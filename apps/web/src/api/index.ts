@@ -1,11 +1,7 @@
-import axios from "./axios";
-
-
-const getHello = async () => {
-  const response = await axios.get(``);
-  return response.data;
-};
+import { admin } from "./admin";
+import { upload } from "./uploads";
 
 export const api = {
-  getHello
+  admin,
+  upload,
 };
