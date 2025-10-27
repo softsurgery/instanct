@@ -1,1 +1,86 @@
-{}
+{
+  "languages": {
+    "en": "🇺🇸 Anglais",
+    "fr": "🇫🇷 Français"
+  },
+  "common": {
+    "buttons": {
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "delete": "Supprimer",
+      "yes": "Oui",
+      "no": "Non",
+      "activate": "Activer",
+      "deactivate": "Désactiver",
+      "approve": "Approuver",
+      "save": "Enregistrer",
+      "edit": "Modifier",
+      "update": "Mettre à jour",
+      "new": "Nouveau",
+      "inspect": "Inspecter",
+      "back": "Retour",
+      "next": "Suivant",
+      "previous": "Précédent",
+      "display": "Afficher",
+      "hide": "Masquer",
+      "reset": "Réinitialiser",
+      "download": "Télécharger",
+      "upload": "Importer",
+      "duplicate": "Dupliquer",
+      "disapprove": "Désapprouver",
+      "logout": "Déconnexion",
+      "notifications": "Notifications",
+      "billing": "Facturation",
+      "account": "Compte",
+      "viewDetails": "Voir les détails",
+      "clearAll": "Tout effacer",
+      "profile": "Profil"
+    },
+    "table": {
+      "Asc": "Croissant",
+      "Desc": "Décroissant",
+      "page": "Page",
+      "of": "de",
+      "hide": "Masquer",
+      "actions": "Actions",
+      "visibleColumns": "Colonnes visibles",
+      "noResults": "Aucun résultat trouvé",
+      "noData": "Aucune donnée",
+      "loading": "Chargement..."
+    },
+    "general": {
+      "unknown": "Inconnu",
+      "more": "Plus"
+    },
+    "placeholders": {
+      "selectDate": "Sélectionner une date...",
+      "filter": "Filtrer"
+    },
+    "imageUpload": {
+      "dragToReorder": "Glisser pour réorganiser",
+      "addPhoto": "Ajouter une photo",
+      "tapToSelect": "Appuyer pour sélectionner"
+    },
+    "sidebar": {
+      "userManagement": "Gestion des utilisateurs",
+      "users": "Utilisateurs",
+      "roles": "Rôles",
+      "permissions": "Permissions",
+      "systemReports": "Rapports système",
+      "feedbacks": "Retours",
+      "bugs": "Bugs",
+      "devices": "Appareils",
+      "contentManagement": "Gestion de contenu",
+      "resources": "Ressources",
+      "regions": "Régions",
+      "applicationProperties": "Propriétés de l'application",
+      "auditMonitoring": "Audit & Surveillance",
+      "logger": "Journal",
+      "developerLogger": "Journal Développeur",
+      "servicesManagement": "Gestion des services",
+      "jobs": "Postes",
+      "jobTags": "Étiquettes de poste",
+      "jobCategories": "Catégories de poste"
+    }
+  }
+}

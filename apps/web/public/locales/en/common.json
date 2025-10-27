@@ -1,1 +1,86 @@
-{}
+{
+  "languages": {
+    "en": "🇺🇸 English",
+    "fr": "🇫🇷 French"
+  },
+  "common": {
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "delete": "Delete",
+      "yes": "Yes",
+      "no": "No",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "approve": "Approve",
+      "save": "Save",
+      "edit": "Edit",
+      "update": "Update",
+      "new": "New",
+      "inspect": "Inspect",
+      "back": "Back",
+      "next": "Next",
+      "previous": "Previous",
+      "display": "Display",
+      "hide": "Hide",
+      "reset": "Reset",
+      "download": "Download",
+      "upload": "Upload",
+      "duplicate": "Duplicate",
+      "disapprove": "Disapprove",
+      "logout": "Logout",
+      "notifications": "Notifications",
+      "billing": "Billing",
+      "account": "Account",
+      "viewDetails": "View Details",
+      "clearAll": "Clear All",
+      "profile": "Profile"
+    },
+    "table": {
+      "Asc": "Ascending",
+      "Desc": "Descending",
+      "page": "Page",
+      "hide": "Hide",
+      "of": "of",
+      "actions": "Actions",
+      "visibleColumns": "Visible Columns",
+      "noResults": "No results found",
+      "noData": "No data",
+      "loading": "Loading..."
+    },
+    "general": {
+      "unknown": "Unknown",
+      "more": "More"
+    },
+    "placeholders": {
+      "selectDate": "Select date...",
+      "filter": "Filter"
+    },
+    "imageUpload": {
+      "dragToReorder": "Drag to reorder",
+      "addPhoto": "Add Photo",
+      "tapToSelect": "Tap to select"
+    },
+    "sidebar": {
+      "userManagement": "User Management",
+      "users": "Users",
+      "roles": "Roles",
+      "permissions": "Permissions",
+      "systemReports": "System Reports",
+      "feedbacks": "Feedbacks",
+      "bugs": "Bugs",
+      "devices": "Devices",
+      "contentManagement": "Content Management",
+      "resources": "Resources",
+      "regions": "Regions",
+      "applicationProperties": "Application Properties",
+      "auditMonitoring": "Audit & Monitoring",
+      "logger": "Logger",
+      "developerLogger": "Developer Logger",
+      "servicesManagement": "Services Management",
+      "jobs": "Jobs",
+      "jobTags": "Job Tags",
+      "jobCategories": "Job Categories"
+    }
+  }
+}
