@@ -30,7 +30,7 @@ export const useRoleCreateSheet = ({
     description: t("sheet.create.description"),
     children: (
       <RoleCreateForm
-        className="my-4"
+        className="mx-4"
         roleCallback={createRole}
         cancelCallback={() => {
           closeCreateRoleSheet?.();

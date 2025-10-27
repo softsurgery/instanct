@@ -30,7 +30,7 @@ export const useUserCreateSheet = ({
     description: tUser("userManagement.sheet.createUserDescription"),
     children: (
       <UserCreateForm
-        className="my-4"
+        className="mx-4"
         createUser={createUser}
         isCreatePending={isCreatePending}
       />

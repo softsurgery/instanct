@@ -222,21 +222,19 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({
               {isFetchRolesPending ? (
                 <Spinner />
               ) : (
-                <div className="flex flex-col flex-1 h-full overflow-hidden mt-4">
-                  <div className="flex-1 overflow-auto px-2">
-                    {methods.current.id === "user-information" && (
-                      <FormBuilder structure={userCreateFormStructure} />
-                    )}
-                    {methods.current.id === "profile-information" && (
-                      <FormBuilder structure={profileCreateFormStructure} />
-                    )}
-                    {methods.current.id === "official-information" && (
-                      <FormBuilder structure={step3FormStructure} />
-                    )}
-                    {methods.current.id === "uploads" && (
-                      <FormBuilder structure={uploadsFormStructure} />
-                    )}
-                  </div>
+                <div className="flex flex-col flex-1 h-full overflow-y-auto overflow-x-hidden my-4">
+                  {methods.current.id === "user-information" && (
+                    <FormBuilder structure={userCreateFormStructure} />
+                  )}
+                  {methods.current.id === "profile-information" && (
+                    <FormBuilder structure={profileCreateFormStructure} />
+                  )}
+                  {methods.current.id === "official-information" && (
+                    <FormBuilder structure={step3FormStructure} />
+                  )}
+                  {methods.current.id === "uploads" && (
+                    <FormBuilder structure={uploadsFormStructure} />
+                  )}
                 </div>
               )}
 

@@ -30,7 +30,7 @@ export const useRoleUpdateSheet = ({
     description: t("sheet.update.description"),
     children: (
       <RoleUpdateForm
-        className="my-4"
+        className="mx-4"
         roleCallback={updateRole}
         cancelCallback={() => {
           closeUpdateRoleSheet?.();

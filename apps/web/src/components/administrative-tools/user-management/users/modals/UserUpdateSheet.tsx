@@ -29,7 +29,7 @@ export const useUserUpdateSheet = ({
     description: t("userManagement.sheet.updateUserDescription"),
     children: (
       <UserUpdateForm
-        className="my-4"
+        className="mx-4"
         updateUser={updateUser}
         isUpdatePending={isUpdatePending}
       />

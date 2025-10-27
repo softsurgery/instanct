@@ -32,7 +32,7 @@ export const RoleUpdateForm: React.FC<RoleFormProps> = ({
       className={cn("flex flex-col flex-1 overflow-hidden gap-2", className)}
     >
       <FormBuilder
-        className="mx-auto mt-5 px-2 h-full flex flex-col flex-1 overflow-auto"
+        className="mx-auto px-2 h-full flex flex-col flex-1 overflow-auto"
         structure={roleUpdateFormStructure}
       />
       <div className="flex gap-2 justify-end px-4 py-3 border-t">
