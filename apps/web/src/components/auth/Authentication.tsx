@@ -18,13 +18,14 @@ import { signIn } from "next-auth/react";
 import { PasswordField } from "../shared/form-builder/PasswordField";
 import Image from "next/image";
 
-export const description =
-  "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
-
 export const Authentication = () => {
   const router = useRouter();
   const [usernameOrEmail, setUsernameOrEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [errors, setErrors] = React.useState<{
+    usernameOrEmail?: string;
+    password?: string;
+  }>({});
 
   const { mutate: signInMutator, isPending: isSignInPending } = useMutation({
     mutationFn: async (data: {
@@ -54,7 +55,29 @@ export const Authentication = () => {
     },
   });
 
+  const validate = () => {
+    const newErrors: { usernameOrEmail?: string; password?: string } = {};
+    if (!usernameOrEmail.trim()) {
+      newErrors.usernameOrEmail = "Email or username is required";
+    } else if (
+      usernameOrEmail.includes("@") &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(usernameOrEmail)
+    ) {
+      newErrors.usernameOrEmail = "Invalid email format";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSignIn = () => {
+    if (!validate()) return;
     signInMutator({ method: "credentials", usernameOrEmail, password });
   };
 
@@ -89,7 +112,7 @@ export const Authentication = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
+          <form className="grid gap-4" onSubmit={handleFormSubmit} noValidate>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -100,7 +123,11 @@ export const Authentication = () => {
                 onChange={(e) => setUsernameOrEmail(e.target.value)}
                 onKeyDown={handleKeyDown}
                 required
+                className={errors.usernameOrEmail ? "border-red-500" : ""}
               />
+              {errors.usernameOrEmail && (
+                <p className="text-sm text-red-500">{errors.usernameOrEmail}</p>
+              )}
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
@@ -118,20 +145,19 @@ export const Authentication = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={handleKeyDown}
+                className={errors.password ? "border-red-500" : ""}
               />
+              {errors.password && (
+                <p className="text-sm text-red-500">{errors.password}</p>
+              )}
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              onClick={handleFormSubmit}
-              disabled={isSignInPending}
-            >
+            <Button type="submit" className="w-full" disabled={isSignInPending}>
               Login
             </Button>
             <Button variant="outline" className="w-full">
               Login with Google
             </Button>
-          </div>
+          </form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link href="#" className="underline">
