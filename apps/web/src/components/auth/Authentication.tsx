@@ -106,8 +106,8 @@ export const Authentication = () => {
               height={100}
             />
           </div>
-          <CardTitle className="text-2xl">Authentication</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-2xl text-center">Authentication</CardTitle>
+          <CardDescription className="text-center">
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>

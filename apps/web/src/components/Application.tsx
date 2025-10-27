@@ -1,13 +1,11 @@
 import React from "react";
 import { AppProps } from "next/app";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { Spinner } from "./shared/Spinner";
 import { Layout } from "./layout/Layout";
 import { cn } from "@/lib/utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { useRouter } from "next/router";
-import { Toaster } from "./ui/sonner";
-import { AuthTokenSync } from "./auth/AuthTokenSync";
-import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 
 interface ApplicationProps {
   className?: string;
@@ -15,35 +13,65 @@ interface ApplicationProps {
   pageProps: AppProps["pageProps"];
 }
 
-const queryClient = new QueryClient();
+const publicRoutes = ["/auth"];
+const protectedHome = "/";
 
-function Application({
-  className,
-  Component,
-  pageProps: { session, ...pageProps },
-}: ApplicationProps) {
+function Application({ className, Component, pageProps }: ApplicationProps) {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const [hasMounted, setHasMounted] = React.useState(false);
+
+  const isAuthPage = publicRoutes.some((route) =>
+    router.pathname.startsWith(route)
+  );
+  const isProtectedRoute = !isAuthPage;
+
+  React.useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (status === "loading") return;
+
+    if (isAuthPage && session) {
+      router.replace(protectedHome);
+    }
+
+    if (isProtectedRoute && !session) {
+      router.replace("/auth");
+    }
+  }, [status, session, isAuthPage, isProtectedRoute, router]);
+
+  const shouldBlockRender =
+    !hasMounted ||
+    status === "loading" ||
+    (isAuthPage && session) ||
+    (isProtectedRoute && !session);
+
+  if (shouldBlockRender) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <Spinner />
+      </main>
+    );
+  }
+
   return (
-    <SessionProvider session={session}>
-      <AuthTokenSync />
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <QueryClientProvider client={queryClient}>
-          {router.pathname === "/auth" ? (
-            <Component {...pageProps} />
-          ) : (
-            <Layout className={cn(className)}>
-              <Component {...pageProps} />
-            </Layout>
-          )}
-        </QueryClientProvider>
-        <Toaster />
-      </ThemeProvider>
-    </SessionProvider>
+    <div
+      className={cn(
+        `flex flex-col flex-1 overflow-hidden min-h-screen max-h-screen`,
+        className
+      )}
+    >
+      {isAuthPage ? (
+        <Component {...pageProps} />
+      ) : (
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      )}
+      <Toaster className="m-5" />
+    </div>
   );
 }
 

@@ -57,7 +57,8 @@ export const authOptions: NextAuthOptions = {
           user.access_token = data.access_token;
           user.refresh_token = data.refresh_token;
           return true;
-        } catch (err) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
           console.error("OAuth sign-in failed:", err);
           return false;
         }
