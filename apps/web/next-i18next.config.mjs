@@ -4,18 +4,15 @@ import LocalStorageBackend from "i18next-localstorage-backend";
 
 const isDev = process.env.NODE_ENV === "development";
 
-module.exports = {
+const nextI18nextConfig = {
   backend: {
     backendOptions: [
       { expirationTime: isDev ? 0 : 60 * 60 * 1000 },
-      {
-        loadPath: "/locales/{{lng}}/{{ns}}.json",
-      },
+      { loadPath: "/locales/{{lng}}/{{ns}}.json" },
     ],
     backends:
       typeof window !== "undefined" ? [LocalStorageBackend, HttpBackend] : [],
   },
-
   i18n: {
     defaultLocale: "en",
     locales: ["en", "fr"],
@@ -27,3 +24,5 @@ module.exports = {
   use: typeof window !== "undefined" ? [ChainedBackend] : [],
   localeDetection: false,
 };
+
+export default nextI18nextConfig;
