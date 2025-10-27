@@ -17,10 +17,10 @@ export const Layout = ({ className, children }: LayoutProps) => {
     >
       {/* Sidebar */}
       <Sidebar />
-      <div className="flex flex-col">
+      <div className="flex flex-col flex-1 overflow-hidden">
         {/* header */}
         <Header />
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex flex-col flex-1 overflow-hidden gap-4 p-4 lg:gap-6 lg:p-6">
           {children}
         </main>
       </div>

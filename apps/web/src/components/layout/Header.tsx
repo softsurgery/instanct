@@ -30,12 +30,15 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { ThemeSwitcher } from "../shared/ThemeSwitcher";
+import { useTheme } from "next-themes";
 
 interface HeaderProps {
   className?: string;
 }
 
 export const Header = ({ className }: HeaderProps) => {
+  const { theme, setTheme } = useTheme();
   return (
     <header
       className={cn(
@@ -128,6 +131,10 @@ export const Header = ({ className }: HeaderProps) => {
           </div>
         </form>
       </div>
+      <ThemeSwitcher
+        value={theme as "light" | "dark" | "system"}
+        onChange={setTheme}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
