@@ -42,7 +42,7 @@ export function DataTableColumnHeader<TData, TValue>({
             size="sm"
             className="text-center data-[state=open]:bg-accent -ml-3"
           >
-            <span>{title}</span>
+            <span className="text-xs">{title}</span>
             {context.order === true && attribute == context.sortKey ? (
               <ArrowDownIcon className="ml-2 h-4 w-4" />
             ) : context.order === false && attribute == context.sortKey ? (

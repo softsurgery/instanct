@@ -6,7 +6,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useUserColumns } from "./columns";
-import { DataTable } from "@/components/shared/data-tables/data-table";
+import { DataTable } from "@/components/shared/data-table/data-table";
 import { useUserCreateSheet } from "./modals/UserCreateSheet";
 import { useUserUpdateSheet } from "./modals/UserUpdateSheet";
 import { useUserDeleteDialog } from "./modals/UserDeleteDialog";
@@ -27,7 +27,7 @@ import { useApproveUserDialog } from "./modals/UserApproveDialog";
 import { useDisapproveUserDialog } from "./modals/UserDisapproveDialog";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-import { DataTableConfig } from "@/components/shared/data-tables/types";
+import { DataTableConfig } from "@/components/shared/data-table/types";
 import { useUploads } from "@/hooks/content/useUploads";
 import { useUpload } from "@/hooks/content/useUpload";
 

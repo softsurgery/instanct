@@ -1,8 +1,8 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
-import DataTableCell from "@/components/shared/data-tables/core/data-table-cell";
-import { DataTableCellVariant } from "@/components/shared/data-tables/types";
+import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
+import { DataTableCellVariant } from "@/components/shared/data-table/types";
 
 const UserAvatarCell = React.memo(
   ({ pictureId, fallback }: { pictureId?: number; fallback?: string }) => {
@@ -17,7 +17,7 @@ const UserAvatarCell = React.memo(
       <DataTableCell
         variant={DataTableCellVariant.AVATAR}
         value={{ url, fallback }}
-        className="my-2 w-14 h-14 bg-muted border-2 rounded-full"
+        className="my-2 w-10 h-10 bg-muted border-2 rounded-full"
       />
     );
   }

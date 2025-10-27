@@ -12,7 +12,7 @@ import { useRoleStore } from "@/hooks/stores/useRoleStore";
 import { useRoleCreateSheet } from "./modals/RoleCreateSheet";
 import { cn } from "@/lib/utils";
 import { useIntro } from "@/contexts/IntroContext";
-import { DataTable } from "@/components/shared/data-tables/data-table";
+import { DataTable } from "@/components/shared/data-table/data-table";
 import { Copy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -21,7 +21,7 @@ import {
   ServerErrorResponse,
   UpdateRoleDto,
 } from "@/types";
-import { DataTableConfig } from "@/components/shared/data-tables/types";
+import { DataTableConfig } from "@/components/shared/data-table/types";
 
 interface RolesProps {
   className?: string;
