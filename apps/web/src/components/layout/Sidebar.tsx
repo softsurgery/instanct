@@ -51,6 +51,17 @@ const navItems: NavItem[] = [
     ],
   },
   {
+    title: "Audit Monitoring",
+    icon: Bell,
+    children: [
+      {
+        title: "Logger",
+        icon: User,
+        href: "/audit-monitoring/logger",
+      },
+    ],
+  },
+  {
     title: "Application Properties",
     href: "/application-properties",
     icon: Shield,

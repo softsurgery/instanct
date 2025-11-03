@@ -78,7 +78,7 @@ export const Layout = ({ className, children }: LayoutProps) => {
                   className={cn("pt-5", isMobile ? "px-4" : "px-10")}
                 />
               )}
-              <main className="flex flex-col flex-1 overflow-hidden gap-4 p-4 lg:gap-6 lg:p-6">
+              <main className="flex flex-col flex-1 overflow-hidden gap-4 px-4 lg:gap-6 lg:px-6">
                 {children}
               </main>
               {content && <Footer />}
