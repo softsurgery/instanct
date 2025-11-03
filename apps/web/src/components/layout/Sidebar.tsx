@@ -1,16 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  Bell,
-  Home,
-  LineChart,
-  ShoppingCart,
-  Users,
-  ChevronDown,
-  User,
-  Shield,
-} from "lucide-react";
+import { Bell, Home, Users, ChevronDown, User, Shield } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,11 +35,6 @@ const navItems: NavItem[] = [
     icon: Home,
   },
   {
-    title: "Orders",
-    href: "/orders",
-    icon: ShoppingCart,
-  },
-  {
     title: "User Management",
     icon: Users,
     children: [
@@ -65,9 +51,9 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    title: "Analytics",
-    href: "/analytics",
-    icon: LineChart,
+    title: "Application Properties",
+    href: "/application-properties",
+    icon: Shield,
   },
 ];
 
@@ -124,7 +110,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                       "flex w-full items-center justify-between rounded-lg px-3 py-2 transition-all cursor-pointer",
                       openItem === item.title
                         ? "font-medium"
-                        : "text-muted-foreground hover:text-primary"
+                        : "text-foreground hover:text-primary"
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -149,7 +135,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                           className={cn(
                             "flex items-center gap-3 rounded-md px-3 py-2 transition-all",
                             isActive
-                              ? "bg-primary font-medium"
+                              ? "bg-primary text-muted font-medium"
                               : "text-muted-foreground hover:text-primary"
                           )}
                         >
