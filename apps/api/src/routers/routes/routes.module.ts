@@ -12,6 +12,9 @@ import { StoreModule } from 'src/shared/store/store.module';
 import { FollowController } from 'src/modules/user-management/controllers/follow.controller';
 import { NotificationController } from 'src/shared/notifications/controllers/notification.controller';
 import { NotificationModule } from 'src/shared/notifications/notifications.module';
+import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
+import { RefTypeController } from 'src/shared/reference-types/controllers/ref-type.controller';
+import { RefParamController } from 'src/shared/reference-types/controllers/ref-param.controller';
 
 @Module({
   controllers: [
@@ -26,6 +29,9 @@ import { NotificationModule } from 'src/shared/notifications/notifications.modul
     FollowController,
     //notifications
     NotificationController,
+    //reference-types
+    RefTypeController,
+    RefParamController,
   ],
   providers: [],
   exports: [],
@@ -36,6 +42,7 @@ import { NotificationModule } from 'src/shared/notifications/notifications.modul
     UserManagementModule,
     UploadModule,
     NotificationModule,
+    ReferenceTypesModule,
   ],
 })
 export class RoutesModule {}
