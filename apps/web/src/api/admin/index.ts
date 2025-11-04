@@ -1,9 +1,11 @@
+import { logger } from "./logger";
+import { permission } from "./permissions";
 import { role } from "./roles";
 import { user } from "./users";
-import { permission } from "./permissions";
 
 export const admin = {
-  user,
-  role,
+  logger,
   permission,
+  role,
+  user,
 };
