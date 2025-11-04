@@ -160,6 +160,49 @@
       "userDeactivatedSuccess": "User Deactivated Successfully",
       "userApprovedSuccess": "User Approved Successfully",
       "userDisapprovedSuccess": "User Disapproved Successfully"
+    },
+    "inspect":{
+      "tabs": {
+        "about": "About",
+        "activity": "Activity",
+        "settings": "Settings"
+      },
+       "stats": {
+      "services": "Services"
+    },
+     "about": {
+      "title": "About",
+      "Bio": "No bio available",
+      "contact": "Contact Information",
+      "personal": "Personal Details",
+      "account": "Account Information",
+      "documents": "Documents",
+      "emailVerified": "Email Verified",
+      "gender": "Gender",
+      "female": "Female",
+      "male": "Male",
+      "profile": "Profile Visibility",
+      "private": "Private",
+      "public": "Public",
+      "role": "Role",
+      "memberSince": "Member Since",
+      "officialDocument": "Official Document",
+      "driverLicense": "Driver License"
+    },
+     "settings": {
+      "title": "Settings",
+      "manageAccount": "Manage your account",
+      "account": "Account",
+      "updateAccount": "Update your account information",
+      "editAccount": "Edit Account",
+      "privacy": "Privacy",
+      "managePrivacy": "Manage your privacy settings",
+      "privacySettings": "Privacy Settings",
+      "notifications": "Notifications",
+      "configureNotifications": "Configure notifications",
+      "notificationSettings": "Notification Settings"
+    },
+    "noPhoneNumber": "No phone number"
+  }
     }
   }
-}
