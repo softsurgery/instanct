@@ -13,6 +13,7 @@ import { LogEntity } from 'src/shared/logger/entities/log.entity';
 import { ProfileEntity } from 'src/modules/user-management/entities/profile.entity';
 import { FollowEntity } from './follow.entity';
 import { NotificationEntity } from 'src/shared/notifications/entities/notification.entity';
+import { GeolocationEntity } from 'src/modules/geolocation/entities/geolocation.entity';
 
 @Entity('users')
 export class UserEntity extends EntityHelper {
@@ -80,4 +81,7 @@ export class UserEntity extends EntityHelper {
 
   @OneToMany(() => FollowEntity, (follow) => follow.following)
   followers: FollowEntity[];
+
+  @OneToOne(() => GeolocationEntity, (location) => location.user)
+  geolocations: GeolocationEntity;
 }

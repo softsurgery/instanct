@@ -29,6 +29,10 @@ export abstract class DatabaseAbstractRepository<T extends ObjectLiteral>
     this.txHost = txHost;
   }
 
+  async rawQuery(query: string, parameters?: any[]) {
+    return this.getRepository().query(query, parameters);
+  }
+
   private getRepository(): Repository<T> {
     return this.txHost?.tx?.getRepository(this.entity.target) || this.entity;
   }
@@ -88,8 +92,11 @@ export abstract class DatabaseAbstractRepository<T extends ObjectLiteral>
     return this.getRepository().save(data);
   }
 
-  public async upsert(data: Partial<T>): Promise<InsertResult> {
-    return this.getRepository().upsert(data, ['id']);
+  public async upsert(
+    data: Partial<T>,
+    uniqueFields?: string[],
+  ): Promise<InsertResult> {
+    return this.getRepository().upsert(data, uniqueFields || ['id']);
   }
 
   public async upsertMany(data: Partial<T>[]): Promise<InsertResult[]> {
