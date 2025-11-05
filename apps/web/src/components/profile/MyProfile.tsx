@@ -2,6 +2,7 @@ import React from "react";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { BaseProfile } from "./BaseProfile";
 import { useUserStore } from "@/hooks/stores/useUserStore";
+import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next"; 
 
 interface MyProfileProps {
@@ -21,7 +22,7 @@ export const MyProfile = ({ className }: MyProfileProps) => {
     }
   }, [user]);
   return (
-   <div className={className}>
+   <div className={cn("flex flex-col flex-1 h-full overflow-auto no-scrollbar container mx-auto",className)}>
       {/* Titre dynamique */}
       <h1>{t("userManagement.inspect.myProfile.profile")}</h1>
 

@@ -163,7 +163,9 @@
     "tabs": {
       "about": "À propos",
       "activity": "Activité",
-      "settings": "Paramètres"
+      "settings": "Paramètres",
+      "conversations": "Conversations",
+      "notifications": "Notifications"
     },
     "stats": {
       "services": "Services"
@@ -200,6 +202,10 @@
       "configureNotifications": "Configurer les notifications",
       "notificationSettings": "Paramètres de notification"
     },
+    "myProfile": {
+        "profile": "Mon Profil",
+        "loadingProfile": "Chargement du profil..."
+      },     
     "noPhoneNumber": "Aucun numéro de téléphone"
   }
   }

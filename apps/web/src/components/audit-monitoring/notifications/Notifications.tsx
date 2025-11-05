@@ -4,8 +4,8 @@ import { api } from "@/api";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useNotificationColumns } from "./columns";
-import { DataTable } from "@/components/shared/data-tables/data-table";
-import { DataTableConfig } from "@/components/shared/data-tables/types";
+import { DataTable } from "@/components/shared/data-table/data-table";
+import { DataTableConfig } from "@/components/shared/data-table/types";
 import { useTranslation } from "react-i18next";
 import { ResponseNotificationDto } from "@/types/notifications";
 

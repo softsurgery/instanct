@@ -165,7 +165,9 @@
       "tabs": {
         "about": "About",
         "activity": "Activity",
-        "settings": "Settings"
+        "settings": "Settings",
+        "conversations": "Conversations",
+        "notifications": "Notifications"
       },
        "stats": {
       "services": "Services"
@@ -202,6 +204,10 @@
       "configureNotifications": "Configure notifications",
       "notificationSettings": "Notification Settings"
     },
+    "myProfile": {
+        "profile": "My Profile",
+        "loadingProfile": "Loading profile..."
+      },
     "noPhoneNumber": "No phone number"
   }
     }

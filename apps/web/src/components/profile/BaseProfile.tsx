@@ -3,11 +3,14 @@ import {
 BarChart2,
 User as UserIcon,
 Settings as SettingsIcon,
+MessageSquare,
+BellIcon
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Spinner } from "../shared/Spinner";
 import { About } from "./cards/About";
 import { Settings } from "./cards/Settings";
+import { Activity } from "./cards/Activity";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 import { Avatar, AvatarFallback } from "../ui/avatar";
@@ -17,6 +20,7 @@ import { useFollowerDialog } from "./modals/FollowersDialog";
 import { useFollowingDialog } from "./modals/FollowingDialog";
 import { useFollowSystem } from "@/hooks/useFollowSystem";
 import { Separator } from "../ui/separator";
+import { Notifications } from "../audit-monitoring/notifications/Notifications";
 import { useTranslation } from "react-i18next";
 
 interface BaseProfileProps {
@@ -62,8 +66,30 @@ return <Spinner className="h-screen" />;
 }
 
 const tabs = [
-{ value: "about", label: t("userManagement.inspect.tabs.about"), icon: UserIcon, content: <About /> },
-{ value: "settings", label: t("userManagement.inspect.tabs.settings"), icon: SettingsIcon, content: <Settings /> },
+{ value: "about", label: t("userManagement.inspect.tabs.about"), 
+  icon: UserIcon, content: <About /> },
+{ value: "settings", label: t("userManagement.inspect.tabs.settings"), 
+  icon: SettingsIcon, content: <Settings /> },
+  {
+  value: "activity",
+  label: t("userManagement.inspect.tabs.activity"),
+  icon: BarChart2,
+  content: <Activity userId={user?.id} />,
+},
+  {
+  value: "conversations",
+  label: t("userManagement.inspect.tabs.conversations"),
+  icon: MessageSquare,
+  content: <div >Conversations Content</div>,
+},
+  {
+      value: "notifications",
+      label: t("userManagement.inspect.tabs.notifications"),
+      icon: BellIcon,
+      content: <Notifications userId={user?.id as string} />,
+    },
+
+
 ];
 
 return (
