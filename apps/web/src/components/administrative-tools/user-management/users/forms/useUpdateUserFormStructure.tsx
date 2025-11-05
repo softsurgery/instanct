@@ -51,8 +51,6 @@ export const useUpdateUserFormStructure = ({
   uploadDriverLicenseDocument,
   isDriverLicenseDocumentPending,
 
-  uploadPhotos,
-  isPhotosUploadPending,
 }: useUpdateUserFormStructureProps) => {
   const { t } = useTranslation("user-management");
 
