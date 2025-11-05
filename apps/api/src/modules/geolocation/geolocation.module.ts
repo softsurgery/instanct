@@ -8,7 +8,7 @@ import { GeolocationGateway } from './gateways/geolocation.gateway';
 @Module({
   controllers: [],
   providers: [GeolocationRepository, GeolocationService, GeolocationGateway],
-  exports: [GeolocationRepository, GeolocationService],
+  exports: [GeolocationRepository, GeolocationService, GeolocationGateway],
   imports: [TypeOrmModule.forFeature([GeolocationEntity])],
 })
 export class GeolocationModule {}

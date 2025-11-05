@@ -98,15 +98,22 @@ export class GeolocationService {
   ): Promise<GeolocationEntity | null> {
     const { latitude, longitude } = dto;
 
-    await this.geolocationRepository.upsert(
-      {
-        userId,
-        latitude,
-        longitude,
-        updatedAt: new Date(),
-      },
-      ['userId'],
-    );
+    const location = await this.geolocationRepository.findOne({
+      where: { userId },
+    });
+
+    if (location) {
+      await this.geolocationRepository.upsert(
+        {
+          id: location?.id,
+          userId,
+          latitude,
+          longitude,
+        },
+        ['userId'],
+      );
+    } else
+      await this.geolocationRepository.save({ userId, latitude, longitude });
 
     return this.geolocationRepository.findOne({ where: { userId } });
   }

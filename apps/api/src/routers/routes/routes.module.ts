@@ -15,6 +15,7 @@ import { NotificationModule } from 'src/shared/notifications/notifications.modul
 import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
 import { RefTypeController } from 'src/shared/reference-types/controllers/ref-type.controller';
 import { RefParamController } from 'src/shared/reference-types/controllers/ref-param.controller';
+import { GeolocationModule } from 'src/modules/geolocation/geolocation.module';
 
 @Module({
   controllers: [
@@ -43,6 +44,7 @@ import { RefParamController } from 'src/shared/reference-types/controllers/ref-p
     UploadModule,
     NotificationModule,
     ReferenceTypesModule,
+    GeolocationModule,
   ],
 })
 export class RoutesModule {}
