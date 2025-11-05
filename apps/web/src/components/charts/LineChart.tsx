@@ -1,5 +1,14 @@
+"use client"
+
 import React from "react"
-import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts"
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts"
 import ChartCard from "./ChartCard"
 
 const data = [
@@ -11,12 +20,16 @@ const data = [
 export default function LineChartExample() {
   return (
     <ChartCard title="Line Chart">
-      <LineChart width={300} height={200} data={data}>
-        <XAxis dataKey="month" />
-        <YAxis />
-        <Tooltip />
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-      </LineChart>
+      <div className="w-full max-w-[320px] h-[250px] mx-auto">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="uv" stroke="#82ca9d" strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   )
 }

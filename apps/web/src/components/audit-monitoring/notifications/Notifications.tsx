@@ -15,7 +15,7 @@ interface NotifcationsProps {
 }
 
 export const Notifications = ({ className, userId }: NotifcationsProps) => {
-  const { t } = useTranslation("notifications");
+  const { t } = useTranslation("user-management");
 
   const [page, setPage] = React.useState(1);
   const { value: debouncedPage, loading: paging } = useDebounce<number>(
@@ -71,8 +71,8 @@ export const Notifications = ({ className, userId }: NotifcationsProps) => {
   }, [notificationsResponse]);
 
   const context: DataTableConfig<ResponseNotificationDto> = {
-    singularName: t("notifications.singular"),
-    pluralName: t("notifications.plural"),
+    singularName: t("userManagement.inspect.notifications.singular"),
+    pluralName: t("userManagement.inspect.notifications.plural"),
     page,
     size,
     totalPageCount: notificationsResponse?.meta.pageCount || 0,

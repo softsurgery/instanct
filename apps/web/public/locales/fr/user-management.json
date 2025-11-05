@@ -205,7 +205,26 @@
     "myProfile": {
         "profile": "Mon Profil",
         "loadingProfile": "Chargement du profil..."
-      },     
+      },    
+  "notifications": {
+    "name": "Notifications",
+    "description": "Voir et gérer les notifications pour les clients et les utilisateurs.",
+    "singularName": "Notification",
+    "pluralName": "Notifications",
+    "columns": {
+      "type": "Type",
+      "description": "Description",
+      "recievedAt": "Reçu à"
+    },
+     "descriptions": {
+    "TEST": "Ceci est une notification de test décrivant ce qui est testé pour vérifier que le système de notification fonctionne correctement.",
+    "NEW_SIGNIN": "Nous avons remarqué une nouvelle connexion de nouveau dispositif"
+  },
+  "titles": {
+    "TEST": "This is a test notification",
+    "NEW_SIGNIN": "New Sign-in!"
+  }
+      }, 
     "noPhoneNumber": "Aucun numéro de téléphone"
   }
   }

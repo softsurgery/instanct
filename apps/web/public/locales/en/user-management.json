@@ -208,6 +208,27 @@
         "profile": "My Profile",
         "loadingProfile": "Loading profile..."
       },
+  
+  "notifications": {
+    "name": "Notifications",
+    "description": "View and manage notifications for the clients and users.",
+    "singular": "Notification",
+    "plural": "Notifications",
+    "columns": {
+      "type": "Type",
+      "description": "Description",
+      "recievedAt": "Recieved At"
+    },
+      "titles": {
+    "TEST": "This is a test notification",
+    "NEW_SIGNIN": "New Sign-in!"
+      },
+      "descriptions": {
+    "TEST": "This is a test notification description designed to verify that the notification system is working properly.",
+    "NEW_SIGNIN": "We noticed a new sigin from a new device"
+  }
+
+      },
     "noPhoneNumber": "No phone number"
   }
     }
