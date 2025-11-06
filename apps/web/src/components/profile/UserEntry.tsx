@@ -1,11 +1,11 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { api } from "@/api";
 import { cn } from "@/lib/utils";
-import { identifyUser, identifyUserAvatar } from "@/lib/user.utils";
 import { ResponseUserDto } from "@/types";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { api } from "@/api";
+import { identifyUser, identifyUserAvatar } from "@/lib/user";
 
 interface UserEntryProps {
   className?: string;
@@ -18,11 +18,11 @@ export const UserEntry = ({ className, user, closeDialog }: UserEntryProps) => {
 
   const { data: profilePicture } = useQuery({
     queryKey: ["profile-picture", user?.profile?.pictureId],
-    //queryFn: () => api.upload.getUploadById(user?.profile?.pictureId!),
+    queryFn: () => api.upload.getUploadById(user?.profile?.pictureId as number),
     enabled: !!user?.profile?.pictureId,
-    staleTime: Infinity,
   });
 
+  const identification = React.useMemo(() => identifyUser(user), [user]);
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
   const handleClick = () => {
@@ -40,14 +40,13 @@ export const UserEntry = ({ className, user, closeDialog }: UserEntryProps) => {
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {/* Avatar 
           <Avatar className="w-10 h-10 border border-border">
             <AvatarImage src={profilePicture} alt={fallback} />
             <AvatarFallback>{fallback}</AvatarFallback>
-          </Avatar>*/}
+          </Avatar>
           <div>
             <div className="text-base font-medium text-card-foreground">
-              {identifyUser(user)}
+              {identification}
             </div>
           </div>
         </div>

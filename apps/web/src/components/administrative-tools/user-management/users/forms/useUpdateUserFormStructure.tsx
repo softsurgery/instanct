@@ -5,8 +5,6 @@ import {
   FieldVariant,
   FormStructure,
   ImageFieldProps,
-  ImageFile,
-  ImageGalleryFieldProps,
   NumberFieldProps,
   PasswordFieldProps,
   SelectFieldProps,
@@ -53,8 +51,6 @@ export const useUpdateUserFormStructure = ({
   uploadDriverLicenseDocument,
   isDriverLicenseDocumentPending,
 
-  uploadPhotos,
-  isPhotosUploadPending,
 }: useUpdateUserFormStructureProps) => {
   const { t } = useTranslation("user-management");
 
@@ -491,47 +487,10 @@ export const useUpdateUserFormStructure = ({
     ],
   };
 
-  // Step 4 *************************************************************************************
-
-  const uploadsField: Field<ImageGalleryFieldProps> = {
-    id: "uploads",
-    label: `${t("userManagement.forms.uploadsLabel")}`,
-    description: `${t("userManagement.forms.uploadsDescription")}`,
-    variant: FieldVariant.IMAGE_GALLERY,
-    props: {
-      images: userStore.images,
-      disabled: isPhotosUploadPending,
-      onFilesChange: (e: ImageFile[]) => {
-        userStore.updateImages("update", e);
-      },
-      onUpload: (file, onProgress) => {
-        uploadPhotos({
-          files: [file],
-          onProgress: (progress: number) => {
-            userStore.setImageProgress(file, progress);
-            onProgress(progress);
-          },
-        });
-      },
-    },
-  };
-
-  const uploadsFormStructure: FormStructure = {
-    title: "",
-    description: "",
-    orientation: "horizontal",
-    fieldsets: [
-      {
-        title: `${t("userManagement.forms.step3Title")}`,
-        rows: [{ fields: [uploadsField] }],
-      },
-    ],
-  };
 
   return {
     userUpdateFormStructure,
     profileUpdateFormStructure,
     step3FormStructure,
-    uploadsFormStructure,
   };
 };

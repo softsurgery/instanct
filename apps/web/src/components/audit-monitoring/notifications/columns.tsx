@@ -1,9 +1,9 @@
-import DataTableCell from "@/components/shared/data-tables/core/data-table-cell";
-import { DataTableColumnHeader } from "@/components/shared/data-tables/data-table-column-header";
+import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
+import { DataTableColumnHeader } from "@/components/shared/data-table/data-table-column-header";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@/components/shared/data-tables/types";
+} from "@/components/shared/data-table/types";
 import { Trans } from "@/components/shared/Trans";
 import { ResponseNotificationDto } from "@/types/notifications";
 import { ColumnDef } from "@tanstack/react-table";

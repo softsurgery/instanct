@@ -11,6 +11,7 @@ interface UserProfileProps {
 export const UserProfile = ({ className, id }: UserProfileProps) => {
   const userStore = useUserStore();
   const { user, isFetchUserPending } = useIdentifiedUser(id, "role");
+
   React.useEffect(() => {
     if (user) {
       userStore.set("response", user);
@@ -18,7 +19,6 @@ export const UserProfile = ({ className, id }: UserProfileProps) => {
         userStore.reset();
       };
     }
-  
   }, [user]);
 
   return (

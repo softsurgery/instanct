@@ -160,48 +160,50 @@
       "userDisapprovedSuccess": "Utilisateur désapprouvé avec succès"
     },
     "inspect": {
-    "tabs": {
-      "about": "À propos",
-      "activity": "Activité",
-      "settings": "Paramètres"
-    },
-    "stats": {
-      "services": "Services"
-    },
-    "about": {
-      "title": "À propos",
-      "Bio": "Aucune biographie disponible",
-      "contact": "Informations de contact",
-      "personal": "Informations personnelles",
-      "account": "Informations du compte",
-      "documents": "Documents",
-      "emailVerified": "Email vérifié",
-      "gender": "Genre",
-      "female": "Femme",
-      "male": "Homme",
-      "profile": "Visibilité du profil",
-      "private": "Privé",
-      "public": "Public",
-      "role": "Rôle",
-      "memberSince": "Membre depuis",
-      "officialDocument": "Document officiel",
-      "driverLicense": "Permis de conduire"
-    },
-     "settings": {
-      "title": "Paramètres",
-      "manageAccount": "Gérer le compte",
-      "account": "Compte",
-      "updateAccount": "Mettre à jour les informations du compte",
-      "editAccount": "Modifier le compte",
-      "privacy": "Confidentialité",
-      "managePrivacy": "Gérer les paramètres de confidentialité",
-      "privacySettings": "Paramètres de confidentialité",
-      "notifications": "Notifications",
-      "configureNotifications": "Configurer les notifications",
-      "notificationSettings": "Paramètres de notification"
-    },
-    "noPhoneNumber": "Aucun numéro de téléphone"
-  }
+      "tabs": {
+        "about": "À propos",
+        "activity": "Activité",
+        "settings": "Paramètres",
+        "conversations": "Conversations",
+        "notifications": "Notifications"
+      },
+      "stats": {
+        "services": "Services"
+      },
+      "about": {
+        "title": "À propos",
+        "Bio": "Aucune biographie disponible",
+        "contact": "Informations de contact",
+        "personal": "Informations personnelles",
+        "account": "Informations du compte",
+        "documents": "Documents",
+        "emailVerified": "Email vérifié",
+        "gender": "Genre",
+        "female": "Femme",
+        "male": "Homme",
+        "profile": "Visibilité du profil",
+        "private": "Privé",
+        "public": "Public",
+        "role": "Rôle",
+        "memberSince": "Membre depuis",
+        "lastUpdated": "Dernière mise à jour",
+        "officialDocument": "Document officiel",
+        "driverLicense": "Permis de conduire"
+      },
+      "settings": {
+        "title": "Paramètres",
+        "manageAccount": "Gérer le compte",
+        "account": "Compte",
+        "updateAccount": "Mettre à jour les informations du compte",
+        "editAccount": "Modifier le compte",
+        "privacy": "Confidentialité",
+        "managePrivacy": "Gérer les paramètres de confidentialité",
+        "privacySettings": "Paramètres de confidentialité",
+        "notifications": "Notifications",
+        "configureNotifications": "Configurer les notifications",
+        "notificationSettings": "Paramètres de notification"
+      },
+      "noPhoneNumber": "Aucun numéro de téléphone"
+    }
   }
 }
-

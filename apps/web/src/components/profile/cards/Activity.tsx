@@ -1,4 +1,4 @@
-/*import { Logger } from "@/components/audit-monitoring/logger/Logger";
+import { LoggerPortal } from "@/components/audit-monitoring/Logger/LoggerPortal";
 
 interface ActivityProps {
   className?: string;
@@ -6,9 +6,5 @@ interface ActivityProps {
 }
 
 export const Activity = ({ className, userId }: ActivityProps) => {
-  return <Logger userId={userId} className={className} />;
-};
-*/
-export const Activity = () => {
-  return null;
+  return <LoggerPortal userId={userId} className={className} />;
 };

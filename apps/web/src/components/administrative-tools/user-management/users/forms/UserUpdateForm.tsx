@@ -27,14 +27,6 @@ const steps = [
     id: "profile-information",
     title: "userManagement.forms.step2Title",
   },
-  {
-    id: "official-information",
-    title: "userManagement.forms.step3Title",
-  },
-  {
-    id: "uploads",
-    title: "userManagement.forms.step4Title",
-  },
 ];
 
 const { Stepper } = defineStepper(...steps);
@@ -110,8 +102,6 @@ export const UserUpdateForm: React.FC<UserUpdateFormProps> = ({
   const {
     userUpdateFormStructure,
     profileUpdateFormStructure,
-    step3FormStructure,
-    uploadsFormStructure,
   } = useUpdateUserFormStructure({
     userStore,
     roles: mapToSelectOptions({
@@ -233,12 +223,6 @@ export const UserUpdateForm: React.FC<UserUpdateFormProps> = ({
                   )}
                   {methods.current.id === "profile-information" && (
                     <FormBuilder structure={profileUpdateFormStructure} />
-                  )}
-                  {methods.current.id === "official-information" && (
-                    <FormBuilder structure={step3FormStructure} />
-                  )}
-                  {methods.current.id === "uploads" && (
-                    <FormBuilder structure={uploadsFormStructure} />
                   )}
                 </div>
               )}
