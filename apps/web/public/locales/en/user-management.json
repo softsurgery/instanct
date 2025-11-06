@@ -12,6 +12,7 @@
       "editUser": "Edit User",
       "createUser": "Create User",
       "deleteUser": "Delete User",
+      "notify": "Notify",
       "userDetails": "User Details"
     },
     "columns": {
@@ -159,7 +160,8 @@
       "userActivatedSuccess": "User Activated Successfully",
       "userDeactivatedSuccess": "User Deactivated Successfully",
       "userApprovedSuccess": "User Approved Successfully",
-      "userDisapprovedSuccess": "User Disapproved Successfully"
+      "userDisapprovedSuccess": "User Disapproved Successfully",
+      "testNotificationSuccess": "Test Notification Successfully"
     },
     "inspect": {
       "tabs": {

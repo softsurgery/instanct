@@ -12,6 +12,7 @@
       "editUser": "Modifier l'Utilisateur",
       "createUser": "Créer un Utilisateur",
       "deleteUser": "Supprimer l'Utilisateur",
+      "notify": "Notifier",
       "userDetails": "Détails de l'Utilisateur"
     },
     "columns": {
@@ -201,7 +202,8 @@
         "privacySettings": "Paramètres de confidentialité",
         "notifications": "Notifications",
         "configureNotifications": "Configurer les notifications",
-        "notificationSettings": "Paramètres de notification"
+        "notificationSettings": "Paramètres de notification",
+        "testNotification": "Tester la notification"
       },
       "noPhoneNumber": "Aucun numéro de téléphone"
     }
