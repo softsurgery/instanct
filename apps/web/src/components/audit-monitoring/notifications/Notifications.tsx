@@ -15,7 +15,7 @@ interface NotifcationsProps {
 }
 
 export const Notifications = ({ className, userId }: NotifcationsProps) => {
-  const { t } = useTranslation("user-management");
+  const { t } = useTranslation("notifications");
 
   const [page, setPage] = React.useState(1);
   const { value: debouncedPage, loading: paging } = useDebounce<number>(
@@ -30,7 +30,7 @@ export const Notifications = ({ className, userId }: NotifcationsProps) => {
   );
 
   const [sortDetails, setSortDetails] = React.useState({
-    order: false, // Default to DESC for logs (newest first)
+    order: false,
     sortKey: "createdAt",
   });
   const { value: debouncedSortDetails, loading: sorting } = useDebounce<
@@ -71,8 +71,8 @@ export const Notifications = ({ className, userId }: NotifcationsProps) => {
   }, [notificationsResponse]);
 
   const context: DataTableConfig<ResponseNotificationDto> = {
-    singularName: t("userManagement.inspect.notifications.singular"),
-    pluralName: t("userManagement.inspect.notifications.plural"),
+    singularName: t("notifications.singular"),
+    pluralName: t("notifications.plural"),
     page,
     size,
     totalPageCount: notificationsResponse?.meta.pageCount || 0,

@@ -161,7 +161,7 @@
       "userApprovedSuccess": "User Approved Successfully",
       "userDisapprovedSuccess": "User Disapproved Successfully"
     },
-    "inspect":{
+    "inspect": {
       "tabs": {
         "about": "About",
         "activity": "Activity",
@@ -169,67 +169,43 @@
         "conversations": "Conversations",
         "notifications": "Notifications"
       },
-       "stats": {
-      "services": "Services"
-    },
-     "about": {
-      "title": "About",
-      "Bio": "No bio available",
-      "contact": "Contact Information",
-      "personal": "Personal Details",
-      "account": "Account Information",
-      "documents": "Documents",
-      "emailVerified": "Email Verified",
-      "gender": "Gender",
-      "female": "Female",
-      "male": "Male",
-      "profile": "Profile Visibility",
-      "private": "Private",
-      "public": "Public",
-      "role": "Role",
-      "memberSince": "Member Since",
-      "officialDocument": "Official Document",
-      "driverLicense": "Driver License"
-    },
-     "settings": {
-      "title": "Settings",
-      "manageAccount": "Manage your account",
-      "account": "Account",
-      "updateAccount": "Update your account information",
-      "editAccount": "Edit Account",
-      "privacy": "Privacy",
-      "managePrivacy": "Manage your privacy settings",
-      "privacySettings": "Privacy Settings",
-      "notifications": "Notifications",
-      "configureNotifications": "Configure notifications",
-      "notificationSettings": "Notification Settings"
-    },
-    "myProfile": {
-        "profile": "My Profile",
-        "loadingProfile": "Loading profile..."
+      "stats": {
+        "services": "Services"
       },
-  
-  "notifications": {
-    "name": "Notifications",
-    "description": "View and manage notifications for the clients and users.",
-    "singular": "Notification",
-    "plural": "Notifications",
-    "columns": {
-      "type": "Type",
-      "description": "Description",
-      "recievedAt": "Recieved At"
-    },
-      "titles": {
-    "TEST": "This is a test notification",
-    "NEW_SIGNIN": "New Sign-in!"
+      "about": {
+        "title": "About",
+        "Bio": "No bio available",
+        "contact": "Contact Information",
+        "personal": "Personal Details",
+        "account": "Account Information",
+        "documents": "Documents",
+        "emailVerified": "Email Verified",
+        "gender": "Gender",
+        "female": "Female",
+        "male": "Male",
+        "profile": "Profile Visibility",
+        "private": "Private",
+        "public": "Public",
+        "role": "Role",
+        "memberSince": "Member Since",
+        "lastUpdated": "Last Updated",
+        "officialDocument": "Official Document",
+        "driverLicense": "Driver License"
       },
-      "descriptions": {
-    "TEST": "This is a test notification description designed to verify that the notification system is working properly.",
-    "NEW_SIGNIN": "We noticed a new sigin from a new device"
-  }
-
+      "settings": {
+        "title": "Settings",
+        "manageAccount": "Manage your account",
+        "account": "Account",
+        "updateAccount": "Update your account information",
+        "editAccount": "Edit Account",
+        "privacy": "Privacy",
+        "managePrivacy": "Manage your privacy settings",
+        "privacySettings": "Privacy Settings",
+        "notifications": "Notifications",
+        "configureNotifications": "Configure notifications",
+        "notificationSettings": "Notification Settings"
       },
-    "noPhoneNumber": "No phone number"
-  }
+      "noPhoneNumber": "No phone number"
     }
   }
+}

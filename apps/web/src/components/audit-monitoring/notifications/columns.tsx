@@ -13,14 +13,14 @@ import { useTranslation } from "react-i18next";
 export const useNotificationColumns = (
   context: DataTableConfig<ResponseNotificationDto>
 ): ColumnDef<ResponseNotificationDto>[] => {
-  const { t } = useTranslation("user-management");
+  const { t } = useTranslation("notifications");
   return [
     {
-      accessorKey: t("userManagement.inspect.notifications.columns.type"),
+      accessorKey: t("notifications.columns.type"),
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
-          title={t("userManagement.inspect.notifications.columns.type")}
+          title={t("notifications.columns.type")}
           attribute="type"
           context={context}
         />
@@ -35,11 +35,11 @@ export const useNotificationColumns = (
     },
 
     {
-      accessorKey: t("userManagement.inspect.notifications.columns.description"),
+      accessorKey: t("notifications.columns.description"),
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
-          title={t("userManagement.inspect.notifications.columns.description")}
+          title={t("notifications.columns.description")}
           attribute="description"
           context={context}
         />
@@ -72,11 +72,11 @@ export const useNotificationColumns = (
       enableHiding: true,
     },
     {
-      accessorKey: `${t("userManagement.inspect.notifications.columns.recievedAt")}`,
+      accessorKey: `${t("notifications.columns.recievedAt")}`,
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
-          title={t("userManagement.inspect.notifications.columns.recievedAt")}
+          title={t("notifications.columns.recievedAt")}
           attribute="createdAt"
           context={context}
         />

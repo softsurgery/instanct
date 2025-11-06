@@ -17,7 +17,7 @@ const nextI18nextConfig = {
     defaultLocale: "en",
     locales: ["en", "fr"],
     defaultNS: "common",
-    ns: ["common", "user-management", "role"],
+    ns: ["common", "user-management", "role", "notifications"],
   },
   reloadOnPrerender: isDev,
   serializeConfig: false,
