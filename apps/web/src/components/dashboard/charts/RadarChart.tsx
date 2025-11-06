@@ -7,7 +7,6 @@ import {
   PolarGrid,
   Radar,
   RadarChart,
-  Tooltip,
   ResponsiveContainer,
 } from "recharts"
 import {
