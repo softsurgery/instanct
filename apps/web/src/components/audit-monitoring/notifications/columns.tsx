@@ -5,7 +5,7 @@ import {
   DataTableConfig,
 } from "@/components/shared/data-table/types";
 import { Trans } from "@/components/shared/Trans";
-import { ResponseNotificationDto } from "@/types/notifications";
+import { ResponseNotificationDto } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";

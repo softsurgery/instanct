@@ -204,7 +204,7 @@ type JSONFormProps = {
 export default function JSONForm(props: JSONFormProps) {
   const { value, onChange, defaultOpen } = props;
   // Freeze schema on initial render to lock structure and keys
-  const schema = useMemo(() => deriveSchemaFromData(value), []);
+  const schema = useMemo(() => deriveSchemaFromData(value), [value]);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor)

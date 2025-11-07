@@ -1,7 +1,17 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Bell, Home, Users, ChevronDown, User, Shield } from "lucide-react";
+import {
+  Bell,
+  Home,
+  Users,
+  ChevronDown,
+  User,
+  Shield,
+  TableOfContents,
+  Table,
+  Table2,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -62,9 +72,25 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    title: "Application Properties",
-    href: "/application-properties",
-    icon: Shield,
+    title: "Content Management",
+    icon: TableOfContents,
+    children: [
+      {
+        title: "Application Properties",
+        href: "/content-management/application-properties",
+        icon: Shield,
+      },
+      {
+        title: "Reference Types",
+        href: "/content-management/reference-types",
+        icon: Table2,
+      },
+      {
+        title: "Reference Parameters",
+        href: "/content-management/reference-parameters",
+        icon: Table,
+      },
+    ],
   },
 ];
 

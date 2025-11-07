@@ -7,7 +7,7 @@ import { useNotificationColumns } from "./columns";
 import { DataTable } from "@/components/shared/data-table/data-table";
 import { DataTableConfig } from "@/components/shared/data-table/types";
 import { useTranslation } from "react-i18next";
-import { ResponseNotificationDto } from "@/types/notifications";
+import { ResponseNotificationDto } from "@/types";
 
 interface NotifcationsProps {
   className?: string;

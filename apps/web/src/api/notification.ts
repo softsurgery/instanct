@@ -1,6 +1,6 @@
 import { Paginated, QueryParams } from "@/types";
 import axios from "./axios";
-import { ResponseNotificationDto } from "@/types/notifications";
+import { ResponseNotificationDto } from "@/types";
 
 const findPaginated = async ({
   page = "1",
@@ -10,8 +10,7 @@ const findPaginated = async ({
   filter = "",
   join = "user",
 }: QueryParams): Promise<Paginated<ResponseNotificationDto>> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const params: { [key: string]: any } = {
+  const params: { [key: string]: string | undefined } = {
     page,
     limit,
     sort,
@@ -39,8 +38,7 @@ const findPaginatedByUser = async (
     join = "",
   }: QueryParams
 ): Promise<Paginated<ResponseNotificationDto>> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const params: { [key: string]: any } = {
+  const params: { [key: string]: string | undefined } = {
     page,
     limit,
     sort,
