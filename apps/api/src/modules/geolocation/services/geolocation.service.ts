@@ -109,6 +109,7 @@ export class GeolocationService {
           userId,
           latitude,
           longitude,
+          updatedAt: new Date(),
         },
         ['userId'],
       );

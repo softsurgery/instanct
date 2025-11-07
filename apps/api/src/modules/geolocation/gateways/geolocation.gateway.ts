@@ -33,7 +33,6 @@ export class GeolocationGateway
   handleConnection(client: AdvancedSocket) {
     const payload = getTokenPayloadForWebSocket(client);
     if (!payload) {
-      console.warn('❌ Unauthorized socket connection — disconnecting');
       client.disconnect();
       return;
     }
@@ -85,6 +84,7 @@ export class GeolocationGateway
       radius,
       userId,
     );
+
     const connectedIds = [...this.connectedUsers.values()];
 
     const nearbyWithPresence = nearby.map((u) => ({
