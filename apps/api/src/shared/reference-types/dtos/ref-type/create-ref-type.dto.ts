@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, Length, MinLength } from 'class-validator';
+import { IsString, Length, MaxLength } from 'class-validator';
 
 export class CreateRefTypeDto {
   @ApiProperty({ type: String })
@@ -9,6 +9,6 @@ export class CreateRefTypeDto {
 
   @ApiProperty({ type: String })
   @IsString()
-  @MinLength(255)
+  @MaxLength(255)
   description: string;
 }

@@ -10,7 +10,7 @@ export class RefTypeEntity extends EntityHelper {
   @Column({})
   label: string;
 
-  @Column({})
+  @Column({ nullable: true, type: 'varchar', length: 255 })
   description: string;
 
   @OneToMany(() => RefParamEntity, (user) => user.refType)
