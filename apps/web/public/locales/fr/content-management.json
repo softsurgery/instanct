@@ -10,16 +10,20 @@
       "id": "ID",
       "label": "Libellé",
       "description": "Description",
-      "noDescription": "Aucune description"
+      "parent": "Parent",
+      "noDescription": "Aucune description",
+      "noParent": "Aucun parent"
     },
     "forms": {
       "create": {
         "title": "Créer un type de référence",
-        "description": "Créer un nouveau type de référence."
+        "description": "Créer un nouveau type de référence.",
+        "parent": "Parent"
       },
       "update": {
         "title": "Mettre à jour un type de référence",
-        "description": "Mettre à jour un nouveau type de référence."
+        "description": "Mettre à jour un nouveau type de référence.",
+        "parent": "Parent"
       },
       "delete": {
         "title": "Supprimer un type de référence",

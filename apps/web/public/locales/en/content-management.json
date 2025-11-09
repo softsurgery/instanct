@@ -10,16 +10,20 @@
       "id": "ID",
       "label": "Label",
       "description": "Description",
-      "noDescription": "No description"
+      "parent": "Parent",
+      "noDescription": "No description",
+      "noParent": "No parent"
     },
     "forms": {
       "create": {
         "title": "Create Reference Type",
-        "description": "Create a new reference type."
+        "description": "Create a new reference type.",
+        "parent": "Parent"
       },
       "update": {
         "title": "Update Reference Type",
-        "description": "Update a new reference type."
+        "description": "Update a new reference type.",
+        "parent": "Parent"
       }
     },
     "sheet": {

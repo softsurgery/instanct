@@ -5,11 +5,15 @@ export interface ResponseRefTypeDto extends DatabaseEntity {
   label: string;
   description: string;
   refParams: ResponseRefParamDto[];
+  parentId?: number;
+  parent?: ResponseRefTypeDto;
+  children: ResponseRefTypeDto[];
 }
 
 export interface CreateRefTypeDto {
   label: string;
   description: string;
+  parentId?: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
