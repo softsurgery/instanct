@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Command } from 'nestjs-command';
 import { StoreService } from 'src/shared/store/services/store.service';
-import { propertiesCoreSeed, propertiesFaqsSeed } from './data/properties.data';
+import {
+  propertiesCoreSeed,
+  propertiesFaqsSeed,
+  propertiesMapConfigSeed,
+} from './data/properties.data';
 
 @Injectable()
 export class PropertiesSeedCommand {
@@ -25,6 +29,11 @@ export class PropertiesSeedCommand {
         id: 'faqs',
         description: 'Frequently Asked Questions',
         value: propertiesFaqsSeed,
+      },
+      {
+        id: 'map-config',
+        description: 'Map configuration',
+        value: propertiesMapConfigSeed,
       },
     ]);
     //=============================================================================================

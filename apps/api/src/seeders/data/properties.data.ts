@@ -26,3 +26,26 @@ export const propertiesFaqsSeed = [
     answer: 'All products come with a 1-year warranty.',
   },
 ];
+
+export const propertiesMapConfigSeed = {
+  range: {
+    min: 0,
+    max: 10,
+    unit: 'km',
+  },
+  lastUpdate: {
+    value: 1,
+    unit: 'day',
+  },
+  reconnection: {
+    maxAttempts: 3,
+    delay: {
+      value: 2,
+      unit: 'second',
+    },
+  },
+  refresh: {
+    value: 10,
+    unit: 'second',
+  },
+};
