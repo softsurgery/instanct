@@ -187,7 +187,11 @@ export const AppProperties = () => {
   }, [handleSaveAll]);
 
   return (
-    <main className={cn("flex flex-col flex-1 container overflow-hidden p-1")}>
+    <main
+      className={cn(
+        "flex flex-col flex-1 container mx-auto overflow-hidden p-1"
+      )}
+    >
       {/* Page header */}
       <div className="w-full mb-2">
         {/* Toolbar */}

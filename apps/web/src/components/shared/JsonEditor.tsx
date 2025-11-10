@@ -234,7 +234,7 @@ function FormNode({
   path,
   depth,
   sensors,
-  defaultOpen,
+  defaultOpen = true,
 }: {
   className?: string;
   value: JSONValue;
@@ -285,7 +285,7 @@ function FormNode({
                 {childSchema.kind === "object" ||
                 childSchema.kind === "array" ? (
                   <Collapsible className="w-full" defaultOpen={defaultOpen}>
-                    <CollapsibleTrigger className="flex justify-between items-center w-full">
+                    <CollapsibleTrigger className="flex justify-between items-center w-full p-4 font-bold">
                       <span> {key.toUpperCase()}</span>
                       <ChevronsUpDown />
                     </CollapsibleTrigger>
