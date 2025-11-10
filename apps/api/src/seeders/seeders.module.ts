@@ -9,9 +9,17 @@ import { TemplatesSeedCommand } from './templates.seeder';
 import { PropertiesSeedCommand } from './properties.seeder';
 import { StoreModule } from 'src/shared/store/store.module';
 import { PlaygroundUsersSeedCommand } from './playground/users.seeder';
+import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
+import { IndustriesSeedCommand } from './Industries.seeder';
 
 @Module({
-  imports: [CommandModule, UserManagementModule, TemplateModule, StoreModule],
+  imports: [
+    CommandModule,
+    UserManagementModule,
+    ReferenceTypesModule,
+    TemplateModule,
+    StoreModule,
+  ],
   providers: [
     //seeders
     PermissionsSeedCommand,
@@ -19,6 +27,8 @@ import { PlaygroundUsersSeedCommand } from './playground/users.seeder';
     AdminSeedCommand,
     TemplatesSeedCommand,
     PropertiesSeedCommand,
+    //reference types
+    IndustriesSeedCommand,
     //playground
     PlaygroundUsersSeedCommand,
   ],

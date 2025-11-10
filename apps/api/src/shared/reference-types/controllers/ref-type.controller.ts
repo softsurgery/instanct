@@ -69,9 +69,9 @@ export class RefTypeController {
     @Body() createRefTypeDto: CreateRefTypeDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefTypeDto> {
-    const region = await this.refTypeService.save(createRefTypeDto);
-    req.logInfo = { id: region.id };
-    return toDto(ResponseRefTypeDto, region);
+    const refType = await this.refTypeService.save(createRefTypeDto);
+    req.logInfo = { id: refType.id, label: refType.label };
+    return toDto(ResponseRefTypeDto, refType);
   }
 
   @Put(':id')
@@ -81,11 +81,10 @@ export class RefTypeController {
     @Body() updateRefTypeDto: UpdateRefTypeDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefTypeDto | null> {
-    req.logInfo = { id };
-    return toDto(
-      ResponseRefTypeDto,
-      await this.refTypeService.update(id, updateRefTypeDto),
-    );
+    const refType = await this.refTypeService.update(id, updateRefTypeDto);
+
+    req.logInfo = { id, label: refType?.label };
+    return toDto(ResponseRefTypeDto, refType);
   }
 
   @Delete(':id')
@@ -94,7 +93,11 @@ export class RefTypeController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefTypeDto | null> {
-    req.logInfo = { id };
-    return toDto(ResponseRefTypeDto, await this.refTypeService.softDelete(id));
+    const refType = await this.refTypeService.delete(id);
+    req.logInfo = {
+      id,
+      label: refType?.label,
+    };
+    return toDto(ResponseRefTypeDto, refType);
   }
 }

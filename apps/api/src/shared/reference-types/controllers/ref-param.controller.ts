@@ -74,9 +74,9 @@ export class RefParamController {
     @Body() createRefParamDto: CreateRefParamDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefParamDto> {
-    const region = await this.refParamService.save(createRefParamDto);
-    req.logInfo = { id: region.id };
-    return toDto(ResponseRefParamDto, region);
+    const refParam = await this.refParamService.save(createRefParamDto);
+    req.logInfo = { id: refParam.id, label: refParam.label };
+    return toDto(ResponseRefParamDto, refParam);
   }
 
   @Put(':id')
@@ -86,11 +86,9 @@ export class RefParamController {
     @Body() updateRefParamDto: UpdateRefParamDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefParamDto | null> {
-    req.logInfo = { id };
-    return toDto(
-      ResponseRefParamDto,
-      await this.refParamService.update(id, updateRefParamDto),
-    );
+    const refParam = await this.refParamService.update(id, updateRefParamDto);
+    req.logInfo = { id, label: refParam?.label };
+    return toDto(ResponseRefParamDto, refParam);
   }
 
   @Delete(':id')
@@ -99,10 +97,8 @@ export class RefParamController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefParamDto | null> {
-    req.logInfo = { id };
-    return toDto(
-      ResponseRefParamDto,
-      await this.refParamService.softDelete(id),
-    );
+    const refParam = await this.refParamService.delete(id);
+    req.logInfo = { id, label: refParam?.label };
+    return toDto(ResponseRefParamDto, refParam);
   }
 }
