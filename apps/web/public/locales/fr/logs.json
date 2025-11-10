@@ -24,7 +24,13 @@
     "BUG_CREATE": "Rapport de bug créé",
     "BUG_DELETE": "Rapport de bug supprimé",
     "FEEDBACK_CREATE": "Feedback soumis",
-    "FEEDBACK_DELETE": "Feedback supprimé"
+    "FEEDBACK_DELETE": "Feedback supprimé",
+    "REF_TYPE_CREATE": "Type de référence créé",
+    "REF_TYPE_UPDATE": "Type de référence mis à jour",
+    "REF_TYPE_DELETE": "Type de référence supprimé",
+    "REF_PARAM_CREATE": "Paramètre de référence créé",
+    "REF_PARAM_UPDATE": "Paramètre de référence mis à jour",
+    "REF_PARAM_DELETE": "Paramètre de référence supprimé"
   },
   "descriptions": {
     "SIGNIN": "L'utilisateur <strong>{{fullname}}</strong> s'est connecté.",
@@ -51,7 +57,13 @@
     "BUG_CREATE": "Le rapport de bug <strong>{{variant}}</strong> a été créé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
     "BUG_DELETE": "Le rapport de bug <strong>{{variant}}</strong> a été supprimé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
     "FEEDBACK_CREATE": "Le feedback <strong>{{category}}</strong> a été soumis par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
-    "FEEDBACK_DELETE": "Le feedback <strong>{{category}}</strong> a été supprimé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>."
+    "FEEDBACK_DELETE": "Le feedback <strong>{{category}}</strong> a été supprimé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_TYPE_CREATE": "Le type de référence <strong>{{label}}</strong> a été créé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_TYPE_UPDATE": "Le type de référence <strong>{{label}}</strong> a été mis à jour par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_TYPE_DELETE": "Le type de référence <strong>{{label}}</strong> a été supprimé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_PARAM_CREATE": "Le paramètre de référence <strong>{{label}}</strong> a été créé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_PARAM_UPDATE": "Le paramètre de référence <strong>{{label}}</strong> a été mis à jour par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_PARAM_DELETE": "Le paramètre de référence <strong>{{label}}</strong> a été supprimé par <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>."
   },
   "logger": {
     "intro": "Audit & Surveillance",

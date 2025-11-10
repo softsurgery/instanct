@@ -67,7 +67,12 @@ export const useRefTypeColumns = (
         />
       ),
       cell: ({ row }) => (
-        <div>{row.original.parent?.label || t("refType.columns.noParent")}</div>
+        <div>
+          {row.original.parent?.label || (
+            <span className="opacity-70">{t("refType.columns.noParent")}</span>
+          )}
+          {row.original.parentId && <span>({row.original.parentId})</span>}
+        </div>
       ),
       enableSorting: true,
       enableHiding: true,

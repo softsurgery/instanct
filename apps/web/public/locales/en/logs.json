@@ -24,7 +24,13 @@
     "BUG_CREATE": "Bug Report Created",
     "BUG_DELETE": "Bug Report Deleted",
     "FEEDBACK_CREATE": "Feedback Submitted",
-    "FEEDBACK_DELETE": "Feedback Deleted"
+    "FEEDBACK_DELETE": "Feedback Deleted",
+    "REF_TYPE_CREATE": "Reference Type Created",
+    "REF_TYPE_UPDATE": "Reference Type Updated",
+    "REF_TYPE_DELETE": "Reference Type Deleted",
+    "REF_PARAM_CREATE": "Reference Parameter Created",
+    "REF_PARAM_UPDATE": "Reference Parameter Updated",
+    "REF_PARAM_DELETE": "Reference Parameter Deleted"
   },
   "descriptions": {
     "SIGNIN": "User <strong>{{fullname}}</strong> has signed in.",
@@ -51,7 +57,13 @@
     "BUG_CREATE": "Bug report <strong>{{variant}}</strong> has been created by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
     "BUG_DELETE": "Bug report <strong>{{variant}}</strong> has been deleted by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
     "FEEDBACK_CREATE": "Feedback <strong>{{category}}</strong> has been submitted by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
-    "FEEDBACK_DELETE": "Feedback <strong>{{category}}</strong> has been deleted by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>."
+    "FEEDBACK_DELETE": "Feedback <strong>{{category}}</strong> has been deleted by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_TYPE_CREATE": "Reference Type <strong>{{label}}</strong> has been created by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_TYPE_UPDATE": "Reference Type <strong>{{label}}</strong> has been updated by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_TYPE_DELETE": "Reference Type <strong>{{label}}</strong> has been deleted by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_PARAM_CREATE": "Reference Parameter <strong>{{label}}</strong> has been created by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_PARAM_UPDATE": "Reference Parameter <strong>{{label}}</strong> has been updated by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>.",
+    "REF_PARAM_DELETE": "Reference Parameter <strong>{{label}}</strong> has been deleted by <a href=\"/user-management/users/{{user.id}}\"><strong>{{user.username}}</strong></a>."
   },
   "logger": {
     "intro": "Audit & Monitoring",
