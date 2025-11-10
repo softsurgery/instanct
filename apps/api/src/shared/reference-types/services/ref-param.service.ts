@@ -8,6 +8,7 @@ import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { RefParamRepository } from '../repositories/ref-param.repository';
 import { RefParamNotFoundException } from '../errors/ref-param/ref-param.notfound.error';
 import { RefParamEntity } from '../entities/ref-param.entity';
+import { RefParamAlreadyExistsException } from '../errors/ref-param/ref-param.alreadyexists.error';
 
 @Injectable()
 export class RefParamService {
@@ -73,6 +74,10 @@ export class RefParamService {
 
   @Transactional()
   async save(refParam: Partial<RefParamEntity>): Promise<RefParamEntity> {
+    const existing = refParam.label && (await this.findByLabel(refParam.label));
+    if (existing) {
+      throw new RefParamAlreadyExistsException();
+    }
     return await this.refParamRepository.save(refParam);
   }
 
@@ -88,6 +93,10 @@ export class RefParamService {
     id: string,
     refParam: Partial<RefParamEntity>,
   ): Promise<RefParamEntity | null> {
+    const existing = refParam.label && (await this.findByLabel(refParam.label));
+    if (existing) {
+      throw new RefParamAlreadyExistsException();
+    }
     return this.refParamRepository.update(id, refParam);
   }
 
@@ -101,5 +110,11 @@ export class RefParamService {
       throw new RefParamNotFoundException();
     }
     return this.refParamRepository.remove(type);
+  }
+
+  //Extended Methods ===========================================================================
+
+  async findByLabel(label: string): Promise<RefParamEntity | null> {
+    return this.refParamRepository.findOne({ where: { label } });
   }
 }

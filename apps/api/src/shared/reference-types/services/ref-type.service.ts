@@ -8,6 +8,7 @@ import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { RefTypeRepository } from '../repositories/ref-type.repository';
 import { RefTypeEntity } from '../entities/ref-type.entity';
 import { RefTypeNotFoundException } from '../errors/ref-type/ref-type.notfound.error';
+import { RefTypeAlreadyExistsException } from '../errors/ref-type/ref-type.alreadyexists.error';
 
 @Injectable()
 export class RefTypeService {
@@ -65,6 +66,10 @@ export class RefTypeService {
 
   @Transactional()
   async save(refType: Partial<RefTypeEntity>): Promise<RefTypeEntity> {
+    const existing = refType.label && (await this.findByLabel(refType.label));
+    if (existing) {
+      throw new RefTypeAlreadyExistsException();
+    }
     return await this.refTypeRepository.save(refType);
   }
 
@@ -78,6 +83,10 @@ export class RefTypeService {
     id: string,
     refType: Partial<RefTypeEntity>,
   ): Promise<RefTypeEntity | null> {
+    const existing = refType.label && (await this.findByLabel(refType.label));
+    if (existing) {
+      throw new RefTypeAlreadyExistsException();
+    }
     return this.refTypeRepository.update(id, refType);
   }
 
