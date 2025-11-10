@@ -103,6 +103,10 @@ export function DataTable<TData, TValue>({
         pageSize: 100,
       },
     },
+    defaultColumn: {
+      size: 0,
+      minSize: 0,
+    },
   });
   return (
     <div className={cn(className, "space-y-4")}>
@@ -139,7 +143,11 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="p-1 px-2 text-xs">
+                    <TableCell
+                      key={cell.id}
+                      className="p-1 px-2 text-xs"
+                      style={{ width: `${cell.column.getSize()}px` }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
