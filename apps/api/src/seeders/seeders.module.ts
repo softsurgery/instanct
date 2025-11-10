@@ -11,6 +11,7 @@ import { StoreModule } from 'src/shared/store/store.module';
 import { PlaygroundUsersSeedCommand } from './playground/users.seeder';
 import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
 import { IndustriesSeedCommand } from './Industries.seeder';
+import { ObjectivesSeedCommand } from './objectives.seeder';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { IndustriesSeedCommand } from './Industries.seeder';
     PropertiesSeedCommand,
     //reference types
     IndustriesSeedCommand,
+    ObjectivesSeedCommand,
     //playground
     PlaygroundUsersSeedCommand,
   ],
