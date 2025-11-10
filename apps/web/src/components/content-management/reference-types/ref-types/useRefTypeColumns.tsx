@@ -3,7 +3,11 @@ import { DataTableColumnHeader } from "@/components/shared/data-table/data-table
 import { DataTableRowActions } from "@/components/shared/data-table/data-table-row-actions";
 import { ResponseRefTypeDto } from "@/types";
 import { useTranslation } from "react-i18next";
-import { DataTableConfig } from "@/components/shared/data-table/types";
+import {
+  DataTableCellVariant,
+  DataTableConfig,
+} from "@/components/shared/data-table/types";
+import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
 
 export const useRefTypeColumns = (
   context: DataTableConfig<ResponseRefTypeDto>
@@ -74,6 +78,50 @@ export const useRefTypeColumns = (
           {row.original.parentId && <span>({row.original.parentId})</span>}
         </div>
       ),
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
+      accessorKey: `${t("refType.columns.createdAt")}`,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("refType.columns.createdAt")}
+          attribute="createdAt"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row?.original?.createdAt);
+        return (
+          <DataTableCell
+            variant={DataTableCellVariant.DATE_TIME}
+            value={date}
+          />
+        );
+      },
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
+      accessorKey: `${t("refType.columns.updatedAt")}`,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("refType.columns.updatedAt")}
+          attribute="updatedAt"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row?.original?.updatedAt);
+        return (
+          <DataTableCell
+            variant={DataTableCellVariant.DATE_TIME}
+            value={date}
+          />
+        );
+      },
       enableSorting: true,
       enableHiding: true,
     },

@@ -11,6 +11,8 @@
       "label": "Label",
       "description": "Description",
       "parent": "Parent",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
       "noDescription": "No description",
       "noParent": "No parent"
     },
@@ -63,6 +65,8 @@
       "description": "Description",
       "refTypeId": "Reference Type",
       "extras": "Extras",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
       "noDescription": "No description"
     },
     "forms": {

@@ -11,6 +11,8 @@
       "label": "Libellé",
       "description": "Description",
       "parent": "Parent",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le",
       "noDescription": "Aucune description",
       "noParent": "Aucun parent"
     },
@@ -64,6 +66,8 @@
       "description": "Description",
       "refTypeId": "Type de référence",
       "extras": "Extras",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le",
       "noDescription": "Aucune description"
     },
     "forms": {

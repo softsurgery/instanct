@@ -3,9 +3,13 @@ import { DataTableColumnHeader } from "@/components/shared/data-table/data-table
 import { DataTableRowActions } from "@/components/shared/data-table/data-table-row-actions";
 import { ResponseRefParamDto } from "@/types";
 import { useTranslation } from "react-i18next";
-import { DataTableConfig } from "@/components/shared/data-table/types";
+import {
+  DataTableCellVariant,
+  DataTableConfig,
+} from "@/components/shared/data-table/types";
 import { Badge } from "@/components/ui/badge";
 import { JsonToggler } from "@/components/shared/JsonToggler";
+import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
 
 export const useRefParamColumns = (
   context: DataTableConfig<ResponseRefParamDto>
@@ -64,6 +68,50 @@ export const useRefParamColumns = (
       enableHiding: true,
     },
     {
+      accessorKey: `${t("refParam.columns.createdAt")}`,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("refParam.columns.createdAt")}
+          attribute="createdAt"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row?.original?.createdAt);
+        return (
+          <DataTableCell
+            variant={DataTableCellVariant.DATE_TIME}
+            value={date}
+          />
+        );
+      },
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
+      accessorKey: `${t("refParam.columns.updatedAt")}`,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("refParam.columns.updatedAt")}
+          attribute="updatedAt"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row?.original?.updatedAt);
+        return (
+          <DataTableCell
+            variant={DataTableCellVariant.DATE_TIME}
+            value={date}
+          />
+        );
+      },
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
       accessorKey: `${t("refParam.columns.extras")}`,
       header: ({ column }) => (
         <DataTableColumnHeader
@@ -85,6 +133,7 @@ export const useRefParamColumns = (
       },
       enableSorting: false,
       enableHiding: true,
+      size: 200,
     },
     {
       id: "actions",
