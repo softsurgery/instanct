@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { RefTypeRepository } from 'src/shared/reference-types/repositories/ref-type.repository';
 import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-param.repository';
 import { industries } from './data/industries.data';
+import { getRandomHexColor } from 'src/shared/reference-types/utils/colors';
 
 @Injectable()
 export class IndustriesSeedCommand {
@@ -34,6 +35,9 @@ export class IndustriesSeedCommand {
           label: industry.industry,
           description: `${industry.industry} sector`,
           parent: industryRefType,
+          extras: {
+            color: getRandomHexColor(),
+          },
         });
 
         await Promise.all(
@@ -46,6 +50,9 @@ export class IndustriesSeedCommand {
                 label: paramLabel,
                 description: `${paramLabel} within ${industry.industry}`,
                 refType: subRefType,
+                extras: {
+                  color: getRandomHexColor(),
+                },
               });
             }
           }),
