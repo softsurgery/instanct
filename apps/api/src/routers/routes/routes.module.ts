@@ -16,6 +16,8 @@ import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types
 import { RefTypeController } from 'src/shared/reference-types/controllers/ref-type.controller';
 import { RefParamController } from 'src/shared/reference-types/controllers/ref-param.controller';
 import { GeolocationModule } from 'src/modules/geolocation/geolocation.module';
+import { ReferenceImplModule } from 'src/modules/reference-impl/reference-impl.module';
+import { RefImplementationController } from 'src/modules/reference-impl/reference-impl.controller';
 
 @Module({
   controllers: [
@@ -33,6 +35,7 @@ import { GeolocationModule } from 'src/modules/geolocation/geolocation.module';
     //reference-types
     RefTypeController,
     RefParamController,
+    RefImplementationController,
   ],
   providers: [],
   exports: [],
@@ -45,6 +48,7 @@ import { GeolocationModule } from 'src/modules/geolocation/geolocation.module';
     NotificationModule,
     ReferenceTypesModule,
     GeolocationModule,
+    ReferenceImplModule,
   ],
 })
 export class RoutesModule {}
