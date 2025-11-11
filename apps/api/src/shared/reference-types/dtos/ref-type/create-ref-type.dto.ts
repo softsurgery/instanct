@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   Length,
@@ -17,6 +18,10 @@ export class CreateRefTypeDto {
   @IsString()
   @MaxLength(255)
   description: string;
+
+  @ApiProperty({ type: Object })
+  @IsObject()
+  extras: object;
 
   @ApiProperty({ type: String })
   @IsNumber()

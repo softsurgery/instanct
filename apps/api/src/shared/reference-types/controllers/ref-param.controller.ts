@@ -82,7 +82,7 @@ export class RefParamController {
   @Put(':id')
   @LogEvent(EventType.REF_PARAM_UPDATE)
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateRefParamDto: UpdateRefParamDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefParamDto | null> {
@@ -94,7 +94,7 @@ export class RefParamController {
   @Delete(':id')
   @LogEvent(EventType.REF_PARAM_DELETE)
   async delete(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefParamDto | null> {
     const refParam = await this.refParamService.delete(id);

@@ -80,21 +80,21 @@ export class RefTypeService {
 
   @Transactional()
   async update(
-    id: string,
+    id: number,
     refType: Partial<RefTypeEntity>,
   ): Promise<RefTypeEntity | null> {
     const existing = refType.label && (await this.findByLabel(refType.label));
-    if (existing) {
+    if (existing && existing.id !== id) {
       throw new RefTypeAlreadyExistsException();
     }
     return this.refTypeRepository.update(id, refType);
   }
 
-  async softDelete(id: string): Promise<RefTypeEntity | null> {
+  async softDelete(id: number): Promise<RefTypeEntity | null> {
     return this.refTypeRepository.softDelete(id);
   }
 
-  async delete(id: string): Promise<RefTypeEntity | null> {
+  async delete(id: number): Promise<RefTypeEntity | null> {
     const type = await this.refTypeRepository.findOneById(id);
     if (!type) {
       throw new RefTypeNotFoundException();

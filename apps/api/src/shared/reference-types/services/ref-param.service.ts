@@ -90,21 +90,21 @@ export class RefParamService {
 
   @Transactional()
   async update(
-    id: string,
+    id: number,
     refParam: Partial<RefParamEntity>,
   ): Promise<RefParamEntity | null> {
     const existing = refParam.label && (await this.findByLabel(refParam.label));
-    if (existing) {
+    if (existing && existing.id !== id) {
       throw new RefParamAlreadyExistsException();
     }
     return this.refParamRepository.update(id, refParam);
   }
 
-  async softDelete(id: string): Promise<RefParamEntity | null> {
+  async softDelete(id: number): Promise<RefParamEntity | null> {
     return this.refParamRepository.softDelete(id);
   }
 
-  async delete(id: string): Promise<RefParamEntity | null> {
+  async delete(id: number): Promise<RefParamEntity | null> {
     const type = await this.refParamRepository.findOneById(id);
     if (!type) {
       throw new RefParamNotFoundException();

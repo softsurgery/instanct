@@ -77,7 +77,7 @@ export class RefTypeController {
   @Put(':id')
   @LogEvent(EventType.REF_TYPE_UPDATE)
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateRefTypeDto: UpdateRefTypeDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefTypeDto | null> {
@@ -90,7 +90,7 @@ export class RefTypeController {
   @Delete(':id')
   @LogEvent(EventType.REF_TYPE_DELETE)
   async delete(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRefTypeDto | null> {
     const refType = await this.refTypeService.delete(id);

@@ -35,4 +35,7 @@ export class RefTypeEntity extends EntityHelper {
 
   @OneToMany(() => RefTypeEntity, (user) => user.parent)
   children: RefTypeEntity[];
+
+  @Column({ type: 'json', nullable: true })
+  extras: object;
 }
