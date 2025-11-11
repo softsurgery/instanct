@@ -8,7 +8,7 @@ import {
   TextFieldProps,
 } from "@/components/shared/form-builder/types";
 import { ReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
-import { RefParamExtras } from "../RefParamExtras";
+import { JSONExtras } from "@/components/shared/JSONExtras";
 import { JSONValue } from "@/components/shared/JsonEditor";
 
 interface RefParamUpdateFormStructureProps {
@@ -88,7 +88,7 @@ export const useUpdateRefParamFormStructure = ({
     error: referenceTypesStore?.refParamUpdateDtoErrors?.extras?.[0],
     props: {
       children: (
-        <RefParamExtras
+        <JSONExtras
           value={referenceTypesStore?.refParamUpdateDto.extras as JSONValue}
           onChange={(value) => {
             referenceTypesStore?.setNested("refParamUpdateDto.extras", value);

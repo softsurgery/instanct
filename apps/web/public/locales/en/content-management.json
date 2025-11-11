@@ -11,6 +11,7 @@
       "label": "Label",
       "description": "Description",
       "parent": "Parent",
+      "extras": "Extras",
       "createdAt": "Created At",
       "updatedAt": "Updated At",
       "noDescription": "No description",
@@ -20,12 +21,14 @@
       "create": {
         "title": "Create Reference Type",
         "description": "Create a new reference type.",
-        "parent": "Parent"
+        "parent": "Parent",
+        "extras": "Extras"
       },
       "update": {
         "title": "Update Reference Type",
         "description": "Update a new reference type.",
-        "parent": "Parent"
+        "parent": "Parent",
+        "extras": "Extras"
       }
     },
     "sheet": {

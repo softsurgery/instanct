@@ -8,10 +8,13 @@ import {
   DataTableConfig,
 } from "@/components/shared/data-table/types";
 import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
+import { JsonToggler } from "@/components/shared/JsonToggler";
+import { Badge } from "@/components/ui/badge";
 
 export const useRefTypeColumns = (
   context: DataTableConfig<ResponseRefTypeDto>
 ): ColumnDef<ResponseRefTypeDto>[] => {
+  const { t: tCommon } = useTranslation("common");
   const { t } = useTranslation("content-management");
   return [
     {
@@ -124,6 +127,30 @@ export const useRefTypeColumns = (
       },
       enableSorting: true,
       enableHiding: true,
+    },
+    {
+      accessorKey: `${t("refType.columns.extras")}`,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("refType.columns.extras")}
+          attribute="extras"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const extras = row?.original?.extras;
+        return extras && Object.keys(extras).length > 0 ? (
+          <JsonToggler data={extras} className="w-full" />
+        ) : (
+          <Badge variant="outline" className="text-xs">
+            {tCommon("common.table.noData")}
+          </Badge>
+        );
+      },
+      enableSorting: false,
+      enableHiding: true,
+      size: 200,
     },
     {
       id: "actions",

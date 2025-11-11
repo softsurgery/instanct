@@ -1,4 +1,5 @@
 import {
+  CustomFieldProps,
   Field,
   FieldVariant,
   FormStructure,
@@ -6,6 +7,8 @@ import {
   SelectOption,
   TextFieldProps,
 } from "@/components/shared/form-builder/types";
+import { JSONValue } from "@/components/shared/JsonEditor";
+import { JSONExtras } from "@/components/shared/JSONExtras";
 import { ReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
 
 interface RefTypeCreateFormStructureProps {
@@ -75,6 +78,25 @@ export const useCreateRefTypeFormStructure = ({
     },
   };
 
+  const extrasField: Field<CustomFieldProps> = {
+    id: "extras",
+    label: "Extras",
+    variant: FieldVariant.CUSTOM,
+    description: "Reference Type's extras.",
+    error: referenceTypesStore?.refTypeCreateDtoErrors?.extras?.[0],
+    props: {
+      children: (
+        <JSONExtras
+          value={referenceTypesStore?.refTypeCreateDto.extras as JSONValue}
+          onChange={(value) => {
+            referenceTypesStore?.setNested("refTypeCreateDto.extras", value);
+            referenceTypesStore?.setNested("refTypeCreateDtoErrors.extras", []);
+          }}
+        />
+      ),
+    },
+  };
+
   const refTypeCreateFormStructure: FormStructure = {
     title: "",
     description: "",
@@ -91,6 +113,9 @@ export const useCreateRefTypeFormStructure = ({
           },
           {
             fields: [descriptionField],
+          },
+          {
+            fields: [extrasField],
           },
         ],
       },

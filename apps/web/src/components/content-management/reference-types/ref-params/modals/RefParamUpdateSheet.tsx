@@ -39,7 +39,7 @@ export const useRefParamUpdateSheet = ({
         isPending={isUpdatePending}
       />
     ),
-    className: "min-w-[50vw] flex flex-col flex-1 overflow-hidden",
+    className: "min-w-[30vw] flex flex-col flex-1 overflow-hidden",
     onToggle: resetRefParam,
   });
 

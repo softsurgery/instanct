@@ -32,6 +32,7 @@ const initialState: ReferenceTypesStoreData = {
     label: "",
     description: "",
     parentId: undefined,
+    extras: {},
   },
   refTypeUpdateDto: {},
   refParamCreateDto: {

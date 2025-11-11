@@ -11,6 +11,7 @@
       "label": "Libellé",
       "description": "Description",
       "parent": "Parent",
+      "extras": "Extras",
       "createdAt": "Créé le",
       "updatedAt": "Mis à jour le",
       "noDescription": "Aucune description",
@@ -20,12 +21,14 @@
       "create": {
         "title": "Créer un type de référence",
         "description": "Créer un nouveau type de référence.",
-        "parent": "Parent"
+        "parent": "Parent",
+        "extras": "Extras"
       },
       "update": {
         "title": "Mettre à jour un type de référence",
         "description": "Mettre à jour un nouveau type de référence.",
-        "parent": "Parent"
+        "parent": "Parent",
+        "extras": "Extras"
       },
       "delete": {
         "title": "Supprimer un type de référence",

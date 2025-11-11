@@ -209,6 +209,7 @@ export const RefTypePortal = ({ className }: RefTypePortalProps) => {
         label: refType.label,
         description: refType.description,
         parentId: refType.parentId,
+        extras: refType.extras,
       });
     },
   };

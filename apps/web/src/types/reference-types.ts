@@ -8,12 +8,14 @@ export interface ResponseRefTypeDto extends DatabaseEntity {
   parentId?: number;
   parent?: ResponseRefTypeDto;
   children: ResponseRefTypeDto[];
+  extras: object;
 }
 
 export interface CreateRefTypeDto {
   label: string;
   description: string;
   parentId?: number;
+  extras: object;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

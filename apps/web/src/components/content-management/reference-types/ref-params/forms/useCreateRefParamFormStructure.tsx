@@ -11,7 +11,7 @@ import {
 import { JSONValue } from "@/components/shared/JsonEditor";
 import { ReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
 import React from "react";
-import { RefParamExtras } from "../RefParamExtras";
+import { JSONExtras } from "@/components/shared/JSONExtras";
 
 interface RefParamCreateFormStructureProps {
   referenceTypesStore?: ReferenceTypesStore;
@@ -90,7 +90,7 @@ export const useCreateRefParamFormStructure = ({
     error: referenceTypesStore?.refParamCreateDtoErrors?.extras?.[0],
     props: {
       children: (
-        <RefParamExtras
+        <JSONExtras
           value={referenceTypesStore?.refParamCreateDto.extras as JSONValue}
           onChange={(value) => {
             referenceTypesStore?.setNested("refParamCreateDto.extras", value);

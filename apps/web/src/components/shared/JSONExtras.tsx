@@ -5,17 +5,13 @@ import { cn } from "@/lib/utils";
 import { Check, TextInitial } from "lucide-react";
 import React from "react";
 
-interface RefParamExtrasProps {
+interface JSONExtrasProps {
   className?: string;
   value: JSONValue;
   onChange: (next: JSONValue) => void;
 }
 
-export const RefParamExtras = ({
-  className,
-  value,
-  onChange,
-}: RefParamExtrasProps) => {
+export const JSONExtras = ({ className, value, onChange }: JSONExtrasProps) => {
   const [jsonText, setJsonText] = React.useState(
     JSON.stringify(value, null, 2)
   );

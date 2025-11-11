@@ -117,7 +117,7 @@ export const useRefParamColumns = (
         <DataTableColumnHeader
           column={column}
           title={t("refParam.columns.extras")}
-          attribute="logInfo"
+          attribute="extras"
           context={context}
         />
       ),
