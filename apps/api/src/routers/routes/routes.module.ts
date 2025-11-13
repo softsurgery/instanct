@@ -18,6 +18,9 @@ import { RefParamController } from 'src/shared/reference-types/controllers/ref-p
 import { GeolocationModule } from 'src/modules/geolocation/geolocation.module';
 import { ReferenceImplModule } from 'src/modules/reference-impl/reference-impl.module';
 import { RefImplementationController } from 'src/modules/reference-impl/reference-impl.controller';
+import { ConversationController } from 'src/modules/chat/controllers/conversation.controller';
+import { MessageController } from 'src/modules/chat/controllers/message.controller';
+import { ChatModule } from 'src/modules/chat/chat.module';
 
 @Module({
   controllers: [
@@ -30,6 +33,9 @@ import { RefImplementationController } from 'src/modules/reference-impl/referenc
     //user
     ClientController,
     FollowController,
+    //chat
+    ConversationController,
+    MessageController,
     //notifications
     NotificationController,
     //reference-types
@@ -45,6 +51,7 @@ import { RefImplementationController } from 'src/modules/reference-impl/referenc
     LoggerModule,
     UserManagementModule,
     UploadModule,
+    ChatModule,
     NotificationModule,
     ReferenceTypesModule,
     GeolocationModule,
