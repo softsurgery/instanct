@@ -5,6 +5,7 @@ import { DataTableCellVariant } from "../types";
 
 interface DataTableCellProps {
   className?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any;
   variant?: DataTableCellVariant;
 }
