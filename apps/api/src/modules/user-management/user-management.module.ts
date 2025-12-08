@@ -12,20 +12,30 @@ import { PermissionEntity } from './entities/permission.entity';
 import { RolePermissionRepository } from './repositories/role-permission.repository';
 import { RolePermissionService } from './services/role-permission.service';
 import { RolePermissionEntity } from './entities/role-permission.entity';
-import { ProfileEntity } from './entities/profile.entity';
-import { ProfileRepository } from './repositories/profile.repository';
-import { ProfileService } from './services/profile.service';
 import { UploadModule } from 'src/shared/uploads/uploads.module';
-import { FollowRepository } from './repositories/follow.repository';
-import { FollowService } from './services/follow.service';
-import { FollowEntity } from './entities/follow.entity';
-import { ProfileUploadRepository } from './repositories/profile-upload.repository';
+import { WalkOfLifeService } from './modules/profile-management/services/walk-of-life.service';
+import { ProfileService } from './services/profile.service';
 import { ProfileUploadService } from './services/profile-upload.service';
+import { FollowService } from './services/follow.service';
+import { ProfileRepository } from './repositories/profile.repository';
+import { ProfileUploadRepository } from './repositories/profile-upload.repository';
+import { FollowRepository } from './repositories/follow.repository';
+import { ProfileEntity } from './entities/profile.entity';
 import { ProfileUploadEntity } from './entities/profile-upload.entity';
+import { FollowEntity } from './entities/follow.entity';
 
 @Module({
   controllers: [],
   providers: [
+    UserService,
+    RoleService,
+    PermissionService,
+    RolePermissionService,
+    ProfileService,
+    ProfileUploadService,
+    FollowService,
+    WalkOfLifeService,
+
     UserRepository,
     RoleRepository,
     PermissionRepository,
@@ -49,6 +59,7 @@ import { ProfileUploadEntity } from './entities/profile-upload.entity';
     ProfileService,
     ProfileUploadService,
     FollowService,
+    WalkOfLifeService,
 
     UserRepository,
     RoleRepository,

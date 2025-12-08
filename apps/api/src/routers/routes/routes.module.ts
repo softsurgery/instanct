@@ -21,12 +21,14 @@ import { RefImplementationController } from 'src/modules/reference-impl/referenc
 import { ConversationController } from 'src/modules/chat/controllers/conversation.controller';
 import { MessageController } from 'src/modules/chat/controllers/message.controller';
 import { ChatModule } from 'src/modules/chat/chat.module';
+import { WalkOfLifeController } from 'src/modules/user-management/modules/profile-management/controllers/walk-of-life.controller';
 
 @Module({
   controllers: [
     //auth
     AuthController,
     ClientAuthController,
+    WalkOfLifeController,
     //common
     UploadController,
     StoreController,

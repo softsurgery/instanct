@@ -4,6 +4,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -12,6 +14,9 @@ import {
 import { Gender } from '../enums/gender.enum';
 import { UploadEntity } from 'src/shared/uploads/entities/upload.entity';
 import { ProfileUploadEntity } from './profile-upload.entity';
+
+import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
+import { Education, Experience, Skill } from '../modules/profile-management/interfaces/walk-of-life.interface';
 
 @Entity('profiles')
 export class ProfileEntity extends EntityHelper {
@@ -78,4 +83,35 @@ export class ProfileEntity extends EntityHelper {
 
   @Column({ nullable: true })
   driverLicenseDocumentId?: number;
+
+  @Column({ nullable: true, type: 'json' })
+  experiences: Experience[];
+
+  @Column({ nullable: true, type: 'json' })
+  educations: Education[];
+
+  @Column({ nullable: true, type: 'json' })
+  skills: Skill[];
+
+  @ManyToMany(() => RefParamEntity, {
+    eager: true,
+    cascade: false,
+  })
+  @JoinTable({
+    name: 'profile-objectives',
+    joinColumn: { name: 'profileId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'refParamId', referencedColumnName: 'id' },
+  })
+  objectives: RefParamEntity[];
+
+  @ManyToMany(() => RefParamEntity, {
+    eager: true,
+    cascade: false,
+  })
+  @JoinTable({
+    name: 'profile-industries',
+    joinColumn: { name: 'profileId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'refParamId', referencedColumnName: 'id' },
+  })
+  industries: RefParamEntity[];
 }
