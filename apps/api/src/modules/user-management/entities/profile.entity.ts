@@ -16,7 +16,11 @@ import { UploadEntity } from 'src/shared/uploads/entities/upload.entity';
 import { ProfileUploadEntity } from './profile-upload.entity';
 
 import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
-import { Education, Experience, Skill } from '../modules/profile-management/interfaces/walk-of-life.interface';
+import {
+  Education,
+  Experience,
+  Skill,
+} from '../modules/profile-management/interfaces/walk-of-life.interface';
 
 @Entity('profiles')
 export class ProfileEntity extends EntityHelper {
