@@ -9,6 +9,7 @@ import {
 import { useContainer } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { branding } from './utils/branding';
 // import { MigrationService } from './shared/database/services/database-migration.service';
 
 async function bootstrap() {
@@ -22,7 +23,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  const logger = new Logger('Bootstrap');
+  const logger: Logger = new Logger('Bootstrap');
 
   // Config Variables =====================================================
   const configService = app.get(ConfigService);
@@ -80,6 +81,7 @@ async function bootstrap() {
 
   logger.log(``);
   logger.log(`==========================================================`);
+  branding(logger);
   logger.log(`Http Server running on ${await app.getUrl()}`, 'NestApplication');
   logger.log(`==========================================================`);
 
