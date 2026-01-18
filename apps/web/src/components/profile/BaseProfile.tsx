@@ -48,9 +48,9 @@ export const BaseProfile = ({
   });
 
   const { data: profilePicture } = useQuery({
-    queryKey: ["profile-picture", user?.profile?.pictureId],
-    queryFn: () => api.upload.getUploadById(user?.profile?.pictureId as number),
-    enabled: !!user?.profile?.pictureId,
+    queryKey: ["profile-picture", user?.pictureId],
+    queryFn: () => api.upload.getUploadById(user?.pictureId as number),
+    enabled: !!user?.pictureId,
   });
 
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
@@ -99,14 +99,14 @@ export const BaseProfile = ({
   ];
 
   const filteredTabs = tabs.filter(
-    (tab) => tab.value !== "notifications" || user?.id !== currentUser?.id
+    (tab) => tab.value !== "notifications" || user?.id !== currentUser?.id,
   );
 
   return (
     <div
       className={cn(
         "flex flex-col flex-1 h-full overflow-auto no-scrollbar container mx-auto",
-        className
+        className,
       )}
     >
       {/* Profile Info */}
@@ -126,8 +126,7 @@ export const BaseProfile = ({
             <div className="flex flex-row items-center mt-2">
               <Separator orientation="vertical" className="mx-1 h-4" />
               <p className="text-sm text-muted-foreground">
-                {user?.profile?.phone ||
-                  t("userManagement.inspect.noPhoneNumber")}
+                {user?.phone || t("userManagement.inspect.noPhoneNumber")}
               </p>
             </div>
           </div>
@@ -200,7 +199,7 @@ export const BaseProfile = ({
               >
                 {content}
               </TabsContent>
-            ) : null
+            ) : null,
           )}
         </div>
       </Tabs>

@@ -23,7 +23,7 @@ export const MyProfile = ({ className }: MyProfileProps) => {
     <div
       className={cn(
         "flex flex-col flex-1 h-full overflow-auto no-scrollbar container mx-auto",
-        className
+        className,
       )}
     >
       <BaseProfile

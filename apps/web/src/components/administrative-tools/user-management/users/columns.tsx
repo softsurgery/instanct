@@ -17,7 +17,7 @@ import {
 
 export const useUserColumns = (
   context: DataTableConfig<ResponseUserDto>,
-  t: (key: string) => string
+  t: (key: string) => string,
 ): ColumnDef<ResponseUserDto>[] => {
   const { t: tCommon } = useTranslation("common");
 
@@ -34,7 +34,7 @@ export const useUserColumns = (
       ),
       cell: ({ row }) => (
         <UserAvatarCell
-          pictureId={row?.original?.profile?.pictureId}
+          pictureId={row?.original?.pictureId}
           fallback={identifyUserAvatar(row?.original)}
         />
       ),

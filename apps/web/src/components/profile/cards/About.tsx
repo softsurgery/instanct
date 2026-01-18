@@ -38,14 +38,14 @@ export const About = ({ className }: AboutProps) => {
 
   const { upload: officialDocument, isUploadPending: isOfficialDocPending } =
     useUpload({
-      id: userStore.response?.profile?.officialDocumentId,
-      enabled: Boolean(userStore.response?.profile?.officialDocumentId),
+      id: userStore.response?.officialDocumentId,
+      enabled: Boolean(userStore.response?.officialDocumentId),
     });
 
   const { upload: driverLicenseDocument, isUploadPending: isDriverDocPending } =
     useUpload({
-      id: userStore.response?.profile?.driverLicenseDocumentId,
-      enabled: Boolean(userStore.response?.profile?.driverLicenseDocumentId),
+      id: userStore.response?.driverLicenseDocumentId,
+      enabled: Boolean(userStore.response?.driverLicenseDocumentId),
     });
 
   return (
@@ -53,8 +53,8 @@ export const About = ({ className }: AboutProps) => {
       <CardHeader>
         <CardTitle>{t("userManagement.inspect.about.title")}</CardTitle>
         <CardDescription>
-          {userStore.response?.profile?.bio
-            ? userStore.response.profile.bio
+          {userStore.response?.bio
+            ? userStore.response?.bio
             : t("userManagement.inspect.about.Bio")}
         </CardDescription>
       </CardHeader>
@@ -76,10 +76,10 @@ export const About = ({ className }: AboutProps) => {
                     </Badge>
                   )}
                 </div>
-                {user?.profile?.phone && (
+                {user?.phone && (
                   <div className="flex items-center gap-3 text-sm">
                     <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>{user.profile.phone}</span>
+                    <span>{user.phone}</span>
                   </div>
                 )}
               </div>
@@ -91,32 +91,32 @@ export const About = ({ className }: AboutProps) => {
                 {t("userManagement.inspect.about.personal")}
               </h4>
               <div className="grid gap-3">
-                {user?.profile?.gender && (
+                {user?.gender && (
                   <div className="flex items-center gap-3 text-sm">
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span>
                       <span className="font-bold">
                         {t("userManagement.inspect.about.gender")}:{" "}
                       </span>
-                      {user.profile.gender === "Female"
+                      {user.gender === "Female"
                         ? t("userManagement.inspect.about.female")
-                        : user.profile.gender === "Male"
-                        ? t("about:male")
-                        : user.profile.gender}
+                        : user.gender === "Male"
+                          ? t("about:male")
+                          : user.gender}
                     </span>
                   </div>
                 )}
-                {user?.profile?.cin && (
+                {user?.cin && (
                   <div className="flex items-center gap-3 text-sm">
                     <CreditCard className="h-4 w-4 text-muted-foreground" />
                     <span>
                       <span className="font-bold">CIN: </span>
-                      {user.profile.cin}
+                      {user.cin}
                     </span>
                   </div>
                 )}
                 <div className="flex items-center gap-3 text-sm">
-                  {user?.profile?.isPrivate ? (
+                  {user?.isPrivate ? (
                     <EyeOff className="h-4 w-4 text-muted-foreground" />
                   ) : (
                     <Eye className="h-4 w-4 text-muted-foreground" />
@@ -125,7 +125,7 @@ export const About = ({ className }: AboutProps) => {
                     <span className="font-bold">
                       {t("userManagement.inspect.about.profile")}:{" "}
                     </span>
-                    {user?.profile?.isPrivate
+                    {user?.isPrivate
                       ? t("userManagement.inspect.about.private")
                       : t("userManagement.inspect.about.public")}
                   </span>
@@ -181,7 +181,7 @@ export const About = ({ className }: AboutProps) => {
               </h4>
             </div>
             <div className="flex flex-col 2xl:flex-row items-center justify-between gap-6">
-              {(officialDocument || user?.profile?.officialDocumentId) && (
+              {(officialDocument || user?.officialDocumentId) && (
                 <DocumentCard
                   title={t("userManagement.inspect.about.officialDocument")}
                   icon={FileText}
@@ -190,8 +190,7 @@ export const About = ({ className }: AboutProps) => {
                 />
               )}
 
-              {(driverLicenseDocument ||
-                user?.profile?.driverLicenseDocumentId) && (
+              {(driverLicenseDocument || user?.driverLicenseDocumentId) && (
                 <DocumentCard
                   title={t("userManagement.inspect.about.driverLicense")}
                   icon={Car}

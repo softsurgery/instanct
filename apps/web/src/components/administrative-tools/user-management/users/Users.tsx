@@ -22,7 +22,7 @@ import {
 } from "@/types";
 import { updateUserSchema } from "@/types/validations/user.validation";
 import { useIntro } from "@/contexts/IntroContext";
-import { ArrowDown, ArrowUp ,BellPlus} from "lucide-react";
+import { ArrowDown, ArrowUp, BellPlus } from "lucide-react";
 import { useApproveUserDialog } from "./modals/UserApproveDialog";
 import { useDisapproveUserDialog } from "./modals/UserDisapproveDialog";
 import { useTranslation } from "react-i18next";
@@ -51,7 +51,7 @@ export const Users = ({ className }: UsersProps) => {
     ]);
     setIntro?.(
       t("userManagement.page.users"),
-      t("userManagement.page.description")
+      t("userManagement.page.description"),
     );
     return () => {
       clearRoutes?.();
@@ -64,13 +64,13 @@ export const Users = ({ className }: UsersProps) => {
   const [page, setPage] = React.useState(1);
   const { value: debouncedPage, loading: paging } = useDebounce<number>(
     page,
-    500
+    500,
   );
 
   const [size, setSize] = React.useState(10);
   const { value: debouncedSize, loading: resizing } = useDebounce<number>(
     size,
-    500
+    500,
   );
 
   const [sortDetails, setSortDetails] = React.useState({
@@ -261,7 +261,7 @@ export const Users = ({ className }: UsersProps) => {
       isDisapprovalPending,
       resetUser: () => userStore.reset(),
     });
-     const { mutate: testNotification } = useMutation({
+  const { mutate: testNotification } = useMutation({
     mutationFn: (id: string) => api.notification.testNotify(id),
     onSuccess: () => {
       toast(t("userManagement.messages.testNotificationSuccess"));
@@ -272,8 +272,8 @@ export const Users = ({ className }: UsersProps) => {
   });
 
   //fetch user images
-  const uploadIds = Array.isArray(userStore.updateDto?.profile?.uploads)
-    ? userStore.updateDto.profile.uploads.map((u) => u.uploadId)
+  const uploadIds = Array.isArray(userStore.updateDto?.uploads)
+    ? userStore.updateDto.uploads.map((u) => u.uploadId)
     : [];
 
   const { uploads: images, isPending: isImagesPending } = useUploads(uploadIds);
@@ -291,8 +291,8 @@ export const Users = ({ className }: UsersProps) => {
 
   const { upload: profilePicture, isUploadPending: isProfilePicturePending } =
     useUpload({
-      id: userStore.updateDto?.profile?.pictureId,
-      enabled: Boolean(userStore.updateDto?.profile?.pictureId),
+      id: userStore.updateDto?.pictureId,
+      enabled: Boolean(userStore.updateDto?.pictureId),
     });
   React.useEffect(() => {
     if (profilePicture) {
@@ -302,8 +302,8 @@ export const Users = ({ className }: UsersProps) => {
 
   const { upload: officialDocument, isUploadPending: isOfficialDocPending } =
     useUpload({
-      id: userStore.updateDto?.profile?.officialDocumentId,
-      enabled: Boolean(userStore.updateDto?.profile?.officialDocumentId),
+      id: userStore.updateDto?.officialDocumentId,
+      enabled: Boolean(userStore.updateDto?.officialDocumentId),
     });
 
   React.useEffect(() => {
@@ -314,8 +314,8 @@ export const Users = ({ className }: UsersProps) => {
 
   const { upload: driverLicenseDocument, isUploadPending: isDriverDocPending } =
     useUpload({
-      id: userStore.updateDto?.profile?.driverLicenseDocumentId,
-      enabled: Boolean(userStore.updateDto?.profile?.driverLicenseDocumentId),
+      id: userStore.updateDto?.driverLicenseDocumentId,
+      enabled: Boolean(userStore.updateDto?.driverLicenseDocumentId),
     });
 
   React.useEffect(() => {
@@ -359,7 +359,7 @@ export const Users = ({ className }: UsersProps) => {
           isActionVisible: (user: ResponseUserDto) => !!user.isApproved,
         },
       ],
-       2: [
+      2: [
         {
           actionCallback: (targetEntity: ResponseUserDto) => {
             testNotification(targetEntity.id);
@@ -383,7 +383,7 @@ export const Users = ({ className }: UsersProps) => {
     setSortDetails: (order: boolean, sortKey: string) =>
       setSortDetails({ order, sortKey }),
     targetEntity: (user: ResponseUserDto) => {
-      const uploads = user.profile?.uploads?.sort((a, b) => a.order - b.order);
+      const uploads = user?.uploads?.sort((a, b) => a.order - b.order);
       userStore.set("response", user);
       userStore.set<UpdateUserDto>("updateDto", {
         firstName: user.firstName,
@@ -395,20 +395,18 @@ export const Users = ({ className }: UsersProps) => {
         email: user.email,
         password: "",
         roleId: user.roleId,
-        profile: {
-          phone: user.profile?.phone,
-          pictureId: user.profile?.pictureId,
-          cin: user.profile?.cin,
-          bio: user.profile?.bio,
-          gender: user.profile?.gender as Gender,
-          isPrivate: user.profile?.isPrivate,
-          officialDocumentId: user.profile?.officialDocumentId,
-          driverLicenseDocumentId: user.profile?.driverLicenseDocumentId,
-          uploads: uploads.map((upload) => ({
-            id: upload.id,
-            uploadId: upload.uploadId,
-          })),
-        },
+        phone: user?.phone,
+        pictureId: user?.pictureId,
+        cin: user?.cin,
+        bio: user?.bio,
+        gender: user?.gender as Gender,
+        isPrivate: user?.isPrivate,
+        officialDocumentId: user?.officialDocumentId,
+        driverLicenseDocumentId: user?.driverLicenseDocumentId,
+        uploads: uploads.map((upload) => ({
+          id: upload.id,
+          uploadId: upload.uploadId,
+        })),
       });
       userStore.set("picture", profilePicture);
       userStore.set("officialDocument", officialDocument);

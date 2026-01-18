@@ -50,7 +50,6 @@ export const useUpdateUserFormStructure = ({
 
   uploadDriverLicenseDocument,
   isDriverLicenseDocumentPending,
-
 }: useUpdateUserFormStructureProps) => {
   const { t } = useTranslation("user-management");
 
@@ -298,9 +297,9 @@ export const useUpdateUserFormStructure = ({
     description: `${t("userManagement.forms.phoneDescription")}`,
     error: t(userStore.updateDtoErrors?.phone?.[0]),
     props: {
-      value: Number(userStore.updateDto?.profile?.phone) || undefined,
+      value: Number(userStore.updateDto?.phone) || undefined,
       onChange: (value: number) => {
-        userStore.setNested("updateDto.profile.phone", value.toString());
+        userStore.setNested("updateDto.phone", value.toString());
         userStore.setNested("updateDtoErrors.phone", []);
       },
     },
@@ -315,9 +314,9 @@ export const useUpdateUserFormStructure = ({
     description: `${t("userManagement.forms.CINDescription")}`,
     error: t(userStore.updateDtoErrors?.cin?.[0]),
     props: {
-      value: Number(userStore.updateDto?.profile?.cin) || undefined,
+      value: Number(userStore.updateDto?.cin) || undefined,
       onChange: (value: number) => {
-        userStore.setNested("updateDto.profile.cin", value.toString());
+        userStore.setNested("updateDto.cin", value.toString());
         userStore.setNested("updateDtoErrors.cin", []);
       },
     },
@@ -332,9 +331,9 @@ export const useUpdateUserFormStructure = ({
     description: `${t("userManagement.forms.bioDescription")}`,
     error: t(userStore.updateDtoErrors?.bio?.[0]),
     props: {
-      value: userStore.updateDto?.profile?.bio,
+      value: userStore.updateDto?.bio,
       onChange: (value) => {
-        userStore.setNested("updateDto.profile.bio", value);
+        userStore.setNested("updateDto.bio", value);
         userStore.setNested("updateDtoErrors.bio", []);
       },
       rows: 5,
@@ -354,16 +353,16 @@ export const useUpdateUserFormStructure = ({
         value,
         label,
       })),
-      value: userStore.updateDto?.profile?.gender?.toString(),
+      value: userStore.updateDto?.gender?.toString(),
       onValueChange: (value) => {
-        userStore.setNested("updateDto.profile.gender", value as Gender);
+        userStore.setNested("updateDto.gender", value as Gender);
         userStore.setNested("updateDtoErrors.gender", []);
       },
     },
   };
 
   const isPrivateField: (defaultChecked: boolean) => Field<SwitchFieldProps> = (
-    defaultChecked
+    defaultChecked,
   ) => ({
     id: "isPrivate",
     label: `${t("userManagement.forms.isPrivate")}`,
@@ -373,14 +372,13 @@ export const useUpdateUserFormStructure = ({
     description: `${t("userManagement.forms.isPrivateDescription")}`,
     props: {
       defaultChecked,
-      checked: userStore.updateDto?.profile?.isPrivate,
+      checked: userStore.updateDto?.isPrivate,
       onCheckedChange: (value) => {
-        userStore.setNested("updateDto.profile.isPrivate", value);
+        userStore.setNested("updateDto.isPrivate", value);
         userStore.setNested("updateDtoErrors.isPrivate", []);
       },
     },
   });
-
 
   const profileUpdateFormStructure: FormStructure = {
     title: `${t("userManagement.forms.step2Title")}`,
@@ -402,7 +400,7 @@ export const useUpdateUserFormStructure = ({
             fields: [bioField],
           },
           {
-            fields: [isPrivateField(!!userStore.updateDto?.profile?.isPrivate)],
+            fields: [isPrivateField(!!userStore.updateDto?.isPrivate)],
           },
         ],
       },
@@ -486,7 +484,6 @@ export const useUpdateUserFormStructure = ({
       },
     ],
   };
-
 
   return {
     userUpdateFormStructure,

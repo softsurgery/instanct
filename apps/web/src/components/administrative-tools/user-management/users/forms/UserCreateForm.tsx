@@ -27,7 +27,6 @@ const steps = [
     id: "profile-information",
     title: "userManagement.forms.step2Title",
   },
- 
 ];
 
 const { Stepper } = defineStepper(...steps);
@@ -53,7 +52,7 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({
     isUploadPending: isProfilePictureUploadPending,
   } = useUploadMutation({
     onSuccess: (response: Upload[]) => {
-      userStore.setNested("createDto.profile.pictureId", response?.[0]?.id);
+      userStore.setNested("createDto.pictureId", response?.[0]?.id);
     },
     onError: (error: ServerErrorResponse) => {
       toast.error(error.response?.data?.message);
@@ -65,10 +64,7 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({
     isUploadPending: isOfficialDocumentUploadPending,
   } = useUploadMutation({
     onSuccess: (response: Upload[]) => {
-      userStore.setNested(
-        "createDto.profile.officialDocumentId",
-        response?.[0]?.id
-      );
+      userStore.setNested("createDto.officialDocumentId", response?.[0]?.id);
     },
     onError: (error: ServerErrorResponse) => {
       toast.error(error.response?.data?.message);
@@ -81,8 +77,8 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({
   } = useUploadMutation({
     onSuccess: (response: Upload[]) => {
       userStore.setNested(
-        "createDto.profile.driverLicenseDocumentId",
-        response?.[0]?.id
+        "createDto.driverLicenseDocumentId",
+        response?.[0]?.id,
       );
     },
     onError: (error: ServerErrorResponse) => {
@@ -133,27 +129,25 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({
         if (!userResult.success) {
           userStore.set(
             "createDtoErrors",
-            userResult.error.flatten().fieldErrors
+            userResult.error.flatten().fieldErrors,
           );
           return false;
         }
       }
 
       if (stepId === "profile-information") {
-        const profileResult = profileSchema.safeParse(
-          userStore.createDto.profile
-        );
+        const profileResult = profileSchema.safeParse(userStore.createDto);
         if (!profileResult.success) {
           userStore.set(
             "createDtoErrors",
-            profileResult.error.flatten().fieldErrors
+            profileResult.error.flatten().fieldErrors,
           );
           return false;
         }
       }
       return true;
     },
-    [userStore]
+    [userStore],
   );
 
   const handleSubmit = () => {
@@ -170,7 +164,7 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({
       >
         {({ methods }) => {
           const activeIndex = steps.findIndex(
-            (step) => step.id === methods.current.id
+            (step) => step.id === methods.current.id,
           );
 
           const handleNext = () => {

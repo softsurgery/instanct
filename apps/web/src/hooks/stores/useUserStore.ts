@@ -45,17 +45,15 @@ const initialState: UserStoreData = {
     username: "",
     email: "",
     roleId: "",
-    profile: {
-      phone: "",
-      cin: "",
-      bio: "",
-      gender: undefined,
-      isPrivate: false,
-      pictureId: undefined,
-      officialDocumentId: undefined,
-      driverLicenseDocumentId: undefined,
-      uploads: [],
-    },
+    phone: "",
+    cin: "",
+    bio: "",
+    gender: undefined,
+    isPrivate: false,
+    pictureId: undefined,
+    officialDocumentId: undefined,
+    driverLicenseDocumentId: undefined,
+    uploads: [],
   },
   updateDto: {
     firstName: "",
@@ -67,17 +65,15 @@ const initialState: UserStoreData = {
     username: "",
     email: "",
     roleId: "",
-    profile: {
-      phone: "",
-      cin: "",
-      bio: "",
-      gender: undefined,
-      isPrivate: false,
-      pictureId: undefined,
-      officialDocumentId: undefined,
-      driverLicenseDocumentId: undefined,
-      uploads: [],
-    },
+    phone: "",
+    cin: "",
+    bio: "",
+    gender: undefined,
+    isPrivate: false,
+    pictureId: undefined,
+    officialDocumentId: undefined,
+    driverLicenseDocumentId: undefined,
+    uploads: [],
   },
   setManualPassword: false,
   confirmPassword: "",
@@ -101,7 +97,7 @@ export interface UserStore extends UserStoreData {
   setImageProgress: (file: File, progress: number) => void;
   appendUploadId: (
     dto: "create" | "update",
-    upload: { id?: number; uploadId: number }
+    upload: { id?: number; uploadId: number },
   ) => void;
   updateImages: (dto: "create" | "update", newImages: ImageFile[]) => void;
 }
@@ -121,7 +117,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
       const updatedRoot = setDeepValue(
         { ...(state[rootKey as keyof UserStoreData] as object) },
         nestedPath,
-        value
+        value,
       );
       return {
         ...state,
@@ -134,7 +130,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     set((state) => ({
       ...state,
       images: state.images.map((image) =>
-        image.image === file ? { ...image, progress } : image
+        image.image === file ? { ...image, progress } : image,
       ),
     }));
   },
@@ -144,10 +140,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
       ...state,
       [`${dto}Dto`]: {
         ...state[`${dto}Dto`],
-        profile: {
-          ...state[`${dto}Dto`].profile,
-          uploads: [...(state[`${dto}Dto`].profile?.uploads ?? []), upload],
-        },
+        uploads: [...(state[`${dto}Dto`]?.uploads ?? []), upload],
       },
     }));
   },
@@ -155,7 +148,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   updateImages: (dto: "create" | "update", newImages: ImageFile[]) => {
     set((state) => {
       const oldImages = state.images;
-      const oldUploads = state[`${dto}Dto`].profile?.uploads ?? [];
+      const oldUploads = state[`${dto}Dto`]?.uploads ?? [];
 
       const uploadMap = new Map<string, { id?: number; uploadId: number }>();
       oldImages.forEach((img, idx) => {
@@ -178,10 +171,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
         images: newImages,
         [`${dto}Dto`]: {
           ...state[`${dto}Dto`],
-          profile: {
-            ...state[`${dto}Dto`].profile,
-            uploads: newUploads,
-          },
+          uploads: newUploads,
         },
       };
     });

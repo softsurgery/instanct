@@ -1,7 +1,9 @@
 import { Upload } from "./upload";
 import { DatabaseEntity } from "./utils/database-entity";
 
-export interface ResponseUserDto extends DatabaseEntity {
+//abstract user dtos *****************************************************************************
+
+export interface ResponseAbstractUserDto extends DatabaseEntity {
   id: string;
   firstName?: string;
   lastName?: string;
@@ -13,11 +15,9 @@ export interface ResponseUserDto extends DatabaseEntity {
   emailVerified?: Date;
   role: ResponseRoleDto;
   roleId: string;
-  profile: ResponseProfileDto;
-  profileId: string;
 }
 
-export interface CreateUserDto {
+export interface CreateAbstractUserDto {
   firstName?: string;
   lastName?: string;
   dateOfBirth?: Date;
@@ -27,11 +27,54 @@ export interface CreateUserDto {
   username: string;
   email: string;
   roleId?: string;
-  profile?: CreateProfileDto;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface UpdateUserDto extends Partial<CreateUserDto> {}
+export interface UpdateAbstractUserDto extends Partial<CreateAbstractUserDto> {}
+
+// user dtos ************************************************************************************
+
+export interface ResponseUserDto extends ResponseAbstractUserDto {
+  phone?: string;
+  cin?: string;
+  bio?: string;
+  gender?: Gender;
+  isPrivate?: boolean;
+  pictureId?: number;
+  picture?: Upload;
+  officialDocumentId?: number;
+  officialDocument?: Upload;
+  driverLicenseDocumentId?: number;
+  driverLicenseDocument?: Upload;
+  uploads: ResponseUserUploadDto[];
+}
+
+export interface CreateUserDto extends CreateAbstractUserDto {
+  phone?: string;
+  cin?: string;
+  bio?: string;
+  gender?: Gender;
+  isPrivate?: boolean;
+  pictureId?: number;
+  officialDocumentId?: number;
+  driverLicenseDocumentId?: number;
+  uploads?: { uploadId: number }[];
+}
+
+export interface UpdateUserDto extends Partial<CreateUserDto> {
+  uploads?: { id: number; uploadId: number }[];
+}
+
+export interface ResponseUserUploadDto extends DatabaseEntity {
+  id: number;
+  userId: string;
+  user: ResponseUserDto;
+  uploadId: number;
+  upload: Upload;
+  order: number;
+}
+
+// ********************************************************************************************
 
 export interface ResponseRoleDto extends DatabaseEntity {
   id: string;
@@ -54,8 +97,9 @@ export interface CreateRoleDto {
   permissions: { permissionId: string }[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface UpdateRoleDto extends Partial<CreateRoleDto> {}
+export interface UpdateRoleDto extends Partial<CreateRoleDto> {
+  uploads?: { id: number; uploadId: number }[];
+}
 
 export interface ResponsePermissionDto extends DatabaseEntity {
   id: string;
@@ -78,39 +122,6 @@ export enum Gender {
   Female = "Female",
 }
 
-export interface ResponseProfileDto extends DatabaseEntity {
-  id: number;
-  phone?: string;
-  cin?: string;
-  bio?: string;
-  gender?: Gender;
-  isPrivate?: boolean;
-  user: ResponseUserDto;
-  pictureId?: number;
-  picture?: Upload;
-  officialDocumentId?: number;
-  officialDocument?: Upload;
-  driverLicenseDocumentId?: number;
-  driverLicenseDocument?: Upload;
-  uploads: ResponseProfileUploadDto[];
-}
-
-export interface CreateProfileDto {
-  phone?: string;
-  cin?: string;
-  bio?: string;
-  gender?: Gender;
-  isPrivate?: boolean;
-  pictureId?: number;
-  officialDocumentId?: number;
-  driverLicenseDocumentId?: number;
-  uploads?: { uploadId: number }[];
-}
-
-export interface UpdateProfileDto extends Partial<CreateProfileDto> {
-  uploads?: { id: number; uploadId: number }[];
-}
-
 export interface ResponseFollowDto extends DatabaseEntity {
   id: string;
   follower: ResponseUserDto;
@@ -129,13 +140,4 @@ export interface ResponseIsFollowingDto {
   userId?: string;
   targetId?: string;
   isFollowing?: boolean;
-}
-
-export interface ResponseProfileUploadDto extends DatabaseEntity {
-  id: number;
-  profileId: number;
-  profile: ResponseProfileDto;
-  uploadId: number;
-  upload: Upload;
-  order: number;
 }
