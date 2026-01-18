@@ -21,7 +21,10 @@ export class AdminSeedCommand {
     });
 
     if (!adminUser) {
-      await this.userRepository.save(adminSeed.profile);
+      await this.userRepository.save({
+        ...adminSeed.core,
+        ...adminSeed.profile,
+      });
     }
 
     //=============================================================================================
