@@ -32,9 +32,9 @@ export function UserNav({ className }: UserNavProps) {
   const avatarIdentity = React.useMemo(() => identifyUserAvatar(user), [user]);
 
   const { data: profilePicture } = useQuery({
-    queryKey: ["profile-picture", user?.profile?.pictureId],
-    queryFn: () => api.upload.getUploadById(user?.profile?.pictureId as number),
-    enabled: !!user?.profile?.pictureId,
+    queryKey: ["profile-picture", user?.pictureId],
+    queryFn: () => api.upload.getUploadById(user?.pictureId as number),
+    enabled: !!user?.pictureId,
     staleTime: Infinity,
   });
 
