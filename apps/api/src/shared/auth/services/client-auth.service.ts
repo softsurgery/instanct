@@ -1,20 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { UserService } from 'src/shared/user-management/services/user.service';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from 'src/shared/user-management/dtos/user/create-user.dto';
 import { OAuth2Client } from 'google-auth-library';
-import { ResponseUserDto } from 'src/shared/user-management/dtos/user/response-user.dto';
 import {
   GithubEmail,
   GithubUserResponse,
 } from '../interfaces/github.interface';
 import { OAuthProvider } from '../enums/oauth.enum';
-import { UserRepository } from 'src/shared/user-management/repositories/user.repository';
 import { RequestResetTokenDto } from '../dtos/web/request-reset-token.dto';
 import { MailService } from 'src/shared/mail/services/mail.service';
-import { UserNotFoundException } from 'src/shared/user-management/errors/user/user.notfound.error';
+import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
 import { ResponseResetTokenDto } from '../dtos/web/response-reset-token.dto';
 import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-token.dto';
 import { RequestCheckResetTokenDto } from '../dtos/web/request-check-reset-token.dto';
@@ -22,12 +18,16 @@ import { StoreService } from 'src/shared/store/services/store.service';
 import { StoreIDs } from 'src/app/enums/store.enum';
 import { GenericStore } from 'src/shared/store/interfaces/generic-store.interface';
 import { ForgetPasswordTemplateProps } from 'src/assets/templates/forget-password/type';
-import { identifyUser } from 'src/shared/user-management/utils/identify-user';
+import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
 import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
-import { BasicRoles } from 'src/shared/user-management/enums/basic-roles.enum';
+import { BasicRoles } from 'src/shared/abstract-user-management/enums/basic-roles.enum';
 import { AuthNotActiveException } from 'src/shared/auth/errors/auth.notactive.error';
 import { Core } from 'src/app/interfaces/core.interface';
+import { CreateAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/create-abstract-user.dto';
+import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
+import { UserRepository } from 'src/modules/users/repositories/user.repository';
+import { UserService } from 'src/modules/users/services/user.service';
 
 @Injectable()
 export class ClientAuthService {
@@ -40,7 +40,7 @@ export class ClientAuthService {
     private readonly storeService: StoreService,
   ) {}
 
-  private async generateTokens(id: string, email: string) {
+  private async generateTokens(id?: string, email?: string) {
     const payload = { sub: id, email: email };
 
     const access_token = await this.jwtService.signAsync(payload, {
@@ -93,9 +93,11 @@ export class ClientAuthService {
     };
   }
 
-  async signup(createUserDto: CreateUserDto): Promise<ResponseClientSignupDto> {
+  async signup(
+    createUserDto: CreateAbstractUserDto,
+  ): Promise<ResponseClientSignupDto> {
     return {
-      user: await this.userService.saveWithProfile({
+      user: await this.userService.save({
         ...createUserDto,
         roleId: BasicRoles.User,
         isActive: true,
@@ -136,7 +138,7 @@ export class ClientAuthService {
     provider: OAuthProvider,
     idToken: string,
   ): Promise<{
-    user: ResponseUserDto;
+    user?: ResponseAbstractUserDto;
     access_token: string;
     refresh_token: string;
   }> {
@@ -199,8 +201,8 @@ export class ClientAuthService {
     });
 
     const { access_token, refresh_token } = await this.generateTokens(
-      user.id,
-      user.email,
+      user?.id,
+      user?.email,
     );
 
     return {

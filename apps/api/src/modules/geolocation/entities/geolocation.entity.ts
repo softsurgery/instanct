@@ -1,5 +1,4 @@
 import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
-import { UserEntity } from 'src/shared/user-management/entities/user.entity';
 import {
   Column,
   Entity,
@@ -9,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 @Entity('geolocations')
 @Index(['latitude', 'longitude'])

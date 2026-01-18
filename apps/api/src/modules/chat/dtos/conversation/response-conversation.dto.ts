@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseClientDto } from 'src/shared/user-management/dtos/client/response-client.dto';
+import { ResponseClientDto } from 'src/shared/abstract-user-management/dtos/client/response-client.dto';
 import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
 import { ResponseMessageDto } from '../message/response-message.dto';
 

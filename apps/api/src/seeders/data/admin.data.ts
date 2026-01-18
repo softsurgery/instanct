@@ -1,5 +1,5 @@
-import { BasicRoles } from 'src/shared/user-management/enums/basic-roles.enum';
-import { Gender } from 'src/shared/user-management/enums/gender.enum';
+import { BasicRoles } from 'src/shared/abstract-user-management/enums/basic-roles.enum';
+import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
 
 export const adminSeed = {
   core: {

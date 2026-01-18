@@ -21,8 +21,8 @@ import { RequestClientSignInDto } from '../dtos/client/request-client-signin.dto
 import { Notify } from 'src/shared/notifications/decorators/notify.decorator';
 import { NotificationType } from 'src/shared/notifications/enums/notification-type.enum';
 import { NotificationInterceptor } from 'src/shared/notifications/decorators/notification.interceptor';
-import { identifyUser } from 'src/shared/user-management/utils/identify-user';
-import { UserEntity } from 'src/shared/user-management/entities/user.entity';
+import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
+import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 
 @ApiTags('client-auth')
 @Controller({ version: '1', path: '/client-auth' })
@@ -56,11 +56,11 @@ export class ClientAuthController {
     );
     req.logInfo = {
       userId: result.user.id,
-      clientName: identifyUser(result.user as UserEntity),
+      clientName: identifyUser(result.user as AbstractUserEntity),
     };
     req.notificationInfo = {
       userId: result.user.id,
-      clientName: identifyUser(result.user as UserEntity),
+      clientName: identifyUser(result.user as AbstractUserEntity),
     };
     return result;
   }
@@ -86,8 +86,8 @@ export class ClientAuthController {
     try {
       const result = await this.clientAuthService.signup(registerDto);
       req.logInfo = {
-        userId: result.user.id,
-        clientName: identifyUser(result.user as UserEntity),
+        userId: result.user?.id,
+        clientName: identifyUser(result.user as AbstractUserEntity),
       };
       return result;
     } catch (error) {

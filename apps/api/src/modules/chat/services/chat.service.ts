@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { MessageService } from './message.service';
-import { UserService } from 'src/shared/user-management/services/user.service';
 import { ConversationService } from './conversation.service';
 import { ConversationNotFoundException } from '../errors/conversation/conversation.notfound.error';
-import { UserNotFoundException } from 'src/shared/user-management/errors/user/user.notfound.error';
+import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
 import { MessageEntity } from '../entities/message.entity';
+import { UserService } from 'src/modules/users/services/user.service';
 
 @Injectable()
 export class ChatService {

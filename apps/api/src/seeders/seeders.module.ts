@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CommandModule } from 'nestjs-command';
-import { UserManagementModule } from 'src/shared/user-management/user-management.module';
+import { UserManagementModule } from 'src/modules/users/user-management.module';
 import { PermissionsSeedCommand } from './permissions.seeder';
 import { RolesSeedCommand } from './roles.seeder';
 import { AdminSeedCommand } from './admin.seeder';

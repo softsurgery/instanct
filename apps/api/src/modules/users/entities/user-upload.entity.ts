@@ -1,0 +1,38 @@
+import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { UploadEntity } from 'src/shared/uploads/entities/upload.entity';
+import { UserEntity } from './user.entity';
+
+@Entity('user_uploads')
+export class UserUploadEntity extends EntityHelper {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  userId: string;
+
+  @Column()
+  uploadId: number;
+
+  @ManyToOne(() => UserEntity, (profile) => profile.uploads, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
+
+  @ManyToOne(() => UploadEntity, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  @JoinColumn({ name: 'uploadId' })
+  upload?: UploadEntity;
+
+  @Column({ nullable: false })
+  order: number;
+}

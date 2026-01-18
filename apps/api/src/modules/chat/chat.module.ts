@@ -8,7 +8,7 @@ import { MessageService } from './services/message.service';
 import { ChatGateway } from './controllers/chat.gateway';
 import { ConversationService } from './services/conversation.service';
 import { ChatService } from './services/chat.service';
-import { UserManagementModule } from 'src/shared/user-management/user-management.module';
+import { UserManagementModule } from 'src/modules/users/user-management.module';
 
 @Module({
   controllers: [],

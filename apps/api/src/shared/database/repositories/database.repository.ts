@@ -29,7 +29,7 @@ export abstract class DatabaseAbstractRepository<T extends ObjectLiteral>
     this.txHost = txHost;
   }
 
-  async rawQuery(query: string, parameters?: any[]) {
+  async rawQuery(query: string, parameters?: unknown[]) {
     return this.getRepository().query(query, parameters);
   }
 
