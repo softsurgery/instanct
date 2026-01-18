@@ -8,7 +8,7 @@ import {
   Length,
   MinLength,
 } from 'class-validator';
-import { CreateProfileDto } from 'src/modules/user-management/dtos/profile/create-profile.dto';
+import { CreateProfileDto } from '../profile/create-profile.dto';
 
 export class CreateUserDto {
   @ApiProperty({ type: String })

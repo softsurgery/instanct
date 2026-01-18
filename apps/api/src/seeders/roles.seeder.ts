@@ -1,8 +1,8 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { RoleRepository } from 'src/modules/user-management/repositories/role.repository';
-import { RolePermissionRepository } from 'src/modules/user-management/repositories/role-permission.repository';
-import { PermissionRepository } from 'src/modules/user-management/repositories/permission.repository';
+import { RoleRepository } from 'src/shared/user-management/repositories/role.repository';
+import { RolePermissionRepository } from 'src/shared/user-management/repositories/role-permission.repository';
+import { PermissionRepository } from 'src/shared/user-management/repositories/permission.repository';
 
 @Injectable()
 export class RolesSeedCommand {

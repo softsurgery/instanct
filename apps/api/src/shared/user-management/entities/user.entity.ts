@@ -10,10 +10,10 @@ import {
 } from 'typeorm';
 import { RoleEntity } from './role.entity';
 import { LogEntity } from 'src/shared/logger/entities/log.entity';
-import { ProfileEntity } from 'src/modules/user-management/entities/profile.entity';
 import { FollowEntity } from './follow.entity';
 import { NotificationEntity } from 'src/shared/notifications/entities/notification.entity';
 import { GeolocationEntity } from 'src/modules/geolocation/entities/geolocation.entity';
+import { ProfileEntity } from './profile.entity';
 
 @Entity('users')
 export class UserEntity extends EntityHelper {

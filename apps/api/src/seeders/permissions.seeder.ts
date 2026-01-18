@@ -1,6 +1,6 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { PermissionService } from 'src/modules/user-management/services/permission.service';
+import { PermissionService } from 'src/shared/user-management/services/permission.service';
 import {
   permissionActionsSeed,
   permissionEntitiesSeed,

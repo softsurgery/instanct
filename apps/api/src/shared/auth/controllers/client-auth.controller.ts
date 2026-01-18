@@ -18,11 +18,11 @@ import { ClientAuthService } from '../services/client-auth.service';
 import { RequestClientSignUpDto } from '../dtos/client/request-client-signup.dto';
 import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
 import { RequestClientSignInDto } from '../dtos/client/request-client-signin.dto';
-import { identifyUser } from 'src/modules/user-management/utils/identify-user';
-import { UserEntity } from 'src/modules/user-management/entities/user.entity';
 import { Notify } from 'src/shared/notifications/decorators/notify.decorator';
 import { NotificationType } from 'src/shared/notifications/enums/notification-type.enum';
 import { NotificationInterceptor } from 'src/shared/notifications/decorators/notification.interceptor';
+import { identifyUser } from 'src/shared/user-management/utils/identify-user';
+import { UserEntity } from 'src/shared/user-management/entities/user.entity';
 
 @ApiTags('client-auth')
 @Controller({ version: '1', path: '/client-auth' })

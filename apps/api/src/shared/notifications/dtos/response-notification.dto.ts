@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
 import { NotificationType } from '../enums/notification-type.enum';
-import { ResponseUserDto } from 'src/modules/user-management/dtos/user/response-user.dto';
+import { ResponseUserDto } from 'src/shared/user-management/dtos/user/response-user.dto';
 
 export class ResponseNotificationDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })

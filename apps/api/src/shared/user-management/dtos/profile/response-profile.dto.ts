@@ -1,13 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Gender } from '../../enums/gender.enum';
 import { Expose, Type } from 'class-transformer';
-import { ResponseUserDto } from 'src/modules/user-management/dtos/user/response-user.dto';
 import { ResponseUploadDto } from 'src/shared/uploads/dtos/response-upload.dto';
 import { ResponseProfileUploadDto } from '../profile-upload/response-profile-upload.dto';
 import { ExperienceDto } from '../../modules/profile-management/dtos/walk-of-life/experience.dto';
-import { Education, Experience, Skill } from '../../modules/profile-management/interfaces/walk-of-life.interface';
+import {
+  Education,
+  Experience,
+  Skill,
+} from '../../modules/profile-management/interfaces/walk-of-life.interface';
 import { EducationDto } from '../../modules/profile-management/dtos/walk-of-life/education.dto';
 import { SkillDto } from '../../modules/profile-management/dtos/walk-of-life/skills.dto';
+import { ResponseUserDto } from '../user/response-user.dto';
 
 export class ResponseProfileDto {
   @ApiProperty({ type: Number })

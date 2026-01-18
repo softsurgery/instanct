@@ -9,8 +9,8 @@ import { ConversationRepository } from '../repositories/conversation.repository'
 import { ConversationEntity } from '../entities/conversation.entity';
 import { ConversationNotFoundException } from '../errors/conversation/conversation.notfound.error';
 import { CreateConversationDto } from '../dtos/conversation/create-conversation.dto';
-import { UserService } from 'src/modules/user-management/services/user.service';
-import { UserNotFoundException } from 'src/modules/user-management/errors/user/user.notfound.error';
+import { UserService } from 'src/shared/user-management/services/user.service';
+import { UserNotFoundException } from 'src/shared/user-management/errors/user/user.notfound.error';
 
 @Injectable()
 export class ConversationService {

@@ -5,9 +5,9 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserEntity } from 'src/modules/user-management/entities/user.entity';
 import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
 import { EventType } from '../enums/event-type.enum';
+import { UserEntity } from 'src/shared/user-management/entities/user.entity';
 
 @Entity('log')
 export class LogEntity extends EntityHelper {

@@ -1,4 +1,3 @@
-import { UserEntity } from 'src/modules/user-management/entities/user.entity';
 import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
 import {
   Column,
@@ -21,6 +20,7 @@ import {
   Experience,
   Skill,
 } from '../modules/profile-management/interfaces/walk-of-life.interface';
+import { UserEntity } from './user.entity';
 
 @Entity('profiles')
 export class ProfileEntity extends EntityHelper {

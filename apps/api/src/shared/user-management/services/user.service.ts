@@ -12,7 +12,7 @@ import { hashPassword } from 'src/shared/helpers/hash.utils';
 import { UserAlreadyExistsException } from '../errors/user/user.alreadyexists.error';
 import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { ProfileService } from 'src/modules/user-management/services/profile.service';
+import { ProfileService } from './profile.service';
 
 @Injectable()
 export class UserService {

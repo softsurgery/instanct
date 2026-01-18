@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { NotificationType } from '../enums/notification-type.enum';
-import { UserEntity } from 'src/modules/user-management/entities/user.entity';
+import { UserEntity } from 'src/shared/user-management/entities/user.entity';
 
 @Entity('notification')
 export class NotificationEntity extends EntityHelper {

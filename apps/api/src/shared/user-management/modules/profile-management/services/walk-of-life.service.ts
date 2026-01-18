@@ -5,9 +5,9 @@ import {
   Experience,
   Skill,
 } from '../interfaces/walk-of-life.interface';
-import { ProfileEntity } from 'src/modules/user-management/entities/profile.entity';
-import { ProfileRepository } from 'src/modules/user-management/repositories/profile.repository';
-import { ProfileNotFoundException } from 'src/modules/user-management/errors/profile/profile.notfound.error';
+import { ProfileEntity } from 'src/shared/user-management/entities/profile.entity';
+import { ProfileRepository } from 'src/shared/user-management/repositories/profile.repository';
+import { ProfileNotFoundException } from 'src/shared/user-management/errors/profile/profile.notfound.error';
 
 @Injectable()
 export class WalkOfLifeService {

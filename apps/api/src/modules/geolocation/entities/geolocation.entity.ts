@@ -1,5 +1,5 @@
-import { UserEntity } from 'src/modules/user-management/entities/user.entity';
 import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import { UserEntity } from 'src/shared/user-management/entities/user.entity';
 import {
   Column,
   Entity,

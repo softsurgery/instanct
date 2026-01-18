@@ -1,8 +1,8 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from 'src/modules/user-management/repositories/user.repository';
-import { ProfileRepository } from 'src/modules/user-management/repositories/profile.repository';
-import { UserService } from 'src/modules/user-management/services/user.service';
+import { UserRepository } from 'src/shared/user-management/repositories/user.repository';
+import { ProfileRepository } from 'src/shared/user-management/repositories/profile.repository';
+import { UserService } from 'src/shared/user-management/services/user.service';
 import { mockUsersSeed } from '../data/playground-users.data';
 
 @Injectable()
