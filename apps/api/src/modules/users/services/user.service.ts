@@ -1,5 +1,5 @@
 import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
@@ -16,6 +16,7 @@ import { UserUploadEntity } from '../entities/user-upload.entity';
 import { CreateUserUploadDto } from '../dtos/user-upload/create-user-upload.dto';
 import { UpdateUserUploadDto } from '../dtos/user-upload/update-user-upload.dto';
 import { AbstractUserService } from 'src/shared/abstract-user-management/services/abstract-user.service';
+import { hashPassword } from 'src/shared/helpers/hash.utils';
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -28,11 +29,11 @@ export class UserService extends AbstractUserService {
   }
 
   async findOneById(id: string): Promise<UserEntity> {
-    const profile = await this.userRepository.findOneById(id);
-    if (!profile) {
+    const user = await this.userRepository.findOneById(id);
+    if (!user) {
       throw new UserNotFoundException();
     }
-    return profile;
+    return user;
   }
 
   async findOneByCondition(
@@ -40,19 +41,19 @@ export class UserService extends AbstractUserService {
   ): Promise<UserEntity | null> {
     const queryBuilder = new QueryBuilder(this.userRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    const profile = await this.userRepository.findOne(
+    const user = await this.userRepository.findOne(
       queryOptions as FindOneOptions<UserEntity>,
     );
-    return profile;
+    return user;
   }
 
   async findAll(query: IQueryObject): Promise<UserEntity[]> {
     const queryBuilder = new QueryBuilder(this.userRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    const profiles = await this.userRepository.findAll(
+    const users = await this.userRepository.findAll(
       queryOptions as FindManyOptions<UserEntity>,
     );
-    return profiles;
+    return users;
   }
 
   async findAllPaginated(query: IQueryObject): Promise<PageDto<UserEntity>> {
@@ -100,11 +101,11 @@ export class UserService extends AbstractUserService {
   }
 
   async delete(id: number): Promise<UserEntity | null> {
-    const profile = await this.userRepository.findOneById(id);
-    if (!profile) {
+    const user = await this.userRepository.findOneById(id);
+    if (!user) {
       throw new UserNotFoundException();
     }
-    return this.userRepository.remove(profile);
+    return this.userRepository.remove(user);
   }
 
   //Extended Methods ===========================================================================
@@ -118,7 +119,13 @@ export class UserService extends AbstractUserService {
       await this.uploadService.confirm(createUserDto.officialDocumentId);
     if (createUserDto.driverLicenseDocumentId)
       await this.uploadService.confirm(createUserDto.driverLicenseDocumentId);
-    const user = await this.userRepository.save(rest);
+
+    if (!rest.password) throw new BadRequestException('Password is required');
+
+    const user = await this.userRepository.save({
+      ...rest,
+      password: await hashPassword(rest.password),
+    });
 
     await this.userUploadService.saveMany(
       uploads?.map((upload, index) => ({
@@ -137,24 +144,24 @@ export class UserService extends AbstractUserService {
     updateUserDto: UpdateUserDto,
   ): Promise<UserEntity | null> {
     const { uploads, ...rest } = updateUserDto;
-    const existingProfile = await this.findOneById(id);
-    if (!existingProfile) throw new UserNotFoundException();
+    const existingUser = await this.findOneById(id);
+    if (!existingUser) throw new UserNotFoundException();
 
     await this.userRepository.update(id, rest);
-    //confirm new profile picture
+    //confirm new picture
     if (
       updateUserDto.pictureId &&
-      updateUserDto.pictureId != existingProfile.pictureId
+      updateUserDto.pictureId != existingUser.pictureId
     ) {
       await this.uploadService.confirm(updateUserDto.pictureId);
-      if (existingProfile.pictureId)
-        await this.uploadService.delete(existingProfile.pictureId);
+      if (existingUser.pictureId)
+        await this.uploadService.delete(existingUser.pictureId);
     }
 
     //confirm new official document
     if (
       updateUserDto.officialDocumentId &&
-      updateUserDto.officialDocumentId != existingProfile.officialDocumentId
+      updateUserDto.officialDocumentId != existingUser.officialDocumentId
     ) {
       await this.uploadService.confirm(updateUserDto.officialDocumentId);
     }
@@ -163,7 +170,7 @@ export class UserService extends AbstractUserService {
     if (
       updateUserDto.driverLicenseDocumentId &&
       updateUserDto.driverLicenseDocumentId !=
-        existingProfile.driverLicenseDocumentId
+        existingUser.driverLicenseDocumentId
     ) {
       await this.uploadService.confirm(updateUserDto.driverLicenseDocumentId);
     }

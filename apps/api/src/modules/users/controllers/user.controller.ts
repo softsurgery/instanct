@@ -66,6 +66,17 @@ export class UserController {
     return toDto(ResponseUserDto, await this.userService.findOneByEmail(email));
   }
 
+  @Get('/current')
+  async findCurrentUser(
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDto | null> {
+    if (!req?.user?.sub) {
+      return null;
+    }
+    const user = await this.userService.findOneById(req?.user?.sub);
+    return toDto(ResponseUserDto, user);
+  }
+
   @Get(':id')
   async findOneById(@Param('id') id: string): Promise<ResponseUserDto | null> {
     return toDto(ResponseUserDto, await this.userService.findOneById(id));
@@ -85,6 +96,21 @@ export class UserController {
     return user;
   }
 
+  @Put('/current')
+  @LogEvent(EventType.USER_UPDATE)
+  async updateCurrentUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDto | null> {
+    if (!req?.user?.sub) {
+      return null;
+    }
+    return toDto(
+      ResponseUserDto,
+      await this.userService.update(req?.user?.sub, updateUserDto),
+    );
+  }
+
   @Put(':id')
   @LogEvent(EventType.USER_UPDATE)
   async update(
@@ -92,7 +118,7 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
-    const user = await this.userService.update(id, updateUserDto);
+    const user = await this.userService.extendedUpdate(id, updateUserDto);
     req.logInfo = { id: user?.id, firstName: user?.firstName };
     return toDto(ResponseUserDto, user);
   }

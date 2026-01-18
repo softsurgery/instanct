@@ -116,6 +116,12 @@ export abstract class AbstractUserService {
     });
   }
 
+  async findOneByUsername(username) {
+    return this.abstractUserRepository.findOne({
+      where: { username },
+    });
+  }
+
   async activate(id: string): Promise<AbstractUserEntity | null | undefined> {
     const user = await this.findOneById(id);
     return this.abstractUserRepository.update(id, { ...user, isActive: true });

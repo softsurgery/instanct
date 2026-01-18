@@ -1,11 +1,11 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { adminSeed } from './data/admin.data';
-import { UserRepository } from 'src/modules/users/repositories/user.repository';
+import { UserService } from 'src/modules/users/services/user.service';
 
 @Injectable()
 export class AdminSeedCommand {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userService: UserService) {}
 
   @Command({
     command: 'seed:admin',
@@ -16,12 +16,12 @@ export class AdminSeedCommand {
     console.log('🚀 Starting seeding of admin...');
     //=============================================================================================
 
-    const adminUser = await this.userRepository.findOne({
+    const adminUser = await this.userService.findOneByUsername({
       where: { username: 'superadmin' },
     });
 
     if (!adminUser) {
-      await this.userRepository.save({
+      await this.userService.extendedSave({
         ...adminSeed.core,
         ...adminSeed.profile,
       });
