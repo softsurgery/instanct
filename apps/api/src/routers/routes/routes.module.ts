@@ -21,6 +21,8 @@ import { ConversationController } from 'src/modules/chat/controllers/conversatio
 import { MessageController } from 'src/modules/chat/controllers/message.controller';
 import { ChatModule } from 'src/modules/chat/chat.module';
 import { WalkOfLifeController } from 'src/modules/users/controllers/walk-of-life.controller';
+import { SessionController } from 'src/shared/sessions/controllers/session.controller';
+import { SessionModule } from 'src/shared/sessions/sessions.module';
 
 @Module({
   controllers: [
@@ -38,6 +40,7 @@ import { WalkOfLifeController } from 'src/modules/users/controllers/walk-of-life
     MessageController,
     //notifications
     NotificationController,
+    SessionController,
     //reference-types
     RefTypeController,
     RefParamController,
@@ -53,6 +56,7 @@ import { WalkOfLifeController } from 'src/modules/users/controllers/walk-of-life
     UploadModule,
     ChatModule,
     NotificationModule,
+    SessionModule,
     ReferenceTypesModule,
     GeolocationModule,
     ReferenceImplModule,

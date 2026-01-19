@@ -11,6 +11,7 @@ import {
 import { RoleEntity } from './role.entity';
 import { LogEntity } from 'src/shared/logger/entities/log.entity';
 import { NotificationEntity } from 'src/shared/notifications/entities/notification.entity';
+import { SessionEntity } from 'src/shared/sessions/entities/session.entity';
 
 @Entity('users')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -63,4 +64,7 @@ export abstract class AbstractUserEntity extends EntityHelper {
 
   @OneToMany(() => NotificationEntity, (notif) => notif.user)
   notifications?: NotificationEntity[];
+
+  @OneToMany(() => SessionEntity, (session) => session.user)
+  sessions?: SessionEntity[];
 }
