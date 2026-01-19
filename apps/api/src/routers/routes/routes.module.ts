@@ -17,9 +17,9 @@ import { RefParamController } from 'src/shared/reference-types/controllers/ref-p
 import { GeolocationModule } from 'src/modules/geolocation/geolocation.module';
 import { ReferenceImplModule } from 'src/modules/reference-impl/reference-impl.module';
 import { RefImplementationController } from 'src/modules/reference-impl/reference-impl.controller';
-import { ConversationController } from 'src/modules/chat/controllers/conversation.controller';
-import { MessageController } from 'src/modules/chat/controllers/message.controller';
-import { ChatModule } from 'src/modules/chat/chat.module';
+import { ConversationController } from 'src/shared/chat/controllers/conversation.controller';
+import { MessageController } from 'src/shared/chat/controllers/message.controller';
+import { ChatModule } from 'src/shared/chat/chat.module';
 import { WalkOfLifeController } from 'src/modules/users/controllers/walk-of-life.controller';
 import { SessionController } from 'src/shared/sessions/controllers/session.controller';
 import { SessionModule } from 'src/shared/sessions/sessions.module';
