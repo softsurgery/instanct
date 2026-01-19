@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { NotificationType } from '../enums/notification-type.enum';
+import { NotificationType } from '../../../app/enums/notification-type.enum';
 import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 
 @Entity('notification')

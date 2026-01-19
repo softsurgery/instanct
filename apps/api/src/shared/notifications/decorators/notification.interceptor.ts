@@ -6,7 +6,7 @@ import { AdvancedRequest } from 'src/types';
 import { AccessTokenPayload } from 'src/shared/auth/interfaces/access-token-payload.interface';
 import { getTokenPayload } from 'src/shared/auth/utils/token-payload';
 import { NotificationService } from '../services/notification.service';
-import { NotificationType } from '../enums/notification-type.enum';
+import { NotificationType } from '../../../app/enums/notification-type.enum';
 
 @Injectable()
 export class NotificationInterceptor implements NestInterceptor {

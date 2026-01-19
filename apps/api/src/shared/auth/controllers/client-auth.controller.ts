@@ -19,7 +19,7 @@ import { RequestClientSignUpDto } from '../dtos/client/request-client-signup.dto
 import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
 import { RequestClientSignInDto } from '../dtos/client/request-client-signin.dto';
 import { Notify } from 'src/shared/notifications/decorators/notify.decorator';
-import { NotificationType } from 'src/shared/notifications/enums/notification-type.enum';
+import { NotificationType } from 'src/app/enums/notification-type.enum';
 import { NotificationInterceptor } from 'src/shared/notifications/decorators/notification.interceptor';
 import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
