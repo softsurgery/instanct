@@ -11,7 +11,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from '../utils/public-strategy';
 import { ResponseSigninDto } from '../dtos/web/response-signin.dto';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
-import { EventType } from 'src/shared/logger/enums/event-type.enum';
+import { EventType } from 'src/app/enums/event-type.enum';
 import { AdvancedRequest } from 'src/types';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { ClientAuthService } from '../services/client-auth.service';

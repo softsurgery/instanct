@@ -11,7 +11,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FollowService } from '../../../modules/users/services/follow.service';
 import { AdvancedRequest } from 'src/types';
-import { EventType } from 'src/shared/logger/enums/event-type.enum';
+import { EventType } from 'src/app/enums/event-type.enum';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 
 @ApiTags('follow')

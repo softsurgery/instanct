@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdvancedRequest } from 'src/types';
-import { EventType } from 'src/shared/logger/enums/event-type.enum';
+import { EventType } from 'src/app/enums/event-type.enum';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { WalkOfLifeService } from '../services/walk-of-life.service';
 import { Education, Experience, Skill } from '../walk-of-life.interface';

@@ -15,7 +15,7 @@ import { ResponseSigninDto } from '../dtos/web/response-signin.dto';
 import { RequestSignInDto } from '../dtos/web/request-signin.dto';
 import { OAuthRequestDto } from '../dtos/web/response-oauth.dto';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
-import { EventType } from 'src/shared/logger/enums/event-type.enum';
+import { EventType } from 'src/app/enums/event-type.enum';
 import { AdvancedRequest } from 'src/types';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { RequestResetTokenDto } from '../dtos/web/request-reset-token.dto';
