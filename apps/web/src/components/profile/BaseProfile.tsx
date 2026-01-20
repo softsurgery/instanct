@@ -5,6 +5,7 @@ import {
   Settings as SettingsIcon,
   MessageSquare,
   BellIcon,
+  BookUser,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Spinner } from "../shared/Spinner";
@@ -24,6 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { identifyUserAvatar } from "@/lib/user";
 import { api } from "@/api";
+import Page from "@/pages/auth";
+import Page404 from "../shared/pages/Page404";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { Book } from "./cards/Book";
 
 interface BaseProfileProps {
   className?: string;
@@ -71,6 +76,12 @@ export const BaseProfile = ({
       label: t("userManagement.inspect.tabs.about"),
       icon: UserIcon,
       content: <About />,
+    },
+    {
+      value: "metadata",
+      label: t("userManagement.inspect.tabs.book"),
+      icon: BookUser,
+      content: <Book />,
     },
     {
       value: "activity",

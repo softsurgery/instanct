@@ -163,10 +163,11 @@
     "inspect": {
       "tabs": {
         "about": "À propos",
+        "book": "Livre",
         "activity": "Activité",
-        "settings": "Paramètres",
         "conversations": "Conversations",
-        "notifications": "Notifications"
+        "notifications": "Notifications",
+        "settings": "Paramètres"
       },
       "stats": {
         "services": "Services"
