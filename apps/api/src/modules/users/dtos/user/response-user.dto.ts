@@ -1,18 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ResponseUploadDto } from 'src/shared/uploads/dtos/response-upload.dto';
-
 import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
 import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
-import { ExperienceDto } from 'src/modules/users/dtos/walk-of-life/experience.dto';
-import {
-  Education,
-  Experience,
-  Skill,
-} from 'src/modules/users/walk-of-life.interface';
-import { EducationDto } from 'src/modules/users/dtos/walk-of-life/education.dto';
-import { SkillDto } from 'src/modules/users/dtos/walk-of-life/skills.dto';
 import { ResponseUserUploadDto } from '../user-upload/response-user-upload.dto';
+import { ResponseExperienceDto } from '../experience/response-experience.dto';
 
 export class ResponseUserDto extends ResponseAbstractUserDto {
   @ApiProperty({ type: String })
@@ -71,18 +63,8 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Type(() => ResponseUserUploadDto)
   uploads: ResponseUserUploadDto[];
 
-  @ApiProperty({ type: [ExperienceDto] })
+  @ApiProperty({ type: [ResponseExperienceDto] })
   @Expose()
-  @Type(() => ExperienceDto)
-  experiences: Experience[];
-
-  @ApiProperty({ type: [EducationDto] })
-  @Expose()
-  @Type(() => EducationDto)
-  educations: Education[];
-
-  @ApiProperty({ type: [SkillDto] })
-  @Expose()
-  @Type(() => SkillDto)
-  skills: Skill[];
+  @Type(() => ResponseExperienceDto)
+  experiences: ResponseExperienceDto[];
 }

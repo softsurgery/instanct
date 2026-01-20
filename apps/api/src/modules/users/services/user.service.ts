@@ -115,10 +115,6 @@ export class UserService extends AbstractUserService {
     const { uploads, ...rest } = createUserDto;
     if (createUserDto.pictureId)
       await this.uploadService.confirm(createUserDto.pictureId);
-    if (createUserDto.officialDocumentId)
-      await this.uploadService.confirm(createUserDto.officialDocumentId);
-    if (createUserDto.driverLicenseDocumentId)
-      await this.uploadService.confirm(createUserDto.driverLicenseDocumentId);
 
     if (!rest.password) throw new BadRequestException('Password is required');
 
@@ -156,23 +152,6 @@ export class UserService extends AbstractUserService {
       await this.uploadService.confirm(updateUserDto.pictureId);
       if (existingUser.pictureId)
         await this.uploadService.delete(existingUser.pictureId);
-    }
-
-    //confirm new official document
-    if (
-      updateUserDto.officialDocumentId &&
-      updateUserDto.officialDocumentId != existingUser.officialDocumentId
-    ) {
-      await this.uploadService.confirm(updateUserDto.officialDocumentId);
-    }
-
-    //confirm new driver license document
-    if (
-      updateUserDto.driverLicenseDocumentId &&
-      updateUserDto.driverLicenseDocumentId !=
-        existingUser.driverLicenseDocumentId
-    ) {
-      await this.uploadService.confirm(updateUserDto.driverLicenseDocumentId);
     }
 
     const updatedUser = await this.userRepository.findOne({

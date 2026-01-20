@@ -20,7 +20,6 @@ import { RefImplementationController } from 'src/modules/reference-impl/referenc
 import { ConversationController } from 'src/shared/chat/controllers/conversation.controller';
 import { MessageController } from 'src/shared/chat/controllers/message.controller';
 import { ChatModule } from 'src/shared/chat/chat.module';
-import { WalkOfLifeController } from 'src/modules/users/controllers/walk-of-life.controller';
 import { SessionController } from 'src/shared/sessions/controllers/session.controller';
 import { SessionModule } from 'src/shared/sessions/sessions.module';
 
@@ -29,7 +28,6 @@ import { SessionModule } from 'src/shared/sessions/sessions.module';
     //auth
     AuthController,
     ClientAuthController,
-    WalkOfLifeController,
     //common
     UploadController,
     StoreController,

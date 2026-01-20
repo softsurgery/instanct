@@ -13,10 +13,10 @@ import { UploadEntity } from 'src/shared/uploads/entities/upload.entity';
 import { UserUploadEntity } from './user-upload.entity';
 
 import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
-import { Education, Experience, Skill } from '../walk-of-life.interface';
 import { AbstractUserEntity } from '../../../shared/abstract-user-management/entities/abstract-user.entity';
 import { GeolocationEntity } from 'src/modules/geolocation/entities/geolocation.entity';
 import { FollowEntity } from './follow.entity';
+import { ExperienceEntity } from './experience.entity';
 
 @ChildEntity()
 export class UserEntity extends AbstractUserEntity {
@@ -54,36 +54,8 @@ export class UserEntity extends AbstractUserEntity {
   })
   uploads: UserUploadEntity[];
 
-  @ManyToOne(() => UploadEntity, {
-    onDelete: 'CASCADE',
-    eager: true,
-    nullable: true,
-  })
-  @JoinColumn({ name: 'officialDocumentId' })
-  officialDocument?: UploadEntity;
-
-  @Column({ nullable: true })
-  officialDocumentId?: number;
-
-  @ManyToOne(() => UploadEntity, {
-    onDelete: 'CASCADE',
-    eager: true,
-    nullable: true,
-  })
-  @JoinColumn({ name: 'driverLicenseDocumentId' })
-  driverLicenseDocument?: UploadEntity;
-
-  @Column({ nullable: true })
-  driverLicenseDocumentId?: number;
-
-  @Column({ nullable: true, type: 'json' })
-  experiences: Experience[];
-
-  @Column({ nullable: true, type: 'json' })
-  educations: Education[];
-
-  @Column({ nullable: true, type: 'json' })
-  skills: Skill[];
+  @OneToMany(() => ExperienceEntity, (experience) => experience.user, {})
+  experiences: ExperienceEntity[];
 
   @ManyToMany(() => RefParamEntity, {
     eager: true,

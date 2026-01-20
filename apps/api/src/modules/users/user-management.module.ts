@@ -3,7 +3,6 @@ import { FollowService } from 'src/modules/users/services/follow.service';
 import { PermissionService } from 'src/shared/abstract-user-management/services/permission.service';
 import { RolePermissionService } from 'src/shared/abstract-user-management/services/role-permission.service';
 import { RoleService } from 'src/shared/abstract-user-management/services/role.service';
-import { WalkOfLifeService } from './services/walk-of-life.service';
 import { RoleRepository } from 'src/shared/abstract-user-management/repositories/role.repository';
 import { PermissionRepository } from 'src/shared/abstract-user-management/repositories/permission.repository';
 import { RolePermissionRepository } from 'src/shared/abstract-user-management/repositories/role-permission.repository';
@@ -20,40 +19,57 @@ import { UserService } from './services/user.service';
 import { UserUploadService } from './services/user-upload.service';
 import { UserRepository } from './repositories/user.repository';
 import { UserUploadRepository } from './repositories/user-upload.repository';
+import { ExperienceService } from './services/experience.service';
+import { ExperienceRepository } from './repositories/experience.repository';
+import { ExperienceEntity } from './entities/experience.entity';
 
 @Module({
   controllers: [],
   providers: [
+    //services
     UserService,
     UserUploadService,
+
     RoleService,
     PermissionService,
     RolePermissionService,
-    FollowService,
-    WalkOfLifeService,
 
+    FollowService,
+    ExperienceService,
+
+    //repositories
     UserRepository,
     UserUploadRepository,
+
     RoleRepository,
     PermissionRepository,
     RolePermissionRepository,
+
     FollowRepository,
+    ExperienceRepository,
   ],
   exports: [
+    //services
     UserService,
     UserUploadService,
+
     RoleService,
     PermissionService,
     RolePermissionService,
-    FollowService,
-    WalkOfLifeService,
 
+    FollowService,
+    ExperienceService,
+
+    //repositories
     UserRepository,
     UserUploadRepository,
+
     RoleRepository,
     PermissionRepository,
     RolePermissionRepository,
+
     FollowRepository,
+    ExperienceRepository,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -63,6 +79,7 @@ import { UserUploadRepository } from './repositories/user-upload.repository';
       PermissionEntity,
       RolePermissionEntity,
       FollowEntity,
+      ExperienceEntity,
     ]),
     UploadModule,
   ],

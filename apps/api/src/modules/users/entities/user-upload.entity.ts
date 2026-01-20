@@ -20,7 +20,7 @@ export class UserUploadEntity extends EntityHelper {
   @Column()
   uploadId: number;
 
-  @ManyToOne(() => UserEntity, (profile) => profile.uploads, {
+  @ManyToOne(() => UserEntity, (user) => user.uploads, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'userId' })
