@@ -17,6 +17,7 @@ import { AbstractUserEntity } from '../../../shared/abstract-user-management/ent
 import { GeolocationEntity } from 'src/modules/geolocation/entities/geolocation.entity';
 import { FollowEntity } from './follow.entity';
 import { ExperienceEntity } from './experience.entity';
+import { EducationEntity } from './education.entity';
 
 @ChildEntity()
 export class UserEntity extends AbstractUserEntity {
@@ -56,6 +57,9 @@ export class UserEntity extends AbstractUserEntity {
 
   @OneToMany(() => ExperienceEntity, (experience) => experience.user, {})
   experiences: ExperienceEntity[];
+
+  @OneToMany(() => EducationEntity, (education) => education.user, {})
+  educations: EducationEntity[];
 
   @ManyToMany(() => RefParamEntity, {
     eager: true,

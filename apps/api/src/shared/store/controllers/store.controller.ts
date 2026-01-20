@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Put, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { StoreService } from '../services/store.service';
@@ -8,6 +8,7 @@ import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginat
 import { UpdateStoreDto } from '../dtos/update-store.dto';
 
 @ApiTags('store')
+@ApiBearerAuth('access_token')
 @Controller({
   version: '1',
   path: '/store',

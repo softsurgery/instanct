@@ -22,6 +22,9 @@ import { UserUploadRepository } from './repositories/user-upload.repository';
 import { ExperienceService } from './services/experience.service';
 import { ExperienceRepository } from './repositories/experience.repository';
 import { ExperienceEntity } from './entities/experience.entity';
+import { EducationService } from './services/education.service';
+import { EducationRepository } from './repositories/education.repository';
+import { EducationEntity } from './entities/education.entity';
 
 @Module({
   controllers: [],
@@ -36,6 +39,7 @@ import { ExperienceEntity } from './entities/experience.entity';
 
     FollowService,
     ExperienceService,
+    EducationService,
 
     //repositories
     UserRepository,
@@ -47,6 +51,7 @@ import { ExperienceEntity } from './entities/experience.entity';
 
     FollowRepository,
     ExperienceRepository,
+    EducationRepository,
   ],
   exports: [
     //services
@@ -59,6 +64,7 @@ import { ExperienceEntity } from './entities/experience.entity';
 
     FollowService,
     ExperienceService,
+    EducationService,
 
     //repositories
     UserRepository,
@@ -70,6 +76,7 @@ import { ExperienceEntity } from './entities/experience.entity';
 
     FollowRepository,
     ExperienceRepository,
+    EducationRepository,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -80,6 +87,7 @@ import { ExperienceEntity } from './entities/experience.entity';
       RolePermissionEntity,
       FollowEntity,
       ExperienceEntity,
+      EducationEntity,
     ]),
     UploadModule,
   ],

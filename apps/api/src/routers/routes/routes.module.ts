@@ -22,6 +22,8 @@ import { MessageController } from 'src/shared/chat/controllers/message.controlle
 import { ChatModule } from 'src/shared/chat/chat.module';
 import { SessionController } from 'src/shared/sessions/controllers/session.controller';
 import { SessionModule } from 'src/shared/sessions/sessions.module';
+import { ExperienceController } from 'src/modules/users/controllers/experience.controller';
+import { EducationController } from 'src/modules/users/controllers/education.controller';
 
 @Module({
   controllers: [
@@ -33,6 +35,8 @@ import { SessionModule } from 'src/shared/sessions/sessions.module';
     StoreController,
     //user
     FollowController,
+    ExperienceController,
+    EducationController,
     //chat
     ConversationController,
     MessageController,

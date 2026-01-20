@@ -10,7 +10,7 @@ import { useContainer } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { branding } from './utils/branding';
-// import { MigrationService } from './shared/database/services/database-migration.service';
+import { MigrationService } from './shared/database/services/database-migration.service';
 
 async function bootstrap() {
   const app: NestApplication = await NestFactory.create(AppModule);
@@ -86,30 +86,30 @@ async function bootstrap() {
   logger.log(`==========================================================`);
 
   //Migrations ==========================================================
-  // const synchronize = configService.get<boolean>('database.synchronize');
-  // if (!synchronize) {
-  //   const migrationService = app.get(MigrationService);
-  //   const migrationPath = join(__dirname, 'assets', 'migrations');
-  //   try {
-  //     // Create migrations table if it does not exist
-  //     await migrationService.createMigrationsTableIfNotExists();
+  const synchronize = configService.get<boolean>('database.synchronize');
+  if (!synchronize) {
+    const migrationService = app.get(MigrationService);
+    const migrationPath = join(__dirname, 'assets', 'migrations');
+    try {
+      // Create migrations table if it does not exist
+      await migrationService.createMigrationsTableIfNotExists();
 
-  //     const migrationFiles = migrationService.loadMigrationFiles(migrationPath);
+      const migrationFiles = migrationService.loadMigrationFiles(migrationPath);
 
-  //     const existingMigrations = await migrationService.findAll({});
+      const existingMigrations = await migrationService.findAll({});
 
-  //     // Check if there are any migrations to run
-  //     const needToRunMigrations = migrationService.runNeeded(
-  //       migrationFiles,
-  //       existingMigrations,
-  //     );
+      // Check if there are any migrations to run
+      const needToRunMigrations = migrationService.runNeeded(
+        migrationFiles,
+        existingMigrations,
+      );
 
-  //     if (needToRunMigrations) {
-  //       await migrationService.runMigrations(migrationPath, migrationFiles);
-  //     }
-  //   } catch (error) {
-  //     logger.error('Migration process failed', error);
-  //   }
-  // }
+      if (needToRunMigrations) {
+        await migrationService.runMigrations(migrationPath, migrationFiles);
+      }
+    } catch (error) {
+      logger.error('Migration process failed', error);
+    }
+  }
 }
 void bootstrap();

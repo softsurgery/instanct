@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 
-@Entity('experiences')
-export class ExperienceEntity extends EntityHelper {
+@Entity('educations')
+export class EducationEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,7 +23,7 @@ export class ExperienceEntity extends EntityHelper {
   endDate: Date;
 
   @Column()
-  company: string;
+  institution: string;
 
   @Column({ type: 'text', nullable: true })
   description: string;
