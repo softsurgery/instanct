@@ -25,6 +25,7 @@ import { ExperienceEntity } from './entities/experience.entity';
 import { EducationService } from './services/education.service';
 import { EducationRepository } from './repositories/education.repository';
 import { EducationEntity } from './entities/education.entity';
+import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
 
 @Module({
   controllers: [],
@@ -90,6 +91,7 @@ import { EducationEntity } from './entities/education.entity';
       EducationEntity,
     ]),
     UploadModule,
+    ReferenceTypesModule,
   ],
 })
 export class UserManagementModule {}

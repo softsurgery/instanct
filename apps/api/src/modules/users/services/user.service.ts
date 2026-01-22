@@ -1,6 +1,6 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
@@ -17,6 +17,7 @@ import { CreateUserUploadDto } from '../dtos/user-upload/create-user-upload.dto'
 import { UpdateUserUploadDto } from '../dtos/user-upload/update-user-upload.dto';
 import { AbstractUserService } from 'src/shared/abstract-user-management/services/abstract-user.service';
 import { hashPassword } from 'src/shared/helpers/hash.utils';
+import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-param.repository';
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -24,6 +25,7 @@ export class UserService extends AbstractUserService {
     private readonly userRepository: UserRepository,
     private readonly userUploadService: UserUploadService,
     private readonly uploadService: UploadService,
+    private readonly refParamRepository: RefParamRepository,
   ) {
     super(userRepository);
   }
@@ -194,5 +196,41 @@ export class UserService extends AbstractUserService {
     });
 
     return updatedUser;
+  }
+
+  async updateObjectives(
+    id: string,
+    objectiveIds: number[],
+  ): Promise<UserEntity> {
+    const user = await this.userRepository.findOneById(id);
+    if (!user) throw new UserNotFoundException();
+
+    const objectives = await this.refParamRepository.findAll({
+      where: { id: In(objectiveIds) },
+    });
+
+    await this.userRepository.update(id, {
+      objectives,
+    });
+
+    return user;
+  }
+
+  async updateIndustries(
+    id: string,
+    industryIds: number[],
+  ): Promise<UserEntity> {
+    const user = await this.userRepository.findOneById(id);
+    if (!user) throw new UserNotFoundException();
+
+    const industries = await this.refParamRepository.findAll({
+      where: { id: In(industryIds) },
+    });
+
+    await this.userRepository.update(id, {
+      industries,
+    });
+
+    return user;
   }
 }

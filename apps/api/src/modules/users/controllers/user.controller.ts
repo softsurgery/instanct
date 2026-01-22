@@ -24,6 +24,8 @@ import { UserService } from '../services/user.service';
 import { ResponseUserDto } from '../dtos/user/response-user.dto';
 import { CreateUserDto } from '../dtos/user/create-user.dto';
 import { UpdateUserDto } from '../dtos/user/update-user.dto';
+import { UpdateUserObjectivesDto } from '../dtos/user/update-user-objectives.dto';
+import { UpdateUserIndustriesDto } from '../dtos/user/update-user-industries.dto';
 
 @ApiTags('user')
 @ApiBearerAuth('access_token')
@@ -94,6 +96,36 @@ export class UserController {
     );
     req.logInfo = { id: user.id, firstName: user.firstName };
     return user;
+  }
+
+  @Put('/objectives/:id')
+  @LogEvent(EventType.USER_UPDATE)
+  async updateObjectives(
+    @Param('id') id: string,
+    @Body() updateUserObjectivesDto: UpdateUserObjectivesDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDto | null> {
+    const user = await this.userService.updateObjectives(
+      id,
+      updateUserObjectivesDto.objectives,
+    );
+    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    return toDto(ResponseUserDto, user);
+  }
+
+  @Put('/industries/:id')
+  @LogEvent(EventType.USER_UPDATE)
+  async updateIndustries(
+    @Param('id') id: string,
+    @Body() updateUserIndustriesDto: UpdateUserIndustriesDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDto | null> {
+    const user = await this.userService.updateIndustries(
+      id,
+      updateUserIndustriesDto.industries,
+    );
+    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    return toDto(ResponseUserDto, user);
   }
 
   @Put('/current')
