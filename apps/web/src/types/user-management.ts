@@ -141,3 +141,50 @@ export interface ResponseIsFollowingDto {
   targetId?: string;
   isFollowing?: boolean;
 }
+
+// user experience dtos ************************************************************************************
+export interface ResponseExperienceDto extends DatabaseEntity {
+  id: number;
+  title?: string;
+  company?: string;
+  startDate?: Date;
+  endDate?: Date;
+  description?: string;
+  user?: ResponseUserDto;
+  userId: string;
+}
+
+export interface CreateExperienceDto {
+  title?: string;
+  company?: string;
+  startDate?: Date;
+  endDate?: Date;
+  description?: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface UpdateExperienceDto extends Partial<CreateExperienceDto> {}
+
+// user education dtos ************************************************************************************
+
+export interface ResponseEducationDto extends DatabaseEntity {
+  id: string;
+  title?: string;
+  startDate?: Date;
+  endDate?: Date;
+  institution?: string;
+  description?: string;
+  user?: ResponseUserDto;
+  userId: string;
+}
+
+export interface CreateEducationDto {
+  title?: string;
+  startDate?: Date;
+  endDate?: Date;
+  institution?: string;
+  description?: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface UpdateEducationDto extends Partial<CreateEducationDto> {}
