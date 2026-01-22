@@ -1,0 +1,49 @@
+{
+  "education": {
+    "page": {
+      "title": "Formation"
+    },
+    "messages": {
+      "createdSuccess": "Formation créée avec succès",
+      "updatedSuccess": "Formation mise à jour avec succès",
+      "deletedSuccess": "Formation supprimée avec succès"
+    },
+    "forms": {
+      "title": "Titre de la formation",
+      "titlePlaceholder": "Entrez le diplôme ou le programme",
+      "titleDescription": "Votre diplôme, certificat ou nom de programme",
+      "institution": "Établissement",
+      "institutionPlaceholder": "Entrez le nom de l'école ou de l'université",
+      "institutionDescription": "Nom de l'établissement d'enseignement",
+      "startDate": "Date de début",
+      "startDateDescription": "Date à laquelle vous avez commencé cette formation",
+      "endDate": "Date de fin",
+      "endDateDescription": "Date à laquelle vous avez terminé cette formation (laisser vide si en cours)",
+      "description": "Description",
+      "descriptionPlaceholder": "Décrivez vos études, réalisations ou spécialisation",
+      "descriptionDescription": "Détails sur votre formation et vos réalisations",
+      "updateTitle": "Mettre à jour la formation"
+    },
+    "sheet": {
+      "createTitle": "Ajouter une formation",
+      "createDescription": "Ajoutez une nouvelle formation à votre profil",
+      "updateTitle": "Modifier la formation",
+      "updateDescription": "Mettez à jour les détails de votre formation"
+    },
+    "dialogs": {
+      "deleteTitle": "Supprimer la formation",
+      "deleteDescription": "Êtes-vous sûr de vouloir supprimer cette formation ? Cette action est irréversible."
+    },
+    "validation": {
+      "titleTooShort": "Le titre doit comporter au moins 2 caractères",
+      "titleTooLong": "Le titre ne peut pas dépasser 100 caractères",
+      "institutionTooShort": "L'établissement doit comporter au moins 2 caractères",
+      "institutionTooLong": "L'établissement ne peut pas dépasser 100 caractères",
+      "startDateRequired": "La date de début est obligatoire",
+      "startDateFuture": "La date de début ne peut pas être dans le futur",
+      "endDateBeforeStart": "La date de fin doit être après la date de début",
+      "endDateFuture": "La date de fin ne peut pas être dans le futur",
+      "descriptionTooLong": "La description ne peut pas dépasser 500 caractères"
+    }
+  }
+}

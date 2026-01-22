@@ -33,6 +33,17 @@
     "dialogs": {
       "deleteTitle": "Supprimer l'expérience",
       "deleteDescription": "Êtes-vous sûr de vouloir supprimer cette expérience ? Cette action est irréversible."
+    },
+    "validation": {
+      "titleTooShort": "Le titre doit comporter au moins 2 caractères",
+      "titleTooLong": "Le titre ne peut pas dépasser 100 caractères",
+      "companyTooShort": "L'entreprise doit comporter au moins 2 caractères",
+      "companyTooLong": "L'entreprise ne peut pas dépasser 100 caractères",
+      "startDateRequired": "La date de début est obligatoire",
+      "startDateFuture": "La date de début ne peut pas être dans le futur",
+      "endDateBeforeStart": "La date de fin doit être après la date de début",
+      "endDateFuture": "La date de fin ne peut pas être dans le futur",
+      "descriptionTooLong": "La description ne peut pas dépasser 500 caractères"
     }
   }
 }

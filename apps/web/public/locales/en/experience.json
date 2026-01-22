@@ -33,6 +33,17 @@
     "dialogs": {
       "deleteTitle": "Delete Experience",
       "deleteDescription": "Are you sure you want to delete this experience? This action cannot be undone."
+    },
+    "validation": {
+      "titleTooShort": "Title must be at least 2 characters",
+      "titleTooLong": "Title cannot exceed 100 characters",
+      "companyTooShort": "Company must be at least 2 characters",
+      "companyTooLong": "Company cannot exceed 100 characters",
+      "startDateRequired": "Start date is required",
+      "startDateFuture": "Start date cannot be in the future",
+      "endDateBeforeStart": "End date must be after start date",
+      "endDateFuture": "End date cannot be in the future",
+      "descriptionTooLong": "Description cannot exceed 500 characters"
     }
   }
 }
