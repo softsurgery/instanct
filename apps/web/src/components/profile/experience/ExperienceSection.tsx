@@ -81,7 +81,7 @@ export function ExperienceSection({
 
       {/* Experience List */}
       {experiences && experiences.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-3 overflow-y-auto max-h-[400px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {/* Display ALL experiences */}
           {experiences.map((experience) => {
             const isExpanded = expandedDescriptions.has(experience.id);
