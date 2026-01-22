@@ -4,7 +4,7 @@ import { notification } from "./notification";
 import { store } from "./store";
 import { upload } from "./uploads";
 import { follow } from "./follow";
-
+import { experience } from "./admin/experience";
 
 export const api = {
   admin,
@@ -13,4 +13,5 @@ export const api = {
   upload,
   notification,
   follow,
+  experience,
 };
