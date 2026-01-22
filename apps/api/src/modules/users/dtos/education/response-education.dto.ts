@@ -6,6 +6,10 @@ import { ResponseUserDto } from '../user/response-user.dto';
 export class ResponseEducationDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })
   @Expose()
+  id: string;
+
+  @ApiProperty({ type: String })
+  @Expose()
   title?: string;
 
   @ApiProperty({ type: Date })
