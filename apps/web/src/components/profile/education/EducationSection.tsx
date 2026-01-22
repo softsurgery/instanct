@@ -6,29 +6,27 @@ import {
   ChevronDown,
   ArrowRight,
   GraduationCap,
-  Building2,
-  Briefcase,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ResponseExperienceDto } from "@/types";
+import { ResponseEducationDto } from "@/types";
 
-interface ExperienceSectionProps {
-  experiences: ResponseExperienceDto[];
+interface EducationSectionProps {
+  educations: ResponseEducationDto[];
   onOpenAddSheet: () => void;
-  onOpenEditSheet: (experience: ResponseExperienceDto) => void;
-  onOpenDeleteDialog: (id: number) => void;
+  onOpenEditSheet: (education: ResponseEducationDto) => void;
+  onOpenDeleteDialog: (id: string) => void; // Note: id is string
 }
 
 const MAX_DESCRIPTION_LENGTH = 150;
 
-export function ExperienceSection({
-  experiences,
+export function EducationSection({
+  educations,
   onOpenAddSheet,
   onOpenEditSheet,
   onOpenDeleteDialog,
-}: ExperienceSectionProps) {
-  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<number>>(
+}: EducationSectionProps) {
+  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(
     new Set(),
   );
 
@@ -40,18 +38,18 @@ export function ExperienceSection({
     });
   };
 
-  const formatDateRange = (experience: ResponseExperienceDto) => {
-    const start = formatDate(experience.startDate);
+  const formatDateRange = (education: ResponseEducationDto) => {
+    const start = formatDate(education.startDate);
 
-    if (!experience.endDate) {
+    if (!education.endDate) {
       return `${start} - Present`;
     }
 
-    const end = formatDate(experience.endDate);
+    const end = formatDate(education.endDate);
     return `${start} - ${end}`;
   };
 
-  const toggleDescription = (id: number) => {
+  const toggleDescription = (id: string) => {
     setExpandedDescriptions((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(id)) {
@@ -67,70 +65,70 @@ export function ExperienceSection({
     onOpenAddSheet();
   };
 
-  const handleEditClick = (experience: ResponseExperienceDto) => {
-    onOpenEditSheet(experience);
+  const handleEditClick = (education: ResponseEducationDto) => {
+    onOpenEditSheet(education);
   };
 
-  const handleDeleteClick = (id: number) => {
+  const handleDeleteClick = (id: string) => {
     if (id) {
       onOpenDeleteDialog(id);
     }
   };
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-4 mt-10">
       {/* Header */}
-      <div className="flex items-center justify-between mt-5">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Briefcase className="h-5 w-5" />
-          <h2 className="text-xl font-bold text-foreground">Experience</h2>
+          <GraduationCap className="h-5 w-5" />
+          <h2 className="text-xl font-bold text-foreground">Education</h2>
         </div>
         <Button onClick={handleAddClick} size="sm" className="gap-2">
           <Plus className="h-4 w-4" />
-          Add Experience
+          Add Education
         </Button>
       </div>
 
-      {/* Experience List */}
-      {experiences && experiences.length > 0 ? (
-        <div className="space-y-3 overflow-y-auto   [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {/* Display ALL experiences */}
-          {experiences.map((experience) => {
-            const isExpanded = expandedDescriptions.has(experience.id);
+      {/* Education List */}
+      {educations && educations.length > 0 ? (
+        <div className="space-y-3">
+          {/* Display ALL educations */}
+          {educations.map((education) => {
+            const isExpanded = expandedDescriptions.has(education.id);
             const shouldShowExpandButton =
-              experience.description &&
-              experience.description.length > MAX_DESCRIPTION_LENGTH;
+              education.description &&
+              education.description.length > MAX_DESCRIPTION_LENGTH;
 
             const displayedDescription = isExpanded
-              ? experience.description
-              : experience.description?.substring(0, MAX_DESCRIPTION_LENGTH);
+              ? education.description
+              : education.description?.substring(0, MAX_DESCRIPTION_LENGTH);
 
             return (
               <div
-                key={experience.id}
+                key={education.id}
                 className="group relative flex items-start justify-between gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-secondary/5"
               >
                 {/* Main Content */}
                 <div className="flex-1 min-w-0">
-                  {/* Title and Company */}
+                  {/* Title and Institution */}
                   <div className="mb-2">
                     <h3 className="text-base font-semibold text-foreground">
-                      {experience.title || "Untitled Position"}
+                      {education.title || "Untitled Education"}
                     </h3>
-                    {experience.company && (
+                    {education.institution && (
                       <p className="text-sm text-muted-foreground">
-                        {experience.company}
+                        {education.institution}
                       </p>
                     )}
                   </div>
 
                   {/* Date Range */}
                   <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                    <span>{formatDateRange(experience)}</span>
+                    <span>{formatDateRange(education)}</span>
                   </div>
 
                   {/* Description */}
-                  {experience.description && (
+                  {education.description && (
                     <div className="space-y-2">
                       <p className="text-sm text-foreground leading-relaxed break-words">
                         {displayedDescription}
@@ -138,7 +136,7 @@ export function ExperienceSection({
                       </p>
                       {shouldShowExpandButton && (
                         <button
-                          onClick={() => toggleDescription(experience.id)}
+                          onClick={() => toggleDescription(education.id)}
                           className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                         >
                           {isExpanded ? "Show less" : "Show more"}
@@ -156,22 +154,22 @@ export function ExperienceSection({
                 {/* Action Buttons */}
                 <div className="flex flex-shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                   <Button
-                    onClick={() => handleEditClick(experience)}
+                    onClick={() => handleEditClick(education)}
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
-                    aria-label="Edit experience"
+                    aria-label="Edit education"
                     title="Edit"
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
 
                   <Button
-                    onClick={() => handleDeleteClick(experience.id)}
+                    onClick={() => handleDeleteClick(education.id)}
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                    aria-label="Delete experience"
+                    aria-label="Delete education"
                     title="Delete"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -182,11 +180,11 @@ export function ExperienceSection({
           })}
 
           {/* Optional: View More Button if you have pagination */}
-          {experiences.length > 5 && (
+          {educations.length > 5 && (
             <div className="flex justify-center pt-2">
-              <Link href={`/experience/${experiences[0]?.userId || ""}`}>
+              <Link href={`/education/${educations[0]?.userId || ""}`}>
                 <Button variant="outline" className="gap-2 bg-transparent">
-                  View all experiences
+                  View all educations
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -196,10 +194,10 @@ export function ExperienceSection({
       ) : (
         <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-8 text-center">
           <p className="text-sm text-muted-foreground">
-            No work experience added yet
+            No education added yet
           </p>
           <Button onClick={handleAddClick} variant="link" className="mt-2">
-            Add your first experience
+            Add your first education
           </Button>
         </div>
       )}
