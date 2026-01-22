@@ -164,3 +164,27 @@ export interface CreateExperienceDto {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface UpdateExperienceDto extends Partial<CreateExperienceDto> {}
+
+// user education dtos ************************************************************************************
+
+export interface ResponseEducationDto extends DatabaseEntity {
+  id: string;
+  title?: string;
+  startDate?: Date;
+  endDate?: Date;
+  institution?: string;
+  description?: string;
+  user?: ResponseUserDto;
+  userId: string;
+}
+
+export interface CreateEducationDto {
+  title?: string;
+  startDate?: Date;
+  endDate?: Date;
+  institution?: string;
+  description?: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface UpdateEducationDto extends Partial<CreateEducationDto> {}
