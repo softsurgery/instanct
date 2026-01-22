@@ -1,0 +1,38 @@
+{
+  "experience": {
+    "page": {
+      "title": "Expérience Professionnelle"
+    },
+    "messages": {
+      "createdSuccess": "Expérience créée avec succès",
+      "updatedSuccess": "Expérience mise à jour avec succès",
+      "deletedSuccess": "Expérience supprimée avec succès"
+    },
+    "forms": {
+      "title": "Titre du poste",
+      "titlePlaceholder": "Entrez le titre du poste",
+      "titleDescription": "Votre rôle ou position dans l'entreprise",
+      "company": "Entreprise",
+      "companyPlaceholder": "Entrez le nom de l'entreprise",
+      "companyDescription": "Nom de l'entreprise ou de l'organisation",
+      "startDate": "Date de début",
+      "startDateDescription": "Date à laquelle vous avez commencé ce poste",
+      "endDate": "Date de fin",
+      "endDateDescription": "Date à laquelle vous avez quitté ce poste (laisser vide si actuel)",
+      "description": "Description",
+      "descriptionPlaceholder": "Décrivez vos responsabilités et réalisations",
+      "descriptionDescription": "Détails sur votre rôle et vos réalisations",
+      "updateTitle": "Mettre à jour l'expérience"
+    },
+    "sheet": {
+      "createTitle": "Ajouter une expérience",
+      "createDescription": "Ajoutez une nouvelle expérience professionnelle à votre profil",
+      "updateTitle": "Modifier l'expérience",
+      "updateDescription": "Mettez à jour les détails de votre expérience professionnelle"
+    },
+    "dialogs": {
+      "deleteTitle": "Supprimer l'expérience",
+      "deleteDescription": "Êtes-vous sûr de vouloir supprimer cette expérience ? Cette action est irréversible."
+    }
+  }
+}
