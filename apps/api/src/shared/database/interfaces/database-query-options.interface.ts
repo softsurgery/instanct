@@ -1,3 +1,5 @@
+import { FindOptionsWhere } from 'typeorm';
+
 export interface IOptionsObject {
   LOOKUP_DELIMITER?: string;
   RELATION_DELIMITER?: string;
@@ -21,7 +23,7 @@ export interface IOptionsObject {
 export interface IQueryTypeOrm {
   select?: string[];
   relations?: string[];
-  where?: object;
+  where?: FindOptionsWhere<unknown>[] | FindOptionsWhere<unknown>;
   order?: object;
   skip?: number;
   take?: number;
