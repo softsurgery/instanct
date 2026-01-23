@@ -1,13 +1,5 @@
-import { useState } from "react";
-import {
-  Plus,
-  Edit,
-  Trash2,
-  ChevronDown,
-  ArrowRight,
-  GraduationCap,
-} from "lucide-react";
-import Link from "next/link";
+import React from "react";
+import { Plus, Edit, Trash2, ChevronDown, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResponseEducationDto } from "@/types";
 
@@ -26,9 +18,9 @@ export function EducationSection({
   onOpenEditSheet,
   onOpenDeleteDialog,
 }: EducationSectionProps) {
-  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(
-    new Set(),
-  );
+  const [expandedDescriptions, setExpandedDescriptions] = React.useState<
+    Set<string>
+  >(new Set());
 
   const formatDate = (date?: Date) => {
     if (!date) return "";
@@ -76,9 +68,9 @@ export function EducationSection({
   };
 
   return (
-    <section className="space-y-4 mt-10">
+    <section className="flex flex-col gap-4 h-full">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-5">
         <div className="flex items-center gap-2">
           <GraduationCap className="h-5 w-5" />
           <h2 className="text-xl font-bold text-foreground">Education</h2>
@@ -91,7 +83,7 @@ export function EducationSection({
 
       {/* Education List */}
       {educations && educations.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-3 overflow-y-auto no-scrollbar">
           {/* Display ALL educations */}
           {educations.map((education) => {
             const isExpanded = expandedDescriptions.has(education.id);
@@ -178,18 +170,6 @@ export function EducationSection({
               </div>
             );
           })}
-
-          {/* Optional: View More Button if you have pagination */}
-          {educations.length > 5 && (
-            <div className="flex justify-center pt-2">
-              <Link href={`/education/${educations[0]?.userId || ""}`}>
-                <Button variant="outline" className="gap-2 bg-transparent">
-                  View all educations
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          )}
         </div>
       ) : (
         <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-8 text-center">

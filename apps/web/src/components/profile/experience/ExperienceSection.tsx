@@ -1,15 +1,5 @@
-import { useState } from "react";
-import {
-  Plus,
-  Edit,
-  Trash2,
-  ChevronDown,
-  ArrowRight,
-  GraduationCap,
-  Building2,
-  Briefcase,
-} from "lucide-react";
-import Link from "next/link";
+import React from "react";
+import { Plus, Edit, Trash2, ChevronDown, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResponseExperienceDto } from "@/types";
 
@@ -28,9 +18,9 @@ export function ExperienceSection({
   onOpenEditSheet,
   onOpenDeleteDialog,
 }: ExperienceSectionProps) {
-  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<number>>(
-    new Set(),
-  );
+  const [expandedDescriptions, setExpandedDescriptions] = React.useState<
+    Set<number>
+  >(new Set());
 
   const formatDate = (date?: Date) => {
     if (!date) return "";
@@ -78,7 +68,7 @@ export function ExperienceSection({
   };
 
   return (
-    <section className="space-y-4">
+    <section className="flex flex-col gap-4 h-full">
       {/* Header */}
       <div className="flex items-center justify-between mt-5">
         <div className="flex items-center gap-2">
@@ -93,7 +83,7 @@ export function ExperienceSection({
 
       {/* Experience List */}
       {experiences && experiences.length > 0 ? (
-        <div className="space-y-3 overflow-y-auto   [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="space-y-3 overflow-y-auto no-scrollbar">
           {/* Display ALL experiences */}
           {experiences.map((experience) => {
             const isExpanded = expandedDescriptions.has(experience.id);
@@ -180,18 +170,6 @@ export function ExperienceSection({
               </div>
             );
           })}
-
-          {/* Optional: View More Button if you have pagination */}
-          {experiences.length > 5 && (
-            <div className="flex justify-center pt-2">
-              <Link href={`/experience/${experiences[0]?.userId || ""}`}>
-                <Button variant="outline" className="gap-2 bg-transparent">
-                  View all experiences
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          )}
         </div>
       ) : (
         <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-8 text-center">
