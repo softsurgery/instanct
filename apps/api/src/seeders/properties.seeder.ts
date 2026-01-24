@@ -31,7 +31,7 @@ export class PropertiesSeedCommand {
         value: propertiesFaqsSeed,
       },
       {
-        id: 'map-config',
+        id: 'maps',
         description: 'Map configuration',
         value: propertiesMapConfigSeed,
       },
