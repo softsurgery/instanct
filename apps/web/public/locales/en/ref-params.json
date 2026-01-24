@@ -1,0 +1,12 @@
+{
+  "ref-params": {
+    "industry": {
+      "messages": {
+        "updatedSuccess": "Industry updated successfully"
+      },
+      "forms": {
+        "reset": "Reset"
+      }
+    }
+  }
+}
