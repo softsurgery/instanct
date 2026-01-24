@@ -15,7 +15,7 @@ interface EducationSectionProps {
   educations: ResponseEducationDto[];
   onOpenAddSheet: () => void;
   onOpenEditSheet: (education: ResponseEducationDto) => void;
-  onOpenDeleteDialog: (id: string) => void; // Note: id is string
+  onOpenDeleteDialog: (id: string) => void;
 }
 
 const MAX_DESCRIPTION_LENGTH = 150;
@@ -76,7 +76,7 @@ export function EducationSection({
   };
 
   return (
-    <section className="space-y-4 mt-10">
+    <section className="space-y-6 mt-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -89,98 +89,100 @@ export function EducationSection({
         </Button>
       </div>
 
-      {/* Education List */}
+      {/* Education Grid */}
       {educations && educations.length > 0 ? (
-        <div className="space-y-3">
-          {/* Display ALL educations */}
-          {educations.map((education) => {
-            const isExpanded = expandedDescriptions.has(education.id);
-            const shouldShowExpandButton =
-              education.description &&
-              education.description.length > MAX_DESCRIPTION_LENGTH;
+        <div className="space-y-6">
+          {/* Grid with 2 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {educations.map((education) => {
+              const isExpanded = expandedDescriptions.has(education.id);
+              const shouldShowExpandButton =
+                education.description &&
+                education.description.length > MAX_DESCRIPTION_LENGTH;
 
-            const displayedDescription = isExpanded
-              ? education.description
-              : education.description?.substring(0, MAX_DESCRIPTION_LENGTH);
+              const displayedDescription = isExpanded
+                ? education.description
+                : education.description?.substring(0, MAX_DESCRIPTION_LENGTH);
 
-            return (
-              <div
-                key={education.id}
-                className="group relative flex items-start justify-between gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-secondary/5"
-              >
-                {/* Main Content */}
-                <div className="flex-1 min-w-0">
-                  {/* Title and Institution */}
-                  <div className="mb-2">
-                    <h3 className="text-base font-semibold text-foreground">
-                      {education.title || "Untitled Education"}
-                    </h3>
-                    {education.institution && (
-                      <p className="text-sm text-muted-foreground">
-                        {education.institution}
-                      </p>
+              return (
+                <div
+                  key={education.id}
+                  className="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/5 h-fit"
+                >
+                  {/* Main Content */}
+                  <div className="flex-1 min-w-0">
+                    {/* Title and Institution */}
+                    <div className="mb-3">
+                      <h3 className="text-base font-semibold text-foreground mb-1">
+                        {education.title || "Untitled Education"}
+                      </h3>
+                      {education.institution && (
+                        <p className="text-sm text-muted-foreground">
+                          {education.institution}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Date Range */}
+                    <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                      <span>{formatDateRange(education)}</span>
+                    </div>
+
+                    {/* Description */}
+                    {education.description && (
+                      <div className="space-y-2">
+                        <p className="text-sm text-foreground leading-relaxed break-words">
+                          {displayedDescription}
+                          {shouldShowExpandButton && !isExpanded && "..."}
+                        </p>
+                        {shouldShowExpandButton && (
+                          <button
+                            onClick={() => toggleDescription(education.id)}
+                            className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                          >
+                            {isExpanded ? "Show less" : "Show more"}
+                            <ChevronDown
+                              className={`h-4 w-4 transition-transform ${
+                                isExpanded ? "rotate-180" : ""
+                              }`}
+                            />
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
 
-                  {/* Date Range */}
-                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                    <span>{formatDateRange(education)}</span>
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 absolute top-4 right-4">
+                    <Button
+                      onClick={() => handleEditClick(education)}
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      aria-label="Edit education"
+                      title="Edit"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                      onClick={() => handleDeleteClick(education.id)}
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      aria-label="Delete education"
+                      title="Delete"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
-
-                  {/* Description */}
-                  {education.description && (
-                    <div className="space-y-2">
-                      <p className="text-sm text-foreground leading-relaxed break-words">
-                        {displayedDescription}
-                        {shouldShowExpandButton && !isExpanded && "..."}
-                      </p>
-                      {shouldShowExpandButton && (
-                        <button
-                          onClick={() => toggleDescription(education.id)}
-                          className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                        >
-                          {isExpanded ? "Show less" : "Show more"}
-                          <ChevronDown
-                            className={`h-4 w-4 transition-transform ${
-                              isExpanded ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-                      )}
-                    </div>
-                  )}
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                  <Button
-                    onClick={() => handleEditClick(education)}
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    aria-label="Edit education"
-                    title="Edit"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-
-                  <Button
-                    onClick={() => handleDeleteClick(education.id)}
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                    aria-label="Delete education"
-                    title="Delete"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Optional: View More Button if you have pagination */}
-          {educations.length > 5 && (
+          {/* Optional: View More Button */}
+          {educations.length > 6 && (
             <div className="flex justify-center pt-2">
               <Link href={`/education/${educations[0]?.userId || ""}`}>
                 <Button variant="outline" className="gap-2 bg-transparent">
@@ -192,7 +194,7 @@ export function EducationSection({
           )}
         </div>
       ) : (
-        <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-8 text-center">
+        <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-12 text-center">
           <p className="text-sm text-muted-foreground">
             No education added yet
           </p>

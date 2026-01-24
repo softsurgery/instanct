@@ -10,13 +10,16 @@ export const Book = ({ className }: BookProps) => {
   const user = userStore.response;
   return (
     <>
-      <div className={className}>
-        {user?.id && <Experience userId={user.id} className="w-full" />}
-      </div>
+      <div className="overflow-auto no-scrollbar">
+        <div className={className}>
+          {user?.id && <Experience userId={user.id} className="w-full" />}
+        </div>
 
-      <div className={className}>
-        {user?.id && <Education userId={user.id} className="w-full" />}
-      </div>
+        <div className={className}>
+          {user?.id && <Education userId={user.id} className="w-full" />}
+        </div>
+
+      </div>  
     </>
   );
 };
