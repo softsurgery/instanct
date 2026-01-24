@@ -18,6 +18,7 @@ import { UpdateUserUploadDto } from '../dtos/user-upload/update-user-upload.dto'
 import { AbstractUserService } from 'src/shared/abstract-user-management/services/abstract-user.service';
 import { hashPassword } from 'src/shared/helpers/hash.utils';
 import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-param.repository';
+import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -202,35 +203,79 @@ export class UserService extends AbstractUserService {
     id: string,
     objectiveIds: number[],
   ): Promise<UserEntity> {
-    const user = await this.userRepository.findOneById(id);
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['objectives'],
+    });
+
+    if (!user) throw new UserNotFoundException();
+    let objectives: RefParamEntity[] = [];
+    if (objectiveIds && objectiveIds.length > 0) {
+      const result = await this.refParamRepository.findAll({
+        where: { id: In(objectiveIds) },
+      });
+      if (result) {
+        if (Array.isArray(result)) {
+          objectives = result;
+        } else {
+          objectives = [result];
+        }
+      }
+    }
+    user.objectives = objectives;
+    return await this.userRepository.save(user);
+  }
+
+  async getObjectives(id: string): Promise<number[]> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['objectives'],
+    });
+
     if (!user) throw new UserNotFoundException();
 
-    const objectives = await this.refParamRepository.findAll({
-      where: { id: In(objectiveIds) },
+    return user.objectives.map((objective) => objective.id);
+  }
+
+  async getIndustries(id: string): Promise<number[]> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['industries'],
     });
 
-    await this.userRepository.update(id, {
-      objectives,
-    });
+    if (!user) throw new UserNotFoundException();
 
-    return user;
+    return user.industries.map((industry) => industry.id);
   }
 
   async updateIndustries(
     id: string,
     industryIds: number[],
   ): Promise<UserEntity> {
-    const user = await this.userRepository.findOneById(id);
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['industries'],
+    });
+
     if (!user) throw new UserNotFoundException();
 
-    const industries = await this.refParamRepository.findAll({
-      where: { id: In(industryIds) },
-    });
+    let industries: RefParamEntity[] = [];
 
-    await this.userRepository.update(id, {
-      industries,
-    });
+    if (industryIds && industryIds.length > 0) {
+      const result = await this.refParamRepository.findAll({
+        where: { id: In(industryIds) },
+      });
 
-    return user;
+      if (result) {
+        if (Array.isArray(result)) {
+          industries = result;
+        } else {
+          industries = [result];
+        }
+      }
+    }
+
+    user.industries = industries;
+    return await this.userRepository.save(user);
   }
 }

@@ -113,6 +113,16 @@ export class UserController {
     return toDto(ResponseUserDto, user);
   }
 
+  @Get('/objectives/:id')
+  async getObjectives(@Param('id') id: string): Promise<number[]> {
+    return this.userService.getObjectives(id);
+  }
+
+  @Get('/industries/:id')
+  async getIndustries(@Param('id') id: string): Promise<number[]> {
+    return this.userService.getIndustries(id);
+  }
+
   @Put('/industries/:id')
   @LogEvent(EventType.USER_UPDATE)
   async updateIndustries(
