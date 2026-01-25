@@ -114,7 +114,9 @@ const updateObjectives = async (
   id: string,
   objectives: number[],
 ): Promise<ResponseUserDto> => {
-  const response = await axios.put(`/admin/user/objectives/${id}`, objectives);
+  const response = await axios.put(`/admin/user/objectives/${id}`, {
+    objectives,
+  });
   return response.data;
 };
 
@@ -122,7 +124,9 @@ const updateIndustries = async (
   id: string,
   industries: number[],
 ): Promise<ResponseUserDto> => {
-  const response = await axios.put(`/admin/user/industries/${id}`, industries);
+  const response = await axios.put(`/admin/user/industries/${id}`, {
+    industries,
+  });
   return response.data;
 };
 

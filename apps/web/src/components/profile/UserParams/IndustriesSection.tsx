@@ -139,7 +139,7 @@ export function IndustriesSection({
       {/* Reset Button */}
       {onReset && (
         <Button
-        className="w-full mb-15"
+          className="w-full mb-15"
           onClick={onReset}
           variant="destructive"
           size="sm"

@@ -87,9 +87,7 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
   const { mutate: updateIndustries, isPending: isMutationPending } =
     useMutation({
       mutationFn: async (industryIds: number[]) => {
-        return api.admin.user.updateIndustries(userId, {
-          industries: industryIds,
-        });
+        return api.admin.user.updateIndustries(userId, industryIds);
       },
       onMutate: async (newIndustryIds) => {
         await queryClient.cancelQueries({
