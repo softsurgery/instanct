@@ -1,13 +1,5 @@
-import { useState } from "react";
-import {
-  Plus,
-  Edit,
-  Trash2,
-  ChevronDown,
-  ArrowRight,
-  Briefcase,
-} from "lucide-react";
-import Link from "next/link";
+import React from "react";
+import { Plus, Edit, Trash2, ChevronDown, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResponseExperienceDto } from "@/types";
 
@@ -26,9 +18,9 @@ export function ExperienceSection({
   onOpenEditSheet,
   onOpenDeleteDialog,
 }: ExperienceSectionProps) {
-  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<number>>(
-    new Set(),
-  );
+  const [expandedDescriptions, setExpandedDescriptions] = React.useState<
+    Set<number>
+  >(new Set());
 
   const formatDate = (date?: Date) => {
     if (!date) return "";
@@ -76,7 +68,7 @@ export function ExperienceSection({
   };
 
   return (
-    <section className="space-y-6">
+    <section className="flex flex-col gap-4 h-full">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -91,107 +83,93 @@ export function ExperienceSection({
 
       {/* Experience Grid */}
       {experiences && experiences.length > 0 ? (
-        <div className="space-y-6">
-          {/* Grid with 2 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {experiences.map((experience) => {
-              const isExpanded = expandedDescriptions.has(experience.id);
-              const shouldShowExpandButton =
-                experience.description &&
-                experience.description.length > MAX_DESCRIPTION_LENGTH;
+        <div className="space-y-3 overflow-y-auto no-scrollbar">
+          {/* Display ALL experiences */}
+          {experiences.map((experience) => {
+            const isExpanded = expandedDescriptions.has(experience.id);
+            const shouldShowExpandButton =
+              experience.description &&
+              experience.description.length > MAX_DESCRIPTION_LENGTH;
 
-              const displayedDescription = isExpanded
-                ? experience.description
-                : experience.description?.substring(0, MAX_DESCRIPTION_LENGTH);
+            const displayedDescription = isExpanded
+              ? experience.description
+              : experience.description?.substring(0, MAX_DESCRIPTION_LENGTH);
 
-              return (
-                <div
-                  key={experience.id}
-                  className="min-h-56 group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/5 h-fit"
-                >
-                  {/* Main Content */}
-                  <div className="flex-1 min-w-0">
-                    {/* Title and Company */}
-                    <div className="mb-3">
-                      <h3 className="text-base font-semibold text-foreground mb-1">
-                        {experience.title || "Untitled Position"}
-                      </h3>
-                      {experience.company && (
-                        <p className="text-sm text-muted-foreground">
-                          {experience.company}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Date Range */}
-                    <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                      <span>{formatDateRange(experience)}</span>
-                    </div>
-
-                    {/* Description */}
-                    {experience.description && (
-                      <div className="space-y-2">
-                        <p className="text-sm text-foreground leading-relaxed break-words">
-                          {displayedDescription}
-                          {shouldShowExpandButton && !isExpanded && "..."}
-                        </p>
-                        {shouldShowExpandButton && (
-                          <button
-                            onClick={() => toggleDescription(experience.id)}
-                            className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                          >
-                            {isExpanded ? "Show less" : "Show more"}
-                            <ChevronDown
-                              className={`h-4 w-4 transition-transform ${
-                                isExpanded ? "rotate-180" : ""
-                              }`}
-                            />
-                          </button>
-                        )}
-                      </div>
+            return (
+              <div
+                key={experience.id}
+                className="min-h-56 group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/5 h-fit"
+              >
+                {/* Main Content */}
+                <div className="flex-1 min-w-0">
+                  {/* Title and Company */}
+                  <div className="mb-3">
+                    <h3 className="text-base font-semibold text-foreground mb-1">
+                      {experience.title || "Untitled Position"}
+                    </h3>
+                    {experience.company && (
+                      <p className="text-sm text-muted-foreground">
+                        {experience.company}
+                      </p>
                     )}
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 absolute top-4 right-4">
-                    <Button
-                      onClick={() => handleEditClick(experience)}
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                      aria-label="Edit experience"
-                      title="Edit"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-
-                    <Button
-                      onClick={() => handleDeleteClick(experience.id)}
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                      aria-label="Delete experience"
-                      title="Delete"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                  {/* Date Range */}
+                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                    <span>{formatDateRange(experience)}</span>
                   </div>
-                </div>
-              );
-            })}
-          </div>
 
-          {/* Optional: View More Button */}
-          {experiences.length > 6 && (
-            <div className="flex justify-center pt-2">
-              <Link href={`/experience/${experiences[0]?.userId || ""}`}>
-                <Button variant="outline" className="gap-2 bg-transparent">
-                  View all experiences
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          )}
+                  {/* Description */}
+                  {experience.description && (
+                    <div className="space-y-2">
+                      <p className="text-sm text-foreground leading-relaxed break-words">
+                        {displayedDescription}
+                        {shouldShowExpandButton && !isExpanded && "..."}
+                      </p>
+                      {shouldShowExpandButton && (
+                        <button
+                          onClick={() => toggleDescription(experience.id)}
+                          className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                        >
+                          {isExpanded ? "Show less" : "Show more"}
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform ${
+                              isExpanded ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 absolute top-4 right-4">
+                  <Button
+                    onClick={() => handleEditClick(experience)}
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    aria-label="Edit experience"
+                    title="Edit"
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+
+                  <Button
+                    onClick={() => handleDeleteClick(experience.id)}
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                    aria-label="Delete experience"
+                    title="Delete"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-12 text-center">

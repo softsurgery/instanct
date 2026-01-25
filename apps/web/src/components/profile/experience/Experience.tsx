@@ -12,7 +12,6 @@ import {
 } from "@/types";
 import { updateExperienceSchema } from "@/types/validations/experience.validation";
 import { useTranslation } from "react-i18next";
-import { Briefcase } from "lucide-react";
 import { useExperienceCreateSheet } from "./modals/ExperienceCreateSheet";
 import { useExperienceUpdateSheet } from "./modals/ExperienceUpdateSheet";
 import { useExperienceDeleteDialog } from "./modals/ExperienceDeleteDialog";
@@ -38,7 +37,6 @@ export const Experience = ({ className, userId }: ExperienceProps) => {
     queryFn: () => api.experience.findAllByUser(userId),
   });
 
-  // Create experience mutation
   // Create experience mutation
   const { mutate: addExperience, isPending: isAddPending } = useMutation({
     mutationFn: (experience: CreateExperienceDto) =>
@@ -166,9 +164,7 @@ export const Experience = ({ className, userId }: ExperienceProps) => {
   const isPending = isExperiencesPending;
 
   return (
-    <div className={cn("flex flex-col flex-1 overflow-hidden", className)}>
-
-
+    <div className={cn("flex flex-col flex-1", className)}>
       {/* Content */}
       {isPending ? (
         <Spinner />

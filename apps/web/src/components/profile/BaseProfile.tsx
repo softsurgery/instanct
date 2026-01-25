@@ -25,10 +25,9 @@ import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { identifyUserAvatar } from "@/lib/user";
 import { api } from "@/api";
-import Page from "@/pages/auth";
-import Page404 from "../shared/pages/Page404";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Book } from "./cards/Book";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 interface BaseProfileProps {
   className?: string;
@@ -43,7 +42,19 @@ export const BaseProfile = ({
   const { user: currentUser } = useCurrentUser();
   const userStore = useUserStore();
   const user = React.useMemo(() => userStore.response, [userStore]);
-  const [activeTab, setActiveTab] = React.useState("about");
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get("tab") || "about";
+  const [activeTab, setActiveTab] = React.useState(initialTab);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", tab);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const { followerDialog, openFollowerDialog } = useFollowerDialog({
     userStore,
@@ -78,7 +89,7 @@ export const BaseProfile = ({
       content: <About />,
     },
     {
-      value: "metadata",
+      value: "book",
       label: t("userManagement.inspect.tabs.book"),
       icon: BookUser,
       content: <Book />,
@@ -179,7 +190,7 @@ export const BaseProfile = ({
       {/* Tabs */}
       <Tabs
         value={activeTab}
-        onValueChange={setActiveTab}
+        onValueChange={handleTabChange}
         className="flex flex-col flex-1 overflow-auto"
       >
         <TabsList
@@ -206,7 +217,7 @@ export const BaseProfile = ({
               <TabsContent
                 key={value}
                 value={value}
-                className="flex flex-col flex-1 overflow-auto h-full"
+                className="flex flex-col flex-1 overflow-auto h-full no-scrollbar"
               >
                 {content}
               </TabsContent>

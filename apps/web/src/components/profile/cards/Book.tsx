@@ -2,6 +2,8 @@ import { useUserStore } from "@/hooks/stores/useUserStore";
 import { Experience } from "../experience/Experience";
 import { Education } from "../education/Education";
 import { Industries } from "../UserParams/Industries";
+import { cn } from "@/lib/utils";
+
 interface BookProps {
   className?: string;
 }
@@ -23,7 +25,7 @@ export const Book = ({ className }: BookProps) => {
         <div className={className}>
           {user?.id && <Industries userId={user.id} className="w-full" />}
         </div>
-      </div>  
+      </div>
     </>
   );
 };

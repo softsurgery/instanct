@@ -160,7 +160,7 @@ export const Education = ({ className, userId }: EducationProps) => {
   const isPending = isEducationsPending;
 
   return (
-    <div className={cn("flex flex-col flex-1 overflow-hidden", className)}>
+    <div className={cn("flex flex-col flex-1", className)}>
       {/* Content */}
       {isPending ? (
         <Spinner />
