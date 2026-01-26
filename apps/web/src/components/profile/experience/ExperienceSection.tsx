@@ -83,7 +83,7 @@ export function ExperienceSection({
 
       {/* Experience Grid */}
       {experiences && experiences.length > 0 ? (
-        <div className="space-y-3 overflow-y-auto no-scrollbar">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4  space-y-3 overflow-y-auto no-scrollbar">
           {/* Display ALL experiences */}
           {experiences.map((experience) => {
             const isExpanded = expandedDescriptions.has(experience.id);
