@@ -27,7 +27,7 @@ const findPaginated = async ({
     `/admin/user/list`,
     {
       params,
-    }
+    },
   );
 
   return response.data;
@@ -60,7 +60,7 @@ const findAll = async (): Promise<ResponseUserDto[]> => {
 
 const findById = async (
   userId?: string,
-  join?: string
+  join?: string,
 ): Promise<ResponseUserDto> => {
   const response = await axios.get<ResponseUserDto>(`/admin/user/${userId}`, {
     params: { join },
@@ -70,13 +70,13 @@ const findById = async (
 
 const findByEmail = async (
   email?: string,
-  join?: string
+  join?: string,
 ): Promise<ResponseUserDto> => {
   const response = await axios.get<ResponseUserDto>(
     `/admin/user/email/${email}`,
     {
       params: { join },
-    }
+    },
   );
   return response.data;
 };
@@ -88,7 +88,7 @@ const create = async (user: CreateUserDto): Promise<ResponseUserDto> => {
 
 const update = async (
   id?: string,
-  user?: UpdateUserDto
+  user?: UpdateUserDto,
 ): Promise<ResponseUserDto> => {
   const response = await axios.put(`/admin/user/${id}`, user);
   return response.data;
@@ -101,13 +101,43 @@ const remove = async (userId?: string): Promise<ResponseUserDto> => {
 
 const hasPermissions = async (
   userId?: string,
-  permissions?: string[]
+  permissions?: string[],
 ): Promise<boolean> => {
   const response = await axios.get(`/admin/user/${userId}/permissions`);
   return (
     permissions?.every((permission) => response.data.includes(permission)) ||
     false
   );
+};
+
+const updateObjectives = async (
+  id: string,
+  objectives: number[],
+): Promise<ResponseUserDto> => {
+  const response = await axios.put(`/admin/user/objectives/${id}`, {
+    objectives,
+  });
+  return response.data;
+};
+
+const updateIndustries = async (
+  id: string,
+  industries: number[],
+): Promise<ResponseUserDto> => {
+  const response = await axios.put(`/admin/user/industries/${id}`, {
+    industries,
+  });
+  return response.data;
+};
+
+const getObjectives = async (id: string): Promise<number[] | null> => {
+  const response = await axios.get(`/admin/user/objectives/${id}`);
+  return response.data;
+};
+
+const getIndustries = async (id: string): Promise<number[] | null> => {
+  const response = await axios.get(`/admin/user/industries/${id}`);
+  return response.data;
 };
 
 export const user = {
@@ -123,4 +153,8 @@ export const user = {
   disapprove,
   remove,
   hasPermissions,
+  updateIndustries,
+  updateObjectives,
+  getIndustries,
+  getObjectives,
 };

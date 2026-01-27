@@ -1,4 +1,5 @@
 export * from "./auth";
+export * from "./configuration";
 export * from "./logger";
 export * from "./store";
 export * from "./notifications";

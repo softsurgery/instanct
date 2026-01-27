@@ -7,7 +7,7 @@ interface EducationSectionProps {
   educations: ResponseEducationDto[];
   onOpenAddSheet: () => void;
   onOpenEditSheet: (education: ResponseEducationDto) => void;
-  onOpenDeleteDialog: (id: string) => void; // Note: id is string
+  onOpenDeleteDialog: (id: string) => void;
 }
 
 const MAX_DESCRIPTION_LENGTH = 150;
@@ -81,9 +81,9 @@ export function EducationSection({
         </Button>
       </div>
 
-      {/* Education List */}
+      {/* Education Grid */}
       {educations && educations.length > 0 ? (
-        <div className="space-y-3 overflow-y-auto no-scrollbar">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-3 overflow-y-auto no-scrollbar">
           {/* Display ALL educations */}
           {educations.map((education) => {
             const isExpanded = expandedDescriptions.has(education.id);
@@ -98,13 +98,13 @@ export function EducationSection({
             return (
               <div
                 key={education.id}
-                className="group relative flex items-start justify-between gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-secondary/5"
+                className="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/5 h-fit"
               >
                 {/* Main Content */}
                 <div className="flex-1 min-w-0">
                   {/* Title and Institution */}
-                  <div className="mb-2">
-                    <h3 className="text-base font-semibold text-foreground">
+                  <div className="mb-3">
+                    <h3 className="text-base font-semibold text-foreground mb-1">
                       {education.title || "Untitled Education"}
                     </h3>
                     {education.institution && (
@@ -144,7 +144,7 @@ export function EducationSection({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 absolute top-4 right-4">
                   <Button
                     onClick={() => handleEditClick(education)}
                     variant="ghost"
@@ -172,7 +172,7 @@ export function EducationSection({
           })}
         </div>
       ) : (
-        <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-8 text-center">
+        <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-12 text-center">
           <p className="text-sm text-muted-foreground">
             No education added yet
           </p>

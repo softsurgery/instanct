@@ -70,7 +70,7 @@ export function ExperienceSection({
   return (
     <section className="flex flex-col gap-4 h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mt-5">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Briefcase className="h-5 w-5" />
           <h2 className="text-xl font-bold text-foreground">Experience</h2>
@@ -81,9 +81,9 @@ export function ExperienceSection({
         </Button>
       </div>
 
-      {/* Experience List */}
+      {/* Experience Grid */}
       {experiences && experiences.length > 0 ? (
-        <div className="space-y-3 overflow-y-auto no-scrollbar">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4  space-y-3 overflow-y-auto no-scrollbar">
           {/* Display ALL experiences */}
           {experiences.map((experience) => {
             const isExpanded = expandedDescriptions.has(experience.id);
@@ -98,13 +98,13 @@ export function ExperienceSection({
             return (
               <div
                 key={experience.id}
-                className="group relative flex items-start justify-between gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-secondary/5"
+                className="min-h-56 group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/5 h-fit"
               >
                 {/* Main Content */}
                 <div className="flex-1 min-w-0">
                   {/* Title and Company */}
-                  <div className="mb-2">
-                    <h3 className="text-base font-semibold text-foreground">
+                  <div className="mb-3">
+                    <h3 className="text-base font-semibold text-foreground mb-1">
                       {experience.title || "Untitled Position"}
                     </h3>
                     {experience.company && (
@@ -144,7 +144,7 @@ export function ExperienceSection({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 absolute top-4 right-4">
                   <Button
                     onClick={() => handleEditClick(experience)}
                     variant="ghost"
@@ -172,7 +172,7 @@ export function ExperienceSection({
           })}
         </div>
       ) : (
-        <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-8 text-center">
+        <div className="rounded-lg border-2 border-dashed border-border bg-card/50 py-12 text-center">
           <p className="text-sm text-muted-foreground">
             No work experience added yet
           </p>
