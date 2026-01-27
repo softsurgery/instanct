@@ -19,6 +19,7 @@
     "seed:industries": "npx nestjs-command seed:industries",
     "seed:objectives": "npx nestjs-command seed:objectives",
     "seed:playground-users": "npx nestjs-command seed:playground-users",
+    "seed:configuration": "npx nestjs-command seed:configuration",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

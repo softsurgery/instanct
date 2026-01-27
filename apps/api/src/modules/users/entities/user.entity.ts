@@ -66,8 +66,8 @@ export class UserEntity extends AbstractUserEntity {
     cascade: false,
   })
   @JoinTable({
-    name: 'profile-objectives',
-    joinColumn: { name: 'profileId', referencedColumnName: 'id' },
+    name: 'user-objectives',
+    joinColumn: { name: 'userId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'refParamId', referencedColumnName: 'id' },
   })
   objectives: RefParamEntity[];
@@ -77,8 +77,8 @@ export class UserEntity extends AbstractUserEntity {
     cascade: false,
   })
   @JoinTable({
-    name: 'profile-industries',
-    joinColumn: { name: 'profileId', referencedColumnName: 'id' },
+    name: 'user-industries',
+    joinColumn: { name: 'userId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'refParamId', referencedColumnName: 'id' },
   })
   industries: RefParamEntity[];

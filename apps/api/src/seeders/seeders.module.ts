@@ -12,6 +12,8 @@ import { PlaygroundUsersSeedCommand } from './playground/users.seeder';
 import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
 import { IndustriesSeedCommand } from './industries.seeder';
 import { ObjectivesSeedCommand } from './objectives.seeder';
+import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
+import { ConfigurationSeedCommand } from './configuration.seeder';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { ObjectivesSeedCommand } from './objectives.seeder';
     ReferenceTypesModule,
     TemplateModule,
     StoreModule,
+    ConfigurationsModule,
   ],
   providers: [
     //seeders
@@ -28,6 +31,7 @@ import { ObjectivesSeedCommand } from './objectives.seeder';
     AdminSeedCommand,
     TemplatesSeedCommand,
     PropertiesSeedCommand,
+    ConfigurationSeedCommand,
     //reference types
     IndustriesSeedCommand,
     ObjectivesSeedCommand,
