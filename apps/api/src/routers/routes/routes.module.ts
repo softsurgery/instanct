@@ -24,6 +24,8 @@ import { SessionController } from 'src/shared/sessions/controllers/session.contr
 import { SessionModule } from 'src/shared/sessions/sessions.module';
 import { ExperienceController } from 'src/modules/users/controllers/experience.controller';
 import { EducationController } from 'src/modules/users/controllers/education.controller';
+import { ConfigurationController } from 'src/shared/configurations/controllers/configuration.controller';
+import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
 
 @Module({
   controllers: [
@@ -33,6 +35,7 @@ import { EducationController } from 'src/modules/users/controllers/education.con
     //common
     UploadController,
     StoreController,
+    ConfigurationController,
     //user
     FollowController,
     ExperienceController,
@@ -53,6 +56,7 @@ import { EducationController } from 'src/modules/users/controllers/education.con
   imports: [
     AuthModule,
     StoreModule,
+    ConfigurationsModule,
     LoggerModule,
     UserManagementModule,
     UploadModule,

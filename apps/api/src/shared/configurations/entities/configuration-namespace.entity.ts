@@ -9,6 +9,8 @@ export class ConfigurationNamespaceEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   description?: string;
 
-  @OneToMany(() => ConfigurationParamEntity, (param) => param.namespace)
+  @OneToMany(() => ConfigurationParamEntity, (param) => param.namespace, {
+    eager: true,
+  })
   params: ConfigurationParamEntity[];
 }

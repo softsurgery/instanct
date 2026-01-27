@@ -26,8 +26,8 @@ export const mapConfiguration = [
     variant: ParamVariant.SELECT,
     value: 'km',
     options: [
-      { label: 'km', value: 'km' },
-      { label: 'miles', value: 'miles' },
+      { label: 'Kilometers', value: 'km' },
+      { label: 'Miles', value: 'miles' },
     ],
   },
   // Last update
@@ -43,7 +43,7 @@ export const mapConfiguration = [
     description: 'Last update unit',
     namespaceId,
     variant: ParamVariant.SELECT,
-    value: 'day',
+    value: 'd',
     options: ConfigurationTimeObject,
   },
   // Reconnection
@@ -66,7 +66,7 @@ export const mapConfiguration = [
     description: 'Reconnection delay unit',
     namespaceId,
     variant: ParamVariant.SELECT,
-    value: 'second',
+    value: 's',
     options: ConfigurationTimeObject,
   },
   // Refresh
@@ -82,7 +82,7 @@ export const mapConfiguration = [
     description: 'Refresh unit',
     namespaceId,
     variant: ParamVariant.SELECT,
-    value: 'second',
+    value: 's',
     options: ConfigurationTimeObject,
   },
 ];
