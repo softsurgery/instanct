@@ -11,6 +11,8 @@ import { PageHeader } from "./PageHeader";
 import { IntroContext } from "@/contexts/IntroContext";
 import { FooterContext } from "@/contexts/FooterContext";
 import { Footer } from "./Footer";
+import { SidebarProvider } from "../ui/sidebar";
+import { AppSidebar } from "./AppSidebar";
 
 interface LayoutProps {
   className?: string;
@@ -59,33 +61,35 @@ export const Layout = ({ className, children }: LayoutProps) => {
 
   const isMobile = useMediaQuery("(max-width: 425px)");
   return (
-    <BreadcrumbContext.Provider value={breadcrumbContext}>
-      <IntroContext.Provider value={introContext}>
-        <FooterContext.Provider value={footerContext}>
-          <div
-            className={cn(
-              "grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]",
-              className
-            )}
-          >
-            {/* Sidebar */}
-            <Sidebar />
-            <div className="flex flex-col flex-1 overflow-hidden">
-              {/* header */}
-              <Header />
-              {(title || description) && (
-                <PageHeader
-                  className={cn("pt-5", isMobile ? "px-4" : "px-10")}
-                />
+    <SidebarProvider>
+      <BreadcrumbContext.Provider value={breadcrumbContext}>
+        <IntroContext.Provider value={introContext}>
+          <FooterContext.Provider value={footerContext}>
+            <div
+              className={cn(
+                "grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]",
+                className,
               )}
-              <main className="flex flex-col flex-1 overflow-hidden gap-4 px-4 lg:gap-6 lg:px-6">
-                {children}
-              </main>
-              {content && <Footer />}
+            >
+              {/* Sidebar */}
+              <AppSidebar />
+              <div className="flex flex-col flex-1 overflow-hidden">
+                {/* header */}
+                <Header />
+                {(title || description) && (
+                  <PageHeader
+                    className={cn("pt-5", isMobile ? "px-4" : "px-10")}
+                  />
+                )}
+                <main className="flex flex-col flex-1 overflow-hidden gap-4 px-4 lg:gap-6 lg:px-6">
+                  {children}
+                </main>
+                {content && <Footer />}
+              </div>
             </div>
-          </div>
-        </FooterContext.Provider>
-      </IntroContext.Provider>
-    </BreadcrumbContext.Provider>
+          </FooterContext.Provider>
+        </IntroContext.Provider>
+      </BreadcrumbContext.Provider>
+    </SidebarProvider>
   );
 };
