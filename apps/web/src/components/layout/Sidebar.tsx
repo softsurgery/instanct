@@ -11,6 +11,7 @@ import {
   TableOfContents,
   Table,
   Table2,
+  Cog,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -90,6 +91,11 @@ const navItems: NavItem[] = [
         href: "/content-management/reference-parameters",
         icon: Table,
       },
+      {
+        title: "Configuration",
+        href: "/content-management/configuration",
+        icon: Cog,
+      },
     ],
   },
 ];
@@ -103,7 +109,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
     const parent = navItems.find(
       (item) =>
         item.children &&
-        item.children.some((child) => pathname.startsWith(child.href))
+        item.children.some((child) => pathname.startsWith(child.href)),
     );
     if (parent) setOpenItem(parent.title);
   }, [pathname]);
@@ -147,7 +153,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                       "flex w-full items-center justify-between rounded-lg px-3 py-2 transition-all cursor-pointer",
                       openItem === item.title
                         ? "font-medium"
-                        : "text-foreground hover:text-primary"
+                        : "text-foreground hover:text-primary",
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -157,7 +163,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                     <ChevronDown
                       className={cn(
                         "h-4 w-4 transition-transform",
-                        openItem === item.title && "rotate-180"
+                        openItem === item.title && "rotate-180",
                       )}
                     />
                   </CollapsibleTrigger>
@@ -173,7 +179,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                             "flex items-center gap-3 rounded-md px-3 py-2 transition-all",
                             isActive
                               ? "bg-primary text-muted font-medium"
-                              : "text-muted-foreground hover:text-primary"
+                              : "text-muted-foreground hover:text-primary",
                           )}
                         >
                           {child.icon && <child.icon className="h-4 w-4" />}
@@ -191,13 +197,13 @@ export const Sidebar = ({ className }: SidebarProps) => {
                     "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
                     pathname.startsWith(item.href!)
                       ? "text-primary font-medium"
-                      : "text-muted-foreground hover:text-primary"
+                      : "text-muted-foreground hover:text-primary",
                   )}
                 >
                   {item.icon && <item.icon className="h-4 w-4" />}
                   {item.title}
                 </Link>
-              )
+              ),
             )}
           </nav>
         </div>

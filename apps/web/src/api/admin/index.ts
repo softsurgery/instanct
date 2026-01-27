@@ -4,6 +4,7 @@ import { refParam } from "./ref-param";
 import { refType } from "./ref-type";
 import { role } from "./roles";
 import { user } from "./users";
+import { configuration } from "./configuration";
 
 export const admin = {
   logger,
@@ -12,4 +13,5 @@ export const admin = {
   refType,
   role,
   user,
+  configuration,
 };
