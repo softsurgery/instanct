@@ -25,6 +25,7 @@ import Link from "next/link";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import { useTheme } from "next-themes";
 import { UserNav } from "./UserNav";
+import { SidebarTrigger } from "../ui/sidebar";
 
 interface HeaderProps {
   className?: string;
@@ -36,9 +37,10 @@ export const Header = ({ className }: HeaderProps) => {
     <header
       className={cn(
         "flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6",
-        className
+        className,
       )}
     >
+      <SidebarTrigger />
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">

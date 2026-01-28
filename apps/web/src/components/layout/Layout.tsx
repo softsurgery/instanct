@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import React from "react";
 import {
@@ -11,7 +10,7 @@ import { PageHeader } from "./PageHeader";
 import { IntroContext } from "@/contexts/IntroContext";
 import { FooterContext } from "@/contexts/FooterContext";
 import { Footer } from "./Footer";
-import { SidebarProvider } from "../ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 
 interface LayoutProps {
@@ -60,28 +59,23 @@ export const Layout = ({ className, children }: LayoutProps) => {
   };
 
   const isMobile = useMediaQuery("(max-width: 425px)");
+
   return (
     <SidebarProvider>
       <BreadcrumbContext.Provider value={breadcrumbContext}>
         <IntroContext.Provider value={introContext}>
           <FooterContext.Provider value={footerContext}>
-            <div
-              className={cn(
-                "grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]",
-                className,
-              )}
-            >
-              {/* Sidebar */}
+            <div className="flex min-h-screen w-full">
               <AppSidebar />
-              <div className="flex flex-col flex-1 overflow-hidden">
-                {/* header */}
+              <div className="flex flex-1 flex-col">
+                {/* header - Add SidebarTrigger here */}
                 <Header />
                 {(title || description) && (
                   <PageHeader
                     className={cn("pt-5", isMobile ? "px-4" : "px-10")}
                   />
                 )}
-                <main className="flex flex-col flex-1 overflow-hidden gap-4 px-4 lg:gap-6 lg:px-6">
+                <main className="flex flex-1 flex-col gap-4 overflow-hidden px-4 lg:gap-6 lg:px-6">
                   {children}
                 </main>
                 {content && <Footer />}

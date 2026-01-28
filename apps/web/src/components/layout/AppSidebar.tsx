@@ -4,19 +4,7 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Home,
-  Users,
-  Bell,
-  Folder,
-  Shield,
-  User as UserIcon,
-  Table2,
-  Table,
-  Settings,
-  HelpCircle,
-  Search,
-} from "lucide-react";
+import { Home, Users, Bell, Folder, Settings, HelpCircle } from "lucide-react";
 
 import {
   Sidebar,
@@ -24,6 +12,9 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./NavMain";
 
@@ -113,24 +104,36 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div className="flex items-center gap-2 p-4">
-          <Image
-            src="/logo.png"
-            alt="Instanct Logo"
-            width={30}
-            height={30}
-            className="dark:invert"
-          />
-          <div>
-            <h1 className="text-lg font-bold">Instanct</h1>
-            <p className="text-xs text-muted-foreground">Admin Panel</p>
-          </div>
-        </div>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <Link href="/" className="flex items-center gap-2">
+                <div className="flex aspect-square size-8 items-center justify-center">
+                  <Image
+                    src="/logo.png"
+                    alt="Instanct Logo"
+                    width={24}
+                    height={24}
+                    className="dark:invert"
+                  />
+                </div>
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <span className="font-semibold">Instanct</span>
+                  <span className="text-xs text-muted-foreground">
+                    Admin Panel
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={transformedNavMain} />
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter>
+        {/* You can add NavUser here if you want */}
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
