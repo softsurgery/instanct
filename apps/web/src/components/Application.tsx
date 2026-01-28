@@ -22,7 +22,7 @@ function Application({ className, Component, pageProps }: ApplicationProps) {
   const [hasMounted, setHasMounted] = React.useState(false);
 
   const isAuthPage = publicRoutes.some((route) =>
-    router.pathname.startsWith(route)
+    router.pathname.startsWith(route),
   );
   const isProtectedRoute = !isAuthPage;
 
@@ -60,7 +60,7 @@ function Application({ className, Component, pageProps }: ApplicationProps) {
     <div
       className={cn(
         `flex flex-col flex-1 overflow-hidden min-h-screen max-h-screen`,
-        className
+        className,
       )}
     >
       {isAuthPage ? (

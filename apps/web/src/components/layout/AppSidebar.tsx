@@ -2,28 +2,15 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
-import {
-  Home,
-  Users,
-  Bell,
-  Folder,
-  Shield,
-  User as UserIcon,
-  Table2,
-  Table,
-  Settings,
-  HelpCircle,
-  Search,
-} from "lucide-react";
-
+import { Home, Users, Bell, Folder, Settings, HelpCircle } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./NavMain";
 
@@ -83,6 +70,10 @@ const data = {
           title: "Reference Parameters",
           url: "/content-management/reference-parameters",
         },
+        {
+          title: "Configuration",
+          url: "/content-management/configuration",
+        },
       ],
     },
     {
@@ -106,26 +97,51 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ...item,
     isActive:
       item.url === "#"
-        ? item.items?.some((child) => pathname.startsWith(child.url)) || false
+        ? item.items?.some((child) =>
+            pathname.startsWith(child.url as string),
+          ) || false
         : pathname.startsWith(item.url),
   }));
 
+  const { open, toggleSidebar } = useSidebar();
+
+  const hoverToggledRef = React.useRef(false);
+
+  const handleMouseEnter = (
+    e: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+  ) => {
+    e.stopPropagation();
+    if (!open) {
+      toggleSidebar();
+      hoverToggledRef.current = true;
+    }
+  };
+
+  const handleMouseLeave = (
+    e: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+  ) => {
+    e.stopPropagation();
+    if (hoverToggledRef.current) {
+      toggleSidebar();
+      hoverToggledRef.current = false;
+    }
+  };
+
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <div className="flex items-center gap-2 p-4">
-          <Image
-            src="/logo.png"
-            alt="Instanct Logo"
-            width={30}
-            height={30}
-            className="dark:invert"
-          />
+    <Sidebar
+      collapsible="icon"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      {...props}
+    >
+      <SidebarHeader className="flex flex-row gap-4">
+        <Image src="/logo.png" width={40} height={40} alt="Instanct" />
+        {open && (
           <div>
-            <h1 className="text-lg font-bold">Instanct</h1>
+            <h1 className="font-bold">Instanct</h1>
             <p className="text-xs text-muted-foreground">Admin Panel</p>
           </div>
-        </div>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={transformedNavMain} />

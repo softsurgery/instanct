@@ -257,12 +257,3 @@ input[type="number"] {
     height: -webkit-fill-available;
   }
 }
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
