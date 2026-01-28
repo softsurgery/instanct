@@ -14,7 +14,7 @@ export const useExperienceDeleteDialog = ({
   deleteExperience,
   isDeletePending,
 }: ExperienceDeleteDialogProps) => {
-  const { t } = useTranslation("experience");
+  const { t } = useTranslation("user-management");
   const { t: tCommon } = useTranslation("common");
   const {
     DialogFragment: experienceDeleteDialog,
@@ -23,11 +23,13 @@ export const useExperienceDeleteDialog = ({
   } = useDialog({
     title: (
       <div className="leading-normal">
-        {t("experience.dialogs.deleteTitle")}{" "}
+        {t("userManagement.experience.dialogs.deleteTitle")}{" "}
         <span className="font-light">{experienceTitle}</span> ?
       </div>
     ),
-    description: <div>{t("experience.dialogs.deleteDescription")}</div>,
+    description: (
+      <div>{t("userManagement.experience.dialogs.deleteDescription")}</div>
+    ),
     children: (
       <div>
         <div className="flex gap-2 justify-end">

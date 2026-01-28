@@ -16,7 +16,7 @@ export const useExperienceCreateSheet = ({
   isAddPending,
   resetExperience,
 }: ExperienceCreateSheet) => {
-  const { t } = useTranslation("experience");
+  const { t } = useTranslation("user-management");
   const {
     SheetFragment: experienceCreateSheet,
     openSheet: openExperienceCreateSheet,
@@ -25,10 +25,10 @@ export const useExperienceCreateSheet = ({
     title: (
       <div className="flex items-center gap-2">
         <Briefcase />
-        {t("experience.sheet.createTitle")}
+        {t("userManagement.experience.sheet.createTitle")}
       </div>
     ),
-    description: t("experience.sheet.createDescription"),
+    description: t("userManagement.experience.sheet.createDescription"),
     children: (
       <ExperienceCreateForm
         className="mx-4"

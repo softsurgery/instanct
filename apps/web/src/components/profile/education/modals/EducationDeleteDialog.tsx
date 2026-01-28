@@ -14,7 +14,7 @@ export const useEducationDeleteDialog = ({
   deleteEducation,
   isDeletePending,
 }: EducationDeleteDialogProps) => {
-  const { t } = useTranslation("education");
+  const { t } = useTranslation("user-management");
   const { t: tCommon } = useTranslation("common");
   const {
     DialogFragment: educationDeleteDialog,
@@ -23,11 +23,15 @@ export const useEducationDeleteDialog = ({
   } = useDialog({
     title: (
       <div className="leading-normal">
-        {t("education.dialogs.deleteTitle")}{" "}
+        {t("userManagement.inspect.books.education.dialogs.deleteTitle")}{" "}
         <span className="font-light">{educationTitle}</span> ?
       </div>
     ),
-    description: <div>{t("education.dialogs.deleteDescription")}</div>,
+    description: (
+      <div>
+        {t("userManagement.inspect.books.education.dialogs.deleteDescription")}
+      </div>
+    ),
     children: (
       <div>
         <div className="flex gap-2 justify-end">

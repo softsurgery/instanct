@@ -24,7 +24,7 @@ interface ExperienceProps {
 }
 
 export const Experience = ({ className, userId }: ExperienceProps) => {
-  const { t } = useTranslation("experience");
+  const { t } = useTranslation("user-management");
   const experienceStore = useExperienceStore();
 
   // Fetch experiences for this user
@@ -42,7 +42,7 @@ export const Experience = ({ className, userId }: ExperienceProps) => {
     mutationFn: (experience: CreateExperienceDto) =>
       api.experience.create(userId, experience),
     onSuccess: () => {
-      toast(t("experience.messages.createdSuccess"));
+      toast(t("userManagement.experience.messages.createdSuccess"));
       closeExperienceCreateSheet();
       experienceStore.reset();
       refetchExperiences();
@@ -57,7 +57,7 @@ export const Experience = ({ className, userId }: ExperienceProps) => {
     mutationFn: (data: { id: number; experience: UpdateExperienceDto }) =>
       api.experience.update(data.id, data.experience),
     onSuccess: () => {
-      toast(t("experience.messages.updatedSuccess"));
+      toast(t("userManagement.experience.messages.updatedSuccess"));
       refetchExperiences();
       experienceStore.reset();
       closeExperienceUpdateSheet();
@@ -71,7 +71,7 @@ export const Experience = ({ className, userId }: ExperienceProps) => {
   const { mutate: deleteExperience, isPending: isDeletePending } = useMutation({
     mutationFn: (id: number) => api.experience.remove(id),
     onSuccess: () => {
-      toast(t("experience.messages.deletedSuccess"));
+      toast(t("userManagement.experience.messages.deletedSuccess"));
       refetchExperiences();
     },
     onError: (error: ServerErrorResponse) => {
