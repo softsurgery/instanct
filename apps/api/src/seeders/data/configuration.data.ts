@@ -1,7 +1,8 @@
+import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { ParamVariant } from 'src/shared/configurations/enums/param-variant.enum';
 import { ConfigurationTimeObject } from 'src/shared/configurations/utils/configuration-time.object';
 
-const namespaceId = 'maps';
+const namespaceId = ConfigurationNamespaces.MAPS;
 
 export const mapConfiguration = [
   // Range
