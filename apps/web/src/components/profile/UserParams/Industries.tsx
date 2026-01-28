@@ -14,7 +14,7 @@ interface IndustriesProps {
 }
 
 export const Industries = ({ className, userId }: IndustriesProps) => {
-  const { t } = useTranslation("industries");
+  const { t } = useTranslation("user-management");
   const queryClient = useQueryClient();
   const {
     industries: selectedIndustryIds,
@@ -26,13 +26,15 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
 
   const { data: allIndustries = [], isLoading: isLoadingAll } = useQuery({
     queryKey: ["all-industries"],
-    queryFn: () => api.admin.refParam.findAll(),
+    queryFn: () => api.admin.refParam.findAllIndustries(),
     select: (data) =>
       data.map((refParam: ResponseRefParamDto) => ({
         id: refParam.id,
         name: refParam.label,
       })),
   });
+
+  console.log(allIndustries);
 
   const { data: userIndustries = [], isLoading: isLoadingUserIndustries } =
     useQuery({
@@ -112,7 +114,11 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
         return { previousIndustries };
       },
       onSuccess: (data, newIndustryIds) => {
-        toast.success(t("ref-params.industry.messages.updatedSuccess"));
+        toast.success(
+          t(
+            "userManagement.inspect.books.ref-params.industry.messages.updatedSuccess",
+          ),
+        );
         const updatedIndustries = allIndustries.filter((industry) =>
           newIndustryIds.includes(industry.id),
         );

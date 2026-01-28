@@ -14,7 +14,7 @@ interface ObjectivesProps {
 }
 
 export const Objectives = ({ className, userId }: ObjectivesProps) => {
-  const { t } = useTranslation("objectives");
+  const { t } = useTranslation("user-management");
   const queryClient = useQueryClient();
   const {
     objectives: selectedObjectiveIds,
@@ -26,7 +26,7 @@ export const Objectives = ({ className, userId }: ObjectivesProps) => {
 
   const { data: allObjectives = [], isLoading: isLoadingAll } = useQuery({
     queryKey: ["all-objectives"],
-    queryFn: () => api.admin.refParam.findAll(),
+    queryFn: () => api.admin.refParam.findAllObjectifs(),
     select: (data) =>
       data.map((refParam: ResponseRefParamDto) => ({
         id: refParam.id,
@@ -112,7 +112,11 @@ export const Objectives = ({ className, userId }: ObjectivesProps) => {
         return { previousObjectives };
       },
       onSuccess: (data, newObjectiveIds) => {
-        toast.success(t("ref-params.objective.messages.updatedSuccess"));
+        toast.success(
+          t(
+            "userManagement.inspect.books.ref-params.objective.messages.updatedSuccess",
+          ),
+        );
         const updatedObjectives = allObjectives.filter((objective) =>
           newObjectiveIds.includes(objective.id),
         );
