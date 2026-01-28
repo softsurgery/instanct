@@ -12,6 +12,9 @@ import { GeolocationService } from '../services/geolocation.service';
 import { AdvancedSocket } from 'src/types';
 import { getTokenPayloadForWebSocket } from 'src/shared/auth/utils/token-payload';
 import { Injectable } from '@nestjs/common';
+import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
+import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
+import { MapConfigurationParam } from 'src/app/configurations/map-configuration.enum';
 
 @WebSocketGateway({
   cors: {
@@ -26,7 +29,10 @@ export class GeolocationGateway
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly geolocationService: GeolocationService) {}
+  constructor(
+    private readonly geolocationService: GeolocationService,
+    private readonly configurationNamespaceService: ConfigurationNamespaceService,
+  ) {}
 
   private connectedUsers = new Map<string, string>();
 
@@ -66,13 +72,28 @@ export class GeolocationGateway
   async handleUpdateLocation(
     @ConnectedSocket() socket: Socket,
     @MessageBody()
-    data: { latitude: number; longitude: number; radius?: number },
+    data: { latitude: number; longitude: number; radius: number },
   ) {
+    const { latitude, longitude, radius } = data;
     const payload = getTokenPayloadForWebSocket(socket);
     const userId = payload?.sub;
     if (!userId) return socket.emit('error', { message: 'Not identified' });
 
-    const { latitude, longitude, radius = 5 } = data;
+    const rangeMax = (await this.configurationNamespaceService.getSpecificParam(
+      ConfigurationNamespaces.MAPS,
+      MapConfigurationParam.RANGE_MAX,
+    )) as number;
+
+    const rangeMin = (await this.configurationNamespaceService.getSpecificParam(
+      ConfigurationNamespaces.MAPS,
+      MapConfigurationParam.RANGE_MIN,
+    )) as number;
+
+    if (radius > rangeMax || radius < rangeMin) {
+      // console.log('Radius out of range');
+      return socket.emit('error', { message: 'Radius out of range' });
+    }
+
     await this.geolocationService.saveNewLocation(
       { latitude, longitude },
       userId,
