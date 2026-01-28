@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Cpu, Search } from "lucide-react";
+import { X, Cpu, Search, Save, AlertCircle, Pencil } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,9 +16,12 @@ interface IndustriesSectionProps {
   selectedIndustryIds: number[];
   isLoading?: boolean;
   isMutationPending?: boolean;
+  hasUnsavedChanges?: boolean;
   onSelectIndustry: (id: number) => void;
   onRemoveIndustry: (id: number) => void;
+  onSave: () => void;
   onReset?: () => void;
+  onCancel?: () => void;
   className?: string;
 }
 
@@ -27,9 +30,13 @@ export function IndustriesSection({
   selectedIndustryIds,
   isLoading = false,
   isMutationPending = false,
+  hasUnsavedChanges = false,
   onSelectIndustry,
   onRemoveIndustry,
+  onSave,
   onReset,
+  onCancel,
+
   className,
 }: IndustriesSectionProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -62,6 +69,11 @@ export function IndustriesSection({
           <Cpu className="h-5 w-5" />
           <h2 className="text-xl font-bold text-foreground">Industries</h2>
         </div>
+        {hasUnsavedChanges && (
+          <span className="text-xs font-medium text-red-600  px-2 py-1 rounded">
+            Unsaved
+          </span>
+        )}
       </div>
 
       {/* Search */}
@@ -136,18 +148,40 @@ export function IndustriesSection({
         </div>
       </div>
 
-      {/* Reset Button */}
-      {onReset && (
-        <Button
-          className="w-full mb-15"
-          onClick={onReset}
-          variant="destructive"
-          size="sm"
-          disabled={selectedIndustryIds.length === 0}
-        >
-          {isMutationPending ? "Resetting..." : "Reset"}
-        </Button>
-      )}
+      <div className="flex flex-col gap-3 mb-15 border-t pt-4">
+        <div className="flex gap-2">
+          <Button
+            onClick={onSave}
+            className="flex-1"
+            size="sm"
+            disabled={!hasUnsavedChanges || isMutationPending}
+          >
+            <Save className="h-4 w-4 " />
+            Save
+            <Spinner show={isMutationPending} className="ml-2" />
+          </Button>
+
+          <Button
+            onClick={onCancel}
+            variant="outline"
+            size="sm"
+            disabled={!hasUnsavedChanges || isMutationPending}
+          >
+            Cancel
+          </Button>
+        </div>
+
+        {onReset && (
+          <Button
+            onClick={onReset}
+            variant="outline"
+            size="sm"
+            disabled={selectedIndustryIds.length === 0 || isMutationPending}
+          >
+            Reset
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
