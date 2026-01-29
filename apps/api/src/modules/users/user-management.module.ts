@@ -14,7 +14,6 @@ import { RolePermissionEntity } from 'src/shared/abstract-user-management/entiti
 import { UserUploadEntity } from './entities/user-upload.entity';
 import { UserEntity } from './entities/user.entity';
 import { FollowEntity } from 'src/modules/users/entities/follow.entity';
-import { UploadModule } from 'src/shared/uploads/uploads.module';
 import { UserService } from './services/user.service';
 import { UserUploadService } from './services/user-upload.service';
 import { UserRepository } from './repositories/user.repository';
@@ -26,6 +25,7 @@ import { EducationService } from './services/education.service';
 import { EducationRepository } from './repositories/education.repository';
 import { EducationEntity } from './entities/education.entity';
 import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
+import { StorageModule } from 'src/shared/storage/storage.module';
 
 @Module({
   controllers: [],
@@ -90,7 +90,7 @@ import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types
       ExperienceEntity,
       EducationEntity,
     ]),
-    UploadModule,
+    StorageModule,
     ReferenceTypesModule,
   ],
 })

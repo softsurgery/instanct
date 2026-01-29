@@ -4,8 +4,7 @@ import { AuthController } from 'src/shared/auth/controllers/auth.controller';
 import { LoggerModule } from 'src/shared/logger/logger.module';
 import { UserManagementModule } from 'src/modules/users/user-management.module';
 import { ClientAuthController } from 'src/shared/auth/controllers/client-auth.controller';
-import { UploadController } from 'src/shared/uploads/controllers/upload.controller';
-import { UploadModule } from 'src/shared/uploads/uploads.module';
+import { StorageModule } from 'src/shared/storage/storage.module';
 import { StoreController } from 'src/shared/store/controllers/store.controller';
 import { StoreModule } from 'src/shared/store/store.module';
 import { FollowController } from 'src/shared/abstract-user-management/controllers/follow.controller';
@@ -26,6 +25,7 @@ import { ExperienceController } from 'src/modules/users/controllers/experience.c
 import { EducationController } from 'src/modules/users/controllers/education.controller';
 import { ConfigurationController } from 'src/shared/configurations/controllers/configuration.controller';
 import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
+import { StorageController } from 'src/shared/storage/controllers/storage.controller';
 
 @Module({
   controllers: [
@@ -33,7 +33,7 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
     AuthController,
     ClientAuthController,
     //common
-    UploadController,
+    StorageController,
     StoreController,
     ConfigurationController,
     //user
@@ -59,7 +59,7 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
     ConfigurationsModule,
     LoggerModule,
     UserManagementModule,
-    UploadModule,
+    StorageModule,
     ChatModule,
     NotificationModule,
     SessionModule,

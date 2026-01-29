@@ -13,37 +13,37 @@ import {
 import { Response } from 'express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { UploadService } from '../services/upload.service';
-import { UploadEntity } from '../entities/upload.entity';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { StorageService } from '../services/storage.service';
+import { StorageEntity } from '../entities/storage.entity';
 
-@ApiTags('upload')
+@ApiTags('storage')
 @ApiBearerAuth('access_token')
 @Controller({
   version: '1',
-  path: '/upload',
+  path: '/storage',
 })
-export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+export class StorageController {
+  constructor(private readonly storageService: StorageService) {}
 
   @Get('/list')
-  @ApiPaginatedResponse(UploadEntity)
+  @ApiPaginatedResponse(StorageEntity)
   async findAllPaginated(
     @Query() query: IQueryObject,
-  ): Promise<PageDto<UploadEntity>> {
-    return this.uploadService.findAllPaginated(query);
+  ): Promise<PageDto<StorageEntity>> {
+    return this.storageService.findAllPaginated(query);
   }
 
   @Get('/all')
-  async findAll(@Query() options: IQueryObject): Promise<UploadEntity[]> {
-    return await this.uploadService.findAll(options);
+  async findAll(@Query() options: IQueryObject): Promise<StorageEntity[]> {
+    return await this.storageService.findAll(options);
   }
 
   @Get(':id')
-  async getFileByIdOrSlug(@Param('id') id: number): Promise<UploadEntity> {
-    return this.uploadService.findOneById(id);
+  async getFileByIdOrSlug(@Param('id') id: number): Promise<StorageEntity> {
+    return this.storageService.findOneById(id);
   }
 
   @ApiConsumes('multipart/form-data')
@@ -65,8 +65,8 @@ export class UploadController {
   @UseInterceptors(FilesInterceptor('files'))
   async uploadMultipleFiles(
     @UploadedFiles() files: Express.Multer.File[],
-  ): Promise<UploadEntity[]> {
-    return this.uploadService.storeMultipleFiles(files);
+  ): Promise<StorageEntity[]> {
+    return this.storageService.storeMultipleFiles(files);
   }
 
   @ApiConsumes('multipart/form-data')
@@ -88,8 +88,8 @@ export class UploadController {
   @UseInterceptors(FilesInterceptor('files'))
   async uploadTemporaryMultipleFiles(
     @UploadedFiles() files: Express.Multer.File[],
-  ): Promise<UploadEntity[]> {
-    return this.uploadService.storeMultipleFiles(files, true);
+  ): Promise<StorageEntity[]> {
+    return this.storageService.storeMultipleFiles(files, true);
   }
 
   @ApiConsumes('multipart/form-data')
@@ -108,8 +108,8 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<UploadEntity> {
-    return this.uploadService.store(file);
+  ): Promise<StorageEntity> {
+    return this.storageService.store(file);
   }
 
   @ApiConsumes('multipart/form-data')
@@ -128,8 +128,8 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadTemporaryFile(
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<UploadEntity> {
-    return this.uploadService.store(file, true);
+  ): Promise<StorageEntity> {
+    return this.storageService.store(file, true);
   }
 
   @Get('/download/slug/:slug')
@@ -137,8 +137,8 @@ export class UploadController {
     @Param('slug') slug: string,
     @Res() res: Response,
   ): Promise<void> {
-    const upload = await this.uploadService.findBySlug(slug);
-    const fileStream = await this.uploadService.loadResource(slug);
+    const upload = await this.storageService.findBySlug(slug);
+    const fileStream = await this.storageService.loadResource(slug);
     res.setHeader('Content-Type', upload.mimetype);
     res.setHeader('Content-Length', upload.size);
     res.setHeader(
@@ -153,8 +153,8 @@ export class UploadController {
     @Param('id') id: number,
     @Res() res: Response,
   ): Promise<void> {
-    const upload = await this.uploadService.findOneById(id);
-    const fileStream = await this.uploadService.loadResource(upload.slug);
+    const upload = await this.storageService.findOneById(id);
+    const fileStream = await this.storageService.loadResource(upload.slug);
     res.setHeader('Content-Type', upload.mimetype);
     res.setHeader('Content-Length', upload.size);
     res.setHeader(
@@ -169,8 +169,8 @@ export class UploadController {
     @Param('slug') slug: string,
     @Res() res: Response,
   ): Promise<void> {
-    const upload = await this.uploadService.findBySlug(slug);
-    const fileStream = await this.uploadService.loadResource(slug);
+    const upload = await this.storageService.findBySlug(slug);
+    const fileStream = await this.storageService.loadResource(slug);
 
     res.setHeader('Content-Type', upload.mimetype);
     res.setHeader('Content-Length', upload.size);
@@ -187,8 +187,8 @@ export class UploadController {
     @Param('id') id: number,
     @Res() res: Response,
   ): Promise<void> {
-    const upload = await this.uploadService.findOneById(id);
-    const fileStream = await this.uploadService.loadResource(upload.slug);
+    const upload = await this.storageService.findOneById(id);
+    const fileStream = await this.storageService.loadResource(upload.slug);
 
     res.setHeader('Content-Type', upload.mimetype);
     res.setHeader('Content-Length', upload.size);
@@ -201,12 +201,12 @@ export class UploadController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<UploadEntity> {
-    return this.uploadService.delete(id);
+  async delete(@Param('id') id: number): Promise<StorageEntity> {
+    return this.storageService.delete(id);
   }
 
   @Delete('slug/:slug')
-  async deleteBySlug(@Param('slug') slug: string): Promise<UploadEntity> {
-    return this.uploadService.deleteBySlug(slug);
+  async deleteBySlug(@Param('slug') slug: string): Promise<StorageEntity> {
+    return this.storageService.deleteBySlug(slug);
   }
 }

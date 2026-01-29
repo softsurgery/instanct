@@ -7,38 +7,38 @@ import { createReadStream, promises as fs } from 'fs';
 import { constants } from 'fs';
 import { ReadStream } from 'typeorm/platform/PlatformTools';
 import { ConfigService } from '@nestjs/config';
-import { UploadRepository } from '../repositories/upload.repository';
-import { UploadEntity } from '../entities/upload.entity';
-import { UploadNotFoundException } from '../errors/upload.not-found.error';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { UploadBadRequestException } from '../errors/upload.bad-request.error';
 import { FileNotFoundException } from '../errors/file.not-found.error';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { StorageRepository } from '../repositories/storage.repository';
+import { StorageEntity } from '../entities/storage.entity';
+import { StorageNotFoundException } from '../errors/storage.not-found.error';
+import { StorageBadRequestException } from '../errors/storage.bad-request.error';
 
 @Injectable()
-export class UploadService {
+export class StorageService {
   rootLocation: string;
-  logger = new Logger(UploadService.name);
+  logger = new Logger(StorageService.name);
   constructor(
-    private readonly uploadRepository: UploadRepository,
+    private readonly storageRepository: StorageRepository,
     private readonly configService: ConfigService,
   ) {
     this.rootLocation =
       this.configService.get<string>('app.uploadPath') || '/upload';
   }
 
-  async findAllPaginated(query: IQueryObject): Promise<PageDto<UploadEntity>> {
-    const queryBuilder = new QueryBuilder(this.uploadRepository.getMetadata());
+  async findAllPaginated(query: IQueryObject): Promise<PageDto<StorageEntity>> {
+    const queryBuilder = new QueryBuilder(this.storageRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    const count = await this.uploadRepository.getTotalCount({
+    const count = await this.storageRepository.getTotalCount({
       where: queryOptions.where,
     });
 
-    const entities = await this.uploadRepository.findAll(
-      queryOptions as FindManyOptions<UploadEntity>,
+    const entities = await this.storageRepository.findAll(
+      queryOptions as FindManyOptions<StorageEntity>,
     );
 
     const pageMetaDto = new PageMetaDto({
@@ -52,26 +52,27 @@ export class UploadService {
     return new PageDto(entities, pageMetaDto);
   }
 
-  async findBySlug(slug: string): Promise<UploadEntity> {
-    const upload = await this.uploadRepository.findOne({ where: { slug } });
+  async findBySlug(slug: string): Promise<StorageEntity> {
+    const upload = await this.storageRepository.findOne({ where: { slug } });
     if (!upload) {
-      throw new UploadNotFoundException();
-    }
-    return upload;
-  }
-  async findOneById(id: number): Promise<UploadEntity> {
-    const upload = await this.uploadRepository.findOneById(id);
-    if (!upload) {
-      throw new UploadNotFoundException();
+      throw new StorageNotFoundException();
     }
     return upload;
   }
 
-  async findAll(query: IQueryObject = {}): Promise<UploadEntity[]> {
-    const queryBuilder = new QueryBuilder(this.uploadRepository.getMetadata());
+  async findOneById(id: number): Promise<StorageEntity> {
+    const upload = await this.storageRepository.findOneById(id);
+    if (!upload) {
+      throw new StorageNotFoundException();
+    }
+    return upload;
+  }
+
+  async findAll(query: IQueryObject = {}): Promise<StorageEntity[]> {
+    const queryBuilder = new QueryBuilder(this.storageRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    return await this.uploadRepository.findAll(
-      queryOptions as FindManyOptions<UploadEntity>,
+    return await this.storageRepository.findAll(
+      queryOptions as FindManyOptions<StorageEntity>,
     );
   }
 
@@ -79,7 +80,7 @@ export class UploadService {
     file: Express.Multer.File,
     isTemporary = false,
     isPrivate = false,
-  ): Promise<UploadEntity> {
+  ): Promise<StorageEntity> {
     const slug = uuidv4();
     const filename = file.originalname;
     const mimetype = file.mimetype;
@@ -92,7 +93,7 @@ export class UploadService {
       relativePath = `${slug}.${extension}`;
     }
 
-    const upload = this.uploadRepository.save({
+    const upload = this.storageRepository.save({
       slug,
       filename,
       mimetype,
@@ -105,13 +106,13 @@ export class UploadService {
     const destinationFile = join(this.rootLocation, relativePath);
     try {
       if (!file.buffer || file.buffer.length === 0) {
-        throw new UploadBadRequestException('Failed to store empty file.');
+        throw new StorageBadRequestException('Failed to store empty file.');
       }
 
       await fs.mkdir(this.rootLocation, { recursive: true });
       await fs.writeFile(destinationFile, file.buffer);
     } catch (error) {
-      throw new UploadBadRequestException(`Failed to store file : ${error}`);
+      throw new StorageBadRequestException(`Failed to store file : ${error}`);
     }
 
     return upload;
@@ -130,32 +131,32 @@ export class UploadService {
     return uploads;
   }
 
-  async expose(id: number): Promise<UploadEntity> {
+  async expose(id: number): Promise<StorageEntity> {
     const upload = await this.findOneById(id);
     upload.isPrivate = false;
-    return await this.uploadRepository.save(upload);
+    return await this.storageRepository.save(upload);
   }
 
-  async hide(id: number): Promise<UploadEntity> {
+  async hide(id: number): Promise<StorageEntity> {
     const upload = await this.findOneById(id);
     upload.isPrivate = true;
-    return await this.uploadRepository.save(upload);
+    return await this.storageRepository.save(upload);
   }
 
-  async confirm(id: number): Promise<UploadEntity> {
+  async confirm(id: number): Promise<StorageEntity> {
     const upload = await this.findOneById(id);
     upload.isTemporary = false;
-    return await this.uploadRepository.save(upload);
+    return await this.storageRepository.save(upload);
   }
 
-  async unconfirm(id: number): Promise<UploadEntity> {
+  async unconfirm(id: number): Promise<StorageEntity> {
     const upload = await this.findOneById(id);
     upload.isTemporary = true;
-    return await this.uploadRepository.save(upload);
+    return await this.storageRepository.save(upload);
   }
 
-  async findTemporary(): Promise<UploadEntity[]> {
-    const uploads = await this.uploadRepository.findAll({
+  async findTemporary(): Promise<StorageEntity[]> {
+    const uploads = await this.storageRepository.findAll({
       where: { isTemporary: true },
     });
     return uploads;
@@ -173,7 +174,7 @@ export class UploadService {
     }
   }
 
-  async duplicate(id: number): Promise<UploadEntity> {
+  async duplicate(id: number): Promise<StorageEntity> {
     //Find the original upload entity
     const originalUpload = await this.findOneById(id);
 
@@ -196,11 +197,13 @@ export class UploadService {
     try {
       await fs.copyFile(originalFilePath, newFilePath);
     } catch (error) {
-      throw new UploadBadRequestException(`Failed to duplicate file: ${error}`);
+      throw new StorageBadRequestException(
+        `Failed to duplicate file: ${error}`,
+      );
     }
 
     //Save the duplicated upload entity in the database
-    const duplicatedUpload = await this.uploadRepository.save({
+    const duplicatedUpload = await this.storageRepository.save({
       slug: newSlug,
       filename: originalUpload.filename,
       mimetype: originalUpload.mimetype,
@@ -211,29 +214,29 @@ export class UploadService {
     return duplicatedUpload;
   }
 
-  async duplicateMany(ids: number[]): Promise<UploadEntity[]> {
+  async duplicateMany(ids: number[]): Promise<StorageEntity[]> {
     const duplicatedUploads = await Promise.all(
       ids.map((id) => this.duplicate(id)),
     );
     return duplicatedUploads;
   }
 
-  async delete(id: number): Promise<UploadEntity> {
+  async delete(id: number): Promise<StorageEntity> {
     const upload = await this.findOneById(id);
     const filePath = join(this.rootLocation, upload.relativePath);
 
     try {
       await fs.unlink(filePath);
-      await this.uploadRepository.softDelete(upload.id);
+      await this.storageRepository.softDelete(upload.id);
       return upload;
     } catch (error) {
-      throw new UploadBadRequestException(
+      throw new StorageBadRequestException(
         `Failed to delete file: ${upload.slug} ${error}`,
       );
     }
   }
 
-  async deleteBySlug(slug: string): Promise<UploadEntity> {
+  async deleteBySlug(slug: string): Promise<StorageEntity> {
     const upload = await this.findBySlug(slug);
     return this.delete(upload.id);
   }
@@ -243,7 +246,7 @@ export class UploadService {
   }
 
   async getTotal(): Promise<number> {
-    return this.uploadRepository.getTotalCount();
+    return this.storageRepository.getTotalCount();
   }
 
   @Cron(CronExpression.EVERY_2_HOURS)

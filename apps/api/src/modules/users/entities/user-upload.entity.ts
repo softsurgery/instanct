@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UploadEntity } from 'src/shared/uploads/entities/upload.entity';
+import { StorageEntity } from 'src/shared/storage/entities/storage.entity';
 import { UserEntity } from './user.entity';
 
 @Entity('user_uploads')
@@ -26,12 +26,12 @@ export class UserUploadEntity extends EntityHelper {
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
 
-  @ManyToOne(() => UploadEntity, {
+  @ManyToOne(() => StorageEntity, {
     onDelete: 'CASCADE',
     eager: true,
   })
   @JoinColumn({ name: 'uploadId' })
-  upload?: UploadEntity;
+  upload?: StorageEntity;
 
   @Column({ nullable: false })
   order: number;

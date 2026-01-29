@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseUploadDto } from 'src/shared/uploads/dtos/response-upload.dto';
+import { ResponseStorageDto } from 'src/shared/storage/dtos/response-storage.dto';
 import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
 import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
 import { ResponseUserUploadDto } from '../user-upload/response-user-upload.dto';
@@ -35,24 +35,24 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Expose()
   pictureId?: number;
 
-  @ApiProperty({ type: ResponseUploadDto })
+  @ApiProperty({ type: ResponseStorageDto })
   @Expose()
-  @Type(() => ResponseUploadDto)
-  picture?: ResponseUploadDto;
+  @Type(() => ResponseStorageDto)
+  picture?: ResponseStorageDto;
 
-  @ApiProperty({ type: ResponseUploadDto })
+  @ApiProperty({ type: ResponseStorageDto })
   @Expose()
-  @Type(() => ResponseUploadDto)
-  officialDocument?: ResponseUploadDto;
+  @Type(() => ResponseStorageDto)
+  officialDocument?: ResponseStorageDto;
 
   @ApiProperty({ type: Number })
   @Expose()
   officialDocumentId?: number;
 
-  @ApiProperty({ type: ResponseUploadDto })
+  @ApiProperty({ type: ResponseStorageDto })
   @Expose()
-  @Type(() => ResponseUploadDto)
-  driverLicenseDocument?: ResponseUploadDto;
+  @Type(() => ResponseStorageDto)
+  driverLicenseDocument?: ResponseStorageDto;
 
   @ApiProperty({ type: Number })
   @Expose()

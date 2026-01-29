@@ -4,15 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
 import { DatabaseAbstractRepository } from 'src/shared/database/repositories/database.repository';
-import { UploadEntity } from '../entities/upload.entity';
+import { StorageEntity } from '../entities/storage.entity';
 
 @Injectable()
-export class UploadRepository extends DatabaseAbstractRepository<UploadEntity> {
+export class StorageRepository extends DatabaseAbstractRepository<StorageEntity> {
   constructor(
-    @InjectRepository(UploadEntity)
-    private readonly uploadRepository: Repository<UploadEntity>,
+    @InjectRepository(StorageEntity)
+    private readonly storageRepository: Repository<StorageEntity>,
     txHost: TransactionHost<TransactionalAdapterTypeOrm>,
   ) {
-    super(uploadRepository, txHost);
+    super(storageRepository, txHost);
   }
 }

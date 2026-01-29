@@ -9,7 +9,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Gender } from '../../../shared/abstract-user-management/enums/gender.enum';
-import { UploadEntity } from 'src/shared/uploads/entities/upload.entity';
+import { StorageEntity } from 'src/shared/storage/entities/storage.entity';
 import { UserUploadEntity } from './user-upload.entity';
 
 import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
@@ -39,13 +39,13 @@ export class UserEntity extends AbstractUserEntity {
   @Column({ nullable: true })
   regionId?: number;
 
-  @ManyToOne(() => UploadEntity, {
+  @ManyToOne(() => StorageEntity, {
     onDelete: 'CASCADE',
     eager: true,
     nullable: true,
   })
   @JoinColumn({ name: 'pictureId' })
-  picture?: UploadEntity;
+  picture?: StorageEntity;
 
   @Column({ nullable: true })
   pictureId?: number;

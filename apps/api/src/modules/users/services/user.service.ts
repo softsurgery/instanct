@@ -6,7 +6,6 @@ import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { UserRepository } from '../repositories/user.repository';
-import { UploadService } from 'src/shared/uploads/services/upload.service';
 import { UserUploadService } from './user-upload.service';
 import { UserEntity } from '../entities/user.entity';
 import { CreateUserDto } from '../dtos/user/create-user.dto';
@@ -19,13 +18,14 @@ import { AbstractUserService } from 'src/shared/abstract-user-management/service
 import { hashPassword } from 'src/shared/helpers/hash.utils';
 import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-param.repository';
 import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
+import { StorageService } from 'src/shared/storage/services/storage.service';
 
 @Injectable()
 export class UserService extends AbstractUserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly userUploadService: UserUploadService,
-    private readonly uploadService: UploadService,
+    private readonly storageService: StorageService,
     private readonly refParamRepository: RefParamRepository,
   ) {
     super(userRepository);
@@ -117,7 +117,7 @@ export class UserService extends AbstractUserService {
   async extendedSave(createUserDto: CreateUserDto): Promise<UserEntity> {
     const { uploads, ...rest } = createUserDto;
     if (createUserDto.pictureId)
-      await this.uploadService.confirm(createUserDto.pictureId);
+      await this.storageService.confirm(createUserDto.pictureId);
 
     if (!rest.password) throw new BadRequestException('Password is required');
 
@@ -152,9 +152,9 @@ export class UserService extends AbstractUserService {
       updateUserDto.pictureId &&
       updateUserDto.pictureId != existingUser.pictureId
     ) {
-      await this.uploadService.confirm(updateUserDto.pictureId);
+      await this.storageService.confirm(updateUserDto.pictureId);
       if (existingUser.pictureId)
-        await this.uploadService.delete(existingUser.pictureId);
+        await this.storageService.delete(existingUser.pictureId);
     }
 
     const updatedUser = await this.userRepository.findOne({

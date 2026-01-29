@@ -6,7 +6,7 @@ import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { UserUploadRepository } from '../repositories/user-upload.repository';
-import { UploadService } from 'src/shared/uploads/services/upload.service';
+import { StorageService } from 'src/shared/storage/services/storage.service';
 import { UserUploadEntity } from '../entities/user-upload.entity';
 import { CreateUserUploadDto } from '../dtos/user-upload/create-user-upload.dto';
 import { UpdateUserUploadDto } from '../dtos/user-upload/update-user-upload.dto';
@@ -16,7 +16,7 @@ import { UserUploadNotFoundException } from '../errors/user-upload/user-upload.n
 export class UserUploadService {
   constructor(
     private readonly userUploadRepository: UserUploadRepository,
-    private readonly uploadService: UploadService,
+    private readonly storageService: StorageService,
   ) {}
 
   async findOneById(id: number): Promise<UserUploadEntity> {
@@ -80,7 +80,7 @@ export class UserUploadService {
   @Transactional()
   async save(createProfileUploadDto: CreateUserUploadDto) {
     if (createProfileUploadDto.uploadId)
-      await this.uploadService.confirm(createProfileUploadDto.uploadId);
+      await this.storageService.confirm(createProfileUploadDto.uploadId);
     return this.userUploadRepository.save(createProfileUploadDto);
   }
 
@@ -88,7 +88,7 @@ export class UserUploadService {
   async saveMany(createProfileUploadDto: CreateUserUploadDto[]) {
     await Promise.all(
       createProfileUploadDto.map(async (dto) => {
-        if (dto.uploadId) await this.uploadService.confirm(dto.uploadId);
+        if (dto.uploadId) await this.storageService.confirm(dto.uploadId);
       }),
     );
     return this.userUploadRepository.saveMany(createProfileUploadDto);
