@@ -14,7 +14,7 @@ export const useExperienceUpdateSheet = ({
   isUpdatePending,
   resetExperience,
 }: ExperienceUpdateSheet) => {
-  const { t } = useTranslation("experience");
+  const { t } = useTranslation("user-management");
   const {
     SheetFragment: experienceUpdateSheet,
     openSheet: openExperienceUpdateSheet,
@@ -23,10 +23,10 @@ export const useExperienceUpdateSheet = ({
     title: (
       <div className="flex items-center gap-2">
         <Briefcase />
-        {t("experience.sheet.updateTitle")}
+        {t("userManagement.experience.sheet.updateTitle")}
       </div>
     ),
-    description: t("experience.sheet.updateDescription"),
+    description: t("userManagement.experience.sheet.updateDescription"),
     children: (
       <ExperienceUpdateForm
         className="mx-4"

@@ -16,7 +16,7 @@ export const useEducationCreateSheet = ({
   isAddPending,
   resetEducation,
 }: EducationCreateSheet) => {
-  const { t } = useTranslation("education");
+  const { t } = useTranslation("user-management");
   const {
     SheetFragment: educationCreateSheet,
     openSheet: openEducationCreateSheet,
@@ -25,10 +25,12 @@ export const useEducationCreateSheet = ({
     title: (
       <div className="flex items-center gap-2">
         <GraduationCap />
-        {t("education.sheet.createTitle")}
+        {t("userManagement.inspect.books.education.sheet.createTitle")}
       </div>
     ),
-    description: t("education.sheet.createDescription"),
+    description: t(
+      "userManagement.inspect.books.education.sheet.createDescription",
+    ),
     children: (
       <EducationCreateForm
         className="mx-4"

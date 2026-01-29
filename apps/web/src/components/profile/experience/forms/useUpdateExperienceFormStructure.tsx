@@ -16,16 +16,20 @@ interface useUpdateExperienceFormStructureProps {
 export const useUpdateExperienceFormStructure = ({
   experienceStore,
 }: useUpdateExperienceFormStructureProps) => {
-  const { t } = useTranslation("experience");
+  const { t } = useTranslation("user-management");
 
   // Title field
   const titleField: Field<TextFieldProps> = {
     id: "title",
-    label: t("experience.forms.title"),
+    label: t("userManagement.inspect.books.experience.forms.title"),
     variant: FieldVariant.TEXT,
     required: true,
-    placeholder: t("experience.forms.titlePlaceholder"),
-    description: t("experience.forms.titleDescription"),
+    placeholder: t(
+      "userManagement.inspect.books.experience.forms.titlePlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.experience.forms.titleDescription",
+    ),
     error: t(experienceStore.updateDtoErrors?.title?.[0]),
     props: {
       value: experienceStore.updateDto.title || undefined,
@@ -39,11 +43,15 @@ export const useUpdateExperienceFormStructure = ({
   // Company field
   const companyField: Field<TextFieldProps> = {
     id: "company",
-    label: t("experience.forms.company"),
+    label: t("userManagement.inspect.books.experience.forms.company"),
     variant: FieldVariant.TEXT,
     required: true,
-    placeholder: t("experience.forms.companyPlaceholder"),
-    description: t("experience.forms.companyDescription"),
+    placeholder: t(
+      "userManagement.inspect.books.experience.forms.companyPlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.experience.forms.companyDescription",
+    ),
     error: t(experienceStore.updateDtoErrors?.company?.[0]),
     props: {
       value: experienceStore.updateDto.company || undefined,
@@ -57,11 +65,13 @@ export const useUpdateExperienceFormStructure = ({
   // Start date field
   const startDateField: Field<DateFieldProps> = {
     id: "startDate",
-    label: t("experience.forms.startDate"),
+    label: t("userManagement.inspect.books.experience.forms.startDate"),
     variant: FieldVariant.DATE,
     required: true,
     placeholder: "YYYY-MM-DD",
-    description: t("experience.forms.startDateDescription"),
+    description: t(
+      "userManagement.inspect.books.experience.forms.startDateDescription",
+    ),
     error: t(experienceStore.updateDtoErrors?.startDate?.[0]),
     props: {
       value: experienceStore.updateDto.startDate || undefined,
@@ -76,11 +86,13 @@ export const useUpdateExperienceFormStructure = ({
   // End date field
   const endDateField: Field<DateFieldProps> = {
     id: "endDate",
-    label: t("experience.forms.endDate"),
+    label: t("userManagement.inspect.books.experience.forms.endDate"),
     variant: FieldVariant.DATE,
     required: false,
     placeholder: "YYYY-MM-DD",
-    description: t("experience.forms.endDateDescription"),
+    description: t(
+      "userManagement.inspect.books.experience.forms.endDateDescription",
+    ),
     error: t(experienceStore.updateDtoErrors?.endDate?.[0]),
     props: {
       value: experienceStore.updateDto.endDate || undefined,
@@ -95,11 +107,15 @@ export const useUpdateExperienceFormStructure = ({
   // Description field
   const descriptionField: Field<TextareaFieldProps> = {
     id: "description",
-    label: t("experience.forms.description"),
+    label: t("userManagement.inspect.books.experience.forms.description"),
     variant: FieldVariant.TEXTAREA,
     required: false,
-    placeholder: t("experience.forms.descriptionPlaceholder"),
-    description: t("experience.forms.descriptionDescription"),
+    placeholder: t(
+      "userManagement.inspect.books.experience.forms.descriptionPlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.experience.forms.descriptionDescription",
+    ),
     error: t(experienceStore.updateDtoErrors?.description?.[0]),
     props: {
       value: experienceStore.updateDto.description || undefined,
@@ -117,7 +133,7 @@ export const useUpdateExperienceFormStructure = ({
     orientation: "vertical",
     fieldsets: [
       {
-        title: t("experience.forms.updateTitle"),
+        title: t("userManagement.inspect.books.experience.forms.updateTitle"),
         description: "",
         includeHeader: true,
         rows: [

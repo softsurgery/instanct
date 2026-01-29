@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "@/api";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 import { ResponseRefParamDto } from "@/types";
-import { IndustriesSection } from "./IndustriesSection";
+import { SelectBox } from "@/components/shared/SelectBox";
 
 interface IndustriesProps {
   className?: string;
@@ -14,19 +14,18 @@ interface IndustriesProps {
 }
 
 export const Industries = ({ className, userId }: IndustriesProps) => {
-  const { t } = useTranslation("industries");
+  const { t } = useTranslation("user-management");
   const queryClient = useQueryClient();
-  const {
-    industries: selectedIndustryIds,
-    setIndustries,
-    resetIndustries,
-  } = useUserRefParamsStore();
+  const { industries: selectedIndustryIds, setIndustries } =
+    useUserRefParamsStore();
 
+  const [localSelectedIds, setLocalSelectedIds] = useState<number[]>([]);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const hasInitialized = useRef(false);
 
   const { data: allIndustries = [], isLoading: isLoadingAll } = useQuery({
     queryKey: ["all-industries"],
-    queryFn: () => api.admin.refParam.findAll(),
+    queryFn: () => api.admin.refParam.findAllIndustries(),
     select: (data) =>
       data.map((refParam: ResponseRefParamDto) => ({
         id: refParam.id,
@@ -69,20 +68,16 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
     if (!hasInitialized.current && !isLoadingUserIndustries) {
       if (userIndustries && userIndustries.length > 0) {
         const ids = userIndustries.map((ind) => ind.id);
+        setLocalSelectedIds(ids);
         setIndustries(ids);
         hasInitialized.current = true;
       } else {
+        setLocalSelectedIds([]);
         setIndustries([]);
         hasInitialized.current = true;
       }
     }
   }, [userIndustries, isLoadingUserIndustries, setIndustries]);
-
-  useEffect(() => {
-    return () => {
-      hasInitialized.current = false;
-    };
-  }, [userId]);
 
   const { mutate: updateIndustries, isPending: isMutationPending } =
     useMutation({
@@ -107,12 +102,20 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
           ["user-industries", userId],
           optimisticIndustries,
         );
-        setIndustries(newIndustryIds);
 
         return { previousIndustries };
       },
       onSuccess: (data, newIndustryIds) => {
-        toast.success(t("ref-params.industry.messages.updatedSuccess"));
+        toast.success(
+          t(
+            "userManagement.inspect.books.ref-params.industry.messages.updatedSuccess",
+          ),
+        );
+
+        setLocalSelectedIds(newIndustryIds);
+        setIndustries(newIndustryIds);
+        setHasUnsavedChanges(false);
+
         const updatedIndustries = allIndustries.filter((industry) =>
           newIndustryIds.includes(industry.id),
         );
@@ -131,9 +134,8 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
           const previousIds = (
             context.previousIndustries as Array<{ id: number; name: string }>
           ).map((ind) => ind.id);
+          setLocalSelectedIds(previousIds);
           setIndustries(previousIds);
-        } else {
-          resetIndustries();
         }
 
         toast.error(error.message || t("messages.updateFailed"));
@@ -145,39 +147,63 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
       },
     });
 
-  const handleSelectIndustry = useCallback(
-    (id: number) => {
-      const newSelection = [...selectedIndustryIds, id];
-      updateIndustries(newSelection);
-    },
-    [selectedIndustryIds, updateIndustries],
-  );
+  const handleSelectIndustry = useCallback((id: number) => {
+    setLocalSelectedIds((prev) => {
+      const newSelection = [...prev, id];
+      setHasUnsavedChanges(true);
+      return newSelection;
+    });
+  }, []);
 
-  const handleRemoveIndustry = useCallback(
-    (id: number) => {
-      const newSelection = selectedIndustryIds.filter((i) => i !== id);
-      updateIndustries(newSelection);
-    },
-    [selectedIndustryIds, updateIndustries],
-  );
+  const handleRemoveIndustry = useCallback((id: number) => {
+    setLocalSelectedIds((prev) => {
+      const newSelection = prev.filter((i) => i !== id);
+      setHasUnsavedChanges(true);
+      return newSelection;
+    });
+  }, []);
+
+  const handleSave = useCallback(() => {
+    if (!isMutationPending && hasUnsavedChanges) {
+      updateIndustries(localSelectedIds);
+    }
+  }, [
+    localSelectedIds,
+    updateIndustries,
+    isMutationPending,
+    hasUnsavedChanges,
+  ]);
 
   const handleReset = useCallback(() => {
-    updateIndustries([]);
-    resetIndustries();
-  }, [updateIndustries, resetIndustries]);
+    if (!isMutationPending) {
+      setLocalSelectedIds([]);
+      setHasUnsavedChanges(true);
+    }
+  }, [isMutationPending]);
+
+  const handleCancel = useCallback(() => {
+    if (!isMutationPending && hasUnsavedChanges) {
+      setLocalSelectedIds(selectedIndustryIds);
+      setHasUnsavedChanges(false);
+    }
+  }, [selectedIndustryIds, isMutationPending, hasUnsavedChanges]);
 
   const isLoading = isLoadingAll || isLoadingUserIndustries;
 
   return (
     <div className={cn("w-full max-w-md", className)}>
-      <IndustriesSection
-        allIndustries={allIndustries}
-        selectedIndustryIds={selectedIndustryIds}
+      <SelectBox
+        allParams={allIndustries}
+        selectedParamIds={localSelectedIds}
         isLoading={isLoading}
         isMutationPending={isMutationPending}
-        onSelectIndustry={handleSelectIndustry}
-        onRemoveIndustry={handleRemoveIndustry}
+        //should i keep this ??? hasUnsavedChanges ig yes it helps
+        hasUnsavedChanges={hasUnsavedChanges}
+        onSelectParam={handleSelectIndustry}
+        onRemoveParam={handleRemoveIndustry}
+        onSave={handleSave}
         onReset={handleReset}
+        onCancel={handleCancel}
       />
     </div>
   );

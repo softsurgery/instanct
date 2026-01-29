@@ -16,16 +16,20 @@ interface useUpdateEducationFormStructureProps {
 export const useUpdateEducationFormStructure = ({
   educationStore,
 }: useUpdateEducationFormStructureProps) => {
-  const { t } = useTranslation("education");
+  const { t } = useTranslation("user-management");
 
   // Title field
   const titleField: Field<TextFieldProps> = {
     id: "title",
-    label: t("education.forms.title"),
+    label: t("userManagement.inspect.books.education.forms.title"),
     variant: FieldVariant.TEXT,
     required: true,
-    placeholder: t("education.forms.titlePlaceholder"),
-    description: t("education.forms.titleDescription"),
+    placeholder: t(
+      "userManagement.inspect.books.education.forms.titlePlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.education.forms.titleDescription",
+    ),
     error: t(educationStore.updateDtoErrors?.title?.[0]),
     props: {
       value: educationStore.updateDto.title || undefined,
@@ -39,11 +43,15 @@ export const useUpdateEducationFormStructure = ({
   // Institution field
   const institutionField: Field<TextFieldProps> = {
     id: "institution",
-    label: t("education.forms.institution"),
+    label: t("userManagement.inspect.books.education.forms.institution"),
     variant: FieldVariant.TEXT,
     required: true,
-    placeholder: t("education.forms.institutionPlaceholder"),
-    description: t("education.forms.institutionDescription"),
+    placeholder: t(
+      "userManagement.inspect.books.education.forms.institutionPlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.education.forms.institutionDescription",
+    ),
     error: t(educationStore.updateDtoErrors?.institution?.[0]),
     props: {
       value: educationStore.updateDto.institution || undefined,
@@ -57,11 +65,13 @@ export const useUpdateEducationFormStructure = ({
   // Start date field
   const startDateField: Field<DateFieldProps> = {
     id: "startDate",
-    label: t("education.forms.startDate"),
+    label: t("userManagement.inspect.books.education.forms.startDate"),
     variant: FieldVariant.DATE,
     required: true,
     placeholder: "YYYY-MM-DD",
-    description: t("education.forms.startDateDescription"),
+    description: t(
+      "userManagement.inspect.books.education.forms.startDateDescription",
+    ),
     error: t(educationStore.updateDtoErrors?.startDate?.[0]),
     props: {
       value: educationStore.updateDto.startDate || undefined,
@@ -76,11 +86,13 @@ export const useUpdateEducationFormStructure = ({
   // End date field
   const endDateField: Field<DateFieldProps> = {
     id: "endDate",
-    label: t("education.forms.endDate"),
+    label: t("userManagement.inspect.books.education.forms.endDate"),
     variant: FieldVariant.DATE,
     required: false,
     placeholder: "YYYY-MM-DD",
-    description: t("education.forms.endDateDescription"),
+    description: t(
+      "userManagement.inspect.books.education.forms.endDateDescription",
+    ),
     error: t(educationStore.updateDtoErrors?.endDate?.[0]),
     props: {
       value: educationStore.updateDto.endDate || undefined,
@@ -95,11 +107,15 @@ export const useUpdateEducationFormStructure = ({
   // Description field
   const descriptionField: Field<TextareaFieldProps> = {
     id: "description",
-    label: t("education.forms.description"),
+    label: t("userManagement.inspect.books.education.forms.description"),
     variant: FieldVariant.TEXTAREA,
     required: false,
-    placeholder: t("education.forms.descriptionPlaceholder"),
-    description: t("education.forms.descriptionDescription"),
+    placeholder: t(
+      "userManagement.inspect.books.education.forms.descriptionPlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.education.forms.descriptionDescription",
+    ),
     error: t(educationStore.updateDtoErrors?.description?.[0]),
     props: {
       value: educationStore.updateDto.description || undefined,
@@ -117,7 +133,7 @@ export const useUpdateEducationFormStructure = ({
     orientation: "vertical",
     fieldsets: [
       {
-        title: t("education.forms.updateTitle"),
+        title: t("userManagement.inspect.books.education.forms.updateTitle"),
         description: "",
         includeHeader: true,
         rows: [

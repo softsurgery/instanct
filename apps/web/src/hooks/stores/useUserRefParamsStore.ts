@@ -9,15 +9,21 @@ interface UserRefParamsStore {
 
   resetObjectives: () => void;
   resetIndustries: () => void;
+  resetAll: () => void;
 }
 
-export const useUserRefParamsStore = create<UserRefParamsStore>((set) => ({
+const initialState = {
   objectives: [],
   industries: [],
+};
+
+export const useUserRefParamsStore = create<UserRefParamsStore>((set) => ({
+  ...initialState,
 
   setObjectives: (objectives) => set({ objectives }),
   setIndustries: (industries) => set({ industries }),
 
   resetObjectives: () => set({ objectives: [] }),
   resetIndustries: () => set({ industries: [] }),
+  resetAll: () => set(initialState),
 }));

@@ -14,7 +14,7 @@ export const useEducationUpdateSheet = ({
   isUpdatePending,
   resetEducation,
 }: EducationUpdateSheet) => {
-  const { t } = useTranslation("education");
+  const { t } = useTranslation("user-management");
   const {
     SheetFragment: educationUpdateSheet,
     openSheet: openEducationUpdateSheet,
@@ -23,10 +23,12 @@ export const useEducationUpdateSheet = ({
     title: (
       <div className="flex items-center gap-2">
         <GraduationCap />
-        {t("education.sheet.updateTitle")}
+        {t("userManagement.inspect.books.education.sheet.updateTitle")}
       </div>
     ),
-    description: t("education.sheet.updateDescription"),
+    description: t(
+      "userManagement.inspect.books.education.sheet.updateDescription",
+    ),
     children: (
       <EducationUpdateForm
         className="mx-4"

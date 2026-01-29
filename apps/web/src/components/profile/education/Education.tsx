@@ -24,7 +24,7 @@ interface EducationProps {
 }
 
 export const Education = ({ className, userId }: EducationProps) => {
-  const { t } = useTranslation("education");
+  const { t } = useTranslation("user-management");
   const educationStore = useEducationStore();
 
   // Fetch educations for this user
@@ -33,7 +33,7 @@ export const Education = ({ className, userId }: EducationProps) => {
     isFetching: isEducationsPending,
     refetch: refetchEducations,
   } = useQuery({
-    queryKey: ["educations", userId],
+    queryKey: ["userManagement.educations", userId],
     queryFn: () => api.education.findAllByUser(userId),
   });
 
@@ -42,7 +42,7 @@ export const Education = ({ className, userId }: EducationProps) => {
     mutationFn: (education: CreateEducationDto) =>
       api.education.create(userId, education),
     onSuccess: () => {
-      toast(t("education.messages.createdSuccess"));
+      toast(t("userManagement.education.messages.createdSuccess"));
       closeEducationCreateSheet();
       educationStore.reset();
       refetchEducations();
@@ -57,7 +57,7 @@ export const Education = ({ className, userId }: EducationProps) => {
     mutationFn: (data: { id: string; education: UpdateEducationDto }) =>
       api.education.update(data.id, data.education),
     onSuccess: () => {
-      toast(t("education.messages.updatedSuccess"));
+      toast(t("userManagement.education.messages.updatedSuccess"));
       refetchEducations();
       educationStore.reset();
       closeEducationUpdateSheet();
@@ -71,7 +71,7 @@ export const Education = ({ className, userId }: EducationProps) => {
   const { mutate: deleteEducation, isPending: isDeletePending } = useMutation({
     mutationFn: (id: string) => api.education.remove(id),
     onSuccess: () => {
-      toast(t("education.messages.deletedSuccess"));
+      toast(t("userManagement.education.messages.deletedSuccess"));
       refetchEducations();
     },
     onError: (error: ServerErrorResponse) => {

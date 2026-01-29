@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "@/api";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 import { ResponseRefParamDto } from "@/types";
-import { ObjectivesSection } from "./ObjectivesSection";
+import { SelectBox } from "@/components/shared/SelectBox";
 
 interface ObjectivesProps {
   className?: string;
@@ -14,19 +14,18 @@ interface ObjectivesProps {
 }
 
 export const Objectives = ({ className, userId }: ObjectivesProps) => {
-  const { t } = useTranslation("objectives");
+  const { t } = useTranslation("user-management");
   const queryClient = useQueryClient();
-  const {
-    objectives: selectedObjectiveIds,
-    setObjectives,
-    resetObjectives,
-  } = useUserRefParamsStore();
+  const { objectives: savedObjectiveIds, setObjectives } =
+    useUserRefParamsStore();
 
+  const [localSelectedIds, setLocalSelectedIds] = useState<number[]>([]);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const hasInitialized = useRef(false);
 
   const { data: allObjectives = [], isLoading: isLoadingAll } = useQuery({
     queryKey: ["all-objectives"],
-    queryFn: () => api.admin.refParam.findAll(),
+    queryFn: () => api.admin.refParam.findAllObjectifs(),
     select: (data) =>
       data.map((refParam: ResponseRefParamDto) => ({
         id: refParam.id,
@@ -69,14 +68,28 @@ export const Objectives = ({ className, userId }: ObjectivesProps) => {
     if (!hasInitialized.current && !isLoadingUserObjectives) {
       if (userObjectives && userObjectives.length > 0) {
         const ids = userObjectives.map((obj) => obj.id);
+        setLocalSelectedIds(ids);
         setObjectives(ids);
         hasInitialized.current = true;
       } else {
+        setLocalSelectedIds([]);
         setObjectives([]);
         hasInitialized.current = true;
       }
     }
   }, [userObjectives, isLoadingUserObjectives, setObjectives]);
+
+  useEffect(() => {
+    // Check for unsaved changes
+    const arraysEqual = (a: number[], b: number[]) => {
+      if (a.length !== b.length) return false;
+      const sortedA = [...a].sort();
+      const sortedB = [...b].sort();
+      return sortedA.every((value, index) => value === sortedB[index]);
+    };
+
+    setHasUnsavedChanges(!arraysEqual(localSelectedIds, savedObjectiveIds));
+  }, [localSelectedIds, savedObjectiveIds]);
 
   useEffect(() => {
     return () => {
@@ -87,7 +100,7 @@ export const Objectives = ({ className, userId }: ObjectivesProps) => {
   const { mutate: updateObjectives, isPending: isMutationPending } =
     useMutation({
       mutationFn: async (objectiveIds: number[]) => {
-        return api.admin.user.updateIndustries(userId, objectiveIds);
+        return api.admin.user.updateObjectives(userId, objectiveIds);
       },
       onMutate: async (newObjectiveIds) => {
         await queryClient.cancelQueries({
@@ -107,12 +120,21 @@ export const Objectives = ({ className, userId }: ObjectivesProps) => {
           ["user-objectives", userId],
           optimisticObjectives,
         );
-        setObjectives(newObjectiveIds);
 
         return { previousObjectives };
       },
       onSuccess: (data, newObjectiveIds) => {
-        toast.success(t("ref-params.objective.messages.updatedSuccess"));
+        toast.success(
+          t(
+            "userManagement.inspect.books.ref-params.objective.messages.updatedSuccess",
+          ),
+        );
+
+        // Update local state and store with saved data
+        setLocalSelectedIds(newObjectiveIds);
+        setObjectives(newObjectiveIds);
+        setHasUnsavedChanges(false);
+
         const updatedObjectives = allObjectives.filter((objective) =>
           newObjectiveIds.includes(objective.id),
         );
@@ -127,13 +149,13 @@ export const Objectives = ({ className, userId }: ObjectivesProps) => {
           context?.previousObjectives,
         );
 
+        // Reset to previous state on error
         if (context?.previousObjectives) {
           const previousIds = (
             context.previousObjectives as Array<{ id: number; name: string }>
           ).map((obj) => obj.id);
+          setLocalSelectedIds(previousIds);
           setObjectives(previousIds);
-        } else {
-          resetObjectives();
         }
 
         toast.error(error.message || t("messages.updateFailed"));
@@ -145,39 +167,60 @@ export const Objectives = ({ className, userId }: ObjectivesProps) => {
       },
     });
 
-  const handleSelectObjective = useCallback(
-    (id: number) => {
-      const newSelection = [...selectedObjectiveIds, id];
-      updateObjectives(newSelection);
-    },
-    [selectedObjectiveIds, updateObjectives],
-  );
+  const handleSelectParam = useCallback((id: number) => {
+    setLocalSelectedIds((prev) => {
+      const newSelection = [...prev, id];
+      return newSelection;
+    });
+  }, []);
 
-  const handleRemoveObjective = useCallback(
-    (id: number) => {
-      const newSelection = selectedObjectiveIds.filter((i) => i !== id);
-      updateObjectives(newSelection);
-    },
-    [selectedObjectiveIds, updateObjectives],
-  );
+  const handleRemoveParam = useCallback((id: number) => {
+    setLocalSelectedIds((prev) => {
+      const newSelection = prev.filter((i) => i !== id);
+      return newSelection;
+    });
+  }, []);
+
+  const handleSave = useCallback(() => {
+    if (!isMutationPending && hasUnsavedChanges) {
+      updateObjectives(localSelectedIds);
+    }
+  }, [
+    localSelectedIds,
+    updateObjectives,
+    isMutationPending,
+    hasUnsavedChanges,
+  ]);
 
   const handleReset = useCallback(() => {
-    updateObjectives([]);
-    resetObjectives();
-  }, [updateObjectives, resetObjectives]);
+    if (!isMutationPending) {
+      setLocalSelectedIds([]);
+    }
+  }, [isMutationPending]);
+
+  const handleCancel = useCallback(() => {
+    if (!isMutationPending && hasUnsavedChanges) {
+      // Reset to last saved state
+      setLocalSelectedIds(savedObjectiveIds);
+      setHasUnsavedChanges(false);
+    }
+  }, [savedObjectiveIds, isMutationPending, hasUnsavedChanges]);
 
   const isLoading = isLoadingAll || isLoadingUserObjectives;
 
   return (
     <div className={cn("w-full max-w-md", className)}>
-      <ObjectivesSection
-        allObjectives={allObjectives}
-        selectedObjectiveIds={selectedObjectiveIds}
+      <SelectBox
+        allParams={allObjectives}
+        selectedParamIds={localSelectedIds}
         isLoading={isLoading}
         isMutationPending={isMutationPending}
-        onSelectObjective={handleSelectObjective}
-        onRemoveObjective={handleRemoveObjective}
+        hasUnsavedChanges={hasUnsavedChanges}
+        onSelectParam={handleSelectParam}
+        onRemoveParam={handleRemoveParam}
+        onSave={handleSave}
         onReset={handleReset}
+        onCancel={handleCancel}
       />
     </div>
   );

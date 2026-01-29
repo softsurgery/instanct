@@ -29,7 +29,7 @@ const findPaginated = async ({
     `/ref-param/list`,
     {
       params,
-    }
+    },
   );
 
   return response.data;
@@ -46,7 +46,7 @@ const findById = async (id: number): Promise<ResponseRefParamDto> => {
 };
 
 const create = async (
-  role: CreateRefParamDto
+  role: CreateRefParamDto,
 ): Promise<ResponseRefParamDto> => {
   const response = await axios.post("/ref-param", role);
   return response.data;
@@ -54,7 +54,7 @@ const create = async (
 
 const update = async (
   id?: number,
-  refParam?: UpdateRefParamDto
+  refParam?: UpdateRefParamDto,
 ): Promise<ResponseRefParamDto> => {
   const response = await axios.put(`/ref-param/${id}`, refParam);
   return response.data;
@@ -65,6 +65,20 @@ const remove = async (id?: number): Promise<ResponseRefParamDto> => {
   return response.data;
 };
 
+const findAllObjectifs = async (): Promise<ResponseRefParamDto[]> => {
+  const response = await axios.get<ResponseRefParamDto[]>(
+    "/reference-impl/objectif",
+  );
+  return response.data;
+};
+
+const findAllIndustries = async (): Promise<ResponseRefParamDto[]> => {
+  const response = await axios.get<ResponseRefParamDto[]>(
+    "/reference-impl/industry",
+  );
+  return response.data;
+};
+
 export const refParam = {
   findPaginated,
   findAll,
@@ -72,4 +86,6 @@ export const refParam = {
   create,
   update,
   remove,
+  findAllObjectifs,
+  findAllIndustries,
 };
