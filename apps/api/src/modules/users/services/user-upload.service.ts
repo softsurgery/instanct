@@ -6,11 +6,11 @@ import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { UserUploadRepository } from '../repositories/user-upload.repository';
-import { StorageService } from 'src/shared/storage/services/storage.service';
 import { UserUploadEntity } from '../entities/user-upload.entity';
 import { CreateUserUploadDto } from '../dtos/user-upload/create-user-upload.dto';
 import { UpdateUserUploadDto } from '../dtos/user-upload/update-user-upload.dto';
 import { UserUploadNotFoundException } from '../errors/user-upload/user-upload.notfound.error';
+import { StorageService } from 'src/shared/storage/services/storage.service';
 
 @Injectable()
 export class UserUploadService {

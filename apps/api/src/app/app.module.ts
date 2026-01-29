@@ -17,6 +17,7 @@ import { MailModule } from 'src/shared/mail/mail.module';
 import { resolveMX } from 'src/shared/mail/utils/mx-resolve.util';
 import { RouterModule } from 'src/routers/router.module';
 import { SeedersModule } from 'src/seeders/seeders.module';
+import { StorageModule } from 'src/shared/storage/storage.module';
 
 @Module({
   imports: [
@@ -95,6 +96,7 @@ import { SeedersModule } from 'src/seeders/seeders.module';
     SeedersModule,
     MailModule,
     RouterModule.forRoot(),
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
