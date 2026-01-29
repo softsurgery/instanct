@@ -63,29 +63,36 @@ export const Layout = ({ className, children }: LayoutProps) => {
     <div
       className={cn(
         "flex md:flex-cols-[220px_1fr] lg:flex-cols-[280px_1fr] overflow-hidden fullscreen",
+        className,
       )}
     >
       <SidebarProvider className="flex flex-row flex-1 overflow-hidden min-w-screen max-w-screen">
         <BreadcrumbContext.Provider value={breadcrumbContext}>
           <IntroContext.Provider value={introContext}>
             <FooterContext.Provider value={footerContext}>
-              {/* Sidebar */}
-              <AppSidebar />
-              <SidebarInset>
+              <div className="flex flex-row flex-1 overflow-hidden">
+                {/* Sidebar */}
+                <AppSidebar />
+                {/* Header , Main & Footer */}
                 <div className="flex flex-col flex-1 overflow-hidden bg-background">
-                  {/* header */}
                   <Header />
                   {(title || description) && (
                     <PageHeader
-                      className={cn("pt-5", isMobile ? "px-4" : "px-10")}
+                      className={cn("py-5", isMobile ? "px-4" : "px-10")}
                     />
                   )}
-                  <main className="flex flex-col flex-1 overflow-hidden gap-4 px-4 lg:gap-6 lg:px-6">
+                  <main
+                    className={cn(
+                      "flex flex-col flex-1 overflow-hidden",
+                      isMobile ? "px-4" : "px-10",
+                      className,
+                    )}
+                  >
                     {children}
                   </main>
                   {content && <Footer />}
                 </div>
-              </SidebarInset>
+              </div>
             </FooterContext.Provider>
           </IntroContext.Provider>
         </BreadcrumbContext.Provider>
