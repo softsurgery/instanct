@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "@/api";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 import { ResponseRefParamDto } from "@/types";
-import { IndustriesSection } from "./IndustriesSection";
+import { SelectBox } from "@/components/shared/SelectBox";
 
 interface IndustriesProps {
   className?: string;
@@ -192,15 +192,15 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
 
   return (
     <div className={cn("w-full max-w-md", className)}>
-      <IndustriesSection
-        allIndustries={allIndustries}
-        selectedIndustryIds={localSelectedIds}
+      <SelectBox
+        allParams={allIndustries}
+        selectedParamIds={localSelectedIds}
         isLoading={isLoading}
         isMutationPending={isMutationPending}
-        //should i keep this ??? hasUnsavedChanges
+        //should i keep this ??? hasUnsavedChanges ig yes it helps
         hasUnsavedChanges={hasUnsavedChanges}
-        onSelectIndustry={handleSelectIndustry}
-        onRemoveIndustry={handleRemoveIndustry}
+        onSelectParam={handleSelectIndustry}
+        onRemoveParam={handleRemoveIndustry}
         onSave={handleSave}
         onReset={handleReset}
         onCancel={handleCancel}
