@@ -1,29 +1,46 @@
+import { setDeepValue } from "@/lib/object";
 import { create } from "zustand";
 
-interface UserRefParamsStore {
+interface UserRefParamsData {
   objectives: number[];
   industries: number[];
-
-  setObjectives: (objectives: number[]) => void;
-  setIndustries: (industries: number[]) => void;
-
-  resetObjectives: () => void;
-  resetIndustries: () => void;
-  resetAll: () => void;
 }
 
-const initialState = {
+const initialState: UserRefParamsData = {
   objectives: [],
   industries: [],
 };
 
+export interface UserRefParamsStore extends UserRefParamsData {
+  set: <T>(name: keyof UserRefParamsData, value: T) => void;
+  setNested: <T>(path: string, value: T) => void;
+  reset: () => void;
+}
+
 export const useUserRefParamsStore = create<UserRefParamsStore>((set) => ({
   ...initialState,
-
-  setObjectives: (objectives) => set({ objectives }),
-  setIndustries: (industries) => set({ industries }),
-
-  resetObjectives: () => set({ objectives: [] }),
-  resetIndustries: () => set({ industries: [] }),
-  resetAll: () => set(initialState),
+  set: (name, value) => {
+    set((state) => ({
+      ...state,
+      [name]: value,
+    }));
+  },
+  setNested: (path, value) => {
+    const [rootKey, ...restPath] = path.split(".");
+    const nestedPath = restPath.join(".");
+    set((state) => {
+      const updatedRoot = setDeepValue(
+        { ...(state[rootKey as keyof UserRefParamsData] as object) },
+        nestedPath,
+        value,
+      );
+      return {
+        ...state,
+        [rootKey]: updatedRoot,
+      };
+    });
+  },
+  reset: () => {
+    set({ ...initialState });
+  },
 }));

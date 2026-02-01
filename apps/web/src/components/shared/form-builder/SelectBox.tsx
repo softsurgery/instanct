@@ -1,35 +1,30 @@
-import { useState } from "react";
-import { X, Cpu, Search, Save } from "lucide-react";
+import React from "react";
+import { X, Search, Save } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/shared/Spinner";
 import { cn } from "@/lib/utils";
-
-interface Param {
-  id: number;
-  name: string;
-}
+import { SelectOption } from "./types";
 
 interface SelectBoxProps {
-  allParams: Param[];
-  selectedParamIds: number[];
-  isLoading?: boolean;
-  isMutationPending?: boolean;
+  className?: string;
+  params: SelectOption[];
+  /** array of selected values */
+  selected: Array<string | number>;
+  isPending?: boolean;
   hasUnsavedChanges?: boolean;
-  onSelectParam: (id: number) => void;
-  onRemoveParam: (id: number) => void;
+  onSelectParam: (id: string | number) => void;
+  onRemoveParam: (id: string | number) => void;
   onSave: () => void;
   onReset?: () => void;
   onCancel?: () => void;
-  className?: string;
 }
 
 export function SelectBox({
-  allParams,
-  selectedParamIds,
-  isLoading = false,
-  isMutationPending = false,
+  params,
+  selected,
+  isPending = false,
   hasUnsavedChanges = false,
   onSelectParam,
   onRemoveParam,
@@ -38,19 +33,26 @@ export function SelectBox({
   onCancel,
   className,
 }: SelectBoxProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = React.useState("");
 
-  const selectedParams = selectedParamIds
-    .map((id) => allParams.find((param) => param.id === id))
-    .filter(Boolean) as Param[];
+  const selectedSet = React.useMemo(() => new Set(selected), [selected]);
 
-  const filteredParams = allParams.filter(
-    (param) =>
-      param.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      !selectedParamIds.includes(param.id),
+  const selectedOptions = React.useMemo(
+    () => params.filter((p) => selectedSet.has(p.value)),
+    [params, selectedSet],
   );
 
-  if (isLoading) {
+  const filteredParams = React.useMemo(
+    () =>
+      params.filter(
+        (param) =>
+          param.label?.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !selectedSet.has(param.value),
+      ),
+    [params, searchQuery, selectedSet],
+  );
+
+  if (isPending) {
     return (
       <div className={cn("flex items-center justify-center p-8", className)}>
         <Spinner />
@@ -60,19 +62,6 @@ export function SelectBox({
 
   return (
     <div className={cn("w-full space-y-6 mt-8", className)}>
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Cpu className="h-5 w-5" />
-          <h2 className="text-xl font-bold text-foreground">Params</h2>
-        </div>
-        {hasUnsavedChanges && (
-          <span className="text-xs font-medium text-red-600  px-2 py-1 rounded">
-            Unsaved
-          </span>
-        )}
-      </div>
-
       {/* Search */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -82,31 +71,31 @@ export function SelectBox({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-9"
-          disabled={isMutationPending}
+          disabled={isPending}
         />
       </div>
 
       {/* Selected Params */}
-      {selectedParams.length > 0 && (
+      {selectedOptions.length > 0 && (
         <div className="space-y-3">
           <p className="text-sm font-medium text-foreground">
-            Selected Params ({selectedParams.length})
+            Selected Params ({selectedOptions.length})
           </p>
           <div className="flex flex-wrap gap-2">
-            {selectedParams.map((param) => (
+            {selectedOptions.map((param) => (
               <Badge
-                key={param.id}
+                key={param.value}
                 variant="secondary"
                 className="flex items-center gap-1 px-3 py-1.5"
               >
-                {param.name}
+                {param.label}
                 <button
-                  onClick={() => onRemoveParam(param.id)}
-                  className="ml-1 hover:opacity-70 transition-opacity"
-                  aria-label={`Remove ${param.name}`}
-                  disabled={isMutationPending}
+                  onClick={() => onRemoveParam(param.value)}
+                  className="ml-1 hover:opacity-70 transition-opacity cursor-pointer"
+                  aria-label={`Remove ${param.label}`}
+                  disabled={isPending}
                 >
-                  <X size={14} />
+                  <X size={12} />
                 </button>
               </Badge>
             ))}
@@ -120,22 +109,25 @@ export function SelectBox({
         <div className="flex flex-wrap gap-2 max-h-80 overflow-y-auto rounded-lg border border-input bg-background p-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {filteredParams.length > 0 ? (
             filteredParams.map((param) => (
-              <Button
-                key={param.id}
-                onClick={() => onSelectParam(param.id)}
-                variant="outline"
-                size="sm"
-                className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                disabled={isMutationPending}
+              <Badge
+                key={param.value}
+                variant="secondary"
+                className="flex items-center gap-1 px-3 py-1.5"
               >
-                {param.name}
-              </Button>
+                <button
+                  onClick={() => onSelectParam(param.value)}
+                  className="ml-1 hover:opacity-70 transition-opacity cursor-pointer"
+                  disabled={isPending}
+                >
+                  {param.label}
+                </button>
+              </Badge>
             ))
           ) : (
             <p className="text-sm text-muted-foreground w-full text-center py-6">
               {searchQuery
                 ? "No params match your search"
-                : allParams.length === 0
+                : params.length === 0
                   ? "No params available"
                   : "All params are selected"}
             </p>
@@ -143,27 +135,30 @@ export function SelectBox({
         </div>
       </div>
 
+      {/* Actions */}
       <div className="flex flex-col gap-3 mb-15 border-t pt-4">
         <div className="flex gap-2">
           <Button
             onClick={onSave}
             className="flex-1"
             size="sm"
-            disabled={!hasUnsavedChanges || isMutationPending}
+            disabled={!hasUnsavedChanges || isPending}
           >
-            <Save className="h-4 w-4 " />
+            <Save className="h-4 w-4" />
             Save
-            <Spinner show={isMutationPending} className="ml-2" />
+            <Spinner show={isPending} className="ml-2" />
           </Button>
 
-          <Button
-            onClick={onCancel}
-            variant="outline"
-            size="sm"
-            disabled={!hasUnsavedChanges || isMutationPending}
-          >
-            Cancel
-          </Button>
+          {onCancel && (
+            <Button
+              onClick={onCancel}
+              variant="outline"
+              size="sm"
+              disabled={!hasUnsavedChanges || isPending}
+            >
+              Cancel
+            </Button>
+          )}
         </div>
 
         {onReset && (
@@ -171,7 +166,7 @@ export function SelectBox({
             onClick={onReset}
             variant="outline"
             size="sm"
-            disabled={selectedParamIds.length === 0 || isMutationPending}
+            disabled={selected.length === 0 || isPending}
           >
             Reset
           </Button>

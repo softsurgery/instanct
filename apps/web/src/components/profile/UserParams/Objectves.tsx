@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "@/api";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 import { ResponseRefParamDto } from "@/types";
-import { SelectBox } from "@/components/shared/SelectBox";
+import { SelectBox } from "@/components/shared/form-builder/SelectBox";
 
 interface ObjectivesProps {
   className?: string;
