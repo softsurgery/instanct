@@ -80,8 +80,17 @@ export class UserController {
   }
 
   @Get(':id')
-  async findOneById(@Param('id') id: string): Promise<ResponseUserDto | null> {
-    return toDto(ResponseUserDto, await this.userService.findOneById(id));
+  async findOneById(
+    @Param('id') id: string,
+    @Query() query: Pick<IQueryObject, 'join'>,
+  ): Promise<ResponseUserDto | null> {
+    return toDto(
+      ResponseUserDto,
+      await this.userService.findOneByCondition({
+        filter: `id||$eq||${id}`,
+        join: query.join,
+      }),
+    );
   }
 
   @Post()
@@ -98,6 +107,11 @@ export class UserController {
     return user;
   }
 
+  @Get('/objectives/:id')
+  async getObjectives(@Param('id') id: string): Promise<number[]> {
+    return this.userService.getObjectives(id);
+  }
+
   @Put('/objectives/:id')
   @LogEvent(EventType.USER_UPDATE)
   async updateObjectives(
@@ -111,11 +125,6 @@ export class UserController {
     );
     req.logInfo = { id: user?.id, firstName: user?.firstName };
     return toDto(ResponseUserDto, user);
-  }
-
-  @Get('/objectives/:id')
-  async getObjectives(@Param('id') id: string): Promise<number[]> {
-    return this.userService.getObjectives(id);
   }
 
   @Get('/industries/:id')

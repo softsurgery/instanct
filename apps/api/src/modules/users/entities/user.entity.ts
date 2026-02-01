@@ -62,24 +62,22 @@ export class UserEntity extends AbstractUserEntity {
   educations: EducationEntity[];
 
   @ManyToMany(() => RefParamEntity, {
-    eager: true,
     cascade: false,
   })
   @JoinTable({
     name: 'user-objectives',
     joinColumn: { name: 'userId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'refParamId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'objectiveId', referencedColumnName: 'id' },
   })
   objectives: RefParamEntity[];
 
   @ManyToMany(() => RefParamEntity, {
-    eager: true,
     cascade: false,
   })
   @JoinTable({
     name: 'user-industries',
     joinColumn: { name: 'userId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'refParamId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'industryId', referencedColumnName: 'id' },
   })
   industries: RefParamEntity[];
 

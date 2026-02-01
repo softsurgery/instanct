@@ -21,24 +21,10 @@ export class ObjectifService {
     return parent;
   }
 
-  async getObjectifByLabel(label: string): Promise<RefTypeEntity | null> {
-    const parent = await this.getObjectifParent();
-    return this.refTypeRepository.findOne({
-      where: { label, parentId: parent?.id },
-    });
-  }
-
-  async getAllObjectifs(): Promise<RefTypeEntity[]> {
-    const parent = await this.getObjectifParent();
-    return this.refTypeRepository.findAll({
-      where: { parentId: parent?.id },
-    });
-  }
-
-  async getObjectifParams(label: string): Promise<RefParamEntity[]> {
+  async getObjectifParams(): Promise<RefParamEntity[]> {
     const parent = await this.getObjectifParent();
     return this.refParamRepository.findAll({
-      where: { refType: { label, parentId: parent?.id } },
+      where: { refType: { parentId: parent?.id } },
     });
   }
 }

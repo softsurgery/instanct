@@ -21,24 +21,10 @@ export class IndustryService {
     return parent;
   }
 
-  async getIndustryByLabel(label: string): Promise<RefTypeEntity | null> {
-    const parent = await this.getIndustryParent();
-    return this.refTypeRepository.findOne({
-      where: { label, parentId: parent?.id },
-    });
-  }
-
-  async getAllIndustries(): Promise<RefTypeEntity[]> {
-    const parent = await this.getIndustryParent();
-    return this.refTypeRepository.findAll({
-      where: { parentId: parent?.id },
-    });
-  }
-
-  async getIndustryParams(label: string): Promise<RefParamEntity[]> {
+  async getIndustryParams(): Promise<RefParamEntity[]> {
     const parent = await this.getIndustryParent();
     return this.refParamRepository.findAll({
-      where: { refType: { label, parentId: parent?.id } },
+      where: { refType: { parentId: parent?.id } },
     });
   }
 }
