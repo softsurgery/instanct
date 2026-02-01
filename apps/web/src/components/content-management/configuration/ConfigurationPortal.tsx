@@ -65,12 +65,22 @@ export const ConfigurationPortal = ({
     >
       {configurations?.map((configuration) => {
         return (
-          <Card key={configuration.id}>
-            <CardHeader>
-              <CardTitle>{_.capitalize(configuration.id)}</CardTitle>
-              <CardDescription>{configuration.description}</CardDescription>
+          <Card key={configuration.id} className="">
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-primary/70" />
+                    {_.capitalize(configuration.id)}
+                  </CardTitle>
+                  <CardDescription className="mt-1 text-sm">
+                    {configuration.description}
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent className="flex flex-col gap-2">
+
+            <CardContent className="flex flex-col gap-8 pt-0">
               {Object.entries(
                 _.groupBy(
                   configuration.params,
@@ -79,30 +89,45 @@ export const ConfigurationPortal = ({
               ).map(([groupKey, params]) => (
                 <div
                   key={groupKey}
-                  className="rounded-lg border p-4 flex flex-col gap-4"
+                  className="rounded-md border bg-muted/30 p-4"
                 >
-                  <h3 className="text-lg font-bold capitalize">{groupKey}</h3>
+                  <div className="mb-3 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold capitalize tracking-tight">
+                      {groupKey}
+                    </h3>
+                    <span className="text-xs text-muted-foreground">
+                      ({params.length})
+                    </span>
+                  </div>
 
-                  {params
-                    .sort((a, b) => a.variant.localeCompare(b.variant))
-                    .map((param) => (
-                      <div
-                        key={param.id}
-                        className="flex flex-col lg:flex-row items-start gap-4"
-                      >
-                        <div className="w-full lg:w-1/4 flex flex-row lg:flex-col justify-between">
-                          <Label className="font-semibold">
-                            {_.startCase(
-                              _.camelCase(param.name?.split(".")[1]),
-                            )}
-                          </Label>
-                          <p className="text-xs text-muted-foreground">
-                            {param.description}
-                          </p>
+                  <div className="space-y-4">
+                    {params
+                      .sort((a, b) => a.variant.localeCompare(b.variant))
+                      .map((param) => (
+                        <div
+                          key={param.id}
+                          className="flex flex-col gap-3 lg:flex-row lg:items-start"
+                        >
+                          <div className="lg:w-1/4">
+                            <div className="space-y-1">
+                              <Label className="text-sm font-medium">
+                                {_.startCase(
+                                  _.camelCase(param.name?.split(".")[1]),
+                                )}
+                              </Label>
+                              {param.description && (
+                                <p className="text-xs text-muted-foreground">
+                                  {param.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="lg:w-3/4">
+                            <ConfigurationInput configurationParam={param} />
+                          </div>
                         </div>
-                        <ConfigurationInput configurationParam={param} />
-                      </div>
-                    ))}
+                      ))}
+                  </div>
                 </div>
               ))}
             </CardContent>
