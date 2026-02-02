@@ -1,3 +1,4 @@
+import { ResponseRefParamDto } from "./reference-types";
 import { Upload } from "./upload";
 import { DatabaseEntity } from "./utils/database-entity";
 
@@ -47,6 +48,8 @@ export interface ResponseUserDto extends ResponseAbstractUserDto {
   driverLicenseDocumentId?: number;
   driverLicenseDocument?: Upload;
   uploads: ResponseUserUploadDto[];
+  industries: ResponseRefParamDto[];
+  objectives: ResponseRefParamDto[];
 }
 
 export interface CreateUserDto extends CreateAbstractUserDto {
@@ -97,9 +100,8 @@ export interface CreateRoleDto {
   permissions: { permissionId: string }[];
 }
 
-export interface UpdateRoleDto extends Partial<CreateRoleDto> {
-  uploads?: { id: number; uploadId: number }[];
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface UpdateRoleDto extends Partial<CreateRoleDto> {}
 
 export interface ResponsePermissionDto extends DatabaseEntity {
   id: string;

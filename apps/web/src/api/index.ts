@@ -6,6 +6,7 @@ import { upload } from "./uploads";
 import { follow } from "./follow";
 import { experience } from "./admin/experience";
 import { education } from "./admin/education";
+import { refImpl } from "./ref-impl";
 
 export const api = {
   admin,
@@ -16,4 +17,5 @@ export const api = {
   follow,
   experience,
   education,
+  refImpl,
 };

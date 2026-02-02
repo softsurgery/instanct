@@ -6,7 +6,7 @@ interface mapToSelectOptionsProps {
   labelKey: string;
   valueKey: string;
   labelKeyTransformer?: (label: string) => string;
-  valueKeyTransformer?: (value: string) => string;
+  valueKeyTransformer?: (value: string | number) => string | number;
 }
 
 export const mapToSelectOptions = ({
@@ -14,10 +14,10 @@ export const mapToSelectOptions = ({
   labelKey,
   valueKey,
   labelKeyTransformer = (label: string) => label,
-  valueKeyTransformer = (value: string) => value,
+  valueKeyTransformer = (value: string | number) => value,
 }: mapToSelectOptionsProps): SelectOption[] => {
   return data.map((item: any) => ({
     label: labelKeyTransformer?.(item?.[labelKey]),
-    value: valueKeyTransformer?.(item?.[valueKey]).toString(),
+    value: valueKeyTransformer?.(item?.[valueKey]),
   }));
 };

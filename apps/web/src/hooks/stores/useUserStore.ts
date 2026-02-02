@@ -12,8 +12,10 @@ import { ImageFile } from "@/components/shared/form-builder/types";
 interface UserStoreData {
   response?: ResponseUserDto;
   responseFollowCountsDto: ResponseFollowCountsDto;
+
   createDto: CreateUserDto;
   updateDto: UpdateUserDto;
+
   setManualPassword: boolean;
   confirmPassword?: string;
   picture?: File;
@@ -21,10 +23,12 @@ interface UserStoreData {
   driverLicenseDocument?: File;
   pictureUrl?: string;
   progress?: number;
-  followers: ResponseFollowDto[];
-  followings: ResponseFollowDto[];
   images: ImageFile[];
   hasInitializedImages: boolean;
+
+  followers: ResponseFollowDto[];
+  followings: ResponseFollowDto[];
+
   createDtoErrors: Record<string, string[]>;
   updateDtoErrors: Record<string, string[]>;
 }
@@ -75,6 +79,7 @@ const initialState: UserStoreData = {
     driverLicenseDocumentId: undefined,
     uploads: [],
   },
+
   setManualPassword: false,
   confirmPassword: "",
   picture: undefined,

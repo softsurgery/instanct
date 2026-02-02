@@ -65,20 +65,6 @@ const remove = async (id?: number): Promise<ResponseRefParamDto> => {
   return response.data;
 };
 
-const findAllObjectifs = async (): Promise<ResponseRefParamDto[]> => {
-  const response = await axios.get<ResponseRefParamDto[]>(
-    "/reference-impl/objectif",
-  );
-  return response.data;
-};
-
-const findAllIndustries = async (): Promise<ResponseRefParamDto[]> => {
-  const response = await axios.get<ResponseRefParamDto[]>(
-    "/reference-impl/industry",
-  );
-  return response.data;
-};
-
 export const refParam = {
   findPaginated,
   findAll,
@@ -86,6 +72,4 @@ export const refParam = {
   create,
   update,
   remove,
-  findAllObjectifs,
-  findAllIndustries,
 };

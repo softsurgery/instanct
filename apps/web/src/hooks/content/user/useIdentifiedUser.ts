@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useIdentifiedUser = (
   id?: string,
-  join?: string,
-  enabled?: boolean
+  join?: string[],
+  enabled?: boolean,
 ) => {
   const {
     isFetching: isFetchUserPending,
@@ -13,7 +13,7 @@ export const useIdentifiedUser = (
     refetch: refetchUser,
   } = useQuery({
     queryKey: ["user", id],
-    queryFn: () => api.admin.user.findById(id, join),
+    queryFn: () => api.admin.user.findById(id, join?.join(",")),
     enabled: enabled && !!id,
   });
 
