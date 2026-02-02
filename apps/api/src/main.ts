@@ -83,6 +83,8 @@ async function bootstrap() {
   logger.log(`==========================================================`);
   branding(logger);
   logger.log(`Http Server running on ${await app.getUrl()}`, 'NestApplication');
+  logger.log(`Timezone set to ${process.env.TZ}`);
+  logger.log(`Storage driver set to ${process.env.STORAGE_DRIVER}`);
   logger.log(`==========================================================`);
 
   //Migrations ==========================================================
