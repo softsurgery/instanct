@@ -24,7 +24,7 @@ export const UserProfile = ({ className, id }: UserProfileProps) => {
 
       userRefParamStore.set(
         "industries",
-        user.industries.map((i) => i.id),
+        user.industries.map((i) => String(i.id)),
       );
 
       userRefParamStore.set(

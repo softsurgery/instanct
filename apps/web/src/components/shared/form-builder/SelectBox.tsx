@@ -142,7 +142,7 @@ export function SelectBox({
             onClick={onSave}
             className="flex-1"
             size="sm"
-            disabled={!hasUnsavedChanges || isPending}
+            disabled={isPending}
           >
             <Save className="h-4 w-4" />
             Save

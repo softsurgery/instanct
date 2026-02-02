@@ -24,7 +24,7 @@ export const Book = ({ className }: BookProps) => {
       </div>
 
       <div className="flex justify-evenly mt-10">
-        {user?.id && <Industries className="w-full" />}
+        {user?.id && <Industries className="w-full" userId={user.id} />}
         {/* {user?.id && <Objectives userId={user.id} className="w-full" />} */}
       </div>
     </div>
