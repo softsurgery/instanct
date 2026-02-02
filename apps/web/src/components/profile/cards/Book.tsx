@@ -23,9 +23,9 @@ export const Book = ({ className }: BookProps) => {
         {user?.id && <Education userId={user.id} className="w-full" />}
       </div>
 
-      <div className="flex justify-evenly mt-10">
+      <div className="flex justify-evenly mt-10 gap-5">
         {user?.id && <Industries className="w-full" userId={user.id} />}
-        {/* {user?.id && <Objectives userId={user.id} className="w-full" />} */}
+        {user?.id && <Objectives className="w-full" userId={user.id} />}
       </div>
     </div>
   );

@@ -100,9 +100,8 @@ export interface CreateRoleDto {
   permissions: { permissionId: string }[];
 }
 
-export interface UpdateRoleDto extends Partial<CreateRoleDto> {
-  uploads?: { id: number; uploadId: number }[];
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface UpdateRoleDto extends Partial<CreateRoleDto> {}
 
 export interface ResponsePermissionDto extends DatabaseEntity {
   id: string;

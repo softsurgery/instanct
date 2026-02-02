@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 import { SelectBox } from "@/components/shared/form-builder/SelectBox";
@@ -16,7 +16,6 @@ interface IndustriesProps {
 
 export const Industries = ({ className, userId }: IndustriesProps) => {
   const userRefParamStore = useUserRefParamsStore();
-  const queryClient = useQueryClient();
   const { t } = useTranslation("user-management");
 
   const { industries, isIndustriesPending } = useIndustries();
@@ -34,18 +33,14 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
 
   const { mutate: updateIndustries, isPending: isMutationPending } =
     useMutation({
-      mutationFn: async (industryIds: number[]) => {
-        return api.admin.user.updateIndustries(userId, industryIds);
-      },
+      mutationFn: async (industryIds: number[]) =>
+        api.admin.user.updateIndustries(userId, industryIds),
       onSuccess: () => {
         toast.success(
           t(
             "userManagement.inspect.books.ref-params.industry.messages.updatedSuccess",
           ),
         );
-        queryClient.invalidateQueries({
-          queryKey: ["identified-user", userId],
-        });
       },
       onError: (error) => {
         toast.error(error.message || t("messages.updateFailed"));
@@ -53,16 +48,14 @@ export const Industries = ({ className, userId }: IndustriesProps) => {
     });
 
   const handleSave = () => {
-    const industryIds = userRefParamStore.industries.map((id) =>
-      typeof id === "string" ? parseInt(id, 10) : id,
-    );
+    const industryIds = userRefParamStore.industries;
     updateIndustries(industryIds);
   };
 
   const isPending = isIndustriesPending || isMutationPending;
 
   return (
-    <div className={cn("w-full max-w-md", className)}>
+    <div className={cn("w-full", className)}>
       <SelectBox
         params={mapToSelectOptions({
           data: industries,

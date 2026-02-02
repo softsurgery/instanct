@@ -21,15 +21,13 @@ export const UserProfile = ({ className, id }: UserProfileProps) => {
   React.useEffect(() => {
     if (user) {
       userStore.set("response", user);
-
       userRefParamStore.set(
         "industries",
-        user.industries.map((i) => String(i.id)),
+        user.industries.map((i) => i.id),
       );
-
       userRefParamStore.set(
         "objectives",
-        user.objectives.map((o) => o.id),
+        user.objectives.map((i) => i.id),
       );
 
       return () => {

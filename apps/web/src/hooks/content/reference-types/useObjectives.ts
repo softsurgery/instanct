@@ -6,7 +6,11 @@ interface useObjectivesProps {
   enabled?: boolean;
 }
 
-export const useObjectives = ({ enabled = true }: useObjectivesProps) => {
+export const useObjectives = (
+  { enabled }: useObjectivesProps = {
+    enabled: true,
+  },
+) => {
   const {
     data: objectivesResp,
     isFetching: isObjectivesPending,
