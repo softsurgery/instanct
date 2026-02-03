@@ -124,6 +124,22 @@ export enum Gender {
   Female = "Female",
 }
 
+export enum WorkTypes {
+  FULL_TIME = "Full-Time",
+  PART_TIME = "Part-Time",
+  TEMPORARY = "Temporary",
+  INTERN = "Internship",
+  FREELANCE = "Freelance",
+  VOLUNTEER = "Volunteer",
+  APPRENTICESHIP = "Apprenticeship",
+}
+
+export enum LocationTypes {
+  REMOTE = "Remote",
+  ON_SITE = "On-Site",
+  HYBRID = "Hybrid",
+}
+
 export interface ResponseFollowDto extends DatabaseEntity {
   id: string;
   follower: ResponseUserDto;
@@ -152,6 +168,9 @@ export interface ResponseExperienceDto extends DatabaseEntity {
   startDate?: Date;
   endDate?: Date;
   description?: string;
+  location?: string;
+  locationType?: LocationTypes;
+  workType?: WorkTypes;
   user?: ResponseUserDto;
   userId: string;
 }
@@ -162,6 +181,9 @@ export interface CreateExperienceDto {
   startDate?: Date;
   endDate?: Date;
   description?: string;
+  location?: string;
+  locationType?: LocationTypes;
+  workType?: WorkTypes;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
