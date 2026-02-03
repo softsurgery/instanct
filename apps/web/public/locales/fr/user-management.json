@@ -245,7 +245,30 @@
             "description": "Description",
             "descriptionPlaceholder": "Décrivez vos responsabilités et réalisations",
             "descriptionDescription": "Détails sur votre rôle et vos accomplissements",
-            "updateTitle": "Mettre à jour l’expérience"
+            "updateTitle": "Mettre à jour l’expérience",
+            "location": "Lieu",
+            "locationPlaceholder": "ex : San Francisco, CA",
+            "locationDescription": "Localisation physique du lieu de travail",
+            "locationType": "Type de lieu",
+            "locationTypePlaceholder": "Sélectionner le type de lieu",
+            "locationTypeDescription": "Comment le travail est effectué",
+            "workType": "Type d'emploi",
+            "workTypePlaceholder": "Sélectionner le type d'emploi",
+            "workTypeDescription": "Type de contrat de travail",
+            "locationTypes": {
+              "Remote": "Distanciel",
+              "On-Site": "Sur site",
+              "Hybrid": "Hybride"
+            },
+            "workTypes": {
+              "Full-Time": "Temps plein",
+              "Part-Time": "Temps partiel",
+              "Temporary": "Temporaire",
+              "Internship": "Stage",
+              "Freelance": "Freelance",
+              "Volunteer": "Bénévolat",
+              "Apprenticeship": "Apprentissage"
+            }
           },
           "sheet": {
             "createTitle": "Ajouter une expérience",
