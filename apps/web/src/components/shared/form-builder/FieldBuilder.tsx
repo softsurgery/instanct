@@ -43,6 +43,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           type={field.variant}
           placeholder={field.placeholder}
           value={field.props?.value}
+          disabled={field?.props?.disabled}
           onChange={(event) => {
             field?.props?.onChange?.(event.target.value);
           }}
@@ -59,6 +60,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           min={field.props?.min}
           max={field.props?.max}
           value={field.props?.value}
+          disabled={field?.props?.disabled}
           placeholder={field?.placeholder}
           onChange={(event) => {
             const inputValue = Number(event.target.value);
