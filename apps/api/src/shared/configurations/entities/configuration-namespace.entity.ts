@@ -1,5 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { ConfigurationParamEntity } from './configuration-param.entity';
+import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 
 @Entity('configuration-namespace')
 export class ConfigurationNamespaceEntity {
@@ -13,4 +21,14 @@ export class ConfigurationNamespaceEntity {
     eager: true,
   })
   params: ConfigurationParamEntity[];
+
+  @ManyToOne(() => AbstractUserEntity, (user) => user.logs, {
+    nullable: true,
+    eager: true,
+  })
+  @JoinColumn({ name: 'userId' })
+  user: AbstractUserEntity;
+
+  @Column({ nullable: true })
+  userId?: string;
 }

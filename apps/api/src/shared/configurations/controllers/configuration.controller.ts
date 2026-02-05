@@ -51,6 +51,16 @@ export class ConfigurationController {
     );
   }
 
+  @Get('/all/global')
+  async findAllGlobal(
+    @Query() query: IQueryObject,
+  ): Promise<ResponseConfigurationNamespaceDto[]> {
+    return toDtoArray(
+      ResponseConfigurationNamespaceDto,
+      await this.configurationNamespaceService.findAll(query),
+    );
+  }
+
   @Put()
   async update(
     @Body() dtos: UpdateConfigurationParamaterDto[],

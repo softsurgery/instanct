@@ -3,6 +3,9 @@ import { ConfigurationNamespaceEntity } from '../entities/configuration-namespac
 import { Injectable } from '@nestjs/common';
 import { ConfigurationNamespaceRepository } from '../repositories/configuration-namespace.repository';
 import { ParamVariant } from '../enums/param-variant.enum';
+import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
+import { FindManyOptions } from 'typeorm';
 
 @Injectable()
 export class ConfigurationNamespaceService extends AbstractCrudService<ConfigurationNamespaceEntity> {
@@ -30,5 +33,19 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
       default:
         return null;
     }
+  }
+
+  async findAllGlobal(
+    query: IQueryObject,
+  ): Promise<ConfigurationNamespaceEntity[]> {
+    const queryBuilder = new QueryBuilder(this.repository.getMetadata());
+    const queryOptions = queryBuilder.build(query);
+    queryOptions.where = {
+      ...queryOptions.where,
+      userId: null,
+    };
+    return await this.repository.findAll(
+      queryOptions as FindManyOptions<ConfigurationNamespaceEntity>,
+    );
   }
 }
