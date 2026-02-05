@@ -34,7 +34,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.title?.[0]),
     props: {
-      value: experienceStore.createDto.title || undefined,
+      value: experienceStore.createDto.title,
       onChange: (value) => {
         experienceStore.setNested("createDto.title", value);
         experienceStore.setNested("createDtoErrors.title", []);
@@ -56,7 +56,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.company?.[0]),
     props: {
-      value: experienceStore.createDto.company || undefined,
+      value: experienceStore.createDto.company,
       onChange: (value) => {
         experienceStore.setNested("createDto.company", value);
         experienceStore.setNested("createDtoErrors.company", []);
@@ -76,7 +76,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.startDate?.[0]),
     props: {
-      value: experienceStore.createDto.startDate || undefined,
+      value: experienceStore.createDto.startDate,
       onDateChange: (value: Date | null) => {
         experienceStore.setNested("createDto.startDate", value);
         experienceStore.setNested("createDtoErrors.startDate", []);
@@ -97,7 +97,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.endDate?.[0]),
     props: {
-      value: experienceStore.createDto.endDate || undefined,
+      value: experienceStore.createDto.endDate,
       onDateChange: (value: Date | null) => {
         experienceStore.setNested("createDto.endDate", value);
         experienceStore.setNested("createDtoErrors.endDate", []);
@@ -120,7 +120,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.description?.[0]),
     props: {
-      value: experienceStore.createDto.description || undefined,
+      value: experienceStore.createDto.description,
       onChange: (value) => {
         experienceStore.setNested("createDto.description", value);
         experienceStore.setNested("createDtoErrors.description", []);
@@ -142,10 +142,13 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.locationType?.[0]),
     props: {
-      value: experienceStore.createDto.locationType || undefined,
+      value: experienceStore.createDto.locationType,
       onValueChange: (value) => {
         experienceStore.setNested("createDto.locationType", value);
         experienceStore.setNested("createDtoErrors.locationType", []);
+
+        experienceStore.setNested("createDto.location", undefined);
+        experienceStore.setNested("createDtoErrors.location", []);
       },
       options: Object.values(LocationTypes).map((type) => ({
         label: t(
@@ -169,9 +172,8 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.location?.[0]),
     props: {
-      value: experienceStore.createDto.location || undefined,
-      // disabled: experienceStore.createDto.locationType === "Remote",
-
+      value: experienceStore.createDto.location || "",
+      disabled: experienceStore.createDto.locationType === LocationTypes.REMOTE,
       onChange: (value) => {
         experienceStore.setNested("createDto.location", value);
         experienceStore.setNested("createDtoErrors.location", []);
@@ -192,7 +194,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.workType?.[0]),
     props: {
-      value: experienceStore.createDto.workType || undefined,
+      value: experienceStore.createDto.workType,
       onValueChange: (value) => {
         console.log("workType changed:", value);
 
@@ -216,7 +218,6 @@ export const useCreateExperienceFormStructure = ({
       {
         title: t("userManagement.inspect.books.experience.forms.title"),
         description: "",
-        includeHeader: true,
         rows: [
           { fields: [titleField, companyField] },
           { fields: [startDateField, endDateField] },

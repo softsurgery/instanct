@@ -34,7 +34,7 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.title?.[0]),
     props: {
-      value: experienceStore.updateDto.title || undefined,
+      value: experienceStore.updateDto.title,
       onChange: (value) => {
         experienceStore.setNested("updateDto.title", value);
         experienceStore.setNested("updateDtoErrors.title", []);
@@ -56,7 +56,7 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.company?.[0]),
     props: {
-      value: experienceStore.updateDto.company || undefined,
+      value: experienceStore.updateDto.company,
       onChange: (value) => {
         experienceStore.setNested("updateDto.company", value);
         experienceStore.setNested("updateDtoErrors.company", []);
@@ -76,7 +76,7 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.startDate?.[0]),
     props: {
-      value: experienceStore.updateDto.startDate || undefined,
+      value: experienceStore.updateDto.startDate,
       onDateChange: (value: Date | null) => {
         experienceStore.setNested("updateDto.startDate", value);
         experienceStore.setNested("updateDtoErrors.startDate", []);
@@ -97,7 +97,7 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.endDate?.[0]),
     props: {
-      value: experienceStore.updateDto.endDate || undefined,
+      value: experienceStore.updateDto.endDate,
       onDateChange: (value: Date | null) => {
         experienceStore.setNested("updateDto.endDate", value);
         experienceStore.setNested("updateDtoErrors.endDate", []);
@@ -120,7 +120,7 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.description?.[0]),
     props: {
-      value: experienceStore.updateDto.description || undefined,
+      value: experienceStore.updateDto.description,
       onChange: (value) => {
         experienceStore.setNested("updateDto.description", value);
         experienceStore.setNested("updateDtoErrors.description", []);
@@ -142,9 +142,8 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.location?.[0]),
     props: {
-      value: experienceStore.updateDto.location || undefined,
-      // disabled: experienceStore.updateDto.locationType === "Remote",
-
+      value: experienceStore.updateDto.location || "",
+      disabled: experienceStore.updateDto.locationType === LocationTypes.REMOTE,
       onChange: (value) => {
         experienceStore.setNested("updateDto.location", value);
         experienceStore.setNested("updateDtoErrors.location", []);
@@ -165,10 +164,15 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.locationType?.[0]),
     props: {
-      value: experienceStore.updateDto.locationType || undefined,
+      value: experienceStore.updateDto.locationType,
       onValueChange: (value) => {
+        console.log("locationType changed:", value);
+
         experienceStore.setNested("updateDto.locationType", value);
         experienceStore.setNested("updateDtoErrors.locationType", []);
+
+        experienceStore.setNested("updateDto.location", undefined);
+        experienceStore.setNested("updateDtoErrors.location", []);
       },
       options: Object.values(LocationTypes).map((type) => ({
         label: t(
@@ -192,10 +196,8 @@ export const useUpdateExperienceFormStructure = ({
     ),
     error: t(experienceStore.updateDtoErrors?.workType?.[0]),
     props: {
-      value: experienceStore.updateDto.workType || undefined,
+      value: experienceStore.updateDto.workType,
       onValueChange: (value) => {
-        console.log("workType changed:", value);
-
         experienceStore.setNested("updateDto.workType", value);
         experienceStore.setNested("updateDtoErrors.workType", []);
       },
@@ -216,7 +218,6 @@ export const useUpdateExperienceFormStructure = ({
       {
         title: t("userManagement.inspect.books.experience.forms.updateTitle"),
         description: "",
-        includeHeader: true,
         rows: [
           { fields: [titleField, companyField] },
           { fields: [startDateField, endDateField] },

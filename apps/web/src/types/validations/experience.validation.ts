@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LocationTypes } from "../user-management";
 
 const baseExperienceSchema = z.object({
   title: z
@@ -55,10 +56,25 @@ const baseExperienceSchema = z.object({
     })
     .max(20, {
       message: "experience.validation.titleTooLong",
-    }),
+    })
+    .optional(),
+
+  locationType: z.enum(LocationTypes).optional(),
 });
 
-const createExperienceSchema = baseExperienceSchema
+const withConditionalLocation = baseExperienceSchema.superRefine(
+  (data, ctx) => {
+    if (data.locationType !== LocationTypes.REMOTE && !data.location) {
+      ctx.addIssue({
+        path: ["location"],
+        code: z.ZodIssueCode.custom,
+        message: "experience.validation.locationRequired",
+      });
+    }
+  },
+);
+
+const createExperienceSchema = withConditionalLocation
   .refine(
     (data) => {
       if (data.endDate) {
@@ -84,7 +100,7 @@ const createExperienceSchema = baseExperienceSchema
     },
   );
 
-const updateExperienceSchema = baseExperienceSchema
+const updateExperienceSchema = withConditionalLocation
   .refine(
     (data) => {
       if (data.endDate) {
