@@ -6,8 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import { cn } from "@/lib/utils";
 import { ParamVariant, ResponseConfigurationParamDto } from "@/types";
+import { useTranslation } from "react-i18next";
 
 interface ConfigurationInputProps {
   className?: string;
@@ -18,42 +20,56 @@ export const ConfigurationInput = ({
   className,
   configurationParam,
 }: ConfigurationInputProps) => {
+  const { t } = useTranslation("content-management");
+  const configStore = useConfigStore();
+
+  const currentValue =
+    configStore.updateDtos.find((p) => p.id === configurationParam.id)?.value ||
+    "";
+
+  const handleChange = (newValue: string) => {
+    const newUpdateDtos = configStore.updateDtos.filter(
+      (p) => p.id !== configurationParam.id,
+    );
+    newUpdateDtos.push({ id: configurationParam.id, value: newValue });
+    configStore.set("updateDtos", newUpdateDtos);
+  };
+
   switch (configurationParam.variant) {
     case ParamVariant.STRING:
       return (
         <Input
-          className={cn(
-            "col-span-2 rounded-md border px-3 py-2 text-sm",
-            className,
-          )}
-          value={configurationParam.value}
-          onChange={(e) => {
-            console.log(configurationParam.id, e.target.value);
-          }}
+          className={cn("w-full", className)}
+          value={currentValue}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder={t("configuration.inputs.enter", {
+            name: configurationParam.name,
+          })}
         />
       );
+
     case ParamVariant.NUMBER:
       return (
         <Input
           type="number"
-          className={cn(
-            "col-span-2 rounded-md border px-3 py-2 text-sm",
-            className,
-          )}
-          value={configurationParam.value}
-          onChange={(e) => {
-            console.log(configurationParam.id, e.target.value);
-          }}
+          className={cn("w-full", className)}
+          value={currentValue}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder={t("configuration.inputs.enter", {
+            name: configurationParam.name,
+          })}
         />
       );
+
     case ParamVariant.SELECT:
       return (
-        <Select
-          value={configurationParam.value}
-          onValueChange={(v) => console.log(configurationParam.id, v)}
-        >
+        <Select value={currentValue} onValueChange={handleChange}>
           <SelectTrigger className={cn("w-full", className)}>
-            <SelectValue placeholder="Theme" />
+            <SelectValue
+              placeholder={t("configuration.inputs.select", {
+                name: configurationParam.name,
+              })}
+            />
           </SelectTrigger>
           <SelectContent>
             {configurationParam.options?.map((option) => (
@@ -64,6 +80,7 @@ export const ConfigurationInput = ({
           </SelectContent>
         </Select>
       );
+
     default:
       return null;
   }
