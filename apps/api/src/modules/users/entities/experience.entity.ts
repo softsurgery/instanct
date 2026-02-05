@@ -27,7 +27,7 @@ export class ExperienceEntity extends EntityHelper {
   @Column()
   company: string;
 
-  @Column()
+  @Column({ nullable: true })
   location?: string;
 
   @Column()
