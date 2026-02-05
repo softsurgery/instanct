@@ -1,5 +1,5 @@
 export interface ResponseConfigurationParamDto {
-  id: string;
+  id: number;
   name?: string;
   description?: string;
   namespace: ResponseConfigurationNamespaceDto;
@@ -13,6 +13,11 @@ export interface ResponseConfigurationNamespaceDto {
   id: string;
   description?: string;
   params?: ResponseConfigurationParamDto[];
+}
+
+export interface UpdateConfigurationParameterDto {
+  id: number;
+  value: string;
 }
 
 export enum ParamVariant {
