@@ -42,7 +42,7 @@ export const Education = ({ className, userId }: EducationProps) => {
     mutationFn: (education: CreateEducationDto) =>
       api.education.create(userId, education),
     onSuccess: () => {
-      toast(t("userManagement.education.messages.createdSuccess"));
+      t("userManagement.inspect.books.experience.messages.createdSuccess");
       closeEducationCreateSheet();
       educationStore.reset();
       refetchEducations();
@@ -57,7 +57,7 @@ export const Education = ({ className, userId }: EducationProps) => {
     mutationFn: (data: { id: string; education: UpdateEducationDto }) =>
       api.education.update(data.id, data.education),
     onSuccess: () => {
-      toast(t("userManagement.education.messages.updatedSuccess"));
+      t("userManagement.inspect.books.experience.messages.updatedSuccess");
       refetchEducations();
       educationStore.reset();
       closeEducationUpdateSheet();

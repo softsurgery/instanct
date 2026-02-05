@@ -1,4 +1,7 @@
-import { ResponseConfigurationNamespaceDto } from "@/types";
+import {
+  ResponseConfigurationNamespaceDto,
+  UpdateConfigurationParameterDto,
+} from "@/types";
 import axios from "../axios";
 
 const findOneById = async (
@@ -13,7 +16,13 @@ const findAll = async (): Promise<ResponseConfigurationNamespaceDto[]> => {
   return response.data;
 };
 
+const update = async (data: UpdateConfigurationParameterDto[]) => {
+  const response = await axios.put(`/configuration`, data);
+  return response.data;
+};
+
 export const configuration = {
   findOneById,
   findAll,
+  update,
 };
