@@ -24,7 +24,6 @@ export const ExperienceCreateForm: React.FC<ExperienceCreateFormProps> = ({
   userId,
 }) => {
   const { t: tCommon } = useTranslation("common");
-  const { t } = useTranslation("experience");
   const experienceStore = useExperienceStore();
 
   const { experienceCreateFormStructure } = useCreateExperienceFormStructure({

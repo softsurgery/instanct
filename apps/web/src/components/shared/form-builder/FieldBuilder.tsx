@@ -38,11 +38,12 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
         <Input
           className={cn(
             field?.className,
-            field.error && "border-destructive focus-visible:ring-destructive"
+            field.error && "border-destructive focus-visible:ring-destructive",
           )}
           type={field.variant}
           placeholder={field.placeholder}
           value={field.props?.value}
+          disabled={field?.props?.disabled}
           onChange={(event) => {
             field?.props?.onChange?.(event.target.value);
           }}
@@ -53,12 +54,13 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
         <Input
           className={cn(
             field?.className,
-            field.error && "border-destructive focus-visible:ring-destructive"
+            field.error && "border-destructive focus-visible:ring-destructive",
           )}
           type={field.variant}
           min={field.props?.min}
           max={field.props?.max}
           value={field.props?.value}
+          disabled={field?.props?.disabled}
           placeholder={field?.placeholder}
           onChange={(event) => {
             const inputValue = Number(event.target.value);
@@ -73,7 +75,6 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
       return (
         <Select
           value={field?.props?.value}
-          defaultValue={field?.props?.value}
           onValueChange={field?.props?.onValueChange}
           disabled={field?.props?.disabled}
         >
@@ -82,7 +83,8 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             className={cn(
               "w-full",
               field?.className,
-              field.error && "border-destructive focus-visible:ring-destructive"
+              field.error &&
+                "border-destructive focus-visible:ring-destructive",
             )}
           >
             <SelectValue placeholder={field.placeholder} />
@@ -104,7 +106,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           className={cn(
             "w-full",
             field?.className,
-            field.error && "border-destructive focus-visible:ring-destructive"
+            field.error && "border-destructive focus-visible:ring-destructive",
           )}
           value={
             (field?.props?.value &&
@@ -139,7 +141,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           className={cn(
             "pr-10",
             field.error && "border-destructive focus-visible:ring-destructive",
-            field?.className
+            field?.className,
           )}
           value={field?.props?.value as string}
           onChange={(e) => field?.props?.onChange?.(e.target.value)}
@@ -165,7 +167,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           id={field.id}
           className={cn(
             !field.props?.resizable && "resize-none",
-            field?.className
+            field?.className,
           )}
           placeholder={field.placeholder}
           value={field.props?.value}
@@ -203,7 +205,8 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             className={cn(
               "my-5 flex items-center",
               field?.className,
-              field.error && "border-destructive focus-visible:ring-destructive"
+              field.error &&
+                "border-destructive focus-visible:ring-destructive",
             )}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const file = e.target.files?.[0];

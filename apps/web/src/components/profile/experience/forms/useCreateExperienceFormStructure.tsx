@@ -3,10 +3,12 @@ import {
   Field,
   FieldVariant,
   FormStructure,
+  SelectFieldProps,
   TextFieldProps,
   TextareaFieldProps,
 } from "@/components/shared/form-builder/types";
 import { ExperienceStore } from "@/hooks/stores/useExperienceStore";
+import { LocationTypes, WorkTypes } from "@/types/user-management";
 import { useTranslation } from "react-i18next";
 
 interface useCreateExperienceFormStructureProps {
@@ -32,7 +34,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.title?.[0]),
     props: {
-      value: experienceStore.createDto.title || undefined,
+      value: experienceStore.createDto.title,
       onChange: (value) => {
         experienceStore.setNested("createDto.title", value);
         experienceStore.setNested("createDtoErrors.title", []);
@@ -54,7 +56,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.company?.[0]),
     props: {
-      value: experienceStore.createDto.company || undefined,
+      value: experienceStore.createDto.company,
       onChange: (value) => {
         experienceStore.setNested("createDto.company", value);
         experienceStore.setNested("createDtoErrors.company", []);
@@ -74,7 +76,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.startDate?.[0]),
     props: {
-      value: experienceStore.createDto.startDate || undefined,
+      value: experienceStore.createDto.startDate,
       onDateChange: (value: Date | null) => {
         experienceStore.setNested("createDto.startDate", value);
         experienceStore.setNested("createDtoErrors.startDate", []);
@@ -95,7 +97,7 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.endDate?.[0]),
     props: {
-      value: experienceStore.createDto.endDate || undefined,
+      value: experienceStore.createDto.endDate,
       onDateChange: (value: Date | null) => {
         experienceStore.setNested("createDto.endDate", value);
         experienceStore.setNested("createDtoErrors.endDate", []);
@@ -118,12 +120,93 @@ export const useCreateExperienceFormStructure = ({
     ),
     error: t(experienceStore.createDtoErrors?.description?.[0]),
     props: {
-      value: experienceStore.createDto.description || undefined,
+      value: experienceStore.createDto.description,
       onChange: (value) => {
         experienceStore.setNested("createDto.description", value);
         experienceStore.setNested("createDtoErrors.description", []);
       },
       rows: 5,
+    },
+  };
+
+  const locationTypeField: Field<SelectFieldProps> = {
+    id: "locationType",
+    label: t("userManagement.inspect.books.experience.forms.locationType"),
+    variant: FieldVariant.SELECT,
+    required: false,
+    placeholder: t(
+      "userManagement.inspect.books.experience.forms.locationTypePlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.experience.forms.locationTypeDescription",
+    ),
+    error: t(experienceStore.createDtoErrors?.locationType?.[0]),
+    props: {
+      value: experienceStore.createDto.locationType,
+      onValueChange: (value) => {
+        experienceStore.setNested("createDto.locationType", value);
+        experienceStore.setNested("createDtoErrors.locationType", []);
+
+        experienceStore.setNested("createDto.location", undefined);
+        experienceStore.setNested("createDtoErrors.location", []);
+      },
+      options: Object.values(LocationTypes).map((type) => ({
+        label: t(
+          `userManagement.inspect.books.experience.forms.locationTypes.${type}`,
+        ),
+        value: type,
+      })),
+    },
+  };
+
+  const locationField: Field<TextFieldProps> = {
+    id: "location",
+    label: t("userManagement.inspect.books.experience.forms.location"),
+    variant: FieldVariant.TEXT,
+    required: false,
+    placeholder: t(
+      "userManagement.inspect.books.experience.forms.locationPlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.experience.forms.locationDescription",
+    ),
+    error: t(experienceStore.createDtoErrors?.location?.[0]),
+    props: {
+      value: experienceStore.createDto.location || "",
+      disabled: experienceStore.createDto.locationType === LocationTypes.REMOTE,
+      onChange: (value) => {
+        experienceStore.setNested("createDto.location", value);
+        experienceStore.setNested("createDtoErrors.location", []);
+      },
+    },
+  };
+
+  const workTypeField: Field<SelectFieldProps> = {
+    id: "workType",
+    label: t("userManagement.inspect.books.experience.forms.workType"),
+    variant: FieldVariant.SELECT,
+    required: false,
+    placeholder: t(
+      "userManagement.inspect.books.experience.forms.workTypePlaceholder",
+    ),
+    description: t(
+      "userManagement.inspect.books.experience.forms.workTypeDescription",
+    ),
+    error: t(experienceStore.createDtoErrors?.workType?.[0]),
+    props: {
+      value: experienceStore.createDto.workType,
+      onValueChange: (value) => {
+        console.log("workType changed:", value);
+
+        experienceStore.setNested("createDto.workType", value);
+        experienceStore.setNested("createDtoErrors.workType", []);
+      },
+      options: Object.values(WorkTypes).map((type) => ({
+        label: t(
+          `userManagement.inspect.books.experience.forms.workTypes.${type}`,
+        ),
+        value: type,
+      })),
     },
   };
 
@@ -135,11 +218,12 @@ export const useCreateExperienceFormStructure = ({
       {
         title: t("userManagement.inspect.books.experience.forms.title"),
         description: "",
-        includeHeader: true,
         rows: [
           { fields: [titleField, companyField] },
           { fields: [startDateField, endDateField] },
+          { fields: [workTypeField] },
           { fields: [descriptionField] },
+          { fields: [locationField, locationTypeField] },
         ],
       },
     ],

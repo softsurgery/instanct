@@ -140,6 +140,7 @@ export const Experience = ({ className, userId }: ExperienceProps) => {
 
   // Handle edit click - set experience in store and open update sheet
   const handleEditClick = (experience: ResponseExperienceDto) => {
+    console.log("Editing experience: ", experience);
     experienceStore.set("response", experience);
     experienceStore.set<UpdateExperienceDto>("updateDto", {
       title: experience.title,
@@ -147,6 +148,9 @@ export const Experience = ({ className, userId }: ExperienceProps) => {
       startDate: experience.startDate,
       endDate: experience.endDate,
       description: experience.description,
+      location: experience.location,
+      locationType: experience.locationType,
+      workType: experience.workType,
     });
     openExperienceUpdateSheet();
   };

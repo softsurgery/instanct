@@ -102,24 +102,38 @@ export function ExperienceSection({
               >
                 {/* Main Content */}
                 <div className="flex-1 min-w-0">
-                  {/* Title and Company */}
                   <div className="mb-3">
                     <h3 className="text-base font-semibold text-foreground mb-1">
                       {experience.title || "Untitled Position"}
                     </h3>
+
                     {experience.company && (
                       <p className="text-sm text-muted-foreground">
                         {experience.company}
                       </p>
                     )}
+
+                    <div className="mb-1 text-sm text-muted-foreground">
+                      <span>{formatDateRange(experience)}</span>
+                    </div>
+
+                    {(experience.location ||
+                      experience.locationType ||
+                      experience.workType) && (
+                      <div className="mt-1 flex flex-wrap gap-x-2 text-sm text-muted-foreground">
+                        {experience.location && (
+                          <span>{experience.location}</span>
+                        )}
+                        {experience.locationType && (
+                          <span>• {experience.locationType}</span>
+                        )}
+                        {experience.workType && (
+                          <span>• {experience.workType}</span>
+                        )}
+                      </div>
+                    )}
                   </div>
 
-                  {/* Date Range */}
-                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                    <span>{formatDateRange(experience)}</span>
-                  </div>
-
-                  {/* Description */}
                   {experience.description && (
                     <div className="space-y-2">
                       <p className="text-sm text-foreground leading-relaxed break-words">

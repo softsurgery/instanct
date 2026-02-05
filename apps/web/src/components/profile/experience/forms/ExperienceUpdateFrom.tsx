@@ -2,7 +2,6 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { useExperienceStore } from "@/hooks/stores/useExperienceStore";
 import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
-import { mapToSelectOptions } from "@/components/shared/form-builder/utils/mapToSelectOptions";
 import { Button } from "@/components/ui/button";
 import { useUpdateExperienceFormStructure } from "./useUpdateExperienceFormStructure";
 import { Save } from "lucide-react";
@@ -15,17 +14,14 @@ interface ExperienceUpdateFormProps {
   className?: string;
   updateExperience?: (experience: UpdateExperienceDto) => void;
   isUpdatePending?: boolean;
-  experienceId?: number;
 }
 
 export const ExperienceUpdateForm: React.FC<ExperienceUpdateFormProps> = ({
   className,
   updateExperience,
   isUpdatePending,
-  experienceId,
 }) => {
   const { t: tCommon } = useTranslation("common");
-  const { t } = useTranslation("experience");
   const experienceStore = useExperienceStore();
 
   // These would come from your API or constants
