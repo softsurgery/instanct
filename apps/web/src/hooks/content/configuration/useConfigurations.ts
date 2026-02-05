@@ -15,7 +15,7 @@ export const useConfigurations = (
     refetch: refetchConfigurations,
   } = useQuery({
     queryKey: ["configurations"],
-    queryFn: () => api.admin.configuration.findAll(),
+    queryFn: () => api.admin.configuration.findAllGlobal(),
     enabled,
   });
 

@@ -1,3 +1,5 @@
+import { ResponseUserDto } from "./user-management";
+
 export interface ResponseConfigurationParamDto {
   id: number;
   name?: string;
@@ -13,6 +15,8 @@ export interface ResponseConfigurationNamespaceDto {
   id: string;
   description?: string;
   params?: ResponseConfigurationParamDto[];
+  userId?: string;
+  user: ResponseUserDto;
 }
 
 export interface UpdateConfigurationParameterDto {

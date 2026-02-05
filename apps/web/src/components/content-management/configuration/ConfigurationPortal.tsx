@@ -58,8 +58,8 @@ export const ConfigurationPortal = ({
       return api.admin.configuration.update(data);
     },
     onSuccess: () => {
+      refetchConfigurations();
       toast.success(t("configuration.messages.updateSuccess"));
-      refetchConfigurations().then(() => {});
     },
     onError: (error) => {
       toast.error(error.message || t("configuration.messages.updateError"));

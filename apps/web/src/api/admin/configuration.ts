@@ -16,6 +16,13 @@ const findAll = async (): Promise<ResponseConfigurationNamespaceDto[]> => {
   return response.data;
 };
 
+const findAllGlobal = async (): Promise<
+  ResponseConfigurationNamespaceDto[]
+> => {
+  const response = await axios.get(`/configuration/all/global`);
+  return response.data;
+};
+
 const update = async (data: UpdateConfigurationParameterDto[]) => {
   const response = await axios.put(`/configuration`, data);
   return response.data;
@@ -24,5 +31,6 @@ const update = async (data: UpdateConfigurationParameterDto[]) => {
 export const configuration = {
   findOneById,
   findAll,
+  findAllGlobal,
   update,
 };
