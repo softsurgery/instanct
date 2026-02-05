@@ -47,6 +47,15 @@ const baseExperienceSchema = z.object({
       message: "experience.validation.descriptionTooLong",
     })
     .optional(),
+
+  location: z
+    .string()
+    .min(4, {
+      message: "experience.validation.titleTooShort",
+    })
+    .max(20, {
+      message: "experience.validation.titleTooLong",
+    }),
 });
 
 const createExperienceSchema = baseExperienceSchema
