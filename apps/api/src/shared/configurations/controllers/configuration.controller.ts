@@ -53,16 +53,11 @@ export class ConfigurationController {
 
   @Put()
   async update(
-    @Body()
-    UpdateConfigurationParamaterDtos: {
-      dtos: UpdateConfigurationParamaterDto[];
-    },
+    @Body() dtos: UpdateConfigurationParamaterDto[],
   ): Promise<ResponseConfigurationNamespaceDto> {
     return toDto(
       ResponseConfigurationNamespaceDto,
-      await this.configurationParamService.updateBatchParams(
-        UpdateConfigurationParamaterDtos.dtos,
-      ),
+      await this.configurationParamService.updateBatchParams(dtos),
     );
   }
 }
