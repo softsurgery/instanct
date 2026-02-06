@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 import { useIntro } from "@/contexts/IntroContext";
 import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
@@ -18,8 +12,15 @@ import { Label } from "@/components/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/api";
-import { Loader2 } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
 
 interface ConfigurationPortalProps {
   className?: string;
@@ -146,32 +147,98 @@ export const ConfigurationPortal = ({
   return (
     <div
       className={cn(
-        "flex flex-col flex-1 overflow-auto no-scrollbar container mx-auto p-1 mt-4",
+        "flex flex-col flex-1 gap-4 overflow-auto no-scrollbar container mx-auto p-1 mt-4 mb-10",
         className,
       )}
     >
+      {/* searsh bar */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          type="text"
+          placeholder="Search params..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-9"
+        />
+      </div>
+
+      <Accordion type="multiple" className="space-y-4 ">
         {filteredConfigs?.length ? (
           filteredConfigs.map((configuration) => (
+            <AccordionItem
+              key={configuration.id}
+              value={configuration.id}
+              className="border-none "
+            >
+              <Card className=" bg-transparent">
+                <AccordionTrigger className="pr-6 hover:no-underline cursor-pointer ">
+                  <CardHeader className="pb-3 text-left">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-primary/70" />
+                      {_.capitalize(configuration.name)}
+                    </CardTitle>
+                  </CardHeader>
+                </AccordionTrigger>
 
-          <CardContent className="flex flex-col gap-8 pt-0">
-            {Object.entries(
-              _.groupBy(
-                configuration.params,
-                (param) => param.name?.split(".")[0],
-              ),
-            ).map(([groupKey, params]) => (
-              <div key={groupKey} className="rounded-md border bg-muted/30 p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <h3 className="text-sm font-semibold capitalize tracking-tight">
-                    {groupKey}
-                  </h3>
-                  <span className="text-xs text-muted-foreground">
-                    {t("configuration.groups.count", {
-                      count: params.length,
-                    })}
-                  </span>
-                </div>
+                <AccordionContent className="bg-transparent ">
+                  <CardContent className="flex flex-col gap-8 pt-0">
+                    {Object.entries(
+                      _.groupBy(
+                        configuration.params,
+                        (param) => param.name?.split(".")[0],
+                      ),
+                    ).map(([groupKey, params]) => (
+                      <div
+                        key={groupKey}
+                        className="rounded-md border bg-muted/30 p-4"
+                      >
+                        <div className="mb-3 flex items-center gap-2">
+                          <h3 className="text-sm font-semibold capitalize tracking-tight">
+                            {groupKey}
+                          </h3>
+                          <span className="text-xs text-muted-foreground">
+                            {t("configuration.groups.count", {
+                              count: params.length,
+                            })}
+                          </span>
+                        </div>
 
+                        <div className="space-y-4">
+                          {params
+                            .sort((a, b) => a.variant.localeCompare(b.variant))
+                            .map((param) => (
+                              <div
+                                key={param.id}
+                                className="flex flex-col gap-3 lg:flex-row lg:items-start"
+                              >
+                                <div className="lg:w-1/4">
+                                  <Label className="text-sm font-medium">
+                                    {_.startCase(
+                                      _.camelCase(param.name?.split(".")[1]),
+                                    )}
+                                  </Label>
+                                  {param.description && (
+                                    <p className="text-xs text-muted-foreground">
+                                      {param.description}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="lg:w-3/4">
+                                  <ConfigurationInput
+                                    configurationParam={param}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </AccordionContent>
+              </Card>
+            </AccordionItem>
+          ))
         ) : (
           <p className="text-sm text-muted-foreground w-full text-center py-6">
             {searchQuery
@@ -179,6 +246,7 @@ export const ConfigurationPortal = ({
               : configurations?.length === 0}
           </p>
         )}
+      </Accordion>
     </div>
   );
 };
