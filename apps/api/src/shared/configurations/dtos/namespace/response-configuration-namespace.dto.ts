@@ -11,6 +11,10 @@ export class ResponseConfigurationNamespaceDto extends ResponseDtoHelper {
 
   @ApiProperty({ type: String })
   @Expose()
+  name?: string;
+
+  @ApiProperty({ type: String })
+  @Expose()
   description?: string;
 
   @ApiProperty({ type: () => [ResponseConfigurationParamDto] })

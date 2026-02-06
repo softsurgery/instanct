@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigurationParamRepository } from 'src/shared/configurations/repositories/configuration-param.repository';
 import { ConfigurationNamespaceRepository } from 'src/shared/configurations/repositories/configuration-namespace.repository';
 import { mapConfiguration } from './data/configuration.data';
+import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 
 @Injectable()
 export class ConfigurationSeedCommand {
@@ -17,24 +18,27 @@ export class ConfigurationSeedCommand {
   })
   async seed() {
     const start = new Date();
-    console.log('🚀 Starting seeding of admin...');
+    console.log('🚀 Starting seeding of configuration...');
     //=============================================================================================
-    const namespaceId = 'maps';
+    const namespace = ConfigurationNamespaces.MAPS;
 
     const mapsConfigNamespace =
       await this.configurationNamespaceRepository.findOne({
-        where: { id: namespaceId },
+        where: { name: namespace },
       });
 
     if (!mapsConfigNamespace) {
-      await this.configurationNamespaceRepository.save({
-        id: namespaceId,
+      const namespaceEntity = await this.configurationNamespaceRepository.save({
+        name: namespace,
         description: 'Maps configuration',
       });
 
       await Promise.all(
         mapConfiguration.map((param) =>
-          this.configurationParamRepository.save(param),
+          this.configurationParamRepository.save({
+            ...param,
+            namespaceId: namespaceEntity.id,
+          }),
         ),
       );
     }

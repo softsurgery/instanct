@@ -57,7 +57,7 @@ export class ConfigurationController {
   ): Promise<ResponseConfigurationNamespaceDto[]> {
     return toDtoArray(
       ResponseConfigurationNamespaceDto,
-      await this.configurationNamespaceService.findAll(query),
+      await this.configurationNamespaceService.findAllGlobal(query),
     );
   }
 
