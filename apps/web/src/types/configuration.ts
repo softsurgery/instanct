@@ -13,6 +13,7 @@ export interface ResponseConfigurationParamDto {
 
 export interface ResponseConfigurationNamespaceDto {
   id: string;
+  name?: string;
   description?: string;
   params?: ResponseConfigurationParamDto[];
   userId?: string;

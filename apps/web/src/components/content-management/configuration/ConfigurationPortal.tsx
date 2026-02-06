@@ -141,7 +141,7 @@ export const ConfigurationPortal = ({
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-primary/70" />
-              {_.capitalize(configuration.id)}
+              {_.capitalize(configuration.name)}
             </CardTitle>
             <CardDescription className="mt-1 text-sm">
               {configuration.description}
