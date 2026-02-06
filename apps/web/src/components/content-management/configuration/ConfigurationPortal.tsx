@@ -36,6 +36,7 @@ export const ConfigurationPortal = ({
   const configStore = useConfigStore();
 
   const originalValuesRef = React.useRef<{ id: number; value: string }[]>([]);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   React.useEffect(() => {
     if (configurations && configStore.updateDtos.length === 0) {
@@ -118,6 +119,19 @@ export const ConfigurationPortal = ({
     };
   }, []);
 
+  const filteredConfigs = React.useMemo(
+    () =>
+      configurations
+        ?.map((config) => ({
+          ...config,
+          params: config.params?.filter((param) =>
+            param.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
+        }))
+        .filter((config) => config.params?.length !== 0),
+    [configurations, searchQuery],
+  );
+
   if (isConfigurationsPending) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -136,17 +150,8 @@ export const ConfigurationPortal = ({
         className,
       )}
     >
-      {configurations?.map((configuration) => (
-        <Card key={configuration.id}>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-primary/70" />
-              {_.capitalize(configuration.name)}
-            </CardTitle>
-            <CardDescription className="mt-1 text-sm">
-              {configuration.description}
-            </CardDescription>
-          </CardHeader>
+        {filteredConfigs?.length ? (
+          filteredConfigs.map((configuration) => (
 
           <CardContent className="flex flex-col gap-8 pt-0">
             {Object.entries(
@@ -167,37 +172,13 @@ export const ConfigurationPortal = ({
                   </span>
                 </div>
 
-                <div className="space-y-4">
-                  {params
-                    .sort((a, b) => a.variant.localeCompare(b.variant))
-                    .map((param) => (
-                      <div
-                        key={param.id}
-                        className="flex flex-col gap-3 lg:flex-row lg:items-start"
-                      >
-                        <div className="lg:w-1/4">
-                          <Label className="text-sm font-medium">
-                            {_.startCase(
-                              _.camelCase(param.name?.split(".")[1]),
-                            )}
-                          </Label>
-                          {param.description && (
-                            <p className="text-xs text-muted-foreground">
-                              {param.description}
-                            </p>
-                          )}
-                        </div>
-                        <div className="lg:w-3/4">
-                          <ConfigurationInput configurationParam={param} />
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      ))}
+        ) : (
+          <p className="text-sm text-muted-foreground w-full text-center py-6">
+            {searchQuery
+              ? "No configutation params match your search"
+              : configurations?.length === 0}
+          </p>
+        )}
     </div>
   );
 };
