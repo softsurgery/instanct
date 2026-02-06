@@ -5,7 +5,8 @@ import { ConfigurationNamespaceRepository } from '../repositories/configuration-
 import { ParamVariant } from '../enums/param-variant.enum';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { FindManyOptions } from 'typeorm';
+import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 
 @Injectable()
 export class ConfigurationNamespaceService extends AbstractCrudService<ConfigurationNamespaceEntity> {
@@ -46,6 +47,22 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
     };
     return await this.repository.findAll(
       queryOptions as FindManyOptions<ConfigurationNamespaceEntity>,
+    );
+  }
+
+  async findGlobalByName(
+    name: ConfigurationNamespaces,
+    query: Pick<IQueryObject, 'join'>,
+  ): Promise<ConfigurationNamespaceEntity | null> {
+    const queryBuilder = new QueryBuilder(this.repository.getMetadata());
+    const queryOptions = queryBuilder.build(query);
+    queryOptions.where = {
+      ...queryOptions.where,
+      userId: null,
+      name,
+    };
+    return await this.repository.findOne(
+      queryOptions as FindOneOptions<ConfigurationNamespaceEntity>,
     );
   }
 }

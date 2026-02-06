@@ -26,6 +26,8 @@ import { EducationRepository } from './repositories/education.repository';
 import { EducationEntity } from './entities/education.entity';
 import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
 import { StorageModule } from 'src/shared/storage/storage.module';
+import { UserConfigurationService } from './services/user-configuration.service';
+import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
 
 @Module({
   controllers: [],
@@ -33,6 +35,7 @@ import { StorageModule } from 'src/shared/storage/storage.module';
     //services
     UserService,
     UserUploadService,
+    UserConfigurationService,
 
     RoleService,
     PermissionService,
@@ -45,6 +48,7 @@ import { StorageModule } from 'src/shared/storage/storage.module';
     //repositories
     UserRepository,
     UserUploadRepository,
+    UserConfigurationService,
 
     RoleRepository,
     PermissionRepository,
@@ -92,6 +96,7 @@ import { StorageModule } from 'src/shared/storage/storage.module';
     ]),
     StorageModule,
     ReferenceTypesModule,
+    ConfigurationsModule,
   ],
 })
 export class UserManagementModule {}

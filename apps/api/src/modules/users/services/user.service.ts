@@ -19,12 +19,14 @@ import { hashPassword } from 'src/shared/helpers/hash.utils';
 import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-param.repository';
 import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
 import { StorageService } from 'src/shared/storage/services/storage.service';
+import { UserConfigurationService } from './user-configuration.service';
 
 @Injectable()
 export class UserService extends AbstractUserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly userUploadService: UserUploadService,
+    private readonly userConfigurationService: UserConfigurationService,
     private readonly storageService: StorageService,
     private readonly refParamRepository: RefParamRepository,
   ) {
@@ -125,6 +127,8 @@ export class UserService extends AbstractUserService {
       ...rest,
       password: await hashPassword(rest.password),
     });
+
+    await this.userConfigurationService.createPersonalMapConfiguration(user.id);
 
     await this.userUploadService.saveMany(
       uploads?.map((upload, index) => ({
