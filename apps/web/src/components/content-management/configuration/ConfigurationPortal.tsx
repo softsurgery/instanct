@@ -21,6 +21,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 interface ConfigurationPortalProps {
   className?: string;
@@ -147,7 +148,7 @@ export const ConfigurationPortal = ({
   return (
     <div
       className={cn(
-        "flex flex-col flex-1 gap-4 overflow-auto no-scrollbar container mx-auto p-1 mt-4 mb-10",
+        "flex flex-col flex-1 gap-4 overflow-hidden  container mx-auto p-1 mt-4",
         className,
       )}
     >
@@ -162,81 +163,85 @@ export const ConfigurationPortal = ({
           className="pl-9"
         />
       </div>
+      <Separator />
 
-      <Accordion type="multiple" className="space-y-4 ">
+      <Accordion
+        type="multiple"
+        className="flex flex-col gap-4 no-scrollbar overflow-auto pb-4"
+      >
         {filteredConfigs?.length ? (
           filteredConfigs.map((configuration) => (
             <AccordionItem
               key={configuration.id}
               value={configuration.id}
-              className="border-none "
+              className="border-none bg-card px-2 rounded-lg"
             >
-              <Card className=" bg-transparent">
-                <AccordionTrigger className="pr-6 hover:no-underline cursor-pointer ">
-                  <CardHeader className="pb-3 text-left">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-primary/70" />
-                      {_.capitalize(configuration.name)}
-                    </CardTitle>
-                  </CardHeader>
-                </AccordionTrigger>
+              <AccordionTrigger className="pr-6 cursor-pointer flex items-center gap-2">
+                <div className="px-4">
+                  <p className="text-lg font-bold">
+                    {_.capitalize(configuration.name)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {configuration.description}
+                  </p>
+                </div>
+              </AccordionTrigger>
 
-                <AccordionContent className="bg-transparent ">
-                  <CardContent className="flex flex-col gap-8 pt-0">
-                    {Object.entries(
-                      _.groupBy(
-                        configuration.params,
-                        (param) => param.name?.split(".")[0],
-                      ),
-                    ).map(([groupKey, params]) => (
-                      <div
-                        key={groupKey}
-                        className="rounded-md border bg-muted/30 p-4"
-                      >
-                        <div className="mb-3 flex items-center gap-2">
-                          <h3 className="text-sm font-semibold capitalize tracking-tight">
-                            {groupKey}
-                          </h3>
-                          <span className="text-xs text-muted-foreground">
-                            {t("configuration.groups.count", {
-                              count: params.length,
-                            })}
-                          </span>
-                        </div>
-
-                        <div className="space-y-4">
-                          {params
-                            .sort((a, b) => a.variant.localeCompare(b.variant))
-                            .map((param) => (
-                              <div
-                                key={param.id}
-                                className="flex flex-col gap-3 lg:flex-row lg:items-start"
-                              >
-                                <div className="lg:w-1/4">
-                                  <Label className="text-sm font-medium">
-                                    {_.startCase(
-                                      _.camelCase(param.name?.split(".")[1]),
-                                    )}
-                                  </Label>
-                                  {param.description && (
-                                    <p className="text-xs text-muted-foreground">
-                                      {param.description}
-                                    </p>
-                                  )}
-                                </div>
-                                <div className="lg:w-3/4">
-                                  <ConfigurationInput
-                                    configurationParam={param}
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                        </div>
+              <AccordionContent>
+                <CardContent className="flex flex-col gap-8 pt-0">
+                  {Object.entries(
+                    _.groupBy(
+                      configuration.params,
+                      (param) => param.name?.split(".")[0],
+                    ),
+                  ).map(([groupKey, params]) => (
+                    <div
+                      key={groupKey}
+                      className="rounded-md border bg-muted/30 p-4"
+                    >
+                      <div className="mb-3 flex items-center gap-2">
+                        <h3 className="text-sm font-semibold capitalize tracking-tight">
+                          {groupKey}
+                        </h3>
+                        <span className="text-xs text-muted-foreground">
+                          {t("configuration.groups.count", {
+                            count: params.length,
+                          })}
+                        </span>
                       </div>
-                    ))}
-                  </CardContent>
-                </AccordionContent>
-              </Card>
+
+                      <div className="space-y-4">
+                        {params
+                          .sort((a, b) => a.variant.localeCompare(b.variant))
+                          .map((param) => (
+                            <div
+                              key={param.id}
+                              className="flex flex-col gap-3 lg:flex-row lg:items-start"
+                            >
+                              <div className="lg:w-1/4">
+                                <Label className="text-sm font-medium">
+                                  {_.startCase(
+                                    _.camelCase(param.name?.split(".")[1]),
+                                  )}
+                                </Label>
+                                {param.description && (
+                                  <p className="text-xs text-muted-foreground">
+                                    {param.description}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="lg:w-3/4">
+                                <ConfigurationInput
+                                  configurationParam={param}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </AccordionContent>
             </AccordionItem>
           ))
         ) : (
