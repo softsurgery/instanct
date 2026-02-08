@@ -71,8 +71,8 @@ const data = {
       icon: Folder,
       items: [
         {
-          title: "Application Properties",
-          url: "/content-management/application-properties",
+          title: "Configuration",
+          url: "/content-management/configuration",
         },
         {
           title: "Reference Types",
@@ -81,10 +81,6 @@ const data = {
         {
           title: "Reference Parameters",
           url: "/content-management/reference-parameters",
-        },
-        {
-          title: "Configuration",
-          url: "/content-management/configuration",
         },
       ],
     },
