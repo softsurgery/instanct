@@ -4,8 +4,8 @@ import { ConfigurationParamRepository } from 'src/shared/configurations/reposito
 import { ConfigurationNamespaceRepository } from 'src/shared/configurations/repositories/configuration-namespace.repository';
 import { mapConfiguration } from './data/configuration.data';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
-import { propertiesCoreSeed } from './data/configuration.data';
-import { ParamVariant } from 'src/shared/configurations/enums/param-variant.enum';
+import { coreConfiguration } from './data/configuration.data';
+
 @Injectable()
 export class ConfigurationSeedCommand {
   constructor(
@@ -21,20 +21,9 @@ export class ConfigurationSeedCommand {
     console.log('🚀 Starting seeding of configuration...');
 
     const configurationByNamespace = {
-      [ConfigurationNamespaces.CORE]: propertiesCoreSeed,
+      [ConfigurationNamespaces.CORE]: coreConfiguration,
       [ConfigurationNamespaces.MAPS]: mapConfiguration,
-    } satisfies Partial<
-      Record<
-        ConfigurationNamespaces,
-        ReadonlyArray<{
-          name: string;
-          description: string;
-          variant: ParamVariant;
-          value: string;
-          options?: unknown;
-        }>
-      >
-    >;
+    };
 
     for (const [namespace, params] of Object.entries(
       configurationByNamespace,

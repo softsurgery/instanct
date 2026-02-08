@@ -75,7 +75,7 @@ export const mapConfiguration = [
   },
 ];
 
-export const propertiesCoreSeed = [
+export const coreConfiguration = [
   {
     name: 'company.name',
     description: 'Company name',
