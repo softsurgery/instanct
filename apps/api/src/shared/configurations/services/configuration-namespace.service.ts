@@ -5,7 +5,7 @@ import { ConfigurationNamespaceRepository } from '../repositories/configuration-
 import { ParamVariant } from '../enums/param-variant.enum';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { FindManyOptions, FindOneOptions, IsNull } from 'typeorm';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
     const queryOptions = queryBuilder.build(query);
     queryOptions.where = {
       ...queryOptions.where,
-      userId: null,
+      userId: IsNull(),
     };
     return await this.repository.findAll(
       queryOptions as FindManyOptions<ConfigurationNamespaceEntity>,
@@ -58,7 +58,7 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
     const queryOptions = queryBuilder.build(query);
     queryOptions.where = {
       ...queryOptions.where,
-      userId: null,
+      userId: IsNull(),
       name,
     };
     return await this.repository.findOne(
