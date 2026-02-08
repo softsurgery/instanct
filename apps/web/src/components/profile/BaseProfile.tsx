@@ -194,7 +194,7 @@ export const BaseProfile = ({
         className="flex flex-col flex-1 overflow-auto"
       >
         <TabsList
-          className={`grid mb-4`}
+          className={`grid border-b-2 border-[#3B82F6]`}
           style={{
             gridTemplateColumns: `repeat(${filteredTabs.length}, minmax(0, 1fr))`,
           }}
