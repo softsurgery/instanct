@@ -14,14 +14,14 @@ interface EducationCreateFormProps {
   className?: string;
   addEducation?: (education: CreateEducationDto) => void;
   isAddPending?: boolean;
-  userId?: string;
+  // userId?: string;
 }
 
 export const EducationCreateForm: React.FC<EducationCreateFormProps> = ({
   className,
   addEducation,
   isAddPending,
-  userId,
+  // userId,
 }) => {
   const { t: tCommon } = useTranslation("common");
   const { t } = useTranslation("education");
@@ -34,7 +34,7 @@ export const EducationCreateForm: React.FC<EducationCreateFormProps> = ({
   const validateForm = React.useCallback(() => {
     const educationResult = createEducationSchema.safeParse({
       ...educationStore.createDto,
-      userId,
+      // userId,
     });
     if (!educationResult.success) {
       educationStore.set(
@@ -44,7 +44,7 @@ export const EducationCreateForm: React.FC<EducationCreateFormProps> = ({
       return false;
     }
     return true;
-  }, [educationStore, userId]);
+  }, [educationStore]);
 
   const handleSubmit = () => {
     const valid = validateForm();

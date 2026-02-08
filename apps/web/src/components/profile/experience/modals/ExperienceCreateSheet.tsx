@@ -8,7 +8,7 @@ interface ExperienceCreateSheet {
   addExperience?: (experience: CreateExperienceDto) => void;
   isAddPending?: boolean;
   resetExperience?: () => void;
-  userId: string;
+  // userId: string;
 }
 
 export const useExperienceCreateSheet = ({

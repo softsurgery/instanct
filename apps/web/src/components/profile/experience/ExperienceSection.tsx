@@ -81,9 +81,9 @@ export function ExperienceSection({
         </Button>
       </div>
 
-      {/* Experience Grid */}
+      {/* Experience Section */}
       {experiences && experiences.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4  space-y-3 overflow-y-auto no-scrollbar">
+        <div className="flex flex-col gap-4 overflow-y-auto no-scrollbar">
           {/* Display ALL experiences */}
           {experiences.map((experience) => {
             const isExpanded = expandedDescriptions.has(experience.id);
@@ -98,7 +98,7 @@ export function ExperienceSection({
             return (
               <div
                 key={experience.id}
-                className="min-h-56 group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/5 h-fit"
+                className="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/5 h-fit"
               >
                 {/* Main Content */}
                 <div className="flex-1 min-w-0">
@@ -122,10 +122,10 @@ export function ExperienceSection({
                       experience.workType) && (
                       <div className="mt-1 flex flex-wrap gap-x-2 text-sm text-muted-foreground">
                         {experience.location && (
-                          <span>{experience.location}</span>
+                          <span>{experience.location} •</span>
                         )}
                         {experience.locationType && (
-                          <span>• {experience.locationType}</span>
+                          <span>{experience.locationType}</span>
                         )}
                         {experience.workType && (
                           <span>• {experience.workType}</span>

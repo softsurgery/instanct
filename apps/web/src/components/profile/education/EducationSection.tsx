@@ -81,9 +81,9 @@ export function EducationSection({
         </Button>
       </div>
 
-      {/* Education Grid */}
+      {/* Education section  */}
       {educations && educations.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-3 overflow-y-auto no-scrollbar">
+        <div className="flex flex-col gap-4 overflow-y-auto no-scrollbar">
           {/* Display ALL educations */}
           {educations.map((education) => {
             const isExpanded = expandedDescriptions.has(education.id);

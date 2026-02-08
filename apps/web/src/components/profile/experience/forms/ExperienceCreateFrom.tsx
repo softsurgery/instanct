@@ -14,14 +14,14 @@ interface ExperienceCreateFormProps {
   className?: string;
   addExperience?: (experience: CreateExperienceDto) => void;
   isAddPending?: boolean;
-  userId?: string;
+  // userId?: string;
 }
 
 export const ExperienceCreateForm: React.FC<ExperienceCreateFormProps> = ({
   className,
   addExperience,
   isAddPending,
-  userId,
+  // userId,
 }) => {
   const { t: tCommon } = useTranslation("common");
   const experienceStore = useExperienceStore();
@@ -33,7 +33,6 @@ export const ExperienceCreateForm: React.FC<ExperienceCreateFormProps> = ({
   const validateForm = React.useCallback(() => {
     const experienceResult = createExperienceSchema.safeParse({
       ...experienceStore.createDto,
-      userId,
     });
     if (!experienceResult.success) {
       experienceStore.set(
@@ -43,7 +42,7 @@ export const ExperienceCreateForm: React.FC<ExperienceCreateFormProps> = ({
       return false;
     }
     return true;
-  }, [experienceStore, userId]);
+  }, [experienceStore]);
 
   const handleSubmit = () => {
     const valid = validateForm();

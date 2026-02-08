@@ -8,7 +8,7 @@ interface EducationCreateSheet {
   addEducation?: (education: CreateEducationDto) => void;
   isAddPending?: boolean;
   resetEducation?: () => void;
-  userId: string;
+  // userId: string;
 }
 
 export const useEducationCreateSheet = ({
