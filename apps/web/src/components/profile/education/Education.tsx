@@ -109,7 +109,6 @@ export const Education = ({ className, userId }: EducationProps) => {
     addEducation,
     isAddPending,
     resetEducation: handleReset,
-    userId,
   });
 
   // Update sheet hook
