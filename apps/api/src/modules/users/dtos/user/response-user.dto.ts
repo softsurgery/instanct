@@ -6,6 +6,7 @@ import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
 import { ResponseUserUploadDto } from '../user-upload/response-user-upload.dto';
 import { ResponseExperienceDto } from '../experience/response-experience.dto';
 import { ResponseRefParamDto } from 'src/shared/reference-types/dtos/ref-param/response-ref-param.dto';
+import { ResponseEducationDto } from '../education/response-education.dto';
 
 export class ResponseUserDto extends ResponseAbstractUserDto {
   @ApiProperty({ type: String })
@@ -68,6 +69,11 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Expose()
   @Type(() => ResponseExperienceDto)
   experiences: ResponseExperienceDto[];
+
+  @ApiProperty({ type: [ResponseEducationDto] })
+  @Expose()
+  @Type(() => ResponseEducationDto)
+  educations: ResponseEducationDto[];
 
   @ApiProperty({ type: [ResponseRefParamDto] })
   @Expose()
