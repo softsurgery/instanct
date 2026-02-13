@@ -26,6 +26,9 @@ import { CreateUserDto } from '../dtos/user/create-user.dto';
 import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UpdateUserObjectivesDto } from '../dtos/user/update-user-objectives.dto';
 import { UpdateUserIndustriesDto } from '../dtos/user/update-user-industries.dto';
+import { UserConfigurationService } from '../services/user-configuration.service';
+import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
+import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dtos/namespace/response-configuration-namespace.dto';
 
 @ApiTags('user')
 @ApiBearerAuth('access_token')
@@ -36,7 +39,10 @@ import { UpdateUserIndustriesDto } from '../dtos/user/update-user-industries.dto
   path: '/user',
 })
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly userConfigurationService: UserConfigurationService,
+  ) {}
 
   @Get()
   async findOne(@Query() query: IQueryObject): Promise<ResponseUserDto | null> {
@@ -90,6 +96,30 @@ export class UserController {
         filter: `id||$eq||${id}`,
         join: query.join,
       }),
+    );
+  }
+
+  @Get('/configurations/maps/current')
+  async getCurrentUserMapConfiguration(
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseConfigurationNamespaceDto | null> {
+    if (!req?.user?.sub) {
+      return null;
+    }
+    const config =
+      await this.userConfigurationService.getPersonalMapConfiguration(
+        req?.user?.sub,
+      );
+    return toDto(ResponseConfigurationNamespaceDto, config);
+  }
+
+  @Get('/configurations/maps/:id')
+  async getMapConfiguration(
+    @Param('id') id: string,
+  ): Promise<ResponseConfigurationNamespaceDto | null> {
+    return toDto(
+      ResponseConfigurationNamespaceDto,
+      await this.userConfigurationService.getPersonalMapConfiguration(id),
     );
   }
 
@@ -215,6 +245,22 @@ export class UserController {
     const user = await this.userService.disapprove(id);
     req.logInfo = { id: user?.id, firstName: user?.firstName };
     return toDto(ResponseUserDto, user);
+  }
+
+  @Put('/configuration/maps/:id')
+  @LogEvent(EventType.USER_UPDATE)
+  async updateMapConfiguration(
+    @Param('id') id: string,
+    @Body() updateUserMapConfigurationDto: UpdateUserMapConfigurationDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseConfigurationNamespaceDto | null> {
+    const config =
+      await this.userConfigurationService.updatePersonalMapConfiguration(
+        id,
+        updateUserMapConfigurationDto,
+      );
+    req.logInfo = { id };
+    return toDto(ResponseConfigurationNamespaceDto, config);
   }
 
   @Delete(':id')

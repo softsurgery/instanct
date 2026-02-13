@@ -27,7 +27,6 @@ export class ConfigurationNamespaceEntity {
 
   @ManyToOne(() => AbstractUserEntity, (user) => user.logs, {
     nullable: true,
-    eager: true,
   })
   @JoinColumn({ name: 'userId' })
   user: AbstractUserEntity;

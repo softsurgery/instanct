@@ -62,6 +62,7 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
     //services
     UserService,
     UserUploadService,
+    UserConfigurationService,
 
     RoleService,
     PermissionService,

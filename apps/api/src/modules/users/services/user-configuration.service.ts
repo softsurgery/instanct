@@ -3,7 +3,7 @@ import { ConfigurationNamespaceService } from 'src/shared/configurations/service
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { ConfigurationParamService } from 'src/shared/configurations/services/configuration-param.service';
 import { ParamVariant } from 'src/shared/configurations/enums/param-variant.enum';
-import { ConfigurationParamEntity } from 'src/shared/configurations/entities/configuration-param.entity';
+import { ConfigurationNamespaceEntity } from 'src/shared/configurations/entities/configuration-namespace.entity';
 
 @Injectable()
 export class UserConfigurationService {
@@ -12,9 +12,41 @@ export class UserConfigurationService {
     private readonly configurationParamService: ConfigurationParamService,
   ) {}
 
+  async getGlobalMapConfigurationParams() {
+    const namespace = await this.configurationNamespaceService.findGlobalByName(
+      ConfigurationNamespaces.MAPS,
+      { join: 'params' },
+    );
+
+    if (!namespace) throw new Error('Global map configuration not found');
+
+    return {
+      rangeMin: Number(
+        namespace.params.find((p) => p.name === 'range.min')?.value,
+      ),
+      rangeMax: Number(
+        namespace.params.find((p) => p.name === 'range.max')?.value,
+      ),
+    };
+  }
+
+  async getPersonalMapConfiguration(
+    userId: string,
+  ): Promise<ConfigurationNamespaceEntity | null> {
+    const namespace =
+      await this.configurationNamespaceService.findOneByCondition({
+        filter: `userId||$eq||${userId};name||$eq||${ConfigurationNamespaces.PERSONAL_MAP}`,
+        join: 'params',
+      });
+
+    if (!namespace) throw new Error('Personal map configuration not found');
+
+    return namespace;
+  }
+
   async createPersonalMapConfiguration(
     userId: string,
-  ): Promise<ConfigurationParamEntity[]> {
+  ): Promise<ConfigurationNamespaceEntity> {
     // Check if personal map configuration already exists
     const existingConfig =
       await this.configurationNamespaceService.findOneByCondition({
@@ -23,23 +55,7 @@ export class UserConfigurationService {
     if (existingConfig) throw new Error('Configuration already exists');
 
     // Get global map configuration to copy values
-    const globalMapConfiguration =
-      await this.configurationNamespaceService.findGlobalByName(
-        ConfigurationNamespaces.MAPS,
-        { join: 'params' },
-      );
-
-    if (!globalMapConfiguration)
-      throw new Error('Global map configuration not found');
-
-    const max = globalMapConfiguration.params.find(
-      (p) => p.name === 'range.max',
-    )?.value;
-
-    const min = globalMapConfiguration.params.find(
-      (p) => p.name === 'range.min',
-    )?.value;
-
+    const globalMapConfiguration = await this.getGlobalMapConfigurationParams();
     // Create personal map configuration
 
     const namespace = await this.configurationNamespaceService.save({
@@ -48,21 +64,58 @@ export class UserConfigurationService {
       userId,
     });
 
-    return this.configurationParamService.saveMany([
+    await this.configurationParamService.saveMany([
       {
         name: 'range.min',
         description: 'Minimum range of the map',
         variant: ParamVariant.NUMBER,
-        value: min,
+        value: globalMapConfiguration.rangeMin.toString(),
         namespaceId: namespace.id,
       },
       {
         name: 'range.max',
         description: 'Maximum range of the map',
         variant: ParamVariant.NUMBER,
-        value: max,
+        value: globalMapConfiguration.rangeMax.toString(),
         namespaceId: namespace.id,
       },
     ]);
+    return namespace;
+  }
+
+  async updatePersonalMapConfiguration(
+    userId: string,
+    params: { rangeMin: number; rangeMax: number },
+  ): Promise<ConfigurationNamespaceEntity | null> {
+    const namespace =
+      await this.configurationNamespaceService.findOneByCondition({
+        filter: `userId||$eq||${userId};name||$eq||${ConfigurationNamespaces.PERSONAL_MAP}`,
+        join: 'params',
+      });
+
+    if (!namespace) throw new Error('Personal map configuration not found');
+
+    const globalMapConfiguration = await this.getGlobalMapConfigurationParams();
+
+    if (
+      globalMapConfiguration?.rangeMin < params.rangeMin &&
+      globalMapConfiguration?.rangeMax < params.rangeMax
+    ) {
+      await this.configurationParamService.updateMany([
+        {
+          id: namespace.params.find((p) => p.name === 'range.min')?.id,
+          value: params.rangeMin.toString(),
+        },
+        {
+          id: namespace.params.find((p) => p.name === 'range.max')?.id,
+          value: params.rangeMax.toString(),
+        },
+      ]);
+      return this.getPersonalMapConfiguration(userId);
+    } else {
+      throw new Error(
+        `Personal map configuration must be greater than global map configuration (rangeMin: ${globalMapConfiguration.rangeMin}, rangeMax: ${globalMapConfiguration.rangeMax})`,
+      );
+    }
   }
 }
