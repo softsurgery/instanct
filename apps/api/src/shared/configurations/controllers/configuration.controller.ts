@@ -31,6 +31,16 @@ export class ConfigurationController {
     private readonly configurationParamService: ConfigurationParamService,
   ) {}
 
+  @Get('/namespace/global/name/:name')
+  async findGlobalOneByName(
+    @Param('name') name: string,
+  ): Promise<ResponseConfigurationNamespaceDto | null> {
+    return toDto(
+      ResponseConfigurationNamespaceDto,
+      await this.configurationNamespaceService.findGlobalByName(name),
+    );
+  }
+
   @Get('/namespace/:id')
   async findOneById(
     @Param('id') id: string,

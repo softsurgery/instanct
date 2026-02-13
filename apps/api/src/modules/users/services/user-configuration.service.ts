@@ -64,28 +64,19 @@ export class UserConfigurationService {
       userId,
     });
 
-    await this.configurationParamService.saveMany([
-      {
-        name: 'range.min',
-        description: 'Minimum range of the map',
-        variant: ParamVariant.NUMBER,
-        value: globalMapConfiguration.rangeMin.toString(),
-        namespaceId: namespace.id,
-      },
-      {
-        name: 'range.max',
-        description: 'Maximum range of the map',
-        variant: ParamVariant.NUMBER,
-        value: globalMapConfiguration.rangeMax.toString(),
-        namespaceId: namespace.id,
-      },
-    ]);
+    await this.configurationParamService.save({
+      name: 'radius',
+      description: 'Radius of the map',
+      variant: ParamVariant.NUMBER,
+      value: globalMapConfiguration.rangeMin.toString(),
+      namespaceId: namespace.id,
+    });
     return namespace;
   }
 
   async updatePersonalMapConfiguration(
     userId: string,
-    params: { rangeMin: number; rangeMax: number },
+    params: { radius: number },
   ): Promise<ConfigurationNamespaceEntity | null> {
     const namespace =
       await this.configurationNamespaceService.findOneByCondition({
@@ -98,17 +89,18 @@ export class UserConfigurationService {
     const globalMapConfiguration = await this.getGlobalMapConfigurationParams();
 
     if (
-      globalMapConfiguration?.rangeMin < params.rangeMin &&
-      globalMapConfiguration?.rangeMax < params.rangeMax
+      globalMapConfiguration?.rangeMin < params.radius &&
+      globalMapConfiguration?.rangeMax < params.radius
     ) {
-      await this.configurationParamService.updateMany([
+      const radiusId = namespace.params.find((p) => p.name === 'radius')?.id;
+      if (!radiusId)
+        throw new Error(
+          'Radius parameter not found in personal map configuration',
+        );
+      await this.configurationParamService.updateBatchParams([
         {
-          id: namespace.params.find((p) => p.name === 'range.min')?.id,
-          value: params.rangeMin.toString(),
-        },
-        {
-          id: namespace.params.find((p) => p.name === 'range.max')?.id,
-          value: params.rangeMax.toString(),
+          id: radiusId,
+          value: params.radius.toString(),
         },
       ]);
       return this.getPersonalMapConfiguration(userId);
