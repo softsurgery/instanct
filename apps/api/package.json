@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "postinstall": "yarn seed:all",
-    "seed:all": "yarn seed:permissions && yarn seed:roles && yarn seed:admin && yarn seed:templates && yarn seed:industries && yarn seed:objectives && yarn seed:configuration",
+    "seed:all": "yarn seed:configuration && yarn seed:permissions && yarn seed:roles && yarn seed:admin && yarn seed:templates && yarn seed:industries && yarn seed:objectives",
     "seed:playground": "npx nestjs-command seed:playground-users",
     "seed:permissions": "npx nestjs-command seed:permissions",
     "seed:roles": "npx nestjs-command seed:roles",
