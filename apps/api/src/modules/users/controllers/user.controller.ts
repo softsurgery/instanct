@@ -247,6 +247,24 @@ export class UserController {
     return toDto(ResponseUserDto, user);
   }
 
+  @Put('/configuration/maps/current')
+  @LogEvent(EventType.USER_UPDATE)
+  async updateCurrentUserMapConfiguration(
+    @Body() updateUserMapConfigurationDto: UpdateUserMapConfigurationDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseConfigurationNamespaceDto | null> {
+    if (!req?.user?.sub) {
+      return null;
+    }
+    const config =
+      await this.userConfigurationService.updatePersonalMapConfiguration(
+        req.user.sub,
+        updateUserMapConfigurationDto,
+      );
+    req.logInfo = { id: req.user.sub };
+    return toDto(ResponseConfigurationNamespaceDto, config);
+  }
+
   @Put('/configuration/maps/:id')
   @LogEvent(EventType.USER_UPDATE)
   async updateMapConfiguration(

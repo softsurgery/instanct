@@ -90,7 +90,7 @@ export class UserConfigurationService {
 
     if (
       globalMapConfiguration?.rangeMin < params.radius &&
-      globalMapConfiguration?.rangeMax < params.radius
+      globalMapConfiguration?.rangeMax > params.radius
     ) {
       const radiusId = namespace.params.find((p) => p.name === 'radius')?.id;
       if (!radiusId)
