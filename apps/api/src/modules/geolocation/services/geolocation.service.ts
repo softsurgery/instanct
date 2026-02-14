@@ -122,7 +122,7 @@ export class GeolocationService {
   async findByRadius(
     latitude: number,
     longitude: number,
-    radius: number = 5,
+    radius: number,
     excludeUserId?: string,
   ): Promise<GeolocationEntity[]> {
     return this.geolocationRepository.findByKmRadius(
