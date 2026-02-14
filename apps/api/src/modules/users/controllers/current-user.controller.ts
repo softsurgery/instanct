@@ -34,7 +34,7 @@ export class CurrentUserController {
     private readonly userConfigurationService: UserConfigurationService,
   ) {}
 
-  @Get('/current')
+  @Get('')
   async findCurrentUser(
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
@@ -59,7 +59,7 @@ export class CurrentUserController {
     return toDto(ResponseConfigurationNamespaceDto, config);
   }
 
-  @Put('/current')
+  @Put()
   @LogEvent(EventType.USER_UPDATE)
   async updateCurrentUser(
     @Body() updateUserDto: UpdateUserDto,

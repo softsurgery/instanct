@@ -67,6 +67,14 @@ export class UserController {
     return toDtoArray(ResponseUserDto, users);
   }
 
+  @Get(':id')
+  async findCurrentUser(
+    @Param('id') id: string,
+  ): Promise<ResponseUserDto | null> {
+    const user = await this.userService.findOneById(id);
+    return toDto(ResponseUserDto, user);
+  }
+
   @Get('/email/:email')
   async findOneByEmail(
     @Param('email') email: string,
