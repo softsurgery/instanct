@@ -123,30 +123,23 @@ export abstract class AbstractUserService {
   }
 
   async activate(id: string): Promise<AbstractUserEntity | null | undefined> {
-    const user = await this.findOneById(id);
-    return this.abstractUserRepository.update(id, { ...user, isActive: true });
+    return this.abstractUserRepository.update(id, { isActive: true });
   }
 
   async deactivate(id: string): Promise<AbstractUserEntity | null | undefined> {
-    const user = await this.findOneById(id);
     return this.abstractUserRepository.update(id, {
-      ...user,
       isActive: false,
     });
   }
 
   async approve(id: string): Promise<AbstractUserEntity | null | undefined> {
-    const user = await this.findOneById(id);
     return this.abstractUserRepository.update(id, {
-      ...user,
       isApproved: true,
     });
   }
 
   async disapprove(id: string): Promise<AbstractUserEntity | null | undefined> {
-    const user = await this.findOneById(id);
     return this.abstractUserRepository.update(id, {
-      ...user,
       isApproved: false,
     });
   }
