@@ -20,7 +20,13 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
     param: string,
   ): Promise<string | number | boolean | null> {
     const namespaceEntity =
-      await this.configurationNampespaceRepository.findOneById(namespace);
+      await this.configurationNampespaceRepository.findOne({
+        where: {
+          name: namespace,
+          userId: IsNull(),
+        },
+        relations: ['params'],
+      });
     if (!namespaceEntity) return null;
     const paramEntity = namespaceEntity.params.find((p) => p.name === param);
     switch (paramEntity?.variant) {
