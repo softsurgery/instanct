@@ -122,31 +122,14 @@ export class GeolocationService {
   async findByRadius(
     latitude: number,
     longitude: number,
-    radiusKm: number = 5,
+    radius: number = 5,
     excludeUserId?: string,
   ): Promise<GeolocationEntity[]> {
-    const query = `
-    SELECT 
-      g.*,
-      (
-        6371 * ACOS(
-          COS(RADIANS(?)) * COS(RADIANS(g.latitude)) *
-          COS(RADIANS(g.longitude) - RADIANS(?)) +
-          SIN(RADIANS(?)) * SIN(RADIANS(g.latitude))
-        )
-      ) AS distance
-    FROM geolocations g
-    WHERE g.latitude IS NOT NULL
-      AND g.longitude IS NOT NULL
-      ${excludeUserId ? 'AND g.userId != ?' : ''}
-    HAVING distance < ?
-    ORDER BY distance ASC;
-  `;
-
-    const params = excludeUserId
-      ? [latitude, longitude, latitude, excludeUserId, radiusKm]
-      : [latitude, longitude, latitude, radiusKm];
-
-    return this.geolocationRepository.rawQuery(query, params);
+    return this.geolocationRepository.findByKmRadius(
+      latitude,
+      longitude,
+      radius,
+      excludeUserId,
+    );
   }
 }
