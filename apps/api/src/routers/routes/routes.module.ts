@@ -26,6 +26,7 @@ import { EducationController } from 'src/modules/users/controllers/education.con
 import { ConfigurationController } from 'src/shared/configurations/controllers/configuration.controller';
 import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
 import { StorageController } from 'src/shared/storage/controllers/storage.controller';
+import { CurrentUserController } from 'src/modules/users/controllers/current-user.controller';
 
 @Module({
   controllers: [
@@ -37,6 +38,7 @@ import { StorageController } from 'src/shared/storage/controllers/storage.contro
     StoreController,
     ConfigurationController,
     //user
+    CurrentUserController,
     FollowController,
     ExperienceController,
     EducationController,
