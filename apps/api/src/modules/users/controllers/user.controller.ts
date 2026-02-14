@@ -74,45 +74,6 @@ export class UserController {
     return toDto(ResponseUserDto, await this.userService.findOneByEmail(email));
   }
 
-  @Get('/current')
-  async findCurrentUser(
-    @Request() req: AdvancedRequest,
-  ): Promise<ResponseUserDto | null> {
-    if (!req?.user?.sub) {
-      return null;
-    }
-    const user = await this.userService.findOneById(req?.user?.sub);
-    return toDto(ResponseUserDto, user);
-  }
-
-  @Get(':id')
-  async findOneById(
-    @Param('id') id: string,
-    @Query() query: Pick<IQueryObject, 'join'>,
-  ): Promise<ResponseUserDto | null> {
-    return toDto(
-      ResponseUserDto,
-      await this.userService.findOneByCondition({
-        filter: `id||$eq||${id}`,
-        join: query.join,
-      }),
-    );
-  }
-
-  @Get('/configurations/maps/current')
-  async getCurrentUserMapConfiguration(
-    @Request() req: AdvancedRequest,
-  ): Promise<ResponseConfigurationNamespaceDto | null> {
-    if (!req?.user?.sub) {
-      return null;
-    }
-    const config =
-      await this.userConfigurationService.getPersonalMapConfiguration(
-        req?.user?.sub,
-      );
-    return toDto(ResponseConfigurationNamespaceDto, config);
-  }
-
   @Get('/configurations/maps/:id')
   async getMapConfiguration(
     @Param('id') id: string,
@@ -245,24 +206,6 @@ export class UserController {
     const user = await this.userService.disapprove(id);
     req.logInfo = { id: user?.id, firstName: user?.firstName };
     return toDto(ResponseUserDto, user);
-  }
-
-  @Put('/configuration/maps/current')
-  @LogEvent(EventType.USER_UPDATE)
-  async updateCurrentUserMapConfiguration(
-    @Body() updateUserMapConfigurationDto: UpdateUserMapConfigurationDto,
-    @Request() req: AdvancedRequest,
-  ): Promise<ResponseConfigurationNamespaceDto | null> {
-    if (!req?.user?.sub) {
-      return null;
-    }
-    const config =
-      await this.userConfigurationService.updatePersonalMapConfiguration(
-        req.user.sub,
-        updateUserMapConfigurationDto,
-      );
-    req.logInfo = { id: req.user.sub };
-    return toDto(ResponseConfigurationNamespaceDto, config);
   }
 
   @Put('/configuration/maps/:id')
