@@ -64,19 +64,35 @@ export class UserConfigurationService {
       userId,
     });
 
-    await this.configurationParamService.save({
-      name: 'radius',
-      description: 'Radius of the map',
-      variant: ParamVariant.NUMBER,
-      value: globalMapConfiguration.rangeMin.toString(),
-      namespaceId: namespace.id,
-    });
+    await this.configurationParamService.saveMany([
+      {
+        name: 'radius',
+        description: 'Radius of the map',
+        variant: ParamVariant.NUMBER,
+        value: globalMapConfiguration.rangeMin.toString(),
+        namespaceId: namespace.id,
+      },
+      {
+        name: 'clusters',
+        description: 'Whether to show clusters on the map',
+        variant: ParamVariant.BOOLEAN,
+        value: 'true',
+        namespaceId: namespace.id,
+      },
+      {
+        name: 'showUsernames',
+        description: 'Whether to show usernames on the map',
+        variant: ParamVariant.BOOLEAN,
+        value: 'true',
+        namespaceId: namespace.id,
+      },
+    ]);
     return namespace;
   }
 
   async updatePersonalMapConfiguration(
     userId: string,
-    params: { radius: number },
+    params: { radius: number; clusters: boolean; showUsernames: boolean },
   ): Promise<ConfigurationNamespaceEntity | null> {
     const namespace =
       await this.configurationNamespaceService.findOneByCondition({
@@ -93,14 +109,27 @@ export class UserConfigurationService {
       globalMapConfiguration?.rangeMax >= params.radius
     ) {
       const radiusId = namespace.params.find((p) => p.name === 'radius')?.id;
-      if (!radiusId)
-        throw new Error(
-          'Radius parameter not found in personal map configuration',
-        );
+      const clustersId = namespace.params.find(
+        (p) => p.name === 'clusters',
+      )?.id;
+      const showUsernamesId = namespace.params.find(
+        (p) => p.name === 'showUsernames',
+      )?.id;
+
+      if (!radiusId || !clustersId || !showUsernamesId)
+        throw new Error('Personal map configuration parameters not found');
       await this.configurationParamService.updateBatchParams([
         {
           id: radiusId,
           value: params.radius.toString(),
+        },
+        {
+          id: clustersId,
+          value: params.clusters ? 'true' : 'false',
+        },
+        {
+          id: showUsernamesId,
+          value: params.showUsernames ? 'true' : 'false',
         },
       ]);
       return this.getPersonalMapConfiguration(userId);

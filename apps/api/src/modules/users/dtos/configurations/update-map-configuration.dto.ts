@@ -8,4 +8,16 @@ export class UpdateUserMapConfigurationDto {
   })
   @IsNumber()
   radius: number;
+
+  @ApiProperty({
+    description: 'Whether to show clusters on the map',
+    example: true,
+  })
+  clusters: boolean;
+
+  @ApiProperty({
+    description: 'Whether to show usernames on the map',
+    example: true,
+  })
+  showUsernames: boolean;
 }
