@@ -5,48 +5,43 @@ import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginat
 import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import {
+  Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
+  Post,
   Query,
+  Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { ConversationService } from '../services/conversation.service';
 import { ResponseConversationDto } from '../dtos/conversation/response-conversation.dto';
+import { AdvancedRequest } from 'src/types';
+import { CreateConversationDto } from '../dtos/conversation/create-conversation.dto';
 
-@ApiTags('conversation')
+@ApiTags('current-conversation')
 @ApiBearerAuth('access_token')
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
 @Controller({
   version: '1',
-  path: '/conversation',
+  path: '/current-conversation',
 })
-export class ConversationController {
+export class CurrentConversationController {
   constructor(private readonly conversationService: ConversationService) {}
 
   @Get('/list')
   @ApiPaginatedResponse(ResponseConversationDto)
   async findAllPaginated(
     @Query() query: IQueryObject,
+    @Request() req: AdvancedRequest,
   ): Promise<PageDto<ResponseConversationDto>> {
     const paginated =
-      await this.conversationService.findPaginatedUserConversations(query);
-    return {
-      ...paginated,
-      data: toDtoArray(ResponseConversationDto, paginated.data),
-    };
-  }
-
-  @Get('/list/:id')
-  @ApiPaginatedResponse(ResponseConversationDto)
-  async findAllUserPaginated(
-    @Param('id') id: string,
-    @Query() query: IQueryObject,
-  ): Promise<PageDto<ResponseConversationDto>> {
-    const paginated =
-      await this.conversationService.findPaginatedUserConversations(query, id);
+      await this.conversationService.findPaginatedUserConversations(
+        query,
+        req?.user?.sub,
+      );
     return {
       ...paginated,
       data: toDtoArray(ResponseConversationDto, paginated.data),
@@ -61,5 +56,17 @@ export class ConversationController {
       ResponseConversationDto,
       await this.conversationService.findOneById(id),
     );
+  }
+
+  @Post()
+  async createConversation(
+    @Body() createConversationDto: CreateConversationDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseConversationDto> {
+    const conversation = await this.conversationService.createConversation(
+      createConversationDto.users[0],
+      req?.user?.sub,
+    );
+    return toDto(ResponseConversationDto, conversation);
   }
 }

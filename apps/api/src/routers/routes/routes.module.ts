@@ -27,6 +27,7 @@ import { ConfigurationController } from 'src/shared/configurations/controllers/c
 import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
 import { StorageController } from 'src/shared/storage/controllers/storage.controller';
 import { CurrentUserController } from 'src/modules/users/controllers/current-user.controller';
+import { CurrentConversationController } from 'src/shared/chat/controllers/user-conversation.controller';
 
 @Module({
   controllers: [
@@ -43,6 +44,7 @@ import { CurrentUserController } from 'src/modules/users/controllers/current-use
     ExperienceController,
     EducationController,
     //chat
+    CurrentConversationController,
     ConversationController,
     MessageController,
     //notifications

@@ -85,7 +85,8 @@ export class MessageService {
     return this.messageRepository.remove(message);
   }
 
-  // 🔹 Récupère les messages d’une conversation avec tri décroissant (dernier message en premier)
+  //Extended methods ******************************************************************************
+
   async findPaginatedConversationMessages(
     query: IQueryObject,
     conversationId?: number,
@@ -115,5 +116,21 @@ export class MessageService {
     });
 
     return new PageDto(entities || [], pageMetaDto);
+  }
+
+  async findConversationLastMessage(
+    conversationId: number,
+  ): Promise<MessageEntity | null> {
+    const messages = await this.messageRepository.findAll({
+      where: {
+        conversationId,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      take: 1,
+    });
+
+    return messages.length > 0 ? messages[0] : null;
   }
 }
