@@ -100,7 +100,6 @@ export class ClientAuthService {
       user: await this.userService.save({
         ...createUserDto,
         roleId: BasicRoles.User,
-        isActive: true,
       }),
     };
   }
@@ -197,7 +196,6 @@ export class ClientAuthService {
     const user = await this.userService.save({
       email,
       username,
-      isApproved: false,
     });
 
     const { access_token, refresh_token } = await this.generateTokens(

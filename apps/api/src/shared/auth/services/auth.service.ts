@@ -186,7 +186,6 @@ export class AuthService {
     const user = await this.userService.save({
       email,
       username,
-      isApproved: false,
     });
 
     const { access_token, refresh_token } = await this.generateTokens(

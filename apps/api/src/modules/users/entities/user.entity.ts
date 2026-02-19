@@ -33,12 +33,6 @@ export class UserEntity extends AbstractUserEntity {
   @Column({ type: 'enum', enum: Gender, nullable: true })
   gender?: Gender;
 
-  @Column({ default: false })
-  isPrivate: boolean;
-
-  @Column({ nullable: true })
-  regionId?: number;
-
   @ManyToOne(() => StorageEntity, {
     onDelete: 'CASCADE',
     eager: true,

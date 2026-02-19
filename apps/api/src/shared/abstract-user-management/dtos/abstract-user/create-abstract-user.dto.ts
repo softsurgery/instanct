@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
   IsDateString,
   IsEmail,
   IsOptional,
@@ -23,19 +22,9 @@ export class CreateAbstractUserDto {
   lastName?: string;
 
   @ApiProperty({ type: Date })
-  @IsOptional()
   @IsDateString()
+  @IsOptional()
   dateOfBirth?: Date;
-
-  @ApiProperty({ type: Boolean, default: false })
-  @IsOptional()
-  @IsBoolean()
-  isActive?: boolean;
-
-  @ApiProperty({ type: Boolean, default: false })
-  @IsOptional()
-  @IsBoolean()
-  isApproved?: boolean;
 
   @ApiProperty({ type: String })
   @IsString()
