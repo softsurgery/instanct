@@ -28,6 +28,7 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
 import { StorageController } from 'src/shared/storage/controllers/storage.controller';
 import { CurrentUserController } from 'src/modules/users/controllers/current-user.controller';
 import { CurrentConversationController } from 'src/shared/chat/controllers/user-conversation.controller';
+import { CurrentSessionController } from 'src/shared/sessions/controllers/current-session.controller';
 
 @Module({
   controllers: [
@@ -50,6 +51,7 @@ import { CurrentConversationController } from 'src/shared/chat/controllers/user-
     //notifications
     NotificationController,
     SessionController,
+    CurrentSessionController,
     //reference-types
     RefTypeController,
     RefParamController,

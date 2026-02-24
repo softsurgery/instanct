@@ -121,7 +121,7 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     );
   }
 
-  async create(
+  async start(
     dto: Partial<SessionEntity>,
     userId?: string,
   ): Promise<SessionEntity> {
