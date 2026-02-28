@@ -14,6 +14,7 @@ import {
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { UserService } from 'src/modules/users/services/user.service';
 import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
+import { mergeTodayWithTime } from 'src/utils/date';
 
 @Injectable()
 export class SessionService extends AbstractCrudService<SessionEntity> {
@@ -126,6 +127,8 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     userId?: string,
   ): Promise<SessionEntity> {
     if (!userId) throw new Error('User id is required');
+    dto.plannedStart = mergeTodayWithTime(dto.plannedStart || new Date());
+    dto.plannedEnd = mergeTodayWithTime(dto.plannedEnd || new Date());
     const user = await this.userService.findOneById(userId);
     if (!user) throw new UserNotFoundException();
 

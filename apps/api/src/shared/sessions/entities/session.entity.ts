@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('sessions')
 export class SessionEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,13 +24,13 @@ export class SessionEntity {
   userId?: string;
 
   @Column({ type: 'enum', enum: SessionType, nullable: true })
-  type: SessionType;
+  sessionType: SessionType;
 
   @Column({ type: 'timestamp', nullable: true })
-  planned_start: Date;
+  plannedStart: Date;
 
   @Column({ type: 'timestamp', nullable: true })
-  planned_end: Date;
+  plannedEnd: Date;
 
   @Column({ type: 'timestamp', nullable: true })
   started: Date;

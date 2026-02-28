@@ -13,20 +13,21 @@ import { DateOrderConstraint } from 'src/utils/validate-date-constraint';
 export class CreateSessionDto {
   @ApiProperty({ enum: SessionType })
   @IsEnum(SessionType)
-  type: SessionType;
+  @IsOptional()
+  sessionType?: SessionType;
 
   @ApiProperty({ type: Date, required: false })
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  planned_start?: Date;
+  plannedStart?: Date;
 
   @ApiProperty({ type: Date, required: false })
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  @Validate(DateOrderConstraint, ['planned_start', 'planned_end'])
-  planned_end?: Date;
+  @Validate(DateOrderConstraint, ['plannedStart', 'plannedEnd'])
+  plannedEnd?: Date;
 
   @ApiProperty({ type: Object, required: false })
   @IsOptional()
