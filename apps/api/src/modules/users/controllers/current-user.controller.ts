@@ -70,7 +70,7 @@ export class CurrentUserController {
     }
     return toDto(
       ResponseUserDto,
-      await this.userService.update(req?.user?.sub, updateUserDto),
+      await this.userService.extendedUpdate(req?.user?.sub, updateUserDto),
     );
   }
 
