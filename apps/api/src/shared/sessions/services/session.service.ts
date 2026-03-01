@@ -14,7 +14,7 @@ import {
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { UserService } from 'src/modules/users/services/user.service';
 import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
-import { mergeTodayWithTime } from 'src/utils/date';
+import { getNowInTimezone, mergeTodayWithTime } from 'src/utils/date';
 
 @Injectable()
 export class SessionService extends AbstractCrudService<SessionEntity> {
@@ -25,8 +25,8 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     super(sessionRepository);
   }
 
-  getActiveCondition(extraConditions = {}, userId?: string) {
-    const now = new Date();
+  getActiveCondition(extraConditions = {}, userId?: string, timezone?: string) {
+    const now = getNowInTimezone(timezone);
 
     const query = [
       {
@@ -38,8 +38,8 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
       {
         ...extraConditions,
         ended: IsNull(),
-        planned_start: LessThanOrEqual(now),
-        planned_end: MoreThanOrEqual(now),
+        plannedStart: LessThanOrEqual(now),
+        plannedEnd: MoreThanOrEqual(now),
         ...(userId && { userId }),
       },
     ];
@@ -50,10 +50,15 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
   async findAllPaginatedActiveUserSessions(
     query: IQueryObject,
     userId?: string,
+    timezone?: string,
   ): Promise<PageDto<SessionEntity>> {
     const queryBuilder = new QueryBuilder(this.sessionRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    queryOptions.where = this.getActiveCondition(queryOptions.where, userId);
+    queryOptions.where = this.getActiveCondition(
+      queryOptions.where,
+      userId,
+      timezone,
+    );
     const count = await this.sessionRepository.getTotalCount({
       where: queryOptions.where,
     });
@@ -102,11 +107,12 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
   async findAllActiveUserSessions(
     query: IQueryObject,
     userId?: string,
+    timezone?: string,
   ): Promise<SessionEntity[]> {
     const queryBuilder = new QueryBuilder(this.sessionRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
     return this.sessionRepository.findAll({
-      where: this.getActiveCondition(queryOptions, userId),
+      where: this.getActiveCondition(queryOptions, userId, timezone),
     });
   }
 

@@ -20,15 +20,15 @@ export class ResponseSessionDto extends ResponseDtoHelper {
 
   @ApiProperty({ type: String, enum: SessionType })
   @Expose()
-  type: SessionType;
+  sessionType: SessionType;
 
   @ApiProperty({ type: Date })
   @Expose()
-  planned_start?: Date;
+  plannedStart?: Date;
 
   @ApiProperty({ type: Date })
   @Expose()
-  planned_end?: Date;
+  plannedEnd?: Date;
 
   @ApiProperty({ type: Date })
   @Expose()

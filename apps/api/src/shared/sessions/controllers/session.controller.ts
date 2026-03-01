@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
@@ -55,10 +55,15 @@ export class SessionController {
   async findAllActiveUserSessions(
     @Query() query: IQueryObject,
     @Param('userId') userId: string,
+    @Headers('x-timezone') timezone?: string,
   ): Promise<ResponseSessionDto[]> {
     return toDtoArray(
       ResponseSessionDto,
-      await this.sessionService.findAllActiveUserSessions(query, userId),
+      await this.sessionService.findAllActiveUserSessions(
+        query,
+        userId,
+        timezone,
+      ),
     );
   }
 }
