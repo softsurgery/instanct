@@ -29,6 +29,9 @@ import { StorageController } from 'src/shared/storage/controllers/storage.contro
 import { CurrentUserController } from 'src/modules/users/controllers/current-user.controller';
 import { CurrentConversationController } from 'src/shared/chat/controllers/user-conversation.controller';
 import { CurrentSessionController } from 'src/shared/sessions/controllers/current-session.controller';
+import { SystemReportsModule } from 'src/modules/system-reports/system-reports.module';
+import { BugController } from 'src/modules/system-reports/controllers/bug.controller';
+import { FeedbackController } from 'src/modules/system-reports/controllers/feedback.controller';
 
 @Module({
   controllers: [
@@ -44,6 +47,9 @@ import { CurrentSessionController } from 'src/shared/sessions/controllers/curren
     FollowController,
     ExperienceController,
     EducationController,
+    //system reports
+    FeedbackController,
+    BugController,
     //chat
     CurrentConversationController,
     ConversationController,
@@ -65,6 +71,7 @@ import { CurrentSessionController } from 'src/shared/sessions/controllers/curren
     ConfigurationsModule,
     LoggerModule,
     UserManagementModule,
+    SystemReportsModule,
     StorageModule,
     ChatModule,
     NotificationModule,
