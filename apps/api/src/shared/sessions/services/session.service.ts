@@ -84,7 +84,9 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
   ): Promise<PageDto<SessionEntity>> {
     const queryBuilder = new QueryBuilder(this.sessionRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    queryOptions.where = { ...queryOptions.where, userId };
+    queryOptions.where = Array.isArray(queryOptions.where)
+      ? queryOptions.where.map((w) => ({ ...w, userId }))
+      : { ...queryOptions.where, userId };
     const count = await this.sessionRepository.getTotalCount({
       where: queryOptions.where,
     });
@@ -122,7 +124,9 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
   ): Promise<SessionEntity[]> {
     const queryBuilder = new QueryBuilder(this.sessionRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    queryOptions.where = { ...queryOptions.where, userId };
+    queryOptions.where = Array.isArray(queryOptions.where)
+      ? queryOptions.where.map((w) => ({ ...w, userId }))
+      : { ...queryOptions.where, userId };
     return this.sessionRepository.findAll(
       queryOptions as FindManyOptions<SessionEntity>,
     );
