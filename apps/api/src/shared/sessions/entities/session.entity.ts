@@ -1,5 +1,6 @@
 import { SessionType } from 'src/app/enums/session.enum';
 import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
+import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
 import {
   Column,
   Entity,
@@ -9,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity('sessions')
-export class SessionEntity {
+export class SessionEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
 

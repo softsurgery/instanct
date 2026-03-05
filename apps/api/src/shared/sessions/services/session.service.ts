@@ -139,6 +139,14 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     if (!userId) throw new Error('User id is required');
     dto.plannedStart = mergeTodayWithTime(dto.plannedStart || new Date());
     dto.plannedEnd = mergeTodayWithTime(dto.plannedEnd || new Date());
+
+    // If plannedStart is after plannedEnd, move plannedEnd to the next day
+    if (dto.plannedStart > dto.plannedEnd) {
+      const nextDay = new Date(dto.plannedEnd);
+      nextDay.setDate(nextDay.getDate() + 1);
+      dto.plannedEnd = nextDay;
+    }
+
     const user = await this.userService.findOneById(userId);
     if (!user) throw new UserNotFoundException();
 
