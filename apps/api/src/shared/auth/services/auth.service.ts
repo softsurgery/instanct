@@ -98,7 +98,7 @@ export class AuthService {
     try {
       const payload: { sub: string; email: string } =
         await this.jwtService.verifyAsync(refreshToken, {
-          secret: this.configService.get('app.jwtRefreshTokenSecret'),
+          secret: this.configService.get('app.jwt.secret'),
         });
 
       const user = await this.userRepository.findOneById(payload.sub);
