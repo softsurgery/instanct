@@ -70,8 +70,9 @@ export class UserController {
   @Get(':id')
   async findCurrentUser(
     @Param('id') id: string,
+    @Query() query: Pick<IQueryObject, 'join'>,
   ): Promise<ResponseUserDto | null> {
-    const user = await this.userService.findOneById(id);
+    const user = await this.userService.findRelationalOneById(id, query);
     return toDto(ResponseUserDto, user);
   }
 

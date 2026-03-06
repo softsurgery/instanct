@@ -33,8 +33,16 @@ export class UserService extends AbstractUserService {
     super(userRepository);
   }
 
-  async findOneById(id: string): Promise<UserEntity> {
-    const user = await this.userRepository.findOneById(id);
+  async findRelationalOneById(
+    id: string,
+    query?: Pick<IQueryObject, 'join'>,
+  ): Promise<UserEntity | null> {
+    const queryBuilder = new QueryBuilder(this.userRepository.getMetadata());
+    const queryOptions = query ? queryBuilder.build(query) : {};
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: queryOptions.relations,
+    });
     if (!user) {
       throw new UserNotFoundException();
     }
@@ -147,7 +155,7 @@ export class UserService extends AbstractUserService {
     updateUserDto: UpdateUserDto,
   ): Promise<UserEntity | null> {
     const { uploads, ...rest } = updateUserDto;
-    const existingUser = await this.findOneById(id);
+    const existingUser = await this.findRelationalOneById(id);
     if (!existingUser) throw new UserNotFoundException();
 
     await this.userRepository.update(id, rest);
