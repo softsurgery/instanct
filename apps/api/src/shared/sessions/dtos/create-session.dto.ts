@@ -10,9 +10,9 @@ export class CreateSessionDto {
   sessionType?: SessionType;
 
   @ApiProperty({ type: Date, required: false })
-  @IsOptional()
   @Type(() => Date)
   @IsDate()
+  @IsOptional()
   plannedStart?: Date;
 
   @ApiProperty({ type: Date, required: false })
