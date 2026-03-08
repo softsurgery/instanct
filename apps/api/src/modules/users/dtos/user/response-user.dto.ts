@@ -25,6 +25,14 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Expose()
   gender?: Gender;
 
+  @ApiProperty({ type: String, nullable: true })
+  @Expose()
+  website?: string;
+
+  @ApiProperty({ type: String, nullable: true })
+  @Expose()
+  linkedin?: string;
+
   @ApiProperty({ type: Boolean, example: false })
   @Expose()
   isPrivate?: boolean;

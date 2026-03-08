@@ -35,6 +35,16 @@ export class CreateUserDto extends CreateAbstractUserDto {
   @IsOptional()
   gender?: Gender;
 
+  @ApiProperty({ type: String, nullable: true })
+  @IsString()
+  @IsOptional()
+  website?: string;
+
+  @ApiProperty({ type: String, nullable: true })
+  @IsString()
+  @IsOptional()
+  linkedin?: string;
+
   @ApiProperty({ type: Boolean, example: false })
   @IsBoolean()
   @IsOptional()
