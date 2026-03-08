@@ -1,18 +1,23 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AppService } from './app.service';
-import { Public } from 'src/shared/auth/utils/public-strategy';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('app')
+@ApiBearerAuth('access_token')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Public()
-  @Get()
+  @Get('health')
   getHealth() {
     return this.appService.getHealth();
   }
 
-  @Public()
   @Get('storage')
   getStorageType() {
     return this.appService.getStorageType();
