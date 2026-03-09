@@ -18,6 +18,7 @@ import { GeolocationEntity } from 'src/modules/geolocation/entities/geolocation.
 import { FollowEntity } from './follow.entity';
 import { ExperienceEntity } from './experience.entity';
 import { EducationEntity } from './education.entity';
+import { IsOptional } from 'class-validator';
 
 @ChildEntity()
 export class UserEntity extends AbstractUserEntity {
@@ -32,6 +33,14 @@ export class UserEntity extends AbstractUserEntity {
 
   @Column({ type: 'enum', enum: Gender, nullable: true })
   gender?: Gender;
+
+  @Column({ type: 'text', nullable: true })
+  @IsOptional()
+  website?: string;
+
+  @Column({ type: 'text', nullable: true })
+  @IsOptional()
+  linkedin?: string;
 
   @ManyToOne(() => StorageEntity, {
     onDelete: 'CASCADE',

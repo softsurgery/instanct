@@ -28,6 +28,16 @@ export class UpdateUserDto extends UpdateAbstractUserDto {
   @IsOptional()
   gender?: Gender;
 
+  @ApiProperty({ type: String, nullable: true })
+  @IsString()
+  @IsOptional()
+  website?: string;
+
+  @ApiProperty({ type: String, nullable: true })
+  @IsString()
+  @IsOptional()
+  linkedin?: string;
+
   @ApiProperty({ type: Number })
   @IsNumber()
   @IsOptional()
