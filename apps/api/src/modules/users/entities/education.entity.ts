@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { IsOptional } from 'class-validator';
 
 @Entity('educations')
 export class EducationEntity extends EntityHelper {
@@ -18,11 +17,9 @@ export class EducationEntity extends EntityHelper {
   title: string;
 
   @Column({ nullable: true })
-  @IsOptional()
   startDate?: Date;
 
   @Column({ nullable: true })
-  @IsOptional()
   endDate?: Date;
 
   @Column()
