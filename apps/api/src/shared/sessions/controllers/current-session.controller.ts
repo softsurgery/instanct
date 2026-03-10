@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
@@ -8,9 +19,14 @@ import { SessionService } from '../services/session.service';
 import { ResponseSessionDto } from '../dtos/response-session.dto';
 import { AdvancedRequest } from 'src/types';
 import { CreateSessionDto } from '../dtos/create-session.dto';
+import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
+import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { EventType } from 'src/app/enums/event-type.enum';
 
 @ApiTags('current-session')
 @ApiBearerAuth('access_token')
+@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(LogInterceptor)
 @Controller({
   version: '1',
   path: '/current-session',
@@ -73,6 +89,7 @@ export class CurrentSessionController {
   }
 
   @Post('/start')
+  @LogEvent(EventType.SESSION_START)
   async start(
     @Body() createSessionDto: CreateSessionDto,
     @Req() req: AdvancedRequest,
@@ -81,6 +98,20 @@ export class CurrentSessionController {
       createSessionDto,
       req.user?.sub,
     );
+    req.logInfo = { sessionId: session.id };
     return toDto(ResponseSessionDto, session);
+  }
+
+  @Put('/end/:id')
+  @LogEvent(EventType.SESSION_END)
+  async end(
+    @Param('id') id: number,
+    @Req() req: AdvancedRequest,
+  ): Promise<ResponseSessionDto | null> {
+    const session = await this.sessionService.end(id);
+    if (session) {
+      req.logInfo = { sessionId: session.id };
+    }
+    return session ? toDto(ResponseSessionDto, session) : null;
   }
 }
