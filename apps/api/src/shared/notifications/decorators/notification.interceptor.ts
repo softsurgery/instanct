@@ -7,6 +7,11 @@ import { AccessTokenPayload } from 'src/shared/auth/interfaces/access-token-payl
 import { getTokenPayload } from 'src/shared/auth/utils/token-payload';
 import { NotificationService } from '../services/notification.service';
 import { NotificationType } from '../../../app/enums/notification-type.enum';
+import {
+  NOTIFY_METADATA_KEY,
+  BATCH_NOTIFY_METADATA_KEY,
+} from './notify.decorator';
+import type { BatchNotificationInfo } from './notify.decorator';
 
 @Injectable()
 export class NotificationInterceptor implements NestInterceptor {
@@ -18,34 +23,75 @@ export class NotificationInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
     return next.handle().pipe(
       tap(() => {
-        const type = this.reflector.get<NotificationType>(
-          'type',
-          context.getHandler(),
-        );
-
-        if (!type) return;
-
         const request: AdvancedRequest = context.switchToHttp().getRequest();
-        const { notificationInfo } = request;
-
-        if (type === NotificationType.NEW_SIGNIN) {
-          void this.notificationService.save({
-            type,
-            payload: notificationInfo,
-            userId: notificationInfo?.userId as string,
-          });
-
-          return;
-        }
-
         const payload: AccessTokenPayload = getTokenPayload(request);
 
+        // Handle stacked @Notify decorators
+        this.handleNotifyDecorators(context, request, payload);
+
+        // Handle @BatchNotify decorators
+        this.handleBatchNotifyDecorators(context, request);
+      }),
+    );
+  }
+
+  private handleNotifyDecorators(
+    context: ExecutionContext,
+    request: AdvancedRequest,
+    payload: AccessTokenPayload,
+  ): void {
+    const types = Reflect.getMetadata(
+      NOTIFY_METADATA_KEY,
+      context.getHandler(),
+    ) as NotificationType[] | undefined;
+
+    if (!types || types.length === 0) return;
+
+    const { notificationInfo } = request;
+
+    for (const type of types) {
+      if (type === NotificationType.NEW_SIGNIN) {
         void this.notificationService.save({
           type,
           payload: notificationInfo,
-          userId: payload?.sub,
+          userId: notificationInfo?.userId as string,
         });
-      }),
-    );
+        continue;
+      }
+
+      void this.notificationService.save({
+        type,
+        payload: notificationInfo,
+        userId: payload?.sub,
+      });
+    }
+  }
+
+  private handleBatchNotifyDecorators(
+    context: ExecutionContext,
+    request: AdvancedRequest,
+  ): void {
+    const batchTypes = Reflect.getMetadata(
+      BATCH_NOTIFY_METADATA_KEY,
+      context.getHandler(),
+    ) as NotificationType[] | undefined;
+
+    if (!batchTypes || batchTypes.length === 0) return;
+
+    const batchNotificationInfo =
+      request.batchNotificationInfo as BatchNotificationInfo[];
+    if (!batchNotificationInfo) return;
+
+    for (const batchInfo of batchNotificationInfo) {
+      if (!batchTypes.includes(batchInfo.type)) continue;
+
+      for (const entry of batchInfo.entries) {
+        void this.notificationService.save({
+          type: batchInfo.type,
+          payload: entry.payload,
+          userId: entry.userId,
+        });
+      }
+    }
   }
 }
