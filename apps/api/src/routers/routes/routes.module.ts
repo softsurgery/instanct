@@ -32,6 +32,8 @@ import { CurrentSessionController } from 'src/shared/sessions/controllers/curren
 import { SystemReportsModule } from 'src/modules/system-reports/system-reports.module';
 import { BugController } from 'src/modules/system-reports/controllers/bug.controller';
 import { FeedbackController } from 'src/modules/system-reports/controllers/feedback.controller';
+import { RequestController } from 'src/modules/requests/controllers/request.controller';
+import { RequestsModule } from 'src/modules/requests/requests.module';
 
 @Module({
   controllers: [
@@ -58,6 +60,7 @@ import { FeedbackController } from 'src/modules/system-reports/controllers/feedb
     NotificationController,
     SessionController,
     CurrentSessionController,
+    RequestController,
     //reference-types
     RefTypeController,
     RefParamController,
@@ -79,6 +82,7 @@ import { FeedbackController } from 'src/modules/system-reports/controllers/feedb
     ReferenceTypesModule,
     GeolocationModule,
     ReferenceImplModule,
+    RequestsModule,
   ],
 })
 export class RoutesModule {}

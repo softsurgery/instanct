@@ -19,6 +19,7 @@ import { FollowEntity } from './follow.entity';
 import { ExperienceEntity } from './experience.entity';
 import { EducationEntity } from './education.entity';
 import { IsOptional } from 'class-validator';
+import { RequestEntity } from 'src/modules/requests/entities/request.entity';
 
 @ChildEntity()
 export class UserEntity extends AbstractUserEntity {
@@ -86,6 +87,12 @@ export class UserEntity extends AbstractUserEntity {
 
   @OneToOne(() => GeolocationEntity, (location) => location.user)
   geolocations: GeolocationEntity;
+
+  @OneToMany(() => RequestEntity, (request) => request.sender)
+  sentRequests: RequestEntity[];
+
+  @ManyToMany(() => RequestEntity, (request) => request.receivers)
+  receivedRequests: RequestEntity[];
 
   @OneToMany(() => FollowEntity, (follow) => follow.follower)
   following: FollowEntity[];
