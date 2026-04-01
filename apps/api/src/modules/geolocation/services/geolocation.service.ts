@@ -124,12 +124,27 @@ export class GeolocationService {
     longitude: number,
     radius: number,
     excludeUserId?: string,
+    query: IQueryObject = {},
   ): Promise<GeolocationEntity[]> {
-    return this.geolocationRepository.findByKmRadius(
+    const geolocations = await this.geolocationRepository.findByKmRadius(
       latitude,
       longitude,
       radius,
       excludeUserId,
     );
+
+    if (!geolocations.length) {
+      return [];
+    }
+
+    const idsFilter = `id||$in||${geolocations.map((g) => g.id).join(',')}`;
+
+    query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
+
+    query.join = query.join ? `${query.join},user` : 'user';
+
+    const data = await this.findAll(query);
+    console.log('Found geolocations with radius filter:', data);
+    return data;
   }
 }
