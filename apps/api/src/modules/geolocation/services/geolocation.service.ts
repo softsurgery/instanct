@@ -87,8 +87,6 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
 
     query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
 
-    query.join = query.join ? `${query.join},user` : 'user';
-
     const data = await this.findAll(query);
     return data;
   }
