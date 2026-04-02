@@ -16,6 +16,7 @@ import { getTokenPayloadForWebSocket } from 'src/shared/auth/utils/token-payload
 import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { MapConfigurationParam } from 'src/app/configurations/map-configuration.enum';
+import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 
 @WebSocketGateway({
   namespace: '/geolocation',
@@ -129,6 +130,7 @@ export class GeolocationGateway
       latitude: number;
       longitude: number;
       radius: number;
+      query?: IQueryObject;
     },
   ) {
     try {
@@ -167,11 +169,18 @@ export class GeolocationGateway
         longitude,
         radius,
         userId,
+        data.query,
       );
 
-      const nearbyWithPresence = nearbyUsers.map((user) => ({
-        ...user,
-        isOnline: this.userToSocket.has(user.userId),
+      const nearbyWithPresence = nearbyUsers.map((geo) => ({
+        ...geo,
+        distance: GeolocationService.calculateDistanceKm(
+          latitude,
+          longitude,
+          geo.latitude as number,
+          geo.longitude as number,
+        ),
+        isOnline: this.userToSocket.has(geo.userId),
       }));
 
       socket.emit('nearby_users', nearbyWithPresence);

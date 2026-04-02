@@ -1,96 +1,42 @@
-import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { GeolocationRepository } from '../repositories/geolocation.repository';
 import { GeolocationEntity } from '../entities/geolocation.entity';
-import { GeolocationNotFoundException } from '../errors/geolocation.notfound.error';
 import { CreateGeolocationDto } from '../dtos/create-geolocation.dto';
+import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
 
 @Injectable()
-export class GeolocationService {
-  constructor(private readonly geolocationRepository: GeolocationRepository) {}
-
-  async findOneById(id: string): Promise<GeolocationEntity> {
-    const location = await this.geolocationRepository.findOneById(id);
-    if (!location) {
-      throw new GeolocationNotFoundException();
-    }
-    return location;
-  }
-
-  async findOneByCondition(
-    query: IQueryObject,
-  ): Promise<GeolocationEntity | null> {
-    const queryBuilder = new QueryBuilder(
-      this.geolocationRepository.getMetadata(),
-    );
-    const queryOptions = queryBuilder.build(query);
-    const location = await this.geolocationRepository.findOne(
-      queryOptions as FindOneOptions<GeolocationEntity>,
-    );
-    if (!location) return null;
-    return location;
-  }
-
-  async findAll(query: IQueryObject = {}): Promise<GeolocationEntity[]> {
-    const queryBuilder = new QueryBuilder(
-      this.geolocationRepository.getMetadata(),
-    );
-    const queryOptions = queryBuilder.build(query);
-    return await this.geolocationRepository.findAll(
-      queryOptions as FindManyOptions<GeolocationEntity>,
-    );
-  }
-
-  async findAllPaginated(
-    query: IQueryObject,
-  ): Promise<PageDto<GeolocationEntity>> {
-    const queryBuilder = new QueryBuilder(
-      this.geolocationRepository.getMetadata(),
-    );
-    const queryOptions = queryBuilder.build(query);
-    const count = await this.geolocationRepository.getTotalCount({
-      where: queryOptions.where,
-    });
-
-    const entities = await this.geolocationRepository.findAll(
-      queryOptions as FindManyOptions<GeolocationEntity>,
-    );
-
-    const pageMetaDto = new PageMetaDto({
-      pageOptionsDto: {
-        page: Number(query.page),
-        take: Number(query.limit),
-      },
-      itemCount: count,
-    });
-
-    return new PageDto(entities, pageMetaDto);
-  }
-
-  @Transactional()
-  async save(geolocationEntity: Partial<GeolocationEntity>) {
-    return this.geolocationRepository.save(geolocationEntity);
-  }
-
-  async saveMany(geolocationEntities: Partial<GeolocationEntity>[]) {
-    return this.geolocationRepository.saveMany(geolocationEntities);
-  }
-
-  async softDelete(id: string): Promise<GeolocationEntity | null> {
-    return this.geolocationRepository.softDelete(id);
-  }
-
-  async delete(id: string): Promise<GeolocationEntity | null> {
-    const geolocation = await this.findOneById(id);
-    return this.geolocationRepository.remove(geolocation);
+export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
+  constructor(private readonly geolocationRepository: GeolocationRepository) {
+    super(geolocationRepository);
   }
 
   //Extended Methods ===========================================================================
+
+  static calculateDistanceKm(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number,
+  ): number {
+    const toRad = (value: number) => (value * Math.PI) / 180;
+
+    const earthRadiusKm = 6371;
+
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) *
+        Math.cos(toRad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return earthRadiusKm * c;
+  }
 
   async saveNewLocation(
     dto: CreateGeolocationDto,
@@ -144,7 +90,6 @@ export class GeolocationService {
     query.join = query.join ? `${query.join},user` : 'user';
 
     const data = await this.findAll(query);
-    console.log('Found geolocations with radius filter:', data);
     return data;
   }
 }
