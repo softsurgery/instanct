@@ -50,24 +50,6 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Type(() => ResponseStorageDto)
   picture?: ResponseStorageDto;
 
-  @ApiProperty({ type: ResponseStorageDto })
-  @Expose()
-  @Type(() => ResponseStorageDto)
-  officialDocument?: ResponseStorageDto;
-
-  @ApiProperty({ type: Number })
-  @Expose()
-  officialDocumentId?: number;
-
-  @ApiProperty({ type: ResponseStorageDto })
-  @Expose()
-  @Type(() => ResponseStorageDto)
-  driverLicenseDocument?: ResponseStorageDto;
-
-  @ApiProperty({ type: Number })
-  @Expose()
-  driverLicenseDocumentId?: number;
-
   @ApiProperty({ type: [ResponseUserUploadDto] })
   @Expose()
   @Type(() => ResponseUserUploadDto)
@@ -82,11 +64,6 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Expose()
   @Type(() => ResponseEducationDto)
   educations: ResponseEducationDto[];
-
-  @ApiProperty({ type: [ResponseRefParamDto] })
-  @Expose()
-  @Type(() => ResponseRefParamDto)
-  objectives: ResponseRefParamDto[];
 
   @ApiProperty({ type: [ResponseRefParamDto] })
   @Expose()

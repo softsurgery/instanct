@@ -24,7 +24,6 @@ import { UserService } from '../services/user.service';
 import { ResponseUserDto } from '../dtos/user/response-user.dto';
 import { CreateUserDto } from '../dtos/user/create-user.dto';
 import { UpdateUserDto } from '../dtos/user/update-user.dto';
-import { UpdateUserObjectivesDto } from '../dtos/user/update-user-objectives.dto';
 import { UpdateUserIndustriesDto } from '../dtos/user/update-user-industries.dto';
 import { UserConfigurationService } from '../services/user-configuration.service';
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
@@ -105,26 +104,6 @@ export class UserController {
     );
     req.logInfo = { id: user.id, firstName: user.firstName };
     return user;
-  }
-
-  @Get('/objectives/:id')
-  async getObjectives(@Param('id') id: string): Promise<number[]> {
-    return this.userService.getObjectives(id);
-  }
-
-  @Put('/objectives/:id')
-  @LogEvent(EventType.USER_UPDATE)
-  async updateObjectives(
-    @Param('id') id: string,
-    @Body() updateUserObjectivesDto: UpdateUserObjectivesDto,
-    @Request() req: AdvancedRequest,
-  ): Promise<ResponseUserDto | null> {
-    const user = await this.userService.updateObjectives(
-      id,
-      updateUserObjectivesDto.objectives,
-    );
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
-    return toDto(ResponseUserDto, user);
   }
 
   @Get('/industries/:id')

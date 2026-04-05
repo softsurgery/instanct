@@ -69,16 +69,6 @@ export class UserEntity extends AbstractUserEntity {
     cascade: false,
   })
   @JoinTable({
-    name: 'user-objectives',
-    joinColumn: { name: 'userId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'objectiveId', referencedColumnName: 'id' },
-  })
-  objectives: RefParamEntity[];
-
-  @ManyToMany(() => RefParamEntity, {
-    cascade: false,
-  })
-  @JoinTable({
     name: 'user-industries',
     joinColumn: { name: 'userId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'industryId', referencedColumnName: 'id' },

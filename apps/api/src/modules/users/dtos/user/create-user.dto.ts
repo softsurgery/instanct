@@ -53,11 +53,6 @@ export class CreateUserDto extends CreateAbstractUserDto {
   @ApiProperty({ type: Number })
   @IsNumber()
   @IsOptional()
-  regionId?: number;
-
-  @ApiProperty({ type: Number })
-  @IsNumber()
-  @IsOptional()
   pictureId?: number;
 
   @ApiProperty({ isArray: true, description: 'ID of uploaded file' })

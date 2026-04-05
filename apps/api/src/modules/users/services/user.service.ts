@@ -211,44 +211,6 @@ export class UserService extends AbstractUserService {
     return updatedUser;
   }
 
-  async updateObjectives(
-    id: string,
-    objectiveIds: number[],
-  ): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: ['objectives'],
-    });
-
-    if (!user) throw new UserNotFoundException();
-    let objectives: RefParamEntity[] = [];
-    if (objectiveIds && objectiveIds.length > 0) {
-      const result = await this.refParamRepository.findAll({
-        where: { id: In(objectiveIds) },
-      });
-      if (result) {
-        if (Array.isArray(result)) {
-          objectives = result;
-        } else {
-          objectives = [result];
-        }
-      }
-    }
-    user.objectives = objectives;
-    return await this.userRepository.save(user);
-  }
-
-  async getObjectives(id: string): Promise<number[]> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: ['objectives'],
-    });
-
-    if (!user) throw new UserNotFoundException();
-
-    return user.objectives.map((objective) => objective.id);
-  }
-
   async getIndustries(id: string): Promise<number[]> {
     const user = await this.userRepository.findOne({
       where: { id },
