@@ -2,7 +2,6 @@ import { useUserStore } from "@/hooks/stores/useUserStore";
 import { Experience } from "../experience/Experience";
 import { Education } from "../education/Education";
 import { Industries } from "../UserParams/Industries";
-import { Objectives } from "../UserParams/Objectves";
 import React from "react";
 
 interface BookProps {
@@ -14,7 +13,7 @@ export const Book = ({ className }: BookProps) => {
   const user = React.useMemo(() => userStore.response, [userStore.response]);
 
   return (
-    <div className="overflow-auto no-scrollbar">
+    <div className="overflow-auto no-scrollbar mb-10">
       <div className={className}>
         {user?.id && <Experience userId={user.id} className="w-full" />}
       </div>
@@ -25,7 +24,6 @@ export const Book = ({ className }: BookProps) => {
 
       <div className="flex justify-evenly mt-10 gap-5">
         {user?.id && <Industries className="w-full" userId={user.id} />}
-        {user?.id && <Objectives className="w-full" userId={user.id} />}
       </div>
     </div>
   );

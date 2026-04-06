@@ -14,7 +14,6 @@ export const UserProfile = ({ className, id }: UserProfileProps) => {
   const userRefParamStore = useUserRefParamsStore();
   const { user, isFetchUserPending } = useIdentifiedUser(id, [
     "role",
-    "objectives",
     "industries",
   ]);
 
@@ -24,10 +23,6 @@ export const UserProfile = ({ className, id }: UserProfileProps) => {
       userRefParamStore.set(
         "industries",
         user.industries.map((i) => i.id),
-      );
-      userRefParamStore.set(
-        "objectives",
-        user.objectives.map((i) => i.id),
       );
 
       return () => {
