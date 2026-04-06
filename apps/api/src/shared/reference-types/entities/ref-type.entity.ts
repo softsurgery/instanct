@@ -1,18 +1,18 @@
 import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   OneToMany,
   ManyToOne,
   JoinColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { RefParamEntity } from './ref-param.entity';
 
 @Entity('ref-type')
 export class RefTypeEntity extends EntityHelper {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn()
+  id: string;
 
   @Column({ unique: true })
   label: string;
@@ -31,7 +31,7 @@ export class RefTypeEntity extends EntityHelper {
   parent?: RefTypeEntity;
 
   @Column({ nullable: true })
-  parentId: number;
+  parentId: string;
 
   @OneToMany(() => RefTypeEntity, (user) => user.parent)
   children: RefTypeEntity[];

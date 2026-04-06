@@ -27,11 +27,13 @@ export class ObjectivesSeedCommand {
 
     if (!objectifRefType) {
       objectifRefType = await this.refTypeRepository.save({
+        id: 'objectif',
         label: 'Objectif',
         description: 'Parent reference type for all Objectives',
       });
       for (const objectif of objectives) {
         const subRefType = await this.refTypeRepository.save({
+          id: objectif.category.toLowerCase().replace(/\s+/g, '-'),
           label: objectif.category,
           description: `${objectif.category} sector`,
           parent: objectifRefType,

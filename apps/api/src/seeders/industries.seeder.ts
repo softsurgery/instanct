@@ -27,11 +27,13 @@ export class IndustriesSeedCommand {
 
     if (!industryRefType) {
       industryRefType = await this.refTypeRepository.save({
+        id: 'industry',
         label: 'Industry',
         description: 'Parent reference type for all industries',
       });
       for (const industry of industries) {
         const subRefType = await this.refTypeRepository.save({
+          id: industry.industry.toLowerCase().replace(/\s+/g, '-'),
           label: industry.industry,
           description: `${industry.industry} sector`,
           parent: industryRefType,

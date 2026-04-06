@@ -26,5 +26,5 @@ export class CreateRefTypeDto {
   @ApiProperty({ type: String })
   @IsNumber()
   @IsOptional()
-  parentId?: number;
+  parentId?: string;
 }

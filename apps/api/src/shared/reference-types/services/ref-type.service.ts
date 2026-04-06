@@ -1,6 +1,6 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { DeepPartial, FindManyOptions, FindOneOptions } from 'typeorm';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
@@ -65,7 +65,7 @@ export class RefTypeService {
   }
 
   @Transactional()
-  async save(refType: Partial<RefTypeEntity>): Promise<RefTypeEntity> {
+  async save(refType: DeepPartial<RefTypeEntity>): Promise<RefTypeEntity> {
     const existing = refType.label && (await this.findByLabel(refType.label));
     if (existing) {
       throw new RefTypeAlreadyExistsException();
@@ -74,14 +74,16 @@ export class RefTypeService {
   }
 
   @Transactional()
-  async saveMany(refTypes: Partial<RefTypeEntity>[]): Promise<RefTypeEntity[]> {
+  async saveMany(
+    refTypes: DeepPartial<RefTypeEntity>[],
+  ): Promise<RefTypeEntity[]> {
     return Promise.all(refTypes.map((dto) => this.save(dto)));
   }
 
   @Transactional()
   async update(
-    id: number,
-    refType: Partial<RefTypeEntity>,
+    id: string,
+    refType: DeepPartial<RefTypeEntity>,
   ): Promise<RefTypeEntity | null> {
     const existing = refType.label && (await this.findByLabel(refType.label));
     if (existing && existing.id !== id) {
@@ -90,11 +92,11 @@ export class RefTypeService {
     return this.refTypeRepository.update(id, refType);
   }
 
-  async softDelete(id: number): Promise<RefTypeEntity | null> {
+  async softDelete(id: string): Promise<RefTypeEntity | null> {
     return this.refTypeRepository.softDelete(id);
   }
 
-  async delete(id: number): Promise<RefTypeEntity | null> {
+  async delete(id: string): Promise<RefTypeEntity | null> {
     const type = await this.refTypeRepository.findOneById(id);
     if (!type) {
       throw new RefTypeNotFoundException();
