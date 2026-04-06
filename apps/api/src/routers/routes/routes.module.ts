@@ -14,8 +14,6 @@ import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types
 import { RefTypeController } from 'src/shared/reference-types/controllers/ref-type.controller';
 import { RefParamController } from 'src/shared/reference-types/controllers/ref-param.controller';
 import { GeolocationModule } from 'src/modules/geolocation/geolocation.module';
-import { ReferenceImplModule } from 'src/modules/reference-impl/reference-impl.module';
-import { RefImplementationController } from 'src/modules/reference-impl/reference-impl.controller';
 import { ConversationController } from 'src/shared/chat/controllers/conversation.controller';
 import { MessageController } from 'src/shared/chat/controllers/message.controller';
 import { ChatModule } from 'src/shared/chat/chat.module';
@@ -64,7 +62,6 @@ import { RequestsModule } from 'src/modules/requests/requests.module';
     //reference-types
     RefTypeController,
     RefParamController,
-    RefImplementationController,
   ],
   providers: [],
   exports: [],
@@ -81,7 +78,6 @@ import { RequestsModule } from 'src/modules/requests/requests.module';
     SessionModule,
     ReferenceTypesModule,
     GeolocationModule,
-    ReferenceImplModule,
     RequestsModule,
   ],
 })
