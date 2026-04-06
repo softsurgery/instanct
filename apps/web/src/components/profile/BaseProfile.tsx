@@ -154,37 +154,7 @@ export const BaseProfile = ({
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="flex flex-row justify-start gap-6 mt-4 lg:mt-0">
-          <div className="flex flex-col items-center">
-            <div className="font-semibold text-lg">-</div>
-            <div className="text-sm text-muted-foreground">
-              {t("userManagement.inspect.stats.services")}
-            </div>
-          </div>
-          <div
-            className="text-center cursor-pointer"
-            onClick={openFollowingDialog}
-          >
-            <div className="font-semibold text-lg">
-              {isFollowingPending ? "..." : followings.length}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {t("Following")}
-            </div>
-          </div>
-          <div
-            className="text-center cursor-pointer"
-            onClick={openFollowerDialog}
-          >
-            <div className="font-semibold text-lg">
-              {isFollowersPending ? "..." : followers.length}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {t("Followers")}
-            </div>
-          </div>
-        </div>
+        {/* Remove stats following/follower section or all the feature??*/}
       </div>
 
       {/* Tabs */}
@@ -209,7 +179,8 @@ export const BaseProfile = ({
               <span className="hidden lg:block">{label}</span>
             </TabsTrigger>
           ))}
-        </TabsList>
+        </TabsList>      {followingDialog}
+      {followerDialog}
 
         <div className="flex flex-col flex-1 overflow-auto h-full">
           {filteredTabs.map(({ value, content }) =>
@@ -225,9 +196,6 @@ export const BaseProfile = ({
           )}
         </div>
       </Tabs>
-
-      {followingDialog}
-      {followerDialog}
     </div>
   );
 };
