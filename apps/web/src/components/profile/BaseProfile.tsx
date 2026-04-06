@@ -69,6 +69,12 @@ export const BaseProfile = ({
     enabled: !!user?.pictureId,
   });
 
+  const { data: coverPicture } = useQuery({
+    queryKey: ["cover-picture", user?.coverId],
+    queryFn: () => api.upload.getUploadById(user?.coverId as number),
+    enabled: !!user?.coverId,
+  });
+
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
   const { followers, followings, isFollowersPending, isFollowingPending } =
@@ -127,75 +133,93 @@ export const BaseProfile = ({
   return (
     <div
       className={cn(
-        "flex flex-col flex-1 h-full overflow-auto no-scrollbar container mx-auto",
+        "flex flex-col flex-1 h-full overflow-auto no-scrollbar ",
         className,
       )}
     >
-      {/* Profile Info */}
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-4 p-4">
-        <div className="flex flex-row items-center gap-4">
-          <Avatar className={cn("w-24 h-24 rounded-full", className)}>
-            <AvatarImage src={profilePicture} alt={fallback} />
-            <AvatarFallback>{fallback}</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col items-start">
-            <h1 className="font-semibold text-lg">
-              {user?.firstName} {user?.lastName}
-            </h1>
-            <h2 className="text-sm text-muted-foreground hover:underline cursor-pointer">
-              <a href={`mailto:${user?.email}`}>{user?.email || "No email"}</a>
-            </h2>
-            <div className="flex flex-row items-center mt-2">
-              <Separator orientation="vertical" className="mx-1 h-4" />
-              <p className="text-sm text-muted-foreground">
-                {user?.phone || t("userManagement.inspect.noPhoneNumber")}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Remove stats following/follower section or all the feature??*/}
+      <div className="relative">
+        <Avatar className={cn("w-screen h-64 rounded-none", className)}>
+          <AvatarImage src={coverPicture} alt={fallback} />
+          <AvatarFallback>{fallback}</AvatarFallback>
+        </Avatar>
       </div>
 
-      {/* Tabs */}
-      <Tabs
-        value={activeTab}
-        onValueChange={handleTabChange}
-        className="flex flex-col flex-1 overflow-auto"
-      >
-        <TabsList
-          className={`grid border-b-2 border-[#3B82F6]`}
-          style={{
-            gridTemplateColumns: `repeat(${filteredTabs.length}, minmax(0, 1fr))`,
-          }}
-        >
-          {filteredTabs.map(({ value, label, icon: Icon }) => (
-            <TabsTrigger
-              key={value}
-              value={value}
-              className="flex items-center gap-2"
-            >
-              <Icon className="h-4 w-4" />
-              <span className="hidden lg:block">{label}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>      {followingDialog}
-      {followerDialog}
+      <div className="container mx-auto">
+        {/* Profile Info */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-4 p-4">
+          <div className="flex flex-row items-center gap-4">
+            <Avatar className={cn("w-24 h-24 rounded-full", className)}>
+              <AvatarImage src={profilePicture} alt={fallback} />
+              <AvatarFallback>{fallback}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col items-start">
+              <h1 className="font-semibold text-lg">
+                {user?.firstName} {user?.lastName}
+              </h1>
+              <h2 className="text-sm text-muted-foreground hover:underline cursor-pointer">
+                <a href={`mailto:${user?.email}`}>
+                  {user?.email || "No email"}
+                </a>
+              </h2>
+              <div className="flex flex-row items-center mt-2">
+                <Separator orientation="vertical" className="mx-1 h-4" />
+                <p className="text-sm text-muted-foreground">
+                  {user?.phone || t("userManagement.inspect.noPhoneNumber")}
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <div className="flex flex-col flex-1 overflow-auto h-full">
-          {filteredTabs.map(({ value, content }) =>
-            activeTab === value ? (
-              <TabsContent
+          {/* Remove stats following/follower section or all the feature??*/}
+        </div>
+
+        {/* Tabs */}
+        <Tabs
+          value={activeTab}
+          onValueChange={handleTabChange}
+          className="flex flex-col flex-1 overflow-auto"
+        >
+          <TabsList
+            className={`grid border-b-2 border-[#3B82F6]`}
+            style={{
+              gridTemplateColumns: `repeat(${filteredTabs.length}, minmax(0, 1fr))`,
+            }}
+          >
+            {filteredTabs.map(({ value, label, icon: Icon }) => (
+              <TabsTrigger
                 key={value}
                 value={value}
-                className="flex flex-col flex-1 overflow-auto h-full no-scrollbar"
+                className="flex items-center gap-2"
               >
-                {content}
-              </TabsContent>
-            ) : null,
-          )}
-        </div>
-      </Tabs>
+                <Icon className="h-4 w-4" />
+                <span className="hidden lg:block">{label}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>{" "}
+          {followingDialog}
+          {followerDialog}
+          <div className="flex flex-col flex-1 overflow-auto h-full">
+            {filteredTabs.map(({ value, content }) =>
+              activeTab === value ? (
+                <TabsContent
+                  key={value}
+                  value={value}
+                  className="flex flex-col flex-1 overflow-auto h-full no-scrollbar"
+                >
+                  {content}
+                </TabsContent>
+              ) : null,
+            )}
+          </div>
+        </Tabs>
+      </div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/*"
+        style={{ display: "none" }}
+      />
     </div>
   );
 };
