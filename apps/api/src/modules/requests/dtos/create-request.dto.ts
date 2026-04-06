@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsDate, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class CreateRequestDto {
   @ApiProperty({ type: [String] })
@@ -9,15 +9,15 @@ export class CreateRequestDto {
   @ApiProperty({ type: String })
   @IsString()
   @IsOptional()
-  description?: string;
+  message?: string;
 
   @ApiProperty({ type: String, nullable: true })
   @IsString()
   @IsOptional()
-  place?: string;
+  location?: string;
 
   @ApiProperty({ type: Date, nullable: true })
-  @IsDate()
+  @IsDateString()
   @IsOptional()
   time?: Date;
 }

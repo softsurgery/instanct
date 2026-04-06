@@ -24,11 +24,11 @@ export class ResponseRequestDto extends ResponseDtoHelper {
 
   @ApiProperty({ type: String, nullable: true })
   @Expose()
-  description?: string;
+  message?: string;
 
   @ApiProperty({ type: String, nullable: true })
   @Expose()
-  place?: string;
+  location?: string;
 
   @ApiProperty({ type: Date, nullable: true })
   @Expose()

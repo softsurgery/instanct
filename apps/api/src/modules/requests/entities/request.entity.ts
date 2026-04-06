@@ -43,10 +43,10 @@ export class RequestEntity extends EntityHelper {
 
   // Request details
   @Column({ type: 'text', nullable: true })
-  description?: string;
+  message?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  place?: string;
+  location?: string;
 
   @Column({ type: 'timestamp', nullable: true })
   time?: Date;
