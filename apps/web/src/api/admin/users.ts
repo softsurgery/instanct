@@ -94,6 +94,14 @@ const update = async (
   return response.data;
 };
 
+const updateCover = async (
+  id: string,
+  coverId: number,
+): Promise<ResponseUserDto> => {
+  const response = await axios.put(`/admin/user/cover/${id}`, { coverId });
+  return response.data;
+};
+
 const remove = async (userId?: string): Promise<ResponseUserDto> => {
   const response = await axios.delete(`/admin/user/${userId}`);
   return response.data;
@@ -147,6 +155,7 @@ export const user = {
   findByEmail,
   create,
   update,
+  updateCover,
   activate,
   deactivate,
   approve,

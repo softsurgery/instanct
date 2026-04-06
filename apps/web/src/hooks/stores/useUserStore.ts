@@ -19,6 +19,7 @@ interface UserStoreData {
   setManualPassword: boolean;
   confirmPassword?: string;
   picture?: File;
+  cover?: File
   officialDocument?: File;
   driverLicenseDocument?: File;
   pictureUrl?: string;
@@ -55,6 +56,7 @@ const initialState: UserStoreData = {
     gender: undefined,
     isPrivate: false,
     pictureId: undefined,
+    coverId: undefined,
     officialDocumentId: undefined,
     driverLicenseDocumentId: undefined,
     uploads: [],
@@ -75,6 +77,7 @@ const initialState: UserStoreData = {
     gender: undefined,
     isPrivate: false,
     pictureId: undefined,
+    coverId: undefined,
     officialDocumentId: undefined,
     driverLicenseDocumentId: undefined,
     uploads: [],

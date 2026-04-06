@@ -42,6 +42,7 @@ export interface ResponseUserDto extends ResponseAbstractUserDto {
   gender?: Gender;
   isPrivate?: boolean;
   pictureId?: number;
+  coverId?: number;
   picture?: Upload;
   officialDocumentId?: number;
   officialDocument?: Upload;
@@ -59,6 +60,7 @@ export interface CreateUserDto extends CreateAbstractUserDto {
   gender?: Gender;
   isPrivate?: boolean;
   pictureId?: number;
+  coverId?: number;
   officialDocumentId?: number;
   driverLicenseDocumentId?: number;
   uploads?: { uploadId: number }[];
