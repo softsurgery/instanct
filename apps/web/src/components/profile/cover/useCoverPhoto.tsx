@@ -13,38 +13,29 @@ export const useCoverPhoto = (userId: string | undefined) => {
   const { uploadFiles: uploadCover, isUploadPending: isCoverUploadPending } =
     useUploadMutation({
       onSuccess: (response) => {
-        if (response && response[0]) {
+        if (response?.[0]?.id) {
           updateCoverMutation.mutate(response[0].id);
         }
       },
-      onError: () => {
-        toast.error("Failed to upload cover photo");
-      },
+      onError: () => toast.error("Failed to upload cover photo"),
     });
 
   const updateCoverMutation = useMutation({
-    mutationFn: (coverId: number) => {
-      return api.admin.user.updateCover(userId || "", coverId);
-    },
+    mutationFn: (coverId: number) =>
+      api.admin.user.updateCover(userId || "", coverId),
     onSuccess: (data) => {
       userStore.set("response", data);
       queryClient.invalidateQueries({ queryKey: ["cover-picture"] });
       toast.success("Cover photo updated successfully");
     },
-    onError: () => {
-      toast.error("Failed to update cover photo");
-    },
+    onError: () => toast.error("Failed to update cover photo"),
   });
 
-  const handleCoverEdit = () => {
-    fileInputRef.current?.click();
-  };
+  const handleCoverEdit = () => fileInputRef.current?.click();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      uploadCover({ files: [file] });
-    }
+    if (file) uploadCover({ files: [file] });
   };
 
   return {

@@ -156,9 +156,9 @@ export const BaseProfile = ({
         </Avatar>
         {user?.id === currentUser?.id && (
           <Button
-            variant="secondary"
+            variant="outline"
             size="icon"
-            className="absolute top-4 right-4 bg-white/80 hover:bg-white/90"
+            className="cursor-pointer rounded-lg absolute top-4 right-4 bg-white/80 hover:bg-white/90"
             onClick={handleCoverEdit}
             disabled={isCoverUploadPending || isCoverUpdatePending}
           >
