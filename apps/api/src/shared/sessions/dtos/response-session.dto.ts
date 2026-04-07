@@ -41,4 +41,8 @@ export class ResponseSessionDto extends ResponseDtoHelper {
   @ApiProperty({ type: Object })
   @Expose()
   payload?: object;
+
+  @ApiProperty({ type: Boolean })
+  @Expose()
+  active: boolean;
 }

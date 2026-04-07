@@ -156,7 +156,6 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
   async end(id: number): Promise<SessionEntity | null> {
     const session = await this.sessionRepository.findOneById(id);
     if (!session) throw new Error('Session not found');
-    session.ended = new Date();
-    return this.sessionRepository.update(id, session);
+    return this.sessionRepository.update(id, { ended: new Date() });
   }
 }
