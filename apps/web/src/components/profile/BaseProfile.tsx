@@ -28,6 +28,10 @@ import { api } from "@/api";
 import { Book } from "./cards/Book";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { toast } from "sonner";
+import { Edit } from "lucide-react";
+import { Button } from "../ui/button";
+import { useCoverPhoto } from "./cover/useCoverPhoto";
 
 interface BaseProfileProps {
   className?: string;
@@ -74,6 +78,14 @@ export const BaseProfile = ({
     queryFn: () => api.upload.getUploadById(user?.coverId as number),
     enabled: !!user?.coverId,
   });
+
+  const {
+    fileInputRef,
+    isCoverUploadPending,
+    isCoverUpdatePending,
+    handleCoverEdit,
+    handleFileChange,
+  } = useCoverPhoto(user?.id);
 
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
@@ -142,6 +154,17 @@ export const BaseProfile = ({
           <AvatarImage src={coverPicture} alt={fallback} />
           <AvatarFallback>{fallback}</AvatarFallback>
         </Avatar>
+        {user?.id === currentUser?.id && (
+          <Button
+            variant="secondary"
+            size="icon"
+            className="absolute top-4 right-4 bg-white/80 hover:bg-white/90"
+            onClick={handleCoverEdit}
+            disabled={isCoverUploadPending || isCoverUpdatePending}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+        )}
       </div>
 
       <div className="container mx-auto">
