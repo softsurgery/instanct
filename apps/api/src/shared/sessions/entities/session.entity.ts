@@ -10,6 +10,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { SessionStatus } from '../enums/session-status.enum';
 
 @Entity('sessions')
 export class SessionEntity extends EntityHelper {
@@ -45,22 +46,38 @@ export class SessionEntity extends EntityHelper {
   payload?: object;
 
   @Expose()
-  active?: boolean;
+  status?: SessionStatus;
 
   @AfterLoad()
-  setActive() {
+  setStatus() {
     const now = new Date();
 
-    const startedAndNotEnded =
-      !!this.started && this.started <= now && !this.ended;
+    // 1. Cancelled
+    if (this.ended) {
+      this.status = SessionStatus.CANCELLED;
+      return;
+    }
 
+    // 2. Active: started or in planned window
+    const startedAndNotEnded = this.started && this.started <= now;
     const plannedWindowActive =
-      !this.ended &&
-      !!this.plannedStart &&
-      !!this.plannedEnd &&
+      this.plannedStart &&
+      this.plannedEnd &&
       this.plannedStart <= now &&
       this.plannedEnd >= now;
 
-    this.active = startedAndNotEnded || plannedWindowActive;
+    if (startedAndNotEnded || plannedWindowActive) {
+      this.status = SessionStatus.ACTIVE;
+      return;
+    }
+
+    // 3. Scheduled in future
+    if (this.plannedStart && this.plannedStart > now) {
+      this.status = SessionStatus.SCHEDULED;
+      return;
+    }
+
+    // 4. Default fallback (no valid dates)
+    this.status = SessionStatus.COMPLETED;
   }
 }

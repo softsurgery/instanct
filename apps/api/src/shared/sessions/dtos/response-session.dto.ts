@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
 import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
 import { SessionType } from 'src/app/enums/session.enum';
+import { SessionStatus } from '../enums/session-status.enum';
 
 export class ResponseSessionDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number, example: 1 })
@@ -42,7 +43,7 @@ export class ResponseSessionDto extends ResponseDtoHelper {
   @Expose()
   payload?: object;
 
-  @ApiProperty({ type: Boolean })
+  @ApiProperty({ type: String, enum: SessionStatus })
   @Expose()
-  active: boolean;
+  status: SessionStatus;
 }
