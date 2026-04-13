@@ -1,5 +1,6 @@
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import { SessionEntity } from 'src/shared/sessions/entities/session.entity';
 import {
   Column,
   Entity,
@@ -16,26 +17,26 @@ export class RequestEntity extends EntityHelper {
   id: number;
 
   // Sender
-  @ManyToOne(() => UserEntity, (user) => user.sentRequests, {
+  @ManyToOne(() => SessionEntity, {
     nullable: false,
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'senderId' })
-  sender: UserEntity;
+  @JoinColumn({ name: 'sessionId' })
+  session: SessionEntity;
 
   @Column()
-  senderId: string;
+  sessionId: number;
 
   // Multiple Receivers
-  @ManyToMany(() => UserEntity, (user) => user.receivedRequests)
+  @ManyToMany(() => UserEntity)
   @JoinTable({
-    name: 'request_receivers',
+    name: 'request_receivers_users',
     joinColumn: {
       name: 'requestId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'receiverId',
+      name: 'receiverUserId',
       referencedColumnName: 'id',
     },
   })

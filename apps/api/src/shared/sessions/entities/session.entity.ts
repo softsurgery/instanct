@@ -37,9 +37,6 @@ export class SessionEntity extends EntityHelper {
   plannedEnd: Date;
 
   @Column({ type: 'timestamp', nullable: true })
-  started: Date;
-
-  @Column({ type: 'timestamp', nullable: true })
   ended: Date;
 
   @Column({ type: 'json', nullable: true })
@@ -58,15 +55,13 @@ export class SessionEntity extends EntityHelper {
       return;
     }
 
-    // 2. Active: started or in planned window
-    const startedAndNotEnded = this.started && this.started <= now;
-    const plannedWindowActive =
+    // 2. Active: started
+    if (
       this.plannedStart &&
-      this.plannedEnd &&
       this.plannedStart <= now &&
-      this.plannedEnd >= now;
-
-    if (startedAndNotEnded || plannedWindowActive) {
+      this.plannedEnd &&
+      this.plannedEnd >= now
+    ) {
       this.status = SessionStatus.ACTIVE;
       return;
     }
@@ -79,5 +74,12 @@ export class SessionEntity extends EntityHelper {
 
     // 4. Default fallback (no valid dates)
     this.status = SessionStatus.COMPLETED;
+  }
+
+  getTimeWindow() {
+    return {
+      start: this.plannedStart,
+      end: this.ended || this.plannedEnd,
+    };
   }
 }

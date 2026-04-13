@@ -4,7 +4,7 @@ import { IsArray, IsDateString, IsOptional, IsString } from 'class-validator';
 export class CreateRequestDto {
   @ApiProperty({ type: [String] })
   @IsArray()
-  receiversIds: string[];
+  receiverIds: string[];
 
   @ApiProperty({ type: String })
   @IsString()

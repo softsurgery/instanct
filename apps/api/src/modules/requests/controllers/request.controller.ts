@@ -48,8 +48,35 @@ export class RequestController {
   }
 
   @Get('/all')
-  async findAll(@Query() options: IQueryObject): Promise<ResponseRequestDto[]> {
-    const requests = await this.requestService.findAll(options);
+  async findAll(@Query() query: IQueryObject): Promise<ResponseRequestDto[]> {
+    const requests = await this.requestService.findAll(query);
+    return toDtoArray(ResponseRequestDto, requests);
+  }
+
+  @Get('sessions/:id/incoming/list')
+  async findAllSessionIncoming(
+    @Param('id') id: number,
+    @Query() query: IQueryObject,
+  ): Promise<PageDto<ResponseRequestDto>> {
+    const paginated = await this.requestService.findIncomingRequestsPaginated(
+      query,
+      id,
+    );
+    return {
+      ...paginated,
+      data: toDtoArray(ResponseRequestDto, paginated.data),
+    };
+  }
+
+  @Get('sessions/:id/incoming/all')
+  async findAllSessionIncomingNonPaginated(
+    @Param('id') id: number,
+    @Query() query: IQueryObject,
+  ): Promise<ResponseRequestDto[]> {
+    const requests = await this.requestService.findAllIncomingRequests(
+      query,
+      id,
+    );
     return toDtoArray(ResponseRequestDto, requests);
   }
 
@@ -75,12 +102,12 @@ export class RequestController {
     );
     req.logInfo = {
       id: request.id,
-      receiversIds: createRequestDto.receiversIds,
+      receiverSessionIds: createRequestDto.receiverIds,
     };
     req.batchNotificationInfo = [
       {
         type: NotificationType.REQUEST_RECEIVED,
-        entries: createRequestDto.receiversIds.map((receiverId) => ({
+        entries: createRequestDto.receiverIds.map((receiverId) => ({
           userId: receiverId,
           payload: {
             requestId: request.id,

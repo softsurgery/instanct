@@ -32,12 +32,6 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
       {
         ...extraConditions,
         ended: IsNull(),
-        started: LessThanOrEqual(now),
-        ...(userId && { userId }),
-      },
-      {
-        ...extraConditions,
-        ended: IsNull(),
         plannedStart: LessThanOrEqual(now),
         plannedEnd: MoreThanOrEqual(now),
         ...(userId && { userId }),
