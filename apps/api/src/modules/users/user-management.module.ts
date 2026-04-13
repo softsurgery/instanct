@@ -28,6 +28,9 @@ import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types
 import { StorageModule } from 'src/shared/storage/storage.module';
 import { UserConfigurationService } from './services/user-configuration.service';
 import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
+import { UserBookmarkRepository } from './repositories/user-bookmark.repository';
+import { UserBookmarkService } from './services/user-bookmark.service';
+import { UserBookmarkEntity } from './entities/user-bookmark.entity';
 
 @Module({
   controllers: [],
@@ -45,6 +48,8 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
     ExperienceService,
     EducationService,
 
+    UserBookmarkService,
+
     //repositories
     UserRepository,
     UserUploadRepository,
@@ -57,6 +62,8 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
     FollowRepository,
     ExperienceRepository,
     EducationRepository,
+
+    UserBookmarkRepository,
   ],
   exports: [
     //services
@@ -72,6 +79,8 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
     ExperienceService,
     EducationService,
 
+    UserBookmarkService,
+
     //repositories
     UserRepository,
     UserUploadRepository,
@@ -83,6 +92,8 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
     FollowRepository,
     ExperienceRepository,
     EducationRepository,
+
+    UserBookmarkRepository,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -94,6 +105,7 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
       FollowEntity,
       ExperienceEntity,
       EducationEntity,
+      UserBookmarkEntity,
     ]),
     StorageModule,
     ReferenceTypesModule,

@@ -83,4 +83,10 @@ export class UserEntity extends AbstractUserEntity {
 
   @OneToMany(() => FollowEntity, (follow) => follow.following)
   followers: FollowEntity[];
+
+  @OneToMany(() => UserBookmarkEntity, (bookmark) => bookmark.user)
+  bookmarks: UserBookmarkEntity[];
+
+  @OneToMany(() => UserBookmarkEntity, (bookmark) => bookmark.bookmark)
+  bookmarked: UserBookmarkEntity[];
 }

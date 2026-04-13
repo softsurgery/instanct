@@ -32,6 +32,7 @@ import { BugController } from 'src/modules/system-reports/controllers/bug.contro
 import { FeedbackController } from 'src/modules/system-reports/controllers/feedback.controller';
 import { RequestController } from 'src/modules/requests/controllers/request.controller';
 import { RequestsModule } from 'src/modules/requests/requests.module';
+import { UserBookmarkController } from 'src/modules/users/controllers/user-bookmark.controller';
 
 @Module({
   controllers: [
@@ -47,6 +48,7 @@ import { RequestsModule } from 'src/modules/requests/requests.module';
     FollowController,
     ExperienceController,
     EducationController,
+    UserBookmarkController,
     //system reports
     FeedbackController,
     BugController,
