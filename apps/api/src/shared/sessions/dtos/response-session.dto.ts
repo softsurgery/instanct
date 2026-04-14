@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
-import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
 import { SessionType } from 'src/app/enums/session.enum';
 import { SessionStatus } from '../enums/session-status.enum';
+import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
 
 export class ResponseSessionDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number, example: 1 })
@@ -14,10 +14,10 @@ export class ResponseSessionDto extends ResponseDtoHelper {
   @Expose()
   userId?: string;
 
-  @ApiProperty({ type: ResponseAbstractUserDto })
+  @ApiProperty({ type: ResponseUserDto })
   @Expose()
-  @Type(() => ResponseAbstractUserDto)
-  user: ResponseAbstractUserDto;
+  @Type(() => ResponseUserDto)
+  user: ResponseUserDto;
 
   @ApiProperty({ type: String, enum: SessionType })
   @Expose()

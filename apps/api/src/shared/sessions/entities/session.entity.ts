@@ -1,6 +1,5 @@
 import { Expose } from 'class-transformer';
 import { SessionType } from 'src/app/enums/session.enum';
-import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
 import {
   AfterLoad,
@@ -11,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { SessionStatus } from '../enums/session-status.enum';
+import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 
 @Entity('sessions')
 export class SessionEntity extends EntityHelper {
@@ -19,7 +19,6 @@ export class SessionEntity extends EntityHelper {
 
   @ManyToOne(() => AbstractUserEntity, (user) => user.sessions, {
     nullable: true,
-    eager: true,
   })
   @JoinColumn({ name: 'userId' })
   user: AbstractUserEntity;

@@ -102,6 +102,23 @@ export class CurrentSessionController {
     return toDto(ResponseSessionDto, session);
   }
 
+  @Put('/update/:id')
+  @LogEvent(EventType.SESSION_UPDATE)
+  async update(
+    @Param('id') id: number,
+    @Body() updateSessionDto: Partial<CreateSessionDto>,
+    @Req() req: AdvancedRequest,
+  ): Promise<ResponseSessionDto> {
+    const session = await this.sessionService.updateDetails(
+      id,
+      updateSessionDto,
+    );
+    if (session) {
+      req.logInfo = { sessionId: session.id };
+    }
+    return toDto(ResponseSessionDto, session);
+  }
+
   @Put('/end/:id')
   @LogEvent(EventType.SESSION_END)
   async end(
