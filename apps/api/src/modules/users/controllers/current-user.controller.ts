@@ -19,6 +19,7 @@ import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UserConfigurationService } from '../services/user-configuration.service';
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
 import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dtos/namespace/response-configuration-namespace.dto';
+import { UpdateUserCoverDto } from '../dtos/user/update-user-cover';
 
 @ApiTags('current-user')
 @ApiBearerAuth('access_token')
@@ -90,5 +91,22 @@ export class CurrentUserController {
       );
     req.logInfo = { id: req.user.sub };
     return toDto(ResponseConfigurationNamespaceDto, config);
+  }
+
+  @Put('/cover')
+  @LogEvent(EventType.USER_UPDATE_COVER)
+  async updateCurrentUserCover(
+    @Body() updateUserCoverDto: UpdateUserCoverDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDto | null> {
+    if (!req?.user?.sub) {
+      return null;
+    }
+    const user = await this.userService.updateCover(
+      req?.user?.sub,
+      updateUserCoverDto.coverId,
+    );
+    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    return toDto(ResponseUserDto, user);
   }
 }

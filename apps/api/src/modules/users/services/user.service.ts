@@ -252,4 +252,17 @@ export class UserService extends AbstractUserService {
     user.industries = industries;
     return await this.userRepository.save(user);
   }
+
+  async updateCover(id: string, coverId: number): Promise<UserEntity> {
+    const user = await this.userRepository.findOneById(id);
+    if (!user) throw new UserNotFoundException();
+
+    if (coverId && coverId != user.coverId) {
+      await this.storageService.confirm(coverId);
+      if (user.coverId) await this.storageService.delete(user.coverId);
+    }
+
+    user.coverId = coverId;
+    return await this.userRepository.save(user);
+  }
 }

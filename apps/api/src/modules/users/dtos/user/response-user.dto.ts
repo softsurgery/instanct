@@ -50,6 +50,15 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Type(() => ResponseStorageDto)
   picture?: ResponseStorageDto;
 
+  @ApiProperty({ type: Number })
+  @Expose()
+  coverId?: number;
+
+  @ApiProperty({ type: ResponseStorageDto })
+  @Expose()
+  @Type(() => ResponseStorageDto)
+  cover?: ResponseStorageDto;
+
   @ApiProperty({ type: [ResponseUserUploadDto] })
   @Expose()
   @Type(() => ResponseUserUploadDto)
