@@ -19,7 +19,7 @@ import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UserConfigurationService } from '../services/user-configuration.service';
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
 import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dtos/namespace/response-configuration-namespace.dto';
-import { UpdateUserCoverDto } from '../dtos/user/update-user-cover';
+import { UpdateUserCoverDto } from '../dtos/user/update-user-cover.dto';
 
 @ApiTags('current-user')
 @ApiBearerAuth('access_token')

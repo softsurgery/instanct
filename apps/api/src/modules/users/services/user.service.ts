@@ -253,7 +253,7 @@ export class UserService extends AbstractUserService {
     return await this.userRepository.save(user);
   }
 
-  async updateCover(id: string, coverId: number): Promise<UserEntity> {
+  async updateCover(id: string, coverId: number): Promise<UserEntity | null> {
     const user = await this.userRepository.findOneById(id);
     if (!user) throw new UserNotFoundException();
 
@@ -262,7 +262,6 @@ export class UserService extends AbstractUserService {
       if (user.coverId) await this.storageService.delete(user.coverId);
     }
 
-    user.coverId = coverId;
-    return await this.userRepository.save(user);
+    return this.userRepository.update(id, { coverId });
   }
 }
