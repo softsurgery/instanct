@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
+import { NotificationInterceptor } from 'src/shared/notifications/decorators/notification.interceptor';
 import { RequestService } from '../services/request.service';
 import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
 import { ResponseRequestDto } from '../dtos/response-request.dto';
@@ -28,6 +29,7 @@ import { NotificationType } from 'src/app/enums/notification-type.enum';
 @ApiBearerAuth('access_token')
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
+@UseInterceptors(NotificationInterceptor)
 @Controller({
   version: '1',
   path: '/requests',

@@ -5,7 +5,7 @@ import { tap } from 'rxjs';
 import { AdvancedRequest } from 'src/types';
 import { AccessTokenPayload } from 'src/shared/auth/interfaces/access-token-payload.interface';
 import { getTokenPayload } from 'src/shared/auth/utils/token-payload';
-import { NotificationService } from '../services/notification.service';
+import { NotificationGateway } from '../controllers/notification.gateway';
 import { NotificationType } from '../../../app/enums/notification-type.enum';
 import {
   NOTIFY_METADATA_KEY,
@@ -17,7 +17,7 @@ import type { BatchNotificationInfo } from './notify.decorator';
 export class NotificationInterceptor implements NestInterceptor {
   constructor(
     private readonly reflector: Reflector,
-    private readonly notificationService: NotificationService,
+    private readonly notificationGateway: NotificationGateway,
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler) {
@@ -51,19 +51,19 @@ export class NotificationInterceptor implements NestInterceptor {
 
     for (const type of types) {
       if (type === NotificationType.NEW_SIGNIN) {
-        void this.notificationService.save({
+        void this.notificationGateway.notifyUser(
+          notificationInfo?.userId as string,
           type,
-          payload: notificationInfo,
-          userId: notificationInfo?.userId as string,
-        });
+          notificationInfo ?? {},
+        );
         continue;
       }
 
-      void this.notificationService.save({
+      void this.notificationGateway.notifyUser(
+        payload?.sub,
         type,
-        payload: notificationInfo,
-        userId: payload?.sub,
-      });
+        notificationInfo ?? {},
+      );
     }
   }
 
@@ -84,13 +84,12 @@ export class NotificationInterceptor implements NestInterceptor {
 
     for (const batchInfo of batchNotificationInfo) {
       if (!batchTypes.includes(batchInfo.type)) continue;
-
       for (const entry of batchInfo.entries) {
-        void this.notificationService.save({
-          type: batchInfo.type,
-          payload: entry.payload,
-          userId: entry.userId,
-        });
+        void this.notificationGateway.notifyUser(
+          entry.userId,
+          batchInfo.type,
+          entry.payload,
+        );
       }
     }
   }
