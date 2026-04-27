@@ -24,6 +24,9 @@ import { EventType } from 'src/app/enums/event-type.enum';
 import { AdvancedRequest } from 'src/types';
 import { BatchNotify } from 'src/shared/notifications/decorators/notify.decorator';
 import { NotificationType } from 'src/app/enums/notification-type.enum';
+import { UserService } from 'src/modules/users/services/user.service';
+import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 @ApiTags('requests')
 @ApiBearerAuth('access_token')
@@ -35,7 +38,10 @@ import { NotificationType } from 'src/app/enums/notification-type.enum';
   path: '/requests',
 })
 export class RequestController {
-  constructor(private readonly requestService: RequestService) {}
+  constructor(
+    private readonly requestService: RequestService,
+    private readonly userService: UserService,
+  ) {}
 
   @Get('/list')
   @ApiPaginatedResponse(ResponseRequestDto)
@@ -85,8 +91,9 @@ export class RequestController {
   @Get(':id')
   async findOneById(
     @Param('id') id: string,
+    @Query() query: IQueryObject,
   ): Promise<ResponseRequestDto | null> {
-    const request = await this.requestService.findOneById(id);
+    const request = await this.requestService.findOneById(id, query.join);
     return toDto(ResponseRequestDto, request);
   }
 
@@ -98,6 +105,9 @@ export class RequestController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRequestDto | null> {
     if (!req?.user?.sub) return null;
+    const user = (await this.userService.findOneById(
+      req.user.sub,
+    )) as UserEntity;
     const request = await this.requestService.sendRequest(
       createRequestDto,
       req.user.sub,
@@ -114,6 +124,8 @@ export class RequestController {
           payload: {
             requestId: request.id,
             senderId: req?.user?.sub,
+            senderIdentification: identifyUser(user),
+            pictureId: user?.pictureId,
           },
         })),
       },
