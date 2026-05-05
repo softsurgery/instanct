@@ -87,7 +87,7 @@ export class GeolocationGateway
     this.socketToUser.set(client.id, userId);
     this.userToSocket.set(userId, client.id);
 
-    this.logger.log(`User ${userId} connected on socket ${client.id}`);
+    // this.logger.log(`User ${userId} connected on socket ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
@@ -102,7 +102,7 @@ export class GeolocationGateway
       this.userToSocket.delete(userId);
     }
 
-    this.logger.log(`User ${userId} disconnected`);
+    // this.logger.log(`User ${userId} disconnected`);
   }
 
   @SubscribeMessage('identify')
@@ -200,9 +200,9 @@ export class GeolocationGateway
         this.server.to(targetSocketId).emit('user_moved', movementPayload);
       }
 
-      this.logger.debug(
-        `Updated location for user ${userId}. Nearby users: ${nearbyWithPresence.length}`,
-      );
+      // this.logger.debug(
+      //   `Updated location for user ${userId}. Nearby users: ${nearbyWithPresence.length}`,
+      // );
     } catch (error) {
       this.logger.error(
         `Failed processing location update for socket ${socket.id}`,
