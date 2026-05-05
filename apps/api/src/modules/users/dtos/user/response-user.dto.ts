@@ -7,6 +7,7 @@ import { ResponseUserUploadDto } from '../user-upload/response-user-upload.dto';
 import { ResponseExperienceDto } from '../experience/response-experience.dto';
 import { ResponseRefParamDto } from 'src/shared/reference-types/dtos/ref-param/response-ref-param.dto';
 import { ResponseEducationDto } from '../education/response-education.dto';
+import { ResponseSessionDto } from 'src/shared/sessions/dtos/response-session.dto';
 
 export class ResponseUserDto extends ResponseAbstractUserDto {
   @ApiProperty({ type: String })
@@ -78,4 +79,9 @@ export class ResponseUserDto extends ResponseAbstractUserDto {
   @Expose()
   @Type(() => ResponseRefParamDto)
   industries: ResponseRefParamDto[];
+
+  @ApiProperty({ type: ResponseSessionDto, nullable: true })
+  @Expose()
+  @Type(() => ResponseSessionDto)
+  activeSession?: ResponseSessionDto;
 }

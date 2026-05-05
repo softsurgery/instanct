@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   ChildEntity,
   Column,
   JoinColumn,
@@ -20,6 +21,9 @@ import { ExperienceEntity } from './experience.entity';
 import { EducationEntity } from './education.entity';
 import { IsOptional } from 'class-validator';
 import { UserBookmarkEntity } from './user-bookmark.entity';
+import { Expose } from 'class-transformer';
+import { SessionEntity } from 'src/shared/sessions/entities/session.entity';
+import { SessionStatus } from 'src/shared/sessions/enums/session-status.enum';
 
 @ChildEntity()
 export class UserEntity extends AbstractUserEntity {
@@ -100,4 +104,16 @@ export class UserEntity extends AbstractUserEntity {
 
   @OneToMany(() => UserBookmarkEntity, (bookmark) => bookmark.bookmark)
   bookmarked: UserBookmarkEntity[];
+
+  @Expose()
+  activeSession?: SessionEntity;
+
+  @AfterLoad()
+  setActiveSession() {
+    if (this.sessions) {
+      this.activeSession = this.sessions.find(
+        (session) => session.status === SessionStatus.ACTIVE,
+      );
+    }
+  }
 }
