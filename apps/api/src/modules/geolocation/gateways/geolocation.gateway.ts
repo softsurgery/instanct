@@ -9,7 +9,6 @@ import {
 } from '@nestjs/websockets';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-
 import { GeolocationService } from '../services/geolocation.service';
 import { AdvancedSocket } from 'src/types';
 import { getTokenPayloadForWebSocket } from 'src/shared/auth/utils/token-payload';

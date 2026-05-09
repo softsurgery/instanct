@@ -5,7 +5,7 @@ import { MessageEntity } from './entities/message.entity';
 import { ConversationRepository } from './repositories/conversation.repository';
 import { MessageRepository } from './repositories/message.repository';
 import { MessageService } from './services/message.service';
-import { ChatGateway } from './controllers/chat.gateway';
+import { ChatGateway } from './gateways/chat.gateway';
 import { ConversationService } from './services/conversation.service';
 import { ChatService } from './services/chat.service';
 import { UserManagementModule } from 'src/modules/users/user-management.module';
