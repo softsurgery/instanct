@@ -9,6 +9,9 @@ import { ChatGateway } from './gateways/chat.gateway';
 import { ConversationService } from './services/conversation.service';
 import { ChatService } from './services/chat.service';
 import { UserManagementModule } from 'src/modules/users/user-management.module';
+import { TriggerRegistry } from '../database/services/trigger-registry.service';
+import { ConversationParticipantsTrigger } from './triggers/conversation-participants.trigger';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
   controllers: [],
@@ -30,6 +33,11 @@ import { UserManagementModule } from 'src/modules/users/user-management.module';
   imports: [
     TypeOrmModule.forFeature([ConversationEntity, MessageEntity]),
     UserManagementModule,
+    DatabaseModule,
   ],
 })
-export class ChatModule {}
+export class ChatModule {
+  constructor(registry: TriggerRegistry) {
+    registry.register(new ConversationParticipantsTrigger());
+  }
+}

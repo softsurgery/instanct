@@ -30,18 +30,28 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     query: IQueryObject,
     userId?: string,
   ): Promise<PageDto<ConversationEntity>> {
+    console.log('Finding paginated conversations for user:', query);
     const queryBuilder = new QueryBuilder(
       this.conversationRepository.getMetadata(),
     );
 
     const queryOptions = queryBuilder.build(query);
 
-    queryOptions.where = {
-      ...(queryOptions.where || {}),
-      participants: {
-        id: userId,
-      },
-    };
+    if (Array.isArray(queryOptions.where)) {
+      queryOptions.where = queryOptions.where.map((where) => ({
+        ...where,
+        participants: {
+          id: userId,
+        },
+      }));
+    } else {
+      queryOptions.where = {
+        ...(queryOptions.where || {}),
+        participants: {
+          id: userId,
+        },
+      };
+    }
 
     const count = await this.conversationRepository.getTotalCount({
       where: queryOptions.where,
