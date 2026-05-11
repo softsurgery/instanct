@@ -40,38 +40,29 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleDisconnect(_client: AdvancedSocket) {}
 
-  /**
-   * When user joins a conversation, load the latest 10 messages
-   */
-  @SubscribeMessage('my-conversations')
-  async listMyConversations(
+  @SubscribeMessage('get-my-conversations')
+  async getMyConversations(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { query: IQueryObject },
   ) {
     const payload = getTokenPayloadForWebSocket(client);
     const userId = payload?.sub;
 
-    const query: IQueryObject = {
-      page: data.query?.page ?? '1',
-      limit: data.query?.limit ?? MAX_LIMIT.toString(),
-      sort: data.query?.sort ?? 'lastMessageAt.createdAt,DESC',
-      ...(data.query?.filter ? { filter: data.query.filter } : {}),
-      ...(data.query?.search ? { search: data.query.search } : {}),
-    };
-
     const conversations =
       await this.conversationService.findPaginatedUserConversations(
-        query,
+        {
+          ...data.query,
+          sort: data.query.sort || 'lastMessage.createdAt,DESC',
+          limit: data.query.limit || MAX_LIMIT.toString(),
+          page: data.query.page || '1',
+          search: data.query.search || '',
+        },
         userId,
       );
-
     client.emit('my-conversations', conversations);
   }
 
-  /**
-   * When user joins a conversation, load the latest 10 messages
-   */
-  @SubscribeMessage('joinConversation')
+  @SubscribeMessage('join-conversation')
   async joinConversation(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { conversationId: number },
@@ -101,14 +92,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         data.conversationId,
       );
 
-    // send messages to the client (latest 10)
-    client.emit('conversationMessages', recentMessages.data);
+    client.emit('conversation-messages', recentMessages.data);
   }
 
-  /**
-   * When user requests older messages (scrolls up)
-   */
-  @SubscribeMessage('getConversationMessages')
+  @SubscribeMessage('get-conversation-messages')
   async getConversationMessages(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody()
@@ -137,14 +124,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         data.conversationId,
       );
 
-    client.emit('conversationMessages', messages.data);
+    client.emit('conversation-messages', messages.data);
   }
 
   @SubscribeMessage('message')
   async handleMessage(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: CreateMessageDto,
-  ) {
+  ): Promise<void> {
     const payload = getTokenPayloadForWebSocket(client);
     const userId = payload?.sub;
 
