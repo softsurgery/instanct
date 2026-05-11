@@ -1,6 +1,6 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { FindManyOptions, In } from 'typeorm';
+import { FindManyOptions } from 'typeorm';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
@@ -44,21 +44,19 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     query: IQueryObject,
     userId?: string,
   ): Promise<PageDto<ConversationEntity>> {
+    const userConversations =
+      await this.conversationUserService.findByUserId(userId);
+
+    const conversationIds = userConversations.map((uc) => uc.conversationId);
+    query.filter = query.filter
+      ? `${query.filter},id||$in||${conversationIds.join(',')}`
+      : `id||$in||${conversationIds.join(',')}`;
+
     const queryBuilder = new QueryBuilder(
       this.conversationRepository.getMetadata(),
     );
 
     const queryOptions = queryBuilder.build(query);
-
-    const userConversations =
-      await this.conversationUserService.findByUserId(userId);
-
-    const conversationIds = userConversations.map((uc) => uc.conversationId);
-
-    queryOptions.where = {
-      ...(queryOptions.where || {}),
-      id: In(conversationIds),
-    };
 
     const count = await this.conversationRepository.getTotalCount({
       where: queryOptions.where,
