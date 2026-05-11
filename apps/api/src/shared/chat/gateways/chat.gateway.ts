@@ -29,12 +29,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly conversationService: ConversationService,
   ) {}
 
-  handleConnection(client: AdvancedSocket) {
+  async handleConnection(client: AdvancedSocket) {
     const payload = getTokenPayloadForWebSocket(client);
     if (!payload) {
       client.disconnect();
       return;
     }
+
+    await client.join(`user_${payload.sub}`);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -149,5 +151,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server
       .to(`conversation_${data.conversationId}`)
       .emit('message', message);
+
+    const conversation = await this.conversationService.findOneById(
+      data.conversationId,
+      'participants,participants.user,lastMessage',
+    );
+
+    for (const participant of conversation?.participants ?? []) {
+      this.server
+        .to(`user_${participant.userId}`)
+        .emit('conversation-updated', conversation);
+    }
   }
 }
