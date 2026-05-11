@@ -8,12 +8,12 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { ChatService } from '../services/chat.service';
 import { getTokenPayloadForWebSocket } from 'src/shared/auth/utils/token-payload';
 import { AdvancedSocket } from 'src/types';
 import { MessageService } from '../services/message.service';
-import { MessageRepository } from '../repositories/message.repository';
 import { CreateMessageDto } from '../dtos/message/create-message.dto';
+import { ConversationService } from '../services/conversation.service';
+import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 
 const MAX_LIMIT = 20;
 
@@ -25,9 +25,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   constructor(
-    private readonly chatService: ChatService,
     private readonly messageService: MessageService,
-    private readonly messageRepository: MessageRepository,
+    private readonly conversationService: ConversationService,
   ) {}
 
   handleConnection(client: AdvancedSocket) {
@@ -44,6 +43,34 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   /**
    * When user joins a conversation, load the latest 10 messages
    */
+  @SubscribeMessage('my-conversations')
+  async listMyConversations(
+    @ConnectedSocket() client: AdvancedSocket,
+    @MessageBody() data: { query: IQueryObject },
+  ) {
+    const payload = getTokenPayloadForWebSocket(client);
+    const userId = payload?.sub;
+
+    const query: IQueryObject = {
+      page: data.query?.page ?? '1',
+      limit: data.query?.limit ?? MAX_LIMIT.toString(),
+      sort: data.query?.sort ?? 'lastMessageAt.createdAt,DESC',
+      ...(data.query?.filter ? { filter: data.query.filter } : {}),
+      ...(data.query?.search ? { search: data.query.search } : {}),
+    };
+
+    const conversations =
+      await this.conversationService.findPaginatedUserConversations(
+        query,
+        userId,
+      );
+
+    client.emit('my-conversations', conversations);
+  }
+
+  /**
+   * When user joins a conversation, load the latest 10 messages
+   */
   @SubscribeMessage('joinConversation')
   async joinConversation(
     @ConnectedSocket() client: AdvancedSocket,
@@ -52,7 +79,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const payload = getTokenPayloadForWebSocket(client);
     const userId = payload?.sub;
 
-    const isParticipant = await this.chatService.isUserInConversation(
+    const isParticipant = await this.conversationService.isUserInConversation(
       data.conversationId,
       userId,
     );
@@ -90,7 +117,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const payload = getTokenPayloadForWebSocket(client);
     const userId = payload?.sub;
 
-    const isParticipant = await this.chatService.isUserInConversation(
+    const isParticipant = await this.conversationService.isUserInConversation(
       data.conversationId,
       userId,
     );
@@ -121,7 +148,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const payload = getTokenPayloadForWebSocket(client);
     const userId = payload?.sub;
 
-    const isParticipant = await this.chatService.isUserInConversation(
+    const isParticipant = await this.conversationService.isUserInConversation(
       data.conversationId,
       userId,
     );
@@ -130,7 +157,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
-    const message = await this.chatService.createMessage(data, userId);
+    const message = await this.messageService.createMessage(data, userId);
 
     this.server
       .to(`conversation_${data.conversationId}`)

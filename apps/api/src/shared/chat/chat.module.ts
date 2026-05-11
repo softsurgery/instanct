@@ -1,37 +1,46 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConversationEntity } from './entities/conversation.entity';
+import { ConversationUserEntity } from './entities/conversation-user.entity';
 import { MessageEntity } from './entities/message.entity';
 import { ConversationRepository } from './repositories/conversation.repository';
 import { MessageRepository } from './repositories/message.repository';
 import { MessageService } from './services/message.service';
 import { ChatGateway } from './gateways/chat.gateway';
 import { ConversationService } from './services/conversation.service';
-import { ChatService } from './services/chat.service';
 import { UserManagementModule } from 'src/modules/users/user-management.module';
 import { TriggerRegistry } from '../database/services/trigger-registry.service';
 import { ConversationParticipantsTrigger } from './triggers/conversation-participants.trigger';
+import { ConversationLastMessageTrigger } from './triggers/conversation-last-message.trigger';
 import { DatabaseModule } from '../database/database.module';
+import { ConversationUserRepository } from './repositories/conversation-user.repository';
+import { ConversationUserService } from './services/conversation-user.service';
 
 @Module({
   controllers: [],
   providers: [
     ConversationRepository,
+    ConversationUserRepository,
     MessageRepository,
     MessageService,
     ConversationService,
-    ChatService,
+    ConversationUserService,
     ChatGateway,
   ],
   exports: [
     ConversationRepository,
+    ConversationUserRepository,
     MessageRepository,
     ConversationService,
+    ConversationUserService,
     MessageService,
-    ChatService,
   ],
   imports: [
-    TypeOrmModule.forFeature([ConversationEntity, MessageEntity]),
+    TypeOrmModule.forFeature([
+      ConversationEntity,
+      ConversationUserEntity,
+      MessageEntity,
+    ]),
     UserManagementModule,
     DatabaseModule,
   ],
@@ -39,5 +48,6 @@ import { DatabaseModule } from '../database/database.module';
 export class ChatModule {
   constructor(registry: TriggerRegistry) {
     registry.register(new ConversationParticipantsTrigger());
+    registry.register(new ConversationLastMessageTrigger());
   }
 }

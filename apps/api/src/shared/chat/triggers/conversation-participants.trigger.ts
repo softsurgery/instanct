@@ -8,12 +8,12 @@ export class ConversationParticipantsTrigger extends AbstractTrigger {
 
   apply: TriggerApply[] = [
     {
-      table: 'conversations_participants_users',
+      table: 'conversation_users',
       type: 'AFTER',
       operation: 'INSERT',
     },
     {
-      table: 'conversations_participants_users',
+      table: 'conversation_users',
       type: 'AFTER',
       operation: 'DELETE',
     },
@@ -39,14 +39,14 @@ export class ConversationParticipantsTrigger extends AbstractTrigger {
             END
             SEPARATOR ','
           )
-          FROM conversations_participants_users cp
+          FROM conversation_users cp
           INNER JOIN users u
-            ON u.id = cp.usersId
-          WHERE cp.conversationsId = ${conversationIdExpr}`;
+            ON u.id = cp.userId
+          WHERE cp.conversationId = ${conversationIdExpr}`;
   }
 
   createTriggerSql(apply: TriggerApply, triggerName: string): string {
-    if (apply.table === 'conversations_participants_users') {
+    if (apply.table === 'conversation_users') {
       const row = apply.operation === 'DELETE' ? 'OLD' : 'NEW';
       return `
         CREATE TRIGGER \`${triggerName}\`
@@ -54,8 +54,8 @@ export class ConversationParticipantsTrigger extends AbstractTrigger {
         FOR EACH ROW
         BEGIN
           UPDATE conversations c
-          SET c.participantsIdentifiers = (${this.participantsSelectSql(`${row}.conversationsId`)})
-          WHERE c.id = ${row}.conversationsId;
+          SET c.participantsIdentifiers = (${this.participantsSelectSql(`${row}.conversationId`)})
+          WHERE c.id = ${row}.conversationId;
         END;
       `;
     }
@@ -69,9 +69,9 @@ export class ConversationParticipantsTrigger extends AbstractTrigger {
         UPDATE conversations c
         SET c.participantsIdentifiers = (${this.participantsSelectSql('c.id')})
         WHERE c.id IN (
-          SELECT cp.conversationsId
-          FROM conversations_participants_users cp
-          WHERE cp.usersId = NEW.id
+          SELECT cp.conversationId
+          FROM conversation_users cp
+          WHERE cp.userId = NEW.id
         );
       END;
     `;
