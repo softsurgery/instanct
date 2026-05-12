@@ -32,6 +32,10 @@ export class ConversationUserEntity extends EntityHelper {
   @JoinColumn({ name: 'conversationId' })
   conversation: ConversationEntity;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({
+    type: 'datetime',
+    precision: 3,
+    default: () => 'CURRENT_TIMESTAMP(3)',
+  })
   lastCheck: Date;
 }
