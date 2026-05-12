@@ -86,6 +86,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
+    const rooms = [...client.rooms];
+
+    for (const room of rooms) {
+      if (room.startsWith('conversation_')) {
+        await client.leave(room);
+      }
+    }
+
     await client.join(`conversation_${data.conversationId}`);
 
     const recentMessages =
@@ -155,6 +163,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     const message = await this.messageService.createMessage(data, userId);
 
+    await this.conversationService.markConversationAsSeen(
+      data.conversationId,
+      userId,
+      message.createdAt,
+    );
+
     this.server
       .to(`conversation_${data.conversationId}`)
       .emit('message', message);
@@ -169,6 +183,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         .to(`user_${participant.userId}`)
         .emit('conversation-updated-message', conversation);
     }
+
+    this.server
+      .to(`user_${userId}`)
+      .emit('conversation-updated-last-check', conversation);
   }
 
   // mark conversation as seen ***********************************************************************************************************************
