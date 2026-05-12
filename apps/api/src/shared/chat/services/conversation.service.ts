@@ -181,6 +181,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
   async markConversationAsSeen(
     conversationId: number,
     userId?: string,
+    date = new Date(),
   ): Promise<ConversationEntity | null> {
     const join = ['participants', 'participants.user', 'lastMessage'].join(',');
 
@@ -198,7 +199,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
       );
     }
     await this.conversationUserService.update(participant.id, {
-      lastCheck: new Date(),
+      lastCheck: date,
     });
 
     return this.findOneById(conversationId, join);
