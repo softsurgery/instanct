@@ -30,9 +30,6 @@ export class ConversationEntity extends EntityHelper {
   @OneToMany(() => MessageEntity, (message) => message.conversation)
   messages: MessageEntity[];
 
-  @Column({ type: 'datetime', nullable: true })
-  seenAt: Date;
-
   @OneToOne(() => MessageEntity, { nullable: true })
   @JoinColumn({ name: 'lastMessageId' })
   lastMessage: MessageEntity;

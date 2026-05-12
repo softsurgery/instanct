@@ -20,4 +20,8 @@ export class ResponseConversationUserDto extends ResponseDtoHelper {
   @Expose()
   @Type(() => ResponseUserDto)
   user: ResponseUserDto;
+
+  @ApiProperty({ type: Date })
+  @Expose()
+  lastCheck: Date;
 }

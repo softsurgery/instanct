@@ -182,18 +182,25 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     conversationId: number,
     userId?: string,
   ): Promise<ConversationEntity | null> {
-    const conversation = await this.findOneById(conversationId);
+    const join = ['participants', 'participants.user', 'lastMessage'].join(',');
+
+    const conversation = await this.findOneById(conversationId, join);
 
     if (!conversation) {
       throw new ConversationNotFoundException();
     }
-
-    if (!conversation.participants.some((p) => p.userId === userId)) {
+    const participant = conversation?.participants.find(
+      (p) => p.userId === userId,
+    );
+    if (!participant) {
       throw new BadRequestException(
         'User is not a participant of the conversation',
       );
     }
+    await this.conversationUserService.update(participant.id, {
+      lastCheck: new Date(),
+    });
 
-    return this.update(conversationId, { seenAt: new Date() });
+    return this.findOneById(conversationId, join);
   }
 }

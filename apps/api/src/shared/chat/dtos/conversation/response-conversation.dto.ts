@@ -19,10 +19,6 @@ export class ResponseConversationDto extends ResponseDtoHelper {
   @Type(() => ResponseMessageDto)
   messages: ResponseMessageDto[];
 
-  @ApiProperty({ type: Date, nullable: true })
-  @Expose()
-  seenAt: Date;
-
   @ApiProperty({ type: ResponseMessageDto, nullable: true })
   @Expose()
   @Type(() => ResponseMessageDto)

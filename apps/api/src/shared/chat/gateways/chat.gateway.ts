@@ -42,6 +42,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleDisconnect(_client: AdvancedSocket) {}
 
+  // get my conversations ***************************************************************************************************************************
+
   @SubscribeMessage('get-my-conversations')
   async getMyConversations(
     @ConnectedSocket() client: AdvancedSocket,
@@ -63,6 +65,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
     client.emit('my-conversations', conversations);
   }
+
+  // join a conversation ******************************************************************************************************************************
 
   @SubscribeMessage('join-conversation')
   async joinConversation(
@@ -97,6 +101,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.emit('conversation-messages', recentMessages.data);
   }
 
+  // load messages for a conversation *****************************************************************************************************************
+
   @SubscribeMessage('get-conversation-messages')
   async getConversationMessages(
     @ConnectedSocket() client: AdvancedSocket,
@@ -129,6 +135,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.emit('conversation-messages', messages.data);
   }
 
+  // new message handler *****************************************************************************************************************************
   @SubscribeMessage('message')
   async handleMessage(
     @ConnectedSocket() client: AdvancedSocket,
@@ -160,7 +167,38 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     for (const participant of conversation?.participants ?? []) {
       this.server
         .to(`user_${participant.userId}`)
-        .emit('conversation-updated', conversation);
+        .emit('conversation-updated-message', conversation);
+    }
+  }
+
+  // mark conversation as seen ***********************************************************************************************************************
+  @SubscribeMessage('see-conversation')
+  async seeConversation(
+    @ConnectedSocket() client: AdvancedSocket,
+    @MessageBody() data: { conversationId: number },
+  ) {
+    const payload = getTokenPayloadForWebSocket(client);
+    const userId = payload?.sub;
+
+    const isParticipant = await this.conversationService.isUserInConversation(
+      data.conversationId,
+      userId,
+    );
+
+    if (!isParticipant) {
+      client.emit('error', 'You are not part of this conversation');
+      return;
+    }
+
+    const conversation = await this.conversationService.markConversationAsSeen(
+      data.conversationId,
+      userId,
+    );
+
+    for (const participant of conversation?.participants ?? []) {
+      this.server
+        .to(`user_${participant.userId}`)
+        .emit('conversation-updated-last-check', conversation);
     }
   }
 }
