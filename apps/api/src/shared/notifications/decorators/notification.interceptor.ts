@@ -5,7 +5,7 @@ import { tap } from 'rxjs';
 import { AdvancedRequest } from 'src/types';
 import { AccessTokenPayload } from 'src/shared/auth/interfaces/access-token-payload.interface';
 import { getTokenPayload } from 'src/shared/auth/utils/token-payload';
-import { NotificationGateway } from '../controllers/notification.gateway';
+import { NotificationGateway } from '../gateways/notification.gateway';
 import { NotificationType } from '../../../app/enums/notification-type.enum';
 import {
   NOTIFY_METADATA_KEY,
