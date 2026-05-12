@@ -4,11 +4,12 @@ import {
   Controller,
   Get,
   Put,
+  Query,
   Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { toDto } from 'src/shared/database/utils/dtos';
+import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
@@ -20,6 +21,10 @@ import { UserConfigurationService } from '../services/user-configuration.service
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
 import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dtos/namespace/response-configuration-namespace.dto';
 import { UpdateUserCoverDto } from '../dtos/user/update-user-cover.dto';
+import { UserBookmarkService } from '../services/user-bookmark.service';
+import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
+import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 
 @ApiTags('current-user')
 @ApiBearerAuth('access_token')
@@ -33,6 +38,7 @@ export class CurrentUserController {
   constructor(
     private readonly userService: UserService,
     private readonly userConfigurationService: UserConfigurationService,
+    private readonly userBookmarkService: UserBookmarkService,
   ) {}
 
   @Get('')
@@ -58,6 +64,24 @@ export class CurrentUserController {
         req?.user?.sub,
       );
     return toDto(ResponseConfigurationNamespaceDto, config);
+  }
+
+  @Get('/bookmarks/list')
+  async getPaginatedCurrentUserBookmarks(
+    @Query() query: IQueryObject,
+    @Request() req: AdvancedRequest,
+  ): Promise<PageDto<ResponseUserBookmarkDto> | null> {
+    if (!req?.user?.sub) {
+      return null;
+    }
+    const paginated = await this.userBookmarkService.findAllPaginatedByUser(
+      query,
+      req.user.sub,
+    );
+    return {
+      ...paginated,
+      data: toDtoArray(ResponseUserBookmarkDto, paginated.data),
+    };
   }
 
   @Put()
