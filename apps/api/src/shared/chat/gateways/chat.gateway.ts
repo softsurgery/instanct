@@ -13,11 +13,11 @@ import { AdvancedSocket } from 'src/types';
 import { MessageService } from '../services/message.service';
 import { CreateMessageDto } from '../dtos/message/create-message.dto';
 import { ConversationService } from '../services/conversation.service';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 
 const MAX_LIMIT = 20;
 
 @WebSocketGateway({
+  namespace: '/chat',
   cors: { origin: '*' },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -41,30 +41,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleDisconnect(_client: AdvancedSocket) {}
-
-  // get my conversations ***************************************************************************************************************************
-
-  @SubscribeMessage('get-my-conversations')
-  async getMyConversations(
-    @ConnectedSocket() client: AdvancedSocket,
-    @MessageBody() data: { query: IQueryObject },
-  ) {
-    const payload = getTokenPayloadForWebSocket(client);
-    const userId = payload?.sub;
-
-    const conversations =
-      await this.conversationService.findPaginatedUserConversations(
-        {
-          ...data.query,
-          sort: data.query.sort || 'lastMessage.createdAt,DESC',
-          limit: data.query.limit || MAX_LIMIT.toString(),
-          page: data.query.page || '1',
-          search: data.query.search || '',
-        },
-        userId,
-      );
-    client.emit('my-conversations', conversations);
-  }
 
   // join a conversation ******************************************************************************************************************************
 
@@ -178,15 +154,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       'participants,participants.user,lastMessage',
     );
 
+    this.server
+      .to(`user_${userId}`)
+      .emit('conversation-updated-last-check', conversation);
+
     for (const participant of conversation?.participants ?? []) {
       this.server
         .to(`user_${participant.userId}`)
         .emit('conversation-updated-message', conversation);
     }
-
-    this.server
-      .to(`user_${userId}`)
-      .emit('conversation-updated-last-check', conversation);
   }
 
   // mark conversation as seen ***********************************************************************************************************************
