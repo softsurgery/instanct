@@ -36,12 +36,10 @@ export class CreateExperienceDto {
   location?: string;
 
   @ApiProperty()
-  @IsOptional()
   @IsEnum(WorkTypes)
   workType?: WorkTypes;
 
   @ApiProperty()
-  @IsOptional()
   @IsEnum(LocationTypes)
   locationType?: LocationTypes;
 
