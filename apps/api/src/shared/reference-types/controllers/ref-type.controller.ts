@@ -24,6 +24,7 @@ import { RefTypeService } from '../services/ref-type.service';
 import { ResponseRefTypeDto } from '../dtos/ref-type/response-ref-type.dto';
 import { CreateRefTypeDto } from '../dtos/ref-type/create-ref-type.dto';
 import { UpdateRefTypeDto } from '../dtos/ref-type/update-ref-type.dto';
+import { Public } from 'src/shared/auth/utils/public-strategy';
 
 @ApiTags('ref-type')
 @ApiBearerAuth('access_token')
@@ -36,6 +37,7 @@ import { UpdateRefTypeDto } from '../dtos/ref-type/update-ref-type.dto';
 export class RefTypeController {
   constructor(private readonly refTypeService: RefTypeService) {}
 
+  @Public()
   @Get('/list')
   @ApiPaginatedResponse(ResponseRefTypeDto)
   async findAllPaginated(
@@ -48,6 +50,7 @@ export class RefTypeController {
     };
   }
 
+  @Public()
   @Get('/all')
   async findAll(@Query() options: IQueryObject): Promise<ResponseRefTypeDto[]> {
     return toDtoArray(

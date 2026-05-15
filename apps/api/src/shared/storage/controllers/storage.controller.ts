@@ -18,6 +18,7 @@ import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginat
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { StorageService } from '../services/storage.service';
 import { StorageEntity } from '../entities/storage.entity';
+import { Public } from 'src/shared/auth/utils/public-strategy';
 
 @ApiTags('storage')
 @ApiBearerAuth('access_token')
@@ -84,6 +85,7 @@ export class StorageController {
       },
     },
   })
+  @Public()
   @Post('/multiple/temporary')
   @UseInterceptors(FilesInterceptor('files'))
   async uploadTemporaryMultipleFiles(
@@ -124,6 +126,7 @@ export class StorageController {
       },
     },
   })
+  @Public()
   @Post('upload/temporary')
   @UseInterceptors(FileInterceptor('file'))
   async uploadTemporaryFile(
