@@ -18,9 +18,17 @@ import { resolveMX } from 'src/shared/mail/utils/mx-resolve.util';
 import { RouterModule } from 'src/routers/router.module';
 import { SeedersModule } from 'src/seeders/seeders.module';
 import { StorageModule } from 'src/shared/storage/storage.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
     ConfigModule.forRoot({
       load: config,
       isGlobal: true,
@@ -99,6 +107,12 @@ import { StorageModule } from 'src/shared/storage/storage.module';
     StorageModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
