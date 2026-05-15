@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Post,
@@ -15,15 +14,14 @@ import { NotificationInterceptor } from 'src/shared/notifications/decorators/not
 import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 import { RequestClientSpecializedSignUpDto } from '../dtos/custom-auth/request-client-specialized-signup.dto';
 import { Public } from 'src/shared/auth/utils/public-strategy';
-import { UserService } from '../services/user.service';
-import { BasicRoles } from 'src/shared/abstract-user-management/enums/basic-roles.enum';
+import { CustomAuthService } from '../services/custom-auth.service';
 
 @ApiTags('client-custom-auth')
 @Controller({ version: '1', path: '/client-custom-auth' })
 @UseInterceptors(LogInterceptor)
 @UseInterceptors(NotificationInterceptor)
 export class ClientCustomAuthController {
-  constructor(private userService: UserService) {}
+  constructor(private customAuthService: CustomAuthService) {}
 
   @Public()
   @Post('sign-up')
@@ -43,23 +41,11 @@ export class ClientCustomAuthController {
     @Body() registerDto: RequestClientSpecializedSignUpDto,
     @Request() req: AdvancedRequest,
   ) {
-    const { industries, ...rest } = registerDto;
-    try {
-      const result = await this.userService.extendedSave(
-        {
-          ...rest,
-          roleId: BasicRoles.User,
-          isActive: true,
-        },
-        industries,
-      );
-      req.logInfo = {
-        userId: result?.id,
-        clientName: identifyUser(result),
-      };
-      return result;
-    } catch (error) {
-      throw new BadRequestException(`User registration failed: ${error}`);
-    }
+    const response = await this.customAuthService.extendedSignup(registerDto);
+    req.logInfo = {
+      userId: response?.id,
+      clientName: identifyUser(response),
+    };
+    return response;
   }
 }

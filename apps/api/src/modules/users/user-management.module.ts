@@ -31,10 +31,13 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
 import { UserBookmarkRepository } from './repositories/user-bookmark.repository';
 import { UserBookmarkService } from './services/user-bookmark.service';
 import { UserBookmarkEntity } from './entities/user-bookmark.entity';
+import { MailModule } from 'src/shared/mail/mail.module';
+import { CustomAuthService } from './services/custom-auth.service';
 
 @Module({
   controllers: [],
   providers: [
+    CustomAuthService,
     //services
     UserService,
     UserUploadService,
@@ -67,6 +70,7 @@ import { UserBookmarkEntity } from './entities/user-bookmark.entity';
   ],
   exports: [
     //services
+    CustomAuthService,
     UserService,
     UserUploadService,
     UserConfigurationService,
@@ -107,6 +111,7 @@ import { UserBookmarkEntity } from './entities/user-bookmark.entity';
       EducationEntity,
       UserBookmarkEntity,
     ]),
+    MailModule,
     StorageModule,
     ReferenceTypesModule,
     ConfigurationsModule,

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { TemplateService } from 'src/shared/templates/services/template.service';
-import * as juice from 'juice';
+import juice from 'juice';
 import * as ejs from 'ejs';
 
 @Injectable()
@@ -48,7 +48,7 @@ export class MailService {
   ): Promise<void> {
     const html = await this.renderTemplateFromDb(
       templateName,
-      variables as Record<string, string>,
+      variables as Record<string, unknown>,
     );
     await this.sendMail(to, subject, html);
   }
