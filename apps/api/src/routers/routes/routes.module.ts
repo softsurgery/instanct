@@ -33,12 +33,14 @@ import { FeedbackController } from 'src/modules/system-reports/controllers/feedb
 import { RequestController } from 'src/modules/requests/controllers/request.controller';
 import { RequestsModule } from 'src/modules/requests/requests.module';
 import { UserBookmarkController } from 'src/modules/users/controllers/user-bookmark.controller';
+import { ClientCustomAuthController } from 'src/modules/users/controllers/custom-auth.controller';
 
 @Module({
   controllers: [
     //auth
     AuthController,
     ClientAuthController,
+    ClientCustomAuthController,
     //common
     StorageController,
     StoreController,
