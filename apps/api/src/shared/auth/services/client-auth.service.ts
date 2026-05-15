@@ -14,30 +14,28 @@ import { UserNotFoundException } from 'src/shared/abstract-user-management/error
 import { ResponseResetTokenDto } from '../dtos/web/response-reset-token.dto';
 import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-token.dto';
 import { RequestCheckResetTokenDto } from '../dtos/web/request-check-reset-token.dto';
-import { StoreService } from 'src/shared/store/services/store.service';
-import { StoreIDs } from 'src/app/enums/store.enum';
-import { GenericStore } from 'src/shared/store/interfaces/generic-store.interface';
 import { ForgetPasswordTemplateProps } from 'src/assets/templates/forget-password/type';
 import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
 import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
 import { BasicRoles } from 'src/shared/abstract-user-management/enums/basic-roles.enum';
 import { AuthNotActiveException } from 'src/shared/auth/errors/auth.notactive.error';
-import { Core } from 'src/app/interfaces/core.interface';
 import { CreateAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/create-abstract-user.dto';
 import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
 import { UserRepository } from 'src/modules/users/repositories/user.repository';
 import { UserService } from 'src/modules/users/services/user.service';
+import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
+import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 
 @Injectable()
 export class ClientAuthService {
   constructor(
-    private userRepository: UserRepository,
-    private userService: UserService,
-    private jwtService: JwtService,
-    private readonly configService: ConfigService,
-    private readonly mailService: MailService,
-    private readonly storeService: StoreService,
+    protected readonly userRepository: UserRepository,
+    protected readonly userService: UserService,
+    protected readonly jwtService: JwtService,
+    protected readonly configService: ConfigService,
+    protected readonly mailService: MailService,
+    protected readonly configurationNamespaceService: ConfigurationNamespaceService,
   ) {}
 
   private async generateTokens(id?: string, email?: string) {
@@ -232,18 +230,27 @@ export class ClientAuthService {
       const resetLink = `${webAppUrl}?token=${resetToken}`;
 
       //gather informations
-      const core = (await this.storeService.findOneById(
-        StoreIDs.CORE,
-      )) as GenericStore<Core>;
 
       await this.mailService.sendTemplate<ForgetPasswordTemplateProps>(
         user.email,
         'Password Reset Request',
         'forget-password',
         {
-          name: core.value.name,
-          address: core.value.address,
-          support: core.value.support,
+          name:
+            ((await this.configurationNamespaceService.getSpecificParam(
+              ConfigurationNamespaces.CORE,
+              'company.name',
+            )) as string) || 'Our App',
+          address:
+            ((await this.configurationNamespaceService.getSpecificParam(
+              ConfigurationNamespaces.CORE,
+              'company.address',
+            )) as string) || 'N/A',
+          support:
+            ((await this.configurationNamespaceService.getSpecificParam(
+              ConfigurationNamespaces.CORE,
+              'company.support',
+            )) as string) || 'N/A',
           logo: `${this.configService.get<string>('app.webAppUrl')}/logo.png`,
           client: identifyUser(user),
           email: user.email,

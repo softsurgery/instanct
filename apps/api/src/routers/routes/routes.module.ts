@@ -5,8 +5,6 @@ import { LoggerModule } from 'src/shared/logger/logger.module';
 import { UserManagementModule } from 'src/modules/users/user-management.module';
 import { ClientAuthController } from 'src/shared/auth/controllers/client-auth.controller';
 import { StorageModule } from 'src/shared/storage/storage.module';
-import { StoreController } from 'src/shared/store/controllers/store.controller';
-import { StoreModule } from 'src/shared/store/store.module';
 import { FollowController } from 'src/shared/abstract-user-management/controllers/follow.controller';
 import { NotificationController } from 'src/shared/notifications/controllers/notification.controller';
 import { NotificationModule } from 'src/shared/notifications/notifications.module';
@@ -43,7 +41,6 @@ import { ClientCustomAuthController } from 'src/modules/users/controllers/custom
     ClientCustomAuthController,
     //common
     StorageController,
-    StoreController,
     ConfigurationController,
     //user
     CurrentUserController,
@@ -71,7 +68,6 @@ import { ClientCustomAuthController } from 'src/modules/users/controllers/custom
   exports: [],
   imports: [
     AuthModule,
-    StoreModule,
     ConfigurationsModule,
     LoggerModule,
     UserManagementModule,

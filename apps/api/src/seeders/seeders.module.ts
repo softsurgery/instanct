@@ -6,7 +6,6 @@ import { RolesSeedCommand } from './roles.seeder';
 import { AdminSeedCommand } from './admin.seeder';
 import { TemplateModule } from 'src/shared/templates/template.module';
 import { TemplatesSeedCommand } from './templates.seeder';
-import { StoreModule } from 'src/shared/store/store.module';
 import { PlaygroundUsersSeedCommand } from './playground/users.seeder';
 import { ReferenceTypesModule } from 'src/shared/reference-types/reference-types.module';
 import { IndustriesSeedCommand } from './industries.seeder';
@@ -20,7 +19,6 @@ import { ConfigurationSeedCommand } from './configuration.seeder';
     UserManagementModule,
     ReferenceTypesModule,
     TemplateModule,
-    StoreModule,
     ConfigurationsModule,
   ],
   providers: [
