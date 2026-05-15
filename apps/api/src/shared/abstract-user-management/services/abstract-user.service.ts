@@ -19,14 +19,23 @@ export abstract class AbstractUserService {
     this.abstractUserRepository = abstractUserRepository;
   }
 
-  async findOneById(id: string): Promise<AbstractUserEntity> {
-    const user = await this.abstractUserRepository.findOneById(id);
+  async findOneById(
+    id: string,
+    query?: Pick<IQueryObject, 'join'>,
+  ): Promise<AbstractUserEntity | null> {
+    const queryBuilder = new QueryBuilder(
+      this.abstractUserRepository.getMetadata(),
+    );
+    const queryOptions = query ? queryBuilder.build(query) : {};
+    const user = await this.abstractUserRepository.findOne({
+      where: { id },
+      relations: queryOptions.relations,
+    });
     if (!user) {
       throw new UserNotFoundException();
     }
     return user;
   }
-
   async findOneByCondition(
     query: IQueryObject,
   ): Promise<AbstractUserEntity | null | undefined> {

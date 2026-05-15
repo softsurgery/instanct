@@ -101,7 +101,7 @@ export class UserController {
     @Param('id') id: string,
     @Query() query: Pick<IQueryObject, 'join'>,
   ): Promise<ResponseUserDto | null> {
-    const user = await this.userService.findRelationalOneById(id, query);
+    const user = await this.userService.findOneById(id, query);
     return toDto(ResponseUserDto, user);
   }
 

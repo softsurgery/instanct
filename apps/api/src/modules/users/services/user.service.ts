@@ -1,15 +1,9 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions, In } from 'typeorm';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
+import { DeepPartial, In } from 'typeorm';
 import { UserRepository } from '../repositories/user.repository';
 import { UserUploadService } from './user-upload.service';
 import { UserEntity } from '../entities/user.entity';
-import { CreateUserDto } from '../dtos/user/create-user.dto';
-import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
 import { UserUploadEntity } from '../entities/user-upload.entity';
 import { CreateUserUploadDto } from '../dtos/user-upload/create-user-upload.dto';
@@ -33,98 +27,13 @@ export class UserService extends AbstractUserService {
     super(userRepository);
   }
 
-  async findRelationalOneById(
-    id: string,
-    query?: Pick<IQueryObject, 'join'>,
-  ): Promise<UserEntity | null> {
-    const queryBuilder = new QueryBuilder(this.userRepository.getMetadata());
-    const queryOptions = query ? queryBuilder.build(query) : {};
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: queryOptions.relations,
-    });
-    if (!user) {
-      throw new UserNotFoundException();
-    }
-    return user;
-  }
-
-  async findOneByCondition(
-    query: IQueryObject = {},
-  ): Promise<UserEntity | null> {
-    const queryBuilder = new QueryBuilder(this.userRepository.getMetadata());
-    const queryOptions = queryBuilder.build(query);
-    const user = await this.userRepository.findOne(
-      queryOptions as FindOneOptions<UserEntity>,
-    );
-    return user;
-  }
-
-  async findAll(query: IQueryObject): Promise<UserEntity[]> {
-    const queryBuilder = new QueryBuilder(this.userRepository.getMetadata());
-    const queryOptions = queryBuilder.build(query);
-    const users = await this.userRepository.findAll(
-      queryOptions as FindManyOptions<UserEntity>,
-    );
-    return users;
-  }
-
-  async findAllPaginated(query: IQueryObject): Promise<PageDto<UserEntity>> {
-    const queryBuilder = new QueryBuilder(this.userRepository.getMetadata());
-    const queryOptions = queryBuilder.build(query);
-    const count = await this.userRepository.getTotalCount({
-      where: queryOptions.where,
-    });
-
-    const entities = await this.userRepository.findAll(
-      queryOptions as FindManyOptions<UserEntity>,
-    );
-
-    const pageMetaDto = new PageMetaDto({
-      pageOptionsDto: {
-        page: Number(query.page),
-        take: Number(query.limit),
-      },
-      itemCount: count,
-    });
-
-    return new PageDto(entities, pageMetaDto);
-  }
-
-  @Transactional()
-  async save(createProfileDto: CreateUserDto): Promise<UserEntity> {
-    return await this.userRepository.save(createProfileDto);
-  }
-
-  @Transactional()
-  async saveMany(createProfileDto: CreateUserDto[]): Promise<UserEntity[]> {
-    return Promise.all(createProfileDto.map((dto) => this.save(dto)));
-  }
-
-  @Transactional()
-  async update(
-    id: string,
-    updateProfileDto: UpdateUserDto,
-  ): Promise<UserEntity | null> {
-    return this.userRepository.update(id, updateProfileDto);
-  }
-
-  async softDelete(id: string): Promise<UserEntity | null> {
-    return this.userRepository.softDelete(id);
-  }
-
-  async delete(id: number): Promise<UserEntity | null> {
-    const user = await this.userRepository.findOneById(id);
-    if (!user) {
-      throw new UserNotFoundException();
-    }
-    return this.userRepository.remove(user);
-  }
-
   //Extended Methods ===========================================================================
 
   @Transactional()
-  async extendedSave(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async extendedSave(
+    createUserDto: DeepPartial<UserEntity>,
+    industries?: number[],
+  ): Promise<UserEntity> {
     const { uploads, ...rest } = createUserDto;
     if (createUserDto.pictureId)
       await this.storageService.confirm(createUserDto.pictureId);
@@ -139,12 +48,16 @@ export class UserService extends AbstractUserService {
     await this.userConfigurationService.createPersonalMapConfiguration(user.id);
 
     await this.userUploadService.saveMany(
-      uploads?.map((upload, index) => ({
+      uploads?.map((upload: DeepPartial<UserUploadEntity>, index) => ({
         userId: user.id,
         uploadId: upload.uploadId,
         order: index,
       })) || [],
     );
+
+    if (industries && industries.length > 0) {
+      await this.updateIndustries(user.id, industries);
+    }
 
     return user;
   }
@@ -152,10 +65,10 @@ export class UserService extends AbstractUserService {
   @Transactional()
   async extendedUpdate(
     id: string,
-    updateUserDto: UpdateUserDto,
+    updateUserDto: DeepPartial<UserEntity>,
   ): Promise<UserEntity | null> {
     const { uploads, ...rest } = updateUserDto;
-    const existingUser = await this.findRelationalOneById(id);
+    const existingUser = (await this.findOneById(id)) as UserEntity;
     if (!existingUser) throw new UserNotFoundException();
 
     await this.userRepository.update(id, rest);
@@ -190,7 +103,7 @@ export class UserService extends AbstractUserService {
     >({
       existingItems: existingUploads || [],
       updatedItems:
-        uploads?.map((upload, index) => ({
+        uploads?.map((upload: UserUploadEntity, index) => ({
           id: upload.id,
           userId: id,
           uploadId: upload.uploadId,
