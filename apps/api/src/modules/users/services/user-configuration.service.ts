@@ -69,7 +69,7 @@ export class UserConfigurationService {
         name: 'radius',
         description: 'Radius of the map',
         variant: ParamVariant.NUMBER,
-        value: globalMapConfiguration.rangeMin.toString(),
+        value: globalMapConfiguration.rangeMax.toString(),
         namespaceId: namespace.id,
       },
       {
