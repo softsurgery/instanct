@@ -28,6 +28,7 @@ import { UpdateUserIndustriesDto } from '../dtos/user/update-user-industries.dto
 import { UserConfigurationService } from '../services/user-configuration.service';
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
 import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dtos/namespace/response-configuration-namespace.dto';
+import { Public } from 'src/shared/auth/utils/public-strategy';
 
 @ApiTags('user')
 @ApiBearerAuth('access_token')
@@ -51,7 +52,7 @@ export class UserController {
     );
   }
 
-  @Get('/list')
+  @Get('list')
   @ApiPaginatedResponse(ResponseUserDto)
   async findAllPaginated(
     @Query() query: IQueryObject,
@@ -60,10 +61,39 @@ export class UserController {
     return { ...paginated, data: toDtoArray(ResponseUserDto, paginated.data) };
   }
 
-  @Get('/all')
+  @Get('all')
   async findAll(@Query() options: IQueryObject): Promise<ResponseUserDto[]> {
     const users = await this.userService.findAll(options);
     return toDtoArray(ResponseUserDto, users);
+  }
+
+  @Public()
+  @Get('email/:email')
+  async findOneByEmail(
+    @Param('email') email: string,
+  ): Promise<ResponseUserDto | null> {
+    return toDto(ResponseUserDto, await this.userService.findOneByEmail(email));
+  }
+
+  @Public()
+  @Get('username/:username')
+  async findOneByUsername(
+    @Param('username') username: string,
+  ): Promise<ResponseUserDto | null> {
+    return toDto(
+      ResponseUserDto,
+      await this.userService.findOneByUsername(username),
+    );
+  }
+
+  @Get('configurations/maps/:id')
+  async getMapConfiguration(
+    @Param('id') id: string,
+  ): Promise<ResponseConfigurationNamespaceDto | null> {
+    return toDto(
+      ResponseConfigurationNamespaceDto,
+      await this.userConfigurationService.getPersonalMapConfiguration(id),
+    );
   }
 
   @Get(':id')
@@ -75,21 +105,9 @@ export class UserController {
     return toDto(ResponseUserDto, user);
   }
 
-  @Get('/email/:email')
-  async findOneByEmail(
-    @Param('email') email: string,
-  ): Promise<ResponseUserDto | null> {
-    return toDto(ResponseUserDto, await this.userService.findOneByEmail(email));
-  }
-
-  @Get('/configurations/maps/:id')
-  async getMapConfiguration(
-    @Param('id') id: string,
-  ): Promise<ResponseConfigurationNamespaceDto | null> {
-    return toDto(
-      ResponseConfigurationNamespaceDto,
-      await this.userConfigurationService.getPersonalMapConfiguration(id),
-    );
+  @Get('/industries/:id')
+  async getIndustries(@Param('id') id: string): Promise<number[]> {
+    return this.userService.getIndustries(id);
   }
 
   @Post()
@@ -104,11 +122,6 @@ export class UserController {
     );
     req.logInfo = { id: user.id, firstName: user.firstName };
     return user;
-  }
-
-  @Get('/industries/:id')
-  async getIndustries(@Param('id') id: string): Promise<number[]> {
-    return this.userService.getIndustries(id);
   }
 
   @Put('/industries/:id')
