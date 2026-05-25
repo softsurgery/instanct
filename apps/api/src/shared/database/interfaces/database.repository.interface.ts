@@ -18,7 +18,7 @@ export interface DatabaseInterfaceRepository<T extends ObjectLiteral> {
   getTotalCount(options: FindOneOptions<T>): Promise<number>;
 
   findOne(options: FindOneOptions<T>): Promise<T | null>;
-  findOneById(id: string): Promise<T | null>;
+  findOneById(id: string | number): Promise<T | null>;
   findAll(options?: FindManyOptions<T>): Promise<T[]>;
   findWithRelations(relations: FindManyOptions<T>): Promise<T[]>;
 
