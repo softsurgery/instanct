@@ -1,10 +1,5 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { RoleRepository } from '../repositories/role.repository';
 import { RoleNotFoundException } from '../errors/role/role.notfound.error';
 import { CreateRoleDto } from '../dtos/role/create-role.dto';
@@ -14,95 +9,16 @@ import { UpdateRoleDto } from '../dtos/role/update-role.dto';
 import { RolePermissionEntity } from '../entities/role-permission.entity';
 import { CreateRolePermissionDto } from '../dtos/role-permission/create-role-permission.dto';
 import { RoleEntity } from '../entities/role.entity';
+import { AbstractCrudService } from '@/shared/database/services/abstract-crud.service';
 
 @Injectable()
-export class RoleService {
+export class RoleService extends AbstractCrudService<RoleEntity> {
   constructor(
     private readonly roleRepository: RoleRepository,
     private readonly rolePermissionService: RolePermissionService,
-  ) {}
-
-  async findOneById(id: string): Promise<RoleEntity> {
-    const role = await this.roleRepository.findOneById(id);
-    if (!role) {
-      throw new RoleNotFoundException();
-    }
-    return role;
+  ) {
+    super(roleRepository);
   }
-
-  async findOneByCondition(
-    query: IQueryObject = {},
-  ): Promise<RoleEntity | null> {
-    const queryBuilder = new QueryBuilder(this.roleRepository.getMetadata());
-    const queryOptions = queryBuilder.build(query);
-    const role = await this.roleRepository.findOne(
-      queryOptions as FindOneOptions<RoleEntity>,
-    );
-    return role;
-  }
-
-  async findAll(query: IQueryObject): Promise<RoleEntity[]> {
-    const queryBuilder = new QueryBuilder(this.roleRepository.getMetadata());
-    const queryOptions = queryBuilder.build(query);
-    const roles = await this.roleRepository.findAll(
-      queryOptions as FindManyOptions<RoleEntity>,
-    );
-    return roles;
-  }
-
-  async findAllPaginated(query: IQueryObject): Promise<PageDto<RoleEntity>> {
-    const queryBuilder = new QueryBuilder(this.roleRepository.getMetadata());
-    const queryOptions = queryBuilder.build(query);
-    const count = await this.roleRepository.getTotalCount({
-      where: queryOptions.where,
-    });
-
-    const entities = await this.roleRepository.findAll(
-      queryOptions as FindManyOptions<RoleEntity>,
-    );
-
-    const pageMetaDto = new PageMetaDto({
-      pageOptionsDto: {
-        page: Number(query.page),
-        take: Number(query.limit),
-      },
-      itemCount: count,
-    });
-
-    return new PageDto(entities, pageMetaDto);
-  }
-
-  @Transactional()
-  async save(createRoleDto: CreateRoleDto): Promise<RoleEntity> {
-    return await this.roleRepository.save(createRoleDto);
-  }
-
-  @Transactional()
-  async saveMany(createRoleDto: CreateRoleDto[]): Promise<RoleEntity[]> {
-    return Promise.all(createRoleDto.map((dto) => this.save(dto)));
-  }
-
-  @Transactional()
-  async update(
-    id: string,
-    updateRoleDto: UpdateRoleDto,
-  ): Promise<RoleEntity | null> {
-    return this.roleRepository.update(id, updateRoleDto);
-  }
-
-  async softDelete(id: string): Promise<RoleEntity | null> {
-    return this.roleRepository.softDelete(id);
-  }
-
-  async delete(id: string): Promise<RoleEntity | null> {
-    const role = await this.roleRepository.findOneById(id);
-    if (!role) {
-      throw new RoleNotFoundException();
-    }
-    return this.roleRepository.remove(role);
-  }
-
-  //Extended Methods ===========================================================================
 
   @Transactional()
   async saveWithPermissions(createRoleDto: CreateRoleDto): Promise<RoleEntity> {
