@@ -13,6 +13,7 @@ import { AdvancedSocket } from 'src/types';
 import { MessageService } from '../services/message.service';
 import { CreateMessageDto } from '../dtos/message/create-message.dto';
 import { ConversationService } from '../services/conversation.service';
+import { UserRepository } from 'src/modules/users/repositories/user.repository';
 
 const MAX_LIMIT = 20;
 
@@ -24,9 +25,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
+  /**
+   * userId -> Set of connected socket IDs (supports multiple devices)
+   */
+  private readonly connectedUsers = new Map<string, Set<string>>();
+
   constructor(
     private readonly messageService: MessageService,
     private readonly conversationService: ConversationService,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async handleConnection(client: AdvancedSocket) {
@@ -36,11 +43,109 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
-    await client.join(`user_${payload.sub}`);
+    const userId = payload.sub;
+    await client.join(`user_${userId}`);
+
+    // Track connection
+    const wasOffline =
+      !this.connectedUsers.has(userId) ||
+      this.connectedUsers.get(userId)!.size === 0;
+
+    if (!this.connectedUsers.has(userId)) {
+      this.connectedUsers.set(userId, new Set());
+    }
+    this.connectedUsers.get(userId)!.add(client.id);
+
+    // Notify other users if this user just came online
+    if (wasOffline) {
+      this.broadcastPresenceChange(userId, true);
+    }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handleDisconnect(_client: AdvancedSocket) {}
+  async handleDisconnect(client: AdvancedSocket) {
+    const payload = getTokenPayloadForWebSocket(client);
+    if (!payload) return;
+
+    const userId = payload.sub;
+    const sockets = this.connectedUsers.get(userId);
+
+    if (sockets) {
+      sockets.delete(client.id);
+
+      // User is fully offline when all sockets are disconnected
+      if (sockets.size === 0) {
+        this.connectedUsers.delete(userId);
+        const now = new Date();
+        await this.userRepository.update(userId, { lastSeen: now });
+        this.broadcastPresenceChange(userId, false, now);
+      }
+    }
+  }
+
+  // get user online status **************************************************************************************************************************
+
+  @SubscribeMessage('get-user-status')
+  async handleGetUserStatus(
+    @ConnectedSocket() client: AdvancedSocket,
+    @MessageBody() data: { userId: string },
+  ) {
+    const isOnline = this.isUserOnline(data.userId);
+    let lastSeen: Date | null = null;
+
+    if (!isOnline) {
+      const user = await this.userRepository.findOneById(data.userId);
+      lastSeen = user?.lastSeen ?? null;
+    }
+
+    client.emit('user-status', {
+      userId: data.userId,
+      isOnline,
+      lastSeen,
+    });
+  }
+
+  // get multiple users online status ****************************************************************************************************************
+
+  @SubscribeMessage('get-users-status')
+  async handleGetUsersStatus(
+    @ConnectedSocket() client: AdvancedSocket,
+    @MessageBody() data: { userIds: string[] },
+  ) {
+    const statuses = await Promise.all(
+      data.userIds.map(async (userId) => {
+        const isOnline = this.isUserOnline(userId);
+        let lastSeen: Date | null = null;
+
+        if (!isOnline) {
+          const user = await this.userRepository.findOneById(userId);
+          lastSeen = user?.lastSeen ?? null;
+        }
+
+        return { userId, isOnline, lastSeen };
+      }),
+    );
+
+    client.emit('users-status', statuses);
+  }
+
+  // helpers *****************************************************************************************************************************************
+
+  isUserOnline(userId: string): boolean {
+    const sockets = this.connectedUsers.get(userId);
+    return !!sockets && sockets.size > 0;
+  }
+
+  private broadcastPresenceChange(
+    userId: string,
+    isOnline: boolean,
+    lastSeen?: Date | null,
+  ) {
+    this.server.emit('user-presence', {
+      userId,
+      isOnline,
+      lastSeen: lastSeen ?? null,
+    });
+  }
 
   // join a conversation ******************************************************************************************************************************
 

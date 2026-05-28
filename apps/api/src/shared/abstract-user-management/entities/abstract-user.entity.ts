@@ -67,4 +67,7 @@ export abstract class AbstractUserEntity extends EntityHelper {
 
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions?: SessionEntity[];
+
+  @Column({ type: 'timestamp', nullable: true })
+  lastSeen?: Date;
 }
