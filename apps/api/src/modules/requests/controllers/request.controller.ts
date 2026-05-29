@@ -61,14 +61,17 @@ export class RequestController {
     return toDtoArray(ResponseRequestDto, requests);
   }
 
-  @Get('sessions/:id/incoming/list')
-  async findAllSessionIncoming(
-    @Param('id') id: number,
+  @Get('/incoming/list')
+  async findAllIncomingNonPaginated(
     @Query() query: IQueryObject,
+    @Request() req: AdvancedRequest,
   ): Promise<PageDto<ResponseRequestDto>> {
+    if (!req?.user?.sub) {
+      throw new Error('User not authenticated');
+    }
     const paginated = await this.requestService.findIncomingRequestsPaginated(
       query,
-      id,
+      req.user.sub,
     );
     return {
       ...paginated,
@@ -76,16 +79,22 @@ export class RequestController {
     };
   }
 
-  @Get('sessions/:id/incoming/all')
-  async findAllSessionIncomingNonPaginated(
-    @Param('id') id: number,
+  @Get('/outgoing/list')
+  async findAllOutgoingNonPaginated(
     @Query() query: IQueryObject,
-  ): Promise<ResponseRequestDto[]> {
-    const requests = await this.requestService.findAllIncomingRequests(
+    @Request() req: AdvancedRequest,
+  ): Promise<PageDto<ResponseRequestDto>> {
+    if (!req?.user?.sub) {
+      throw new Error('User not authenticated');
+    }
+    const paginated = await this.requestService.findOutgoingRequestsPaginated(
       query,
-      id,
+      req.user.sub,
     );
-    return toDtoArray(ResponseRequestDto, requests);
+    return {
+      ...paginated,
+      data: toDtoArray(ResponseRequestDto, paginated.data),
+    };
   }
 
   @Get(':id')

@@ -9,7 +9,7 @@ import { IQueryObject } from 'src/shared/database/interfaces/database-query-opti
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { Between, FindManyOptions } from 'typeorm';
+import { FindManyOptions } from 'typeorm';
 
 @Injectable()
 export class RequestService extends AbstractCrudService<RequestEntity> {
@@ -25,21 +25,75 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
 
   async findIncomingRequestsPaginated(
     query: IQueryObject,
-    sessionId: number,
+    userId: string,
   ): Promise<PageDto<RequestEntity>> {
-    const session = await this.sessionService.findOneById(sessionId);
-    const timeWindow = session?.getTimeWindow();
-
     const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
+
+    queryOptions.relations = queryOptions.relations
+      ? [...queryOptions.relations, 'session', 'session.user', 'receivers']
+      : ['session', 'session.user', 'receivers'];
+
     queryOptions.where = {
       ...queryOptions.where,
-      createdAt: Between(
-        timeWindow?.start ?? new Date(),
-        timeWindow?.end ?? new Date(),
-      ),
-      receivers: {
-        id: session?.userId,
+      receivers: { id: userId },
+    } satisfies FindManyOptions<RequestEntity>['where'];
+
+    const count = await this.repository.getTotalCount({
+      where: queryOptions.where,
+      relations: queryOptions.relations,
+    } as FindManyOptions<RequestEntity>);
+
+    const entities = await this.repository.findAll(
+      queryOptions as FindManyOptions<RequestEntity>,
+    );
+
+    const pageMetaDto = new PageMetaDto({
+      pageOptionsDto: {
+        page: Number(query.page),
+        take: Number(query.limit),
+      },
+      itemCount: count,
+    });
+
+    return new PageDto(entities, pageMetaDto);
+  }
+
+  async findAllIncomingRequests(
+    query: IQueryObject,
+    userId: string,
+  ): Promise<RequestEntity[]> {
+    const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
+    const queryOptions = queryBuilder.build(query);
+
+    queryOptions.relations = queryOptions.relations
+      ? [...queryOptions.relations, 'session', 'session.user', 'receivers']
+      : ['session', 'session.user', 'receivers'];
+
+    queryOptions.where = {
+      ...queryOptions.where,
+      receivers: { id: userId },
+    } satisfies FindManyOptions<RequestEntity>['where'];
+
+    return this.repository.findAll(
+      queryOptions as FindManyOptions<RequestEntity>,
+    );
+  }
+
+  async findOutgoingRequestsPaginated(
+    query: IQueryObject,
+    userId: string,
+  ): Promise<PageDto<RequestEntity>> {
+    const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
+    const queryOptions = queryBuilder.build(query);
+    queryOptions.relations = queryOptions.relations
+      ? [...queryOptions.relations, 'session', 'session.user']
+      : ['session', 'session.user'];
+
+    queryOptions.where = {
+      ...queryOptions.where,
+      session: {
+        userId,
       },
     } satisfies FindManyOptions<RequestEntity>['where'];
 
@@ -62,23 +116,21 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
     return new PageDto(entities, pageMetaDto);
   }
 
-  async findAllIncomingRequests(
+  async findAllOutgoingRequests(
     query: IQueryObject,
-    sessionId: number,
+    userId: string,
   ): Promise<RequestEntity[]> {
-    const session = await this.sessionService.findOneById(sessionId);
-    const timeWindow = session?.getTimeWindow();
-
     const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
+
+    queryOptions.relations = queryOptions.relations
+      ? [...queryOptions.relations, 'session', 'session.user']
+      : ['session', 'session.user'];
+
     queryOptions.where = {
       ...queryOptions.where,
-      createdAt: Between(
-        timeWindow?.start ?? new Date(),
-        timeWindow?.end ?? new Date(),
-      ),
-      receivers: {
-        id: session?.userId,
+      session: {
+        userId: userId,
       },
     } satisfies FindManyOptions<RequestEntity>['where'];
 
