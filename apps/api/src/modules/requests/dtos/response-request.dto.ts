@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
 import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
 import { ResponseSessionDto } from 'src/shared/sessions/dtos/response-session.dto';
+import { RequestStatus } from '../enums/request-status.enum';
 
 export class ResponseRequestDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -12,6 +13,10 @@ export class ResponseRequestDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
   @Expose()
   sessionId: number;
+
+  @ApiProperty({ enum: RequestStatus })
+  @Expose()
+  status: RequestStatus;
 
   @ApiProperty({ type: ResponseSessionDto })
   @Expose()
