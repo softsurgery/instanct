@@ -29,6 +29,7 @@ import { SystemReportsModule } from 'src/modules/system-reports/system-reports.m
 import { BugController } from 'src/modules/system-reports/controllers/bug.controller';
 import { FeedbackController } from 'src/modules/system-reports/controllers/feedback.controller';
 import { RequestController } from 'src/modules/requests/controllers/request.controller';
+import { RequestWorkflowController } from 'src/modules/requests/controllers/request-workdlow.controller';
 import { RequestsModule } from 'src/modules/requests/requests.module';
 import { UserBookmarkController } from 'src/modules/users/controllers/user-bookmark.controller';
 import { ClientCustomAuthController } from 'src/modules/users/controllers/custom-auth.controller';
@@ -60,6 +61,7 @@ import { ClientCustomAuthController } from 'src/modules/users/controllers/custom
     SessionController,
     CurrentSessionController,
     RequestController,
+    RequestWorkflowController,
     //reference-types
     RefTypeController,
     RefParamController,

@@ -10,6 +10,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { RequestStatus } from '../enums/request-status.enum';
 
 @Entity('requests')
 export class RequestEntity extends EntityHelper {
@@ -26,6 +27,13 @@ export class RequestEntity extends EntityHelper {
 
   @Column()
   sessionId: number;
+
+  @Column({
+    type: 'enum',
+    enum: RequestStatus,
+    default: RequestStatus.Sent,
+  })
+  status: RequestStatus;
 
   // Multiple Receivers
   @ManyToMany(() => UserEntity)
