@@ -21,7 +21,6 @@ export class RefParamEntity extends EntityHelper {
 
   @ManyToOne(() => RefTypeEntity, (reftype) => reftype.params, {
     onDelete: 'CASCADE',
-    eager: true,
   })
   @JoinColumn({ name: 'refTypeId' })
   refType: RefTypeEntity;
