@@ -11,8 +11,6 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
     super(geolocationRepository);
   }
 
-  //Extended Methods ===========================================================================
-
   static calculateDistanceKm(
     lat1: number,
     lon1: number,
@@ -88,6 +86,33 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
     query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
 
     const data = await this.findAll(query);
+    return data;
+  }
+
+  async findActiveSessionsByRadius(
+    latitude: number,
+    longitude: number,
+    radius: number,
+    excludeUserId?: string,
+    query: IQueryObject = {},
+  ): Promise<GeolocationEntity[]> {
+    const geolocations = await this.geolocationRepository.findByKmRadius(
+      latitude,
+      longitude,
+      radius,
+      excludeUserId,
+    );
+
+    if (!geolocations.length) {
+      return [];
+    }
+
+    const idsFilter = `id||$in||${geolocations.map((g) => g.id).join(',')}`;
+    query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
+    query.join = query.join ? `${query.join},user` : 'user';
+    const data = (await this.findAll(query)).filter(
+      (geo) => geo.user?.activeSession,
+    );
     return data;
   }
 }

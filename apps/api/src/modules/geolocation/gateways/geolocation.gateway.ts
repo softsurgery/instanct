@@ -163,13 +163,14 @@ export class GeolocationGateway
         userId,
       );
 
-      const nearbyUsers = await this.geolocationService.findByRadius(
-        latitude,
-        longitude,
-        radius,
-        userId,
-        data.query,
-      );
+      const nearbyUsers =
+        await this.geolocationService.findActiveSessionsByRadius(
+          latitude,
+          longitude,
+          radius,
+          userId,
+          data.query,
+        );
 
       const nearbyWithPresence = nearbyUsers.map((geo) => ({
         ...geo,
