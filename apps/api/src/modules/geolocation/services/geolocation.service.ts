@@ -103,13 +103,10 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
       excludeUserId,
     );
 
-    if (!geolocations.length) {
-      return [];
-    }
+    if (!geolocations.length) return [];
 
     const idsFilter = `id||$in||${geolocations.map((g) => g.id).join(',')}`;
     query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
-    query.join = query.join ? `${query.join},user` : 'user';
     const data = (await this.findAll(query)).filter(
       (geo) => geo.user?.activeSession,
     );

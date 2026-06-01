@@ -42,8 +42,8 @@ export class GeolocationGateway
    */
   private readonly userToSocket = new Map<string, string>();
 
-  private rangeMin = 0;
-  private rangeMax = 100;
+  private rangeMin: number;
+  private rangeMax: number;
 
   constructor(
     private readonly geolocationService: GeolocationService,
@@ -199,10 +199,6 @@ export class GeolocationGateway
 
         this.server.to(targetSocketId).emit('user_moved', movementPayload);
       }
-
-      // this.logger.debug(
-      //   `Updated location for user ${userId}. Nearby users: ${nearbyWithPresence.length}`,
-      // );
     } catch (error) {
       this.logger.error(
         `Failed processing location update for socket ${socket.id}`,
