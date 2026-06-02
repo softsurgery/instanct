@@ -7,12 +7,14 @@ import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.
 import { RequestService } from '@/modules/requests/services/request.service';
 import { RequestStatus } from '@/modules/requests/enums/request-status.enum';
 import { SessionStatus } from '@/shared/sessions/enums/session-status.enum';
+import { SessionService } from '@/shared/sessions/services/session.service';
 
 @Injectable()
 export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
   constructor(
     private readonly geolocationRepository: GeolocationRepository,
     private readonly requestService: RequestService,
+    private readonly sessionService: SessionService,
   ) {
     super(geolocationRepository);
   }
@@ -128,9 +130,12 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
       join: 'session,receivers',
     });
 
-    return requests.some((req) => {
-      const sessionActive = req.session?.status === SessionStatus.ACTIVE;
-      if (!sessionActive) return false;
+    for (const req of requests) {
+      const session = await this.sessionService.findOneById(req.sessionId);
+
+      if (session?.status !== SessionStatus.ACTIVE) {
+        continue;
+      }
 
       const isUserASessionToB =
         req.session?.userId === userA &&
@@ -140,7 +145,11 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
         req.session?.userId === userB &&
         req.receivers?.some((r) => r.id === userA);
 
-      return isUserASessionToB || isUserBSessionToA;
-    });
+      if (isUserASessionToB || isUserBSessionToA) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
