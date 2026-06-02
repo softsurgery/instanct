@@ -4,10 +4,16 @@ import { GeolocationRepository } from '../repositories/geolocation.repository';
 import { GeolocationEntity } from '../entities/geolocation.entity';
 import { CreateGeolocationDto } from '../dtos/create-geolocation.dto';
 import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { RequestService } from '@/modules/requests/services/request.service';
+import { RequestStatus } from '@/modules/requests/enums/request-status.enum';
+import { SessionStatus } from '@/shared/sessions/enums/session-status.enum';
 
 @Injectable()
 export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
-  constructor(private readonly geolocationRepository: GeolocationRepository) {
+  constructor(
+    private readonly geolocationRepository: GeolocationRepository,
+    private readonly requestService: RequestService,
+  ) {
     super(geolocationRepository);
   }
 
@@ -111,5 +117,30 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
       (geo) => geo.user?.activeSession,
     );
     return data;
+  }
+
+  async hasAcceptedRequestInSession(
+    userA: string,
+    userB: string,
+  ): Promise<boolean> {
+    const requests = await this.requestService.findAll({
+      filter: `status||$eq||${RequestStatus.Accepted}`,
+      join: 'session,receivers',
+    });
+
+    return requests.some((req) => {
+      const sessionActive = req.session?.status === SessionStatus.ACTIVE;
+      if (!sessionActive) return false;
+
+      const isUserASessionToB =
+        req.session?.userId === userA &&
+        req.receivers?.some((r) => r.id === userB);
+
+      const isUserBSessionToA =
+        req.session?.userId === userB &&
+        req.receivers?.some((r) => r.id === userA);
+
+      return isUserASessionToB || isUserBSessionToA;
+    });
   }
 }

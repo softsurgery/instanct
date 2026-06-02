@@ -8,13 +8,13 @@ export class ResponseGeolocationDto extends ResponseDtoHelper {
   @Expose()
   id: number;
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: Number, nullable: true })
   @Expose()
-  latitude: number;
+  latitude: number | null;
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: Number, nullable: true })
   @Expose()
-  longitude: number;
+  longitude: number | null;
 
   @ApiProperty({ type: () => ResponseUserDto })
   @Expose()
@@ -24,4 +24,8 @@ export class ResponseGeolocationDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })
   @Expose()
   userId: string;
+
+  @ApiProperty({ type: Boolean })
+  @Expose()
+  coordinatesVisible: boolean;
 }

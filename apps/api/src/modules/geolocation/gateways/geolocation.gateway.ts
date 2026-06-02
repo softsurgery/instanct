@@ -16,6 +16,7 @@ import { ConfigurationNamespaceService } from 'src/shared/configurations/service
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { MapConfigurationParam } from 'src/app/configurations/map-configuration.enum';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { SessionService } from 'src/shared/sessions/services/session.service';
 
 @WebSocketGateway({
   namespace: '/geolocation',
@@ -48,6 +49,7 @@ export class GeolocationGateway
   constructor(
     private readonly geolocationService: GeolocationService,
     private readonly configurationNamespaceService: ConfigurationNamespaceService,
+    private readonly sessionService: SessionService,
   ) {}
 
   async onModuleInit() {
@@ -121,6 +123,11 @@ export class GeolocationGateway
     this.logger.debug(`User ${userId} identified on socket ${socket.id}`);
   }
 
+  /**
+   * Check if two users have an accepted request between them
+   * in either user's current active session (bidirectional visibility)
+   */
+
   @SubscribeMessage('update_location')
   async handleUpdateLocation(
     @ConnectedSocket() socket: Socket,
@@ -158,6 +165,15 @@ export class GeolocationGateway
         return;
       }
 
+      // Check if the current user has an active session
+      const activeSessions =
+        await this.sessionService.findAllActiveUserSessions({}, userId);
+
+      if (activeSessions.length === 0) {
+        socket.emit('nearby_users', []);
+        return;
+      }
+
       await this.geolocationService.saveNewLocation(
         { latitude, longitude },
         userId,
@@ -172,16 +188,32 @@ export class GeolocationGateway
           data.query,
         );
 
-      const nearbyWithPresence = nearbyUsers.map((geo) => ({
-        ...geo,
-        distance: GeolocationService.calculateDistanceKm(
-          latitude,
-          longitude,
-          geo.latitude as number,
-          geo.longitude as number,
-        ),
-        isOnline: this.userToSocket.has(geo.userId),
-      }));
+      // Check accepted requests for each nearby user
+      const nearbyWithPresence = await Promise.all(
+        nearbyUsers.map(async (geo) => {
+          const accepted =
+            await this.geolocationService.hasAcceptedRequestInSession(
+              userId,
+              geo.userId,
+            );
+
+          return {
+            ...geo,
+            latitude: accepted ? geo.latitude : null,
+            longitude: accepted ? geo.longitude : null,
+            distance: accepted
+              ? GeolocationService.calculateDistanceKm(
+                  latitude,
+                  longitude,
+                  geo.latitude as number,
+                  geo.longitude as number,
+                )
+              : null,
+            isOnline: this.userToSocket.has(geo.userId),
+            coordinatesVisible: accepted,
+          };
+        }),
+      );
 
       socket.emit('nearby_users', nearbyWithPresence);
 
@@ -192,7 +224,10 @@ export class GeolocationGateway
         updatedAt: new Date().toISOString(),
       };
 
+      // Only emit user_moved to users who have an accepted request
       for (const user of nearbyWithPresence) {
+        if (!user.coordinatesVisible) continue;
+
         const targetSocketId = this.userToSocket.get(user.userId);
 
         if (!targetSocketId) continue;
