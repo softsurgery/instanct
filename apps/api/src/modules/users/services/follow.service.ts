@@ -1,20 +1,19 @@
-// follow.service.ts
+import { FollowCannotFollowYourselfException } from '@/shared/abstract-user-management/errors/follow/follow.cannotfollowyourself.error';
+import { FollowRepository } from '@/shared/abstract-user-management/repositories/follow.repository';
 import { Injectable } from '@nestjs/common';
-import { FollowCannotFollowYourselfException } from '../../../shared/abstract-user-management/errors/follow/follow.cannotfollowyourself.error';
-import { UserNotFoundException } from '../../../shared/abstract-user-management/errors/user/user.notfound.error';
-import { FollowNotFoundException } from '../../../shared/abstract-user-management/errors/follow/follow.notfound.error';
-import { FollowRepository } from '../../../shared/abstract-user-management/repositories/follow.repository';
-import { ResponseFollowDto } from '../../../shared/abstract-user-management/dtos/follow/response-follow.dto';
-import { ResponseFollowCountsDto } from '../../../shared/abstract-user-management/dtos/follow/response-follow-counts.dto';
-import { FollowAlreadyExistsException } from '../../../shared/abstract-user-management/errors/follow/follow.alreadyexists.error';
-import { ResponseIsFollowingDto } from '../../../shared/abstract-user-management/dtos/follow/response-is-following.dto';
 import { UserRepository } from '../repositories/user.repository';
+import { UserNotFoundException } from '@/shared/abstract-user-management/errors/user/user.notfound.error';
+import { FollowAlreadyExistsException } from '@/shared/abstract-user-management/errors/follow/follow.alreadyexists.error';
+import { FollowNotFoundException } from '@/shared/abstract-user-management/errors/follow/follow.notfound.error';
+import { ResponseFollowDto } from '@/shared/abstract-user-management/dtos/follow/response-follow.dto';
+import { ResponseIsFollowingDto } from '@/shared/abstract-user-management/dtos/follow/response-is-following.dto';
+import { ResponseFollowCountsDto } from '@/shared/abstract-user-management/dtos/follow/response-follow-counts.dto';
 
 @Injectable()
 export class FollowService {
   constructor(
-    private followRepository: FollowRepository,
-    private userRepository: UserRepository,
+    private readonly followRepository: FollowRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async follow(targetId: string, userId?: string) {
