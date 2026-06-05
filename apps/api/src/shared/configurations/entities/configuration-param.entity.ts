@@ -32,8 +32,8 @@ export class ConfigurationParamEntity {
   @Column({ type: 'enum', enum: ParamVariant, default: ParamVariant.STRING })
   variant: ParamVariant;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  value?: string;
+  @Column({ type: 'varchar', length: 255, default: '' })
+  value: string;
 
   @Column({ type: 'json', nullable: true })
   options?: { label: string; value: string }[];

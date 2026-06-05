@@ -31,7 +31,7 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
     const paramEntity = namespaceEntity.params.find((p) => p.name === param);
     switch (paramEntity?.variant) {
       case (ParamVariant.STRING, ParamVariant.SELECT):
-        return paramEntity.value || null;
+        return paramEntity.value;
       case ParamVariant.NUMBER:
         return Number(paramEntity.value);
       case ParamVariant.BOOLEAN:
