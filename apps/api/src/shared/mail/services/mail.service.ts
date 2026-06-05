@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { TemplateService } from 'src/shared/templates/services/template.service';
-import juice from 'juice';
+import * as juice from 'juice';
 import * as ejs from 'ejs';
 
 @Injectable()
