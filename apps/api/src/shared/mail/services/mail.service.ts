@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
@@ -17,7 +18,7 @@ export class MailService {
 
   async renderTemplateFromDb(
     templateName: string,
-    variables: Record<string, unknown>,
+    variables: Record<string, any>,
   ): Promise<string> {
     const template = await this.templateService.findOneByName(templateName);
 

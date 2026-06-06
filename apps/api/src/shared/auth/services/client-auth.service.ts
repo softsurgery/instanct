@@ -15,6 +15,7 @@ import { ResponseResetTokenDto } from '../dtos/web/response-reset-token.dto';
 import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-token.dto';
 import { RequestCheckResetTokenDto } from '../dtos/web/request-check-reset-token.dto';
 import { ForgetPasswordTemplateProps } from 'src/assets/templates/forget-password/type';
+import { VerifyEmailTemplateProps } from 'src/assets/templates/verify-email/type';
 import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
 import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
@@ -206,6 +207,102 @@ export class ClientAuthService {
       access_token,
       refresh_token,
     };
+  }
+
+  async sendEmailVerification(email: string) {
+    const user = await this.userService.findOneByEmail(email);
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    try {
+      const verifyToken = await this.jwtService.signAsync(
+        { sub: user.id, email: user.email },
+        {
+          secret: this.configService.get('app.jwt.secret'),
+          expiresIn: '15m',
+        },
+      );
+
+      const host = this.configService.get('app.http.host');
+      const port = this.configService.get('app.http.port');
+      const verifyLink = `${host}:${port}/api/client-auth/verify-email?token=${verifyToken}`;
+
+      const name =
+        ((await this.configurationNamespaceService.getSpecificParam(
+          ConfigurationNamespaces.CORE,
+          'company.name',
+        )) as string) || 'Our App';
+      const address =
+        ((await this.configurationNamespaceService.getSpecificParam(
+          ConfigurationNamespaces.CORE,
+          'company.address',
+        )) as string) || 'N/A';
+      const support =
+        ((await this.configurationNamespaceService.getSpecificParam(
+          ConfigurationNamespaces.CORE,
+          'company.support',
+        )) as string) || 'N/A';
+
+      await this.mailService.sendTemplate<VerifyEmailTemplateProps>(
+        user.email,
+        `Verify your email address - ${name}`,
+        'verify-email',
+        {
+          name,
+          address,
+          support,
+          logo: `${this.configService.get<string>('app.webAppUrl')}/logo.png`,
+          client: identifyUser(user),
+          email: user.email,
+          url: verifyLink,
+        },
+      );
+
+      return { email: user.email, success: true };
+    } catch (error) {
+      console.error('Error sending verify email:', error);
+      return { email: user.email, success: false };
+    }
+  }
+
+  async verifyEmail(token: string) {
+    try {
+      const payload: { sub: string; email: string } =
+        await this.jwtService.verifyAsync(token, {
+          secret: this.configService.get('app.jwt.secret'),
+        });
+
+      const user = await this.userRepository.findOne({
+        where: [{ id: payload.sub }],
+      });
+      if (!user) {
+        throw new UnauthorizedException('User does not exist');
+      }
+
+      await this.userRepository.update(user.id, { emailVerified: new Date() });
+
+      let url: string;
+      const mobileScheme = this.configService.get('app.mobile.scheme');
+
+      if (mobileScheme === 'exp') {
+        const mobileHost = this.configService.get('app.mobile.host');
+        const mobilePort = this.configService.get('app.mobile.port');
+        url = `exp://${mobileHost}:${mobilePort}/--/main/test?verify-token=${encodeURIComponent(
+          token,
+        )}`;
+      } else {
+        url = `${mobileScheme}://main/test?verify-token=${encodeURIComponent(
+          token,
+        )}`;
+      }
+
+      return url;
+    } catch (error) {
+      throw new UnauthorizedException(
+        'Invalid or expired verify token ' + error,
+      );
+    }
   }
 
   async requestResetToken(
