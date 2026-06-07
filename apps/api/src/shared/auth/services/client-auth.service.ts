@@ -26,6 +26,7 @@ import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dto
 import { UserRepository } from 'src/modules/users/repositories/user.repository';
 import { UserService } from 'src/modules/users/services/user.service';
 import { RequestClientUpdateMailDto } from '../dtos/client/request-client-update-mail.dto';
+import { RequestClientUpdatePasswordDto } from '../dtos/client/request-client-update-password.dto';
 import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { StorageService } from '@/shared/storage/services/storage.service';
@@ -301,6 +302,35 @@ export class ClientAuthService {
     });
 
     await this.sendEmailVerification(updateMailDto.email);
+
+    return { success: true };
+  }
+
+  async updatePassword(
+    userId: string,
+    updatePasswordDto: RequestClientUpdatePasswordDto,
+  ) {
+    const user = await this.userRepository.findOneById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User does not exist');
+    }
+
+    if (!user.password) {
+      throw new UnauthorizedException('User does not have a password');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      updatePasswordDto.currentPassword,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Your current password is incorrect');
+    }
+
+    await this.userService.updatePassword(
+      user.id,
+      updatePasswordDto.newPassword,
+    );
 
     return { success: true };
   }

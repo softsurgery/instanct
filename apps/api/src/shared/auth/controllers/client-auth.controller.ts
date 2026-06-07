@@ -23,6 +23,7 @@ import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.d
 import { RequestClientSignInDto } from '../dtos/client/request-client-signin.dto';
 import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
 import { RequestClientUpdateMailDto } from '../dtos/client/request-client-update-mail.dto';
+import { RequestClientUpdatePasswordDto } from '../dtos/client/request-client-update-password.dto';
 import { RefreshTokenDto } from '../dtos/web/response-refresh-token';
 import { Notify } from 'src/shared/notifications/decorators/notify.decorator';
 import { NotificationType } from 'src/app/enums/notification-type.enum';
@@ -154,6 +155,23 @@ export class ClientAuthController {
     @Request() req: AdvancedRequest,
   ) {
     return this.clientAuthService.updateEmail(req.user!.sub, body);
+  }
+
+  @Post('update-password')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Update user password',
+    description: 'Update user password using current and new password.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Password updated successfully.',
+  })
+  async updatePassword(
+    @Body() body: RequestClientUpdatePasswordDto,
+    @Request() req: AdvancedRequest,
+  ) {
+    return this.clientAuthService.updatePassword(req.user!.sub, body);
   }
 
   @Public()

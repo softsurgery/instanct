@@ -177,4 +177,16 @@ export class UserService extends AbstractUserService {
 
     return this.userRepository.update(id, { coverId });
   }
+
+  async updatePassword(
+    id: string,
+    password: string,
+  ): Promise<UserEntity | null> {
+    const user = await this.userRepository.findOneById(id);
+    if (!user) throw new UserNotFoundException();
+
+    return this.userRepository.update(id, {
+      password: await hashPassword(password),
+    });
+  }
 }
