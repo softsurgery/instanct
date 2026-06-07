@@ -27,6 +27,9 @@ import { UserRepository } from 'src/modules/users/repositories/user.repository';
 import { UserService } from 'src/modules/users/services/user.service';
 import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
+import { StorageService } from '@/shared/storage/services/storage.service';
+import { STORAGE_SYSTEMATICS } from '@/app/constants/storage-systematics.constants';
+import { buildStaticUrl } from '@/shared/helpers/url.utils';
 
 @Injectable()
 export class ClientAuthService {
@@ -36,6 +39,7 @@ export class ClientAuthService {
     protected readonly jwtService: JwtService,
     protected readonly configService: ConfigService,
     protected readonly mailService: MailService,
+    protected readonly storageService: StorageService,
     protected readonly configurationNamespaceService: ConfigurationNamespaceService,
   ) {}
 
@@ -224,9 +228,11 @@ export class ClientAuthService {
         },
       );
 
-      const host = this.configService.get('app.http.host');
-      const port = this.configService.get('app.http.port');
-      const verifyLink = `${host}:${port}/api/client-auth/verify-email?token=${verifyToken}`;
+      const host = this.configService.get<string | null>('app.http.host') || '';
+      const port = this.configService.get<number>('app.http.port') || 80;
+      const secure = this.configService.get<boolean>('app.http.secure');
+      const url = buildStaticUrl(host, port, secure);
+      const verifyLink = `${url}/api/client-auth/verify-email?token=${verifyToken}`;
 
       const name =
         ((await this.configurationNamespaceService.getSpecificParam(
@@ -244,6 +250,10 @@ export class ClientAuthService {
           'company.support',
         )) as string) || 'N/A';
 
+      const applicationLogo = await this.storageService.findBySystematicName(
+        STORAGE_SYSTEMATICS.APPLICATION_LOGO,
+      );
+
       await this.mailService.sendTemplate<VerifyEmailTemplateProps>(
         user.email,
         `Verify your email address - ${name}`,
@@ -252,7 +262,7 @@ export class ClientAuthService {
           name,
           address,
           support,
-          logo: `${this.configService.get<string>('app.webAppUrl')}/logo.png`,
+          logo: `${url}/api/storage/resource/${applicationLogo?.slug}`,
           client: identifyUser(user),
           email: user.email,
           url: verifyLink,
@@ -288,11 +298,11 @@ export class ClientAuthService {
       if (mobileScheme === 'exp') {
         const mobileHost = this.configService.get('app.mobile.host');
         const mobilePort = this.configService.get('app.mobile.port');
-        url = `exp://${mobileHost}:${mobilePort}/--/main/test?verify-token=${encodeURIComponent(
+        url = `exp://${mobileHost}:${mobilePort}/--/main/profile/email-success?verifyToken=${encodeURIComponent(
           token,
         )}`;
       } else {
-        url = `${mobileScheme}://main/test?verify-token=${encodeURIComponent(
+        url = `${mobileScheme}/--/main/profile/email-success?verifyToken=${encodeURIComponent(
           token,
         )}`;
       }

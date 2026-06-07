@@ -7,6 +7,7 @@ import { AuthService } from './services/auth.service';
 import { MailModule } from '../mail/mail.module';
 import { ClientAuthService } from './services/client-auth.service';
 import { ConfigurationsModule } from '../configurations/configurations.module';
+import { StorageModule } from '../storage/storage.module';
 
 @Module({
   imports: [
@@ -14,15 +15,16 @@ import { ConfigurationsModule } from '../configurations/configurations.module';
     ConfigModule,
     ConfigurationsModule,
     MailModule,
+    StorageModule,
   ],
   controllers: [],
   providers: [
+    AuthService,
+    ClientAuthService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
-    AuthService,
-    ClientAuthService,
   ],
   exports: [AuthService, ClientAuthService],
 })

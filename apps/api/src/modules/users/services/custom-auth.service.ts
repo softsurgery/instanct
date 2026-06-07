@@ -8,6 +8,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
+import { StorageService } from '@/shared/storage/services/storage.service';
 
 @Injectable()
 export class CustomAuthService extends ClientAuthService {
@@ -17,6 +18,7 @@ export class CustomAuthService extends ClientAuthService {
     protected readonly userRepository: UserRepository,
     protected readonly jwtService: JwtService,
     protected readonly configService: ConfigService,
+    protected readonly storageService: StorageService,
     protected readonly configurationNamespaceService: ConfigurationNamespaceService,
   ) {
     super(
@@ -25,6 +27,7 @@ export class CustomAuthService extends ClientAuthService {
       jwtService,
       configService,
       mailService,
+      storageService,
       configurationNamespaceService,
     );
   }

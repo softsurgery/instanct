@@ -8,7 +8,8 @@ export default registerAs(
     http: {
       enable: process.env.HTTP_ENABLE === 'true',
       host: process.env.APP_HOST ?? 'localhost',
-      port: process.env.APP_PORT ? Number.parseInt(process.env.APP_PORT) : 5000,
+      port: process.env.APP_PORT ? Number.parseInt(process.env.APP_PORT) : 80,
+      secure: process.env.APP_SECURE === 'true',
     },
 
     mobile: {
