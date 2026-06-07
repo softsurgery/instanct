@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   Res,
+  UnauthorizedException,
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
@@ -28,6 +29,28 @@ import { Public } from 'src/shared/auth/utils/public-strategy';
 })
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
+
+  @Public()
+  @Get('/resource/:slug')
+  async viewResourceBySlug(
+    @Param('slug') slug: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const upload = await this.storageService.findBySlug(slug);
+    if (upload.isPrivate) {
+      throw new UnauthorizedException(
+        'You do not have permission to access this file',
+      );
+    }
+    const fileStream = await this.storageService.loadResource(slug);
+    res.setHeader('Content-Type', upload.mimetype);
+    res.setHeader('Content-Length', upload.size);
+    res.setHeader(
+      'Content-Disposition',
+      `inline; filename="${upload.filename}"`,
+    );
+    fileStream.pipe(res);
+  }
 
   @Get('/list')
   @ApiPaginatedResponse(StorageEntity)

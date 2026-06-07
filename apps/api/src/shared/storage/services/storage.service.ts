@@ -58,6 +58,16 @@ export abstract class StorageService {
     return upload;
   }
 
+  async findBySystematicName(
+    systematicName: string,
+  ): Promise<StorageEntity | null> {
+    const upload = await this.storageRepository.findOne({
+      where: { systematicName },
+    });
+
+    return upload ?? null;
+  }
+
   // Find single entities
   async findAll(query: IQueryObject = {}): Promise<StorageEntity[]> {
     const queryBuilder = new QueryBuilder(this.storageRepository.getMetadata());
@@ -72,6 +82,7 @@ export abstract class StorageService {
     file: Express.Multer.File,
     isTemporary?: boolean,
     isPrivate?: boolean,
+    systematicName?: string,
   ): Promise<StorageEntity>;
   abstract storeMultipleFiles(
     files: Express.Multer.File[],
