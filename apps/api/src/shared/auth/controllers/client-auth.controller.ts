@@ -22,6 +22,7 @@ import { RequestClientSignUpDto } from '../dtos/client/request-client-signup.dto
 import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
 import { RequestClientSignInDto } from '../dtos/client/request-client-signin.dto';
 import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
+import { RequestClientUpdateMailDto } from '../dtos/client/request-client-update-mail.dto';
 import { RefreshTokenDto } from '../dtos/web/response-refresh-token';
 import { Notify } from 'src/shared/notifications/decorators/notify.decorator';
 import { NotificationType } from 'src/app/enums/notification-type.enum';
@@ -136,6 +137,23 @@ export class ClientAuthController {
   })
   async sendVerifyEmail(@Body() body: { email: string }) {
     return this.clientAuthService.sendEmailVerification(body.email);
+  }
+
+  @Post('update-email')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Update user email',
+    description: 'Update user email and send verification to the new email.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Email updated successfully.',
+  })
+  async updateEmail(
+    @Body() body: RequestClientUpdateMailDto,
+    @Request() req: AdvancedRequest,
+  ) {
+    return this.clientAuthService.updateEmail(req.user!.sub, body);
   }
 
   @Public()

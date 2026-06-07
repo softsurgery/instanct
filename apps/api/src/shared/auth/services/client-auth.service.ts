@@ -25,6 +25,7 @@ import { CreateAbstractUserDto } from 'src/shared/abstract-user-management/dtos/
 import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
 import { UserRepository } from 'src/modules/users/repositories/user.repository';
 import { UserService } from 'src/modules/users/services/user.service';
+import { RequestClientUpdateMailDto } from '../dtos/client/request-client-update-mail.dto';
 import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { StorageService } from '@/shared/storage/services/storage.service';
@@ -274,6 +275,34 @@ export class ClientAuthService {
       console.error('Error sending verify email:', error);
       return { email: user.email, success: false };
     }
+  }
+
+  async updateEmail(userId: string, updateMailDto: RequestClientUpdateMailDto) {
+    const user = await this.userRepository.findOneById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User does not exist');
+    }
+
+    if (!user.password) {
+      throw new UnauthorizedException('User does not have a password');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      updateMailDto.password,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Your password is incorrect');
+    }
+
+    await this.userRepository.update(user.id, {
+      email: updateMailDto.email,
+      emailVerified: null as unknown as Date,
+    });
+
+    await this.sendEmailVerification(updateMailDto.email);
+
+    return { success: true };
   }
 
   async verifyEmail(token: string) {
