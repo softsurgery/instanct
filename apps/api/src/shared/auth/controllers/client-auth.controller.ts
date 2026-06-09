@@ -31,6 +31,7 @@ import { NotificationInterceptor } from 'src/shared/notifications/decorators/not
 import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 import { Response } from 'express';
+import { RequestClientOAuthDto } from '../dtos/client/request-client-oauth.dto';
 
 @ApiTags('client-auth')
 @Controller({ version: '1', path: '/client-auth' })
@@ -71,6 +72,47 @@ export class ClientAuthController {
       clientName: identifyUser(result.user as AbstractUserEntity),
     };
     return result;
+  }
+
+  @Public()
+  @Post('oauth')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Handle OAuth SSO sign-in/signup',
+    description:
+      'Accepts an ID token or access token from a supported OAuth provider (Google, LinkedIn, Apple) and signs in or registers the user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful OAuth sign in or registration.',
+    type: ResponseClientSigninDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Missing or invalid OAuth data.',
+  })
+  @LogEvent(EventType.CLIENT_SIGNIN)
+  @Notify(NotificationType.NEW_SIGNIN)
+  async oauth(
+    @Body() oauthDto: RequestClientOAuthDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseClientSigninDto> {
+    const result = await this.clientAuthService.handleOAuth(
+      oauthDto.provider,
+      oauthDto.idToken,
+      oauthDto.redirectUri,
+    );
+    if (result.user) {
+      req.logInfo = {
+        userId: result.user.id,
+        clientName: identifyUser(result.user as AbstractUserEntity),
+      };
+      req.notificationInfo = {
+        userId: result.user.id,
+        clientName: identifyUser(result.user as AbstractUserEntity),
+      };
+    }
+    return result as ResponseClientSigninDto;
   }
 
   @Public()

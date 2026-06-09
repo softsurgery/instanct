@@ -141,6 +141,7 @@ export class ClientAuthService {
   async handleOAuth(
     provider: OAuthProvider,
     idToken: string,
+    redirectUri?: string,
   ): Promise<{
     user?: ResponseAbstractUserDto;
     access_token: string;
@@ -149,15 +150,34 @@ export class ClientAuthService {
     let email: string | undefined | null;
     let username: string | undefined;
 
-    if (provider == OAuthProvider.GOOGLE) {
-      const client = new OAuth2Client(process.env.GOOGLE_ID);
-      const ticket = await client.verifyIdToken({
-        idToken,
-        audience: process.env.GOOGLE_ID,
-      });
-      const payload = ticket.getPayload();
-      email = payload?.email;
-      username = payload?.name || payload?.email?.split('@')[0];
+    if (provider === OAuthProvider.GOOGLE) {
+      const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          code: idToken,
+          client_id: process.env.GOOGLE_CLIENT_ID!,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+          redirect_uri: redirectUri || 'instanctmobileapp://oauth',
+          grant_type: 'authorization_code',
+        }).toString(),
+      }).then((res) => res.json());
+
+      const accessToken = tokenResponse.access_token;
+
+      const userInfo = await fetch(
+        'https://openidconnect.googleapis.com/v1/userinfo',
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      ).then((res) => res.json());
+
+      email = userInfo.email;
+      username = userInfo.name || userInfo.email?.split('@')[0];
     } else if (provider == OAuthProvider.GITHUB) {
       const userResponse: GithubUserResponse = await fetch(
         'https://api.github.com/user',
@@ -167,9 +187,6 @@ export class ClientAuthService {
           },
         },
       ).then((res) => res.json());
-
-      email = userResponse.email;
-      username = userResponse.login;
 
       email = userResponse.email;
       username = userResponse.login;
@@ -188,6 +205,59 @@ export class ClientAuthService {
         const primary = emails.find((e) => e.primary && e.verified);
         email = primary?.email || undefined;
       }
+    } else if (provider == OAuthProvider.LINKEDIN) {
+      // LinkedIn sends an authorization code; exchange it for an access token
+      let accessToken = idToken;
+
+      // If it looks like an authorization code (not a JWT), exchange it
+      if (!idToken.includes('.')) {
+        const tokenResponse: { access_token?: string } = await fetch(
+          'https://www.linkedin.com/oauth/v2/accessToken',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              grant_type: 'authorization_code',
+              code: idToken,
+              client_id: process.env.LINKEDIN_CLIENT_ID || '',
+              client_secret: process.env.LINKEDIN_CLIENT_SECRET || '',
+              redirect_uri: redirectUri || `${this.configService.get<string>('app.mobile.scheme') || 'instanctmobileapp'}://`,
+            }).toString(),
+          },
+        ).then((res) => res.json());
+
+        if (!tokenResponse.access_token) {
+          throw new UnauthorizedException(
+            'Failed to exchange LinkedIn authorization code',
+          );
+        }
+        accessToken = tokenResponse.access_token;
+      }
+
+      // Use the access token to get user info
+      const userInfoResponse: {
+        email?: string;
+        name?: string;
+        given_name?: string;
+      } = await fetch('https://api.linkedin.com/v2/userinfo', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => res.json());
+
+      email = userInfoResponse.email;
+      username =
+        userInfoResponse.name ||
+        userInfoResponse.given_name ||
+        userInfoResponse.email?.split('@')[0];
+    } else if (provider == OAuthProvider.APPLE) {
+      // Apple sends a JWT id_token; decode and extract claims
+      const decoded: { email?: string; sub?: string } | null =
+        this.jwtService.decode(idToken);
+      email = decoded?.email;
+      username = decoded?.email?.split('@')[0] || decoded?.sub;
     } else {
       throw new UnauthorizedException('Unsupported OAuth provider');
     }
