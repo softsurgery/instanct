@@ -1,6 +1,6 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DeepPartial, FindManyOptions } from 'typeorm';
+import { DeepPartial, FindManyOptions, FindOptionsWhere, Not } from 'typeorm';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
@@ -48,11 +48,18 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
 
   async findConversationLastMessage(
     conversationId: number,
+    excludeStatic = true,
   ): Promise<MessageEntity | null> {
+    const where: FindOptionsWhere<MessageEntity> = {
+      conversationId,
+    };
+
+    if (excludeStatic) {
+      where.content = Not('');
+    }
+
     const messages = await this.messageRepository.findAll({
-      where: {
-        conversationId,
-      },
+      where,
       order: {
         createdAt: 'DESC',
       },

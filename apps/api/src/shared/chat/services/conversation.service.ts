@@ -15,6 +15,8 @@ import { MessageService } from './message.service';
 import { ConversationNotFoundException } from '../errors/conversation/conversation.notfound.error';
 import { ConversationUserEntity } from '../entities/conversation-user.entity';
 import { ConversationUserService } from './conversation-user.service';
+import { MessageVariant } from '../enums/message-variant.enum';
+import { StaticMessageEnum } from '@/app/enums/static-message.enum';
 
 @Injectable()
 export class ConversationService extends AbstractCrudService<ConversationEntity> {
@@ -48,6 +50,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
       await this.conversationUserService.findByUserId(userId);
 
     const conversationIds = userConversations.map((uc) => uc.conversationId);
+
     query.filter = query.filter
       ? `${query.filter},id||$in||${conversationIds.join(',')}`
       : `id||$in||${conversationIds.join(',')}`;
@@ -62,9 +65,19 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
       where: queryOptions.where,
     });
 
-    const entities = await this.conversationRepository.findAll(
-      queryOptions as FindManyOptions<ConversationEntity>,
-    );
+    const entities = (
+      await this.conversationRepository.findAll(
+        queryOptions as FindManyOptions<ConversationEntity>,
+      )
+    ).sort((a, b) => {
+      const aDate = a.lastMessage?.createdAt ?? a.createdAt;
+      const bDate = b.lastMessage?.createdAt ?? b.createdAt;
+
+      const aTime = aDate ? new Date(aDate).getTime() : 0;
+      const bTime = bDate ? new Date(bDate).getTime() : 0;
+
+      return bTime - aTime;
+    });
 
     // Fetch last message for each conversation
     await this.populateLastMessages(entities);
@@ -133,6 +146,13 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     });
     conversation.participants =
       await this.conversationUserService.saveMany(participantEntries);
+
+    await this.messageService.save({
+      conversationId: conversation.id,
+      userId,
+      variant: MessageVariant.STATIC,
+      static: StaticMessageEnum.FIRST_MESSAGE,
+    });
 
     return conversation;
   }
