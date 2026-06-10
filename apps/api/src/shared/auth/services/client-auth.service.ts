@@ -200,6 +200,10 @@ export class ClientAuthService {
         isActive: true,
         source: provider,
       });
+    } else if (userByEmail) {
+      newUser = userByEmail as UserEntity;
+    } else {
+      newUser = userByUsername as UserEntity;
     }
 
     const { access_token, refresh_token } = await this.generateTokens(
