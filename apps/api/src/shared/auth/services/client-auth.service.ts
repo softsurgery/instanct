@@ -198,6 +198,7 @@ export class ClientAuthService {
         lastName: newUser.lastName,
         roleId: BasicRoles.User,
         isActive: true,
+        source: provider,
       });
     }
 

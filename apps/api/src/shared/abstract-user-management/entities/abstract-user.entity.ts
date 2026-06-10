@@ -12,6 +12,7 @@ import { RoleEntity } from './role.entity';
 import { LogEntity } from 'src/shared/logger/entities/log.entity';
 import { NotificationEntity } from 'src/shared/notifications/entities/notification.entity';
 import { SessionEntity } from 'src/shared/sessions/entities/session.entity';
+import { OAuthProvider } from '@/shared/auth/enums/oauth.enum';
 
 @Entity('users')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -33,6 +34,12 @@ export abstract class AbstractUserEntity extends EntityHelper {
 
   @Column({ default: false })
   isApproved: boolean;
+
+  @Column({
+    enum: OAuthProvider,
+    default: OAuthProvider.EMAIL,
+  })
+  source?: OAuthProvider;
 
   @Column({ nullable: true })
   password?: string;

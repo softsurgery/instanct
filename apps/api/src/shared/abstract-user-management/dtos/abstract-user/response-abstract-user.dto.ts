@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
 import { ResponseRoleDto } from '../role/response-role.dto';
+import { OAuthProvider } from '@/shared/auth/enums/oauth.enum';
 
 export class ResponseAbstractUserDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })
@@ -51,4 +52,12 @@ export class ResponseAbstractUserDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })
   @Expose()
   roleId: string;
+
+  @ApiProperty({
+    enum: OAuthProvider,
+    required: true,
+    description: 'Source of the user',
+  })
+  @Expose()
+  source?: OAuthProvider;
 }
