@@ -21,9 +21,18 @@ export class RequestClientOAuthDto {
   idToken: string;
 
   @ApiProperty({
-    description: 'The redirect URI used in the frontend (required for some providers like Google authorization code exchange)',
+    description:
+      'The redirect URI used in the frontend (required for some providers like Google authorization code exchange)',
     required: false,
   })
   @IsString()
   redirectUri?: string;
+
+  @ApiProperty({
+    description:
+      'The code verifier used in the frontend (required for some providers like Google authorization code exchange)',
+    required: false,
+  })
+  @IsString()
+  codeVerifier?: string;
 }

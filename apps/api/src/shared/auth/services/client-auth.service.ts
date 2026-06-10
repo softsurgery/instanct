@@ -2,11 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-import { OAuth2Client } from 'google-auth-library';
-import {
-  GithubEmail,
-  GithubUserResponse,
-} from '../interfaces/github.interface';
 import { OAuthProvider } from '../enums/oauth.enum';
 import { RequestResetTokenDto } from '../dtos/web/request-reset-token.dto';
 import { MailService } from 'src/shared/mail/services/mail.service';
@@ -32,10 +27,9 @@ import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.
 import { StorageService } from '@/shared/storage/services/storage.service';
 import { STORAGE_SYSTEMATICS } from '@/app/constants/storage-systematics.constants';
 import { buildStaticUrl } from '@/shared/helpers/url.utils';
-import {
-  GoogleTokenResponse,
-  GoogleUserInfo,
-} from '../interfaces/google.interface';
+import { AuthProvidersService } from './auth-provider.service';
+import { UserEntity } from '@/modules/users/entities/user.entity';
+import { DeepPartial } from 'typeorm';
 
 @Injectable()
 export class ClientAuthService {
@@ -47,6 +41,7 @@ export class ClientAuthService {
     protected readonly mailService: MailService,
     protected readonly storageService: StorageService,
     protected readonly configurationNamespaceService: ConfigurationNamespaceService,
+    protected readonly authProvidersService?: AuthProvidersService,
   ) {}
 
   private async generateTokens(id?: string, email?: string) {
@@ -146,174 +141,75 @@ export class ClientAuthService {
     provider: OAuthProvider,
     idToken: string,
     redirectUri?: string,
+    codeVerifier?: string,
   ): Promise<{
     user?: ResponseAbstractUserDto;
     access_token: string;
     refresh_token: string;
   }> {
-    let email: string | undefined | null;
-    let username: string | undefined;
+    let newUser: DeepPartial<UserEntity> = {};
 
     if (provider === OAuthProvider.GOOGLE) {
-      const data = await this.googleOath(idToken, redirectUri);
-      email = data.email;
-      username = data.username;
+      const data = await this.authProvidersService?.googleOAuth(
+        idToken,
+        codeVerifier,
+        redirectUri,
+      );
+      newUser.email = data?.email as string;
+      newUser.firstName = data?.given_name;
+      newUser.lastName = data?.family_name;
+      newUser.username = data?.email?.split('@')[0];
     } else if (provider == OAuthProvider.GITHUB) {
-      const data = await this.githubOAuth(idToken);
-      email = data.email;
-      username = data.username;
+      const data = await this.authProvidersService?.githubOAuth(idToken);
+      newUser.email = data?.email as string;
+      newUser.username = data?.username.toLowerCase();
     } else if (provider == OAuthProvider.LINKEDIN) {
-      const data = await this.linkedinOauth(idToken, redirectUri);
-      email = data.email;
-      username = data.username;
+      const data = await this.authProvidersService?.linkedinOauth(
+        idToken,
+        redirectUri,
+      );
+      newUser.email = data?.email as string;
+      newUser.username = data?.username;
     } else if (provider == OAuthProvider.APPLE) {
       const decoded: { email?: string; sub?: string } | null =
         this.jwtService.decode(idToken);
-      email = decoded?.email;
-      username = decoded?.email?.split('@')[0] || decoded?.sub;
+      newUser.email = decoded?.email;
+      newUser.username = decoded?.email?.split('@')[0] || decoded?.sub;
     } else {
       throw new UnauthorizedException('Unsupported OAuth provider');
     }
 
-    if (!email || !username) {
+    if (!newUser.email || !newUser.username) {
       throw new UnauthorizedException(
         'Could not retrieve valid email or username from provider',
       );
     }
 
-    const user = await this.userService.save({
-      email,
-      username,
-    });
+    const userByEmail = await this.userService.findOneByEmail(newUser.email);
+    const userByUsername = await this.userService.findOneByUsername(
+      newUser.username,
+    );
+
+    if (!userByEmail && !userByUsername) {
+      newUser = await this.userService.extendedSave({
+        email: newUser.email,
+        username: newUser.username.toLowerCase().replace(/\s/g, '_'),
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        roleId: BasicRoles.User,
+        isActive: true,
+      });
+    }
 
     const { access_token, refresh_token } = await this.generateTokens(
-      user?.id,
-      user?.email,
+      newUser?.id,
+      newUser?.email,
     );
 
     return {
-      user,
+      user: newUser as ResponseAbstractUserDto,
       access_token,
       refresh_token,
-    };
-  }
-
-  async googleOath(idToken: string, redirectUri?: string) {
-    const tokenResponse: GoogleTokenResponse = await fetch(
-      'https://oauth2.googleapis.com/token',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          code: idToken,
-          client_id: process.env.GOOGLE_CLIENT_ID!,
-          client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-          redirect_uri: redirectUri || 'instanctmobileapp://oauth',
-          grant_type: 'authorization_code',
-        }).toString(),
-      },
-    ).then((res) => res.json());
-
-    const accessToken = tokenResponse.access_token;
-
-    const userInfo: GoogleUserInfo = await fetch(
-      'https://openidconnect.googleapis.com/v1/userinfo',
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    ).then((res) => res.json());
-
-    return {
-      email: userInfo.email,
-      username: userInfo.name || userInfo.email?.split('@')[0],
-    };
-  }
-
-  async githubOAuth(idToken: string) {
-    const userResponse: GithubUserResponse = await fetch(
-      'https://api.github.com/user',
-      {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      },
-    ).then((res) => res.json());
-
-    let email = userResponse.email;
-    const username = userResponse.login;
-
-    if (!email) {
-      const emails: GithubEmail[] = await fetch(
-        'https://api.github.com/user/emails',
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        },
-      ).then((res) => res.json());
-
-      const primary = emails.find((e) => e.primary && e.verified);
-      email = primary?.email || null;
-    }
-
-    return {
-      email,
-      username,
-    };
-  }
-
-  async linkedinOauth(idToken: string, redirectUri?: string) {
-    let accessToken = idToken;
-
-    if (!idToken.includes('.')) {
-      const tokenResponse: { access_token?: string } = await fetch(
-        'https://www.linkedin.com/oauth/v2/accessToken',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            grant_type: 'authorization_code',
-            code: idToken,
-            client_id: process.env.LINKEDIN_CLIENT_ID || '',
-            client_secret: process.env.LINKEDIN_CLIENT_SECRET || '',
-            redirect_uri:
-              redirectUri ||
-              `${this.configService.get<string>('app.mobile.scheme') || 'instanctmobileapp'}://`,
-          }).toString(),
-        },
-      ).then((res) => res.json());
-
-      if (!tokenResponse.access_token) {
-        throw new UnauthorizedException(
-          'Failed to exchange LinkedIn authorization code',
-        );
-      }
-      accessToken = tokenResponse.access_token;
-    }
-
-    // Use the access token to get user info
-    const userInfoResponse: {
-      email?: string;
-      name?: string;
-      given_name?: string;
-    } = await fetch('https://api.linkedin.com/v2/userinfo', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }).then((res) => res.json());
-
-    return {
-      email: userInfoResponse.email,
-      username:
-        userInfoResponse.name ||
-        userInfoResponse.given_name ||
-        userInfoResponse.email?.split('@')[0],
     };
   }
 

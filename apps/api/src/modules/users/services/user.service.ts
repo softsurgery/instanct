@@ -1,5 +1,5 @@
 import { Transactional } from '@nestjs-cls/transactional';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DeepPartial, In } from 'typeorm';
 import { UserRepository } from '../repositories/user.repository';
 import { UserUploadService } from './user-upload.service';
@@ -32,17 +32,15 @@ export class UserService extends AbstractUserService {
   @Transactional()
   async extendedSave(
     createUserDto: DeepPartial<UserEntity>,
-    industries?: number[],
+    industries: number[] = [],
   ): Promise<UserEntity> {
     const { uploads, ...rest } = createUserDto;
     if (createUserDto.pictureId)
       await this.storageService.confirm(createUserDto.pictureId);
 
-    if (!rest.password) throw new BadRequestException('Password is required');
-
     const user = await this.userRepository.save({
       ...rest,
-      password: await hashPassword(rest.password),
+      password: rest.password ? await hashPassword(rest.password) : undefined,
     });
 
     await this.userConfigurationService.createPersonalMapConfiguration(user.id);

@@ -32,13 +32,17 @@ import { identifyUser } from 'src/shared/abstract-user-management/utils/identify
 import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 import { Response } from 'express';
 import { RequestClientOAuthDto } from '../dtos/client/request-client-oauth.dto';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('client-auth')
 @Controller({ version: '1', path: '/client-auth' })
 @UseInterceptors(LogInterceptor)
 @UseInterceptors(NotificationInterceptor)
 export class ClientAuthController {
-  constructor(private clientAuthService: ClientAuthService) {}
+  constructor(
+    private clientAuthService: ClientAuthService,
+    private configService: ConfigService,
+  ) {}
 
   @Public()
   @Post('sign-in')
@@ -101,6 +105,7 @@ export class ClientAuthController {
       oauthDto.provider,
       oauthDto.idToken,
       oauthDto.redirectUri,
+      oauthDto.codeVerifier,
     );
     if (result.user) {
       req.logInfo = {
@@ -113,6 +118,29 @@ export class ClientAuthController {
       };
     }
     return result as ResponseClientSigninDto;
+  }
+
+  @Public()
+  @Get('oauth/redirect')
+  @ApiOperation({
+    summary: 'OAuth redirect handler',
+    description: 'Redirects OAuth response back to the mobile app.',
+  })
+  redirect(@Query() query: Record<string, string>, @Res() res: Response) {
+    let url: string;
+    const mobileScheme = this.configService.get('app.mobile.scheme');
+
+    const queryString = new URLSearchParams(query).toString();
+
+    if (mobileScheme === 'exp') {
+      const mobileHost = this.configService.get('app.mobile.host');
+      const mobilePort = this.configService.get('app.mobile.port');
+      url = `exp://${mobileHost}:${mobilePort}/--/oauth?${queryString}`;
+    } else {
+      url = `${mobileScheme}/--/oauth?${queryString}`;
+    }
+
+    return res.redirect(url);
   }
 
   @Public()
