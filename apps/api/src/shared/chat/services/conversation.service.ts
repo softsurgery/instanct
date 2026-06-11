@@ -65,7 +65,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
       where: queryOptions.where,
     });
 
-    const entities = (
+    const entities: ConversationEntity[] = (
       await this.conversationRepository.findAll(
         queryOptions as FindManyOptions<ConversationEntity>,
       )
@@ -80,7 +80,6 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     });
 
     // Fetch last message for each conversation
-    await this.populateLastMessages(entities);
 
     const pageMetaDto = new PageMetaDto({
       pageOptionsDto: {
@@ -91,26 +90,6 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     });
 
     return new PageDto(entities, pageMetaDto);
-  }
-
-  private async populateLastMessages(
-    conversations: ConversationEntity[],
-  ): Promise<void> {
-    if (conversations.length === 0) return;
-
-    await Promise.all(
-      conversations.map(async (conversation) => {
-        const lastMessage =
-          await this.messageService.findConversationLastMessage(
-            conversation.id,
-          );
-        if (lastMessage) {
-          conversation.messages = [lastMessage];
-        } else {
-          conversation.messages = [];
-        }
-      }),
-    );
   }
 
   @Transactional()

@@ -26,7 +26,7 @@ export class ConversationLastMessageTrigger extends AbstractTrigger {
       BEGIN
         UPDATE conversations
         SET lastMessageId = NEW.id
-        WHERE id = NEW.conversationId AND NEW.content <> '';
+        WHERE id = NEW.conversationId;
       END;
     `;
   }

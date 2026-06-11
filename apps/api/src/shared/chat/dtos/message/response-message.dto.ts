@@ -4,6 +4,7 @@ import { ResponseConversationDto } from '../conversation/response-conversation.d
 import { Expose, Type } from 'class-transformer';
 import { MessageVariant } from '../../enums/message-variant.enum';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
+import { StaticMessageEnum } from '@/app/enums/static-message.enum';
 
 export class ResponseMessageDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -35,4 +36,8 @@ export class ResponseMessageDto extends ResponseDtoHelper {
   @ApiProperty({ type: String, enum: MessageVariant })
   @Expose()
   variant: MessageVariant;
+
+  @ApiProperty({ type: String, enum: StaticMessageEnum })
+  @Expose()
+  static?: StaticMessageEnum;
 }
