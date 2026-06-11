@@ -15,7 +15,7 @@ export class MessageUploadEntity extends EntityHelper {
   id: number;
 
   @Column()
-  messageId: string;
+  messageId: number;
 
   @Column()
   uploadId: number;
@@ -28,6 +28,7 @@ export class MessageUploadEntity extends EntityHelper {
 
   @ManyToOne(() => StorageEntity, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   @JoinColumn({ name: 'uploadId' })
   upload?: StorageEntity;

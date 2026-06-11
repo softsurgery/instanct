@@ -1,16 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsEnum,
   IsNumber,
   IsOptional,
   IsString,
   MinLength,
+  ValidateIf,
 } from 'class-validator';
 import { MessageVariant } from '../../enums/message-variant.enum';
 import { StaticMessageEnum } from '@/app/enums/static-message.enum';
 
 export class CreateMessageDto {
   @ApiProperty({ type: String })
+  @ValidateIf(
+    (dto: CreateMessageDto) =>
+      !dto.uploadIds?.length && dto.variant !== MessageVariant.STATIC,
+  )
   @IsString()
   @MinLength(1)
   @IsOptional()
@@ -29,4 +35,10 @@ export class CreateMessageDto {
   @IsEnum(StaticMessageEnum)
   @IsOptional()
   static?: StaticMessageEnum;
+
+  @ApiProperty({ type: [Number], description: 'IDs of uploaded files' })
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @IsOptional()
+  uploadIds?: number[];
 }

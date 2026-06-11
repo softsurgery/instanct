@@ -1,6 +1,6 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DeepPartial, FindManyOptions, FindOptionsWhere, Not } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, Not } from 'typeorm';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
@@ -8,10 +8,20 @@ import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { MessageRepository } from '../repositories/message.repository';
 import { MessageEntity } from '../entities/message.entity';
 import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { MessageUploadService } from './message-upload.service';
+import { StorageService } from 'src/shared/storage/services/storage.service';
+import { MessageVariant } from '../enums/message-variant.enum';
+import { CreateMessageDto } from '../dtos/message/create-message.dto';
+
+const MESSAGE_UPLOAD_RELATIONS = 'uploads,uploads.upload';
 
 @Injectable()
 export class MessageService extends AbstractCrudService<MessageEntity> {
-  constructor(private readonly messageRepository: MessageRepository) {
+  constructor(
+    private readonly messageRepository: MessageRepository,
+    private readonly messageUploadService: MessageUploadService,
+    private readonly storageService: StorageService,
+  ) {
     super(messageRepository);
   }
 
@@ -20,7 +30,10 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     conversationId?: number,
   ): Promise<PageDto<MessageEntity>> {
     const queryBuilder = new QueryBuilder(this.messageRepository.getMetadata());
-    const queryOptions = queryBuilder.build(query);
+    const queryOptions = queryBuilder.build({
+      ...query,
+      join: query.join ?? MESSAGE_UPLOAD_RELATIONS,
+    });
 
     queryOptions.where = {
       ...(queryOptions.where || {}),
@@ -69,9 +82,31 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     return messages.length > 0 ? messages[0] : null;
   }
 
+  private resolveVariantFromUploads(
+    mimetypes: string[],
+  ): MessageVariant.IMAGE | MessageVariant.VIDEO {
+    const hasVideo = mimetypes.some((mimetype) =>
+      mimetype.startsWith('video/'),
+    );
+    const hasImage = mimetypes.some((mimetype) =>
+      mimetype.startsWith('image/'),
+    );
+
+    if (hasVideo && hasImage) {
+      throw new BadRequestException(
+        'Messages cannot contain both images and videos',
+      );
+    }
+
+    if (hasVideo) return MessageVariant.VIDEO;
+    if (hasImage) return MessageVariant.IMAGE;
+
+    throw new BadRequestException('Unsupported media type');
+  }
+
   @Transactional()
   async createMessage(
-    createMessage: DeepPartial<MessageEntity>,
+    createMessage: CreateMessageDto,
     userId?: string,
   ): Promise<MessageEntity> {
     if (!userId) {
@@ -81,6 +116,52 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
       throw new BadRequestException('Conversation id is required');
     }
 
-    return this.save({ ...createMessage, userId });
+    const { uploadIds, ...messageData } = createMessage;
+    const isStatic = messageData.variant === MessageVariant.STATIC;
+
+    if (
+      !isStatic &&
+      !messageData.content?.trim() &&
+      (!uploadIds || uploadIds.length === 0)
+    ) {
+      throw new BadRequestException('Message content or uploads are required');
+    }
+
+    let variant = messageData.variant ?? MessageVariant.TEXT;
+
+    if (uploadIds?.length) {
+      const uploads = await Promise.all(
+        uploadIds.map((id) => this.storageService.findOneById(id)),
+      );
+      variant = this.resolveVariantFromUploads(
+        uploads.map((upload) => upload.mimetype),
+      );
+    }
+
+    const message = await this.save({
+      ...messageData,
+      content: messageData.content?.trim() || undefined,
+      variant,
+      userId,
+    });
+
+    if (uploadIds?.length) {
+      await this.messageUploadService.saveMany(
+        uploadIds.map((uploadId, index) => ({
+          messageId: message.id,
+          uploadId,
+          order: index,
+        })),
+      );
+    }
+
+    const savedMessage = await this.findOneById(
+      message.id,
+      MESSAGE_UPLOAD_RELATIONS,
+    );
+    if (!savedMessage) {
+      throw new BadRequestException('Failed to load created message');
+    }
+    return savedMessage;
   }
 }

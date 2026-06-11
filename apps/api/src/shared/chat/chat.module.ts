@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConversationEntity } from './entities/conversation.entity';
 import { ConversationUserEntity } from './entities/conversation-user.entity';
 import { MessageEntity } from './entities/message.entity';
+import { MessageUploadEntity } from './entities/message-upload.entity';
 import { ConversationRepository } from './repositories/conversation.repository';
 import { MessageRepository } from './repositories/message.repository';
 import { MessageService } from './services/message.service';
@@ -15,6 +16,9 @@ import { ConversationLastMessageTrigger } from './triggers/conversation-last-mes
 import { DatabaseModule } from '../database/database.module';
 import { ConversationUserRepository } from './repositories/conversation-user.repository';
 import { ConversationUserService } from './services/conversation-user.service';
+import { MessageUploadRepository } from './repositories/message-upload.repository';
+import { MessageUploadService } from './services/message-upload.service';
+import { StorageModule } from '../storage/storage.module';
 
 @Module({
   controllers: [],
@@ -22,7 +26,9 @@ import { ConversationUserService } from './services/conversation-user.service';
     ConversationRepository,
     ConversationUserRepository,
     MessageRepository,
+    MessageUploadRepository,
     MessageService,
+    MessageUploadService,
     ConversationService,
     ConversationUserService,
     ChatGateway,
@@ -40,9 +46,11 @@ import { ConversationUserService } from './services/conversation-user.service';
       ConversationEntity,
       ConversationUserEntity,
       MessageEntity,
+      MessageUploadEntity,
     ]),
     UserManagementModule,
     DatabaseModule,
+    StorageModule,
   ],
 })
 export class ChatModule {
