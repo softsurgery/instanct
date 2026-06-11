@@ -14,6 +14,8 @@ import { MessageService } from '../services/message.service';
 import { CreateMessageDto } from '../dtos/message/create-message.dto';
 import { ConversationService } from '../services/conversation.service';
 import { UserRepository } from 'src/modules/users/repositories/user.repository';
+import { ConversationEntity } from '../entities/conversation.entity';
+import { DeepPartial } from 'typeorm';
 
 const MAX_LIMIT = 20;
 
@@ -254,10 +256,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .to(`conversation_${data.conversationId}`)
       .emit('message', message);
 
-    const conversation = await this.conversationService.findOneById(
-      data.conversationId,
-      'participants,participants.user,lastMessage',
-    );
+    let conversation: DeepPartial<ConversationEntity> =
+      (await this.conversationService.findOneById(
+        data.conversationId,
+        'participants,participants.user,lastMessage',
+      )) as DeepPartial<ConversationEntity>;
+
+    conversation = {
+      ...conversation,
+      messages: [message],
+    };
 
     this.server
       .to(`user_${userId}`)

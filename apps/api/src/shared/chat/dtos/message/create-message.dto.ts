@@ -22,7 +22,8 @@ export class CreateMessageDto {
 
   @ApiProperty({ type: String, enum: MessageVariant })
   @IsEnum(MessageVariant)
-  variant: MessageVariant;
+  @IsOptional()
+  variant?: MessageVariant;
 
   @ApiProperty({ type: String, enum: StaticMessageEnum })
   @IsEnum(StaticMessageEnum)
