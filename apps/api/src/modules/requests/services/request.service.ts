@@ -1,9 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
 import { RequestEntity } from '../entities/request.entity';
 import { RequestRepository } from '../repositories/request.repository';
 import { UserService } from 'src/modules/users/services/user.service';
 import { CreateRequestDto } from '../dtos/create-request.dto';
+import { UpdateRequestDto } from '../dtos/update-request.dto';
+import { RequestStatus } from '../enums/request-status.enum';
 import { SessionService } from 'src/shared/sessions/services/session.service';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
@@ -167,5 +174,34 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
       sessionId: activeSession[0].id,
       receivers: users,
     });
+  }
+
+  async updateRequestDetails(
+    id: number,
+    userId: string,
+    data: UpdateRequestDto,
+  ): Promise<RequestEntity> {
+    const request = await this.findOneById(String(id), 'session');
+
+    if (!request) {
+      throw new NotFoundException(`Request with id ${id} not found`);
+    }
+
+    if (request.session?.userId !== userId) {
+      throw new ForbiddenException('Only the sender can update this request');
+    }
+
+    if (request.status !== RequestStatus.Sent) {
+      throw new BadRequestException(
+        'Cannot update a request that has already been answered',
+      );
+    }
+
+    const updated = await this.repository.update(id, data);
+    if (!updated) {
+      throw new NotFoundException(`Request with id ${id} not found`);
+    }
+
+    return updated;
   }
 }

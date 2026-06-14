@@ -57,6 +57,12 @@ export class RequestEntity extends EntityHelper {
   @Column({ type: 'varchar', length: 255, nullable: true })
   location?: string;
 
+  @Column({ type: 'double', nullable: true })
+  latitude?: number;
+
+  @Column({ type: 'double', nullable: true })
+  longitude?: number;
+
   @Column({ type: 'timestamp', nullable: true })
   time?: Date;
 }

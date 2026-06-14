@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   Request,
   UseInterceptors,
@@ -19,6 +20,7 @@ import { IQueryObject } from 'src/shared/database/interfaces/database-query-opti
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
 import { CreateRequestDto } from '../dtos/create-request.dto';
+import { UpdateRequestDto } from '../dtos/update-request.dto';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { AdvancedRequest } from 'src/types';
@@ -139,6 +141,23 @@ export class RequestController {
         })),
       },
     ];
+    return toDto(ResponseRequestDto, request);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateRequestDto: UpdateRequestDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseRequestDto | null> {
+    if (!req?.user?.sub) return null;
+
+    const request = await this.requestService.updateRequestDetails(
+      Number(id),
+      req.user.sub,
+      updateRequestDto,
+    );
+
     return toDto(ResponseRequestDto, request);
   }
 }

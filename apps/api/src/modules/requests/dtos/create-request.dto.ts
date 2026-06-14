@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsDateString, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateRequestDto {
   @ApiProperty({ type: [String] })
@@ -15,6 +21,16 @@ export class CreateRequestDto {
   @IsString()
   @IsOptional()
   location?: string;
+
+  @ApiProperty({ type: Number, nullable: true })
+  @IsNumber()
+  @IsOptional()
+  latitude?: number;
+
+  @ApiProperty({ type: Number, nullable: true })
+  @IsNumber()
+  @IsOptional()
+  longitude?: number;
 
   @ApiProperty({ type: Date, nullable: true })
   @IsDateString()

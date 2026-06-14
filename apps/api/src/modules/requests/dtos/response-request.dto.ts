@@ -36,6 +36,14 @@ export class ResponseRequestDto extends ResponseDtoHelper {
   @Expose()
   location?: string;
 
+  @ApiProperty({ type: Number, nullable: true })
+  @Expose()
+  latitude?: number;
+
+  @ApiProperty({ type: Number, nullable: true })
+  @Expose()
+  longitude?: number;
+
   @ApiProperty({ type: Date, nullable: true })
   @Expose()
   time?: Date;
