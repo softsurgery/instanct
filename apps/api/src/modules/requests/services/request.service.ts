@@ -2,9 +2,19 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
+  OnModuleInit,
 } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { SessionEntity } from 'src/shared/sessions/entities/session.entity';
+import { SessionRepository } from 'src/shared/sessions/repositories/session.repository';
+import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
+import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
+import { FindManyOptions, IsNull, MoreThan } from 'typeorm';
 import { RequestEntity } from '../entities/request.entity';
 import { RequestRepository } from '../repositories/request.repository';
 import { UserService } from 'src/modules/users/services/user.service';
@@ -12,28 +22,43 @@ import { CreateRequestDto } from '../dtos/create-request.dto';
 import { UpdateRequestDto } from '../dtos/update-request.dto';
 import { RequestStatus } from '../enums/request-status.enum';
 import { SessionService } from 'src/shared/sessions/services/session.service';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { FindManyOptions } from 'typeorm';
 
 @Injectable()
-export class RequestService extends AbstractCrudService<RequestEntity> {
+export class RequestService
+  extends AbstractCrudService<RequestEntity>
+  implements OnModuleInit
+{
+  private readonly logger = new Logger(RequestService.name);
+
   requestRepository: RequestRepository;
+
   constructor(
     requestRepository: RequestRepository,
     private readonly userService: UserService,
     private readonly sessionService: SessionService,
+    private readonly sessionRepository: SessionRepository,
+    private readonly schedulerRegistry: SchedulerRegistry,
   ) {
     super(requestRepository);
     this.requestRepository = requestRepository;
+  }
+
+  async onModuleInit(): Promise<void> {
+    await this.expireStaleRequests();
+    await this.scheduleActiveSessionExpirations();
+  }
+
+  async findOneById(id: number | string, join?: string) {
+    await this.expireStaleRequests();
+    return super.findOneById(id, join);
   }
 
   async findIncomingRequestsPaginated(
     query: IQueryObject,
     userId: string,
   ): Promise<PageDto<RequestEntity>> {
+    await this.expireStaleRequests();
+
     const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
 
@@ -70,6 +95,8 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
     query: IQueryObject,
     userId: string,
   ): Promise<RequestEntity[]> {
+    await this.expireStaleRequests();
+
     const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
 
@@ -91,6 +118,8 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
     query: IQueryObject,
     userId: string,
   ): Promise<PageDto<RequestEntity>> {
+    await this.expireStaleRequests();
+
     const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
     queryOptions.relations = queryOptions.relations
@@ -127,6 +156,8 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
     query: IQueryObject,
     userId: string,
   ): Promise<RequestEntity[]> {
+    await this.expireStaleRequests();
+
     const queryBuilder = new QueryBuilder(this.requestRepository.getMetadata());
     const queryOptions = queryBuilder.build(query);
 
@@ -150,6 +181,8 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
     data: CreateRequestDto,
     senderId: string,
   ): Promise<RequestEntity> {
+    await this.expireStaleRequests();
+
     const activeSession = await this.sessionService.findAllActiveUserSessions(
       {},
       senderId,
@@ -157,6 +190,10 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
     if (activeSession.length === 0) {
       throw new NotFoundException('No active session found for the sender');
     }
+
+    const session = activeSession[0];
+    this.scheduleSessionExpiration(session);
+
     const users = await Promise.all(
       data.receiverIds.map(async (id) => {
         const user = await this.userService.findOneById(id);
@@ -171,7 +208,7 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
 
     return this.requestRepository.save({
       ...data,
-      sessionId: activeSession[0].id,
+      sessionId: session.id,
       receivers: users,
     });
   }
@@ -203,5 +240,73 @@ export class RequestService extends AbstractCrudService<RequestEntity> {
     }
 
     return updated;
+  }
+
+  private async expireStaleRequests(): Promise<void> {
+    const now = new Date();
+    const expiredCount =
+      await this.requestRepository.expireSentRequestsForEndedSessions(now);
+
+    if (expiredCount > 0) {
+      this.logger.log(`Expired ${expiredCount} pending request(s)`);
+    }
+  }
+
+  private async scheduleActiveSessionExpirations(): Promise<void> {
+    const now = new Date();
+    const sessions = await this.sessionRepository.findAll({
+      where: {
+        ended: IsNull(),
+        plannedEnd: MoreThan(now),
+      },
+    });
+
+    for (const session of sessions) {
+      this.scheduleSessionExpiration(session);
+    }
+  }
+
+  private scheduleSessionExpiration(session: SessionEntity): void {
+    if (!session.plannedEnd || session.ended) return;
+
+    const jobName = this.getExpirationJobName(session.id);
+    this.cancelSessionExpiration(session.id);
+
+    const delay = session.plannedEnd.getTime() - Date.now();
+    if (delay <= 0) {
+      void this.expireSentRequestsForSession(session.id);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      void this.expireSentRequestsForSession(session.id);
+      this.schedulerRegistry.deleteTimeout(jobName);
+    }, delay);
+
+    this.schedulerRegistry.addTimeout(jobName, timeout);
+  }
+
+  private cancelSessionExpiration(sessionId: number): void {
+    const jobName = this.getExpirationJobName(sessionId);
+    try {
+      this.schedulerRegistry.deleteTimeout(jobName);
+    } catch {
+      // No scheduled expiration for this session.
+    }
+  }
+
+  private async expireSentRequestsForSession(sessionId: number): Promise<void> {
+    const expiredCount =
+      await this.requestRepository.expireSentRequestsForSession(sessionId);
+
+    if (expiredCount > 0) {
+      this.logger.log(
+        `Expired ${expiredCount} pending request(s) for session ${sessionId}`,
+      );
+    }
+  }
+
+  private getExpirationJobName(sessionId: number): string {
+    return `expire-requests-session-${sessionId}`;
   }
 }

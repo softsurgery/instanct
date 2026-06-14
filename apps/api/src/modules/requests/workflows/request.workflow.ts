@@ -26,5 +26,8 @@ export const requestMachine = setup({
     Rejected: {
       type: 'final',
     },
+    Expired: {
+      type: 'final',
+    },
   },
 });
