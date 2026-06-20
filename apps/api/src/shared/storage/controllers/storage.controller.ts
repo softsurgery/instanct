@@ -200,6 +200,7 @@ export class StorageController {
 
     res.setHeader('Content-Type', upload.mimetype);
     res.setHeader('Content-Length', upload.size);
+    res.setHeader('Cache-Control', 'public, max-age=3600, immutable');
     res.setHeader(
       'Content-Disposition',
       `inline; filename="${upload.filename}"`,
@@ -218,6 +219,7 @@ export class StorageController {
 
     res.setHeader('Content-Type', upload.mimetype);
     res.setHeader('Content-Length', upload.size);
+    res.setHeader('Cache-Control', 'public, max-age=3600, immutable');
     res.setHeader(
       'Content-Disposition',
       `inline; filename="${upload.filename}"`,
