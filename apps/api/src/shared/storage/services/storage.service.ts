@@ -122,7 +122,11 @@ export abstract class StorageService {
   }
 
   // Load file from storage
-  abstract loadResource(slug: string): Promise<ReadStream>;
+  abstract loadResource(
+    slug: string,
+    start?: number,
+    end?: number,
+  ): Promise<ReadStream>;
 
   // Duplicate
   abstract duplicate(id: number): Promise<StorageEntity>;
