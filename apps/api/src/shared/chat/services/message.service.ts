@@ -32,13 +32,13 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     const queryBuilder = new QueryBuilder(this.messageRepository.getMetadata());
     const queryOptions = queryBuilder.build({
       ...query,
+      sort: query.sort ?? 'createdAt,DESC',
       join: query.join ?? MESSAGE_UPLOAD_RELATIONS,
     });
 
-    queryOptions.where = {
-      ...(queryOptions.where || {}),
-      conversationId,
-    };
+    queryOptions.where = Array.isArray(queryOptions.where)
+      ? queryOptions.where.map((where) => ({ ...where, conversationId }))
+      : { ...(queryOptions.where || {}), conversationId };
 
     const count = await this.messageRepository.getTotalCount({
       where: queryOptions.where,
