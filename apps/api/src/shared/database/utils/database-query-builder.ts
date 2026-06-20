@@ -145,9 +145,17 @@ export class QueryBuilder {
       const [key, value] = condition.split(
         this.options.VALUE_DELIMITER as string,
       );
-      if (key) {
-        this.assignObjectKey(order, key, (value || 'ASC').toUpperCase());
+      if (!key) return;
+
+      const direction = (value || 'ASC').toUpperCase();
+      const bareDirection = key.toUpperCase();
+
+      if (!value && (bareDirection === 'ASC' || bareDirection === 'DESC')) {
+        this.assignObjectKey(order, 'createdAt', bareDirection);
+        return;
       }
+
+      this.assignObjectKey(order, key, direction);
     });
     return order;
   }
