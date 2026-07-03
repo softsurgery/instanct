@@ -45,12 +45,8 @@ export class MessageEntity extends EntityHelper {
   })
   static?: StaticMessageEnum;
 
-  @OneToMany(
-    () => MessageUploadEntity,
-    (messageUpload) => messageUpload.message,
-    {
-      nullable: true,
-    },
-  )
+  @OneToMany(() => MessageUploadEntity, (upload) => upload.message, {
+    nullable: true,
+  })
   uploads: MessageUploadEntity[];
 }

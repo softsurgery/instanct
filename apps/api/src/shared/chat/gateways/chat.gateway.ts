@@ -259,7 +259,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     let conversation: DeepPartial<ConversationEntity> =
       (await this.conversationService.findOneById(
         data.conversationId,
-        'participants,participants.user,lastMessage',
+        'participants,participants.user,lastMessage,lastMessage.uploads',
       )) as DeepPartial<ConversationEntity>;
 
     conversation = {
