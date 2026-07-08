@@ -9,17 +9,20 @@ import { MessageRepository } from '../repositories/message.repository';
 import { MessageEntity } from '../entities/message.entity';
 import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
 import { MessageUploadService } from './message-upload.service';
+import { MessageLinkService } from './message-link.service';
 import { StorageService } from 'src/shared/storage/services/storage.service';
 import { MessageVariant } from '../enums/message-variant.enum';
 import { CreateMessageDto } from '../dtos/message/create-message.dto';
+import { extractMessageLinks } from '../utils/extract-message-links';
 
-const MESSAGE_UPLOAD_RELATIONS = 'uploads,uploads.upload';
+export const MESSAGE_DEFAULT_RELATIONS = 'uploads,uploads.upload,links';
 
 @Injectable()
 export class MessageService extends AbstractCrudService<MessageEntity> {
   constructor(
     private readonly messageRepository: MessageRepository,
     private readonly messageUploadService: MessageUploadService,
+    private readonly messageLinkService: MessageLinkService,
     private readonly storageService: StorageService,
   ) {
     super(messageRepository);
@@ -33,7 +36,7 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     const queryOptions = queryBuilder.build({
       ...query,
       sort: query.sort ?? 'createdAt,DESC',
-      join: query.join ?? MESSAGE_UPLOAD_RELATIONS,
+      join: query.join ?? MESSAGE_DEFAULT_RELATIONS,
     });
 
     queryOptions.where = Array.isArray(queryOptions.where)
@@ -161,9 +164,19 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
       );
     }
 
+    const extractedLinks = extractMessageLinks(message.content);
+    if (extractedLinks.length) {
+      await this.messageLinkService.saveMany(
+        extractedLinks.map((link) => ({
+          messageId: message.id,
+          ...link,
+        })),
+      );
+    }
+
     const savedMessage = await this.findOneById(
       message.id,
-      MESSAGE_UPLOAD_RELATIONS,
+      MESSAGE_DEFAULT_RELATIONS,
     );
     if (!savedMessage) {
       throw new BadRequestException('Failed to load created message');

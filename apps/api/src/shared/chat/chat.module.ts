@@ -4,6 +4,7 @@ import { ConversationEntity } from './entities/conversation.entity';
 import { ConversationUserEntity } from './entities/conversation-user.entity';
 import { MessageEntity } from './entities/message.entity';
 import { MessageUploadEntity } from './entities/message-upload.entity';
+import { MessageLinkEntity } from './entities/message-link.entity';
 import { ConversationRepository } from './repositories/conversation.repository';
 import { MessageRepository } from './repositories/message.repository';
 import { MessageService } from './services/message.service';
@@ -17,7 +18,9 @@ import { DatabaseModule } from '../database/database.module';
 import { ConversationUserRepository } from './repositories/conversation-user.repository';
 import { ConversationUserService } from './services/conversation-user.service';
 import { MessageUploadRepository } from './repositories/message-upload.repository';
+import { MessageLinkRepository } from './repositories/message-link.repository';
 import { MessageUploadService } from './services/message-upload.service';
+import { MessageLinkService } from './services/message-link.service';
 import { StorageModule } from '../storage/storage.module';
 
 @Module({
@@ -27,8 +30,10 @@ import { StorageModule } from '../storage/storage.module';
     ConversationUserRepository,
     MessageRepository,
     MessageUploadRepository,
+    MessageLinkRepository,
     MessageService,
     MessageUploadService,
+    MessageLinkService,
     ConversationService,
     ConversationUserService,
     ChatGateway,
@@ -47,6 +52,7 @@ import { StorageModule } from '../storage/storage.module';
       ConversationUserEntity,
       MessageEntity,
       MessageUploadEntity,
+      MessageLinkEntity,
     ]),
     UserManagementModule,
     DatabaseModule,

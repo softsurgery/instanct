@@ -6,6 +6,7 @@ import { MessageVariant } from '../../enums/message-variant.enum';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
 import { StaticMessageEnum } from '@/app/enums/static-message.enum';
 import { ResponseMessageUploadDto } from '../message-upload/response-message-upload.dto';
+import { ResponseMessageLinkDto } from '../message-link/response-message-link.dto';
 
 export class ResponseMessageDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -46,4 +47,9 @@ export class ResponseMessageDto extends ResponseDtoHelper {
   @Expose()
   @Type(() => ResponseMessageUploadDto)
   uploads?: ResponseMessageUploadDto[];
+
+  @ApiProperty({ type: [ResponseMessageLinkDto] })
+  @Expose()
+  @Type(() => ResponseMessageLinkDto)
+  links?: ResponseMessageLinkDto[];
 }

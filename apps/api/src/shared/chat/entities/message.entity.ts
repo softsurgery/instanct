@@ -10,6 +10,7 @@ import {
 import { ConversationEntity } from './conversation.entity';
 import { MessageVariant } from '../enums/message-variant.enum';
 import { MessageUploadEntity } from './message-upload.entity';
+import { MessageLinkEntity } from './message-link.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { StaticMessageEnum } from '@/app/enums/static-message.enum';
 
@@ -49,4 +50,9 @@ export class MessageEntity extends EntityHelper {
     nullable: true,
   })
   uploads: MessageUploadEntity[];
+
+  @OneToMany(() => MessageLinkEntity, (link) => link.message, {
+    nullable: true,
+  })
+  links: MessageLinkEntity[];
 }
