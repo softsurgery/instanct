@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -129,7 +130,12 @@ export class StorageController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
+    @Body('filename') filename?: string,
   ): Promise<StorageEntity> {
+    if (filename?.trim()) {
+      file.originalname = filename.trim();
+    }
+
     return this.storageService.store(file);
   }
 
@@ -150,7 +156,12 @@ export class StorageController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadTemporaryFile(
     @UploadedFile() file: Express.Multer.File,
+    @Body('filename') filename?: string,
   ): Promise<StorageEntity> {
+    if (filename?.trim()) {
+      file.originalname = filename.trim();
+    }
+
     return this.storageService.store(file, true);
   }
 
