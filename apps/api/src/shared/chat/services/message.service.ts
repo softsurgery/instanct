@@ -84,24 +84,30 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
 
   private resolveVariantFromUploads(
     mimetypes: string[],
-  ): MessageVariant.IMAGE | MessageVariant.VIDEO {
+  ): MessageVariant.IMAGE | MessageVariant.VIDEO | MessageVariant.FILE {
     const hasVideo = mimetypes.some((mimetype) =>
       mimetype.startsWith('video/'),
     );
     const hasImage = mimetypes.some((mimetype) =>
       mimetype.startsWith('image/'),
     );
+    const hasFile = mimetypes.some(
+      (mimetype) =>
+        !mimetype.startsWith('video/') && !mimetype.startsWith('image/'),
+    );
 
-    if (hasVideo && hasImage) {
+    const mediaKinds = [hasVideo, hasImage, hasFile].filter(Boolean).length;
+    if (mediaKinds > 1) {
       throw new BadRequestException(
-        'Messages cannot contain both images and videos',
+        'Messages cannot contain mixed upload types',
       );
     }
 
     if (hasVideo) return MessageVariant.VIDEO;
     if (hasImage) return MessageVariant.IMAGE;
+    if (hasFile) return MessageVariant.FILE;
 
-    throw new BadRequestException('Unsupported media type');
+    throw new BadRequestException('Unsupported upload type');
   }
 
   @Transactional()
