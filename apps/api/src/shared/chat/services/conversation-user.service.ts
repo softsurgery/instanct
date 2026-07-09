@@ -59,4 +59,8 @@ export class ConversationUserService extends AbstractCrudService<ConversationUse
       ),
     );
   }
+
+  async countUnreadConversations(userId: string): Promise<number> {
+    return this.conversationUserRepository.countUnreadMessages(userId);
+  }
 }

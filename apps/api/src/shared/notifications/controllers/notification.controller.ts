@@ -34,6 +34,14 @@ export class NotificationController {
     private readonly notificationGateway: NotificationGateway,
   ) {}
 
+  @Get('/unread-count')
+  async getUnreadCount(
+    @Request() req: AdvancedRequest,
+  ): Promise<{ count: number }> {
+    const count = await this.notificationService.getUnreadCount(req?.user?.sub);
+    return { count };
+  }
+
   @Get('/list')
   @ApiPaginatedResponse(ResponseNotificationDto)
   async findAllPaginated(
@@ -74,6 +82,11 @@ export class NotificationController {
       ResponseNotificationDto,
       await this.notificationService.findOneById(id),
     );
+  }
+
+  @Post('/mark-read')
+  async markAllAsRead(@Request() req: AdvancedRequest): Promise<void> {
+    await this.notificationService.markAllAsRead(req?.user?.sub);
   }
 
   @Post('test/:id')

@@ -4,7 +4,7 @@ import { NotificationEntity } from '../entities/notification.entity';
 import { NotificationNotFoundException } from '../errors/notification.notfound.error';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { FindManyOptions, FindOneOptions, IsNull } from 'typeorm';
 import { PageDto } from 'src/shared/database/dtos/database.page.dto';
 import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
 import { Transactional } from '@nestjs-cls/transactional';
@@ -141,5 +141,33 @@ export class NotificationService {
     });
 
     return new PageDto(entities, pageMetaDto);
+  }
+
+  async getUnreadCount(userId?: string): Promise<number> {
+    if (!userId) {
+      return 0;
+    }
+
+    return this.notificationRepository.getTotalCount({
+      where: {
+        userId,
+        readAt: IsNull(),
+      },
+    });
+  }
+
+  @Transactional()
+  async markAllAsRead(userId?: string): Promise<void> {
+    if (!userId) {
+      return;
+    }
+
+    await this.notificationRepository
+      .createQueryBuilder()
+      .update(NotificationEntity)
+      .set({ readAt: new Date() })
+      .where('userId = :userId', { userId })
+      .andWhere('readAt IS NULL')
+      .execute();
   }
 }

@@ -29,4 +29,11 @@ export class NotificationEntity extends EntityHelper {
 
   @Column({ type: 'json', nullable: true })
   payload?: object;
+
+  @Column({
+    type: 'datetime',
+    precision: 3,
+    nullable: true,
+  })
+  readAt?: Date;
 }

@@ -33,6 +33,16 @@ import { CreateConversationReportDto } from '../dtos/conversation/create-convers
 export class CurrentConversationController {
   constructor(private readonly conversationService: ConversationService) {}
 
+  @Get('/unread-count')
+  async getUnreadCount(
+    @Request() req: AdvancedRequest,
+  ): Promise<{ count: number }> {
+    const count = await this.conversationService.getUnreadConversationCount(
+      req?.user?.sub,
+    );
+    return { count };
+  }
+
   @Get('/list')
   @ApiPaginatedResponse(ResponseConversationDto)
   async findAllPaginated(
@@ -85,6 +95,7 @@ export class CurrentConversationController {
       createConversationReportDto,
     );
   }
+
   @Delete(':id')
   async deleteConversation(
     @Param('id') id: number,
