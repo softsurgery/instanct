@@ -31,6 +31,9 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
 import { UserBookmarkRepository } from './repositories/user-bookmark.repository';
 import { UserBookmarkService } from './services/user-bookmark.service';
 import { UserBookmarkEntity } from './entities/user-bookmark.entity';
+import { UserBlockRepository } from './repositories/user-block.repository';
+import { UserBlockService } from './services/user-block.service';
+import { UserBlockEntity } from './entities/user-block.entity';
 import { MailModule } from 'src/shared/mail/mail.module';
 import { CustomAuthService } from './services/custom-auth.service';
 
@@ -52,6 +55,7 @@ import { CustomAuthService } from './services/custom-auth.service';
     EducationService,
 
     UserBookmarkService,
+    UserBlockService,
 
     //repositories
     UserRepository,
@@ -67,6 +71,7 @@ import { CustomAuthService } from './services/custom-auth.service';
     EducationRepository,
 
     UserBookmarkRepository,
+    UserBlockRepository,
   ],
   exports: [
     //services
@@ -84,6 +89,7 @@ import { CustomAuthService } from './services/custom-auth.service';
     EducationService,
 
     UserBookmarkService,
+    UserBlockService,
 
     //repositories
     UserRepository,
@@ -98,6 +104,7 @@ import { CustomAuthService } from './services/custom-auth.service';
     EducationRepository,
 
     UserBookmarkRepository,
+    UserBlockRepository,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -110,6 +117,7 @@ import { CustomAuthService } from './services/custom-auth.service';
       ExperienceEntity,
       EducationEntity,
       UserBookmarkEntity,
+      UserBlockEntity,
     ]),
     MailModule,
     StorageModule,

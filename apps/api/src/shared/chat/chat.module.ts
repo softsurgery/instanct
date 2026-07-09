@@ -22,6 +22,9 @@ import { MessageLinkRepository } from './repositories/message-link.repository';
 import { MessageUploadService } from './services/message-upload.service';
 import { MessageLinkService } from './services/message-link.service';
 import { StorageModule } from '../storage/storage.module';
+import { ConversationReportEntity } from './entities/conversation-report.entity';
+import { ConversationReportRepository } from './repositories/conversation-report.repository';
+import { ConversationReportService } from './services/conversation-report.service';
 
 @Module({
   controllers: [],
@@ -36,6 +39,8 @@ import { StorageModule } from '../storage/storage.module';
     MessageLinkService,
     ConversationService,
     ConversationUserService,
+    ConversationReportRepository,
+    ConversationReportService,
     ChatGateway,
   ],
   exports: [
@@ -44,6 +49,8 @@ import { StorageModule } from '../storage/storage.module';
     MessageRepository,
     ConversationService,
     ConversationUserService,
+    ConversationReportRepository,
+    ConversationReportService,
     MessageService,
   ],
   imports: [
@@ -53,6 +60,7 @@ import { StorageModule } from '../storage/storage.module';
       MessageEntity,
       MessageUploadEntity,
       MessageLinkEntity,
+      ConversationReportEntity,
     ]),
     UserManagementModule,
     DatabaseModule,

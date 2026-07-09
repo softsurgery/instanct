@@ -17,6 +17,8 @@ import { ConversationUserEntity } from '../entities/conversation-user.entity';
 import { ConversationUserService } from './conversation-user.service';
 import { MessageVariant } from '../enums/message-variant.enum';
 import { StaticMessageEnum } from '@/app/enums/static-message.enum';
+import { CreateConversationReportDto } from '../dtos/conversation/create-conversation-report.dto';
+import { ConversationReportService } from './conversation-report.service';
 
 @Injectable()
 export class ConversationService extends AbstractCrudService<ConversationEntity> {
@@ -25,6 +27,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     private readonly conversationUserService: ConversationUserService,
     private readonly messageService: MessageService,
     private readonly userService: UserService,
+    private readonly conversationReportService: ConversationReportService,
   ) {
     super(conversationRepository);
   }
@@ -202,5 +205,75 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     });
 
     return this.findOneById(conversationId, join);
+  }
+
+  async leaveConversation(
+    conversationId: number,
+    userId?: string,
+  ): Promise<void> {
+    if (!userId) {
+      throw new BadRequestException('User id is required');
+    }
+
+    const isParticipant = await this.isUserInConversation(
+      conversationId,
+      userId,
+    );
+    if (!isParticipant) {
+      throw new BadRequestException(
+        'User is not a participant of the conversation',
+      );
+    }
+
+    await this.conversationUserService.removeByConversationAndUser(
+      conversationId,
+      userId,
+    );
+  }
+
+  async reportConversation(
+    conversationId: number,
+    userId: string | undefined,
+    createConversationReportDto: CreateConversationReportDto,
+  ) {
+    if (!userId) {
+      throw new BadRequestException('User id is required');
+    }
+
+    const join = ['participants'].join(',');
+    const conversation = await this.findOneById(conversationId, join);
+    if (!conversation) {
+      throw new ConversationNotFoundException();
+    }
+
+    const isParticipant = conversation.participants.some(
+      (participant) => participant.userId === userId,
+    );
+    if (!isParticipant) {
+      throw new BadRequestException(
+        'User is not a participant of the conversation',
+      );
+    }
+
+    const reportedUserId = conversation.participants.find(
+      (participant) => participant.userId !== userId,
+    )?.userId;
+
+    return this.conversationReportService.reportConversation(
+      conversationId,
+      userId,
+      reportedUserId,
+      createConversationReportDto,
+    );
+  }
+
+  async removeSharedConversations(
+    userId: string,
+    otherUserId: string,
+  ): Promise<void> {
+    await this.conversationUserService.removeSharedConversations(
+      userId,
+      otherUserId,
+    );
   }
 }

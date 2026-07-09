@@ -32,6 +32,7 @@ import { RequestController } from 'src/modules/requests/controllers/request.cont
 import { RequestWorkflowController } from 'src/modules/requests/controllers/request-workdlow.controller';
 import { RequestsModule } from 'src/modules/requests/requests.module';
 import { UserBookmarkController } from 'src/modules/users/controllers/user-bookmark.controller';
+import { UserBlockController } from 'src/modules/users/controllers/user-block.controller';
 import { ClientCustomAuthController } from 'src/modules/users/controllers/custom-auth.controller';
 
 @Module({
@@ -49,6 +50,7 @@ import { ClientCustomAuthController } from 'src/modules/users/controllers/custom
     ExperienceController,
     EducationController,
     UserBookmarkController,
+    UserBlockController,
     //system reports
     FeedbackController,
     BugController,

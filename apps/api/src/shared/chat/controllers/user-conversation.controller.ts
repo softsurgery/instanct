@@ -8,6 +8,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -19,6 +20,7 @@ import { ConversationService } from '../services/conversation.service';
 import { ResponseConversationDto } from '../dtos/conversation/response-conversation.dto';
 import { AdvancedRequest } from 'src/types';
 import { CreateConversationDto } from '../dtos/conversation/create-conversation.dto';
+import { CreateConversationReportDto } from '../dtos/conversation/create-conversation-report.dto';
 
 @ApiTags('current-conversation')
 @ApiBearerAuth('access_token')
@@ -69,5 +71,25 @@ export class CurrentConversationController {
       req?.user?.sub,
     );
     return toDto(ResponseConversationDto, conversation);
+  }
+
+  @Post(':id/report')
+  async reportConversation(
+    @Param('id') id: number,
+    @Body() createConversationReportDto: CreateConversationReportDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<void> {
+    await this.conversationService.reportConversation(
+      id,
+      req?.user?.sub,
+      createConversationReportDto,
+    );
+  }
+  @Delete(':id')
+  async deleteConversation(
+    @Param('id') id: number,
+    @Request() req: AdvancedRequest,
+  ): Promise<void> {
+    await this.conversationService.leaveConversation(id, req?.user?.sub);
   }
 }
