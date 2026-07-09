@@ -149,6 +149,48 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
   }
 
+  async emitUnreadCountUpdate(userId?: string): Promise<void> {
+    if (!userId) {
+      return;
+    }
+
+    const count =
+      await this.conversationService.getUnreadConversationCount(userId);
+
+    this.server
+      .to(`user_${userId}`)
+      .emit('conversations-unread-count', { count });
+  }
+
+  async emitNewConversation(
+    conversationId: number,
+    creatorUserId?: string,
+  ): Promise<void> {
+    const conversation = await this.conversationService.findOneById(
+      conversationId,
+      'participants,participants.user,lastMessage,lastMessage.uploads',
+    );
+
+    if (!conversation) {
+      return;
+    }
+
+    for (const participant of conversation.participants ?? []) {
+      this.server
+        .to(`user_${participant.userId}`)
+        .emit('conversation-created', {
+          conversation,
+          creatorUserId,
+        });
+    }
+
+    for (const participant of conversation.participants ?? []) {
+      if (participant.userId !== creatorUserId) {
+        await this.emitUnreadCountUpdate(participant.userId);
+      }
+    }
+  }
+
   // join a conversation ******************************************************************************************************************************
 
   @SubscribeMessage('join-conversation')

@@ -32,6 +32,16 @@ export class ConversationUserRepository extends DatabaseAbstractRepository<Conve
           firstMessage: StaticMessageEnum.FIRST_MESSAGE,
         },
       )
+      .andWhere(
+        `NOT EXISTS (
+          SELECT 1 FROM \`user-blocks\` block
+          WHERE (
+            (block.userId = :userId AND block.blockedUserId = message.userId)
+            OR (block.userId = message.userId AND block.blockedUserId = :userId)
+          )
+        )`,
+        { userId },
+      )
       .select('COUNT(message.id)', 'count')
       .getRawOne<{ count: string }>();
 

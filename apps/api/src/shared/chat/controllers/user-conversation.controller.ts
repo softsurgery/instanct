@@ -17,6 +17,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ConversationService } from '../services/conversation.service';
+import { ChatGateway } from '../gateways/chat.gateway';
 import { ResponseConversationDto } from '../dtos/conversation/response-conversation.dto';
 import { AdvancedRequest } from 'src/types';
 import { CreateConversationDto } from '../dtos/conversation/create-conversation.dto';
@@ -31,7 +32,10 @@ import { CreateConversationReportDto } from '../dtos/conversation/create-convers
   path: '/current-conversation',
 })
 export class CurrentConversationController {
-  constructor(private readonly conversationService: ConversationService) {}
+  constructor(
+    private readonly conversationService: ConversationService,
+    private readonly chatGateway: ChatGateway,
+  ) {}
 
   @Get('/unread-count')
   async getUnreadCount(
@@ -76,11 +80,20 @@ export class CurrentConversationController {
     @Body() createConversationDto: CreateConversationDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseConversationDto> {
+    const userId = req?.user?.sub;
     const conversation = await this.conversationService.createConversation(
       createConversationDto.users[0],
-      req?.user?.sub,
+      userId,
     );
-    return toDto(ResponseConversationDto, conversation);
+
+    await this.chatGateway.emitNewConversation(conversation.id, userId);
+
+    const fullConversation = await this.conversationService.findOneById(
+      conversation.id,
+      'participants,participants.user,lastMessage,lastMessage.uploads',
+    );
+
+    return toDto(ResponseConversationDto, fullConversation);
   }
 
   @Post(':id/report')
@@ -101,6 +114,8 @@ export class CurrentConversationController {
     @Param('id') id: number,
     @Request() req: AdvancedRequest,
   ): Promise<void> {
-    await this.conversationService.leaveConversation(id, req?.user?.sub);
+    const userId = req?.user?.sub;
+    await this.conversationService.leaveConversation(id, userId);
+    await this.chatGateway.emitUnreadCountUpdate(userId);
   }
 }

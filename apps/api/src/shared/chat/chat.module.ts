@@ -52,6 +52,7 @@ import { ConversationReportService } from './services/conversation-report.servic
     ConversationReportRepository,
     ConversationReportService,
     MessageService,
+    ChatGateway,
   ],
   imports: [
     TypeOrmModule.forFeature([

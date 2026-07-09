@@ -13,6 +13,7 @@ import { AdvancedRequest } from 'src/types';
 import { toDto } from 'src/shared/database/utils/dtos';
 import { ResponseUserBlockDto } from '../dtos/user-block/response-user-block.dto';
 import { ConversationService } from 'src/shared/chat/services/conversation.service';
+import { ChatGateway } from 'src/shared/chat/gateways/chat.gateway';
 
 @ApiTags('user-block')
 @ApiBearerAuth('access_token')
@@ -26,6 +27,7 @@ export class UserBlockController {
   constructor(
     private readonly userBlockService: UserBlockService,
     private readonly conversationService: ConversationService,
+    private readonly chatGateway: ChatGateway,
   ) {}
 
   @Post('/:id')
@@ -37,8 +39,10 @@ export class UserBlockController {
       throw new Error('User not authenticated');
     }
 
-    const block = await this.userBlockService.blockUser(req.user.sub, id);
-    await this.conversationService.removeSharedConversations(req.user.sub, id);
+    const userId = req.user.sub;
+    const block = await this.userBlockService.blockUser(userId, id);
+    await this.conversationService.removeSharedConversations(userId, id);
+    await this.chatGateway.emitUnreadCountUpdate(userId);
     return toDto(ResponseUserBlockDto, block);
   }
 }
