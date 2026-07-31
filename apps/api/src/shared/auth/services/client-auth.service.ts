@@ -218,7 +218,7 @@ export class ClientAuthService {
     };
   }
 
-  async sendEmailVerification(email: string) {
+  async sendEmailVerification(email: string, callbackUrl?: string) {
     const user = await this.userService.findOneByEmail(email);
     if (!user) {
       throw new UserNotFoundException();
@@ -226,7 +226,7 @@ export class ClientAuthService {
 
     try {
       const verifyToken = await this.jwtService.signAsync(
-        { sub: user.id, email: user.email },
+        { sub: user.id, email: user.email, callbackUrl },
         {
           secret: this.configService.get('app.jwt.secret'),
           expiresIn: '15m',
@@ -281,7 +281,11 @@ export class ClientAuthService {
     }
   }
 
-  async updateEmail(userId: string, updateMailDto: RequestClientUpdateMailDto) {
+  async updateEmail(
+    userId: string,
+    updateMailDto: RequestClientUpdateMailDto,
+    callbackUrl?: string,
+  ) {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
       throw new UnauthorizedException('User does not exist');
@@ -304,7 +308,7 @@ export class ClientAuthService {
       emailVerified: null as unknown as Date,
     });
 
-    await this.sendEmailVerification(updateMailDto.email);
+    await this.sendEmailVerification(updateMailDto.email, callbackUrl);
 
     return { success: true };
   }
@@ -340,7 +344,7 @@ export class ClientAuthService {
 
   async verifyEmail(token: string) {
     try {
-      const payload: { sub: string; email: string } =
+      const payload: { sub: string; email: string; callbackUrl?: string } =
         await this.jwtService.verifyAsync(token, {
           secret: this.configService.get('app.jwt.secret'),
         });
@@ -355,16 +359,14 @@ export class ClientAuthService {
       await this.userRepository.update(user.id, { emailVerified: new Date() });
 
       let url: string;
-      const mobileScheme = this.configService.get('app.mobile.scheme');
-
-      if (mobileScheme === 'exp') {
-        const mobileHost = this.configService.get('app.mobile.host');
-        const mobilePort = this.configService.get('app.mobile.port');
-        url = `exp://${mobileHost}:${mobilePort}/--/main/profile/email-success?verifyToken=${encodeURIComponent(
-          token,
-        )}`;
+      if (payload.callbackUrl) {
+        url = payload.callbackUrl.includes('?')
+          ? `${payload.callbackUrl}&verifyToken=${encodeURIComponent(token)}`
+          : `${payload.callbackUrl}?verifyToken=${encodeURIComponent(token)}`;
       } else {
-        url = `${mobileScheme}/--/main/profile/email-success?verifyToken=${encodeURIComponent(
+        const mobileScheme =
+          this.configService.get('app.mobile.scheme') || 'instanctmobileapp';
+        url = `${mobileScheme}://main/profile/email-success?verifyToken=${encodeURIComponent(
           token,
         )}`;
       }

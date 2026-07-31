@@ -127,20 +127,24 @@ export class ClientAuthController {
     description: 'Redirects OAuth response back to the mobile app.',
   })
   redirect(@Query() query: Record<string, string>, @Res() res: Response) {
-    let url: string;
-    const mobileScheme = this.configService.get('app.mobile.scheme');
-
-    const queryString = new URLSearchParams(query).toString();
-
-    if (mobileScheme === 'exp') {
-      const mobileHost = this.configService.get('app.mobile.host');
-      const mobilePort = this.configService.get('app.mobile.port');
-      url = `exp://${mobileHost}:${mobilePort}/--/oauth?${queryString}`;
-    } else {
-      url = `${mobileScheme}://oauth?${queryString}`;
+    if (!query.state || !query.state.includes('|')) {
+      throw new BadRequestException(
+        'Invalid state parameter: missing callback URL',
+      );
     }
 
-    return res.redirect(url);
+    const parts = query.state.split('|');
+    const originalState = parts[0];
+    const callbackUrl = parts.slice(1).join('|');
+
+    query.state = originalState; // Restore state so client AuthSession can validate it
+    const queryString = new URLSearchParams(query).toString();
+
+    const finalUrl = callbackUrl.includes('?')
+      ? `${callbackUrl}&${queryString}`
+      : `${callbackUrl}?${queryString}`;
+
+    return res.redirect(finalUrl);
   }
 
   @Public()
@@ -206,8 +210,11 @@ export class ClientAuthController {
     status: 200,
     description: 'Email sent successfully.',
   })
-  async sendVerifyEmail(@Body() body: { email: string }) {
-    return this.clientAuthService.sendEmailVerification(body.email);
+  async sendVerifyEmail(@Body() body: { email: string; callbackUrl?: string }) {
+    return this.clientAuthService.sendEmailVerification(
+      body.email,
+      body.callbackUrl,
+    );
   }
 
   @Post('update-email')
@@ -221,10 +228,14 @@ export class ClientAuthController {
     description: 'Email updated successfully.',
   })
   async updateEmail(
-    @Body() body: RequestClientUpdateMailDto,
+    @Body() body: RequestClientUpdateMailDto & { callbackUrl?: string },
     @Request() req: AdvancedRequest,
   ) {
-    return this.clientAuthService.updateEmail(req.user!.sub, body);
+    return this.clientAuthService.updateEmail(
+      req.user!.sub,
+      body,
+      body.callbackUrl,
+    );
   }
 
   @Post('update-password')
