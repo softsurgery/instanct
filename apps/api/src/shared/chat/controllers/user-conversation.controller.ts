@@ -11,6 +11,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Query,
   Request,
@@ -64,7 +65,7 @@ export class CurrentConversationController {
   })
   @Get(':id')
   async findOneById(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Query() query: IQueryObject,
   ): Promise<ResponseConversationDto | null> {
     const conversation = await this.conversationService.findOneById(
@@ -120,7 +121,7 @@ export class CurrentConversationController {
   })
   @Post(':id/report')
   async reportConversation(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() createConversationReportDto: CreateConversationReportDto,
     @Request() req: AdvancedRequest,
   ): Promise<void> {
@@ -137,7 +138,7 @@ export class CurrentConversationController {
   })
   @Delete(':id')
   async deleteConversation(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Request() req: AdvancedRequest,
   ): Promise<void> {
     const userId = req?.user?.sub;

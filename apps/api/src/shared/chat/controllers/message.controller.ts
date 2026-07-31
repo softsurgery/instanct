@@ -9,6 +9,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
@@ -33,7 +34,7 @@ export class MessageController {
   @Get(':id/list')
   @ApiPaginatedResponse(ResponseMessageDto)
   async findPaginatedConversationMessages(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Query() query: IQueryObject,
   ): Promise<PageDto<ResponseMessageDto>> {
     const paginated =

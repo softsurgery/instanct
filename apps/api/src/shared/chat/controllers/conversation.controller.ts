@@ -9,6 +9,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
@@ -67,7 +68,7 @@ export class ConversationController {
   })
   @Get(':id')
   async findOneById(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<ResponseConversationDto | null> {
     return toDto(
       ResponseConversationDto,

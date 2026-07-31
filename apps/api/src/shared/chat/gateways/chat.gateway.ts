@@ -309,9 +309,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       messages: [message],
     };
 
-    this.server
-      .to(`user_${userId}`)
-      .emit('conversation-updated-last-check', conversation);
+    for (const participant of conversation?.participants ?? []) {
+      this.server
+        .to(`user_${participant.userId}`)
+        .emit('conversation-updated-last-check', conversation);
+    }
 
     for (const participant of conversation?.participants ?? []) {
       this.server
@@ -324,7 +326,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('see-conversation')
   async seeConversation(
     @ConnectedSocket() client: AdvancedSocket,
-    @MessageBody() data: { conversationId: number },
+    @MessageBody() data: { conversationId: number; lastCheck?: string },
   ) {
     const payload = getTokenPayloadForWebSocket(client);
     const userId = payload?.sub;
@@ -342,6 +344,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const conversation = await this.conversationService.markConversationAsSeen(
       data.conversationId,
       userId,
+      data.lastCheck ? new Date(data.lastCheck) : new Date(),
     );
 
     for (const participant of conversation?.participants ?? []) {
