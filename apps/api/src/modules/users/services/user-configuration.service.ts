@@ -73,13 +73,6 @@ export class UserConfigurationService {
         namespaceId: namespace.id,
       },
       {
-        name: 'clusters',
-        description: 'Whether to show clusters on the map',
-        variant: ParamVariant.BOOLEAN,
-        value: 'true',
-        namespaceId: namespace.id,
-      },
-      {
         name: 'showUsernames',
         description: 'Whether to show usernames on the map',
         variant: ParamVariant.BOOLEAN,
@@ -92,7 +85,7 @@ export class UserConfigurationService {
 
   async updatePersonalMapConfiguration(
     userId: string,
-    params: { radius: number; clusters: boolean; showUsernames: boolean },
+    params: { radius: number; showUsernames: boolean },
   ): Promise<ConfigurationNamespaceEntity | null> {
     const namespace =
       await this.configurationNamespaceService.findOneByCondition({
@@ -109,23 +102,16 @@ export class UserConfigurationService {
       globalMapConfiguration?.rangeMax >= params.radius
     ) {
       const radiusId = namespace.params.find((p) => p.name === 'radius')?.id;
-      const clustersId = namespace.params.find(
-        (p) => p.name === 'clusters',
-      )?.id;
       const showUsernamesId = namespace.params.find(
         (p) => p.name === 'showUsernames',
       )?.id;
 
-      if (!radiusId || !clustersId || !showUsernamesId)
+      if (!radiusId || !showUsernamesId)
         throw new Error('Personal map configuration parameters not found');
       await this.configurationParamService.updateBatchParams([
         {
           id: radiusId,
           value: params.radius.toString(),
-        },
-        {
-          id: clustersId,
-          value: params.clusters ? 'true' : 'false',
         },
         {
           id: showUsernamesId,
