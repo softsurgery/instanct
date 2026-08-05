@@ -69,7 +69,7 @@ export function ImageUploaderManager({
 
   const handleImageDragStart = (
     e: React.DragEvent<HTMLDivElement>,
-    index: number
+    index: number,
   ) => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = "move";
@@ -77,7 +77,7 @@ export function ImageUploaderManager({
 
   const handleImageDragOver = (
     e: React.DragEvent<HTMLDivElement>,
-    index: number
+    index: number,
   ) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
@@ -90,7 +90,7 @@ export function ImageUploaderManager({
 
   const handleImageDrop = (
     e: React.DragEvent<HTMLDivElement>,
-    dropIndex: number
+    dropIndex: number,
   ) => {
     e.preventDefault();
 
@@ -171,13 +171,13 @@ export function ImageUploaderManager({
                   draggedIndex !== index &&
                   "border-primary scale-105 shadow-2xl ring-4 ring-primary/20",
                 dragOverIndex !== index &&
-                  "border-border hover:border-primary/50"
+                  "border-border hover:border-primary/50",
               )}
             >
               <div
                 className={cn(
                   "aspect-square relative overflow-hidden",
-                  imageObj.progress != 100 && "opacity-50"
+                  imageObj.progress != 100 && "opacity-50",
                 )}
               >
                 <Image
@@ -185,7 +185,7 @@ export function ImageUploaderManager({
                   alt={imageObj.name}
                   className={cn(
                     "w-full h-full object-cover transition-transform duration-300 group-hover:scale-110",
-                    className
+                    className,
                   )}
                   fill
                 />
@@ -211,7 +211,7 @@ export function ImageUploaderManager({
                 </Button>
 
                 {/* Image Name */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="bg-gradient-to-t from-black/80 to-transparent text-white p-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
                   <p className="text-sm font-medium truncate">
                     {imageObj.name}
                   </p>
