@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { OAuthProvider } from '../../enums/oauth.enum';
 
 export class RequestClientOAuthDto {
@@ -25,6 +25,7 @@ export class RequestClientOAuthDto {
       'The redirect URI used in the frontend (required for some providers like Google authorization code exchange)',
     required: false,
   })
+  @IsOptional()
   @IsString()
   redirectUri?: string;
 
@@ -33,6 +34,7 @@ export class RequestClientOAuthDto {
       'The code verifier used in the frontend (required for some providers like Google authorization code exchange)',
     required: false,
   })
+  @IsOptional()
   @IsString()
   codeVerifier?: string;
 }
