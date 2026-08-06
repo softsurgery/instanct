@@ -99,6 +99,14 @@ export class NotificationService {
     return this.notificationRepository.softDelete(id);
   }
 
+  async softDeleteByUserId(userId: string): Promise<void> {
+    await this.notificationRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where('userId = :userId', { userId })
+      .execute();
+  }
+
   async delete(id: number): Promise<NotificationEntity | null> {
     const notification = await this.notificationRepository.findOneById(id);
     if (!notification) {

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionEntity } from './entities/session.entity';
 import { SessionRepository } from './repositories/session.repository';
@@ -9,6 +9,9 @@ import { UserManagementModule } from 'src/modules/users/user-management.module';
   controllers: [],
   providers: [SessionRepository, SessionService],
   exports: [SessionRepository, SessionService],
-  imports: [TypeOrmModule.forFeature([SessionEntity]), UserManagementModule],
+  imports: [
+    TypeOrmModule.forFeature([SessionEntity]),
+    forwardRef(() => UserManagementModule),
+  ],
 })
 export class SessionModule {}

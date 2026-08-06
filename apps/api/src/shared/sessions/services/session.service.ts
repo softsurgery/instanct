@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { SessionEntity } from '../entities/session.entity';
 import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
 import { SessionRepository } from '../repositories/session.repository';
@@ -20,6 +20,7 @@ import { getNowInTimezone, mergeTodayWithTime } from 'src/utils/date';
 export class SessionService extends AbstractCrudService<SessionEntity> {
   constructor(
     private readonly sessionRepository: SessionRepository,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
   ) {
     super(sessionRepository);
@@ -164,5 +165,13 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     const session = await this.sessionRepository.findOneById(id);
     if (!session) throw new Error('Session not found');
     return this.sessionRepository.update(id, { ended: new Date() });
+  }
+
+  async softDeleteByUserId(userId: string): Promise<void> {
+    await this.sessionRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where('userId = :userId', { userId })
+      .execute();
   }
 }

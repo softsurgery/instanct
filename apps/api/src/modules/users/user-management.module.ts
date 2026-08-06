@@ -1,5 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { FollowService } from 'src/modules/users/services/follow.service';
+import { NotificationModule } from 'src/shared/notifications/notifications.module';
+import { LoggerModule } from 'src/shared/logger/logger.module';
+import { SessionModule } from 'src/shared/sessions/sessions.module';
 import { PermissionService } from 'src/shared/abstract-user-management/services/permission.service';
 import { RolePermissionService } from 'src/shared/abstract-user-management/services/role-permission.service';
 import { RoleService } from 'src/shared/abstract-user-management/services/role.service';
@@ -123,6 +126,9 @@ import { CustomAuthService } from './services/custom-auth.service';
     StorageModule,
     ReferenceTypesModule,
     ConfigurationsModule,
+    NotificationModule,
+    LoggerModule,
+    forwardRef(() => SessionModule),
   ],
 })
 export class UserManagementModule {}

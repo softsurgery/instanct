@@ -1,5 +1,5 @@
 import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { DeepPartial, In } from 'typeorm';
 import { UserRepository } from '../repositories/user.repository';
 import { UserUploadService } from './user-upload.service';
@@ -14,6 +14,10 @@ import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-
 import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
 import { StorageService } from 'src/shared/storage/services/storage.service';
 import { UserConfigurationService } from './user-configuration.service';
+import { NotificationService } from 'src/shared/notifications/services/notification.service';
+import { LoggerService } from 'src/shared/logger/services/logger.service';
+import { SessionService } from 'src/shared/sessions/services/session.service';
+import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -23,6 +27,11 @@ export class UserService extends AbstractUserService {
     private readonly userConfigurationService: UserConfigurationService,
     private readonly storageService: StorageService,
     private readonly refParamRepository: RefParamRepository,
+    private readonly notificationService: NotificationService,
+    private readonly loggerService: LoggerService,
+    @Inject(forwardRef(() => SessionService))
+    private readonly sessionService: SessionService,
+    private readonly configurationNamespaceService: ConfigurationNamespaceService,
   ) {
     super(userRepository);
   }
@@ -186,5 +195,20 @@ export class UserService extends AbstractUserService {
     return this.userRepository.update(id, {
       password: await hashPassword(password),
     });
+  }
+
+  @Transactional()
+  override async softDelete(id: string) {
+    const user = await this.userRepository.findOneById(id);
+    if (!user) throw new UserNotFoundException();
+
+    // Soft-delete related entities using their respective services
+    await this.notificationService.softDeleteByUserId(id);
+    await this.loggerService.softDeleteByUserId(id);
+    await this.sessionService.softDeleteByUserId(id);
+    await this.configurationNamespaceService.deleteByUserId(id);
+
+    // Finally, soft-delete the user itself
+    return await this.userRepository.softDelete(id);
   }
 }

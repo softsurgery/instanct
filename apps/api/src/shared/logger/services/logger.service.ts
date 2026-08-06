@@ -59,6 +59,14 @@ export class LoggerService {
     return this.loggerRepository.softDelete(id);
   }
 
+  async softDeleteByUserId(userId: string): Promise<void> {
+    await this.loggerRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where('userId = :userId', { userId })
+      .execute();
+  }
+
   async deleteAll() {
     return this.loggerRepository.deleteAll();
   }
