@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
@@ -33,6 +33,8 @@ import { DeepPartial } from 'typeorm';
 
 @Injectable()
 export class ClientAuthService {
+  private readonly logger = new Logger(ClientAuthService.name);
+
   constructor(
     protected readonly userRepository: UserRepository,
     protected readonly userService: UserService,
@@ -66,10 +68,16 @@ export class ClientAuthService {
   ): Promise<ResponseClientSigninDto> {
     const user = await this.userRepository.findOne({
       where: [{ email: email }],
+      withDeleted: true,
     });
 
     if (!user) {
       throw new UnauthorizedException('User does not exist');
+    }
+
+    if (user.deletedAt) {
+      await this.userRepository.restore(user.id);
+      user.deletedAt = undefined;
     }
 
     if (!user.password) {
@@ -137,6 +145,56 @@ export class ClientAuthService {
     }
   }
 
+  private async downloadProfilePicture(
+    pictureUrl: string,
+  ): Promise<number | null> {
+    try {
+      const response = await fetch(pictureUrl);
+      if (!response.ok) {
+        this.logger.warn(
+          `Failed to download profile picture: HTTP ${response.status}`,
+        );
+        return null;
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      if (buffer.length === 0) {
+        this.logger.warn('Profile picture download returned empty buffer');
+        return null;
+      }
+
+      const contentType = response.headers.get('content-type') || 'image/jpeg';
+      const extension = contentType.split('/')[1]?.split(';')[0] || 'jpg';
+
+      const multerFile: Express.Multer.File = {
+        buffer,
+        originalname: `ipp-${Date.now()}.${extension}`,
+        mimetype: contentType,
+        size: buffer.length,
+        fieldname: 'file',
+        encoding: '7bit',
+        stream: null as unknown as Express.Multer.File['stream'],
+        destination: '',
+        filename: '',
+        path: '',
+      };
+
+      // Store as non-temporary and non-private (profile pictures are public)
+      const storageEntity = await this.storageService.store(
+        multerFile,
+        false,
+        false,
+      );
+
+      return storageEntity.id;
+    } catch (error) {
+      this.logger.warn(`Failed to import profile picture: ${error}`);
+      return null;
+    }
+  }
+
   async handleOAuth(
     provider: OAuthProvider,
     idToken: string,
@@ -148,6 +206,7 @@ export class ClientAuthService {
     refresh_token: string;
   }> {
     let newUser: DeepPartial<UserEntity> = {};
+    let pictureUrl: string | undefined;
 
     if (provider === OAuthProvider.GOOGLE) {
       const data = await this.authProvidersService?.googleOAuth(
@@ -159,6 +218,7 @@ export class ClientAuthService {
       newUser.firstName = data?.given_name;
       newUser.lastName = data?.family_name;
       newUser.username = data?.email?.split('@')[0];
+      pictureUrl = data?.picture;
     } else if (provider == OAuthProvider.GITHUB) {
       const data = await this.authProvidersService?.githubOAuth(idToken);
       newUser.email = data?.email as string;
@@ -170,6 +230,7 @@ export class ClientAuthService {
       );
       newUser.email = data?.email as string;
       newUser.username = data?.username;
+      pictureUrl = data?.picture;
     } else if (provider == OAuthProvider.APPLE) {
       const decoded: { email?: string; sub?: string } | null =
         this.jwtService.decode(idToken);
@@ -185,12 +246,26 @@ export class ClientAuthService {
       );
     }
 
-    const userByEmail = await this.userService.findOneByEmail(newUser.email);
+    const userByEmail = await this.userService.findOneByEmail(
+      newUser.email,
+      true,
+    );
     const userByUsername = await this.userService.findOneByUsername(
       newUser.username,
+      true,
     );
 
     if (!userByEmail && !userByUsername) {
+      // Download profile picture for new users only
+      let pictureId: number | undefined;
+      if (pictureUrl) {
+        const downloadedPictureId =
+          await this.downloadProfilePicture(pictureUrl);
+        if (downloadedPictureId) {
+          pictureId = downloadedPictureId;
+        }
+      }
+
       newUser = await this.userService.extendedSave({
         email: newUser.email,
         username: newUser.username.toLowerCase().replace(/\s/g, '_'),
@@ -199,10 +274,19 @@ export class ClientAuthService {
         roleId: BasicRoles.User,
         isActive: true,
         source: provider,
+        pictureId,
       });
     } else if (userByEmail) {
+      if (userByEmail.deletedAt) {
+        await this.userService.restore(userByEmail.id);
+        userByEmail.deletedAt = undefined;
+      }
       newUser = userByEmail as UserEntity;
     } else {
+      if (userByUsername?.deletedAt) {
+        await this.userService.restore(userByUsername.id);
+        userByUsername.deletedAt = undefined;
+      }
       newUser = userByUsername as UserEntity;
     }
 

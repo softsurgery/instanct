@@ -123,6 +123,7 @@ export class AuthProvidersService {
       email?: string;
       name?: string;
       given_name?: string;
+      picture?: string;
     } = await fetch('https://api.linkedin.com/v2/userinfo', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -135,6 +136,7 @@ export class AuthProvidersService {
         userInfoResponse.name ||
         userInfoResponse.given_name ||
         userInfoResponse.email?.split('@')[0],
+      picture: userInfoResponse.picture,
     };
   }
 }
