@@ -4,7 +4,7 @@ import { IsDateString, IsOptional, IsString, Length } from 'class-validator';
 export class CreateEducationDto {
   @ApiProperty({ type: String })
   @IsString()
-  @Length(2, 50)
+  @Length(2, 255)
   title?: string;
 
   @ApiProperty({ type: Date })
