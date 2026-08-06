@@ -36,6 +36,7 @@ export abstract class AbstractUserEntity extends EntityHelper {
   isApproved: boolean;
 
   @Column({
+    type: "enum",
     enum: OAuthProvider,
     default: OAuthProvider.EMAIL,
   })
