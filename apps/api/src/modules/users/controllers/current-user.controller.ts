@@ -2,6 +2,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
   Put,
   Query,
@@ -130,6 +131,19 @@ export class CurrentUserController {
       req?.user?.sub,
       updateUserCoverDto.coverId,
     );
+    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    return toDto(ResponseUserDto, user);
+  }
+
+  @Delete('/')
+  @LogEvent(EventType.USER_DELETE)
+  async deleteCurrent(
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDto | null> {
+    if (!req?.user?.sub) {
+      return null;
+    }
+    const user = await this.userService.softDelete(req.user.sub);
     req.logInfo = { id: user?.id, firstName: user?.firstName };
     return toDto(ResponseUserDto, user);
   }

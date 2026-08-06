@@ -119,16 +119,23 @@ export abstract class AbstractUserService {
 
   async findOneByEmail(
     email: string,
+    withDeleted: boolean = false,
   ): Promise<AbstractUserEntity | null | undefined> {
     return this.abstractUserRepository.findOne({
       where: { email },
+      withDeleted,
     });
   }
 
-  async findOneByUsername(username) {
+  async findOneByUsername(username: string, withDeleted: boolean = false) {
     return this.abstractUserRepository.findOne({
       where: { username },
+      withDeleted,
     });
+  }
+
+  async restore(id: string): Promise<void> {
+    await this.abstractUserRepository.restore(id);
   }
 
   async activate(id: string): Promise<AbstractUserEntity | null | undefined> {

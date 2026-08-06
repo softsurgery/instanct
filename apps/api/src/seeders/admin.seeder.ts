@@ -16,9 +16,7 @@ export class AdminSeedCommand {
     console.log('🚀 Starting seeding of admin...');
     //=============================================================================================
 
-    const adminUser = await this.userService.findOneByUsername({
-      where: { username: 'superadmin' },
-    });
+    const adminUser = await this.userService.findOneByUsername('superadmin');
 
     if (!adminUser) {
       await this.userService.extendedSave({
