@@ -25,11 +25,21 @@ import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-tok
 import { AbstractUserEntity } from 'src/shared/abstract-user-management/entities/abstract-user.entity';
 import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 
+import { Notify } from 'src/shared/notifications/decorators/notify.decorator';
+import { NotificationType } from 'src/app/enums/notification-type.enum';
+import { NotificationInterceptor } from 'src/shared/notifications/decorators/notification.interceptor';
+import { getSigninMetadata } from '../utils/signin-metadata';
+import { UserDeviceService } from '../services/user-device.service';
+
 @ApiTags('auth')
 @Controller({ version: '1', path: '/auth' })
 @UseInterceptors(LogInterceptor)
+@UseInterceptors(NotificationInterceptor)
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userDeviceService: UserDeviceService,
+  ) {}
 
   @Public()
   @Post('sign-in')
@@ -45,6 +55,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Invalid credentials.' })
   @LogEvent(EventType.SIGNIN)
+  @Notify(NotificationType.NEW_SIGNIN)
   async signIn(
     @Body() signInDto: RequestSignInDto,
     @Request() req: AdvancedRequest,
@@ -53,10 +64,39 @@ export class AuthController {
       signInDto.usernameOrEmail,
       signInDto.password,
     );
+    const meta = getSigninMetadata(req, signInDto);
+    let deviceId: string | undefined;
+    if (result.user?.id) {
+      const userDevice = await this.userDeviceService.registerOrUpdateDevice(
+        result.user.id,
+        meta,
+      );
+      deviceId = userDevice.id;
+    }
     req.logInfo = {
       userId: result.user?.id,
       fullname: identifyUser(result?.user as AbstractUserEntity),
+      device: meta.device,
+      ip: meta.ip,
+      deviceId,
+      fingerprint: meta.fingerprint,
     };
+    if (result.user?.id) {
+      req.notificationInfo = {
+        userId: result.user.id,
+        clientName: identifyUser(result.user as AbstractUserEntity),
+        device: meta.device,
+        os: meta.os,
+        ip: meta.ip,
+        latitude: meta.latitude,
+        longitude: meta.longitude,
+        location: meta.location,
+        time: meta.time,
+        when: meta.when,
+        deviceId,
+        fingerprint: meta.fingerprint,
+      };
+    }
     return result;
   }
 
@@ -76,12 +116,45 @@ export class AuthController {
     status: 400,
     description: 'Missing or invalid OAuth data.',
   })
-  async oauth(@Body() oauthDto: OAuthRequestDto): Promise<ResponseSigninDto> {
+  @LogEvent(EventType.SIGNIN)
+  @Notify(NotificationType.NEW_SIGNIN)
+  async oauth(
+    @Body() oauthDto: OAuthRequestDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseSigninDto> {
     const { provider, idToken } = oauthDto;
     if (!provider || !idToken) {
       throw new BadRequestException('Missing provider or idToken');
     }
-    return this.authService.handleOAuth(provider, idToken);
+    const result = await this.authService.handleOAuth(provider, idToken);
+    if (result?.user?.id) {
+      const meta = getSigninMetadata(req);
+      const userDevice = await this.userDeviceService.registerOrUpdateDevice(
+        result.user.id,
+        meta,
+      );
+      req.logInfo = {
+        userId: result.user.id,
+        fullname: identifyUser(result.user as AbstractUserEntity),
+        device: meta.device,
+        ip: meta.ip,
+        deviceId: userDevice.id,
+        fingerprint: meta.fingerprint,
+      };
+      req.notificationInfo = {
+        userId: result.user.id,
+        clientName: identifyUser(result.user as AbstractUserEntity),
+        device: meta.device,
+        os: meta.os,
+        ip: meta.ip,
+        location: meta.location,
+        time: meta.time,
+        when: meta.when,
+        deviceId: userDevice.id,
+        fingerprint: meta.fingerprint,
+      };
+    }
+    return result;
   }
 
   @Public()

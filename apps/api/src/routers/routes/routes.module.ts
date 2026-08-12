@@ -34,6 +34,7 @@ import { RequestsModule } from 'src/modules/requests/requests.module';
 import { UserBookmarkController } from 'src/modules/users/controllers/user-bookmark.controller';
 import { UserBlockController } from 'src/modules/users/controllers/user-block.controller';
 import { ClientCustomAuthController } from 'src/modules/users/controllers/custom-auth.controller';
+import { UserDeviceController } from 'src/shared/auth/controllers/user-device.controller';
 
 @Module({
   controllers: [
@@ -41,6 +42,7 @@ import { ClientCustomAuthController } from 'src/modules/users/controllers/custom
     AuthController,
     ClientAuthController,
     ClientCustomAuthController,
+    UserDeviceController,
     //common
     StorageController,
     ConfigurationController,

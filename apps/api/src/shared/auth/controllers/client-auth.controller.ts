@@ -34,6 +34,9 @@ import { Response } from 'express';
 import { RequestClientOAuthDto } from '../dtos/client/request-client-oauth.dto';
 import { ConfigService } from '@nestjs/config';
 
+import { getSigninMetadata } from '../utils/signin-metadata';
+import { UserDeviceService } from '../services/user-device.service';
+
 @ApiTags('client-auth')
 @Controller({ version: '1', path: '/client-auth' })
 @UseInterceptors(LogInterceptor)
@@ -42,6 +45,7 @@ export class ClientAuthController {
   constructor(
     private clientAuthService: ClientAuthService,
     private configService: ConfigService,
+    private userDeviceService: UserDeviceService,
   ) {}
 
   @Public()
@@ -67,13 +71,32 @@ export class ClientAuthController {
       signInDto.email,
       signInDto.password,
     );
+    const meta = getSigninMetadata(req, signInDto);
+    const userDevice = await this.userDeviceService.registerOrUpdateDevice(
+      result.user.id,
+      meta,
+    );
     req.logInfo = {
       userId: result.user.id,
       clientName: identifyUser(result.user as AbstractUserEntity),
+      device: meta.device,
+      ip: meta.ip,
+      deviceId: userDevice.id,
+      fingerprint: meta.fingerprint,
     };
     req.notificationInfo = {
       userId: result.user.id,
       clientName: identifyUser(result.user as AbstractUserEntity),
+      device: meta.device,
+      os: meta.os,
+      ip: meta.ip,
+      latitude: meta.latitude,
+      longitude: meta.longitude,
+      location: meta.location,
+      time: meta.time,
+      when: meta.when,
+      deviceId: userDevice.id,
+      fingerprint: meta.fingerprint,
     };
     return result;
   }
@@ -108,13 +131,30 @@ export class ClientAuthController {
       oauthDto.codeVerifier,
     );
     if (result.user) {
+      const meta = getSigninMetadata(req);
+      const userDevice = await this.userDeviceService.registerOrUpdateDevice(
+        result.user.id,
+        meta,
+      );
       req.logInfo = {
         userId: result.user.id,
         clientName: identifyUser(result.user as AbstractUserEntity),
+        device: meta.device,
+        ip: meta.ip,
+        deviceId: userDevice.id,
+        fingerprint: meta.fingerprint,
       };
       req.notificationInfo = {
         userId: result.user.id,
         clientName: identifyUser(result.user as AbstractUserEntity),
+        device: meta.device,
+        os: meta.os,
+        ip: meta.ip,
+        location: meta.location,
+        time: meta.time,
+        when: meta.when,
+        deviceId: userDevice.id,
+        fingerprint: meta.fingerprint,
       };
     }
     return result as ResponseClientSigninDto;
