@@ -64,7 +64,7 @@ export class AuthController {
       signInDto.usernameOrEmail,
       signInDto.password,
     );
-    const meta = getSigninMetadata(req, signInDto);
+    const meta = await getSigninMetadata(req, signInDto);
     let deviceId: string | undefined;
     if (result.user?.id) {
       const userDevice = await this.userDeviceService.registerOrUpdateDevice(
@@ -128,7 +128,7 @@ export class AuthController {
     }
     const result = await this.authService.handleOAuth(provider, idToken);
     if (result?.user?.id) {
-      const meta = getSigninMetadata(req);
+      const meta = await getSigninMetadata(req, oauthDto);
       const userDevice = await this.userDeviceService.registerOrUpdateDevice(
         result.user.id,
         meta,

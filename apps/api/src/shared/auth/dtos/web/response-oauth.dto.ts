@@ -14,4 +14,11 @@ export class OAuthRequestDto {
     example: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
   idToken: string;
+
+  device?: string;
+  os?: string;
+  latitude?: number;
+  longitude?: number;
+  location?: string;
+  fingerprint?: string;
 }

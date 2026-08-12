@@ -71,7 +71,7 @@ export class ClientAuthController {
       signInDto.email,
       signInDto.password,
     );
-    const meta = getSigninMetadata(req, signInDto);
+    const meta = await getSigninMetadata(req, signInDto);
     const userDevice = await this.userDeviceService.registerOrUpdateDevice(
       result.user.id,
       meta,
@@ -131,7 +131,7 @@ export class ClientAuthController {
       oauthDto.codeVerifier,
     );
     if (result.user) {
-      const meta = getSigninMetadata(req);
+      const meta = await getSigninMetadata(req, oauthDto);
       const userDevice = await this.userDeviceService.registerOrUpdateDevice(
         result.user.id,
         meta,

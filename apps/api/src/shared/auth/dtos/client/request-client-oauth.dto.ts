@@ -37,4 +37,26 @@ export class RequestClientOAuthDto {
   @IsOptional()
   @IsString()
   codeVerifier?: string;
+
+  @IsOptional()
+  @IsString()
+  device?: string;
+
+  @IsOptional()
+  @IsString()
+  os?: string;
+
+  @IsOptional()
+  latitude?: number;
+
+  @IsOptional()
+  longitude?: number;
+
+  @IsOptional()
+  @IsString()
+  location?: string;
+
+  @IsOptional()
+  @IsString()
+  fingerprint?: string;
 }
