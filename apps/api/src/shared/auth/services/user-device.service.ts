@@ -91,6 +91,20 @@ export class UserDeviceService {
   }
 
   @Transactional()
+  async untrustDevice(id: string, userId: string): Promise<UserDeviceEntity> {
+    const device = await this.userDeviceRepository.findOne({
+      where: { id, userId },
+    });
+
+    if (!device) {
+      throw new NotFoundException('Device record not found');
+    }
+
+    device.isTrusted = false;
+    return this.userDeviceRepository.save(device);
+  }
+
+  @Transactional()
   async revokeDevice(id: string, userId: string): Promise<void> {
     const device = await this.userDeviceRepository.findOne({
       where: { id, userId },

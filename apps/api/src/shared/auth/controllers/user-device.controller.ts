@@ -50,6 +50,23 @@ export class UserDeviceController {
     return this.userDeviceService.trustDevice(id, req.user!.sub);
   }
 
+  @Post(':id/untrust')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Untrust a device',
+    description: 'Mark a registered device as untrusted (not allowed).',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Device successfully marked as untrusted.',
+  })
+  async untrustDevice(
+    @Param('id') id: string,
+    @Request() req: AdvancedRequest,
+  ): Promise<UserDeviceEntity> {
+    return this.userDeviceService.untrustDevice(id, req.user!.sub);
+  }
+
   @Delete(':id')
   @HttpCode(200)
   @ApiOperation({
