@@ -107,6 +107,10 @@ export abstract class AbstractUserService {
     return await this.abstractUserRepository?.softDelete(id);
   }
 
+  async restore(id: string): Promise<void> {
+    await this.abstractUserRepository.restore(id);
+  }
+
   //Extended Methods ===========================================================================
 
   async findOneByUsernameOrEmail(
@@ -119,23 +123,34 @@ export abstract class AbstractUserService {
 
   async findOneByEmail(
     email: string,
-    withDeleted: boolean = false,
+    withDeleted = false,
+    query?: Pick<IQueryObject, 'join'>,
   ): Promise<AbstractUserEntity | null | undefined> {
+    const queryBuilder = new QueryBuilder(
+      this.abstractUserRepository.getMetadata(),
+    );
+    const queryOptions = query ? queryBuilder.build(query) : {};
     return this.abstractUserRepository.findOne({
       where: { email },
+      relations: queryOptions.relations,
       withDeleted,
     });
   }
 
-  async findOneByUsername(username: string, withDeleted: boolean = false) {
+  async findOneByUsername(
+    username: string,
+    withDeleted: boolean = false,
+    query?: Pick<IQueryObject, 'join'>,
+  ): Promise<AbstractUserEntity | null | undefined> {
+    const queryBuilder = new QueryBuilder(
+      this.abstractUserRepository.getMetadata(),
+    );
+    const queryOptions = query ? queryBuilder.build(query) : {};
     return this.abstractUserRepository.findOne({
       where: { username },
+      relations: queryOptions.relations,
       withDeleted,
     });
-  }
-
-  async restore(id: string): Promise<void> {
-    await this.abstractUserRepository.restore(id);
   }
 
   async activate(id: string): Promise<AbstractUserEntity | null | undefined> {
