@@ -27,7 +27,7 @@ export class CreateExperienceDto {
 
   @ApiProperty({ type: String })
   @IsString()
-  @Length(2, 50)
+  @Length(2, 255)
   company?: string;
 
   @ApiProperty({ type: String })

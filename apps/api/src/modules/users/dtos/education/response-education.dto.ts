@@ -4,9 +4,9 @@ import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dt
 import { ResponseUserDto } from '../user/response-user.dto';
 
 export class ResponseEducationDto extends ResponseDtoHelper {
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: Number })
   @Expose()
-  id: string;
+  id: number;
 
   @ApiProperty({ type: String })
   @Expose()
