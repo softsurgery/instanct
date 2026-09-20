@@ -6,7 +6,7 @@ import { ScrollViewContext } from "@/contexts/ScrollViewContext";
 import { cn } from "@/lib/utils";
 import { Calendar, ChevronDown } from "lucide-react-native";
 import React from "react";
-import { Keyboard, Platform, UIManager, View } from "react-native";
+import { Keyboard, Platform, Pressable, UIManager, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -17,7 +17,6 @@ import Animated, {
   LinearTransition,
 } from "react-native-reanimated";
 import { StableScrollable } from "../../StableScrollable";
-import { StablePressable } from "../../StablePressable";
 import { Separator } from "@/components/ui/separator";
 import { triggerHaptic } from "@/lib/haptics";
 
@@ -228,7 +227,7 @@ export const DatePicker = ({
           </View>
           <Separator className="my-2" />
           <View className="flex-row justify-between">
-            <StablePressable
+            <Pressable
               className="p-2 rounded-lg"
               onPress={() => {
                 triggerHaptic();
@@ -237,8 +236,8 @@ export const DatePicker = ({
               }}
             >
               <Text className="font-bold">Remove Date</Text>
-            </StablePressable>
-            <StablePressable
+            </Pressable>
+            <Pressable
               className="p-2 rounded-lg"
               onPress={() => {
                 triggerHaptic();
@@ -246,7 +245,7 @@ export const DatePicker = ({
               }}
             >
               <Text className="text-primary font-bold">Done</Text>
-            </StablePressable>
+            </Pressable>
           </View>
         </Animated.View>
       )}

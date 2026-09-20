@@ -20,7 +20,7 @@ export const StableSafeAreaView: React.FC<StableSafeAreaViewProps> = ({
 
   const paddingTop =
     Platform.OS === "android"
-      ? (StatusBar.currentHeight ?? 0) + insets.top
+      ? (StatusBar.currentHeight ?? 0) + insets.top * 0.2
       : insets.top;
 
   return (

@@ -57,13 +57,11 @@ export default function MapPinField({
   // Sync external prop changes
   React.useEffect(() => {
     if (latitude != null && longitude != null) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPin({ latitude, longitude });
     }
   }, [latitude, longitude]);
 
   React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (locationName != null) setName(locationName);
   }, [locationName]);
 
@@ -181,9 +179,7 @@ export default function MapPinField({
         <View className="flex flex-row items-center justify-between w-full">
           <View className="flex flex-row items-center gap-2">
             <Icon as={Pin} size={16} color={"gray"} />
-            <Text className="text-sm">
-              {name || placeholder}
-            </Text>
+            <Text className="text-sm">{name || placeholder}</Text>
           </View>
           <Icon as={ChevronDown} size={16} color={"gray"} />
         </View>
