@@ -1,0 +1,55 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseConversationDto } from '../conversation/response-conversation.dto';
+import { Expose, Type } from 'class-transformer';
+import { MessageVariant } from '../../enums/message-variant.enum';
+import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
+import { StaticMessageEnum } from '@/app/enums/static-message.enum';
+import { ResponseMessageUploadDto } from '../message-upload/response-message-upload.dto';
+import { ResponseMessageLinkDto } from '../message-link/response-message-link.dto';
+
+export class ResponseMessageDto extends ResponseDtoHelper {
+  @ApiProperty({ type: Number })
+  @Expose()
+  id: number;
+
+  @ApiProperty({ type: String })
+  @Expose()
+  content: string;
+
+  @ApiProperty({ type: Number })
+  @Expose()
+  conversationId: number;
+
+  @ApiProperty({ type: ResponseConversationDto })
+  @Expose()
+  @Type(() => ResponseConversationDto)
+  conversation: ResponseConversationDto;
+
+  @ApiProperty({ type: String })
+  @Expose()
+  userId: string;
+
+  @ApiProperty({ type: ResponseUserDto })
+  @Expose()
+  @Type(() => ResponseUserDto)
+  user: ResponseUserDto;
+
+  @ApiProperty({ type: String, enum: MessageVariant })
+  @Expose()
+  variant: MessageVariant;
+
+  @ApiProperty({ type: String, enum: StaticMessageEnum })
+  @Expose()
+  static?: StaticMessageEnum;
+
+  @ApiProperty({ type: [ResponseMessageUploadDto] })
+  @Expose()
+  @Type(() => ResponseMessageUploadDto)
+  uploads?: ResponseMessageUploadDto[];
+
+  @ApiProperty({ type: [ResponseMessageLinkDto] })
+  @Expose()
+  @Type(() => ResponseMessageLinkDto)
+  links?: ResponseMessageLinkDto[];
+}
