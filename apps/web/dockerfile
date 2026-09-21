@@ -1,26 +1,38 @@
+# Build from the repository root:
+#   docker build -f apps/web/dockerfile -t instanct-backoffice .
+
 FROM node:22-alpine AS builder
 
-WORKDIR /app
+WORKDIR /repo
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
 
-COPY . .
-COPY .env.build .env.build
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/web/package.json ./apps/web/package.json
+COPY apps/mobile/package.json ./apps/mobile/package.json
+COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+COPY packages/ui/package.json ./packages/ui/package.json
 
-# ✅ Build Next.js app using public env vars
-RUN export $(grep ^NEXT_PUBLIC_ .env.build | xargs) && yarn build
+RUN pnpm install --frozen-lockfile --filter instanct-ui... --ignore-scripts
+
+COPY apps/web ./apps/web
+COPY packages ./packages
+
+# Build Next.js app using public env vars
+RUN export $(grep ^NEXT_PUBLIC_ apps/web/.env.build | xargs) && pnpm --filter instanct-ui build
 
 # ---- Production image ----
 FROM gcr.io/distroless/nodejs20-debian12 AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/next.config.ts ./next.config.ts
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /repo/apps/web/.next ./.next
+COPY --from=builder /repo/apps/web/public ./public
+COPY --from=builder /repo/apps/web/package.json ./package.json
+COPY --from=builder /repo/apps/web/next.config.ts ./next.config.ts
+COPY --from=builder /repo/node_modules ./node_modules
 
 EXPOSE 3000
 

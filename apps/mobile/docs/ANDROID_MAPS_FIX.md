@@ -144,9 +144,7 @@ return (
 Add `react-native-view-shot` to your project:
 
 ```bash
-npm install react-native-view-shot
-# or
-yarn add react-native-view-shot
+pnpm add react-native-view-shot
 ```
 
 This library provides the PNG capture functionality across both platforms.

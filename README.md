@@ -15,14 +15,18 @@ Monorepo for the Instanct web app, mobile app, and API.
 
 ## Package manager
 
-The workspace root uses **pnpm** workspaces (`apps/*`, `packages/*`) with Turbo.
+The workspace uses **pnpm** (`apps/*`, `packages/*`) with Turbo. Install from the repository root:
 
-Each imported application still declares Yarn Classic (`yarn@1.22.22`) and keeps its own `yarn.lock`. That is intentional: unifying Next.js, Expo, and NestJS into a single Yarn 1 hoist graph would require `nohoist` / resolution changes. Apps can still be installed independently with Yarn from their own directories.
+```sh
+pnpm install --ignore-scripts   # ignore-scripts avoids apps/api postinstall DB seeding
+```
+
+Do not use npm or Yarn. The root `packageManager` field pins `pnpm@11.25.0`.
 
 ## Scripts
 
 ```sh
-pnpm install --ignore-scripts   # ignore-scripts avoids apps/api postinstall DB seeding
+pnpm dev          # web, mobile, and API
 pnpm dev:web
 pnpm dev:mobile
 pnpm dev:api

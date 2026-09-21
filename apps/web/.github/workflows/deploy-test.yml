@@ -21,7 +21,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Create .env.build file from .env
-        run: grep '^NEXT_PUBLIC_' .env > .env.build
+        run: grep '^NEXT_PUBLIC_' .env > apps/web/.env.build
 
       - name: Export NEXT_PUBLIC_* variables as build args
         id: export-public-envs
@@ -31,7 +31,7 @@ jobs:
           echo "BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_ENV
 
       - name: Build Docker image with dynamic NEXT_PUBLIC_* args
-        run: docker build ${{ env.BUILD_ARGS }} -t instanct-backoffice .
+        run: docker build ${{ env.BUILD_ARGS }} -f apps/web/dockerfile -t instanct-backoffice .
 
       - name: Save Docker image to archive
         run: docker save instanct-backoffice -o image.tar

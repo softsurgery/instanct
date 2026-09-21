@@ -21,7 +21,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        run: docker build -t instanct-api .
+        run: docker build -f apps/api/dockerfile -t instanct-api .
 
       - name: Save Docker image to archive
         run: docker save instanct-api -o image.tar

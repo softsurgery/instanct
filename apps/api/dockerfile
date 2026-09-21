@@ -1,29 +1,36 @@
+# Build from the repository root:
+#   docker build -f apps/api/dockerfile -t instanct-api .
+
 # --- Build Stage ---
 FROM node:22-alpine AS builder
 
-WORKDIR /app
+WORKDIR /repo
 
-# Install dependencies
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false --ignore-scripts
+RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
 
-# Copy source files and build
-COPY . .
-RUN yarn build
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/web/package.json ./apps/web/package.json
+COPY apps/mobile/package.json ./apps/mobile/package.json
+COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+COPY packages/ui/package.json ./packages/ui/package.json
 
-# Remove devDependencies (keeping only production deps)
-RUN yarn install --frozen-lockfile --production --ignore-scripts && \
-    rm -rf /app/.yarn /app/.yarn-cache /app/cache /app/test /app/docs
+RUN pnpm install --frozen-lockfile --filter instanct-api... --ignore-scripts && \
+    pnpm rebuild bcrypt
+
+COPY apps/api ./apps/api
+COPY packages ./packages
+
+RUN pnpm --filter instanct-api build
 
 # --- Runtime Stage: Using Google Distroless (very small) ---
 FROM gcr.io/distroless/nodejs20-debian12
 
 WORKDIR /app
 
-# Copy only what’s needed
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
+COPY --from=builder /repo/apps/api/dist ./dist
+COPY --from=builder /repo/node_modules ./node_modules
+COPY --from=builder /repo/apps/api/package.json ./
 
-# Application runs without a shell
 CMD ["dist/main.js"]
