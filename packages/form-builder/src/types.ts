@@ -1,23 +1,40 @@
 import { CheckedState } from "@radix-ui/react-checkbox";
 
 export interface FormStructure {
-  title?: string;
-  description?: string;
+  title?: {
+    value: string;
+    className?: string;
+  };
+  description?: {
+    value: string;
+    className?: string;
+  };
   orientation?: "vertical" | "horizontal";
   includeHeader?: boolean;
   fieldsets: Fieldset[];
+  toggleableFieldsets?: boolean;
+  gap?: number;
 }
 
 export interface Fieldset {
-  title?: string;
-  description?: string;
+  title?: {
+    value: string;
+    className?: string;
+  };
+  description?: {
+    value: string;
+    className?: string;
+  };
+  component?: React.ReactNode;
   includeHeader?: boolean;
   rows: FieldsetRow[];
+  gap?: number;
 }
 
 export interface FieldsetRow {
   className?: string;
   fields: Field[];
+  gap?: number;
 }
 
 export enum FieldVariant {
@@ -30,20 +47,21 @@ export enum FieldVariant {
   DATE = "date",
   SELECT = "select",
   MULTI_SELECT = "multi_select",
+  COMBO_BOX = "combo_box",
   CHECKBOX = "checkbox",
-  CHECK = "check",
   RADIO = "radio",
   SWITCH = "switch",
   TEXTAREA = "textarea",
-  IMAGE = "image",
-  IMAGE_GALLERY = "image_gallery",
+  EDITOR = "editor",
   FILE = "file",
+  AVATAR = "avatar",
   EMPTY = "empty",
   CUSTOM = "custom",
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface Field<T=any> {
+export type FieldErrors = Record<string, string[] | undefined>;
+
+export interface Field<T = any> {
   id: string;
   label?: string;
   className?: string;
@@ -53,6 +71,7 @@ export interface Field<T=any> {
   description?: string;
   placeholder?: string;
   hidden?: boolean;
+  pending?: boolean;
   error?: string;
   props?: T;
 }
@@ -64,6 +83,7 @@ export interface BaseFieldProps {
 export interface TextFieldProps extends BaseFieldProps {
   value?: string | null;
   onChange?: (e: string) => void;
+  maxLength?: number;
 }
 
 export interface EmailFieldProps extends BaseFieldProps {
@@ -78,7 +98,7 @@ export interface TelFieldProps extends BaseFieldProps {
 
 export interface NumberFieldProps extends BaseFieldProps {
   value?: number | null;
-  onChange?: (e: number) => void;
+  onChange?: (e: number | undefined) => void;
   min?: number;
   max?: number;
 }
@@ -96,20 +116,34 @@ export interface DateFieldProps extends BaseFieldProps {
 
 export interface SelectOption {
   label: string;
-  value: string | number;
+  value: string;
 }
 
 export interface SelectFieldProps extends BaseFieldProps {
   value?: string | null;
   onValueChange?: (value: string) => void;
   options?: SelectOption[];
+  nullable?: boolean;
 }
 
 export interface MultiSelectFieldProps extends BaseFieldProps {
-  value?: SelectOption[];
-  onChange?: (value: SelectOption[]) => void;
+  value?: string[];
+  onValueChange?: (value: string[]) => void;
   options?: SelectOption[];
-  creatable?: boolean;
+  hidePlaceholderWhenSelected?: boolean;
+}
+
+export interface ComboBoxFieldProps extends BaseFieldProps {
+  value?: string[];
+  onValueChange?: (value: string[]) => void;
+  options?: SelectOption[];
+}
+
+export interface RadioFieldProps extends BaseFieldProps {
+  value?: string;
+  onValueChange?: (value: string) => void;
+  options?: SelectOption[];
+  spread?: "horizontal" | "vertical";
 }
 
 export interface CheckboxFieldProps extends BaseFieldProps {
@@ -130,38 +164,48 @@ export interface TextareaFieldProps extends BaseFieldProps {
   cols?: number;
   rows?: number;
   resizable?: boolean;
+  maxLength?: number;
 }
 
-export interface ImageFieldProps extends BaseFieldProps {
-  image?: File | null;
+export interface EditorFieldProps extends BaseFieldProps {
+  value?: string;
+  onChange?: (e: string) => void;
+  maxLength?: number;
+  height?: number | string;
+  autoHeight?: boolean;
+}
+
+export interface FileFieldProps extends BaseFieldProps {
   accept?: string;
+  progress?: number;
+  onFileChange?: (file: File) => void;
+  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
+}
+
+export type AvatarFieldSource =
+  | File
+  | string
+  | {
+      slug?: string;
+      id?: number;
+      url?: string;
+    }
+  | null;
+
+export interface AvatarFieldProps extends BaseFieldProps {
+  image?: AvatarFieldSource;
   progress?: number;
   placeholder?: string;
   fallback?: string;
-  onFileChange?: (e: File) => void;
-  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
-}
-
-export interface SingleFileFieldProps extends BaseFieldProps {
-  file?: File | null;
   accept?: string;
-  progress?: number;
-  onFileChange?: (e: File) => void;
-  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
-}
-
-export interface ImageGalleryFieldProps extends BaseFieldProps {
-  images: ImageFile[];
-  onFilesChange?: (e: ImageFile[]) => void;
-  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
-}
-
-export interface ImageFile {
-  id: string;
-  image?: File | null;
-  url?: string;
-  name: string;
-  progress: number;
+  resolveImageUrl?: (
+    image: Exclude<AvatarFieldSource, File | string | null | undefined>,
+  ) => string | Promise<string>;
+  onFileChange?: (file: File) => void;
+  onUpload?: (
+    file: File,
+    onProgress: (percent: number) => void,
+  ) => void | Promise<void>;
 }
 
 export interface CustomFieldProps extends BaseFieldProps {
@@ -170,5 +214,4 @@ export interface CustomFieldProps extends BaseFieldProps {
   includeLabel?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface EmptyFieldProps {}

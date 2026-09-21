@@ -1,9 +1,13 @@
-import React from "react";
-import { cn } from "@instanct/lib";
-import { Label } from "@instanct/ui/components/label";
-import { Separator } from "@instanct/ui/components/separator";
-import { FieldBuilder } from "./FieldBuilder";
-import { FieldVariant, FormStructure } from "./types";
+import { FormStructure } from "./types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  cn,
+} from "@qlp/ui";
+import { FieldsetBuilder } from "./FieldsetBuilder";
+import { Separator } from "@qlp/ui";
 
 interface FormBuilderProps {
   className?: string;
@@ -16,112 +20,84 @@ export const FormBuilder = ({ className, structure }: FormBuilderProps) => {
       {!!structure?.includeHeader && (
         <div>
           <div className="space-y-1 py-5 sm:py-0">
-            <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-              {structure.title}
+            <h1
+              className={cn(
+                "text-lg font-bold tracking-tight",
+                structure.title?.className,
+              )}
+            >
+              {structure.title?.value}
             </h1>
-            <p className="text-muted-foreground">{structure.description}</p>
+
+            {structure.description && (
+              <p
+                className={cn(
+                  "text-muted-foreground",
+                  structure.description.className,
+                )}
+              >
+                {structure.description.value}
+              </p>
+            )}
           </div>
           <Separator className="mt-2 mb-4 lg:mb-6" />
         </div>
       )}
 
-      <form
+      <div
         className={cn(
-          "flex gap-4 xl:gap-10",
+          "flex w-full",
+          structure.gap === undefined && "gap-4 xl:gap-10",
           structure?.orientation === "vertical"
             ? "flex-col xl:flex-row"
-            : "flex-col"
+            : "flex-col",
         )}
-        onSubmit={() => {
-          return false;
-        }}
+        style={{ gap: structure.gap }}
       >
-        {structure?.fieldsets?.map((fieldset, index) => (
-          <div
-            key={index}
-            className={cn(
-              "flex  w-full",
-              structure.orientation === "vertical"
-                ? "flex-row xl:flex-col gap-10"
-                : "flex-col gap-4"
+        {structure.toggleableFieldsets ? (
+          <Accordion
+            type="multiple"
+            defaultValue={structure.fieldsets.map(
+              (_, index) => `fieldset-${index}`,
             )}
+            className="w-full"
           >
-            {fieldset.includeHeader && (
-              <div className="flex flex-col gap-2">
-                <h2 className="text-lg font-semibold">{fieldset.title}</h2>
-                <Separator />
-              </div>
-            )}
+            {structure.fieldsets.map((fieldset, index) => (
+              <AccordionItem
+                key={index}
+                value={`fieldset-${index}`}
+                className="border-0"
+              >
+                <AccordionTrigger>
+                  <div className="flex flex-col text-left">
+                    <span className="font-semibold">
+                      {fieldset.title?.value}
+                    </span>
 
-            {fieldset?.rows?.map((row, index) => {
-              const fieldCount = row.fields.length;
+                    {fieldset.description && (
+                      <span className="text-xs text-muted-foreground">
+                        {fieldset.description.value}
+                      </span>
+                    )}
+                  </div>
+                </AccordionTrigger>
 
-              return (
-                <div
-                  key={index}
-                  className={cn(
-                    "grid gap-6 w-full",
-                    structure.orientation === "vertical" || fieldCount === 1
-                      ? "grid-cols-1"
-                      : fieldCount === 2
-                      ? "grid-cols-1 lg:grid-cols-2"
-                      : fieldCount === 3
-                      ? "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
-                      : fieldCount === 4
-                      ? "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                      : "w-full"
-                  )}
-                >
-                  {row.fields.map((field) => {
-                    if (!field.hidden)
-                      return (
-                        <div
-                          key={field.id}
-                          className={cn(
-                            "flex flex-col gap-2 w-full",
-                            field.wrapperClassName
-                          )}
-                        >
-                          <div className="flex flex-row justify-between items-center">
-                            <Label
-                              className={cn(
-                                "text-xs font-semibold",
-                                field.variant === "check" && "invisible"
-                              )}
-                              htmlFor={field.label}
-                            >
-                              {field.variant !== "check"
-                                ? field.label || "\u00A0"
-                                : "\u00A0"}
-                              {field.required && (
-                                <span className="text-red-500 mx-1">*</span>
-                              )}
-                            </Label>
-                          </div>
-
-                          <FieldBuilder field={field} />
-                          <div className="flex justify-between items-center gap-2">
-                            {field.variant !== FieldVariant.SWITCH &&
-                              !field.error && (
-                                <span className="font-medium text-xs opacity-70 leading-3">
-                                  {field.description}
-                                </span>
-                              )}
-                            {field?.error && (
-                              <span className="font-medium text-xs text-red-500 leading-3">
-                                {field?.error}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </form>
+                <AccordionContent>
+                  <FieldsetBuilder fieldset={fieldset} structure={structure} />
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        ) : (
+          structure.fieldsets.map((fieldset, index) => (
+            <FieldsetBuilder
+              key={index}
+              fieldset={fieldset}
+              structure={structure}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };

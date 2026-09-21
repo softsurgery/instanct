@@ -6,18 +6,12 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "declaration": true,
-    "noEmit": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "paths": {
-      "@instanct/lib": ["../lib/src/index.ts"],
-      "@instanct/lib/*": ["../lib/src/*"],
-      "@instanct/ui": ["../ui/src/index.ts"],
-      "@instanct/ui/*": ["../ui/src/*"]
-    }
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["src/**/*"]
 }

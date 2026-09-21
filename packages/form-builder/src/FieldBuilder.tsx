@@ -1,57 +1,68 @@
 import React from "react";
-import { Checkbox } from "@instanct/ui/components/checkbox";
-import { DatePicker } from "@instanct/ui/components/date-picker";
-import { Input } from "@instanct/ui/components/input";
-import { Label } from "@instanct/ui/components/label";
+import { Field, SelectOption } from "./types";
 import {
+  Checkbox,
+  cn,
+  DatePicker,
+  Input,
+  Label,
+  Progress,
+  RadioGroup,
+  RadioGroupItem,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@instanct/ui/components/select";
-import { Textarea } from "@instanct/ui/components/textarea";
-import { Switch } from "@instanct/ui/components/switch";
-import { cn } from "@instanct/lib";
-import { CheckedState } from "@radix-ui/react-checkbox";
-import { Field, SelectOption } from "./types";
-import { Progress } from "@instanct/ui/components/progress";
-import { useTranslation } from "react-i18next";
-import { PasswordField } from "./PasswordField";
-import { ImageUploaderManager } from "./ImageUploaderManager";
-import { ImageUploader } from "./ImageUploader";
-import MultipleSelector from "@instanct/ui/components/multi-select";
+  Switch,
+  Textarea,
+} from "@qlp/ui";
+import { ComboboxMultiSelectField } from "./components/ComboboxMultiSelectField";
+import { AvatarField } from "./components/AvatarField";
+import { PasswordField } from "./components/PasswordField";
+import { RichTextField } from "./components/RichTextField";
 
 interface FieldBuilderProps {
-  field?: Field;
+  field?: Field<any>;
 }
 
 export const FieldBuilder = ({ field }: FieldBuilderProps) => {
-  const { t } = useTranslation("common");
-
   switch (field?.variant) {
     case "text":
     case "email":
-    case "tel":
     case "url":
       return (
         <Input
+          {...field.props}
           className={cn(
             field?.className,
             field.error && "border-destructive focus-visible:ring-destructive",
           )}
           type={field.variant}
           placeholder={field.placeholder}
-          value={field.props?.value}
-          disabled={field?.props?.disabled}
+          value={field.props?.value ?? ""}
           onChange={(event) => {
             field?.props?.onChange?.(event.target.value);
           }}
         />
       );
+    // case "tel":
+    //   return (
+    //     <PhoneInput
+    //       {...field.props}
+    //       className={cn(
+    //         field?.className,
+    //         field.error && "border-destructive focus-visible:ring-destructive",
+    //       )}
+    //       value={field?.props?.value ?? ""}
+    //       onChange={(value) => field?.props?.onChange?.(value)}
+    //       placeholder={field?.placeholder}
+    //     />
+    //   );
     case "number":
       return (
         <Input
+          {...field.props}
           className={cn(
             field?.className,
             field.error && "border-destructive focus-visible:ring-destructive",
@@ -59,11 +70,15 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           type={field.variant}
           min={field.props?.min}
           max={field.props?.max}
-          value={field.props?.value}
-          disabled={field?.props?.disabled}
+          value={field.props?.value ?? ""}
           placeholder={field?.placeholder}
           onChange={(event) => {
+            if (event.target.value === "") {
+              field?.props?.onChange?.(undefined);
+              return;
+            }
             const inputValue = Number(event.target.value);
+            if (isNaN(inputValue)) return;
             const min = field.props?.min ?? -Infinity;
             const max = field.props?.max ?? Infinity;
             const clampedValue = Math.max(min, Math.min(max, inputValue));
@@ -74,8 +89,15 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
     case "select":
       return (
         <Select
-          value={field?.props?.value}
-          onValueChange={field?.props?.onValueChange}
+          {...field.props}
+          value={field?.props?.value ?? ""}
+          onValueChange={(value) => {
+            if (value === "__clear__") {
+              field?.props?.onValueChange?.(undefined);
+            } else {
+              field?.props?.onValueChange?.(value);
+            }
+          }}
           disabled={field?.props?.disabled}
         >
           <SelectTrigger
@@ -89,10 +111,18 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           >
             <SelectValue placeholder={field.placeholder} />
           </SelectTrigger>
-          <SelectContent className="overflow-y-auto max-h-[15rem]">
+          <SelectContent className="overflow-y-auto max-h-60">
+            {field?.props?.nullable && (
+              <SelectItem
+                value="__clear__"
+                className="text-muted-foreground font-thin italic"
+              >
+                {field.placeholder || "---"}
+              </SelectItem>
+            )}
             {field?.props?.options?.map((option: SelectOption) => {
               return (
-                <SelectItem key={option.value} value={option.value as string}>
+                <SelectItem key={option.value} value={option.value}>
                   {option.label}
                 </SelectItem>
               );
@@ -100,9 +130,50 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           </SelectContent>
         </Select>
       );
+    // case "multi_select": {
+    //   const selectedOptions = (field.props?.options || []).filter(
+    //     (opt: SelectOption) => field.props?.value?.includes(opt.value),
+    //   );
+    //   return (
+    //     <MultipleSelector
+    //       {...field.props}
+    //       className={cn("w-full", field?.className)}
+    //       options={field.props?.options}
+    //       value={selectedOptions}
+    //       disabled={field.props?.disabled}
+    //       onChange={(value) =>
+    //         field?.props?.onValueChange?.(value.map((v: any) => v.value))
+    //       }
+    //       placeholder={field?.placeholder}
+    //       hidePlaceholderWhenSelected={field.props?.hidePlaceholderWhenSelected}
+    //       creatable={field.props?.creatable}
+    //       emptyIndicator={
+    //         <p className="text-center text-sm">{t("table.no_results")}</p>
+    //       }
+    //     />
+    //   );
+    // }
+    case "combo_box":
+      return (
+        <ComboboxMultiSelectField
+          {...field.props}
+          className={cn(
+            field?.className,
+            field.error &&
+              "border-destructive focus-within:ring-destructive/20",
+          )}
+          placeholder={field.placeholder}
+          options={field.props?.options}
+          value={field.props?.value}
+          disabled={field.props?.disabled}
+          onValueChange={field?.props?.onValueChange}
+        />
+      );
+
     case "date":
       return (
         <DatePicker
+          {...field.props}
           className={cn(
             "w-full",
             field?.className,
@@ -113,26 +184,78 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
               new Date(field?.props?.value as string | Date | number)) ||
             undefined
           }
-          onChange={(value: Date | null) => field?.props?.onDateChange?.(value)}
-          placeholder={t("common.placeholders.selectDate")}
+          placeholder={field.placeholder}
+          onDateChange={(value: Date | null) =>
+            field?.props?.onDateChange?.(value)
+          }
           nullable={field?.props?.nullable}
           disabled={field?.props?.disabled}
         />
       );
-    case "check":
+    case "checkbox":
+      if (field.props?.selectOptions?.length) {
+        return (
+          <div className="flex flex-col gap-2 my-1">
+            {field.props.selectOptions.map((option: SelectOption) => (
+              <div key={option.label} className="flex items-center gap-2">
+                <Checkbox
+                  id={option.label}
+                  className={field?.className}
+                  checked={field.props?.value}
+                  onCheckedChange={(value) =>
+                    field?.props?.onCheckedChange?.(value)
+                  }
+                />
+                <Label className="text-sm font-semibold">{option.label}</Label>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
       return (
         <div className="flex items-center gap-2 h-8">
           <Checkbox
-            {...field.props}
-            id={field.label}
-            checked={field?.props?.value}
+            id={field.id}
+            className={field?.className}
+            disabled={field?.props?.disabled}
+            checked={field?.props?.checked ?? field?.props?.value ?? false}
             defaultChecked={field?.props?.defaultChecked}
             onCheckedChange={(value) => field?.props?.onCheckedChange?.(value)}
           />
-          <Label className={cn("text-sm font-semibold")} htmlFor={field.label}>
-            {field.label}
+          <Label className={cn("text-xs")} htmlFor={field.id}>
+            {field.description}
           </Label>
         </div>
+      );
+
+    case "radio":
+      return (
+        <RadioGroup
+          value={field.props?.value ?? ""}
+          className={cn(
+            "flex w-fit my-2.5",
+            field?.props?.spread === "horizontal" ? "flex-row" : "flex-col",
+            field?.className,
+          )}
+          onValueChange={(value) => {
+            field?.props?.onValueChange?.(value);
+          }}
+        >
+          {field.props?.options?.map((option: SelectOption) => (
+            <div key={option.value} className="flex items-center gap-3">
+              <RadioGroupItem
+                value={option.value}
+                id={`${field.id}-${option.value}`}
+                disabled={field?.props?.disabled}
+                className={cn(field?.className)}
+              />
+              <Label htmlFor={`${field.id}-${option.value}`}>
+                {option.label}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
       );
     case "password":
       return (
@@ -143,7 +266,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             field.error && "border-destructive focus-visible:ring-destructive",
             field?.className,
           )}
-          value={field?.props?.value as string}
+          value={(field?.props?.value as string) ?? ""}
           onChange={(e) => field?.props?.onChange?.(e.target.value)}
         />
       );
@@ -153,8 +276,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           <Switch
             {...field.props}
             id={field.label}
-            checked={field?.props?.value}
-            defaultChecked={field?.props?.defaultChecked}
+            checked={field?.props?.checked ?? field?.props?.value ?? false}
             onCheckedChange={(value) => field?.props?.onCheckedChange?.(value)}
           />{" "}
           <Label className="text-xs font-light">{field.description}</Label>
@@ -170,40 +292,24 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             field?.className,
           )}
           placeholder={field.placeholder}
-          value={field.props?.value}
+          value={field.props?.value ?? ""}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             field?.props?.onChange?.(e.target.value)
           }
         />
       );
-    case "checkbox":
-      return (
-        <div className="flex flex-col gap-2 my-1">
-          {field.props?.selectOptions?.map((option: SelectOption) => (
-            <div key={option.label} className="flex items-center gap-2">
-              <Checkbox
-                id={option.label}
-                className={field?.className}
-                checked={field.props?.value as CheckedState}
-                onCheckedChange={(value: CheckedState) =>
-                  field?.props?.onCheckedChange?.(value)
-                }
-              />
-              <Label className="text-sm font-semibold">{option.label}</Label>
-            </div>
-          ))}
-        </div>
-      );
+    case "editor":
+      return <RichTextField field={field} />;
     case "file":
       return (
-        <div className={cn("flex flex-col gap-2", field?.wrapperClassName)}>
+        <div className={cn("flex flex-col", field?.wrapperClassName)}>
           <Input
-            {...field.props}
             id={field.id}
             type="file"
             accept={field.props?.accept}
+            placeholder={field.placeholder}
             className={cn(
-              "my-5 flex items-center",
+              "flex items-center",
               field?.className,
               field.error &&
                 "border-destructive focus-visible:ring-destructive",
@@ -221,7 +327,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             }}
           />
           {typeof field.props?.progress === "number" && (
-            <div className="space-y-1">
+            <div className="mt-2">
               <Progress value={field.props.progress} />
               <span className="text-xs text-muted-foreground text-center">
                 {field.props.progress}%
@@ -230,42 +336,21 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           )}
         </div>
       );
-    case "image":
+    case "avatar":
       return (
-        <ImageUploader
-          {...field.props}
-          wrapperClassName={cn(field?.wrapperClassName)}
-          className={cn("flex flex-col gap-2 items-center", field?.className)}
+        <AvatarField
           id={field.id}
-          image={field?.props?.image}
-          fallback={field?.props?.fallback}
-          disabled={field?.props?.disabled}
-          accept={field?.props?.accept}
-          onFileChange={(e: File) => field?.props?.onFileChange?.(e)}
-          onUpload={(file, onProgress) =>
-            field?.props?.onUpload?.(file, onProgress)
-          }
-        />
-      );
-
-    case "image_gallery":
-      return <ImageUploaderManager {...field.props} />;
-
-    case "multi_select":
-      return (
-        <MultipleSelector
-          {...field.props}
-          id={field.id}
-          className={cn("w-full", field?.className)}
-          options={field.props?.options}
-          value={field.props?.value}
-          isDisabled={field.props?.disabled}
-          onChange={(value) => field?.props?.onChange?.(value)}
-          placeholder={field?.placeholder}
-          creatable={field.props?.creatable}
-          emptyIndicator={
-            <p className="text-center text-sm">{t("common.table.noResults")}</p>
-          }
+          className={cn(field?.className, field.error && "border-destructive")}
+          error={Boolean(field.error)}
+          image={field.props?.image}
+          progress={field.props?.progress}
+          placeholder={field.props?.placeholder}
+          fallback={field.props?.fallback}
+          accept={field.props?.accept}
+          disabled={field.props?.disabled}
+          resolveImageUrl={field.props?.resolveImageUrl}
+          onFileChange={field.props?.onFileChange}
+          onUpload={field.props?.onUpload}
         />
       );
 

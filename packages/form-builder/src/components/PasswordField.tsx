@@ -1,37 +1,36 @@
 import React from "react";
-import { Input } from "@instanct/ui/components/input";
-import { Button } from "@instanct/ui/components/button";
 import { Eye, EyeOff } from "lucide-react";
-import { cn } from "@instanct/lib";
+import { useTranslation } from "react-i18next";
+import { Button, Input } from "@qlp/ui";
 
-interface PasswordFieldProps
-  extends Omit<React.ComponentProps<"input">, "type"> {
-  defaultState?: boolean;
+interface PasswordFieldProps extends React.ComponentProps<"input"> {
+  className?: string;
 }
 
 export const PasswordField = ({
   className,
   placeholder,
-  defaultState = false,
   ...props
 }: PasswordFieldProps) => {
-  const [showPassword, setShowPassword] = React.useState(defaultState);
+  const { t } = useTranslation("form-builder");
+  const [showPassword, setShowPassword] = React.useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   return (
-    <div className={cn("grid gap-2 text-left")}>
+    <div className="grid gap-2 text-start">
       <div className="relative">
         <Input
-          {...props}
           type={showPassword ? "text" : "password"}
-          placeholder={placeholder || "Enter password"}
-          className={cn("pr-10", className)}
+          placeholder={placeholder || t("password.placeholder")}
+          className="pe-10"
           autoComplete="new-password"
+          {...props}
         />
         <Button
           type="button"
           onClick={togglePasswordVisibility}
           variant={"link"}
-          className="absolute inset-y-0 right-0 flex items-center pr-3"
+          className="absolute inset-y-0 end-0 flex items-center pe-3"
+          aria-label={showPassword ? t("password.hide") : t("password.show")}
         >
           {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
         </Button>
