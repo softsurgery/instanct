@@ -5,13 +5,13 @@ export default ({ config }) => ({
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
-  scheme: "instanctmobileapp",
+  scheme: "com.instanct.instanctma",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "instanctmobileapp",
+    bundleIdentifier: "com.instanct.instanctma",
     infoPlist: {
       UIDesignRequiresCompatibility: true,
       NSAppTransportSecurity: {
@@ -34,7 +34,7 @@ export default ({ config }) => ({
     softwareKeyboardLayoutMode: "pan",
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
-    package: "com.softsurgery.instanctmobileapp",
+    package: "com.instanct.instanctma",
   },
   plugins: [
     "expo-font",
