@@ -16,9 +16,11 @@ import {
   SelectValue,
   Switch,
   Textarea,
-} from "@qlp/ui";
+} from "@instanct/ui";
 import { ComboboxMultiSelectField } from "./components/ComboboxMultiSelectField";
 import { AvatarField } from "./components/AvatarField";
+import { ImageUploader } from "./components/ImageUploader";
+import { ImageUploaderManager } from "./components/ImageUploaderManager";
 import { PasswordField } from "./components/PasswordField";
 import { RichTextField } from "./components/RichTextField";
 
@@ -74,7 +76,6 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           placeholder={field?.placeholder}
           onChange={(event) => {
             if (event.target.value === "") {
-              field?.props?.onChange?.(undefined);
               return;
             }
             const inputValue = Number(event.target.value);
@@ -257,6 +258,22 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           ))}
         </RadioGroup>
       );
+    case "check":
+      return (
+        <div className="flex items-center gap-2 h-8">
+          <Checkbox
+            {...field.props}
+            id={field.id}
+            checked={field?.props?.checked ?? field?.props?.value ?? false}
+            defaultChecked={field?.props?.defaultChecked}
+            disabled={field?.props?.disabled}
+            onCheckedChange={(value) => field?.props?.onCheckedChange?.(value)}
+          />
+          <Label className={cn("text-sm font-semibold")} htmlFor={field.id}>
+            {field.label}
+          </Label>
+        </div>
+      );
     case "password":
       return (
         <PasswordField
@@ -335,6 +352,31 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             </div>
           )}
         </div>
+      );
+    case "image":
+      return (
+        <ImageUploader
+          {...field.props}
+          wrapperClassName={cn(field?.wrapperClassName)}
+          className={cn("flex flex-col gap-2 items-center", field?.className)}
+          id={field.id}
+          image={field?.props?.image}
+          fallback={field?.props?.fallback}
+          disabled={field?.props?.disabled}
+          accept={field?.props?.accept}
+          onFileChange={(file) => field?.props?.onFileChange?.(file)}
+          onUpload={(file, onProgress) =>
+            field?.props?.onUpload?.(file, onProgress)
+          }
+        />
+      );
+    case "image_gallery":
+      return (
+        <ImageUploaderManager
+          {...field.props}
+          className={field?.className}
+          wrapperClassName={field?.wrapperClassName}
+        />
       );
     case "avatar":
       return (

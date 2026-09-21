@@ -13,7 +13,7 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
-} from "@qlp/ui";
+} from "@instanct/ui";
 
 interface ComboboxItem {
   label: string;

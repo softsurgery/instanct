@@ -1,6 +1,6 @@
 import React from "react";
 import { Camera } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage, cn, Progress } from "@qlp/ui";
+import { Avatar, AvatarFallback, AvatarImage, cn, Progress } from "@instanct/ui";
 import type { AvatarFieldProps as AFP } from "../types";
 
 interface AvatarFieldProps extends AFP {

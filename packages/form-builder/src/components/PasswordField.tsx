@@ -1,7 +1,7 @@
 import React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Button, Input } from "@qlp/ui";
+import { Button, Input } from "@instanct/ui";
 
 interface PasswordFieldProps extends React.ComponentProps<"input"> {
   className?: string;

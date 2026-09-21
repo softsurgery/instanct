@@ -10,7 +10,7 @@ import Superscript from "@tiptap/extension-superscript";
 import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
 import { Maximize, Minimize } from "lucide-react";
-import { RichTextEditor, Link, cn } from "@qlp/ui";
+import { RichTextEditor, Link, cn } from "@instanct/ui";
 import { EditorFieldProps, Field } from "../types";
 
 interface RichTextFieldProps {

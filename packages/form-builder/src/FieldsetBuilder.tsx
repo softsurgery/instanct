@@ -1,6 +1,7 @@
 import { Fieldset, FieldVariant, FormStructure } from "./types";
 import { FieldBuilder } from "./FieldBuilder";
-import { cn, Label, Separator } from "@qlp/ui";
+import { cn, Label, Separator } from "@instanct/ui";
+import { formHeaderClassName, formHeaderValue } from "./utils/formHeader.js";
 
 interface FieldsetContentProps {
   fieldset: Fieldset;
@@ -30,20 +31,20 @@ export const FieldsetBuilder = ({
               <h2
                 className={cn(
                   "text-lg font-semibold",
-                  fieldset.title?.className,
+                  formHeaderClassName(fieldset.title),
                 )}
               >
-                {fieldset.title?.value}
+                {formHeaderValue(fieldset.title)}
               </h2>
 
-              {fieldset.description && (
+              {formHeaderValue(fieldset.description) && (
                 <p
                   className={cn(
                     "text-sm text-muted-foreground",
-                    fieldset.description?.className,
+                    formHeaderClassName(fieldset.description),
                   )}
                 >
-                  {fieldset.description.value}
+                  {formHeaderValue(fieldset.description)}
                 </p>
               )}
             </div>

@@ -5,9 +5,10 @@ import {
   AccordionItem,
   AccordionTrigger,
   cn,
-} from "@qlp/ui";
+} from "@instanct/ui";
 import { FieldsetBuilder } from "./FieldsetBuilder";
-import { Separator } from "@qlp/ui";
+import { Separator } from "@instanct/ui";
+import { formHeaderClassName, formHeaderValue } from "./utils/formHeader.js";
 
 interface FormBuilderProps {
   className?: string;
@@ -23,20 +24,20 @@ export const FormBuilder = ({ className, structure }: FormBuilderProps) => {
             <h1
               className={cn(
                 "text-lg font-bold tracking-tight",
-                structure.title?.className,
+                formHeaderClassName(structure.title),
               )}
             >
-              {structure.title?.value}
+              {formHeaderValue(structure.title)}
             </h1>
 
-            {structure.description && (
+            {formHeaderValue(structure.description) && (
               <p
                 className={cn(
                   "text-muted-foreground",
-                  structure.description.className,
+                  formHeaderClassName(structure.description),
                 )}
               >
-                {structure.description.value}
+                {formHeaderValue(structure.description)}
               </p>
             )}
           </div>
@@ -71,12 +72,12 @@ export const FormBuilder = ({ className, structure }: FormBuilderProps) => {
                 <AccordionTrigger>
                   <div className="flex flex-col text-left">
                     <span className="font-semibold">
-                      {fieldset.title?.value}
+                      {formHeaderValue(fieldset.title)}
                     </span>
 
-                    {fieldset.description && (
+                    {formHeaderValue(fieldset.description) && (
                       <span className="text-xs text-muted-foreground">
-                        {fieldset.description.value}
+                        {formHeaderValue(fieldset.description)}
                       </span>
                     )}
                   </div>

@@ -1,14 +1,15 @@
 import { CheckedState } from "@radix-ui/react-checkbox";
 
+export type FormHeaderText =
+  | string
+  | {
+      value: string;
+      className?: string;
+    };
+
 export interface FormStructure {
-  title?: {
-    value: string;
-    className?: string;
-  };
-  description?: {
-    value: string;
-    className?: string;
-  };
+  title?: FormHeaderText;
+  description?: FormHeaderText;
   orientation?: "vertical" | "horizontal";
   includeHeader?: boolean;
   fieldsets: Fieldset[];
@@ -17,14 +18,8 @@ export interface FormStructure {
 }
 
 export interface Fieldset {
-  title?: {
-    value: string;
-    className?: string;
-  };
-  description?: {
-    value: string;
-    className?: string;
-  };
+  title?: FormHeaderText;
+  description?: FormHeaderText;
   component?: React.ReactNode;
   includeHeader?: boolean;
   rows: FieldsetRow[];
@@ -53,6 +48,9 @@ export enum FieldVariant {
   SWITCH = "switch",
   TEXTAREA = "textarea",
   EDITOR = "editor",
+  CHECK = "check",
+  IMAGE = "image",
+  IMAGE_GALLERY = "image_gallery",
   FILE = "file",
   AVATAR = "avatar",
   EMPTY = "empty",
@@ -98,7 +96,7 @@ export interface TelFieldProps extends BaseFieldProps {
 
 export interface NumberFieldProps extends BaseFieldProps {
   value?: number | null;
-  onChange?: (e: number | undefined) => void;
+  onChange?: (value: number) => void;
   min?: number;
   max?: number;
 }
@@ -148,7 +146,9 @@ export interface RadioFieldProps extends BaseFieldProps {
 
 export interface CheckboxFieldProps extends BaseFieldProps {
   checked?: boolean;
+  value?: CheckedState;
   defaultChecked?: boolean;
+  selectOptions?: SelectOption[];
   onCheckedChange?: (e: CheckedState) => void;
 }
 
@@ -180,6 +180,30 @@ export interface FileFieldProps extends BaseFieldProps {
   progress?: number;
   onFileChange?: (file: File) => void;
   onUpload?: (file: File, onProgress: (percent: number) => void) => void;
+}
+
+export interface ImageFieldProps extends BaseFieldProps {
+  image?: File | string | null;
+  accept?: string;
+  progress?: number;
+  placeholder?: string;
+  fallback?: string;
+  onFileChange?: (file: File) => void;
+  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
+}
+
+export interface ImageGalleryFieldProps extends BaseFieldProps {
+  images: ImageFile[];
+  onFilesChange?: (files: ImageFile[]) => void;
+  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
+}
+
+export interface ImageFile {
+  id: string;
+  image?: File | null;
+  url?: string;
+  name: string;
+  progress: number;
 }
 
 export type AvatarFieldSource =

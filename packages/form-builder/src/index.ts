@@ -3,4 +3,8 @@ export { FormBuilder } from "./FormBuilder.js";
 export { FieldBuilder } from "./FieldBuilder.js";
 export { FieldsetBuilder } from "./FieldsetBuilder.js";
 export { PasswordField } from "./components/PasswordField.js";
+export { ImageUploader } from "./components/ImageUploader.js";
+export { ImageUploaderManager } from "./components/ImageUploaderManager.js";
+export { TreeSelectBox } from "./components/TreeSelectBox.js";
 export { mapToSelectOptions } from "./utils/mapToSelectOptions.js";
+export { fieldBuilderFactory } from "./utils/fieldBuilderFactory.js";
