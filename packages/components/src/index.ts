@@ -26,3 +26,7 @@ export { default as JSONForm } from "./JsonEditor";
 export type { JSONValue } from "./JsonEditor";
 export { JsonToggler } from "./JsonToggler";
 export { JSONExtras } from "./JSONExtras";
+export { SideNav } from "./SideNav";
+export type { SideNavItem, SideNavProps, SideNavSection } from "./SideNav";
+
+
