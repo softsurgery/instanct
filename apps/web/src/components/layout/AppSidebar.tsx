@@ -3,15 +3,7 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import {
-  Home,
-  Users,
-  Bell,
-  Folder,
-  Settings,
-  HelpCircle,
-  Link as LinkIcon,
-} from "lucide-react";
+import { Home, Users, Bell, Folder, Settings, HelpCircle } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -70,6 +62,10 @@ const data = {
       url: "#",
       icon: Folder,
       items: [
+        {
+          title: "Pages",
+          url: "/content-management/pages",
+        },
         {
           title: "Configuration",
           url: "/content-management/configuration",
@@ -153,7 +149,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     alt="Instanct Logo"
                     width={40}
                     height={40}
-                    className="dark:invert"
                   />
                 </div>
                 {open && (

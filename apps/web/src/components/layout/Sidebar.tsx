@@ -12,6 +12,7 @@ import {
   Table,
   Table2,
   Cog,
+  FileText,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@instanct/ui";
@@ -92,6 +93,11 @@ const navItems: NavItem[] = [
         icon: Table,
       },
       {
+        title: "Pages",
+        href: "/content-management/pages",
+        icon: FileText,
+      },
+      {
         title: "Configuration",
         href: "/content-management/configuration",
         icon: Cog,
@@ -102,23 +108,31 @@ const navItems: NavItem[] = [
 
 export const Sidebar = ({ className }: SidebarProps) => {
   const pathname = usePathname();
-  const [openItem, setOpenItem] = React.useState<string | null>(null);
 
-  // Auto-open parent if pathname matches one of its children
-  React.useEffect(() => {
+  const getActiveParent = (path: string) => {
     const parent = navItems.find(
       (item) =>
         item.children &&
-        item.children.some((child) => pathname.startsWith(child.href)),
+        item.children.some((child) => path.startsWith(child.href)),
     );
-    if (parent) setOpenItem(parent.title);
-  }, [pathname]);
+    return parent ? parent.title : null;
+  };
+
+  const [prevPathname, setPrevPathname] = React.useState(pathname);
+  const [openItem, setOpenItem] = React.useState<string | null>(() =>
+    getActiveParent(pathname),
+  );
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpenItem(getActiveParent(pathname));
+  }
 
   return (
-    <div className={cn("hidden border-r bg-muted/40 md:block", className)}>
+    <div className={cn("hidden border-r md:block bg-sidebar text-sidebar-foreground", className)}>
       <div className="flex h-full max-h-screen flex-col gap-2">
         {/* Header */}
-        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+        <div className="flex h-14 items-center border-b px-4 lg:h-15 lg:px-6">
           <Link
             href="/"
             className="flex justify-center items-center gap-2 font-semibold w-full"
