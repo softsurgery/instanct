@@ -35,6 +35,8 @@ import { UserBookmarkController } from 'src/modules/users/controllers/user-bookm
 import { UserBlockController } from 'src/modules/users/controllers/user-block.controller';
 import { ClientCustomAuthController } from 'src/modules/users/controllers/custom-auth.controller';
 import { UserDeviceController } from 'src/shared/auth/controllers/user-device.controller';
+import { ContentModule } from '@/shared/content/content.module';
+import { ContentPageController } from '@/shared/content/controllers/content-page.controller';
 
 @Module({
   controllers: [
@@ -69,6 +71,7 @@ import { UserDeviceController } from 'src/shared/auth/controllers/user-device.co
     //reference-types
     RefTypeController,
     RefParamController,
+    ContentPageController,
   ],
   providers: [],
   exports: [],
@@ -85,6 +88,7 @@ import { UserDeviceController } from 'src/shared/auth/controllers/user-device.co
     ReferenceTypesModule,
     GeolocationModule,
     RequestsModule,
+    ContentModule,
   ],
 })
 export class RoutesModule {}
