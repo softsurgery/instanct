@@ -1,9 +1,9 @@
 import { usePreferencePersistStore } from "@instanct/hooks";
-import { Select } from "@instanct/mobile-form-builder";
 import { useColorScheme } from "nativewind";
-import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { Platform, Appearance } from "react-native";
 import { useTranslation } from "react-i18next";
+import { setAndroidNavigationBar } from "./lib/android-navigation-bar";
+import { Select } from "./Select";
 
 interface ThemeSwitcherProps {
   classNames?: {
@@ -13,7 +13,10 @@ interface ThemeSwitcherProps {
   showSystemOption?: boolean;
 }
 
-export const ThemeSwitcher = ({ classNames, showSystemOption = true }: ThemeSwitcherProps) => {
+export const ThemeSwitcher = ({
+  classNames,
+  showSystemOption = true,
+}: ThemeSwitcherProps) => {
   const { setColorScheme } = useColorScheme();
   const { theme, setTheme } = usePreferencePersistStore();
   const { t } = useTranslation("common");
@@ -38,7 +41,12 @@ export const ThemeSwitcher = ({ classNames, showSystemOption = true }: ThemeSwit
         const newTheme = value as "light" | "dark" | "system";
         setColorScheme(newTheme);
         if (Platform.OS === "android") {
-          const activeTheme = newTheme === "system" ? (Appearance.getColorScheme() ?? "light") : newTheme;
+          const activeTheme =
+            newTheme === "system"
+              ? Appearance.getColorScheme() === "dark"
+                ? "dark"
+                : "light"
+              : newTheme;
           setAndroidNavigationBar(activeTheme);
         }
         setTheme(newTheme);

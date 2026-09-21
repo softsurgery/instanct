@@ -5,7 +5,7 @@ export { PasswordField } from "./components/PasswordField";
 export { PictureUploader } from "./components/PictureUploader";
 export { DatePicker } from "./components/DatePicker2";
 export { TimePicker } from "./components/TimePicker";
-export { default as Select } from "./components/Select";
+export { Select } from "@instanct/mobile-components";
 export { default as MultiSelect } from "./components/MultiSelect";
 export { default as MapPinField } from "./components/MapPinField";
 export { mapToSelectOptions } from "./utils/map-select-options";

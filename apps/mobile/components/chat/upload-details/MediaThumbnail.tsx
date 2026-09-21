@@ -8,8 +8,10 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { api } from "~/api";
-import { VideoPreview } from "~/components/shared/VideoPreview";
-import { VideoThumbnailPreview } from "~/components/shared/VideoThumbnailPreview";
+import {
+  VideoPreview,
+  VideoThumbnailPreview,
+} from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 
 /**

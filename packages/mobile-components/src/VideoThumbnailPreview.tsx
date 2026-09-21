@@ -5,7 +5,7 @@ import {
   getThumbnailCacheKey,
   promoteDiskCacheToMemory,
   getMemoryCachedThumbnail,
-} from "@/lib/video";
+} from "./lib/video";
 import type { ImageSource } from "expo-image";
 import React from "react";
 import { View } from "react-native";

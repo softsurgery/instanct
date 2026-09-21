@@ -2,7 +2,10 @@ import { useEvent } from "expo";
 import { useVideoPlayer } from "expo-video";
 import React from "react";
 
-import { onThumbnailPlayerStatusChange, setThumbnailPlayer } from "@/lib/video";
+import {
+  onThumbnailPlayerStatusChange,
+  setThumbnailPlayer,
+} from "./lib/video";
 
 export const VideoThumbnailGeneratorHost = () => {
   const player = useVideoPlayer(null, (nextPlayer) => {

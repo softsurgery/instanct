@@ -11,9 +11,11 @@ import {
   ResponseMessageDto,
   PendingMediaUpload,
 } from "@/types";
-import { PhotoPreview } from "@instanct/mobile-components";
-import { VideoPreview } from "~/components/shared/VideoPreview";
-import { VideoThumbnailPreview } from "~/components/shared/VideoThumbnailPreview";
+import {
+  PhotoPreview,
+  VideoPreview,
+  VideoThumbnailPreview,
+} from "@instanct/mobile-components";
 import { useServerImages } from "~/hooks/content/useServerImages";
 import { MessageTextContent } from "./MessageTextContent";
 import { MediaImageGrid } from "./ChatMediaImageGrid";

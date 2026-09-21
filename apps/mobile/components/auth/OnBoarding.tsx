@@ -15,7 +15,7 @@ import { Rocket, Zap, ShieldCheck, Languages } from "lucide-react-native";
 import { useColorPalette } from "@instanct/mobile-components";
 import { ThemeToggle } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { LanguageSwitcher } from "../shared/LanguageSwitcher";
+import { LanguageSwitcher } from "@instanct/mobile-components";
 import { Icon } from "@instanct/mobile-ui";
 
 const width = Dimensions.get("window").width;

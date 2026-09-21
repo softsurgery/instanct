@@ -11,11 +11,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import type { SelectOption } from "../types";
 import { cn } from "@instanct/lib";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
-import { useColorPalette } from "@instanct/mobile-components";
-import { useRTL } from "@instanct/mobile-components";
+import { useColorPalette } from "./hooks/useColorPalette";
+import { useRTL } from "./hooks/useRTL";
+
+interface SelectOption {
+  label: string;
+  value: string;
+}
 
 interface SelectProps {
   classNames?: {
@@ -36,7 +40,7 @@ interface SelectProps {
   customTrigger?: React.ReactNode;
 }
 
-export default function Select({
+export function Select({
   classNames,
 
   title,

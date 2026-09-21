@@ -6,7 +6,7 @@
 // Queue thumbnail requests until the player is available.
 
 import { Image } from "expo-image";
-import type { AppVideoSource } from "@instanct/mobile-components";
+import type { AppVideoSource } from "../VideoPreview";
 import type { ImageSource } from "expo-image";
 import type { VideoPlayer } from "expo-video";
 

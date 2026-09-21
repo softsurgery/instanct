@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import { VideoThumbnailPreview } from "~/components/shared/VideoThumbnailPreview";
+import { VideoThumbnailPreview } from "@instanct/mobile-components";
 import { StagedMedia } from "@/types";
 import { useTranslation } from "react-i18next";
 

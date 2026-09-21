@@ -6,7 +6,7 @@ import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 import { ApplicationHeader } from "@instanct/mobile-components";
-import { ThemeSwitcher } from "../shared/ThemeSwitcher";
+import { ThemeSwitcher } from "@instanct/mobile-components";
 import { AppHeaderBack } from "@instanct/mobile-components";
 
 interface ThemeSettingsPortalProps {

@@ -1,7 +1,8 @@
 import { usePreferencePersistStore } from "@instanct/hooks";
 import { useTranslation } from "react-i18next";
-import { Select } from "@instanct/mobile-form-builder";
 import * as Localization from "expo-localization";
+import type { ReactNode } from "react";
+import { Select } from "./Select";
 
 interface LanguageSwitcherProps {
   classNames?: {
@@ -9,11 +10,15 @@ interface LanguageSwitcherProps {
     content?: string;
     input?: string;
   };
-  customTrigger?: React.ReactNode;
+  customTrigger?: ReactNode;
   showSystemOption?: boolean;
 }
 
-export const LanguageSwitcher = ({ classNames, customTrigger, showSystemOption = true }: LanguageSwitcherProps) => {
+export const LanguageSwitcher = ({
+  classNames,
+  customTrigger,
+  showSystemOption = true,
+}: LanguageSwitcherProps) => {
   const preferencePersistStore = usePreferencePersistStore();
   const { t, i18n } = useTranslation("common");
 
@@ -38,10 +43,14 @@ export const LanguageSwitcher = ({ classNames, customTrigger, showSystemOption =
       onSelect={(value) => {
         let lang = value;
         if (lang === "system") {
-           lang = (Localization.getLocales()[0]?.languageCode as "en" | "fr" | "ar") || "en";
+          lang =
+            (Localization.getLocales()[0]?.languageCode as "en" | "fr" | "ar") ||
+            "en";
         }
         i18n.changeLanguage(lang);
-        preferencePersistStore.setLanguage(value as "en" | "fr" | "ar" | "system");
+        preferencePersistStore.setLanguage(
+          value as "en" | "fr" | "ar" | "system",
+        );
       }}
       options={options}
     />
