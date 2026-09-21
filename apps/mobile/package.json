@@ -13,6 +13,11 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
+    "@instanct/hooks": "workspace:*",
+    "@instanct/lib": "workspace:*",
+    "@instanct/mobile-components": "workspace:*",
+    "@instanct/mobile-form-builder": "workspace:*",
+    "@instanct/mobile-ui": "workspace:*",
     "@legendapp/list": "^1.1.4",
     "@lottiefiles/dotlottie-react": "^0.19.4",
     "@miblanchard/react-native-slider": "^2.6.0",
@@ -91,6 +96,7 @@
     "react-native-pager-view": "8.0.2",
     "react-native-reanimated": "4.5.1",
     "react-native-reanimated-carousel": "^4.0.3",
+    "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-star-rating-widget": "^1.9.2",
@@ -105,12 +111,7 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^4.1.12",
-    "zustand": "^5.0.8",
-    "@instanct/hooks": "workspace:*",
-    "@instanct/lib": "workspace:*",
-    "@instanct/mobile-form-builder": "workspace:*",
-    "@instanct/mobile-ui": "workspace:*",
-    "@instanct/mobile-components": "workspace:*"
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@react-native-community/cli": "latest",

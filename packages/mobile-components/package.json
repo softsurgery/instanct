@@ -43,6 +43,7 @@
     "react-native-actions-sheet": "*",
     "react-native-gesture-handler": "*",
     "react-native-reanimated": "*",
+    "react-native-render-html": "*",
     "react-native-safe-area-context": "*"
   },
   "devDependencies": {

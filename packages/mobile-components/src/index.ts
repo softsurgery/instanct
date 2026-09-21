@@ -5,6 +5,7 @@ export * from "./ChoicePicker";
 export * from "./DividedText";
 export * from "./FileTypeIcon";
 export * from "./HTMLText";
+export * from "./HtmlDocument";
 export * from "./LanguageSwitcher";
 export * from "./Loader";
 export * from "./MarkedInput";
