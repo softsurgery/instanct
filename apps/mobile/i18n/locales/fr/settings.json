@@ -1,0 +1,348 @@
+{
+  "settings": {
+    "general": {
+      "description": "Connecté et synchronisé sur tous vos appareils. Effectuez des modifications qui vous ressemblent.",
+      "soon": "Bientôt"
+    },
+    "account": {
+      "title": "Compte",
+      "description": "Gardez vos informations de profil et de sécurité à jour.",
+      "screens": {
+        "profile": {
+          "title": "Mettre à jour le profil",
+          "description": "Mettez à jour les informations de votre profil.",
+          "form": {
+            "profile-picture": "Photo de profil",
+            "first-name": "Prénom",
+            "last-name": "Nom",
+            "date-of-birth": "Date de naissance",
+            "bio": "Biographie",
+            "gender": "Genre",
+            "website": "Site web",
+            "linkedin": "LinkedIn",
+            "placeholders": {
+              "first-name": "Entrez votre prénom",
+              "last-name": "Entrez votre nom",
+              "date-of-birth": "Entrez votre date de naissance",
+              "bio": "Parlez-nous de vous",
+              "gender": "Sélectionnez votre genre",
+              "website": "Entrez l’URL de votre site web",
+              "linkedin": "Entrez l’URL de votre profil LinkedIn"
+            },
+            "descriptions": {
+              "profile-picture": "Téléversez une photo de profil pour personnaliser votre compte.",
+              "first-name": "Votre prénom tel qu’il apparaît sur votre profil.",
+              "last-name": "Votre nom tel qu’il apparaît sur votre profil.",
+              "date-of-birth": "Célébrons votre anniversaire !",
+              "bio": "Une courte description à votre sujet qui sera visible sur votre profil.",
+              "gender": "Votre genre est utilisé pour la récupération du compte et les notifications.",
+              "website": "L’URL de votre site web est utilisée pour la récupération du compte et les notifications.",
+              "linkedin": "L’URL de votre profil LinkedIn est utilisée pour la récupération du compte et les notifications."
+            }
+          },
+          "validation": {
+            "invalidFirstNameLength": "Le prénom doit contenir au moins 3 caractères.",
+            "firstNameTooLong": "Le prénom ne peut pas dépasser 25 caractères.",
+            "invalidFirstNameFormat": "Le prénom ne peut contenir que des lettres et des espaces.",
+            "invalidLastNameLength": "Le nom doit contenir au moins 3 caractères.",
+            "lastNameTooLong": "Le nom ne peut pas dépasser 25 caractères.",
+            "invalidLastNameFormat": "Le nom ne peut contenir que des lettres et des espaces.",
+            "invalidAge": "Vous devez avoir au moins 13 ans.",
+            "invalidWebsiteUrl": "Veuillez saisir une URL de site web valide.",
+            "websiteTooLong": "L'URL du site web ne peut pas dépasser 255 caractères.",
+            "invalidLinkedinUrl": "Veuillez saisir une URL LinkedIn valide.",
+            "invalidLinkedinFormat": "Veuillez saisir une URL de profil LinkedIn valide.",
+            "linkedinTooLong": "L'URL LinkedIn ne peut pas dépasser 1024 caractères."
+          },
+          "actions": {
+            "update-profile": "Mettre à jour le profil",
+            "update-profile-pending": "Mise à jour...",
+            "remove-picture": "Supprimer la photo"
+          },
+          "toasts": {
+            "updated": "Profil mis à jour",
+            "updated-description": "Votre profil a bien été mis à jour.",
+            "update-error": "Échec de la mise à jour du profil",
+            "upload-error": "Échec du téléversement de l'image"
+          }
+        },
+        "privacy-security": {
+          "title": "Confidentialité et sécurité",
+          "description": "Gérez vos paramètres de confidentialité et de sécurité.",
+          "screens": {
+            "account-security": {
+              "title": "Sécurité du compte",
+              "description": "Gérez les actions les plus importantes liées à la sécurité de votre compte.",
+              "change-email": {
+                "title": "Modifier l'adresse e-mail",
+                "description": "Mettez à jour l'adresse e-mail associée à votre compte",
+                "forms": {
+                  "title": "Modifier l'adresse e-mail",
+                  "description": "Pour modifier votre adresse e-mail, nous devons vérifier votre identité. Veuillez saisir votre adresse e-mail actuelle ainsi que votre mot de passe pour continuer.",
+                  "current-email": "Adresse e-mail actuelle",
+                  "new-email": "Nouvelle adresse e-mail",
+                  "current-password": "Mot de passe actuel",
+                  "placeholders": {
+                    "current-email": "Saisissez votre adresse e-mail actuelle",
+                    "new-email": "Saisissez votre nouvelle adresse e-mail",
+                    "current-password": "Saisissez votre mot de passe actuel"
+                  },
+                  "descriptions": {
+                    "current-email": "Votre adresse e-mail actuelle est utilisée pour la récupération de votre compte et les notifications.",
+                    "new-email": "Votre nouvelle adresse e-mail sera utilisée pour la récupération de votre compte et les notifications.",
+                    "current-password": "Veuillez saisir votre mot de passe actuel afin de vérifier votre identité."
+                  },
+                  "actions": {
+                    "update-email": "Mettre à jour l'adresse e-mail",
+                    "update-email-pending": "Mise à jour..."
+                  }
+                }
+              },
+              "change-password": {
+                "title": "Modifier le mot de passe",
+                "description": "Mettez à jour votre mot de passe et protégez votre compte.",
+                "forms": {
+                  "title": "Modifier le mot de passe",
+                  "description": "Pour modifier votre mot de passe, nous devons vérifier votre identité. Veuillez saisir votre mot de passe actuel ainsi que votre nouveau mot de passe pour continuer.",
+                  "current-password": "Mot de passe actuel",
+                  "new-password": "Nouveau mot de passe",
+                  "confirm-new-password": "Confirmer le nouveau mot de passe",
+                  "placeholders": {
+                    "current-password": "Saisissez votre mot de passe actuel",
+                    "new-password": "Saisissez votre nouveau mot de passe",
+                    "confirm-new-password": "Confirmez votre nouveau mot de passe"
+                  },
+                  "descriptions": {
+                    "current-password": "Veuillez saisir votre mot de passe actuel afin de vérifier votre identité.",
+                    "new-password": "Votre nouveau mot de passe doit contenir au moins 8 caractères et inclure une combinaison de lettres, chiffres et symboles.",
+                    "confirm-new-password": "Veuillez confirmer votre nouveau mot de passe en le saisissant à nouveau."
+                  },
+                  "actions": {
+                    "update-password": "Mettre à jour le mot de passe",
+                    "update-password-pending": "Mise à jour..."
+                  }
+                }
+              },
+              "devices": {
+                "title": "Appareils et accès autorisés",
+                "description": "Gérez les appareils autorisés à accéder à votre compte",
+                "sectionTitle": "Appareils enregistrés",
+                "sectionDescription": "Gérez les appareils connectés à votre compte. Contrôlez si chaque appareil est autorisé ou révoquez son accès.",
+                "loading": "Chargement des appareils...",
+                "emptyTitle": "Aucun appareil enregistré",
+                "emptyDescription": "Les appareils depuis lesquels vous vous connectez apparaîtront ici.",
+                "thisDevice": "Cet appareil",
+                "statusAllowed": "Autorisé",
+                "statusNotAllowed": "Non autorisé",
+                "accessAllowed": "Accès autorisé",
+                "accessRestricted": "Accès restreint",
+                "lastSignIn": "Dernière activité",
+                "actions": {
+                  "revoke": "Révoquer"
+                },
+                "revokeAlert": {
+                  "title": "Révoquer l'accès de l'appareil",
+                  "message": "Êtes-vous sûr de vouloir révoquer l'accès de cet appareil ? Vous devrez vous reconnecter depuis cet appareil.",
+                  "cancel": "Annuler",
+                  "confirm": "Révoquer"
+                },
+                "toasts": {
+                  "allowedSuccess": "Accès de l'appareil autorisé",
+                  "allowedError": "Échec de la mise à jour des autorisations de l'appareil",
+                  "disallowedSuccess": "Accès de l'appareil restreint",
+                  "disallowedError": "Échec de la mise à jour des autorisations de l'appareil",
+                  "revokeSuccess": "Accès de l'appareil révoqué avec succès",
+                  "revokeError": "Échec de la révocation de l'appareil"
+                }
+              },
+              "two-factor-authentication": {
+                "title": "Authentification à deux facteurs",
+                "description": "Ajoutez une couche de sécurité supplémentaire lors de la connexion."
+              }
+            },
+            "privacy": {
+              "title": "Confidentialité",
+              "description": "Gérez vos paramètres de confidentialité.",
+              "data-visibility": {
+                "title": "Visibilité des données",
+                "description": "Contrôlez qui peut voir votre profil et votre activité."
+              },
+              "download-data": {
+                "title": "Télécharger vos données",
+                "description": "Exportez une copie des informations de votre compte."
+              }
+            }
+          }
+        }
+      }
+    },
+    "preferences": {
+      "title": "Préférences",
+      "description": "Personnalisez votre expérience dans l’application.",
+      "screens": {
+        "language": {
+          "title": "Langue",
+          "description": "Choisissez votre langue préférée pour l’application."
+        },
+        "theme": {
+          "title": "Thème",
+          "description": "Sélectionnez votre thème préféré pour l’application."
+        }
+      }
+    },
+    "support": {
+      "title": "Assistance",
+      "description": "Signalez des problèmes ou envoyez-nous vos commentaires.",
+      "screens": {
+        "report-bug": {
+          "title": "Signaler un bug",
+          "description": "Aidez-nous à améliorer l’application en signalant les bugs que vous rencontrez.",
+          "forms": {
+            "title": "Signaler un bug",
+            "description": "Veuillez fournir autant de détails que possible sur le bug que vous avez rencontré. Cela nous aidera à identifier et à résoudre le problème plus rapidement.",
+            "bug-title": "Titre du bug",
+            "bug-description": "Description du bug",
+            "bug-category": "Catégorie du bug",
+            "placeholders": {
+              "bug-title": "Entrez un titre concis pour le bug",
+              "bug-description": "Décrivez le bug en détail",
+              "bug-category": "Sélectionnez la catégorie qui décrit le mieux le bug"
+            },
+            "descriptions": {
+              "bug-title": "Un titre court qui résume le bug rencontré.",
+              "bug-description": "Une description détaillée du bug, incluant les étapes pour le reproduire, le comportement attendu ainsi que toute capture d'écran ou message d'erreur pertinent.",
+              "bug-category": "Sélectionnez la catégorie qui décrit le mieux le bug rencontré."
+            },
+            "actions": {
+              "submit-bug": "Soumettre le rapport",
+              "submit-bug-pending": "Soumission en cours..."
+            }
+          },
+          "validation": {
+            "variantRequired": "Vous devez sélectionner un type de bug.",
+            "titleRequired": "Le titre est obligatoire.",
+            "titleTooShort": "Le titre doit contenir au moins 10 caractères.",
+            "titleTooLong": "Le titre ne doit pas dépasser 255 caractères.",
+            "descriptionRequired": "La description est obligatoire.",
+            "descriptionTooShort": "La description doit contenir au moins 10 caractères.",
+            "descriptionTooLong": "La description ne doit pas dépasser 1024 caractères."
+          },
+          "variants": {
+            "crash": "Plantage",
+            "uiIssue": "Problème d'interface",
+            "performanceIssue": "Problème de performance",
+            "featureNotWorking": "Fonctionnalité qui ne marche pas",
+            "other": "Autre"
+          }
+        },
+        "send-feedback": {
+          "title": "Envoyer un commentaire",
+          "description": "Votre avis nous intéresse ! Partagez vos idées et suggestions avec nous.",
+          "forms": {
+            "title": "Envoyer un commentaire",
+            "description": "Nous apprécions vos commentaires et suggestions. Veuillez nous faire part de vos idées pour améliorer l’application.",
+            "message": "Feedback massage",
+            "category": "Catégorie du commentaire",
+            "rating": "Évaluation",
+            "placeholders": {
+              "message": "Entrez votre commentaire ici",
+              "category": "Sélectionnez la catégorie qui décrit le mieux votre commentaire",
+              "rating": "Sélectionnez votre évaluation"
+            },
+            "descriptions": {
+              "message": "Votre commentaire est précieux pour nous aider à améliorer l’application.",
+              "category": "Sélectionnez la catégorie qui décrit le mieux votre commentaire.",
+              "rating": "Sélectionnez votre évaluation de l’application."
+            },
+            "actions": {
+              "submit-feedback": "Soumettre le commentaire",
+              "submit-feedback-pending": "Soumission en cours..."
+            }
+          },
+          "validation": {
+            "categoryRequired": "Vous devez sélectionner une catégorie de commentaire.",
+            "messageRequired": "Le message est obligatoire.",
+            "messageTooShort": "Le message doit contenir au moins 10 caractères.",
+            "messageTooLong": "Le message ne doit pas dépasser 1024 caractères.",
+            "ratingRequired": "La note doit être d'au moins 1."
+          },
+          "categories": {
+            "generalFeedback": "Commentaire général",
+            "featureRequest": "Demande de fonctionnalité",
+            "other": "Autre"
+          }
+        },
+        "faqs": {
+          "title": "Questions fréquentes",
+          "description": "Trouvez des réponses aux questions fréquemment posées sur l’application.",
+          "intro": {
+            "title": "Comment pouvons-nous vous aider ?",
+            "description": "Ici, vous trouverez des réponses aux questions les plus courantes sur notre application. Si vous avez d'autres questions, n'hésitez pas à contacter notre équipe d'assistance."
+          },
+          "still-need-help": {
+            "title": "Vous avez encore besoin d'aide ?",
+            "description": "Vous ne trouvez pas ce que vous cherchez ? Notre équipe d'assistance est là pour vous aider."
+          }
+        }
+      }
+    },
+    "info-legal": {
+      "title": "Informations et mentions légales",
+      "description": "Découvrez davantage l’application et ses informations légales.",
+      "screens": {
+        "about": {
+          "title": "À propos d’Instanct",
+          "description": "Découvrez davantage l’application et ses fonctionnalités."
+        },
+        "terms-of-service": {
+          "title": "Conditions d’utilisation",
+          "description": "Lisez les conditions générales qui régissent votre utilisation de l’application."
+        },
+        "privacy-policy": {
+          "title": "Politique de confidentialité",
+          "description": "Comprenez comment nous collectons, utilisons et protégeons vos informations personnelles."
+        }
+      }
+    },
+    "session": {
+      "title": "Session",
+      "description": "Déconnectez-vous ou supprimez votre compte.",
+      "actions": {
+        "sign-out": "Se déconnecter",
+        "remove-account": "Supprimer le compte"
+      },
+      "deleteAlert": {
+        "title": "Supprimer le compte",
+        "message": "Êtes-vous sûr de vouloir supprimer votre compte ? Toutes vos données seront définitivement supprimées et cette action est irréversible.",
+        "cancel": "Annuler",
+        "confirm": "Supprimer",
+        "success": "Compte supprimé avec succès.",
+        "error": "Échec de la suppression du compte. Veuillez réessayer."
+      }
+    }
+  },
+  "map-settings": {
+    "title": "Paramètres de la carte",
+    "discovery-range": {
+      "title": "Portée de découverte",
+      "description": "Définissez la distance à laquelle vous pouvez voir les autres utilisateurs.",
+      "search-radius": "Rayon de recherche"
+    },
+    "display-preferences": {
+      "title": "Préférences d'affichage",
+      "description": "Personnalisez l'affichage de la carte.",
+      "show-usernames": {
+        "title": "Afficher les noms d'utilisateur",
+        "description": "Afficher ou masquer les noms d'utilisateur sur la carte."
+      }
+    },
+    "actions": {
+      "update-map-config": "Mettre à jour les paramètres de la carte",
+      "update-map-config-pending": "Mise à jour..."
+    },
+    "toasts": {
+      "updated": "Paramètres de la carte mis à jour",
+      "updated-description": "Vos paramètres de la carte ont bien été mis à jour."
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "screens": {
+    "explore": "Explore",
+    "messages": "Messages",
+    "like": "Like",
+    "map": {
+      "title": "Map",
+      "locked": {
+        "title": "Sharing is Locked",
+        "description": "Start a session to go live and see who's nearby on the map"
+      }
+    },
+    "menu": "Menu",
+    "notifications": "Notifications",
+    "profile": "My Profile",
+    "experience": "Experience",
+    "education": "Education",
+    "sessions": "Sessions",
+    "sessionDetails": "Session Details",
+    "mapSettings": "Map Settings",
+    "activities": "Activities",
+    "sessionStarter": "Session Starter",
+    "manageSession": "Manage Session",
+    "userFilters": "User Filters",
+    "editExperience": "Edit Experience",
+    "deleteExperience": "Delete Experience",
+    "createEducation": "Create Education",
+    "editEducation": "Edit Education",
+    "deleteEducation": "Delete Education",
+    "industries": "Industries",
+    "calendar": "Calendar",
+    "chat": "Chat",
+    "conversationDetails": "Conversation Details",
+    "reportConversation": "Report Conversation",
+    "mediaFilesLinks": "Media, Files & Links",
+    "emailChangedSuccess": "Email Changed Successfully",
+    "verifyEmail": "Verify Email",
+    "aboutInstanct": "About Instanct",
+    "privacySecurity": "Privacy & Security",
+    "changeEmail": "Change Email",
+    "changePassword": "Change Password",
+    "sendRequest": "Send a Request",
+    "acceptRequest": "Accept",
+    "settings": {
+      "title": "Settings",
+      "reportBug": "Report a Bug",
+      "sendFeedback": "Send Feedback",
+      "faqs": "Frequently Asked Questions",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "language": "Language",
+      "theme": "Theme"
+    }
+  },
+  "language": {
+    "select": {
+      "title": "Select Language",
+      "description": "Select the language you want to use in the app",
+      "placeholder": "Select Language"
+    },
+    "options": {
+      "en": "English",
+      "fr": "French",
+      "ar": "Arabic",
+      "system": "System"
+    }
+  },
+  "theme": {
+    "title": "Theme",
+    "description": "Choose your preferred theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "common": {
+    "back": "Back"
+  },
+  "actions": {
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "formBuilder": {
+    "mapPinField": {
+      "placeholder": "Select a location",
+      "title": "Pick a Location",
+      "hint": "Tap on the map to drop a pin",
+      "confirm": "Confirm Location"
+    },
+    "timePicker": {
+      "placeholder": "Select a time",
+      "remove": "Remove Time",
+      "done": "Done"
+    }
+  }
+}
