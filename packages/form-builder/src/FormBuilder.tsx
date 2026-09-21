@@ -8,7 +8,7 @@ import {
 } from "@instanct/ui";
 import { FieldsetBuilder } from "./FieldsetBuilder";
 import { Separator } from "@instanct/ui";
-import { formHeaderClassName, formHeaderValue } from "./utils/formHeader.js";
+import { formHeaderClassName, formHeaderValue } from "./utils/formHeader";
 
 interface FormBuilderProps {
   className?: string;

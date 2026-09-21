@@ -1,4 +1,4 @@
-import { FormHeaderText } from "../types.js";
+import { FormHeaderText } from "../types";
 
 export const formHeaderValue = (header?: FormHeaderText): string | undefined => {
   if (header == null) return undefined;

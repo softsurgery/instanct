@@ -1,7 +1,7 @@
 import { Fieldset, FieldVariant, FormStructure } from "./types";
 import { FieldBuilder } from "./FieldBuilder";
 import { cn, Label, Separator } from "@instanct/ui";
-import { formHeaderClassName, formHeaderValue } from "./utils/formHeader.js";
+import { formHeaderClassName, formHeaderValue } from "./utils/formHeader";
 
 interface FieldsetContentProps {
   fieldset: Fieldset;
