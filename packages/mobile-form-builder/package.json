@@ -1,0 +1,38 @@
+{
+  "name": "@instanct/mobile-form-builder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@instanct/lib": "workspace:*",
+    "@instanct/mobile-ui": "workspace:*",
+    "@instanct/mobile-components": "workspace:*"
+  },
+  "peerDependencies": {
+    "expo-haptics": "*",
+    "expo-image-picker": "*",
+    "expo-location": "*",
+    "lucide-react-native": "*",
+    "react": "^19.0.0",
+    "react-i18next": "*",
+    "react-native": "*",
+    "react-native-actions-sheet": "*",
+    "react-native-maps": "*",
+    "react-native-reanimated": "*",
+    "react-native-star-rating-widget": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "19.2.3",
+    "typescript": "^5.5.3"
+  }
+}

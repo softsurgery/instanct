@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ResponseUserDto } from "@/types";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
 import { api } from "@/api";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 

@@ -1,5 +1,5 @@
-import { Image } from "@/components/ui/image";
-import { cn } from "@/lib/utils";
+import { Image } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { ImageSource } from "expo-image";
 import React from "react";
 import { View } from "react-native";
@@ -7,9 +7,9 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "~/components/shared/StableAvatar";
-import { Skeleton } from "~/components/ui/skeleton";
-import { Text } from "~/components/ui/text";
+} from "@instanct/mobile-components";
+import { Skeleton } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useAuthPersistStore } from "../useAuthPersistStore";
 import { api } from "@/api";
 

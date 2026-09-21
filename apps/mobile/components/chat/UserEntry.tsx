@@ -1,8 +1,8 @@
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import React from "react";
 import { View } from "react-native";
-import { Text } from "~/components/ui/text";
-import { cn } from "~/lib/utils";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import {
   MessageVariant,
   ResponseConversationDto,

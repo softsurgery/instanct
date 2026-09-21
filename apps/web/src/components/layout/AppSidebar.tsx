@@ -22,7 +22,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "@/components/ui/sidebar";
+} from "@instanct/ui";
 import { NavMain } from "./NavMain";
 import Link from "next/link";
 

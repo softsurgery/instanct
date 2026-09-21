@@ -1,6 +1,6 @@
 import React from "react";
 import { BadgeCheck, Bell, CreditCard, LogOut, User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@instanct/ui";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";

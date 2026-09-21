@@ -2,16 +2,16 @@ import { format } from "date-fns";
 import { Play } from "lucide-react-native";
 import { Dimensions, ImageSourcePropType, View } from "react-native";
 import { Image } from "expo-image";
-import { Text } from "~/components/ui/text";
-import { Icon } from "~/components/ui/icon";
-import { cn } from "~/lib/utils";
+import { Text } from "@instanct/mobile-ui";
+import { Icon } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import {
   MessageVariant,
   PendingMediaItem,
   ResponseMessageDto,
   PendingMediaUpload,
 } from "@/types";
-import { PhotoPreview } from "~/components/shared/PhotoPreview";
+import { PhotoPreview } from "@instanct/mobile-components";
 import { VideoPreview } from "~/components/shared/VideoPreview";
 import { VideoThumbnailPreview } from "~/components/shared/VideoThumbnailPreview";
 import { useServerImages } from "~/hooks/content/useServerImages";

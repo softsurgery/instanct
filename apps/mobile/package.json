@@ -105,7 +105,12 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^4.1.12",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "@instanct/hooks": "workspace:*",
+    "@instanct/lib": "workspace:*",
+    "@instanct/mobile-form-builder": "workspace:*",
+    "@instanct/mobile-ui": "workspace:*",
+    "@instanct/mobile-components": "workspace:*"
   },
   "devDependencies": {
     "@react-native-community/cli": "latest",

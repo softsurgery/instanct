@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import { useSheet } from "@/components/shared/Sheets";
+import { useSheet } from "@instanct/components";
 import { UserUpdateForm } from "../forms/UserUpdateForm";
 import { useTranslation } from "react-i18next";
 

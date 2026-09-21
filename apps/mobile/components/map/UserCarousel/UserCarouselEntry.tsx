@@ -1,6 +1,6 @@
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import React from "react";
 import { Pressable } from "react-native";

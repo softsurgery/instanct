@@ -1,6 +1,5 @@
-import { Icon } from "@/components/ui/icon";
-import { useColorPalette } from "@/hooks/useColorPalette";
-import { useRTL } from "@/hooks/useRTL";
+import { Icon } from "@instanct/mobile-ui";
+import { useColorPalette, useRTL } from "@instanct/mobile-components";
 import { IconChecklist, IconMapPinHeart } from "@tabler/icons-react-native";
 import * as Haptics from "expo-haptics";
 import { Tabs, useSegments } from "expo-router";

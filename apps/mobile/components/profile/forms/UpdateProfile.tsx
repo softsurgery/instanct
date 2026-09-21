@@ -1,17 +1,17 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useUserStore } from "@/stores/useUserStore";
 import { router } from "expo-router";
-import { ApplicationHeader } from "../../shared/AppHeader";
-import { FormBuilder } from "../../shared/form-builder/FormBuilder";
-import { StableKeyboardAwareScrollView } from "../../shared/StableKeyboardAwareScrollView";
-import { StableSafeAreaView } from "../../shared/StableSafeAreaView";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { FormBuilder } from "@instanct/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { useUpdateProfileFormStructure } from "./useUpdateProfileFormStructure";
 import { ServerErrorResponse, UpdateUserDto, Upload } from "@/types";
 import { api } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserSchema } from "@/types/validations/user.validation";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import React from "react";
 import { useServerImages } from "@/hooks/content/useServerImages";
@@ -19,9 +19,9 @@ import { identifyUserAvatar } from "@/lib/user";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 
 interface UpdateProfileProps {
   className?: string;

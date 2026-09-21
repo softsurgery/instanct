@@ -6,17 +6,17 @@ import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
-import { Text } from "~/components/ui/text";
-import { cn } from "~/lib/utils";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { SSOButtons } from "./SSOButtons";
 import { AcceptTerms } from "./AcceptTerms";
 import { Rocket, Zap, ShieldCheck, Languages } from "lucide-react-native";
-import { useColorPalette } from "@/hooks/useColorPalette";
-import { ThemeToggle } from "../shared/ThemeToggle";
+import { useColorPalette } from "@instanct/mobile-components";
+import { ThemeToggle } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
-import { Icon } from "../ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 
 const width = Dimensions.get("window").width;
 

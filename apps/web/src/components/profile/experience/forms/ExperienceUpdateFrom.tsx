@@ -1,12 +1,12 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useExperienceStore } from "@/hooks/stores/useExperienceStore";
-import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
-import { Button } from "@/components/ui/button";
+import { FormBuilder } from "@instanct/form-builder";
+import { Button } from "@instanct/ui";
 import { useUpdateExperienceFormStructure } from "./useUpdateExperienceFormStructure";
 import { Save } from "lucide-react";
 import { updateExperienceSchema } from "@/types/validations/experience.validation";
-import { Spinner } from "@/components/shared/Spinner";
+import { Spinner } from "@instanct/components";
 import { UpdateExperienceDto } from "@/types";
 import { useTranslation } from "react-i18next";
 

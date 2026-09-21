@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { BlurView } from "expo-blur";
 import { MapPinned } from "lucide-react-native";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Icon } from "../ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import { useColorScheme } from "nativewind";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 
 interface MapSessionStarterProps {
   className?: string;

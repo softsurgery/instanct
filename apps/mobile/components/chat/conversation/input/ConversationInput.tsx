@@ -2,11 +2,11 @@ import { Hand, Plus, SendHorizonalIcon } from "lucide-react-native";
 import React from "react";
 import { View, ViewStyle, TouchableOpacity, Platform } from "react-native";
 import { type ActionSheetRef } from "react-native-actions-sheet";
-import { Icon } from "~/components/ui/icon";
-import { Textarea } from "~/components/ui/textarea";
-import { cn } from "~/lib/utils";
+import { Icon } from "@instanct/mobile-ui";
+import { Textarea } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { ConversationInputActionsSheet } from "./ConversationInputActionsSheet";
-import { Text } from "@/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import Animated, {
   FadeIn,

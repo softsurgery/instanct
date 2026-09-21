@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
-import { useIntro } from "@/contexts/IntroContext";
+import { Button } from "@instanct/ui";
+import { Card, CardContent, CardHeader, CardTitle } from "@instanct/ui";
+import { useBreadcrumb } from "@instanct/contexts";
+import { useIntro } from "@instanct/contexts";
 import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
 import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import { cn } from "@/lib/utils";
 import _ from "lodash";
 import React from "react";
 import { ConfigurationInput } from "./ConfigurationInput";
-import { Label } from "@/components/ui/label";
+import { Label } from "@instanct/ui";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/api";
@@ -19,9 +19,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+} from "@instanct/ui";
+import { Input } from "@instanct/ui";
+import { Separator } from "@instanct/ui";
 
 interface ConfigurationPortalProps {
   className?: string;

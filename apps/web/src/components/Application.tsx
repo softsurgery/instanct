@@ -2,10 +2,10 @@ import React from "react";
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { Spinner } from "./shared/Spinner";
 import { Layout } from "./layout/Layout";
 import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@instanct/ui";
+import { Spinner } from "@instanct/components";
 
 interface ApplicationProps {
   className?: string;
@@ -27,6 +27,7 @@ function Application({ className, Component, pageProps }: ApplicationProps) {
   const isProtectedRoute = !isAuthPage;
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasMounted(true);
   }, []);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { hslToHex } from "@/lib/theme";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import {
   ResponseConversationDto,
   ResponseRefParamDto,
@@ -24,12 +24,12 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Icon } from "../ui/icon";
-import { Text } from "../ui/text";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useStartConversation } from "@/hooks/content/chat/useStartConversation";
 import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";
 import { useServerImages } from "@/hooks/content/useServerImages";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 import { IconMoodPlus } from "@tabler/icons-react-native";
 import Animated, {
   useSharedValue,

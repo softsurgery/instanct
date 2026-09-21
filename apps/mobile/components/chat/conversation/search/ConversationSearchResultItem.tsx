@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Text } from "~/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { ResponseMessageDto, ResponseUserDto } from "~/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { MessageTextContent } from "../bubbles/MessageTextContent";

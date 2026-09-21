@@ -1,0 +1,49 @@
+{
+  "name": "@instanct/components",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check-types": "tsc --noEmit"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@instanct/form-builder": "workspace:*",
+    "@instanct/hooks": "workspace:*",
+    "@instanct/lib": "workspace:*",
+    "@instanct/ui": "workspace:*",
+    "@radix-ui/react-scroll-area": "^1.2.10",
+    "@radix-ui/react-separator": "^1.1.8",
+    "@radix-ui/react-use-controllable-state": "^1.2.2",
+    "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.563.0",
+    "motion": "^12.23.24",
+    "sonner": "^2.0.7"
+  },
+  "peerDependencies": {
+    "next": ">=15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^15.0.2"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "typescript": "^5.5.3"
+  }
+}

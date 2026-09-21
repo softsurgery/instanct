@@ -5,9 +5,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Label } from "@/components/ui/label";
-import { Toggle } from "@/components/ui/toggle";
+} from "@instanct/ui";
+import { Label } from "@instanct/ui";
+import { Toggle } from "@instanct/ui";
 import { useRoleStore } from "@/hooks/stores/useRoleStore";
 
 interface PermissionAccordionsProps {

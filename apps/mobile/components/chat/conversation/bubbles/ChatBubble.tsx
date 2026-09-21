@@ -9,8 +9,8 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-import { Text } from "~/components/ui/text";
-import { cn } from "~/lib/utils";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { MessageTextContent } from "./MessageTextContent";
 import { useTranslation } from "react-i18next";
 

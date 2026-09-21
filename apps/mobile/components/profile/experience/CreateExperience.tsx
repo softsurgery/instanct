@@ -1,11 +1,11 @@
 import { api } from "@/api";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
-import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
-import { StableKeyboardAwareScrollView } from "@/components/shared/StableKeyboardAwareScrollView";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { FormBuilder } from "@instanct/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { useUserStore } from "@/stores/useUserStore";
 import { CreateExperienceDto, ServerErrorResponse } from "@/types";
 import { createExperienceSchema } from "@/types/validations/experience.validation";
@@ -18,8 +18,8 @@ import { useCreateExperienceFormStructure } from "./useCreateExperienceFormStruc
 import { toast } from "sonner-native";
 import React from "react";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
+import { AppHeaderBack } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
 interface CreateExperienceProps {
   className?: string;
 }

@@ -16,7 +16,7 @@ import { useExperienceCreateSheet } from "./modals/ExperienceCreateSheet";
 import { useExperienceUpdateSheet } from "./modals/ExperienceUpdateSheet";
 import { useExperienceDeleteDialog } from "./modals/ExperienceDeleteDialog";
 import { ExperienceSection } from "./ExperienceSection";
-import { Spinner } from "@/components/shared/Spinner";
+import { Spinner } from "@instanct/components";
 
 interface ExperienceProps {
   className?: string;

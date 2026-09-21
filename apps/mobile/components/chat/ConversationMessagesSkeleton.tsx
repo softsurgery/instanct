@@ -1,6 +1,6 @@
 import { Dimensions, View } from "react-native";
-import { cn } from "~/lib/utils";
-import { Skeleton } from "../ui/skeleton";
+import { cn } from "@instanct/lib";
+import { Skeleton } from "@instanct/mobile-ui";
 
 interface ConversationMessagesSkeletonProps {
   className?: string;

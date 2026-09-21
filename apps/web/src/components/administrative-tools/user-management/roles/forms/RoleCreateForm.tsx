@@ -3,9 +3,9 @@ import { cn } from "@/lib/utils";
 import { useRoleStore } from "@/hooks/stores/useRoleStore";
 import { usePermissions } from "@/hooks/content/usePermissions";
 import { useCreateRoleFormStructure } from "./useCreateRoleFormStructure";
-import { Button } from "@/components/ui/button";
+import { Button } from "@instanct/ui";
 import { Save } from "lucide-react";
-import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
+import { FormBuilder } from "@instanct/form-builder";
 
 interface RoleFormProps {
   className?: string;

@@ -1,4 +1,4 @@
-import { Text } from "@/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { identifyUser } from "@/lib/user";
 import { normalizeMessageLinkUrl } from "@/lib/messageLinks";
 import { ResponseMessageDto, ResponseMessageLinkDto } from "@/types";
@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { Link2 } from "lucide-react-native";
 import React from "react";
 import { Linking, Pressable, View } from "react-native";
-import { Icon } from "~/components/ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 
 interface LinkListItemProps {
   message: ResponseMessageDto;

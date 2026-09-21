@@ -1,8 +1,8 @@
-import { cn } from "~/lib/utils";
+import { cn } from "@instanct/lib";
 import { Pressable, View } from "react-native";
 import { Pencil } from "lucide-react-native";
-import { Icon } from "../ui/icon";
-import { Text } from "../ui/text";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 

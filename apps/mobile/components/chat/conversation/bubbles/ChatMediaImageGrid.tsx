@@ -1,11 +1,11 @@
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
-import { PhotoPreview } from "@/components/shared/PhotoPreview";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { PhotoPreview } from "@instanct/mobile-components";
 import {
   toVideoSource,
   VideoPreview,
-} from "@/components/shared/VideoPreview";
-import { VideoThumbnailPreview } from "@/components/shared/VideoThumbnailPreview";
+} from "@instanct/mobile-components";
+import { VideoThumbnailPreview } from "@instanct/mobile-components";
 import { Image, ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
 import React from "react";

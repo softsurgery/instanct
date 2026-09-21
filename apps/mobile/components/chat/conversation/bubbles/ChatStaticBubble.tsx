@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { ResponseMessageDto, StaticMessageEnum } from "@/types";
 import React from "react";
 import { Pressable } from "react-native";
-import { Text } from "~/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useTranslation } from "react-i18next";
 

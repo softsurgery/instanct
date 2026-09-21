@@ -1,9 +1,9 @@
-import { SeeMoreText } from "@/components/shared/SeeMoreText";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { SeeMoreText } from "@instanct/mobile-components";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { useColorPalette } from "@instanct/mobile-components";
 import { hslToHex } from "@/lib/theme";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { ResponseExperienceDto } from "@/types";
 import { format } from "date-fns";
 import { Briefcase, CalendarDays, Laptop, MapPin } from "lucide-react-native";

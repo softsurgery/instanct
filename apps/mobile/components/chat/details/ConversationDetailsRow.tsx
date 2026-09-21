@@ -1,10 +1,10 @@
 import React from "react";
-import { Icon } from "@/components/ui/icon";
-import { Switch } from "@/components/ui/switch";
-import { Text } from "@/components/ui/text";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { Icon } from "@instanct/mobile-ui";
+import { Switch } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { useColorPalette } from "@instanct/mobile-components";
 import { hslToHex } from "@/lib/theme";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { ChevronRight, LucideIcon } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
 

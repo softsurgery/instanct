@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
+import { cn } from "@instanct/lib";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { StableKeyboardAwareScrollView } from "@/components/shared/StableKeyboardAwareScrollView";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface VerifyEmailPortalProps {
   className?: string;
 }

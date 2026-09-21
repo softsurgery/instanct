@@ -16,7 +16,7 @@ import { useEducationCreateSheet } from "./modals/EducationCreateSheet";
 import { useEducationUpdateSheet } from "./modals/EducationUpdateSheet";
 import { useEducationDeleteDialog } from "./modals/EducationDeleteDialog";
 import { EducationSection } from "./EducationSection";
-import { Spinner } from "@/components/shared/Spinner";
+import { Spinner } from "@instanct/components";
 
 interface EducationProps {
   className?: string;

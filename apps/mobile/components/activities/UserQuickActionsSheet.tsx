@@ -1,13 +1,13 @@
 import React from "react";
 import { View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
-import { Text } from "../ui/text";
-import { Button } from "../ui/button";
-import { Icon } from "../ui/icon";
+import { Text } from "@instanct/mobile-ui";
+import { Button } from "@instanct/mobile-ui";
+import { Icon } from "@instanct/mobile-ui";
 import { identifyUser } from "@/lib/user";
 import { ResponseUserDto } from "@/types";
 import { LucideIcon } from "lucide-react-native";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 
 export interface QuickAction {
   key: string;

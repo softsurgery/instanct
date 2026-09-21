@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { ResponseSessionDto } from "@/types/session";
 import React from "react";
 import { StyleProp, TextStyle, View, ViewStyle } from "react-native";

@@ -1,10 +1,10 @@
-import { SeeMoreText } from "@/components/shared/SeeMoreText";
-import { StablePressable } from "@/components/shared/StablePressable";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { SeeMoreText } from "@instanct/mobile-components";
+import { StablePressable } from "@instanct/mobile-components";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { useColorPalette } from "@instanct/mobile-components";
 import { hslToHex, THEME } from "@/lib/theme";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { ResponseUserDto } from "@/types";
 import {
   ExternalLink,

@@ -9,10 +9,10 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
   TextFieldProps,
-} from "../../shared/form-builder/types";
+} from "@instanct/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
 import { Pressable, View } from "react-native";
-import { Text } from "@/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { useTranslation } from "react-i18next";
 
 interface useUpdateProfileFormStructureProps {

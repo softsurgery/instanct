@@ -1,8 +1,8 @@
 import React from "react";
-import StableScrollView from "@/components/shared/StableScrollView";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import { cn } from "@/lib/utils";
+import { StableScrollView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { cn } from "@instanct/lib";
 import { MapSessionPayload, ResponseSessionDto } from "@/types/session";
 import { router, useLocalSearchParams } from "expo-router";
 import { Bell } from "lucide-react-native";

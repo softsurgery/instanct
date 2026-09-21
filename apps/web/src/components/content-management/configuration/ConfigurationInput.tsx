@@ -1,11 +1,11 @@
-import { Input } from "@/components/ui/input";
+import { Input } from "@instanct/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@instanct/ui";
 import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import { cn } from "@/lib/utils";
 import { ParamVariant, ResponseConfigurationParamDto } from "@/types";

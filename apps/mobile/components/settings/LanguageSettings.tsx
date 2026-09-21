@@ -1,14 +1,14 @@
 import React from "react";
 import { View } from "react-native";
-import { Text } from "~/components/ui/text";
-import { cn } from "~/lib/utils";
-import { StableKeyboardAwareScrollView } from "~/components/shared/StableKeyboardAwareScrollView";
-import { StableSafeAreaView } from "~/components/shared/StableSafeAreaView";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { ApplicationHeader } from "~/components/shared/AppHeader";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface LanguageSettingsPortalProps {
   className?: string;
 }

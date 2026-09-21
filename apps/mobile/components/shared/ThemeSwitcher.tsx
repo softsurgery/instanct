@@ -1,5 +1,5 @@
-import { usePreferencePersistStore } from "@/stores/usePreferencePersistStore";
-import Select from "./form-builder/components/Select";
+import { usePreferencePersistStore } from "@instanct/hooks";
+import { Select } from "@instanct/mobile-form-builder";
 import { useColorScheme } from "nativewind";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { Platform, Appearance } from "react-native";

@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { LucideIcon } from "lucide-react-native";
 import React, { useMemo } from "react";
 import { Pressable, View } from "react-native";
-import { StablePressable } from "../shared/StablePressable";
-import { Icon } from "../ui/icon";
-import { Text } from "../ui/text";
+import { StablePressable } from "@instanct/mobile-components";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 
 export interface SettingRowConfig {
   title?: string;

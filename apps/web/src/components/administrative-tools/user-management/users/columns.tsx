@@ -1,19 +1,19 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@instanct/ui";
 import { format } from "date-fns";
-import { DataTableColumnHeader } from "@/components/shared/data-table/data-table-column-header";
-import { DataTableRowActions } from "@/components/shared/data-table/data-table-row-actions";
+import { DataTableColumnHeader } from "@instanct/datatable-builder";
+import { DataTableRowActions } from "@instanct/datatable-builder";
 import { ResponseUserDto } from "@/types";
-import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
+import { DataTableCell } from "@instanct/datatable-builder";
 import { useTranslation } from "react-i18next";
 import { identifyUserAvatar } from "@/lib/user";
 import UserAvatarCell from "./UserAvatarCell";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@/components/shared/data-table/types";
+} from "@instanct/datatable-builder";
 
 export const useUserColumns = (
   context: DataTableConfig<ResponseUserDto>,

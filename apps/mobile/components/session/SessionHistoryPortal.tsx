@@ -1,27 +1,27 @@
 import React from "react";
 import { View } from "react-native";
 import { LegendList } from "@legendapp/list";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
-import { cn } from "@/lib/utils";
-import { ApplicationHeader } from "../shared/AppHeader";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { cn } from "@instanct/lib";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { Map as MapIcon, ChevronRight, Calendar } from "lucide-react-native";
 import { router } from "expo-router";
-import { Text } from "../ui/text";
+import { Text } from "@instanct/mobile-ui";
 import {
   SessionStatus,
   SessionType,
   type ResponseSessionDto,
 } from "@/types/session";
 import { toDateOnly, toTimeOnly } from "@/lib/date";
-import { Icon } from "../ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import { useInfiniteUserSessions } from "@/hooks/content/sessions/useInfiniteUserSessions";
-import { StablePressable } from "../shared/StablePressable";
+import { StablePressable } from "@instanct/mobile-components";
 import { SessionStarter } from "./SessionStarter";
 import { useTranslation } from "react-i18next";
-import { Loader } from "../shared/Loader";
+import { Loader } from "@instanct/mobile-components";
 import { SessionStatusLegend } from "./SessionStatusLegend";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface SessionHistoryPortalProps {
   className?: string;
 }

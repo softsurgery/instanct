@@ -14,12 +14,12 @@ import {
   Cog,
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@instanct/ui";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+} from "@instanct/ui";
 import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";

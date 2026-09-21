@@ -3,26 +3,26 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "~/api";
 import { View } from "react-native";
 import { Loader2 } from "lucide-react-native";
-import { Text } from "~/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { createFeedbackSchema } from "~/types/validations/system-reports.validation";
-import { Button } from "~/components/ui/button";
-import { FormBuilder } from "~/components/shared/form-builder/FormBuilder";
+import { Button } from "@instanct/mobile-ui";
+import { FormBuilder } from "@instanct/mobile-form-builder";
 import { useSendFeedbackFormStructure } from "./useSendFeedbackFormStructure";
-import { cn } from "~/lib/utils";
-import { StableKeyboardAwareScrollView } from "~/components/shared/StableKeyboardAwareScrollView";
+import { cn } from "@instanct/lib";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { router } from "expo-router";
-import { StableSafeAreaView } from "~/components/shared/StableSafeAreaView";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { ApplicationHeader } from "~/components/shared/AppHeader";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { useSendFeedbackStore } from "@/stores/useFeedbackManager";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { ServerErrorResponse } from "@/types/utils/server.interfaces";
 import { toast } from "sonner-native";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface SendFeedbackPortalProps {
   className?: string;
 }

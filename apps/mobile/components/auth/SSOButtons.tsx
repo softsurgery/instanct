@@ -1,10 +1,10 @@
 import { useColorScheme } from "nativewind";
 import { Image, Platform, View } from "react-native";
 import React from "react";
-import { cn } from "~/lib/utils";
-import DividedText from "../shared/DividedText";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
+import { cn } from "@instanct/lib";
+import { DividedText } from "@instanct/mobile-components";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useSSO } from "@/hooks/useSSO";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";

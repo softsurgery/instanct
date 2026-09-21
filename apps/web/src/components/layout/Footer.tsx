@@ -1,4 +1,4 @@
-import { useFooter } from "@/contexts/FooterContext";
+import { useFooter } from "@instanct/contexts";
 import { cn } from "@/lib/utils";
 
 interface FooterProps {

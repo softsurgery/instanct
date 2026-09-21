@@ -1,14 +1,14 @@
 import React from "react";
 import { api } from "@/api";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
-import { Tappable } from "@/components/shared/Tappable";
-import { StablePressable } from "@/components/shared/StablePressable";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import StableScrollView from "@/components/shared/StableScrollView";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { Tappable } from "@instanct/mobile-components";
+import { StablePressable } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { StableScrollView } from "@instanct/mobile-components";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { getExperienceYears } from "@/lib/date";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useUserStore } from "@/stores/useUserStore";
 import { ResponseExperienceDto, ServerErrorResponse } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -20,7 +20,7 @@ import { toast } from "sonner-native";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteExperienceActionSheet } from "./DeleteExperienceActionSheet";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 
 interface UpdateExperiencesProps {
   className?: string;

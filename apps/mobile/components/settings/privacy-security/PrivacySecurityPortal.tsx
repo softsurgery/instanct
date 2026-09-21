@@ -10,17 +10,17 @@ import {
   Smartphone,
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "~/lib/utils";
-import { ApplicationHeader } from "~/components/shared/AppHeader";
-import { StableSafeAreaView } from "~/components/shared/StableSafeAreaView";
+import { cn } from "@instanct/lib";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { SettingRow, createSettingRow } from "../SettingsRow";
 import type { SettingRowConfig } from "../SettingsRow";
-import { Text } from "~/components/ui/text";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import StableScrollView from "@/components/shared/StableScrollView";
+import { Text } from "@instanct/mobile-ui";
+import { Separator } from "@instanct/mobile-ui";
+import { Badge } from "@instanct/mobile-ui";
+import { StableScrollView } from "@instanct/mobile-components";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface PrivacySecurityPortalProps {
   className?: string;
 }

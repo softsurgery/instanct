@@ -1,9 +1,9 @@
 import React from "react";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
-import { Text } from "~/components/ui/text";
-import { Button } from "~/components/ui/button";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { Text } from "@instanct/mobile-ui";
+import { Button } from "@instanct/mobile-ui";
+import { useColorPalette } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 import { RequestEvent } from "@/types";
 

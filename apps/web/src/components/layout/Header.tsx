@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
-import { ThemeSwitcher } from "../shared/ThemeSwitcher";
+import { ThemeSwitcher } from "@instanct/components";
 import { useTheme } from "next-themes";
 import { UserNav } from "./UserNav";
-import { SidebarTrigger } from "../ui/sidebar";
+import { SidebarTrigger } from "@instanct/ui";
 
 interface HeaderProps {
   className?: string;

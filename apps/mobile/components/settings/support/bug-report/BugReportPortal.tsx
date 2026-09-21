@@ -2,27 +2,27 @@ import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react-native";
 import { api } from "~/api";
-import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { View } from "react-native";
 import { useBugReportFormStructure } from "./useBugReportFormStructure";
-import { FormBuilder } from "~/components/shared/form-builder/FormBuilder";
-import { cn } from "~/lib/utils";
-import { StableKeyboardAwareScrollView } from "~/components/shared/StableKeyboardAwareScrollView";
+import { FormBuilder } from "@instanct/mobile-form-builder";
+import { cn } from "@instanct/lib";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { router } from "expo-router";
-import { StableSafeAreaView } from "~/components/shared/StableSafeAreaView";
-import { ApplicationHeader } from "~/components/shared/AppHeader";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 import { createBugSchema } from "@/types/validations/system-reports.validation";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "@/types";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface BugReportPortalProps {
   className?: string;
 }

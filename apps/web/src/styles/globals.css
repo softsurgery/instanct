@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source "../../../../packages/ui/src";
+@source "../../../../packages/components/src";
+@source "../../../../packages/form-builder/src";
+@source "../../../../packages/datatable-builder/src";
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

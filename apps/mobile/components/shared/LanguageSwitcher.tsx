@@ -1,6 +1,6 @@
-import { usePreferencePersistStore } from "@/stores/usePreferencePersistStore";
+import { usePreferencePersistStore } from "@instanct/hooks";
 import { useTranslation } from "react-i18next";
-import Select from "./form-builder/components/Select";
+import { Select } from "@instanct/mobile-form-builder";
 import * as Localization from "expo-localization";
 
 interface LanguageSwitcherProps {

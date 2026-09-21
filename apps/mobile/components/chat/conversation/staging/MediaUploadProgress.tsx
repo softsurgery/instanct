@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
-import { Text } from "~/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { useTranslation } from "react-i18next";
 
 interface MediaUploadProgressProps {

@@ -13,7 +13,7 @@ import {
   SwitchFieldProps,
   TextareaFieldProps,
   TextFieldProps,
-} from "@/components/shared/form-builder/types";
+} from "@instanct/form-builder";
 import { UserStore } from "@/hooks/stores/useUserStore";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { identifyUserAvatar } from "@/lib/user";

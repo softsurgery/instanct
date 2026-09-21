@@ -1,13 +1,13 @@
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { router } from "expo-router";
 import { Bell, FlaskConical, Settings } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { InspectBaseProfile } from "../profile/BaseProfile";
-import { ApplicationHeader } from "../shared/AppHeader";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import React from "react";
 import { useChatContext } from "@/contexts/ChatContext";

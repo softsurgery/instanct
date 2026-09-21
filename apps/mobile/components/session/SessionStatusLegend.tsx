@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from "react-native";
-import { Text } from "../ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { SessionStatus } from "@/types/session";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useTranslation } from "react-i18next";
 
 interface LegendItemProps {

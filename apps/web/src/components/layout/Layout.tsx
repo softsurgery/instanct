@@ -1,16 +1,14 @@
 import { cn } from "@/lib/utils";
 import { Header } from "./Header";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useMediaQuery } from "@instanct/ui";
 import React from "react";
-import {
-  BreadcrumbContext,
-  BreadcrumbRoute,
-} from "@/contexts/BreadcrumbContext";
+import { BreadcrumbContext } from "@instanct/contexts";
+import type { BreadcrumbRoute } from "@instanct/contexts";
 import { PageHeader } from "./PageHeader";
-import { IntroContext } from "@/contexts/IntroContext";
-import { FooterContext } from "@/contexts/FooterContext";
+import { IntroContext } from "@instanct/contexts";
+import { FooterContext } from "@instanct/contexts";
 import { Footer } from "./Footer";
-import { SidebarInset, SidebarProvider } from "../ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@instanct/ui";
 import { AppSidebar } from "./AppSidebar";
 
 interface LayoutProps {
@@ -60,39 +58,30 @@ export const Layout = ({ className, children }: LayoutProps) => {
 
   const isMobile = useMediaQuery("(max-width: 425px)");
   return (
-    <div
-      className={cn(
-        "flex md:flex-cols-[220px_1fr] lg:flex-cols-[280px_1fr] overflow-hidden fullscreen",
-        className,
-      )}
-    >
-      <SidebarProvider className="flex flex-row flex-1 overflow-hidden min-w-screen max-w-screen">
+    <div className={cn("flex overflow-hidden fullscreen", className)}>
+      <SidebarProvider className="min-h-0 min-w-0 flex-1 overflow-hidden">
         <BreadcrumbContext.Provider value={breadcrumbContext}>
           <IntroContext.Provider value={introContext}>
             <FooterContext.Provider value={footerContext}>
-              <div className="flex flex-row flex-1 overflow-hidden">
-                {/* Sidebar */}
-                <AppSidebar />
-                {/* Header , Main & Footer */}
-                <div className="flex flex-col flex-1 overflow-hidden bg-background">
-                  <Header />
-                  {(title || description) && (
-                    <PageHeader
-                      className={cn("py-5", isMobile ? "px-4" : "px-10")}
-                    />
+              <AppSidebar />
+              <SidebarInset className="min-h-0 overflow-hidden">
+                <Header />
+                {(title || description) && (
+                  <PageHeader
+                    className={cn("py-5", isMobile ? "px-4" : "px-10")}
+                  />
+                )}
+                <div
+                  className={cn(
+                    "flex min-h-0 flex-1 flex-col overflow-hidden",
+                    isMobile ? "px-4" : "px-10",
+                    className,
                   )}
-                  <main
-                    className={cn(
-                      "flex flex-col flex-1 overflow-hidden",
-                      isMobile ? "px-4" : "px-10",
-                      className,
-                    )}
-                  >
-                    {children}
-                  </main>
-                  {content && <Footer />}
+                >
+                  {children}
                 </div>
-              </div>
+                {content && <Footer />}
+              </SidebarInset>
             </FooterContext.Provider>
           </IntroContext.Provider>
         </BreadcrumbContext.Provider>
