@@ -118,12 +118,18 @@
     "actions": {
       "saveChanges": "Save Changes",
       "saving": "Saving...",
-      "resetAll": "Reset All"
+      "resetAll": "Reset All",
+      "export": "Export",
+      "import": "Import"
     },
     "messages": {
       "updateSuccess": "Configuration updated successfully",
       "updateError": "Failed to update configuration",
-      "resetSuccess": "Configuration reset to original values"
+      "resetSuccess": "Configuration reset to original values",
+      "exportSuccess": "Configuration exported",
+      "importSuccess": "Imported {{count}} configuration values",
+      "importSkipped": "Skipped {{count}} unknown or unmatched entries",
+      "importError": "Failed to import configuration file"
     },
     "loading": {
       "configurations": "Loading configuration..."
@@ -132,8 +138,49 @@
       "enter": "Enter {{name}}",
       "select": "Select {{name}}"
     },
+    "list": {
+      "add": "Add item",
+      "remove": "Remove",
+      "item": "Item {{index}}",
+      "empty": "No items yet. Add a provider when you need one.",
+      "missingSchema": "This list has no schema and cannot be edited."
+    },
     "groups": {
       "count": "({{count}})"
+    }
+  },
+  "pages": {
+    "page": {
+      "title": "Legal pages",
+      "description": "Edit terms, privacy, and other public HTML documents."
+    },
+    "breadcrumbs": {
+      "contentManagement": "Content Management",
+      "pages": "Pages"
+    },
+    "actions": {
+      "saveChanges": "Save changes",
+      "saving": "Saving...",
+      "export": "Export",
+      "import": "Import"
+    },
+    "messages": {
+      "updateSuccess": "Content page updated successfully",
+      "updateError": "Failed to update content page",
+      "exportSuccess": "Page exported",
+      "importSuccess": "Page content imported",
+      "importError": "Failed to import page file"
+    },
+    "loading": "Loading pages...",
+    "empty": "No content pages yet. Run the content seeder first.",
+    "fields": {
+      "title": "Title",
+      "subtitle": "Subtitle"
+    },
+    "editor": {
+      "hint": "Use HTML rich text editor. Wrap unfinished features with Not applied block. Insert {{placeholders}} for company, hosting, and map values from Configuration.",
+      "notApplied": "Not currently applied",
+      "insertPlaceholder": "Insert placeholder"
     }
   }
 }

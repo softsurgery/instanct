@@ -4,8 +4,8 @@
   flex-direction: column;
   min-height: 0;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--border));
-  background-color: hsl(var(--background));
+  border: 1px solid var(--border);
+  background-color: var(--input);
   transition:
     border-color 150ms ease-out,
     box-shadow 150ms ease-out;
@@ -58,7 +58,7 @@ button.rte-control-button:active {
   user-select: none;
   float: left;
   height: 0;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   opacity: 0.5;
   transition: opacity 150ms ease-out;
 }
@@ -167,12 +167,30 @@ button.rte-control-button:active {
 }
 
 .rte-content .ProseMirror blockquote {
-  border-left: 3px solid hsl(var(--border));
+  border-left: 3px solid var(--border);
   padding-left: 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   font-style: italic;
+}
+
+.rte-content .ProseMirror mark {
+  background-color: color-mix(in srgb, #f59e0b 32%, transparent);
+  color: inherit;
+  border-radius: 0.25rem;
+  padding: 0.08em 0.28em;
+  box-decoration-break: clone;
+}
+
+.rte-content .ProseMirror .legal-not-applied,
+.rte-content .ProseMirror blockquote.legal-not-applied {
+  border-left: 4px solid #d97706;
+  background-color: color-mix(in srgb, #f59e0b 12%, transparent);
+  color: inherit;
+  font-style: normal;
+  border-radius: 0.5rem;
+  padding: 0.85rem 1rem;
 }
 
 .rte-content .ProseMirror pre code {
@@ -183,10 +201,10 @@ button.rte-control-button:active {
 }
 
 .rte-content .ProseMirror pre {
-  background-color: hsl(var(--muted));
-  color: hsl(var(--foreground));
+  background-color: var(--muted);
+  color: var(--foreground);
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--border));
+  border: 1px solid var(--border);
   padding: 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -205,13 +223,13 @@ button.rte-control-button:active {
 
 .rte-content .ProseMirror hr {
   border: none;
-  border-top: 1px solid hsl(var(--border));
+  border-top: 1px solid var(--border);
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
 .rte-content .ProseMirror a {
-  color: hsl(var(--primary));
+  color: var(--primary);
   text-decoration: underline;
   text-underline-offset: 4px;
   cursor: pointer;
@@ -220,24 +238,24 @@ button.rte-control-button:active {
     text-decoration-color 150ms ease-out;
   text-decoration-color: color-mix(
     in srgb,
-    hsl(var(--primary)) 40%,
+    var(--primary) 40%,
     transparent
   );
 }
 
 .rte-content .ProseMirror a:hover {
-  color: color-mix(in srgb, hsl(var(--primary)) 80%, transparent);
+  color: color-mix(in srgb, var(--primary) 80%, transparent);
   text-decoration-color: color-mix(
     in srgb,
-    hsl(var(--primary)) 80%,
+    var(--primary) 80%,
     transparent
   );
 }
 
 .rte-content .ProseMirror::selection,
-.rte-content .ProseMirror *::selection {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+.rte-content .ProseMirror *::selection,
+.rte-root ::selection,
+.rte-root *::selection {
 }
 
 /* Syntax Highlighting */
@@ -338,7 +356,7 @@ button.rte-control-button:active {
 .rte-content .ProseMirror code {
   font-size: 0.875em;
   font-weight: 500;
-  background: color-mix(in srgb, hsl(var(--muted)) 70%, transparent);
+  background: color-mix(in srgb, var(--muted) 70%, transparent);
   padding: 0.125rem 0.375rem;
   border-radius: calc(var(--radius) - 4px);
   transition: background-color 150ms ease-out;
@@ -355,13 +373,13 @@ button.rte-control-button:active {
   top: var(--rte-sticky-offset, 0px);
   background-color: color-mix(
     in srgb,
-    hsl(var(--muted)) 35%,
-    hsl(var(--background))
+    var(--muted) 35%,
+    var(--background)
   );
   z-index: 1;
   border-start-end-radius: var(--radius);
   border-start-start-radius: var(--radius);
-  border-bottom: 1px solid hsl(var(--border));
+  border-bottom: 1px solid var(--border);
   padding: 0.5rem 0.75rem;
   transition:
     box-shadow 150ms ease-out,
@@ -370,7 +388,7 @@ button.rte-control-button:active {
 
 .rte-toolbar[data-sticky] {
   position: sticky;
-  background-color: color-mix(in srgb, hsl(var(--background)) 85%, transparent);
+  background-color: color-mix(in srgb, var(--background) 85%, transparent);
   backdrop-filter: blur(8px);
   box-shadow:
     0px 0px 0px 1px oklch(0 0 0 / 0.04),
@@ -392,20 +410,20 @@ button.rte-control-button:active {
   flex-wrap: wrap;
   flex-shrink: 0;
   gap: 0.5rem;
-  background-color: hsl(var(--background));
+  background-color: var(--background);
   z-index: 1;
   border-end-end-radius: var(--radius);
   border-end-start-radius: var(--radius);
-  border-top: 1px solid hsl(var(--border));
+  border-top: 1px solid var(--border);
   padding: 0.5rem 0.75rem;
   font-size: 0.75rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 .rte-footer[data-sticky] {
   position: sticky;
   bottom: 0;
-  background-color: color-mix(in srgb, hsl(var(--background)) 85%, transparent);
+  background-color: color-mix(in srgb, var(--background) 85%, transparent);
   backdrop-filter: blur(8px);
   box-shadow:
     0px 0px 0px 1px oklch(0 0 0 / 0.04),
@@ -438,11 +456,11 @@ button.rte-control-button:active {
 .rte-footer-word-count-number {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
 }
 
 .rte-footer-word-count-unit {
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 .rte-footer-word-count-separator {
@@ -452,16 +470,16 @@ button.rte-control-button:active {
   border-radius: 9999px;
   background-color: color-mix(
     in srgb,
-    hsl(var(--muted-foreground)) 45%,
+    var(--muted-foreground) 45%,
     transparent
   );
 }
 
 .rte-toolbar--subtle + .rte-content + .rte-footer {
-  background-color: hsl(var(--muted));
+  background-color: var(--muted);
 }
 .rte-toolbar--compact + .rte-content + .rte-footer {
-  background-color: hsl(var(--muted));
+  background-color: var(--muted);
 }
 
 @media (max-width: 640px) {
@@ -485,12 +503,12 @@ button.rte-control-button:active {
   align-items: center;
 }
 .rte-root[data-variant="default"] .rte-controls-group > button {
-  border: 1px solid hsl(var(--border));
+  border: 1px solid var(--border);
   border-radius: 0;
   min-width: 1.75rem;
   height: 1.75rem;
-  background-color: hsl(var(--background));
-  color: hsl(var(--muted-foreground));
+  background-color: var(--background);
+  color: var(--muted-foreground);
   transition:
     background-color 150ms ease-out,
     color 150ms ease-out,
@@ -510,20 +528,20 @@ button.rte-control-button:active {
   border-end-end-radius: calc(var(--radius) - 2px);
 }
 .rte-root[data-variant="default"] .rte-controls-group > button:hover {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 .rte-root[data-variant="default"] .rte-controls-group > button:focus-visible {
-  outline: 2px solid color-mix(in srgb, hsl(var(--primary)) 40%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--primary) 40%, transparent);
   outline-offset: -2px;
-  background-color: color-mix(in srgb, hsl(var(--primary)) 8%, transparent);
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
 }
 .rte-root[data-variant="default"] .rte-controls-group > button[data-state="on"],
 .rte-root[data-variant="default"]
   .rte-controls-group
   > button[aria-pressed="true"] {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
@@ -535,10 +553,10 @@ button.rte-control-button:active {
     0 1px 2px rgba(0, 0, 0, 0.04);
 }
 .rte-toolbar--subtle {
-  border-bottom: 1px solid hsl(var(--border));
+  border-bottom: 1px solid var(--border);
   padding: 0.375rem 0.5rem;
   gap: 0.375rem;
-  background-color: hsl(var(--muted));
+  background-color: var(--muted);
 }
 .rte-root[data-variant="subtle"] .rte-content .ProseMirror {
   padding: 0.875rem;
@@ -554,7 +572,7 @@ button.rte-control-button:active {
   width: 1px;
   height: 1rem;
   margin-inline: 0.25rem;
-  background-color: hsl(var(--border));
+  background-color: var(--border);
   flex-shrink: 0;
 }
 .rte-root[data-variant="subtle"] .rte-controls-group > button {
@@ -563,29 +581,29 @@ button.rte-control-button:active {
   min-width: 2rem;
   height: 2rem;
   background-color: transparent;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   transition:
     background-color 150ms ease-out,
     color 150ms ease-out;
 }
 .rte-root[data-variant="subtle"] .rte-controls-group > button:hover {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 .rte-root[data-variant="subtle"] .rte-controls-group > button:focus-visible {
-  outline: 2px solid color-mix(in srgb, hsl(var(--primary)) 40%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--primary) 40%, transparent);
   outline-offset: 1px;
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 .rte-root[data-variant="subtle"] .rte-controls-group > button[data-state="on"],
 .rte-root[data-variant="subtle"]
   .rte-controls-group
   > button[aria-pressed="true"] {
-  background-color: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
-  color: hsl(var(--primary));
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
   box-shadow: inset 0 0 0 1px
-    color-mix(in srgb, hsl(var(--primary)) 25%, transparent);
+    color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
 /* ── Compact variant: inline fused toolbar-content ── */
@@ -596,7 +614,7 @@ button.rte-control-button:active {
   padding: 0.25rem 0.375rem;
   gap: 0.25rem;
   border-bottom: none;
-  background-color: hsl(var(--muted));
+  background-color: var(--muted);
 }
 .rte-root[data-variant="compact"] .rte-content .ProseMirror {
   padding: 0.5rem 0.625rem;
@@ -613,7 +631,7 @@ button.rte-control-button:active {
   width: 1px;
   height: 0.875rem;
   margin-inline: 0.125rem;
-  background-color: hsl(var(--border));
+  background-color: var(--border);
   flex-shrink: 0;
 }
 .rte-root[data-variant="compact"] .rte-controls-group > button {
@@ -622,29 +640,29 @@ button.rte-control-button:active {
   min-width: 1.5rem;
   height: 1.5rem;
   background-color: transparent;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   transition:
     background-color 150ms ease-out,
     color 150ms ease-out;
 }
 .rte-root[data-variant="compact"] .rte-controls-group > button:hover {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 .rte-root[data-variant="compact"] .rte-controls-group > button:focus-visible {
-  outline: 2px solid color-mix(in srgb, hsl(var(--primary)) 40%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--primary) 40%, transparent);
   outline-offset: 1px;
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 .rte-root[data-variant="compact"] .rte-controls-group > button[data-state="on"],
 .rte-root[data-variant="compact"]
   .rte-controls-group
   > button[aria-pressed="true"] {
-  background-color: color-mix(in srgb, hsl(var(--primary)) 10%, transparent);
-  color: hsl(var(--primary));
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
   box-shadow: inset 0 0 0 1px
-    color-mix(in srgb, hsl(var(--primary)) 25%, transparent);
+    color-mix(in srgb, var(--primary) 25%, transparent);
 }
 .rte-root[data-variant="compact"] .rte-editor-icon {
   height: 0.875rem;
@@ -718,9 +736,9 @@ button.rte-control-button:active {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 1px solid hsl(var(--border));
+  border: 1px solid var(--border);
   border-radius: calc(var(--radius) - 2px);
-  background-color: hsl(var(--background));
+  background-color: var(--background);
   vertical-align: middle;
   position: relative;
   flex-shrink: 0;
@@ -735,8 +753,8 @@ button.rte-control-button:active {
 }
 
 .rte-task-list input[type="checkbox"]:checked {
-  background-color: hsl(var(--primary));
-  border-color: hsl(var(--primary));
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 @keyframes checkmark-in {
@@ -786,7 +804,7 @@ button.rte-control-button:active {
 }
 
 .rte-embed-wrapper[data-selected] .rte-embed {
-  outline: 2px solid hsl(var(--primary));
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
   border-radius: var(--radius);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -796,7 +814,7 @@ button.rte-control-button:active {
   position: relative;
   overflow: visible;
   border-radius: var(--radius);
-  background: hsl(var(--muted));
+  background: var(--muted);
   display: block;
   width: 100%;
   transition:
@@ -816,7 +834,7 @@ button.rte-control-button:active {
 .rte-embed-loading {
   padding: 2rem;
   text-align: center;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -840,8 +858,8 @@ button.rte-control-button:active {
   display: flex;
   align-items: center;
   height: 2.25rem;
-  background: hsl(var(--popover));
-  border: 1px solid hsl(var(--border));
+  background: var(--popover);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
   padding: 0 0.375rem;
@@ -860,7 +878,7 @@ button.rte-control-button:active {
 .rte-embed-selector-divider {
   width: 1px;
   height: 1.25rem;
-  background: hsl(var(--border));
+  background: var(--border);
   margin: 0 0.125rem;
   flex-shrink: 0;
 }
@@ -875,7 +893,7 @@ button.rte-control-button:active {
   border: none;
   border-radius: calc(var(--radius) - 4px);
   background: transparent;
-  color: hsl(var(--popover-foreground));
+  color: var(--popover-foreground);
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 500;
@@ -886,8 +904,8 @@ button.rte-control-button:active {
 }
 
 .rte-embed-selector-btn:hover {
-  background: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .rte-embed-selector-btn:active {
@@ -895,8 +913,8 @@ button.rte-control-button:active {
 }
 
 .rte-embed-selector-btn--active {
-  color: hsl(var(--primary));
-  background: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
 .rte-embed-selector-btn--preset {
@@ -906,18 +924,18 @@ button.rte-control-button:active {
 }
 
 .rte-embed-selector-btn--danger:hover {
-  background: color-mix(in srgb, hsl(var(--destructive)) 15%, transparent);
-  color: hsl(var(--destructive));
+  background: color-mix(in srgb, var(--destructive) 15%, transparent);
+  color: var(--destructive);
 }
 
 .rte-embed-selector-btn--save {
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background: var(--primary);
+  color: var(--primary-foreground);
   padding: 0 0.5rem;
 }
 .rte-embed-selector-btn--save:hover {
-  background: color-mix(in srgb, hsl(var(--primary)) 90%, black);
-  color: hsl(var(--primary-foreground));
+  background: color-mix(in srgb, var(--primary) 90%, black);
+  color: var(--primary-foreground);
 }
 
 .rte-embed-selector-edit-form {
@@ -932,14 +950,14 @@ button.rte-control-button:active {
   padding: 0 0.5rem;
   font-size: 0.75rem;
   border-radius: calc(var(--radius) - 4px);
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--foreground);
   outline: none;
 }
 
 .rte-embed-selector-input:focus {
-  border-color: hsl(var(--primary));
+  border-color: var(--primary);
 }
 
 .rte-embed-resize-badge {
@@ -986,7 +1004,7 @@ button.rte-control-button:active {
   position: absolute;
   inset: 4px 1px;
   width: 2px;
-  background: hsl(var(--primary));
+  background: var(--primary);
   border-radius: 1px;
   transition:
     width 150ms ease-out,
@@ -1012,7 +1030,7 @@ button.rte-control-button:active {
   position: absolute;
   inset: 4px 1px;
   width: 2px;
-  background: hsl(var(--primary));
+  background: var(--primary);
   border-radius: 1px;
   transition:
     width 150ms ease-out,
@@ -1039,7 +1057,7 @@ button.rte-control-button:active {
   left: 4px;
   right: 4px;
   height: 2px;
-  background: hsl(var(--primary));
+  background: var(--primary);
   border-radius: 1px;
   bottom: 1px;
   transition:
@@ -1055,8 +1073,8 @@ button.rte-control-button:active {
 .rte-resize-handle--corner {
   width: 12px;
   height: 12px;
-  background: hsl(var(--primary));
-  border: 2px solid hsl(var(--background));
+  background: var(--primary);
+  border: 2px solid var(--background);
   border-radius: 2px;
   transition: transform 150ms ease-out;
 }
@@ -1093,8 +1111,8 @@ button.rte-control-button:active {
   display: flex;
   align-items: center;
   height: 2.25rem;
-  background: hsl(var(--popover));
-  border: 1px solid hsl(var(--border));
+  background: var(--popover);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   padding: 0 0.25rem;
@@ -1110,7 +1128,7 @@ button.rte-control-button:active {
 .rte-bubble-separator {
   width: 1px;
   height: 1.25rem;
-  background: hsl(var(--border));
+  background: var(--border);
   margin: 0 0.125rem;
   flex-shrink: 0;
 }
@@ -1124,7 +1142,7 @@ button.rte-control-button:active {
   border: none;
   border-radius: calc(var(--radius) - 4px);
   background: transparent;
-  color: hsl(var(--popover-foreground));
+  color: var(--popover-foreground);
   cursor: pointer;
   font-size: 0.8125rem;
   white-space: nowrap;
@@ -1135,8 +1153,8 @@ button.rte-control-button:active {
 }
 
 .rte-bubble-btn:hover {
-  background: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .rte-bubble-btn:active {
@@ -1144,8 +1162,8 @@ button.rte-control-button:active {
 }
 
 .rte-bubble-btn--active {
-  color: hsl(var(--primary));
-  background: hsl(var(--accent));
+  color: var(--primary);
+  background: var(--accent);
 }
 
 .rte-bubble-btn-icon {
@@ -1180,8 +1198,8 @@ button.rte-control-button:active {
   left: 0;
   z-index: 1000;
   min-width: 150px;
-  background: hsl(var(--popover));
-  border: 1px solid hsl(var(--border));
+  background: var(--popover);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   padding: 0.25rem;
@@ -1207,7 +1225,7 @@ button.rte-control-button:active {
   width: 100%;
   padding: 0.375rem 0.5rem;
   font-size: 0.8125rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   background: transparent;
   border: none;
   border-radius: calc(var(--radius) - 4px);
@@ -1220,7 +1238,7 @@ button.rte-control-button:active {
 
 .rte-bubble-dropdown-item:hover,
 .rte-bubble-dropdown-item:focus-visible {
-  color: hsl(var(--foreground));
+  color: var(--foreground);
 }
 
 .rte-bubble-dropdown-pill {
@@ -1230,7 +1248,7 @@ button.rte-control-button:active {
   z-index: 0;
   pointer-events: none;
   border-radius: calc(var(--radius) - 4px);
-  background: color-mix(in srgb, hsl(var(--primary)) 6%, transparent);
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
   opacity: 0;
   transition:
     top 220ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -1245,8 +1263,8 @@ button.rte-control-button:active {
 }
 
 .rte-bubble-dropdown-item--active {
-  color: hsl(var(--primary));
-  background-color: color-mix(in srgb, hsl(var(--primary)) 10%, transparent);
+  color: var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent);
 }
 
 .rte-bubble-dropdown-icon {
@@ -1254,7 +1272,7 @@ button.rte-control-button:active {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   width: 1rem;
   height: 1rem;
 }
@@ -1265,7 +1283,7 @@ button.rte-control-button:active {
 }
 
 .rte-bubble-dropdown-item--active .rte-bubble-dropdown-icon {
-  color: hsl(var(--primary));
+  color: var(--primary);
 }
 
 /* ── Suppress transitions on theme switch ── */
@@ -1273,4 +1291,10 @@ button.rte-control-button:active {
 .rte-theme-transitioning *::before,
 .rte-theme-transitioning *::after {
   transition: none !important;
+}
+
+/* ── Fullscreen mode ── */
+.rte-root[data-fullscreen],
+.rte-root.rte-fullscreen,
+.rte-root--fullscreen {
 }

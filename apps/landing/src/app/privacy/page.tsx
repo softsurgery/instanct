@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
-import { LegalPage } from "@/components/legal-page";
-import { privacySections } from "@/lib/site";
+import { LegalHtmlPage, LegalUnavailable } from "@/components/legal-html-page";
+import { findBySlug } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
 };
 
-export default function PrivacyPolicyPage() {
-  return (
-    <LegalPage
-      title="Privacy Policy"
-      subtitle="We collect only what we need to deliver a safe, personalized Instanct experience."
-      updatedLabel="Updated Feb 5, 2026"
-      sections={privacySections}
-    />
-  );
+export default async function PrivacyPolicyPage() {
+  const page = await findBySlug("privacy");
+
+  if (!page) {
+    return (
+      <LegalUnavailable
+        title="Privacy Policy"
+        subtitle="The privacy policy is temporarily unavailable. Please try again later."
+      />
+    );
+  }
+
+  return <LegalHtmlPage page={page} />;
 }

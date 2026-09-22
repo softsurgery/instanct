@@ -9,19 +9,12 @@ import { ConfigurationInput } from "./ConfigurationInput";
 import { Label } from "@instanct/ui";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { api } from "@/api";
-import {
-  Download,
-  Loader2,
-  RotateCcw,
-  Save,
-  Search,
-  Settings,
-  Upload,
-} from "lucide-react";
+import { api } from "@/lib/api";
+import { Loader2, RotateCcw, Save, Search, Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@instanct/ui";
 import { SideNav, SideNavItem } from "@instanct/components";
+import { ImportExportActions } from "../ImportExportActions";
 import {
   applyConfigurationImport,
   buildConfigurationExport,
@@ -36,7 +29,7 @@ export const ConfigurationPortal = ({
   className,
 }: ConfigurationPortalProps) => {
   const { t } = useTranslation("content-management");
-  const { setIntro, clearIntro, clearFloating } = useIntro();
+  const { setIntro, setFloating, clearIntro, clearFloating } = useIntro();
   const { setRoutes, clearRoutes } = useBreadcrumb();
   const { setContent, clearContent } = useFooter();
   const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
@@ -45,7 +38,6 @@ export const ConfigurationPortal = ({
   const configStore = useConfigStore();
 
   const originalValuesRef = React.useRef<{ id: number; value: string }[]>([]);
-  const importInputRef = React.useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedNamespaceId, setSelectedNamespaceId] = React.useState<
     string | null
@@ -111,15 +103,9 @@ export const ConfigurationPortal = ({
     toast.success(t("configuration.messages.exportSuccess"));
   }, [namespaces, t]);
 
-  const handleImportClick = React.useCallback(() => {
-    importInputRef.current?.click();
-  }, []);
-
-  const handleImportFile = React.useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      event.target.value = "";
-      if (!file || !namespaces.length) return;
+  const handleImport = React.useCallback(
+    async (file: File) => {
+      if (!namespaces.length) return;
 
       try {
         const raw = await file.text();
@@ -185,6 +171,30 @@ export const ConfigurationPortal = ({
   }, [clearFloating, clearIntro, clearRoutes, setIntro, setRoutes, t]);
 
   React.useEffect(() => {
+    setFloating?.(
+      <ImportExportActions
+        exportLabel={t("configuration.actions.export")}
+        importLabel={t("configuration.actions.import")}
+        disabled={isSaving || !namespaces.length}
+        onExport={handleExport}
+        onImport={handleImport}
+      />,
+    );
+
+    return () => {
+      clearFloating?.();
+    };
+  }, [
+    clearFloating,
+    handleExport,
+    handleImport,
+    isSaving,
+    namespaces.length,
+    setFloating,
+    t,
+  ]);
+
+  React.useEffect(() => {
     if (!selectedNamespace) {
       clearContent?.();
       return;
@@ -192,26 +202,6 @@ export const ConfigurationPortal = ({
 
     setContent?.(
       <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleExport}
-          disabled={isSaving}
-        >
-          <Download />
-          {t("configuration.actions.export")}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleImportClick}
-          disabled={isSaving}
-        >
-          <Upload />
-          {t("configuration.actions.import")}
-        </Button>
         <Button
           type="button"
           variant="outline"
@@ -239,8 +229,6 @@ export const ConfigurationPortal = ({
     };
   }, [
     clearContent,
-    handleExport,
-    handleImportClick,
     handleReset,
     handleSave,
     isSaving,
@@ -289,13 +277,6 @@ export const ConfigurationPortal = ({
     <div
       className={cn("flex flex-col lg:flex-row gap-6 w-full h-auto", className)}
     >
-      <input
-        ref={importInputRef}
-        type="file"
-        accept="application/json,.json"
-        className="hidden"
-        onChange={handleImportFile}
-      />
       <aside className="w-full lg:w-72 shrink-0 space-y-3">
         <SideNav
           items={sideNavItems}

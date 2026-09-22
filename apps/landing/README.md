@@ -13,4 +13,5 @@ pnpm --filter instanct-landing dev
 
 Open [http://localhost:3002](http://localhost:3002) to view the landing page.
 
-Copy `.env.example` to `.env` to configure store links, the web app URL, and contact email.
+Copy `.env.example` to `.env` to configure store links, the web app URL, contact email, and the API base URL used to load legal pages.
+

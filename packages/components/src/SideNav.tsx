@@ -152,6 +152,7 @@ export function SideNav({
 
     if (onSelect) {
       onSelect(item);
+      return;
     }
 
     if (item.external) {

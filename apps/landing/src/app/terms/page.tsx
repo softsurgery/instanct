@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
-import { LegalPage } from "@/components/legal-page";
-import { termsSections } from "@/lib/site";
+import { LegalHtmlPage, LegalUnavailable } from "@/components/legal-html-page";
+import { findBySlug } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
 };
 
-export default function TermsPage() {
-  return (
-    <LegalPage
-      title="Terms & Conditions"
-      subtitle="These terms help keep Instanct safe, respectful, and enjoyable for everyone."
-      updatedLabel="Updated Feb 5, 2026"
-      sections={termsSections}
-    />
-  );
+export default async function TermsPage() {
+  const page = await findBySlug("terms");
+
+  if (!page) {
+    return (
+      <LegalUnavailable
+        title="Terms & Conditions"
+        subtitle="The terms of service are temporarily unavailable. Please try again later."
+      />
+    );
+  }
+
+  return <LegalHtmlPage page={page} />;
 }

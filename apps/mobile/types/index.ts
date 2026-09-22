@@ -1,6 +1,7 @@
 export * from "./auth";
 export * from "./chat";
 export * from "./configuration";
+export * from "./content";
 export * from "./geolocation";
 export * from "./notifications";
 export * from "./reference-types";
