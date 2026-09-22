@@ -37,13 +37,13 @@ export class ContentPageController {
   constructor(private readonly contentPageService: ContentPageService) {}
 
   @Public()
-  @Get('/public/slug/:slug')
+  @Get('/slug/:slug')
   async findBySlug(
     @Param('slug') slug: string,
   ): Promise<ResponseContentPageDto> {
     return toDto(
       ResponseContentPageDto,
-      await this.contentPageService.findOneBySlug(slug),
+      await this.contentPageService.findBySlug(slug),
     );
   }
 
@@ -65,16 +65,6 @@ export class ContentPageController {
     return toDtoArray(
       ResponseContentPageDto,
       await this.contentPageService.findAll(query),
-    );
-  }
-
-  @Get('/slug/:slug')
-  async findOneBySlug(
-    @Param('slug') slug: string,
-  ): Promise<ResponseContentPageDto> {
-    return toDto(
-      ResponseContentPageDto,
-      await this.contentPageService.findOneBySlug(slug),
     );
   }
 

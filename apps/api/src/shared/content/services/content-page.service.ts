@@ -22,6 +22,22 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
     });
   }
 
+  async findBySlug(slug: string) {
+    const page = await this.findOneBySlug(slug);
+    if (!page) return null;
+
+    const interpolated = await this.contentInterpolationService.interpolate(
+      page.body,
+    );
+
+    return {
+      ...page,
+      body: interpolated.body,
+      unresolvedKeys: interpolated.unresolvedKeys,
+      hasNotApplied: interpolated.hasNotApplied,
+    };
+  }
+
   @Transactional()
   async save(dto: CreateContentPageDto): Promise<ContentPageEntity> {
     const existing = await this.contentPageRepository.findOne({
