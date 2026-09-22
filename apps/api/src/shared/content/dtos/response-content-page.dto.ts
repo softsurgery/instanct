@@ -27,10 +27,6 @@ export class ResponseContentPageDto extends ResponseDtoHelper {
   @Expose()
   locale: string;
 
-  @ApiProperty({ type: Boolean })
-  @Expose()
-  published: boolean;
-
   @ApiProperty({ type: [String], required: false })
   @Expose()
   unresolvedKeys?: string[];

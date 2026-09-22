@@ -1,9 +1,5 @@
 import { Transactional } from '@nestjs-cls/transactional';
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { ContentPageRepository } from '../repositories/content-page.repository';
 import { ContentPageEntity } from '../entities/content-page.entity';
 import { CreateContentPageDto } from '../dtos/create-content-page.dto';
@@ -20,32 +16,10 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
     super(contentPageRepository);
   }
 
-  async findOneBySlug(
-    slug: string,
-    publishedOnly = false,
-  ): Promise<ContentPageEntity | null> {
+  async findOneBySlug(slug: string): Promise<ContentPageEntity | null> {
     return this.contentPageRepository.findOne({
-      where: {
-        slug,
-        published: publishedOnly ? true : undefined,
-      },
+      where: { slug },
     });
-  }
-
-  async getPublishedBySlug(slug: string) {
-    const page = await this.findOneBySlug(slug, true);
-    if (!page) {
-      throw new NotFoundException('Content page not found');
-    }
-    const interpolated = await this.contentInterpolationService.interpolate(
-      page.body,
-    );
-    return {
-      ...page,
-      body: interpolated.body,
-      unresolvedKeys: interpolated.unresolvedKeys,
-      hasNotApplied: interpolated.hasNotApplied,
-    };
   }
 
   @Transactional()
@@ -61,7 +35,6 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
     return this.contentPageRepository.save({
       ...dto,
       locale: dto.locale ?? 'fr',
-      published: dto.published ?? true,
     });
   }
 

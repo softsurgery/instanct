@@ -20,7 +20,4 @@ export class ContentPageEntity extends EntityHelper {
 
   @Column({ type: 'varchar', length: 8, default: 'fr' })
   locale: string;
-
-  @Column({ type: 'boolean', default: true })
-  published: boolean;
 }

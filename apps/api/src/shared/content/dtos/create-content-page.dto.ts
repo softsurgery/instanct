@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
   IsOptional,
   IsString,
   Length,
@@ -35,9 +34,4 @@ export class CreateContentPageDto {
   @IsOptional()
   @Length(2, 8)
   locale?: string;
-
-  @ApiProperty({ type: Boolean, required: false })
-  @IsBoolean()
-  @IsOptional()
-  published?: boolean;
 }

@@ -38,12 +38,12 @@ export class ContentPageController {
 
   @Public()
   @Get('/public/slug/:slug')
-  async findPublishedBySlug(
+  async findBySlug(
     @Param('slug') slug: string,
   ): Promise<ResponseContentPageDto> {
     return toDto(
       ResponseContentPageDto,
-      await this.contentPageService.getPublishedBySlug(slug),
+      await this.contentPageService.findOneBySlug(slug),
     );
   }
 
