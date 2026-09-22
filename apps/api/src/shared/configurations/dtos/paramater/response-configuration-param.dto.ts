@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
 import { ResponseConfigurationNamespaceDto } from '../namespace/response-configuration-namespace.dto';
 import { ParamVariant } from '../../enums/param-variant.enum';
+import { ConfigurationListFieldSchema } from '../../utils/configuration-list-schema';
 
 export class ResponseConfigurationParamDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -41,4 +42,8 @@ export class ResponseConfigurationParamDto extends ResponseDtoHelper {
   @ApiProperty({ type: Object })
   @Expose()
   options?: { label: string; value: string }[];
+
+  @ApiProperty({ type: Object, required: false })
+  @Expose()
+  schema?: ConfigurationListFieldSchema[];
 }

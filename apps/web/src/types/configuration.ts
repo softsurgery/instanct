@@ -1,5 +1,20 @@
 import { ResponseUserDto } from "./user-management";
 
+export enum ParamVariant {
+  STRING = "string",
+  NUMBER = "number",
+  BOOLEAN = "boolean",
+  SELECT = "select",
+  LIST = "list",
+}
+
+export interface ConfigurationListFieldSchema {
+  key: string;
+  label: string;
+  variant: ParamVariant;
+  required?: boolean;
+}
+
 export interface ResponseConfigurationParamDto {
   id: number;
   name?: string;
@@ -9,6 +24,7 @@ export interface ResponseConfigurationParamDto {
   variant: ParamVariant;
   value?: string;
   options?: { label: string; value: string }[];
+  schema?: ConfigurationListFieldSchema[];
 }
 
 export interface ResponseConfigurationNamespaceDto {
@@ -23,11 +39,4 @@ export interface ResponseConfigurationNamespaceDto {
 export interface UpdateConfigurationParameterDto {
   id: number;
   value: string;
-}
-
-export enum ParamVariant {
-  STRING = "string",
-  NUMBER = "number",
-  BOOLEAN = "boolean",
-  SELECT = "select",
 }

@@ -7,6 +7,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { ParamVariant } from '../enums/param-variant.enum';
 import { ConfigurationParamaterNotFoundException } from '../errors/paramater/paramater.notfound.error copy';
 import { ConfigurationParamaterInvalideValueException } from '../errors/paramater/paramater.invalide.error';
+import { isValidConfigurationListValue } from '../utils/configuration-list-schema';
 
 @Injectable()
 export class ConfigurationParamService extends AbstractCrudService<ConfigurationParamEntity> {
@@ -26,6 +27,8 @@ export class ConfigurationParamService extends AbstractCrudService<Configuration
         return param.value === 'true' || param.value === 'false';
       case ParamVariant.SELECT:
         return param.options?.some((option) => option.value === param.value);
+      case ParamVariant.LIST:
+        return isValidConfigurationListValue(param.value, param.schema);
       default:
         return false;
     }
@@ -43,11 +46,16 @@ export class ConfigurationParamService extends AbstractCrudService<Configuration
           throw new ConfigurationParamaterNotFoundException();
         }
 
-        if (!ConfigurationParamService.isValidValue(entity)) {
+        const nextValue = {
+          ...entity,
+          value: dto.value,
+        };
+
+        if (!ConfigurationParamService.isValidValue(nextValue)) {
           throw new ConfigurationParamaterInvalideValueException();
         }
 
-        return this.repository.update(dto.id, dto);
+        return this.repository.update(dto.id, { value: dto.value });
       }),
     );
   }
