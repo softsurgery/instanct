@@ -75,7 +75,7 @@ export const RichTextField = ({ field }: RichTextFieldProps) => {
         "w-full rounded-md shadow-sm mt-1 transition-all duration-200",
         field.error && "border-destructive focus-within:ring-destructive",
         isFullscreen &&
-          "fixed inset-0 z-[9999]  m-0 p-1 sm:p-3 w-full h-full overflow-hidden flex flex-col rounded-none border-none",
+          "fixed inset-0 z-999999 bg-input m-0 p-1 sm:p-3 w-full h-full overflow-hidden flex flex-col rounded-none border-none",
         !isFullscreen && field.className,
       )}
     >
@@ -83,7 +83,8 @@ export const RichTextField = ({ field }: RichTextFieldProps) => {
         editor={editor}
         editable={!disabled}
         className={cn(
-          isFullscreen && "h-full min-h-0 flex flex-col flex-1 overflow-hidden",
+          "bg-input selection:bg-primary selection:text-primary-foreground",
+          isFullscreen && "h-full min-h-0 flex flex-col flex-1 overflow-hidden bg-input",
         )}
       >
         <RichTextEditor.Toolbar>
@@ -133,7 +134,7 @@ export const RichTextField = ({ field }: RichTextFieldProps) => {
         </RichTextEditor.Toolbar>
         <RichTextEditor.Content
           className={cn(
-            "overflow-y-auto",
+            "overflow-y-auto bg-input selection:bg-primary selection:text-primary-foreground",
             !height && !autoHeight && !isFullscreen && "min-h-37.5 max-h-100",
             autoHeight && !isFullscreen && "min-h-37.5",
             isFullscreen && "flex-1 min-h-0 max-h-none",

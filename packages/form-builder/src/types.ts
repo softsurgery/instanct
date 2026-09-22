@@ -161,10 +161,7 @@ export interface SwitchFieldProps extends BaseFieldProps {
 export interface TextareaFieldProps extends BaseFieldProps {
   value?: string;
   onChange?: (e: string) => void;
-  cols?: number;
-  rows?: number;
   resizable?: boolean;
-  maxLength?: number;
 }
 
 export interface EditorFieldProps extends BaseFieldProps {
