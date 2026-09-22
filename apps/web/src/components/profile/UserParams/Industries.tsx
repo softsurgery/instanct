@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 import { TreeSelectBox } from "@instanct/form-builder";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 interface IndustriesProps {

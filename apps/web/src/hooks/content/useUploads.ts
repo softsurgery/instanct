@@ -1,5 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 
 interface UploadResult {
   id: number;

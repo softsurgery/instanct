@@ -16,7 +16,7 @@ import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { useTranslation } from "react-i18next";
 
 interface UserNavProps {

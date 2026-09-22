@@ -10,7 +10,8 @@ import "@instanct/ui/components/editor/style.css";
 import { SessionProvider } from "next-auth/react";
 import { AuthTokenSync } from "@/components/auth/AuthTokenSync";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@instanct/contexts";
+import { AppProvider, ThemeProvider } from "@instanct/contexts";
+import { api } from "@/lib/api";
 
 const inter = { className: "font-inter" };
 const queryClient = new QueryClient();
@@ -33,11 +34,13 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
             enableSystem
             disableTransitionOnChange
           >
-            <Application
-              Component={Component}
-              pageProps={pageProps}
-              className={inter.className}
-            />
+            <AppProvider value={{ appType: "admin", api }}>
+              <Application
+                Component={Component}
+                pageProps={pageProps}
+                className={inter.className}
+              />
+            </AppProvider>
           </ThemeProvider>
         </QueryClientProvider>
       </SessionProvider>

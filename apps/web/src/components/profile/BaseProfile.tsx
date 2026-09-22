@@ -24,7 +24,7 @@ import { Notifications } from "../audit-monitoring/notifications/Notifications";
 import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { identifyUserAvatar } from "@/lib/user";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { Book } from "./cards/Book";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";

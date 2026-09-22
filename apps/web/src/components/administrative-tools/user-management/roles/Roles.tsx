@@ -1,5 +1,5 @@
 import React from "react";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { useDebounce } from "@instanct/hooks/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRoleColumns } from "./columns";

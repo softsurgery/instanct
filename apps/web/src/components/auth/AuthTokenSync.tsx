@@ -1,6 +1,6 @@
 import React from "react";
 import { useSession } from "next-auth/react";
-import { useAuthPersistStore } from "@/hooks/stores/useAuthPersistStore";
+import { useAuthPersistStore } from "@instanct/hooks/stores";
 
 export function AuthTokenSync() {
   const { data: session, status } = useSession();

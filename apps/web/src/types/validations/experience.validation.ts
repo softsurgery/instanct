@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LocationTypes } from "../user-management";
+import { LocationTypes } from "@/types";
 
 const baseExperienceSchema = z.object({
   title: z

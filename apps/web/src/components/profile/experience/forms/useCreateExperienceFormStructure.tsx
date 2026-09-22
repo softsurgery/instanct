@@ -8,7 +8,7 @@ import {
   TextareaFieldProps,
 } from "@instanct/form-builder";
 import { ExperienceStore } from "@/hooks/stores/useExperienceStore";
-import { LocationTypes, WorkTypes } from "@/types/user-management";
+import { LocationTypes, WorkTypes } from "@/types";
 import { useTranslation } from "react-i18next";
 
 interface useCreateExperienceFormStructureProps {

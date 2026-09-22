@@ -1,5 +1,5 @@
 import React from "react";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
 export const useRoles = (enabled?: boolean) => {

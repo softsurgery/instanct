@@ -2,7 +2,7 @@ import React from "react";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { toast } from "sonner";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 
 export const useCoverPhoto = (userId: string | undefined) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { useBreadcrumb } from "@instanct/contexts";
 import { useDebounce } from "@instanct/hooks/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

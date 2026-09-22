@@ -5,7 +5,7 @@ import { Badge } from "@instanct/ui";
 import { cn } from "@/lib/utils";
 import { ResponseUserDto } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 

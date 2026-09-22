@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@instanct/hooks/utils";
 import { useNotificationColumns } from "./columns";
