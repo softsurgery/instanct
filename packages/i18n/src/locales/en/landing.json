@@ -1,0 +1,196 @@
+{
+  "appName": "Instanct",
+  "language": {
+    "select": "Select language",
+    "en": "EN",
+    "fr": "FR"
+  },
+  "meta": {
+    "title": "Instanct — Discover, connect, and feel at home in your community.",
+    "description": "Instanct helps people discover nearby professionals, start sessions, and build meaningful connections with confidence.",
+    "titleTemplate": "{{page}} · Instanct"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "logoAlt": "Instanct logo",
+    "homeAria": "Instanct home"
+  },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How it works",
+    "safety": "Safety",
+    "faq": "FAQ",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
+  },
+  "hero": {
+    "eyebrow": "The next generation of connectivity",
+    "tagline": "Discover, connect, and feel at home in your community.",
+    "description": "Instanct helps people discover nearby professionals, start sessions, and build meaningful connections with confidence.",
+    "body": "Explore, message, and meet people nearby with a modern experience designed for trust.",
+    "seeHowItWorks": "See how it works",
+    "previewLightAlt": "Instanct explore screen in light mode",
+    "previewDarkAlt": "Instanct explore screen in dark mode"
+  },
+  "store": {
+    "appStoreAria": "Download on the App Store",
+    "appStoreAlt": "Download on the App Store",
+    "playStoreAria": "Get it on Google Play",
+    "playStoreAlt": "Get it on Google Play"
+  },
+  "features": {
+    "eyebrow": "What we offer",
+    "title": "Curated discovery with thoughtful experiences",
+    "subtitle": "Instanct brings map-based discovery, professional profiles, live chat, and meeting tools together in one place.",
+    "items": {
+      "nearbyDiscovery": {
+        "title": "Nearby discovery",
+        "description": "Explore professionals around you on a live map. Filter by industry and objectives to find people who match what you are looking for."
+      },
+      "profiles": {
+        "title": "Profiles that go further",
+        "description": "Showcase experience, education, industries, and intent so the right people can find you — and you can find them."
+      },
+      "messaging": {
+        "title": "Real-time messaging",
+        "description": "Chat with networking contacts, share media, and send a poke when a lightweight hello is all you need."
+      },
+      "sessions": {
+        "title": "Sessions",
+        "description": "Share when you are available to connect. Others nearby can see you are open, then start a conversation with context."
+      },
+      "meetingRequests": {
+        "title": "Meeting requests",
+        "description": "Send or receive meeting requests with a time and place. Accepted meetings land on your schedule automatically."
+      },
+      "bookmarks": {
+        "title": "Bookmarks & activities",
+        "description": "Save interesting profiles, keep incoming and outgoing requests in one place, and stay on top of what matters today."
+      }
+    }
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "From nearby to meaningful, in three steps",
+    "steps": {
+      "01": {
+        "title": "Create your profile",
+        "description": "Add your photo, bio, experience, education, and industries. Sign in with email, Google, Apple, or LinkedIn."
+      },
+      "02": {
+        "title": "Explore who is nearby",
+        "description": "Open the map, apply filters, and discover people around you who share your objectives or industry."
+      },
+      "03": {
+        "title": "Connect with confidence",
+        "description": "Start a session, send a meeting request, or open a chat. Instanct is built for connections that feel human-first."
+      }
+    }
+  },
+  "showcase": {
+    "eyebrow": "Our mission",
+    "title": "Tools that help people connect with confidence",
+    "body": "We build for meaningful connections based on shared interests, local discovery that stays human-first, and experiences that prioritize safety, trust, and inclusion.",
+    "highlights": {
+      "filters": "Filter by industry and objectives",
+      "sessions": "Share when you are available to connect",
+      "chat": "Chat, poke, and bookmark in one flow",
+      "languages": "English, French, and Arabic"
+    },
+    "cards": {
+      "explore": {
+        "title": "Explore",
+        "body": "See who is around you, then open a profile to learn about their experience, education, and intent.",
+        "badge": "Map"
+      },
+      "sessions": {
+        "title": "Sessions",
+        "body": "Tell the community you are ready to connect. Others nearby can reach out while you are available.",
+        "badge": "Live"
+      },
+      "requests": {
+        "title": "Requests",
+        "body": "Propose a meeting with a message, time, and place. Accepted requests are added to your schedule.",
+        "badge": "Meet"
+      },
+      "chat": {
+        "title": "Chat",
+        "body": "Keep the conversation going with real-time messaging, media, and lightweight pokes.",
+        "badge": "Realtime"
+      }
+    }
+  },
+  "safety": {
+    "eyebrow": "Safety & trust",
+    "title": "Designed with trust at the core",
+    "subtitle": "Clear policies, proactive moderation, and settings that keep you in control of what you share.",
+    "points": {
+      "privacy": {
+        "title": "Privacy first",
+        "description": "Location is only used when you enable it, to power map and nearby features. You control visibility from Settings."
+      },
+      "community": {
+        "title": "Community standards",
+        "description": "Harassment, impersonation, and harmful content are not allowed. We can suspend accounts that break these terms."
+      },
+      "content": {
+        "title": "You own your content",
+        "description": "You own what you share. Instanct only hosts and displays it to operate the service, and you can delete your account at any time."
+      }
+    }
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions, answered",
+    "items": {
+      "whatIsInstanct": {
+        "question": "What is Instanct?",
+        "answer": "Instanct is a professional discovery app. It helps people find nearby professionals, start sessions, send meeting requests, and chat — with privacy and trust at the core."
+      },
+      "location": {
+        "question": "Is my location always shared?",
+        "answer": "No. Location data is collected only when enabled, to power map and nearby features. You can manage visibility and preferences in Settings."
+      },
+      "sessions": {
+        "question": "How do sessions work?",
+        "answer": "A session tells others you are available to connect. You choose when it starts and ends so people nearby understand your intent before they reach out."
+      },
+      "platforms": {
+        "question": "Which platforms are supported?",
+        "answer": "The Instanct experience is built for iOS and Android. A web backoffice exists for administration. The product is available in English, French, and Arabic."
+      },
+      "deleteAccount": {
+        "question": "How do I delete my account?",
+        "answer": "Open Settings, then Session, and choose Remove Account. Account deletion permanently removes your data and cannot be undone."
+      }
+    }
+  },
+  "cta": {
+    "eyebrow": "Ready to connect?",
+    "title": "Start your first session",
+    "body": "Join Instanct to discover nearby professionals, share when you are available, and build connections that feel at home in your community.",
+    "talkWithUs": "Talk with us"
+  },
+  "footer": {
+    "product": "Product",
+    "legal": "Legal",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "copyright": "© {{year}} Instanct. Built for people who want to connect with confidence."
+  },
+  "legal": {
+    "updatedAt": "Last updated {{date}}",
+    "notice": "Highlighted passages in amber are not yet applied or still need confirmation (company identity, host, payment provider, or features not yet live).",
+    "privacy": {
+      "title": "Privacy Policy",
+      "unavailableTitle": "Privacy Policy",
+      "unavailableSubtitle": "The privacy policy is temporarily unavailable. Please try again later."
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "unavailableTitle": "Terms & Conditions",
+      "unavailableSubtitle": "The terms of service are temporarily unavailable. Please try again later."
+    }
+  }
+}

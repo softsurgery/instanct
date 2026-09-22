@@ -1,6 +1,6 @@
-import { Icon } from "@/components/ui/icon";
-import { Image } from "@/components/ui/image";
-import { Text } from "@/components/ui/text";
+import { Icon } from "@instanct/mobile-ui";
+import { Image } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { MessageVariant, ResponseMessageDto } from "@/types";
 import { ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
@@ -8,8 +8,10 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { api } from "~/api";
-import { VideoPreview } from "~/components/shared/VideoPreview";
-import { VideoThumbnailPreview } from "~/components/shared/VideoThumbnailPreview";
+import {
+  VideoPreview,
+  VideoThumbnailPreview,
+} from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 
 /**

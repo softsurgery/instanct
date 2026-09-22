@@ -1,0 +1,35 @@
+---
+- name: Ensure deploy directory exists
+  ansible.builtin.file:
+    path: "{{ deploy_dir }}"
+    state: directory
+    mode: "0750"
+
+- name: Load Docker images from archives
+  ansible.builtin.command: "docker load -i {{ deploy_dir }}/{{ item.image_archive }}"
+  register: docker_load
+  changed_when: "'Loaded image' in docker_load.stdout"
+  loop: "{{ instanct_services }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Stop and remove existing containers
+  ansible.builtin.command: "docker rm -f {{ item.name }}"
+  register: docker_rm
+  changed_when: docker_rm.rc == 0
+  failed_when: false
+  loop: "{{ instanct_services }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Run application containers
+  ansible.builtin.command: >-
+    docker run -d
+    --name {{ item.name }}
+    --env-file {{ deploy_dir }}/{{ item.env_file }}
+    --network {{ docker_network_mode }}
+    --restart unless-stopped
+    {{ item.image }}
+  loop: "{{ instanct_services }}"
+  loop_control:
+    label: "{{ item.name }}"

@@ -12,8 +12,13 @@ import { IndustriesSeedCommand } from './industries.seeder';
 import { ObjectivesSeedCommand } from './objectives.seeder';
 import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
 import { ConfigurationSeedCommand } from './configuration.seeder';
+import { ConfigurationCoreSeedCommand } from './configuration-core.seeder';
+import { ConfigurationMapSeedCommand } from './configuration-map.seeder';
+import { ConfigurationApplicationSeedCommand } from './configuration-application.seeder';
 import { PublicResourceSeedCommand } from './public-resource.seeder';
 import { StorageModule } from 'src/shared/storage/storage.module';
+import { ContentModule } from '@/shared/content/content.module';
+import { ContentSeedCommand } from './content.seeder';
 
 @Module({
   imports: [
@@ -23,6 +28,7 @@ import { StorageModule } from 'src/shared/storage/storage.module';
     TemplateModule,
     ConfigurationsModule,
     StorageModule,
+    ContentModule,
   ],
   providers: [
     //seeders
@@ -31,6 +37,10 @@ import { StorageModule } from 'src/shared/storage/storage.module';
     AdminSeedCommand,
     TemplatesSeedCommand,
     ConfigurationSeedCommand,
+    ConfigurationCoreSeedCommand,
+    ConfigurationMapSeedCommand,
+    ConfigurationApplicationSeedCommand,
+    ContentSeedCommand,
     PublicResourceSeedCommand,
     //reference types
     IndustriesSeedCommand,

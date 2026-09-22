@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 
 interface useFollowSystemProps {
   id: string;

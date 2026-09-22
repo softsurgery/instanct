@@ -1,21 +1,21 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@instanct/ui";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@instanct/ui";
+import { Input } from "@instanct/ui";
+import { Label } from "@instanct/ui";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ServerErrorResponse } from "@/types";
 import { signIn } from "next-auth/react";
-import { PasswordField } from "../shared/form-builder/PasswordField";
+import { PasswordField } from "@instanct/form-builder";
 import Image from "next/image";
 
 export const Authentication = () => {

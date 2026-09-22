@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
+import { Skeleton } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 
 interface BaseProfileSkeletonProps {
   className?: string;

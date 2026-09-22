@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import React from "react";
 import { Dimensions, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";

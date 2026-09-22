@@ -1,6 +1,6 @@
 import React from "react";
 import { Plus, Edit, Trash2, ChevronDown, GraduationCap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@instanct/ui";
 import { ResponseEducationDto } from "@/types";
 
 interface EducationSectionProps {

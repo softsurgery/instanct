@@ -7,30 +7,30 @@ import {
   BellIcon,
   BookUser,
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Spinner } from "../shared/Spinner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@instanct/ui";
+import { Spinner } from "@instanct/components";
 import { About } from "./cards/About";
 import { Settings } from "./cards/Settings";
 import { Activity } from "./cards/Activity";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/stores/useUserStore";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useFollowerDialog } from "./modals/FollowersDialog";
 import { useFollowingDialog } from "./modals/FollowingDialog";
 import { useFollowSystem } from "@/hooks/useFollowSystem";
-import { Separator } from "../ui/separator";
+import { Separator } from "@instanct/ui";
 import { Notifications } from "../audit-monitoring/notifications/Notifications";
 import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { identifyUserAvatar } from "@/lib/user";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { Book } from "./cards/Book";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { Edit } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@instanct/ui";
 import { useCoverPhoto } from "./cover/useCoverPhoto";
 
 interface BaseProfileProps {

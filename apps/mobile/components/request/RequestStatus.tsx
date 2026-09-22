@@ -1,7 +1,7 @@
 import { RequestStatus } from "@/types";
 import { View } from "react-native";
-import { Icon } from "../ui/icon";
-import { Text } from "../ui/text";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { CheckCircle2, XCircle } from "lucide-react-native";
 
 interface RequestStatusBadgeProps {

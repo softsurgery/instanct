@@ -5,27 +5,27 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
-import { cn } from "@/lib/utils";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
-import { Text } from "@/components/ui/text";
+import { cn } from "@instanct/lib";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { Text } from "@instanct/mobile-ui";
 import { Loader2 } from "lucide-react-native";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { Button } from "@/components/ui/button";
+import { Button } from "@instanct/mobile-ui";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
+import { FormBuilder } from "@instanct/mobile-form-builder";
 import {
   FieldVariant,
   FormStructure,
   MultiSelectFieldProps,
-} from "@/components/shared/form-builder/types";
-import { StableKeyboardAwareScrollView } from "@/components/shared/StableKeyboardAwareScrollView";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
+} from "@instanct/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface IndustriesManagementProps {
   className?: string;
 }

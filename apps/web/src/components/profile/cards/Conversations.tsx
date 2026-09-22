@@ -1,4 +1,4 @@
-/*import { Card } from "@/components/ui/card";
+/*import { Card } from "@instanct/ui";
 import React from "react";
 import { ConversationList } from "@/components/chat/conversation/ConversationList";
 

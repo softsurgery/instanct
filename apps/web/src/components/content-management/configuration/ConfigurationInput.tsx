@@ -1,15 +1,16 @@
-import { Input } from "@/components/ui/input";
+import { Input } from "@instanct/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@instanct/ui";
 import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import { cn } from "@/lib/utils";
 import { ParamVariant, ResponseConfigurationParamDto } from "@/types";
 import { useTranslation } from "react-i18next";
+import { ConfigurationListInput } from "./ConfigurationListInput";
 
 interface ConfigurationInputProps {
   className?: string;
@@ -65,11 +66,7 @@ export const ConfigurationInput = ({
       return (
         <Select value={currentValue} onValueChange={handleChange}>
           <SelectTrigger className={cn("w-full", className)}>
-            <SelectValue
-              placeholder={t("configuration.inputs.select", {
-                name: configurationParam.name,
-              })}
-            />
+            <SelectValue placeholder={t("configuration.inputs.select")} />
           </SelectTrigger>
           <SelectContent>
             {configurationParam.options?.map((option) => (
@@ -79,6 +76,16 @@ export const ConfigurationInput = ({
             ))}
           </SelectContent>
         </Select>
+      );
+
+    case ParamVariant.LIST:
+      return (
+        <ConfigurationListInput
+          className={className}
+          configurationParam={configurationParam}
+          value={currentValue}
+          onChange={handleChange}
+        />
       );
 
     default:

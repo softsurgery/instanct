@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@/components/shared/data-table/data-table-column-header";
-import { DataTableRowActions } from "@/components/shared/data-table/data-table-row-actions";
+import { DataTableColumnHeader } from "@instanct/datatable-builder";
+import { DataTableRowActions } from "@instanct/datatable-builder";
 import { ResponseRoleDto } from "@/types";
 import { useTranslation } from "react-i18next";
-import { DataTableConfig } from "@/components/shared/data-table/types";
+import { DataTableConfig } from "@instanct/datatable-builder";
 
 export const useRoleColumns = (
   context: DataTableConfig<ResponseRoleDto>

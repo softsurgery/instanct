@@ -1,4 +1,4 @@
-import { useDialog } from "@/components/shared/Dialogs";
+import { useDialog } from "@instanct/components";
 import { UserStore } from "@/hooks/stores/useUserStore";
 import { UserEntry } from "../UserEntry";
 import { useTranslation } from "react-i18next";

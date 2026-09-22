@@ -1,6 +1,6 @@
 import { BookUser } from "lucide-react";
 import { RoleCreateForm } from "../forms/RoleCreateForm";
-import { useSheet } from "@/components/shared/Sheets";
+import { useSheet } from "@instanct/components";
 import { useTranslation } from "react-i18next";
 
 interface RoleCreateSheet {

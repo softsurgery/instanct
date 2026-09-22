@@ -1,19 +1,19 @@
 import React from "react";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { X } from "lucide-react-native";
 import { View } from "react-native";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { router } from "expo-router";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useServerImages } from "@/hooks/content/useServerImages";
-import { cn } from "@/lib/utils";
-import { FormBuilder } from "../shared/form-builder/FormBuilder";
+import { cn } from "@instanct/lib";
+import { FormBuilder } from "@instanct/mobile-form-builder";
 import { useCreateNewRequestFormStructure } from "./forms/useCreateRequestFormStructure";
 import { useRequestStore } from "@/stores/useRequestStore";
-import { StableKeyboardAwareScrollView } from "../shared/StableKeyboardAwareScrollView";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
@@ -22,8 +22,8 @@ import { ServerErrorResponse } from "@/types";
 import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
 import { zodErrorsToNested } from "@/lib/object";
 import { useMapStore } from "@/stores/useMapStore";
-import { Loader } from "../shared/Loader";
-import { BottomButtonWrapper } from "../shared/BottomButtonBlockWrapper";
+import { Loader } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 
 interface NewRequestProps {

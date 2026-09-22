@@ -1,8 +1,8 @@
-import StableScrollView from "@/components/shared/StableScrollView";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
+import { StableScrollView } from "@instanct/mobile-components";
+import { Button } from "@instanct/mobile-ui";
+import { Dialog, DialogContent, DialogTrigger } from "@instanct/mobile-ui";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useMapStore } from "@/stores/useMapStore";
 import { Cog } from "lucide-react-native";
 

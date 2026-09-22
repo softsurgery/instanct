@@ -1,5 +1,5 @@
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
 import _ from "lodash";

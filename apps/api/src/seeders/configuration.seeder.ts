@@ -1,52 +1,29 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { ConfigurationParamRepository } from 'src/shared/configurations/repositories/configuration-param.repository';
-import { ConfigurationNamespaceRepository } from 'src/shared/configurations/repositories/configuration-namespace.repository';
-import { mapConfiguration } from './data/configuration.data';
-import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
-import { coreConfiguration } from './data/configuration.data';
+import { ConfigurationCoreSeedCommand } from './configuration-core.seeder';
+import { ConfigurationMapSeedCommand } from './configuration-map.seeder';
+import { ConfigurationApplicationSeedCommand } from './configuration-application.seeder';
 
 @Injectable()
 export class ConfigurationSeedCommand {
   constructor(
-    private readonly configurationNamespaceRepository: ConfigurationNamespaceRepository,
-    private readonly configurationParamRepository: ConfigurationParamRepository,
+    private readonly configurationCoreSeedCommand: ConfigurationCoreSeedCommand,
+    private readonly configurationMapSeedCommand: ConfigurationMapSeedCommand,
+    private readonly configurationApplicationSeedCommand: ConfigurationApplicationSeedCommand,
   ) {}
+
   @Command({
     command: 'seed:configuration',
-    describe: 'seed system configuration',
+    describe: 'seed system configuration (core and maps)',
   })
   async seed() {
     const start = new Date();
     console.log('🚀 Starting seeding of configuration...');
 
-    const configurationByNamespace = {
-      [ConfigurationNamespaces.CORE]: coreConfiguration,
-      [ConfigurationNamespaces.MAPS]: mapConfiguration,
-    };
+    await this.configurationCoreSeedCommand.seed();
+    await this.configurationMapSeedCommand.seed();
+    await this.configurationApplicationSeedCommand.seed();
 
-    for (const [namespace, params] of Object.entries(
-      configurationByNamespace,
-    ) as [ConfigurationNamespaces, typeof mapConfiguration][]) {
-      const existing = await this.configurationNamespaceRepository.findOne({
-        where: { name: namespace },
-      });
-
-      if (existing) continue;
-      const namespaceEntity = await this.configurationNamespaceRepository.save({
-        name: namespace,
-        description: `${namespace} configuration`,
-      });
-
-      await Promise.all(
-        params.map((param) =>
-          this.configurationParamRepository.save({
-            ...param,
-            namespaceId: namespaceEntity.id,
-          }),
-        ),
-      );
-    }
     const end = new Date();
     console.log(
       `✅ Seeding completed in ${end.getTime() - start.getTime()}ms ⏱️`,

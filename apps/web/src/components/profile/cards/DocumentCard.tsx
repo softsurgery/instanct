@@ -2,8 +2,8 @@
 
 import type React from "react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@instanct/ui";
+import { Card, CardContent } from "@instanct/ui";
 import { FileText, Download, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";

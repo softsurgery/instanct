@@ -1,11 +1,11 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDebounce } from "@/hooks/useDebounce";
+import { useDebounce } from "@instanct/hooks/utils";
 import { useNotificationColumns } from "./columns";
-import { DataTable } from "@/components/shared/data-table/data-table";
-import { DataTableConfig } from "@/components/shared/data-table/types";
+import { DataTable } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@instanct/datatable-builder";
 import { useTranslation } from "react-i18next";
 import { ResponseNotificationDto } from "@/types";
 

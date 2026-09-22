@@ -1,5 +1,5 @@
 import React from "react";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 import { File, Hand, Image as ImageIcon, Video } from "lucide-react-native";
 import { View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";

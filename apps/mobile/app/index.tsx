@@ -1,5 +1,5 @@
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
-import { usePreferencePersistStore } from "@/stores/usePreferencePersistStore";
+import { usePreferencePersistStore } from "@instanct/hooks";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
@@ -24,7 +24,7 @@ export default function Page() {
         const activeTheme = preferencePersistStore.theme === "system" 
             ? (Appearance.getColorScheme() ?? "light") 
             : preferencePersistStore.theme;
-        setAndroidNavigationBar(activeTheme);
+        setAndroidNavigationBar((activeTheme === 'dark' ? 'dark' : 'light'));
       }
       
       let lang = preferencePersistStore.language;

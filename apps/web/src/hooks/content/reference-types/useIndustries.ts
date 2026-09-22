@@ -1,5 +1,4 @@
-import { refType } from "@/api/admin/ref-type";
-import { refParam } from "@/api/admin/ref-param";
+import { api } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -16,13 +15,13 @@ interface UseIndustriesProps {
 export const useIndustries = ({ enabled = true }: UseIndustriesProps = {}) => {
   const { data: types, isFetching: isTypesPending } = useQuery({
     queryKey: ["ref-types"],
-    queryFn: refType.findAll,
+    queryFn: api.admin.refType.findAll,
     enabled,
   });
 
   const { data: params, isFetching: isParamsPending } = useQuery({
     queryKey: ["ref-params"],
-    queryFn: refParam.findAll,
+    queryFn: api.admin.refParam.findAll,
     enabled,
   });
 

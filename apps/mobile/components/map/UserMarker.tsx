@@ -1,11 +1,11 @@
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { usePulseAnimation } from "@/hooks/usePulseAnimation";
 import { identifyUserAvatar } from "@/lib/user";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import React from "react";
 import { Animated, View } from "react-native";
-import { Text } from "../ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 
 interface UserMarkerProps {

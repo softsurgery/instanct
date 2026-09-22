@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useExperienceStore } from "@/hooks/stores/useExperienceStore";
@@ -16,7 +16,7 @@ import { useExperienceCreateSheet } from "./modals/ExperienceCreateSheet";
 import { useExperienceUpdateSheet } from "./modals/ExperienceUpdateSheet";
 import { useExperienceDeleteDialog } from "./modals/ExperienceDeleteDialog";
 import { ExperienceSection } from "./ExperienceSection";
-import { Spinner } from "@/components/shared/Spinner";
+import { Spinner } from "@instanct/components";
 
 interface ExperienceProps {
   className?: string;

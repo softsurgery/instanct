@@ -1,15 +1,15 @@
 import { timeAgo } from "@/lib/date";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { Image } from "@/components/ui/image";
-import { cn } from "~/lib/utils";
+import { Image } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import {
   NotificationType,
   ResponseNotificationDto,
 } from "~/types/notifications";
-import { HTMLText } from "../shared/HTMLText";
-import { StablePressable } from "../shared/StablePressable";
-import { Text } from "../ui/text";
+import { HTMLText } from "@instanct/mobile-components";
+import { StablePressable } from "@instanct/mobile-components";
+import { Text } from "@instanct/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { router } from "expo-router";
 

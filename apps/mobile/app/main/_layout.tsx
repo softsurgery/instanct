@@ -11,7 +11,7 @@ import * as Notifications from "expo-notifications";
 import React from "react";
 import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { NotificationType } from "@/types";
 

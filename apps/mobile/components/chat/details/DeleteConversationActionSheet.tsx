@@ -1,10 +1,10 @@
 import React from "react";
 import { View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
-import { Text } from "~/components/ui/text";
-import { Button } from "~/components/ui/button";
-import { Icon } from "~/components/ui/icon";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { Text } from "@instanct/mobile-ui";
+import { Button } from "@instanct/mobile-ui";
+import { Icon } from "@instanct/mobile-ui";
+import { useColorPalette } from "@instanct/mobile-components";
 import { hslToHex } from "@/lib/theme";
 import { Ban } from "lucide-react-native";
 import { useTranslation } from "react-i18next";

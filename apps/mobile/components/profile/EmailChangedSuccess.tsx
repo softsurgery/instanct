@@ -1,7 +1,7 @@
-import { Success } from "@/components/shared/Success";
+import { Success } from "@instanct/mobile-components";
 import { View } from "react-native";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";

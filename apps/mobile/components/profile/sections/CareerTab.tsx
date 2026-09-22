@@ -6,7 +6,7 @@ import {
   NativeScrollEvent,
 } from "react-native";
 import { ProfileSection } from "./RenderSection";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 
 interface CarreerTabProps {
   className?: string;

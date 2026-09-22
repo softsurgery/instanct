@@ -1,7 +1,7 @@
 import React from "react";
 import { Linking } from "react-native";
-import { Text } from "~/components/ui/text";
-import { cn } from "~/lib/utils";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { ResponseMessageLinkDto } from "@/types";
 import {
   ExtractedMessageLink,

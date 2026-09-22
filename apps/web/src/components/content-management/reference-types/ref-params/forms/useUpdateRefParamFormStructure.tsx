@@ -6,10 +6,10 @@ import {
   SelectFieldProps,
   SelectOption,
   TextFieldProps,
-} from "@/components/shared/form-builder/types";
+} from "@instanct/form-builder";
 import { ReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
-import { JSONExtras } from "@/components/shared/JSONExtras";
-import { JSONValue } from "@/components/shared/JsonEditor";
+import { JSONExtras } from "@instanct/components";
+import { JSONValue } from "@instanct/components";
 
 interface RefParamUpdateFormStructureProps {
   referenceTypesStore?: ReferenceTypesStore;

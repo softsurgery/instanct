@@ -1,12 +1,12 @@
 import React from "react";
-import { api } from "@/api";
-import { useDebounce } from "@/hooks/useDebounce";
+import { api } from "@/lib/api";
+import { useDebounce } from "@instanct/hooks/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
+import { useBreadcrumb } from "@instanct/contexts";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useIntro } from "@/contexts/IntroContext";
-import { DataTable } from "@/components/shared/data-table/data-table";
+import { useIntro } from "@instanct/contexts";
+import { DataTable } from "@instanct/datatable-builder";
 import { useTranslation } from "react-i18next";
 import {
   CreateRefParamDto,
@@ -14,7 +14,7 @@ import {
   ServerErrorResponse,
   UpdateRefParamDto,
 } from "@/types";
-import { DataTableConfig } from "@/components/shared/data-table/types";
+import { DataTableConfig } from "@instanct/datatable-builder";
 import { useReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
 import { useRefParamColumns } from "./useRefParamColumns";
 import { useRefParamCreateSheet } from "./modals/RefParamCreateSheet";

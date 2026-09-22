@@ -1,4 +1,4 @@
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 import { hslToHex } from "@/lib/theme";
 import { SendFeedbackStore } from "@/stores/useFeedbackManager";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,7 @@ import {
   RatingFieldProps,
   SelectFieldProps,
   TextareaFieldProps,
-} from "~/components/shared/form-builder/types";
+} from "@instanct/mobile-form-builder";
 import { FeedbackCategory } from "~/types";
 
 interface useSendFeedbackFormStructureProps {

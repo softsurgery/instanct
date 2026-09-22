@@ -6,7 +6,7 @@ import {
   FormStructure,
   EmailFieldProps,
   PasswordFieldProps,
-} from "~/components/shared/form-builder/types";
+} from "@instanct/mobile-form-builder";
 
 interface UseChangeEmailFormStructureProps {
   store: UserStore;

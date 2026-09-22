@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@instanct/mobile-ui";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
+} from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { UserStore } from "@/stores/useUserStore";
 import React from "react";
 import { View } from "react-native";

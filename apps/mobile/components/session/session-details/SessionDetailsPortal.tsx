@@ -1,9 +1,9 @@
 import React from "react";
-import StableScrollView from "@/components/shared/StableScrollView";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
+import { StableScrollView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { MapSessionPayload, ResponseSessionDto } from "@/types/session";
 import { router, useLocalSearchParams } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
@@ -11,7 +11,7 @@ import { View } from "react-native";
 import { SessionDetailsContent } from "./SessionDetailsContent";
 import { useTranslation } from "react-i18next";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface SessionDetailsPortalProps {
   className?: string;
 }

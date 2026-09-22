@@ -1,23 +1,23 @@
-import { ApplicationHeader } from "@/components/shared/AppHeader";
-import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { FormBuilder } from "@instanct/mobile-form-builder";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { router } from "expo-router";
 import { View } from "react-native";
 import { useExploreFilterFormStructure } from "./useExploreFilterFormStructure";
-import { StableKeyboardAwareScrollView } from "@/components/shared/StableKeyboardAwareScrollView";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { mapToSelectOptions } from "@/components/shared/form-builder/utils/map-select-options";
+import { mapToSelectOptions } from "@instanct/mobile-form-builder";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import React from "react";
 import { toast } from "sonner-native";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@instanct/mobile-components";
 
 interface UserFilterPortalProps {
   className?: string;

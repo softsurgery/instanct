@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=./apps/* --continue",
     "dev:web": "turbo run dev --filter=instanct-ui",
+    "dev:landing": "turbo run dev --filter=instanct-landing",
     "dev:mobile": "turbo run dev --filter=instanct-mobile-app",
     "dev:api": "turbo run start:dev --filter=instanct-api",
     "lint": "turbo run lint",
@@ -14,10 +15,11 @@
   "devDependencies": {
     "prettier": "3.9.6",
     "turbo": "^2.11.2",
-    "typescript": "7.0.2"
+    "typescript": "5.9.3"
   },
   "packageManager": "pnpm@11.25.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=18",
+    "pnpm": ">=11.25.0"
   }
 }

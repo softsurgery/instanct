@@ -14,6 +14,7 @@ import { referenceTypes } from "./reference-types";
 import { request } from "./request";
 import { bookmark } from "./bookmark";
 import { devices } from "./devices";
+import { contentPage } from "./content-page";
 
 export const api = {
   auth,
@@ -32,4 +33,5 @@ export const api = {
   request,
   bookmark,
   devices,
+  contentPage,
 };

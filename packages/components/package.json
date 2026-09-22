@@ -1,0 +1,62 @@
+{
+  "name": "@instanct/components",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check-types": "tsc --noEmit"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.tsx"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@instanct/form-builder": "workspace:*",
+    "@instanct/hooks": "workspace:*",
+    "@instanct/lib": "workspace:*",
+    "@instanct/ui": "workspace:*",
+    "@tiptap/core": "^3.31.3",
+    "@tiptap/extension-character-count": "^3.31.3",
+    "@tiptap/extension-highlight": "^3.31.3",
+    "@tiptap/extension-link": "^3.31.3",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/extension-subscript": "^3.31.3",
+    "@tiptap/extension-superscript": "^3.31.3",
+    "@tiptap/extension-text-align": "^3.31.3",
+    "@tiptap/extension-underline": "^3.31.3",
+    "@tiptap/pm": "^3.31.3",
+    "@tiptap/react": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
+    "@radix-ui/react-scroll-area": "^1.2.10",
+    "@radix-ui/react-separator": "^1.1.8",
+    "@radix-ui/react-use-controllable-state": "^1.2.2",
+    "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.563.0",
+    "motion": "^12.23.24",
+    "sonner": "^2.0.7"
+  },
+  "peerDependencies": {
+    "next": ">=15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^15.0.2"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "typescript": "^5.5.3"
+  }
+}

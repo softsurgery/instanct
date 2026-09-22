@@ -5,7 +5,7 @@ import {
   Field,
   FieldVariant,
   FormStructure,
-} from "../shared/form-builder/types";
+} from "@instanct/mobile-form-builder";
 
 interface useSignInFormStructureProps {
   store: AuthStore;

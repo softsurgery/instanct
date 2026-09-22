@@ -1,7 +1,7 @@
 
-import { useDialog } from "@/components/shared/Dialogs";
-import { Spinner } from "@/components/shared/Spinner";
-import { Button } from "@/components/ui/button";
+import { useDialog } from "@instanct/components";
+import { Spinner } from "@instanct/components";
+import { Button } from "@instanct/ui";
 import { useTranslation } from "react-i18next";
 
 interface UserApproveDialogProps {

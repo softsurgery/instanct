@@ -73,6 +73,27 @@ export const mapConfiguration = [
     value: 's',
     options: ConfigurationTimeObject,
   },
+  {
+    name: 'providers',
+    description:
+      'Map providers used by the app, with a privacy policy URL for each one',
+    variant: ParamVariant.LIST,
+    value: '[]',
+    schema: [
+      {
+        key: 'name',
+        label: 'Provider name',
+        variant: ParamVariant.STRING,
+        required: true,
+      },
+      {
+        key: 'privacyUrl',
+        label: 'Privacy policy URL',
+        variant: ParamVariant.STRING,
+        required: true,
+      },
+    ],
+  },
 ];
 
 export const coreConfiguration = [
@@ -93,5 +114,73 @@ export const coreConfiguration = [
     description: 'Company address',
     variant: ParamVariant.STRING,
     value: '123 Main Street, Anytown',
+  },
+  {
+    name: 'company.legalName',
+    description: 'Legal company name (raison sociale)',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+  {
+    name: 'company.legalForm',
+    description: 'Legal form and share capital',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+  {
+    name: 'company.rcs',
+    description: 'RCS / SIREN number',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+  {
+    name: 'company.privacyEmail',
+    description: 'Data protection contact email',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+  {
+    name: 'hosting.provider',
+    description: 'Hosting provider name',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+  {
+    name: 'hosting.country',
+    description: 'Hosting country',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+  {
+    name: 'hosting.address',
+    description: 'Hosting provider address',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+];
+
+export const applicationConfiguration = [
+  {
+    name: 'languages',
+    description: 'Available languages for the application',
+    variant: ParamVariant.LIST,
+    value: JSON.stringify([
+      { label: 'English', code: 'en' },
+      { label: 'French', code: 'fr' },
+    ]),
+    schema: [
+      {
+        key: 'label',
+        label: 'Language label',
+        variant: ParamVariant.STRING,
+        required: true,
+      },
+      {
+        key: 'code',
+        label: 'Language code (e.g. en, fr)',
+        variant: ParamVariant.STRING,
+        required: true,
+      },
+    ],
   },
 ];

@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
-import { StablePressable } from "@/components/shared/StablePressable";
-import { cn } from "@/lib/utils";
+import { Button } from "@instanct/mobile-ui";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { StablePressable } from "@instanct/mobile-components";
+import { cn } from "@instanct/lib";
 import { ResponseUserDto } from "@/types";
 import {
   format,
@@ -26,10 +26,10 @@ import {
 } from "lucide-react-native";
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { StableSafeAreaView } from "../../shared/StableSafeAreaView";
-import { ApplicationHeader } from "../../shared/AppHeader";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 // Mock event types for demonstration
 export interface CalendarEvent {
   id: string;

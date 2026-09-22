@@ -114,12 +114,18 @@
     "actions": {
       "saveChanges": "Enregistrer les modifications",
       "saving": "Enregistrement...",
-      "resetAll": "Réinitialiser tout"
+      "resetAll": "Réinitialiser tout",
+      "export": "Exporter",
+      "import": "Importer"
     },
     "messages": {
       "updateSuccess": "La configuration a été mise à jour avec succès",
       "updateError": "Échec de la mise à jour de la configuration",
-      "resetSuccess": "La configuration a été réinitialisée aux valeurs d'origine"
+      "resetSuccess": "La configuration a été réinitialisée aux valeurs d'origine",
+      "exportSuccess": "Configuration exportée",
+      "importSuccess": "{{count}} valeurs de configuration importées",
+      "importSkipped": "{{count}} entrées inconnues ou non reconnues ignorées",
+      "importError": "Échec de l'import du fichier de configuration"
     },
     "loading": {
       "configurations": "Chargement de la configuration..."
@@ -128,8 +134,49 @@
       "enter": "Saisir {{name}}",
       "select": "Sélectionner {{name}}"
     },
+    "list": {
+      "add": "Ajouter un élément",
+      "remove": "Supprimer",
+      "item": "Élément {{index}}",
+      "empty": "Aucun élément. Ajoutez un prestataire si nécessaire.",
+      "missingSchema": "Cette liste n'a pas de schéma et ne peut pas être modifiée."
+    },
     "groups": {
       "count": "({{count}})"
+    }
+  },
+  "pages": {
+    "page": {
+      "title": "Pages légales",
+      "description": "Modifiez les CGU, la politique de confidentialité et les autres documents HTML publics."
+    },
+    "breadcrumbs": {
+      "contentManagement": "Gestion de contenu",
+      "pages": "Pages"
+    },
+    "actions": {
+      "saveChanges": "Enregistrer les modifications",
+      "saving": "Enregistrement...",
+      "export": "Exporter",
+      "import": "Importer"
+    },
+    "messages": {
+      "updateSuccess": "La page a été mise à jour avec succès",
+      "updateError": "Échec de la mise à jour de la page",
+      "exportSuccess": "Page exportée",
+      "importSuccess": "Contenu de la page importé",
+      "importError": "Échec de l'import du fichier de page"
+    },
+    "loading": "Chargement des pages...",
+    "empty": "Aucune page de contenu. Lancez d'abord le seeder de contenu.",
+    "fields": {
+      "title": "Titre",
+      "subtitle": "Sous-titre"
+    },
+    "editor": {
+      "hint": "Utilisez l'éditeur HTML. Encadrez les fonctionnalités non encore en production avec le bloc Non applicable. Insérez des {{placeholders}} pour la société, l'hébergeur et la carte depuis Configuration.",
+      "notApplied": "Non applicable actuellement",
+      "insertPlaceholder": "Insérer un placeholder"
     }
   }
 }

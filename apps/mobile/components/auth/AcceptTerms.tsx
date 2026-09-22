@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { router } from "expo-router";
 import { View } from "react-native";
-import { Checkbox } from "../ui/checkbox";
-import { Text } from "../ui/text";
+import { Checkbox } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useTranslation } from "react-i18next";
 
 interface AcceptTermsProps {

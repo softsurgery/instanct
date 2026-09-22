@@ -1,5 +1,5 @@
 import React from "react"
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardContent, CardTitle } from "@instanct/ui"
 
 interface ChartCardProps {
   title: string

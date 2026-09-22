@@ -1,10 +1,10 @@
-import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
-import { DataTableColumnHeader } from "@/components/shared/data-table/data-table-column-header";
+import { DataTableCell } from "@instanct/datatable-builder";
+import { DataTableColumnHeader } from "@instanct/datatable-builder";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@/components/shared/data-table/types";
-import { Trans } from "@/components/shared/Trans";
+} from "@instanct/datatable-builder";
+import { Trans } from "@instanct/components";
 import { ResponseNotificationDto } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";

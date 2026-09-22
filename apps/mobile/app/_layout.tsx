@@ -1,6 +1,6 @@
 import { splashPrevented } from "@/lib/splash-screen";
 import { NAV_THEME } from "@/lib/theme";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { PortalHost } from "@rn-primitives/portal";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
@@ -17,12 +17,12 @@ import "../global.css";
 import "../i18n";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { VideoThumbnailGeneratorHost } from "@/components/shared/VideoThumbnailGeneratorHost";
+import { VideoThumbnailGeneratorHost } from "@instanct/mobile-components";
 import { LoaderProvider } from "@/contexts/LoaderContext";
-import { usePreferencePersistStore } from "@/stores/usePreferencePersistStore";
+import { usePreferencePersistStore } from "@instanct/hooks";
 
 function RootLayoutContent() {
   const { colorScheme, palette } = useColorPalette();

@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { ThemeToggle } from "@instanct/mobile-components";
 import { Stack } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";

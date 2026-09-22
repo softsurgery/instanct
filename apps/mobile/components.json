@@ -11,8 +11,8 @@
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
+    "utils": "@instanct/lib",
+    "ui": "@instanct/mobile-ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   }

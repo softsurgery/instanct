@@ -1,11 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
+import { Card, CardContent } from "@instanct/ui";
+import { Badge } from "@instanct/ui";
 
 import { cn } from "@/lib/utils";
 import { ResponseUserDto } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api } from "@/lib/api";
 import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 

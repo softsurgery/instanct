@@ -1,5 +1,5 @@
 import { useNotificationContext } from "@/contexts/NotificationsContext";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { IconMapPinCog, IconMessageChatbot } from "@tabler/icons-react-native";
 import { router } from "expo-router";
@@ -7,14 +7,14 @@ import { Bell } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { ApplicationHeader } from "../shared/AppHeader";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 import { MapRenderer } from "./MapRenderer";
-import { Loader } from "../shared/Loader";
+import { Loader } from "@instanct/mobile-components";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { hslToHex } from "@/lib/theme";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 import { MapStatus } from "./MapDebugging/MapStatus";
 import { MapLockedOverlay } from "./MaplLockedOverlay";
 

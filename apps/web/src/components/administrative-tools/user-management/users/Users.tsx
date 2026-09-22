@@ -1,12 +1,12 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { api } from "@/api";
-import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
-import { useDebounce } from "@/hooks/useDebounce";
+import { api } from "@/lib/api";
+import { useBreadcrumb } from "@instanct/contexts";
+import { useDebounce } from "@instanct/hooks/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useUserColumns } from "./columns";
-import { DataTable } from "@/components/shared/data-table/data-table";
+import { DataTable } from "@instanct/datatable-builder";
 import { useUserCreateSheet } from "./modals/UserCreateSheet";
 import { useUserUpdateSheet } from "./modals/UserUpdateSheet";
 import { useUserDeleteDialog } from "./modals/UserDeleteDialog";
@@ -21,13 +21,13 @@ import {
   UpdateUserDto,
 } from "@/types";
 import { updateUserSchema } from "@/types/validations/user.validation";
-import { useIntro } from "@/contexts/IntroContext";
+import { useIntro } from "@instanct/contexts";
 import { ArrowDown, ArrowUp, BellPlus } from "lucide-react";
 import { useApproveUserDialog } from "./modals/UserApproveDialog";
 import { useDisapproveUserDialog } from "./modals/UserDisapproveDialog";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-import { DataTableConfig } from "@/components/shared/data-table/types";
+import { DataTableConfig } from "@instanct/datatable-builder";
 import { useUploads } from "@/hooks/content/useUploads";
 import { useUpload } from "@/hooks/content/useUpload";
 

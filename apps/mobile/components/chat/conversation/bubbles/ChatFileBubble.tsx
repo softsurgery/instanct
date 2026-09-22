@@ -1,7 +1,7 @@
-import { Text } from "@/components/ui/text";
-import { FileTypeIcon } from "@/components/shared/FileTypeIcon";
+import { Text } from "@instanct/mobile-ui";
+import { FileTypeIcon } from "@instanct/mobile-components";
 import { useServerUploads } from "@/hooks/content/useServerUploads";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { openUploadFile } from "@/lib/files";
 import { PendingFileUpload, ResponseMessageDto } from "@/types";
 import { format } from "date-fns";

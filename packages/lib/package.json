@@ -1,0 +1,25 @@
+{
+  "name": "@instanct/lib",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check-types": "tsc --noEmit"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts",
+    "./legal-html.css": "./src/legal-html.css"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}

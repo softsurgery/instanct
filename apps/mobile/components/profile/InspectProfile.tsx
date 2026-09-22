@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { View } from "react-native";
 import { InspectBaseProfile } from "../profile/BaseProfile";
-import { ApplicationHeader } from "../shared/AppHeader";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
 
 interface InspectProfileProps {
   className?: string;

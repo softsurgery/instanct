@@ -3,6 +3,7 @@ import { ConfigurationNamespaceEntity } from '../entities/configuration-namespac
 import { Injectable } from '@nestjs/common';
 import { ConfigurationNamespaceRepository } from '../repositories/configuration-namespace.repository';
 import { ParamVariant } from '../enums/param-variant.enum';
+import { parseConfigurationListValue } from '../utils/configuration-list-schema';
 import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
 import { FindManyOptions, FindOneOptions, IsNull } from 'typeorm';
@@ -18,7 +19,7 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
   async getSpecificParam(
     namespace: string,
     param: string,
-  ): Promise<string | number | boolean | null> {
+  ): Promise<string | number | boolean | Record<string, string>[] | null> {
     const namespaceEntity =
       await this.configurationNampespaceRepository.findOne({
         where: {
@@ -32,11 +33,13 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
     switch (paramEntity?.variant) {
       case ParamVariant.STRING:
       case ParamVariant.SELECT:
-        return paramEntity.value;
+        return paramEntity.value ?? null;
       case ParamVariant.NUMBER:
         return Number(paramEntity.value);
       case ParamVariant.BOOLEAN:
         return paramEntity.value === 'true';
+      case ParamVariant.LIST:
+        return parseConfigurationListValue(paramEntity.value);
       default:
         return null;
     }

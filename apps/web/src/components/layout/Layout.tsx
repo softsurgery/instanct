@@ -1,102 +1,89 @@
+import type { CSSProperties, ReactNode } from "react";
+import { SidebarInset, SidebarProvider } from "@instanct/ui";
+import { useFooter, useIntro, useUI } from "@instanct/contexts";
+import { AppSidebar } from "@/components/layout/AppSidebar";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { AppProviders } from "@/components/providers/AppProviders";
 import { cn } from "@/lib/utils";
-import { Header } from "./Header";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-import React from "react";
-import {
-  BreadcrumbContext,
-  BreadcrumbRoute,
-} from "@/contexts/BreadcrumbContext";
-import { PageHeader } from "./PageHeader";
-import { IntroContext } from "@/contexts/IntroContext";
-import { FooterContext } from "@/contexts/FooterContext";
-import { Footer } from "./Footer";
-import { SidebarInset, SidebarProvider } from "../ui/sidebar";
-import { AppSidebar } from "./AppSidebar";
 
 interface LayoutProps {
   className?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const Layout = ({ className, children }: LayoutProps) => {
-  const [routes, setRoutes] = React.useState<BreadcrumbRoute[]>([]);
-  const breadcrumbContext = {
-    routes,
-    setRoutes,
-    clearRoutes: () => {
-      setRoutes?.([]);
-    },
-  };
+function LayoutShell({ className, children }: LayoutProps) {
+  const { title, description, floating } = useIntro();
+  const { content } = useFooter();
+  const { enableMainOverflow, showSidebar = true } = useUI();
 
-  const [content, setContent] = React.useState<React.ReactNode>(null);
-  const footerContext = {
-    content,
-    setContent,
-    clearContent: () => {
-      setContent?.(null);
-    },
-  };
-
-  const [title, setTitle] = React.useState<string>("");
-  const [description, setDescription] = React.useState<string>("");
-  const [floating, setFloating] = React.useState<React.ReactNode>(null);
-  const introContext = {
-    title,
-    description,
-    floating,
-    setIntro: (title: string, description?: string) => {
-      setTitle(title);
-      setDescription(description || "");
-    },
-    setFloating,
-    clearIntro: () => {
-      setTitle("");
-      setDescription("");
-    },
-    clearFloating: () => {
-      setFloating(null);
-    },
-  };
-
-  const isMobile = useMediaQuery("(max-width: 425px)");
   return (
-    <div
-      className={cn(
-        "flex md:flex-cols-[220px_1fr] lg:flex-cols-[280px_1fr] overflow-hidden fullscreen",
-        className,
-      )}
+    <SidebarProvider
+      className="h-svh overflow-hidden"
+      style={
+        {
+          "--sidebar-width": "18rem",
+          "--header-height": "3.5rem",
+        } as CSSProperties
+      }
     >
-      <SidebarProvider className="flex flex-row flex-1 overflow-hidden min-w-screen max-w-screen">
-        <BreadcrumbContext.Provider value={breadcrumbContext}>
-          <IntroContext.Provider value={introContext}>
-            <FooterContext.Provider value={footerContext}>
-              <div className="flex flex-row flex-1 overflow-hidden">
-                {/* Sidebar */}
-                <AppSidebar />
-                {/* Header , Main & Footer */}
-                <div className="flex flex-col flex-1 overflow-hidden bg-background">
-                  <Header />
-                  {(title || description) && (
-                    <PageHeader
-                      className={cn("py-5", isMobile ? "px-4" : "px-10")}
-                    />
+      {showSidebar ? <AppSidebar variant="inset" /> : null}
+      <SidebarInset className="min-h-0 overflow-hidden">
+        <Header />
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          <div
+            id="main-layout"
+            className={cn(
+              "flex min-h-0 flex-1 flex-col gap-4 p-2 md:p-4",
+              enableMainOverflow ? "overflow-auto" : "overflow-hidden",
+              className,
+            )}
+          >
+            {(title || description || floating) && (
+              <div className="shrink-0 flex flex-row items-center justify-between gap-4">
+                <div className="space-y-1">
+                  {title && (
+                    <h2 className="text-2xl font-semibold tracking-tight">
+                      {title}
+                    </h2>
                   )}
-                  <main
-                    className={cn(
-                      "flex flex-col flex-1 overflow-hidden",
-                      isMobile ? "px-4" : "px-10",
-                      className,
-                    )}
-                  >
-                    {children}
-                  </main>
-                  {content && <Footer />}
+                  {description && (
+                    <p className="text-sm text-muted-foreground">
+                      {description}
+                    </p>
+                  )}
                 </div>
+                {floating ? <div>{floating}</div> : null}
               </div>
-            </FooterContext.Provider>
-          </IntroContext.Provider>
-        </BreadcrumbContext.Provider>
-      </SidebarProvider>
-    </div>
+            )}
+            <div
+              className={cn(
+                "flex flex-col",
+                enableMainOverflow
+                  ? "overflow-visible"
+                  : "min-h-0 flex-1 overflow-hidden",
+              )}
+            >
+              {children}
+            </div>
+          </div>
+          {content ? (
+            <div className="shrink-0">
+              <Footer />
+            </div>
+          ) : null}
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
-};
+}
+
+export function Layout({ className, children }: LayoutProps) {
+  return (
+    <AppProviders>
+      <LayoutShell className={className}>{children}</LayoutShell>
+    </AppProviders>
+  );
+}
+
+export default Layout;

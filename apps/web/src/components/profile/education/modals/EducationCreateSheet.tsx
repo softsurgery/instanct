@@ -1,5 +1,5 @@
 import { GraduationCap } from "lucide-react";
-import { useSheet } from "@/components/shared/Sheets";
+import { useSheet } from "@instanct/components";
 import { EducationCreateForm } from "../forms/EducationCreateFrom";
 import { useTranslation } from "react-i18next";
 import { CreateEducationDto } from "@/types";

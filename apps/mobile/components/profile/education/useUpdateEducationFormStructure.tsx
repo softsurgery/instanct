@@ -4,7 +4,7 @@ import {
   FormStructure,
   TextareaFieldProps,
   TextFieldProps,
-} from "@/components/shared/form-builder/types";
+} from "@instanct/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
 import { useTranslation } from "react-i18next";
 

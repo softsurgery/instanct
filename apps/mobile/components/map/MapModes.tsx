@@ -1,11 +1,11 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { View } from "react-native";
-import { Icon } from "../ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import * as Haptics from "expo-haptics";
 import { Crosshair, RefreshCcw, SatelliteDish } from "lucide-react-native";
 import { useMapStore } from "@/stores/useMapStore";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 
 interface MapModesProps {
   className?: string;

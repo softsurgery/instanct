@@ -3,4 +3,5 @@ export enum ParamVariant {
   NUMBER = 'number',
   BOOLEAN = 'boolean',
   SELECT = 'select',
+  LIST = 'list',
 }

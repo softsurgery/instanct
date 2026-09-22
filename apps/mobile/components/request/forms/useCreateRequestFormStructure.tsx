@@ -1,4 +1,4 @@
-import { SegmentedToggle } from "@/components/shared/SegmentedToggle";
+import { SegmentedToggle } from "@instanct/mobile-components";
 import {
   CustomFieldProps,
   Field,
@@ -7,7 +7,7 @@ import {
   MapPinFieldProps,
   TextareaFieldProps,
   TimeFieldProps,
-} from "@/components/shared/form-builder/types";
+} from "@instanct/mobile-form-builder";
 
 import { RequestStore } from "@/stores/useRequestStore";
 import { useTranslation } from "react-i18next";

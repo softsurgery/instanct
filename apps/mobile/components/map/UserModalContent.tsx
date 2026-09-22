@@ -1,13 +1,13 @@
 import { usePanResponder } from "@/hooks/usePanResponder";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { NearbyUser } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 import { router } from "expo-router";
 import React from "react";
 import { TouchableWithoutFeedback, View } from "react-native";
-import { StablePressable } from "../shared/StablePressable";
-import { Text } from "../ui/text";
+import { StablePressable } from "@instanct/mobile-components";
+import { Text } from "@instanct/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 
 interface UserModalContentProps {

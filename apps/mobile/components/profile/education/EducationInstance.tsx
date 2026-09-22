@@ -1,7 +1,7 @@
-import { SeeMoreText } from "@/components/shared/SeeMoreText";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
+import { SeeMoreText } from "@instanct/mobile-components";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { ResponseEducationDto } from "@/types";
 import { GraduationCap } from "lucide-react-native";
 import { View } from "react-native";

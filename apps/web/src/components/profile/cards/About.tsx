@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@instanct/ui";
 import { useTranslation } from "react-i18next";
 import {
   Card,
@@ -7,8 +7,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+} from "@instanct/ui";
+import { Separator } from "@instanct/ui";
 import { useUpload } from "@/hooks/content/useUpload";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 import { cn } from "@/lib/utils";

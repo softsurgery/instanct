@@ -1,9 +1,42 @@
 {
-  "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "strictNullChecks": true
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "declaration": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "paths": {
+      "#lib/*": [
+        "./src/lib/*"
+      ],
+      "#components/*": [
+        "./src/components/*"
+      ],
+      "#hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@instanct/ui/*": [
+        "./src/*"
+      ],
+      "@instanct/lib": [
+        "../lib/src/index.ts"
+      ],
+      "@instanct/lib/*": [
+        "../lib/src/*"
+      ]
+    },
+    "noEmit": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*"
+  ]
 }

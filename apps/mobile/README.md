@@ -39,8 +39,8 @@ A modern, cross-platform mobile application built with React Native and Expo for
 ### Prerequisites
 
 - Node.js 18+
-- npm or yarn
-- Expo CLI: `npm install -g expo-cli`
+- pnpm 11+
+- Expo CLI: `pnpm add -g expo-cli`
 - For iOS development: Xcode (macOS only)
 - For Android development: Android Studio or Android SDK
 
@@ -49,7 +49,7 @@ A modern, cross-platform mobile application built with React Native and Expo for
 1. **Clone and install dependencies**
 
    ```bash
-   yarn install
+   pnpm install --ignore-scripts
    ```
 
 2. **Set up environment variables**
@@ -57,18 +57,18 @@ A modern, cross-platform mobile application built with React Native and Expo for
 
 3. **Start the development server**
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 ### Available Scripts
 
-- `npm run dev` - Start Expo dev client with development build
-- `npm start` - Start Expo development server
-- `npm run android` - Run on Android emulator/device
-- `npm run ios` - Run on iOS simulator/device
-- `npm run web` - Run on web browser
-- `npm run lint` - Run ESLint
-- `npm run reset-project` - Reset project to initial state
+- `pnpm dev` - Start Expo dev client with development build
+- `pnpm start` - Start Expo development server
+- `pnpm android` - Run on Android emulator/device
+- `pnpm ios` - Run on iOS simulator/device
+- `pnpm web` - Run on web browser
+- `pnpm lint` - Run ESLint
+- `pnpm reset-project` - Reset project to initial state
 
 ## 📁 Project Structure
 
@@ -141,7 +141,7 @@ Built with React Native Primitives:
 ### Android
 
 ```bash
-npm run android
+pnpm android
 ```
 
 See [ANDROID_MAPS_FIX.md](docs/ANDROID_MAPS_FIX.md) for maps integration setup.
@@ -149,13 +149,13 @@ See [ANDROID_MAPS_FIX.md](docs/ANDROID_MAPS_FIX.md) for maps integration setup.
 ### iOS
 
 ```bash
-npm run ios
+pnpm ios
 ```
 
 ### Web
 
 ```bash
-npm run web
+pnpm web
 ```
 
 ## 🌍 Internationalization
@@ -196,7 +196,7 @@ API requests are configured in `/api/axios.ts` with:
 
 ### Common Issues
 
-- **Metro bundler errors**: Run `npm run reset-project`
+- **Metro bundler errors**: Run `pnpm reset-project`
 - **Navigation issues**: Clear Expo cache with `expo start -c`
 - **Maps not showing**: See [ANDROID_MAPS_FIX.md](docs/ANDROID_MAPS_FIX.md)
 - **AsyncStorage errors**: Ensure persistence setup is correct
@@ -206,7 +206,7 @@ API requests are configured in `/api/axios.ts` with:
 Please follow the existing code style and structure when contributing. Run linting before submitting:
 
 ```bash
-npm run lint
+pnpm lint
 ```
 
 ## 📄 License

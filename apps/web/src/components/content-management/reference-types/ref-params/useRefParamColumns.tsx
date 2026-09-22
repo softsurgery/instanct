@@ -1,15 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@/components/shared/data-table/data-table-column-header";
-import { DataTableRowActions } from "@/components/shared/data-table/data-table-row-actions";
+import { DataTableColumnHeader } from "@instanct/datatable-builder";
+import { DataTableRowActions } from "@instanct/datatable-builder";
 import { ResponseRefParamDto } from "@/types";
 import { useTranslation } from "react-i18next";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@/components/shared/data-table/types";
-import { Badge } from "@/components/ui/badge";
-import { JsonToggler } from "@/components/shared/JsonToggler";
-import DataTableCell from "@/components/shared/data-table/core/data-table-cell";
+} from "@instanct/datatable-builder";
+import { Badge } from "@instanct/ui";
+import { JsonToggler } from "@instanct/components";
+import { DataTableCell } from "@instanct/datatable-builder";
 
 export const useRefParamColumns = (
   context: DataTableConfig<ResponseRefParamDto>

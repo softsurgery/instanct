@@ -6,19 +6,19 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "~/components/ui/accordion";
-import { Text } from "~/components/ui/text";
-import { cn } from "~/lib/utils";
+} from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { StoreIDs } from "~/types";
-import { StableSafeAreaView } from "~/components/shared/StableSafeAreaView";
-import { ApplicationHeader } from "~/components/shared/AppHeader";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 import { useDataStore } from "@/hooks/content/useDataStore";
-import StableScrollView from "@/components/shared/StableScrollView";
-import { Loader } from "@/components/shared/Loader";
-import { Icon } from "@/components/ui/icon";
+import { StableScrollView } from "@instanct/mobile-components";
+import { Loader } from "@instanct/mobile-components";
+import { Icon } from "@instanct/mobile-ui";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface Faq {
   question: string;
   answer: string;

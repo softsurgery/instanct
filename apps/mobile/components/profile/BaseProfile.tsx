@@ -1,11 +1,11 @@
 import React from "react";
-import { Text } from "@/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useEducations } from "@/hooks/content/users/useEducations";
 import { useExperiences } from "@/hooks/content/users/useExperiences";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { identifyUser } from "@/lib/user";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { createClientStore, useUserStore } from "@/stores/useUserStore";
 import {
   ResponseEducationDto,
@@ -28,13 +28,13 @@ import { ProfileCover } from "./ProfileCover";
 import { toast } from "sonner-native";
 import { api } from "@/api";
 import { useMutation } from "@tanstack/react-query";
-import { Icon } from "../ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
 import { ExperienceInstance } from "./experience/ExperienceInstance";
 import { EducationInstance } from "./education/EducationInstance";
 import { hslToHex } from "@/lib/theme";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 import { useScrollableElement } from "@/hooks/useScrollableElement";
 import Animated, {
   useAnimatedStyle,

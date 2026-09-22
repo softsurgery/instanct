@@ -1,6 +1,6 @@
 import React from "react";
-import { cn } from "@/lib/utils";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { cn } from "@instanct/lib";
+import { useColorPalette } from "@instanct/mobile-components";
 import { hslToHex } from "@/lib/theme";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,7 +15,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { Icon } from "../ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 
 interface MapLockedOverlayProps {
   className?: string;

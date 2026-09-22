@@ -1,15 +1,15 @@
 import React from "react";
 import { Pressable, View } from "react-native";
 import { router } from "expo-router";
-import { Text } from "@/components/ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar, identifyUser } from "@/lib/user";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { timeAgo } from "@/lib/date";
 import { RequestStatus, ResponseRequestDto } from "@/types";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@instanct/mobile-ui";
 import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react-native";
-import { useColorPalette } from "@/hooks/useColorPalette";
+import { useColorPalette } from "@instanct/mobile-components";
 
 interface SessionRequestCardProps {
   className?: string;

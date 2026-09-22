@@ -1,7 +1,7 @@
 import { api } from "@/api";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { ServerErrorResponse } from "@/types";
 import { requestSignInDtoSchema } from "@/types/validations/auth.validation";
@@ -9,16 +9,16 @@ import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
-import DividedText from "../shared/DividedText";
-import { StableKeyboardAwareScrollView } from "../shared/StableKeyboardAwareScrollView";
-import { FormBuilder } from "../shared/form-builder/FormBuilder";
+import { DividedText } from "@instanct/mobile-components";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { FormBuilder } from "@instanct/mobile-form-builder";
 import { useSignInFormStructure } from "./useSigninFormStructure";
 import { SSOButtons } from "./SSOButtons";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
-import { ApplicationHeader } from "../shared/AppHeader";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 
 interface SigninProps {
   className?: string;

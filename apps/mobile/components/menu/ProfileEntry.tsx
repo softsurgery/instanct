@@ -1,15 +1,15 @@
 //Deprecated
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { router } from "expo-router";
 import { Edit, Verified } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
 import { PremiumCarousel } from "../deprecated/premium/PremiumCarousel";
-import { Button } from "../ui/button";
-import { Icon } from "../ui/icon";
-import { Text } from "../ui/text";
+import { Button } from "@instanct/mobile-ui";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 
 interface ProfileEntryProps {

@@ -1,3 +1,18 @@
+export enum ParamVariant {
+  STRING = "string",
+  NUMBER = "number",
+  BOOLEAN = "boolean",
+  SELECT = "select",
+  LIST = "list",
+}
+
+export interface ConfigurationListFieldSchema {
+  key: string;
+  label: string;
+  variant: ParamVariant;
+  required?: boolean;
+}
+
 export interface ResponseConfigurationParamDto {
   id: string;
   name?: string;
@@ -7,6 +22,7 @@ export interface ResponseConfigurationParamDto {
   variant: ParamVariant;
   value?: string;
   options?: { label: string; value: string }[];
+  schema?: ConfigurationListFieldSchema[];
 }
 
 export interface ResponseConfigurationNamespaceDto {
@@ -21,13 +37,6 @@ export enum ConfigurationNamespaces {
   CORE = "core",
 }
 
-export enum ParamVariant {
-  STRING = "string",
-  NUMBER = "number",
-  BOOLEAN = "boolean",
-  SELECT = "select",
-}
-
 export enum MapConfigurationParam {
   REFRESH_UNIT = "refresh.unit",
   REFRESH_VALUE = "refresh.value",
@@ -39,4 +48,5 @@ export enum MapConfigurationParam {
   RANGE_UNIT = "range.unit",
   RANGE_MAX = "range.max",
   RANGE_MIN = "range.min",
+  PROVIDERS = "providers",
 }

@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { ActionSheetRef } from "react-native-actions-sheet";
-import { ThreeDotsActionSheet } from "../shared/ThreedotActionSheet";
+import { ThreeDotsActionSheet } from "@instanct/mobile-components";
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable, View } from "react-native";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { Eye, Camera } from "lucide-react-native";
-import { PhotoPreview, PhotoPreviewRef } from "../shared/PhotoPreview";
+import { PhotoPreview, PhotoPreviewRef } from "@instanct/mobile-components";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { api } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

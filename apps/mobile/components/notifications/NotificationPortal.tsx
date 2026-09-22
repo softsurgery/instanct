@@ -4,16 +4,16 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, View } from "react-native";
 import { api } from "~/api";
-import { cn } from "~/lib/utils";
+import { cn } from "@instanct/lib";
 import { ResponseNotificationDto } from "~/types/notifications";
-import { ApplicationHeader } from "../shared/AppHeader";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
-import { Text } from "../ui/text";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { Text } from "@instanct/mobile-ui";
 import { NotificationEntry } from "./NotificationEntry";
 import { NotificationEntrySkeleton } from "./NotificationEntrySkeleton";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 interface NotificationPortalProps {
   className?: string;
 }

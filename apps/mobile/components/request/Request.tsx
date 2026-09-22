@@ -1,11 +1,11 @@
 import React from "react";
 import { api } from "@/api";
-import { ApplicationHeader } from "@/components/shared/AppHeader";
-import { StableSafeAreaView } from "@/components/shared/StableSafeAreaView";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { Button } from "@instanct/mobile-ui";
+import { Icon } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
+import { cn } from "@instanct/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Calendar,
@@ -17,7 +17,7 @@ import {
 import { View } from "react-native";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { useTranslation } from "react-i18next";
-import { Loader } from "@/components/shared/Loader";
+import { Loader } from "@instanct/mobile-components";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
@@ -28,7 +28,7 @@ import { RequestDetailsCard } from "./RequestDetailsCard";
 import { RequestLocationSection } from "./RequestLocationSection";
 import { RequestSkeleton } from "./RequestSkeleton";
 import { StatusBadge } from "./RequestStatus";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 import { RequestConfirmActionSheet } from "./RequestConfirmActionSheet";
 
 interface RequestProps {

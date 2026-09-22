@@ -1,7 +1,7 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { TouchableOpacity, View } from "react-native";
-import { Text } from "../ui/text";
+import { Text } from "@instanct/mobile-ui";
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
 import Animated, {

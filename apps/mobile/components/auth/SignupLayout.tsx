@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { router } from "expo-router";
 import { View } from "react-native";
-import { FormBuilder } from "../shared/form-builder/FormBuilder";
+import { FormBuilder } from "@instanct/mobile-form-builder";
 import { useSignUpFormStructure } from "./useSignupFormStructure";
 import { AcceptTerms } from "./AcceptTerms";
-import { StableSafeAreaView } from "../shared/StableSafeAreaView";
-import { ApplicationHeader } from "../shared/AppHeader";
-import { Stepper } from "../shared/Stepper";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
+import { Stepper } from "@instanct/mobile-components";
 import React from "react";
 import { useAuthValidation } from "@/hooks/useAuthValidation";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
@@ -17,7 +17,7 @@ import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 
 interface SignupLayoutProps {
   className?: string;

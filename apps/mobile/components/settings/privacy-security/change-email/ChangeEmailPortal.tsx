@@ -3,25 +3,25 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { Loader2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "~/lib/utils";
-import { ApplicationHeader } from "~/components//shared/AppHeader";
-import { StableSafeAreaView } from "~/components//shared/StableSafeAreaView";
-import { StableKeyboardAwareScrollView } from "~/components//shared/StableKeyboardAwareScrollView";
-import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
+import { cn } from "@instanct/lib";
+import { FormBuilder } from "@instanct/mobile-form-builder";
 import { useChangeEmailFormStructure } from "./useChangeEmailFormStructure";
 import { useUserStore } from "@/stores/useUserStore";
-import { Text } from "@/components/ui/text";
+import { Text, Button, Icon } from "@instanct/mobile-ui";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
-import { Button } from "@/components/ui/button";
 import * as Haptics from "expo-haptics";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "@/types";
-import { Icon } from "@/components/ui/icon";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import {
+  AppHeaderBack,
+  ApplicationHeader,
+  BottomButtonWrapper,
+  StableKeyboardAwareScrollView,
+  StableSafeAreaView,
+} from "@instanct/mobile-components";
 
 interface ChangeEmailPortalProps {
   className?: string;

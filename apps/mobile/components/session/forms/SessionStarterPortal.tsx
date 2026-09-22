@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@instanct/lib";
 import { View } from "react-native";
-import { StableSafeAreaView } from "../../shared/StableSafeAreaView";
-import { ApplicationHeader } from "../../shared/AppHeader";
+import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@instanct/mobile-components";
 import { Info } from "lucide-react-native";
 import { router } from "expo-router";
-import { StableKeyboardAwareScrollView } from "../../shared/StableKeyboardAwareScrollView";
-import { FormBuilder } from "../../shared/form-builder/FormBuilder";
-import { Button } from "../../ui/button";
-import { Text } from "../../ui/text";
+import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { FormBuilder } from "@instanct/mobile-form-builder";
+import { Button } from "@instanct/mobile-ui";
+import { Text } from "@instanct/mobile-ui";
 import { useSessionStarterFormStructure } from "./useSessionStarterFormStructure";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useSessionStore } from "@/stores/useSessionStore";
@@ -19,12 +19,12 @@ import { ServerErrorResponse } from "@/types";
 import { SessionType } from "@/types/session";
 import { useUserSessions } from "@/hooks/content/sessions/useUserSessions";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { mapToSelectOptions } from "../../shared/form-builder/utils/map-select-options";
+import { mapToSelectOptions } from "@instanct/mobile-form-builder";
 import { zodErrorsToNested } from "@/lib/object";
 import { toast } from "sonner-native";
-import { AppHeaderBack } from "@/components/shared/AppHeaderBack";
+import { AppHeaderBack } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { BottomButtonWrapper } from "@/components/shared/BottomButtonBlockWrapper";
+import { BottomButtonWrapper } from "@instanct/mobile-components";
 interface SessionStarterPortalProps {
   className?: string;
 }

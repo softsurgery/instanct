@@ -1,12 +1,12 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@instanct/ui";
 import { Save } from "lucide-react";
-import { FormBuilder } from "@/components/shared/form-builder/FormBuilder";
+import { FormBuilder } from "@instanct/form-builder";
 import { useReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
 import { useUpdateRefTypeFormStructure } from "./useUpdateRefTypeFormStructure";
 import { useRefTypes } from "@/hooks/content/reference-types/useRefTypes";
-import { mapToSelectOptions } from "@/components/shared/form-builder/utils/mapToSelectOptions";
+import { mapToSelectOptions } from "@instanct/form-builder";
 
 interface RefTypeUpdateFormProps {
   className?: string;

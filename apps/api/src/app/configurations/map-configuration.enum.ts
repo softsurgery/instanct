@@ -9,4 +9,5 @@ export enum MapConfigurationParam {
   RANGE_UNIT = 'range.unit',
   RANGE_MAX = 'range.max',
   RANGE_MIN = 'range.min',
+  PROVIDERS = 'providers',
 }
