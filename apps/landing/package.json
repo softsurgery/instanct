@@ -12,13 +12,17 @@
   "dependencies": {
     "@instanct/components": "workspace:*",
     "@instanct/contexts": "workspace:*",
+    "@instanct/i18n": "workspace:*",
     "@instanct/lib": "workspace:*",
     "@instanct/ui": "workspace:*",
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.0.2",
     "lucide-react": "^0.563.0",
     "next": "^16.2.6",
     "next-themes": "^0.4.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-i18next": "^15.4.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

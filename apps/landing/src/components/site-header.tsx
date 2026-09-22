@@ -4,14 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useTranslation } from "react-i18next";
 import { ThemeSwitcher } from "@instanct/components/ThemeSwitcher";
 import { Button } from "@instanct/ui/components/button";
-import { navItems, site } from "@/lib/site";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { navLinks, site } from "@/lib/site";
 import React from "react";
 
 export function SiteHeader() {
   const [open, setOpen] = React.useState(false);
   const { theme, setTheme } = useTheme();
+  const { t } = useTranslation("landing");
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
@@ -20,10 +23,11 @@ export function SiteHeader() {
           href="/"
           className="flex items-center gap-2.5"
           onClick={() => setOpen(false)}
+          aria-label={t("a11y.homeAria")}
         >
           <Image
             src="/logo.png"
-            alt=""
+            alt={t("a11y.logoAlt")}
             width={32}
             height={32}
             className="size-8"
@@ -35,7 +39,7 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {navItems.map((item) => (
+          {navLinks.map((item) => (
             <Button
               key={item.href}
               variant="ghost"
@@ -43,12 +47,13 @@ export function SiteHeader() {
               className="text-foreground"
               asChild
             >
-              <Link href={item.href}>{item.label}</Link>
+              <Link href={item.href}>{t(item.labelKey)}</Link>
             </Button>
           ))}
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher className="hidden sm:flex" />
           <ThemeSwitcher
             value={theme as "light" | "dark" | "system"}
             onChange={setTheme}
@@ -60,7 +65,7 @@ export function SiteHeader() {
             className="md:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
             onClick={() => setOpen((value) => !value)}
           >
             {open ? <X /> : <Menu />}
@@ -73,19 +78,22 @@ export function SiteHeader() {
           id="mobile-nav"
           className="border-t bg-background px-4 py-3 md:hidden"
         >
-          <div className="mx-auto flex max-w-6xl flex-col gap-1">
-            {navItems.map((item) => (
-              <Button
-                key={item.href}
-                variant="ghost"
-                className="justify-start"
-                asChild
-              >
-                <Link href={item.href} onClick={() => setOpen(false)}>
-                  {item.label}
-                </Link>
-              </Button>
-            ))}
+          <div className="mx-auto flex max-w-6xl flex-col gap-3">
+            <LanguageSwitcher />
+            <div className="flex flex-col gap-1">
+              {navLinks.map((item) => (
+                <Button
+                  key={item.href}
+                  variant="ghost"
+                  className="justify-start"
+                  asChild
+                >
+                  <Link href={item.href} onClick={() => setOpen(false)}>
+                    {t(item.labelKey)}
+                  </Link>
+                </Button>
+              ))}
+            </div>
           </div>
         </nav>
       ) : null}

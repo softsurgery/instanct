@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     "@instanct/lib",
     "@instanct/components",
     "@instanct/contexts",
+    "@instanct/i18n",
   ],
   reactStrictMode: true,
   agentRules: false,

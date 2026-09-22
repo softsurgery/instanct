@@ -1,17 +1,21 @@
+"use client";
+
 import { prepareLegalHtml } from "@instanct/lib";
 import "@instanct/lib/legal-html.css";
+import { useTranslation } from "react-i18next";
 import type { ContentPage } from "@/lib/content";
-
+import { resolveSupportedLng } from "@/i18n/config";
 
 type LegalHtmlPageProps = {
   page: ContentPage;
 };
 
-function formatUpdatedAt(value?: string) {
+function formatUpdatedAt(value: string | undefined, locale: string) {
   if (!value) return null;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
-  return date.toLocaleDateString("fr-FR", {
+  const dateLocale = locale === "fr" ? "fr-FR" : "en-US";
+  return date.toLocaleDateString(dateLocale, {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -19,7 +23,13 @@ function formatUpdatedAt(value?: string) {
 }
 
 export function LegalHtmlPage({ page }: LegalHtmlPageProps) {
-  const updated = formatUpdatedAt(page.updatedAt);
+  const { t, i18n } = useTranslation("landing");
+  const locale = resolveSupportedLng(i18n.resolvedLanguage ?? i18n.language);
+  const formattedDate = formatUpdatedAt(page.updatedAt, locale);
+  const updated =
+    formattedDate != null
+      ? t("legal.updatedAt", { date: formattedDate })
+      : null;
   const showNotice =
     page.hasNotApplied || (page.unresolvedKeys?.length ?? 0) > 0;
   const htmlContent = prepareLegalHtml(page.body || "");
@@ -27,18 +37,18 @@ export function LegalHtmlPage({ page }: LegalHtmlPageProps) {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
       {updated ? (
-        <p className="text-sm text-muted-foreground">Mis à jour le {updated}</p>
+        <p className="text-sm text-muted-foreground">{updated}</p>
       ) : null}
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">{page.title}</h1>
+      <h1 className="mt-2 text-4xl font-semibold tracking-tight">
+        {page.title}
+      </h1>
       {page.subtitle ? (
         <p className="mt-4 text-lg text-muted-foreground">{page.subtitle}</p>
       ) : null}
 
       {showNotice ? (
         <aside className="mt-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-950 dark:text-amber-100">
-          Les passages surlignés en ambre ne sont pas encore appliqués ou restent
-          à confirmer (identité de la société, hébergeur, prestataire de carte,
-          ou fonctionnalités non ouvertes).
+          {t("legal.notice")}
         </aside>
       ) : null}
 

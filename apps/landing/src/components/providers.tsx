@@ -1,6 +1,8 @@
 "use client";
 
 import { ThemeProvider } from "@instanct/contexts";
+import "@/i18n";
+import { DocumentMetaSync } from "@/components/document-meta-sync";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -10,6 +12,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
+      <DocumentMetaSync />
       {children}
     </ThemeProvider>
   );

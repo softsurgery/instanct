@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 import { cn } from "@instanct/lib";
 import { site } from "@/lib/site";
 
@@ -8,6 +11,7 @@ type StoreBadgesProps = {
 };
 
 export function StoreBadges({ className, badgeClassName }: StoreBadgesProps) {
+  const { t } = useTranslation("landing");
   const appleHref = site.urls.appStore || "/#get-started";
   const googleHref = site.urls.playStore || "/#get-started";
 
@@ -15,12 +19,12 @@ export function StoreBadges({ className, badgeClassName }: StoreBadgesProps) {
     <div className={cn("flex flex-wrap items-center gap-3", className)}>
       <a
         href={appleHref}
-        aria-label="Download on the App Store"
+        aria-label={t("store.appStoreAria")}
         className="transition-opacity hover:opacity-90"
       >
         <Image
           src="/get-apple.png"
-          alt="Download on the App Store"
+          alt={t("store.appStoreAlt")}
           width={1912}
           height={651}
           className={cn("h-11 w-auto", badgeClassName)}
@@ -28,12 +32,12 @@ export function StoreBadges({ className, badgeClassName }: StoreBadgesProps) {
       </a>
       <a
         href={googleHref}
-        aria-label="Get it on Google Play"
+        aria-label={t("store.playStoreAria")}
         className="transition-opacity hover:opacity-90"
       >
         <Image
           src="/get-google.png"
-          alt="Get it on Google Play"
+          alt={t("store.playStoreAlt")}
           width={1918}
           height={651}
           className={cn("h-11 w-auto", badgeClassName)}

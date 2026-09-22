@@ -1,0 +1,196 @@
+{
+  "appName": "Instanct",
+  "language": {
+    "select": "Choisir la langue",
+    "en": "EN",
+    "fr": "FR"
+  },
+  "meta": {
+    "title": "Instanct — Découvrez, connectez-vous et trouvez votre place dans votre communauté.",
+    "description": "Instanct aide les personnes à découvrir des professionnels à proximité, à lancer des sessions et à créer des liens significatifs en toute confiance.",
+    "titleTemplate": "{{page}} · Instanct"
+  },
+  "a11y": {
+    "skipToContent": "Aller au contenu",
+    "logoAlt": "Logo Instanct",
+    "homeAria": "Accueil Instanct"
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "howItWorks": "Comment ça marche",
+    "safety": "Sécurité",
+    "faq": "FAQ",
+    "closeMenu": "Fermer le menu",
+    "openMenu": "Ouvrir le menu"
+  },
+  "hero": {
+    "eyebrow": "La nouvelle génération de la connexion",
+    "tagline": "Découvrez, connectez-vous et trouvez votre place dans votre communauté.",
+    "description": "Instanct aide les personnes à découvrir des professionnels à proximité, à lancer des sessions et à créer des liens significatifs en toute confiance.",
+    "body": "Explorez, échangez et rencontrez des personnes à proximité grâce à une expérience moderne pensée pour la confiance.",
+    "seeHowItWorks": "Voir comment ça marche",
+    "previewLightAlt": "Écran Explorer Instanct en mode clair",
+    "previewDarkAlt": "Écran Explorer Instanct en mode sombre"
+  },
+  "store": {
+    "appStoreAria": "Télécharger sur l’App Store",
+    "appStoreAlt": "Télécharger sur l’App Store",
+    "playStoreAria": "Disponible sur Google Play",
+    "playStoreAlt": "Disponible sur Google Play"
+  },
+  "features": {
+    "eyebrow": "Ce que nous proposons",
+    "title": "Une découverte soignée et des expériences réfléchies",
+    "subtitle": "Instanct réunit découverte sur carte, profils professionnels, chat en direct et outils de rendez-vous au même endroit.",
+    "items": {
+      "nearbyDiscovery": {
+        "title": "Découverte à proximité",
+        "description": "Explorez les professionnels autour de vous sur une carte en direct. Filtrez par secteur et objectifs pour trouver les bonnes personnes."
+      },
+      "profiles": {
+        "title": "Des profils plus complets",
+        "description": "Mettez en avant expérience, formation, secteurs et intentions pour que les bonnes personnes vous trouvent — et que vous les trouviez."
+      },
+      "messaging": {
+        "title": "Messagerie en temps réel",
+        "description": "Discutez avec vos contacts, partagez des médias et envoyez un poke quand un simple bonjour suffit."
+      },
+      "sessions": {
+        "title": "Sessions",
+        "description": "Indiquez quand vous êtes disponible pour échanger. Les personnes à proximité voient que vous êtes ouvert et peuvent engager la conversation."
+      },
+      "meetingRequests": {
+        "title": "Demandes de rendez-vous",
+        "description": "Envoyez ou recevez des demandes avec un horaire et un lieu. Les rendez-vous acceptés s’ajoutent automatiquement à votre agenda."
+      },
+      "bookmarks": {
+        "title": "Favoris et activités",
+        "description": "Enregistrez des profils intéressants, suivez vos demandes entrantes et sortantes, et gardez le fil de l’essentiel."
+      }
+    }
+  },
+  "howItWorks": {
+    "eyebrow": "Comment ça marche",
+    "title": "De la proximité à l’essentiel, en trois étapes",
+    "steps": {
+      "01": {
+        "title": "Créez votre profil",
+        "description": "Ajoutez votre photo, bio, expérience, formation et secteurs. Connectez-vous par e-mail, Google, Apple ou LinkedIn."
+      },
+      "02": {
+        "title": "Explorez qui est à proximité",
+        "description": "Ouvrez la carte, appliquez des filtres et découvrez des personnes qui partagent vos objectifs ou votre secteur."
+      },
+      "03": {
+        "title": "Connectez-vous en confiance",
+        "description": "Lancez une session, envoyez une demande de rendez-vous ou ouvrez un chat. Instanct est conçu pour des liens authentiques."
+      }
+    }
+  },
+  "showcase": {
+    "eyebrow": "Notre mission",
+    "title": "Des outils pour connecter en toute confiance",
+    "body": "Nous construisons pour des liens significatifs, une découverte locale qui reste humaine, et des expériences qui placent sécurité, confiance et inclusion au centre.",
+    "highlights": {
+      "filters": "Filtrez par secteur et objectifs",
+      "sessions": "Indiquez quand vous êtes disponible",
+      "chat": "Chat, poke et favoris dans un même flux",
+      "languages": "Anglais, français et arabe"
+    },
+    "cards": {
+      "explore": {
+        "title": "Explorer",
+        "body": "Voyez qui est autour de vous, puis ouvrez un profil pour découvrir expérience, formation et intentions.",
+        "badge": "Carte"
+      },
+      "sessions": {
+        "title": "Sessions",
+        "body": "Signalez à la communauté que vous êtes prêt à échanger. Les personnes à proximité peuvent vous contacter pendant votre disponibilité.",
+        "badge": "En direct"
+      },
+      "requests": {
+        "title": "Demandes",
+        "body": "Proposez un rendez-vous avec un message, un horaire et un lieu. Les demandes acceptées s’ajoutent à votre agenda.",
+        "badge": "Rencontre"
+      },
+      "chat": {
+        "title": "Chat",
+        "body": "Poursuivez la conversation avec messagerie en temps réel, médias et pokes légers.",
+        "badge": "Temps réel"
+      }
+    }
+  },
+  "safety": {
+    "eyebrow": "Sécurité et confiance",
+    "title": "Conçu avec la confiance au cœur",
+    "subtitle": "Des règles claires, une modération proactive et des réglages qui vous laissent maître de ce que vous partagez.",
+    "points": {
+      "privacy": {
+        "title": "La confidentialité d’abord",
+        "description": "La localisation n’est utilisée que si vous l’activez, pour la carte et les fonctionnalités à proximité. Vous contrôlez la visibilité dans les Réglages."
+      },
+      "community": {
+        "title": "Standards de la communauté",
+        "description": "Harcèlement, usurpation et contenus nuisibles sont interdits. Nous pouvons suspendre les comptes qui enfreignent ces règles."
+      },
+      "content": {
+        "title": "Vous possédez votre contenu",
+        "description": "Vous restez propriétaire de ce que vous partagez. Instanct l’héberge uniquement pour faire fonctionner le service, et vous pouvez supprimer votre compte à tout moment."
+      }
+    }
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Vos questions, nos réponses",
+    "items": {
+      "whatIsInstanct": {
+        "question": "Qu’est-ce qu’Instanct ?",
+        "answer": "Instanct est une application de découverte professionnelle. Elle aide à trouver des professionnels à proximité, lancer des sessions, envoyer des demandes de rendez-vous et discuter — avec la confidentialité et la confiance au centre."
+      },
+      "location": {
+        "question": "Ma position est-elle toujours partagée ?",
+        "answer": "Non. Les données de localisation ne sont collectées que si vous les activez, pour la carte et les fonctionnalités à proximité. Gérez visibilité et préférences dans les Réglages."
+      },
+      "sessions": {
+        "question": "Comment fonctionnent les sessions ?",
+        "answer": "Une session indique aux autres que vous êtes disponible pour échanger. Vous choisissez le début et la fin pour que les personnes à proximité comprennent votre intention avant de vous contacter."
+      },
+      "platforms": {
+        "question": "Quelles plateformes sont prises en charge ?",
+        "answer": "L’expérience Instanct est disponible sur iOS et Android. Un backoffice web existe pour l’administration. Le produit est disponible en anglais, français et arabe."
+      },
+      "deleteAccount": {
+        "question": "Comment supprimer mon compte ?",
+        "answer": "Ouvrez Réglages, puis Session, et choisissez Supprimer le compte. La suppression efface définitivement vos données et est irréversible."
+      }
+    }
+  },
+  "cta": {
+    "eyebrow": "Prêt à vous connecter ?",
+    "title": "Lancez votre première session",
+    "body": "Rejoignez Instanct pour découvrir des professionnels à proximité, indiquer vos disponibilités et créer des liens qui vous ressemblent.",
+    "talkWithUs": "Nous contacter"
+  },
+  "footer": {
+    "product": "Produit",
+    "legal": "Mentions légales",
+    "contact": "Contact",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d’utilisation",
+    "copyright": "© {{year}} Instanct. Pour celles et ceux qui veulent connecter en confiance."
+  },
+  "legal": {
+    "updatedAt": "Mis à jour le {{date}}",
+    "notice": "Les passages surlignés en ambre ne sont pas encore appliqués ou restent à confirmer (identité de la société, hébergeur, prestataire de paiement ou fonctionnalités non ouvertes).",
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "unavailableTitle": "Politique de confidentialité",
+      "unavailableSubtitle": "La politique de confidentialité est temporairement indisponible. Veuillez réessayer plus tard."
+    },
+    "terms": {
+      "title": "Conditions d’utilisation",
+      "unavailableTitle": "Conditions générales",
+      "unavailableSubtitle": "Les conditions d’utilisation sont temporairement indisponibles. Veuillez réessayer plus tard."
+    }
+  }
+}

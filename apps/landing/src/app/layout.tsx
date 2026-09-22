@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { site } from "@/lib/site";
 import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { SkipToContent } from "@/components/skip-to-content";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,18 +14,20 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.name} — ${site.tagline}`,
-    template: `%s · ${site.name}`,
+    default: "Instanct — Discover, connect, and feel at home in your community.",
+    template: "%s · Instanct",
   },
-  description: site.description,
+  description:
+    "Instanct helps people discover nearby professionals, start sessions, and build meaningful connections with confidence.",
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
   },
   openGraph: {
-    title: site.name,
-    description: site.description,
-    siteName: site.name,
+    title: "Instanct",
+    description:
+      "Instanct helps people discover nearby professionals, start sessions, and build meaningful connections with confidence.",
+    siteName: "Instanct",
     type: "website",
   },
 };
@@ -44,12 +46,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen font-sans" suppressHydrationWarning>
         <Providers>
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
-          >
-            Skip to content
-          </a>
+          <SkipToContent />
           <SiteHeader />
           <main id="main">{children}</main>
           <SiteFooter />

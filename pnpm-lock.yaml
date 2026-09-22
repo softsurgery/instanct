@@ -227,12 +227,21 @@ importers:
       '@instanct/contexts':
         specifier: workspace:*
         version: link:../../packages/contexts
+      '@instanct/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@instanct/lib':
         specifier: workspace:*
         version: link:../../packages/lib
       '@instanct/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      i18next:
+        specifier: ^24.2.3
+        version: 24.2.3(typescript@5.9.3)
+      i18next-browser-languagedetector:
+        specifier: ^8.0.2
+        version: 8.2.1
       lucide-react:
         specifier: ^0.563.0
         version: 0.563.0(react@19.2.3)
@@ -248,6 +257,9 @@ importers:
       react-dom:
         specifier: 19.2.3
         version: 19.2.3(react@19.2.3)
+      react-i18next:
+        specifier: ^15.4.1
+        version: 15.7.4(i18next@24.2.3(typescript@5.9.3))(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.86.3(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(typescript@5.9.3)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3
@@ -1178,6 +1190,12 @@ importers:
       react-dom:
         specifier: 19.2.3
         version: 19.2.3(react@19.2.3)
+      typescript:
+        specifier: ^5.5.3
+        version: 5.9.3
+
+  packages/i18n:
+    devDependencies:
       typescript:
         specifier: ^5.5.3
         version: 5.9.3
@@ -8864,6 +8882,9 @@ packages:
 
   hyphenate-style-name@1.1.0:
     resolution: {integrity: sha512-WDC/ui2VVRrz3jOVi+XtjqkDjiVjTtFaAGiW37k6b+ohyQ5wYDOGkvCZa8+H0nx3gyvv0+BST9xuOgIyGQ00gw==}
+
+  i18next-browser-languagedetector@8.2.1:
+    resolution: {integrity: sha512-bZg8+4bdmaOiApD7N7BPT9W8MLZG+nPTOFlLiJiT8uzKXFjhxw4v2ierCXOwB5sFDMtuA5G4kgYZ0AznZxQ/cw==}
 
   i18next-chained-backend@4.6.3:
     resolution: {integrity: sha512-Yg4hAKg/98zRAMQs87vJSNevTzaPPrYF3Eb7Kpx+UEaaXLd3p69g7dulAL+hpmZQHeMQ/5gFqHVtdwva53mB0Q==}
@@ -23869,6 +23890,10 @@ snapshots:
   human-signals@2.1.0: {}
 
   hyphenate-style-name@1.1.0: {}
+
+  i18next-browser-languagedetector@8.2.1:
+    dependencies:
+      '@babel/runtime': 7.29.7
 
   i18next-chained-backend@4.6.3:
     dependencies:
