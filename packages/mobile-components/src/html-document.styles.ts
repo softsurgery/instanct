@@ -1,11 +1,14 @@
 import type { MixedStyleRecord } from "react-native-render-html";
+import { hslToHex } from "./lib/theme";
 
-export const htmlDocumentTagsStyles: MixedStyleRecord = {
+export const getHtmlDocumentTagsStyles = (palette: any): MixedStyleRecord => ({
   body: {
+    color: hslToHex(palette.foreground),
     fontSize: 15,
     lineHeight: 24,
   },
   h1: {
+    color: hslToHex(palette.foreground),
     fontSize: 26,
     fontWeight: "700",
     letterSpacing: -0.4,
@@ -13,6 +16,7 @@ export const htmlDocumentTagsStyles: MixedStyleRecord = {
     marginBottom: 12,
   },
   h2: {
+    color: hslToHex(palette.foreground),
     fontSize: 20,
     fontWeight: "700",
     letterSpacing: -0.3,
@@ -20,21 +24,24 @@ export const htmlDocumentTagsStyles: MixedStyleRecord = {
     marginBottom: 10,
     paddingBottom: 6,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(120, 120, 128, 0.22)",
+    borderBottomColor: hslToHex(palette.border),
   },
   h3: {
+    color: hslToHex(palette.foreground),
     fontSize: 17,
     fontWeight: "600",
     marginTop: 18,
     marginBottom: 8,
   },
   h4: {
+    color: hslToHex(palette.foreground),
     fontSize: 16,
     fontWeight: "600",
     marginTop: 16,
     marginBottom: 6,
   },
   p: {
+    color: hslToHex(palette.foreground),
     fontSize: 15,
     lineHeight: 24,
     marginTop: 0,
@@ -51,31 +58,32 @@ export const htmlDocumentTagsStyles: MixedStyleRecord = {
     paddingLeft: 18,
   },
   li: {
+    color: hslToHex(palette.foreground),
     fontSize: 15,
     lineHeight: 23,
     marginBottom: 6,
   },
   strong: {
+    color: hslToHex(palette.foreground),
     fontWeight: "700",
   },
   em: {
+    color: hslToHex(palette.foreground),
     fontStyle: "italic",
   },
   a: {
-    color: "#2563eb",
+    color: hslToHex(palette.primary),
     fontWeight: "600",
     textDecorationLine: "underline",
   },
   mark: {
-    backgroundColor: "rgba(245, 158, 11, 0.35)",
+    backgroundColor: hslToHex(palette.primary, 0.25),
     borderRadius: 4,
     paddingHorizontal: 4,
     paddingVertical: 1,
   },
   blockquote: {
-    backgroundColor: "rgba(245, 158, 11, 0.12)",
-    borderLeftWidth: 4,
-    borderLeftColor: "#d97706",
+    backgroundColor: hslToHex(palette.card),
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
@@ -83,26 +91,25 @@ export const htmlDocumentTagsStyles: MixedStyleRecord = {
     fontStyle: "normal",
   },
   code: {
+    color: hslToHex(palette.foreground),
     fontSize: 13,
-    backgroundColor: "rgba(120, 120, 128, 0.12)",
+    backgroundColor: hslToHex(palette.muted, 0.5),
     borderRadius: 4,
     paddingHorizontal: 4,
   },
   hr: {
     marginVertical: 18,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(120, 120, 128, 0.22)",
+    borderBottomColor: hslToHex(palette.border),
   },
-};
+});
 
-export const htmlDocumentClassesStyles: MixedStyleRecord = {
+export const getHtmlDocumentClassesStyles = (palette: any): MixedStyleRecord => ({
   "legal-not-applied": {
-    backgroundColor: "rgba(245, 158, 11, 0.12)",
-    borderLeftWidth: 4,
-    borderLeftColor: "#d97706",
+    backgroundColor: hslToHex(palette.card),
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginVertical: 12,
   },
-};
+});
