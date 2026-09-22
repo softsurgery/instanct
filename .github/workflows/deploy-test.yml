@@ -1,0 +1,76 @@
+name: Deploy Test
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-test
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: TEST_ENV
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create env files from secrets
+        env:
+          API_ENV: ${{ secrets.API_ENV }}
+          WEB_ENV: ${{ secrets.WEB_ENV }}
+          LEGACY_ENV: ${{ secrets.ENV }}
+        run: |
+          if [ -n "$API_ENV" ]; then
+            printf '%s\n' "$API_ENV" > api.env
+          else
+            printf '%s\n' "$LEGACY_ENV" > api.env
+          fi
+          if [ -n "$WEB_ENV" ]; then
+            printf '%s\n' "$WEB_ENV" > web.env
+          else
+            printf '%s\n' "$LEGACY_ENV" > web.env
+          fi
+          grep '^NEXT_PUBLIC_' web.env > apps/web/.env.build || true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker images
+        run: |
+          docker build -f apps/api/dockerfile -t instanct-api .
+          docker build -f apps/web/dockerfile -t instanct-backoffice .
+
+      - name: Save Docker images
+        run: |
+          docker save instanct-api -o instanct-api.tar
+          docker save instanct-backoffice -o instanct-backoffice.tar
+          chmod 644 instanct-api.tar instanct-backoffice.tar
+
+      - name: Copy artifacts to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "instanct-api.tar,instanct-backoffice.tar,api.env,web.env"
+          target: "/home/${{ secrets.SSH_USER }}/deploy"
+
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+
+      - name: Write SSH key for Ansible
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Deploy with Ansible
+        working-directory: infra/ansible
+        env:
+          ANSIBLE_HOST: ${{ secrets.SSH_HOST }}
+          ANSIBLE_USER: ${{ secrets.SSH_USER }}
+          ANSIBLE_SSH_PRIVATE_KEY_FILE: ~/.ssh/deploy_key
+        run: ansible-playbook playbooks/deploy.yml

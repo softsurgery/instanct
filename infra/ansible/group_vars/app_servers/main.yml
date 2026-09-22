@@ -1,0 +1,14 @@
+deploy_dir: "/home/{{ ansible_user }}/deploy"
+docker_network_mode: host
+
+instanct_services:
+  - name: instanct-api
+    image: instanct-api
+    image_archive: instanct-api.tar
+    env_file: api.env
+    container_port: 5000
+  - name: instanct-backoffice
+    image: instanct-backoffice
+    image_archive: instanct-backoffice.tar
+    env_file: web.env
+    container_port: 3000

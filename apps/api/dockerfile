@@ -8,6 +8,9 @@ WORKDIR /repo
 
 RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
 
+# Prevent workspace postinstall hooks (DB seeders) during image builds.
+RUN printf 'ignore-scripts=true\n' > .npmrc
+
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json ./apps/api/package.json
 COPY apps/web/package.json ./apps/web/package.json
@@ -22,10 +25,10 @@ RUN pnpm install --frozen-lockfile --filter instanct-api... --ignore-scripts && 
 COPY apps/api ./apps/api
 COPY packages ./packages
 
-RUN pnpm --filter instanct-api build
+RUN cd apps/api && /repo/node_modules/.bin/nest build
 
-# --- Runtime Stage: Using Google Distroless (very small) ---
-FROM gcr.io/distroless/nodejs20-debian12
+# --- Runtime Stage ---
+FROM gcr.io/distroless/nodejs22-debian12
 
 WORKDIR /app
 
