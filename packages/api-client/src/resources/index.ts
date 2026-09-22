@@ -30,6 +30,7 @@ export function createResources(http: AxiosInstance) {
       contentPage: createContentPageResource(http),
     },
     store: createStoreResource(http),
+    contentPage: createContentPageResource(http),
     upload: createUploadResource(http),
     notification: createNotificationResource(http),
     follow: createFollowResource(http),

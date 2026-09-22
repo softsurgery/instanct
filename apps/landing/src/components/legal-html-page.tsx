@@ -10,9 +10,9 @@ type LegalHtmlPageProps = {
   page: ContentPage;
 };
 
-function formatUpdatedAt(value: string | undefined, locale: string) {
+function formatUpdatedAt(value: string | Date | undefined, locale: string) {
   if (!value) return null;
-  const date = new Date(value);
+  const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return null;
   const dateLocale = locale === "fr" ? "fr-FR" : "en-US";
   return date.toLocaleDateString(dateLocale, {
@@ -24,7 +24,8 @@ function formatUpdatedAt(value: string | undefined, locale: string) {
 
 export function LegalHtmlPage({ page }: LegalHtmlPageProps) {
   const { t, i18n } = useTranslation("landing");
-  const locale = resolveSupportedLng(i18n.resolvedLanguage ?? i18n.language);
+  const activeLang = page.locale || i18n.resolvedLanguage || i18n.language;
+  const locale = resolveSupportedLng(activeLang);
   const formattedDate = formatUpdatedAt(page.updatedAt, locale);
   const updated =
     formattedDate != null

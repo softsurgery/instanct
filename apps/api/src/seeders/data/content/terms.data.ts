@@ -96,5 +96,106 @@ export const termsHtml = `<p>Version du 20 septembre 2026</p>
 <h2>15. Contact</h2>
 <p>Instanct – Protection des données</p>
 <p><mark>{{company.legalName}}</mark></p>
-<p><mark>{{company.address}}</mark></p>
+<p><mark>{{company.privacyEmail}}</mark></p>`;
+
+export const termsHtmlFr = termsHtml;
+
+export const termsHtmlEn = `<p>Version of September 20, 2026</p>
+<p>Highlighted passages identify either information yet to be confirmed (company identity, host, map provider) or features that are not yet in production.</p>
+<h2>1. Purpose</h2>
+<p>Instanct is a real-time professional networking platform. It allows people present in the same location to voluntarily make themselves visible, discover relevant professional profiles, and connect.</p>
+<p>These terms govern access to and use of:</p>
+<ul><li>
+<p>the Instanct mobile application;</p></li><li>
+<p>the Instanct website;</p></li><li>
+<p>map, networking, messaging, and appointment scheduling features.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>Instanct Open spaces, Instanct Spaces, VIP areas, hotels, lounges, coworkings, trade shows, congresses, business clubs, campuses, or companies, as well as beta versions distributed via TestFlight, are not yet offered. These mentions have no effect until the corresponding feature is opened.</p></blockquote>
+
+<p>By creating an account or using Instanct, you accept these terms and the privacy policy.</p>
+<h2>2. Service Publisher</h2>
+<p>The service is published by:</p>
+<p><strong><mark>{{company.legalName}}</mark></strong></p>
+<p><mark>{{company.legalForm}}</mark></p>
+<p>Registered office: <mark>{{company.address}}</mark></p>
+<p>RCS/SIREN: <mark>{{company.rcs}}</mark></p>
+<p>In these terms, "Instanct", "we", and "our" refer to this company.</p>
+<p>For any questions: <mark>{{company.privacyEmail}}</mark> or <mark>{{company.support}}</mark></p>
+<h2>3. Service Access</h2>
+<p>Instanct is intended for professionals aged at least 18 years old.</p>
+<p>To use the service, you must:</p>
+<ul><li>
+<p>create an account with accurate and up-to-date information;</p></li><li>
+<p>maintain the confidentiality of your credentials;</p></li><li>
+<p>promptly report any unauthorized use of your account to us.</p></li></ul>
+
+<p>You are responsible for all activity conducted from your account.</p>
+<p>Refusing certain phone permissions (location, notifications) may limit features without preventing the use of other available functions.</p>
+<h2>4. Account and Profile</h2>
+<p>You may fill out a professional profile including your name, photo, job title, company, skills, networking goals, and availability.</p>
+<p>You must not publish sensitive, confidential, or misleading information. You must not impersonate another person.</p>
+<p>Instanct may suspend or delete an account in the event of manifestly false information, identity theft, or breach of these terms.</p>
+<h2>5. Map, Location, and Visibility</h2>
+<p>The Instanct map allows viewing locations and, when voluntarily authorized, your presence in an area.</p>
+<p>Visibility on the map must be enabled voluntarily. Authorization given to the operating system does not automatically mean your position is visible to other users.</p>
+<p>You can in particular:</p>
+<ul><li>
+<p>appear only in a specific location or general area;</p></li><li>
+<p>limit your visibility;</p></li><li>
+<p>deactivate your presence;</p></li><li>
+<p>remove location authorization in your phone settings.</p></li></ul>
+
+<p>Even an indication at a venue level may reveal that you are inside an establishment. Check your settings before enabling visibility.</p>
+<blockquote class="legal-not-applied">
+<p>Background location tracking is not offered. If added later, it will be subject to specific information and dedicated authorization.</p></blockquote>
+
+<h2>6. Connections, Messaging, and Appointments</h2>
+<p>Instanct allows you to request connections, exchange messages, and organize appointments.</p>
+<p>You commit to using these features in a professional, fair, and respectful manner. Harassment, discriminatory language, threats, spam, and repeated unsolicited requests are strictly prohibited.</p>
+<p>The content of private conversations is not shared with partners unless you choose to share it or access is essential to investigate a report, ensure service security, or comply with a legal obligation.</p>
+<h2>7. Content</h2>
+<p>You retain your rights to the content you publish. You grant Instanct a limited, non-exclusive, worldwide license to host, display, and distribute this content to operate the service.</p>
+<p>You guarantee that you hold the necessary rights to the content you publish.</p>
+<p>Other users may take screenshots or retain information seen in the application. Instanct cannot technically prevent all uses made outside the platform.</p>
+<h2>8. Prohibited Uses</h2>
+<p>It is forbidden to:</p>
+<ul><li>
+<p>harass, threaten, or discriminate against other users;</p></li><li>
+<p>publish illegal, misleading, or harmful content;</p></li><li>
+<p>extract, scrape, or massively reuse platform data;</p></li><li>
+<p>bypass security or access control measures;</p></li><li>
+<p>use Instanct for surveillance, unsolicited advertising, or activities contrary to public order.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>Access to device contacts or calendar is not offered. If added later, dedicated authorization and specific information will be presented before any import.</p></blockquote>
+
+<h2>9. Partner Spaces and Events</h2>
+<blockquote class="legal-not-applied">
+<p>Spaces created for organizers, hotels, trade shows, or companies, participant list transmission, and event administration by partners are not yet in service. Instanct does not act as a subcontractor for an organizer for these purposes. These clauses will apply only when the corresponding feature opens.</p></blockquote>
+
+<h2>10. Availability and Evolution</h2>
+<p>Instanct is provided as is. We may modify, suspend, or interrupt all or part of the service, in particular for maintenance, security, or feature evolution.</p>
+<p>We may update these terms. In the event of a material change, we will notify you in the application, by email, or through another appropriate medium before it takes effect.</p>
+<h2>11. Liability</h2>
+<p>To the extent permitted by law, Instanct is not responsible for:</p>
+<ul><li>
+<p>meetings, exchanges, or appointments organized between users;</p></li><li>
+<p>content published by users;</p></li><li>
+<p>interruptions, errors, or data losses related to force majeure, third-party providers, or misuse of the service.</p></li></ul>
+
+<p>No digital service can guarantee absolute security or availability. You must protect your credentials and promptly report any suspicious activity.</p>
+<h2>12. Suspension and Termination</h2>
+<p>We may suspend or delete an account in the event of a violation of these terms, security risk, or legal obligation.</p>
+<p>You may request account deletion from the application or at <mark>{{company.privacyEmail}}</mark>.</p>
+<p>Deletion results in profile deactivation, end of map visibility, and deletion or anonymization of personal data, subject to legal or security retention requirements.</p>
+<h2>13. Personal Data</h2>
+<p>The processing of your data is described in the Privacy Policy, which forms an integral part of these terms.</p>
+<p>Instanct does not sell your personal data.</p>
+<h2>14. Applicable Law</h2>
+<p>These terms are governed by French law.</p>
+<p>In the event of a dispute, failing amicable resolution, competent courts will be those within the jurisdiction of Instanct's registered office, subject to mandatory rules applicable to consumers or professionals concerned.</p>
+<h2>15. Contact</h2>
+<p>Instanct – Data Protection</p>
+<p><mark>{{company.legalName}}</mark></p>
 <p><mark>{{company.privacyEmail}}</mark></p>`;

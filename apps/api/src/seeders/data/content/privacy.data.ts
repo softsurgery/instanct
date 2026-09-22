@@ -387,3 +387,395 @@ export const privacyHtml = `<p>Version du 20 septembre 2026</p>
 <p><mark>{{company.legalName}}</mark></p>
 <p><mark>{{company.address}}</mark></p>
 <p><mark>{{company.privacyEmail}}</mark></p>`;
+
+export const privacyHtmlFr = privacyHtml;
+
+export const privacyHtmlEn = `<p>Version of September 20, 2026</p>
+<p>Highlighted passages identify either information yet to be confirmed or processing or features that are not yet applied.</p>
+<h2>1. Our Commitment</h2>
+<p>Instanct is a real-time professional networking platform. It allows people present in the same location, establishment, or event to voluntarily make themselves visible, discover relevant professional profiles, and connect.</p>
+<p>Privacy protection is built into how Instanct operates. In particular, you retain control over:</p>
+<ul><li>
+<p>the information displayed on your profile;</p></li><li>
+<p>your presence in a space;</p></li><li>
+<p>your visibility on the map;</p></li><li>
+<p>who can contact you;</p></li><li>
+<p>the use of your location;</p></li><li>
+<p>your connections and conversations;</p></li><li>
+<p>the deletion of your data and account.</p></li></ul>
+
+<p>Instanct does not sell your personal data.</p>
+<h2>2. Data Controller</h2>
+<p>The data controller is:</p>
+<p><strong><mark>{{company.legalName}}</mark></strong></p>
+<p><mark>{{company.legalForm}}</mark></p>
+<p>Registered office: <mark>{{company.address}}</mark></p>
+<p>RCS/SIREN: <mark>{{company.rcs}}</mark></p>
+<p>Data protection email: <mark>{{company.privacyEmail}}</mark></p>
+<p>In this policy, the terms "Instanct", "we", and "our" refer to this company.</p>
+<h2>3. Services Covered</h2>
+<p>This policy applies:</p>
+<ul><li>
+<p>to the Instanct mobile application;</p></li><li>
+<p>to the Instanct website;</p></li><li>
+<p>to map, networking, messaging, and appointment scheduling features.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>This policy also mentions, for information purposes, Instanct Open public spaces, Instanct Spaces private, semi-public, or VIP spaces, spaces created for hotels, lounges, coworkings, trade shows, congresses, business clubs, campuses, or companies, as well as beta versions distributed via TestFlight. These services are not yet open. Processing that exists solely for these spaces does not apply until put into production.</p></blockquote>
+
+<h2>4. Data You Provide to Us</h2>
+<h3>4.1 Account Creation</h3>
+<p>We may collect:</p>
+<ul><li>
+<p>your first and last name;</p></li><li>
+<p>your email address;</p></li><li>
+<p>your phone number, when requested;</p></li><li>
+<p>your password in a secure form;</p></li><li>
+<p>your language;</p></li><li>
+<p>your profile picture;</p></li><li>
+<p>your user ID.</p></li></ul>
+
+<h3>4.2 Professional Profile</h3>
+<p>You may voluntarily add:</p>
+<ul><li>
+<p>your job title;</p></li><li>
+<p>your company or organization;</p></li><li>
+<p>your industry / sector;</p></li><li>
+<p>your skills and areas of expertise;</p></li><li>
+<p>a professional bio / presentation;</p></li><li>
+<p>your professional contact details;</p></li><li>
+<p>your professional links;</p></li><li>
+<p>your areas of interest;</p></li><li>
+<p>your networking goals;</p></li><li>
+<p>your availability;</p></li><li>
+<p>languages you speak.</p></li></ul>
+
+<p>You must not publish sensitive or confidential information that you do not wish to make visible to other authorized users.</p>
+<h3>4.3 Networking Goals</h3>
+<p>You can indicate the reason why you wish to be contacted, for example:</p>
+<ul><li>
+<p>seeking clients;</p></li><li>
+<p>meeting partners;</p></li><li>
+<p>finding investors;</p></li><li>
+<p>recruiting or seeking career opportunities;</p></li><li>
+<p>offering or seeking expertise;</p></li><li>
+<p>expanding your network;</p></li><li>
+<p>organizing a meeting.</p></li></ul>
+
+<p>This information is used to facilitate relevant professional connections.</p>
+<h3>4.4 Communications</h3>
+<p>We process information related to:</p>
+<ul><li>
+<p>connection requests;</p></li><li>
+<p>acceptances and rejections;</p></li><li>
+<p>professional contacts created;</p></li><li>
+<p>messages exchanged;</p></li><li>
+<p>appointments organized;</p></li><li>
+<p>blocked users;</p></li><li>
+<p>reports submitted to our team.</p></li></ul>
+
+<p>The content of private conversations is not shared with organizers, hotels, or other partners, except when a user chooses to share it or access is essential to investigate a report, ensure service security, or comply with a legal obligation.</p>
+<h2>5. Location and Instanct Map</h2>
+<h3>5.1 General Operation</h3>
+<p>The Instanct map allows viewing venues, events, professional spaces, and, when users have voluntarily authorized it, their presence in an area.</p>
+<p>The map is not intended to provide continuous tracking of movements.</p>
+<p>Depending on the features used and authorizations granted, Instanct may process:</p>
+<ul><li>
+<p>an approximate location inferred from the IP address;</p></li><li>
+<p>the venue or event joined;</p></li><li>
+<p>a manually selected area;</p></li><li>
+<p>the device position provided by the operating system;</p></li><li>
+<p>a precise GPS position when the user expressly authorizes it;</p></li><li>
+<p>the date, time, and duration of presence in a space;</p></li><li>
+<p>the point or area displayed on the map.</p></li></ul>
+
+<h3>5.2 Voluntary Activation</h3>
+<p>User visibility on the map must be enabled voluntarily.</p>
+<p>Authorization given to the operating system does not automatically mean position is visible to other users. Visibility on Instanct also depends on settings chosen within the app.</p>
+<p>Users can in particular:</p>
+<ul><li>
+<p>appear only in a venue or general area;</p></li><li>
+<p>authorize a more precise position when offered;</p></li><li>
+<p>limit visibility to participants in the same space;</p></li><li>
+<p>deactivate their presence;</p></li><li>
+<p>leave a venue or event;</p></li><li>
+<p>remove location authorization in phone settings.</p></li></ul>
+
+<h3>5.3 Precise Location</h3>
+<p>When precise location is required for a feature, Instanct asks for user permission before accessing GPS data.</p>
+<p>Unless otherwise clearly presented to the user:</p>
+<ul><li>
+<p>Instanct does not continuously track movements;</p></li><li>
+<p>Instanct does not use location in the background;</p></li><li>
+<p>position is not publicly accessible on the internet;</p></li><li>
+<p>position is not sold to advertisers;</p></li><li>
+<p>partners do not receive detailed movement history;</p></li><li>
+<p>an exact position is not communicated to other users when a venue-level or area-level indication is sufficient.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>If a background location feature is added later, it will be subject to specific information and dedicated authorization. This feature is not active.</p></blockquote>
+
+<h3>5.4 Temporary Presence</h3>
+<p>Presence on the map is designed as temporary information.</p>
+<p>It may end:</p>
+<ul><li>
+<p>when the user deactivates presence;</p></li><li>
+<p>when voluntarily leaving the space;</p></li><li>
+<p>upon expiration of the selected session;</p></li><li>
+<p>upon event closure;</p></li><li>
+<p>after a period of inactivity.</p></li></ul>
+
+<p>Instanct may temporarily retain certain technical data related to the session to ensure security, prevent abuse, and resolve incidents. This data must not be used to reconstruct user movements over time.</p>
+<h3>5.5 Security and Vigilance</h3>
+<p>Even when a position is displayed at a venue or area level, it may reveal that a person is inside an establishment or attending an event.</p>
+<p>Each user must therefore check their settings before activating visibility and avoid displaying position when they believe it could pose a risk.</p>
+<p>Other users may take screenshots or retain information seen in the application. Instanct cannot technically prevent all uses made outside the platform.</p>
+<h2>6. Data from Organizers and Partners</h2>
+<blockquote class="legal-not-applied">
+<p>When a user attends a trade show, congress, professional event, or accesses a partner space, the organizer may transmit certain information to us, for example:</p>
+<ul><li>
+<p>first and last name;</p></li><li>
+<p>professional email address;</p></li><li>
+<p>company and job title;</p></li><li>
+<p>badge number or registration ID;</p></li><li>
+<p>participant category;</p></li><li>
+<p>selected program or sessions;</p></li><li>
+<p>access rights to certain areas;</p></li><li>
+<p>participant or exhibitor lists;</p></li><li>
+<p>scheduled appointments.</p></li></ul>
+
+<p>This processing is not yet implemented. It will apply only when an organizer effectively transmits data to Instanct and has informed participants of this transmission.</p></blockquote>
+
+<h2>7. Roles of Instanct and Organizers</h2>
+<h3>7.1 Instanct as Data Controller</h3>
+<p>Instanct generally acts as data controller for:</p>
+<ul><li>
+<p>creation and management of the global account;</p></li><li>
+<p>the Instanct profile;</p></li><li>
+<p>connections and messaging;</p></li><li>
+<p>privacy settings;</p></li><li>
+<p>platform security;</p></li><li>
+<p>general map operation;</p></li><li>
+<p>service improvement;</p></li><li>
+<p>user rights management.</p></li></ul>
+
+<h3>7.2 Instanct as Data Processor</h3>
+<blockquote class="legal-not-applied">
+<p>Instanct may act as data processor when an organizer or partner asks us to process data exclusively to administer their event or space. This situation is not yet in production. In this case, the organizer or partner will determine processing purposes, and requests specifically concerning data entrusted to us by them may need to be addressed to them.</p></blockquote>
+
+<h3>7.3 Organizer as Separate Controller</h3>
+<blockquote class="legal-not-applied">
+<p>An organizer may use certain data for its own purposes, such as managing registrations, controlling access, organizing meetings, analyzing attendance, communicating with participants, and fulfilling security obligations. Such processing will fall under the organizer's privacy policy. It does not apply while no partner space is open.</p></blockquote>
+
+<h2>8. Automatically Collected Data</h2>
+<p>When using Instanct, we may collect:</p>
+<ul><li>
+<p>IP address;</p></li><li>
+<p>device model;</p></li><li>
+<p>operating system;</p></li><li>
+<p>app version;</p></li><li>
+<p>language and time zone;</p></li><li>
+<p>technical identifiers;</p></li><li>
+<p>connection dates and times;</p></li><li>
+<p>screens and features used;</p></li><li>
+<p>error and crash reports;</p></li><li>
+<p>security logs;</p></li><li>
+<p>permission settings communicated by the device.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>QR codes or invitations used to join an event space are not yet collected.</p></blockquote>
+
+<p>We limit this collection to information necessary for operation, security, statistics, and service improvement.</p>
+<h2>9. How We Use Your Data</h2>
+<p>We use data to:</p>
+<ul><li>
+<p>create and administer your account;</p></li><li>
+<p>display your profile according to your settings;</p></li><li>
+<p>allow you to join a venue or event;</p></li><li>
+<p>display your voluntary presence on the map;</p></li><li>
+<p>suggest profiles matching your criteria;</p></li><li>
+<p>facilitate connections and appointments;</p></li><li>
+<p>provide messaging;</p></li><li>
+<p>send notifications;</p></li><li>
+<p>personalize your experience;</p></li><li>
+<p>compile aggregated statistics;</p></li><li>
+<p>detect fake accounts, fraud, and abusive behavior;</p></li><li>
+<p>respond to support requests;</p></li><li>
+<p>improve features;</p></li><li>
+<p>comply with legal obligations.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>Administration of partner spaces is not yet active.</p></blockquote>
+
+<p>Instanct does not use the content of your private conversations to display targeted advertising.</p>
+<p>Instanct does not use your private conversations or precise GPS data to train artificial intelligence systems without prior notification and an appropriate legal basis.</p>
+<h2>10. Legal Bases</h2>
+<p>Processing relies, depending on the case, on:</p>
+<ul><li>
+<p>contract performance, to provide the account, profile, connections, messaging, and requested features;</p></li><li>
+<p>consent, notably for precise location, certain notifications, device contacts, or commercial communications;</p></li><li>
+<p>legitimate interest, to secure the service, prevent fraud, improve Instanct, and generate aggregated statistics;</p></li><li>
+<p>legal obligation, when we must retain or disclose certain information.</p></li></ul>
+
+<p>You may withdraw your consent at any time. Withdrawal does not affect the lawfulness of processing carried out prior to withdrawal.</p>
+<blockquote class="legal-not-applied">
+<p>Access to phone contacts and commercial communications are not yet offered. Corresponding consent is therefore not collected to date.</p></blockquote>
+
+<h2>11. Information Visibility</h2>
+<p>Depending on your settings and the space joined, other users can see:</p>
+<ul><li>
+<p>your name and photo;</p></li><li>
+<p>your job title and company;</p></li><li>
+<p>your professional bio;</p></li><li>
+<p>your skills;</p></li><li>
+<p>your goals;</p></li><li>
+<p>your availability;</p></li><li>
+<p>your presence in a venue or area;</p></li><li>
+<p>your available appointment slots.</p></li></ul>
+
+<p>Your email address, phone number, exact GPS position, and private messages are not made visible unless expressly authorized or shared by you.</p>
+<h2>12. Controlling Your Information</h2>
+<p>You can in particular:</p>
+<ul><li>
+<p>edit your profile;</p></li><li>
+<p>hide certain information;</p></li><li>
+<p>enable or disable presence;</p></li><li>
+<p>control your visibility on the map;</p></li><li>
+<p>reject or accept a connection;</p></li><li>
+<p>block and report a user;</p></li><li>
+<p>turn off certain notifications;</p></li><li>
+<p>revoke location access;</p></li><li>
+<p>leave a space;</p></li><li>
+<p>request a copy of your data;</p></li><li>
+<p>delete your account.</p></li></ul>
+
+<p>Revoking permission may prevent certain features from working without preventing the use of other available functions.</p>
+<h2>13. Information Accessible to Partners</h2>
+<blockquote class="legal-not-applied">
+<p>Partners and organizers may receive information necessary for managing their space as well as statistics, such as number of active participants, participation rate, connection volume, appointment count, general professional goal categories, peak periods and areas, and feature usage. These transmissions are not yet conducted.</p>
+<p>When implemented, statistics will, as far as possible, be aggregated or anonymized. Partners will not receive private conversation content, passwords, precise GPS position, detailed movement history, or unshared private contact details.</p></blockquote>
+
+<h2>14. Other Recipients</h2>
+<p>Data may be processed by:</p>
+<ul><li>
+<p>authorized Instanct personnel;</p></li><li>
+<p>other users according to your settings;</p></li><li>
+<p>hosting providers;</p></li><li>
+<p>authentication providers;</p></li><li>
+<p>mapping services;</p></li><li>
+<p>notification providers;</p></li><li>
+<p>diagnostic and audience measurement tools;</p></li><li>
+<p>support and security providers;</p></li><li>
+<p>Apple or Google for app distribution;</p></li><li>
+<p>competent authorities when required by law.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>Authorized administrators of a partner space do not yet receive data, as no partner space is currently open.</p></blockquote>
+
+<p>Our processors may only use data in accordance with our contractual instructions.</p>
+<h2>15. Mapping Service</h2>
+<p>The map may rely on one or more external providers.</p>
+<p>Providers currently planned:</p>
+<mark>{{maps.providers}}</mark>
+<p>When the map is loaded, these providers may receive technical data such as IP address, device type, displayed area, or information necessary to deliver the map.</p>
+<h2>16. Contacts and Calendar</h2>
+<blockquote class="legal-not-applied">
+<p>Instanct does not currently access device contacts or calendar. If offered, we will explain what data is imported, for what purpose, retention duration, and how to delete imported information. Refusing access will not prevent manual networking features from working.</p></blockquote>
+
+<h2>17. Retention Periods</h2>
+<p>We apply the following retention periods:</p>
+<ul><li>
+<p><strong>Account and profile</strong> — While the account is in use</p></li><li>
+<p><strong>Inactive account</strong> — Deletion or anonymization after 3 years of inactivity</p></li><li>
+<p><strong>Visible map presence</strong> — Duration of session or event</p></li><li>
+<p><strong>Precise position linked to a session</strong> — Deletion or conversion to non-precise data after session end, except security incidents</p></li><li>
+<p><strong>Technical location logs</strong> — Maximum 30 days, except incidents or legal obligation</p></li><li>
+<p><strong>Professional connections</strong> — Until deleted by user or account deletion</p></li><li>
+<p><strong>Messages</strong> — Until deleted by user or account deletion</p></li><li>
+<p><strong>Security logs</strong> — Maximum 12 months</p></li><li>
+<p><strong>Support requests</strong> — Up to 3 years after closure</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>The following durations do not yet apply as corresponding processing is not in production:</p>
+<ul><li>
+<p><strong>Event data</strong> — Duration defined with organizer, then deletion or anonymization</p></li><li>
+<p><strong>Billing data</strong> — 10 years</p></li><li>
+<p><strong>Commercial prospecting</strong> — 3 years after last active contact</p></li></ul>
+</blockquote>
+
+<p>Data may be retained longer when justified by a legal obligation, litigation, serious report, or security requirement.</p>
+<p>Backup copies are progressively deleted according to our technical cycles.</p>
+<h2>18. Hosting and International Transfers</h2>
+<p>Data is hosted by:</p>
+<p><strong><mark>{{hosting.provider}}</mark></strong></p>
+<p><mark>{{hosting.country}}</mark></p>
+<p><mark>{{hosting.address}}</mark></p>
+<p>We prioritize hosting within the European Union or European Economic Area.</p>
+<p>When data is transferred to a country outside this area, we use a recognized mechanism such as an adequacy decision or European Commission standard contractual clauses.</p>
+<h2>19. Security</h2>
+<p>We implement appropriate measures, including:</p>
+<ul><li>
+<p>encrypted communications;</p></li><li>
+<p>password protection;</p></li><li>
+<p>access control;</p></li><li>
+<p>logging of sensitive access;</p></li><li>
+<p>backups;</p></li><li>
+<p>incident management procedures;</p></li><li>
+<p>processor monitoring;</p></li><li>
+<p>blocking and reporting mechanisms.</p></li></ul>
+
+<blockquote class="legal-not-applied">
+<p>Separation of partner spaces is not yet operational, as these spaces are not open.</p></blockquote>
+
+<p>No digital service can guarantee absolute security. You must protect your credentials and promptly report suspicious activity.</p>
+<h2>20. No Data Selling or Behavioral Advertising</h2>
+<p>Instanct does not sell or rent your personal data.</p>
+<p>As of the date of this policy, Instanct does not use your precise position, private messages, or networking activity to track you across third-party apps and websites.</p>
+<p>If an ad model or cross-app tracking system were introduced, this policy and disclosures to Apple and Google would be updated beforehand, and required consents would be collected.</p>
+<h2>21. Minor Users</h2>
+<p>Instanct is intended for professionals aged at least 18 years old.</p>
+<p>We do not knowingly collect data from minors. When an account belonging to a minor is identified, it may be suspended and deleted.</p>
+<h2>22. Your Rights</h2>
+<p>You can request:</p>
+<ul><li>
+<p>access to your data;</p></li><li>
+<p>rectification;</p></li><li>
+<p>erasure;</p></li><li>
+<p>restriction of processing;</p></li><li>
+<p>data portability;</p></li><li>
+<p>objection to processing;</p></li><li>
+<p>withdrawal of consent;</p></li><li>
+<p>a copy of your data;</p></li><li>
+<p>information on international transfers;</p></li><li>
+<p>directives regarding your data after your death.</p></li></ul>
+
+<p>You can exercise your rights within the app or by writing to:</p>
+<p><mark>{{company.privacyEmail}}</mark></p>
+<p>We may request proof of identity only in case of reasonable doubt.</p>
+<p>We normally respond within one month, subject to regulatory extensions.</p>
+<p>You can also lodge a complaint with the CNIL:</p>
+<p>Commission Nationale de l'Informatique et des Libertés</p>
+<p>3 Place de Fontenoy</p>
+<p>TSA 80715</p>
+<p>75334 Paris Cedex 07</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://www.cnil.fr">www.cnil.fr</a></p>
+<h2>23. Account Deletion</h2>
+<p>You can request account deletion directly from the app or at <mark>{{company.privacyEmail}}</mark>.</p>
+<p>Deletion results in:</p>
+<ul><li>
+<p>profile deactivation;</p></li><li>
+<p>end of map visibility;</p></li><li>
+<p>removal from active spaces;</p></li><li>
+<p>deletion or anonymization of personal data;</p></li><li>
+<p>removal of connections and content per applicable rules.</p></li></ul>
+
+<p>Certain information may be temporarily retained to comply with legal obligations, investigate reports, or defend legal rights.</p>
+<h2>24. Changes to This Policy</h2>
+<p>We may update this policy as features, providers, or regulations evolve.</p>
+<p>In the event of material changes, we will notify you in the application, by email, or through another appropriate medium before taking effect.</p>
+<h2>25. Contact Us</h2>
+<p>For any questions regarding your data:</p>
+<p>Instanct – Data Protection</p>
+<p><mark>{{company.legalName}}</mark></p>
+<p><mark>{{company.address}}</mark></p>
+<p><mark>{{company.privacyEmail}}</mark></p>`;

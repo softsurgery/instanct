@@ -13,9 +13,11 @@ import {
   ServerErrorResponse,
   UpdateContentPageDto,
 } from "@/types";
+import { useApplicationLanguages } from "@/hooks/content/configuration/useApplicationLanguages";
 import { useContentPages } from "@/hooks/content/pages/useContentPages";
 import { useContentPageStore } from "@/hooks/stores/useContentPageStore";
 import { ImportExportActions } from "../ImportExportActions";
+import { PageLanguageToggle } from "./PageLanguageToggle";
 import { useContentPageFormStructure } from "./useContentPageFormStructure";
 import {
   buildContentPageExport,
@@ -33,14 +35,14 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
   const { setIntro, setFloating, clearIntro, clearFloating } = useIntro();
   const { setContent, clearContent } = useFooter();
   const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
+  const [selectedLocale, setSelectedLocale] = React.useState<string>("fr");
   const { contentPages, isContentPagesPending, refetchContentPages } =
-    useContentPages({ enabled: true });
+    useContentPages({ enabled: true, locale: selectedLocale });
+  const { languages } = useApplicationLanguages();
   const contentPageStore = useContentPageStore();
   const { contentPageFormStructure } = useContentPageFormStructure({
     contentPageStore,
   });
-
-  const store = useContentPageStore();
 
   const [selectedSlug, setSelectedSlug] = React.useState<string | null>(null);
 
@@ -51,26 +53,31 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
   );
 
   const hydrateFromPage = React.useCallback((page: ResponseContentPageDto) => {
-    store.set("response", page);
-    store.set<UpdateContentPageDto>("updateDto", {
+    const { set } = useContentPageStore.getState();
+    set("response", page);
+    set<UpdateContentPageDto>("updateDto", {
       title: page.title,
       subtitle: page.subtitle ?? "",
       body: page.body,
       locale: page.locale,
     });
-    store.set("updateDtoErrors", {});
+    set("updateDtoErrors", {});
   }, []);
 
   React.useEffect(() => {
     if (!selectedPage) return;
-    if (useContentPageStore.getState().response?.slug === selectedPage.slug)
+    const currentResp = useContentPageStore.getState().response;
+    if (
+      currentResp?.slug === selectedPage.slug &&
+      currentResp?.locale === selectedPage.locale
+    )
       return;
     hydrateFromPage(selectedPage);
   }, [hydrateFromPage, selectedPage]);
 
   React.useEffect(() => {
     return () => {
-      store.reset();
+      useContentPageStore.getState().reset();
     };
   }, []);
 
@@ -98,9 +105,9 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
     if (!selectedPage) return;
     updatePage({
       id: selectedPage.id,
-      payload: contentPageStore.updateDto,
+      payload: useContentPageStore.getState().updateDto,
     });
-  }, [contentPageStore.updateDto, selectedPage, updatePage]);
+  }, [selectedPage, updatePage]);
 
   const handleExport = React.useCallback(() => {
     if (!selectedPage) return;
@@ -119,7 +126,7 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
       try {
         const raw = await file.text();
         const page = parseContentPageImportFile(raw);
-        store.set<UpdateContentPageDto>("updateDto", {
+        useContentPageStore.getState().set<UpdateContentPageDto>("updateDto", {
           title: page.title,
           subtitle: page.subtitle,
           body: page.body,
@@ -134,7 +141,7 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
         );
       }
     },
-    [selectedPage, store, t],
+    [selectedPage, t],
   );
 
   React.useEffect(() => {
@@ -171,7 +178,13 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
         disabled={isSaving || !selectedPage}
         onExport={handleExport}
         onImport={handleImport}
-      />,
+      >
+        <PageLanguageToggle
+          value={selectedLocale}
+          onValueChange={setSelectedLocale}
+          languages={languages}
+        />
+      </ImportExportActions>,
     );
 
     return () => {
@@ -182,6 +195,8 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
     handleExport,
     handleImport,
     isSaving,
+    languages,
+    selectedLocale,
     selectedPage,
     setFloating,
     t,

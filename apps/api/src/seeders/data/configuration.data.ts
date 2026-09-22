@@ -158,3 +158,29 @@ export const coreConfiguration = [
     value: '',
   },
 ];
+
+export const applicationConfiguration = [
+  {
+    name: 'languages',
+    description: 'Available languages for the application',
+    variant: ParamVariant.LIST,
+    value: JSON.stringify([
+      { label: 'English', code: 'en' },
+      { label: 'French', code: 'fr' },
+    ]),
+    schema: [
+      {
+        key: 'label',
+        label: 'Language label',
+        variant: ParamVariant.STRING,
+        required: true,
+      },
+      {
+        key: 'code',
+        label: 'Language code (e.g. en, fr)',
+        variant: ParamVariant.STRING,
+        required: true,
+      },
+    ],
+  },
+];

@@ -10,6 +10,7 @@ import { cn } from "@instanct/lib";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator, View } from "react-native";
 import { api } from "@/api";
+import { useTranslation } from "react-i18next";
 
 type LegalContentScreenProps = {
   slug: "terms" | "privacy";
@@ -22,9 +23,10 @@ export function LegalContentScreen({
   fallbackTitle,
   className,
 }: LegalContentScreenProps) {
+  const { i18n } = useTranslation();
   const { data, isPending, isError } = useQuery({
-    queryKey: ["content-page", slug],
-    queryFn: () => api.contentPage.findBySlug(slug),
+    queryKey: ["content-page", slug, i18n.language],
+    queryFn: () => api.contentPage.findBySlug(slug, i18n.language),
   });
 
   const title = data?.title ?? fallbackTitle;

@@ -21,6 +21,7 @@
     "seed:configuration": "nestjs-command seed:configuration",
     "seed:configuration:core": "nestjs-command seed:configuration:core",
     "seed:configuration:maps": "nestjs-command seed:configuration:maps",
+    "seed:configuration:application": "nestjs-command seed:configuration:application",
     "seed:content": "nestjs-command seed:content",
     "seed:public-resource": "nestjs-command seed:public-resource",
     "seed:playground-users": "nestjs-command seed:playground-users",

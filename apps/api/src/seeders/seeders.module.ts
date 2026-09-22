@@ -14,6 +14,7 @@ import { ConfigurationsModule } from 'src/shared/configurations/configurations.m
 import { ConfigurationSeedCommand } from './configuration.seeder';
 import { ConfigurationCoreSeedCommand } from './configuration-core.seeder';
 import { ConfigurationMapSeedCommand } from './configuration-map.seeder';
+import { ConfigurationApplicationSeedCommand } from './configuration-application.seeder';
 import { PublicResourceSeedCommand } from './public-resource.seeder';
 import { StorageModule } from 'src/shared/storage/storage.module';
 import { ContentModule } from '@/shared/content/content.module';
@@ -38,6 +39,7 @@ import { ContentSeedCommand } from './content.seeder';
     ConfigurationSeedCommand,
     ConfigurationCoreSeedCommand,
     ConfigurationMapSeedCommand,
+    ConfigurationApplicationSeedCommand,
     ContentSeedCommand,
     PublicResourceSeedCommand,
     //reference types

@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export function DocumentMetaSync() {
   const { t, i18n } = useTranslation("landing");
 
-  useEffect(() => {
+  React.useEffect(() => {
     const apply = () => {
       document.title = t("meta.title");
       const description = document.querySelector('meta[name="description"]');
@@ -15,10 +15,17 @@ export function DocumentMetaSync() {
       }
     };
 
+    const handleLanguageChange = () => {
+      apply();
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
     apply();
-    i18n.on("languageChanged", apply);
+    i18n.on("languageChanged", handleLanguageChange);
     return () => {
-      i18n.off("languageChanged", apply);
+      i18n.off("languageChanged", handleLanguageChange);
     };
   }, [i18n, t]);
 

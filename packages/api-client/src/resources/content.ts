@@ -15,7 +15,8 @@ export function createContentPageResource(http: AxiosInstance) {
     search = "",
     filter = "",
     join = "",
-  }: QueryParams): Promise<Paginated<ResponseContentPageDto>> => {
+    locale,
+  }: QueryParams & { locale?: string }): Promise<Paginated<ResponseContentPageDto>> => {
     const params: { [key: string]: string | undefined } = {
       page,
       limit,
@@ -25,6 +26,7 @@ export function createContentPageResource(http: AxiosInstance) {
     if (search) params.search = search;
     if (filter) params.filter = filter;
     if (join) params.join = join;
+    if (locale) params.locale = locale;
 
     const response = await http.get<Paginated<ResponseContentPageDto>>(
       `/content-pages/list`,
@@ -35,7 +37,7 @@ export function createContentPageResource(http: AxiosInstance) {
   };
 
   const findAll = async (
-    params?: QueryParams,
+    params?: QueryParams & { locale?: string },
   ): Promise<ResponseContentPageDto[]> => {
     const response = await http.get<ResponseContentPageDto[]>(
       `/content-pages/all`,
@@ -51,9 +53,13 @@ export function createContentPageResource(http: AxiosInstance) {
     return response.data;
   };
 
-  const findBySlug = async (slug: string): Promise<ResponseContentPageDto> => {
+  const findBySlug = async (
+    slug: string,
+    locale?: string,
+  ): Promise<ResponseContentPageDto> => {
     const response = await http.get<ResponseContentPageDto>(
       `/content-pages/slug/${slug}`,
+      { params: locale ? { locale } : undefined },
     );
     return response.data;
   };
@@ -73,9 +79,7 @@ export function createContentPageResource(http: AxiosInstance) {
     return response.data;
   };
 
-  const remove = async (
-    id: string,
-  ): Promise<ResponseContentPageDto | null> => {
+  const remove = async (id: string): Promise<ResponseContentPageDto | null> => {
     const response = await http.delete(`/content-pages/${id}`);
     return response.data;
   };

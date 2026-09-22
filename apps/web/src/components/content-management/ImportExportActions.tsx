@@ -14,6 +14,7 @@ type ImportExportActionsProps = {
   disabled?: boolean;
   onExport: () => void;
   onImport: (file: File) => void | Promise<void>;
+  children?: React.ReactNode;
 };
 
 function IconAction({
@@ -56,6 +57,7 @@ export function ImportExportActions({
   disabled,
   onExport,
   onImport,
+  children,
 }: ImportExportActionsProps) {
   const importInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -82,19 +84,22 @@ export function ImportExportActions({
         className="hidden"
         onChange={handleImportFile}
       />
-      <div className="flex items-center gap-1">
-        <IconAction
-          label={exportLabel}
-          disabled={disabled}
-          onClick={onExport}
-          icon={<Download />}
-        />
-        <IconAction
-          label={importLabel}
-          disabled={disabled}
-          onClick={handleImportClick}
-          icon={<Upload />}
-        />
+      <div className="flex items-center gap-2">
+        {children}
+        <div className="flex items-center gap-1">
+          <IconAction
+            label={exportLabel}
+            disabled={disabled}
+            onClick={onExport}
+            icon={<Download />}
+          />
+          <IconAction
+            label={importLabel}
+            disabled={disabled}
+            onClick={handleImportClick}
+            icon={<Upload />}
+          />
+        </div>
       </div>
     </TooltipProvider>
   );

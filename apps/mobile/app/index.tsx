@@ -24,7 +24,7 @@ export default function Page() {
         const activeTheme = preferencePersistStore.theme === "system" 
             ? (Appearance.getColorScheme() ?? "light") 
             : preferencePersistStore.theme;
-        setAndroidNavigationBar(activeTheme);
+        setAndroidNavigationBar((activeTheme === 'dark' ? 'dark' : 'light'));
       }
       
       let lang = preferencePersistStore.language;

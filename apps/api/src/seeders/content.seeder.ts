@@ -2,8 +2,8 @@ import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { ContentPageService } from '@/shared/content/services/content-page.service';
 import { ContentPageSlug } from '@/app/enums/content-page-slug.enum';
-import { termsHtml } from './data/content/terms.data';
-import { privacyHtml } from './data/content/privacy.data';
+import { termsHtml, termsHtmlEn } from './data/content/terms.data';
+import { privacyHtml, privacyHtmlEn } from './data/content/privacy.data';
 
 @Injectable()
 export class ContentSeedCommand {
@@ -34,12 +34,27 @@ export class ContentSeedCommand {
         body: privacyHtml,
         locale: 'fr',
       },
+      {
+        slug: ContentPageSlug.TERMS,
+        title: 'Terms of Service',
+        subtitle: 'Rules for using Instanct.',
+        body: termsHtmlEn,
+        locale: 'en',
+      },
+      {
+        slug: ContentPageSlug.PRIVACY,
+        title: 'Privacy Policy',
+        subtitle: 'How Instanct processes your data.',
+        body: privacyHtmlEn,
+        locale: 'en',
+      },
     ];
 
     for (const page of pages) {
-      const existing = await this.contentPageService.findOneByCondition({
-        filter: `slug||$eq||${page.slug}`,
-      });
+      const existing = await this.contentPageService.findOneBySlug(
+        page.slug,
+        page.locale,
+      );
       if (existing) {
         await this.contentPageService.update(existing.id, {
           title: page.title,
@@ -47,11 +62,11 @@ export class ContentSeedCommand {
           body: page.body,
           locale: page.locale,
         });
-        console.log(`🔁 Updated content page: ${page.slug}`);
+        console.log(`🔁 Updated content page: ${page.slug} (${page.locale})`);
         continue;
       }
       await this.contentPageService.save(page);
-      console.log(`✅ Seeded content page: ${page.slug}`);
+      console.log(`✅ Seeded content page: ${page.slug} (${page.locale})`);
     }
 
     const end = new Date();

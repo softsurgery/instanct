@@ -6,6 +6,7 @@ import { CreateContentPageDto } from '../dtos/create-content-page.dto';
 import { UpdateContentPageDto } from '../dtos/update-content-page.dto';
 import { ContentInterpolationService } from './content-interpolation.service';
 import { AbstractCrudService } from '@/shared/database/services/abstract-crud.service';
+import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
 
 @Injectable()
 export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
@@ -16,14 +17,42 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
     super(contentPageRepository);
   }
 
-  async findOneBySlug(slug: string): Promise<ContentPageEntity | null> {
+  override async findAll(
+    query: IQueryObject = {},
+    locale?: string,
+  ): Promise<ContentPageEntity[]> {
+    if (locale) {
+      const localeFilter = `locale||$eq||${locale}`;
+      query = {
+        ...query,
+        filter: query.filter ? `${query.filter};${localeFilter}` : localeFilter,
+      };
+    }
+    return super.findAll(query);
+  }
+
+  override async findAllPaginated(query: IQueryObject, locale?: string) {
+    if (locale) {
+      const localeFilter = `locale||$eq||${locale}`;
+      query = {
+        ...query,
+        filter: query.filter ? `${query.filter};${localeFilter}` : localeFilter,
+      };
+    }
+    return super.findAllPaginated(query);
+  }
+
+  async findOneBySlug(
+    slug: string,
+    locale: string = 'fr',
+  ): Promise<ContentPageEntity | null> {
     return this.contentPageRepository.findOne({
-      where: { slug },
+      where: { slug, locale },
     });
   }
 
-  async findBySlug(slug: string) {
-    const page = await this.findOneBySlug(slug);
+  async findBySlug(slug: string, locale: string = 'fr') {
+    const page = await this.findOneBySlug(slug, locale);
     if (!page) return null;
 
     const interpolated = await this.contentInterpolationService.interpolate(
@@ -41,7 +70,7 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
   @Transactional()
   async save(dto: CreateContentPageDto): Promise<ContentPageEntity> {
     const existing = await this.contentPageRepository.findOne({
-      where: { slug: dto.slug },
+      where: { slug: dto.slug, locale: dto.locale ?? 'fr' },
     });
     if (existing) {
       throw new ConflictException(

@@ -2,12 +2,14 @@ import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { ConfigurationCoreSeedCommand } from './configuration-core.seeder';
 import { ConfigurationMapSeedCommand } from './configuration-map.seeder';
+import { ConfigurationApplicationSeedCommand } from './configuration-application.seeder';
 
 @Injectable()
 export class ConfigurationSeedCommand {
   constructor(
     private readonly configurationCoreSeedCommand: ConfigurationCoreSeedCommand,
     private readonly configurationMapSeedCommand: ConfigurationMapSeedCommand,
+    private readonly configurationApplicationSeedCommand: ConfigurationApplicationSeedCommand,
   ) {}
 
   @Command({
@@ -20,6 +22,7 @@ export class ConfigurationSeedCommand {
 
     await this.configurationCoreSeedCommand.seed();
     await this.configurationMapSeedCommand.seed();
+    await this.configurationApplicationSeedCommand.seed();
 
     const end = new Date();
     console.log(

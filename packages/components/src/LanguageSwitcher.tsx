@@ -10,10 +10,16 @@ import {
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
+interface Language {
+  label: string;
+  code: string;
+}
+
 interface LanguageSwitcherProps {
   className?: string;
+  languages?: Language[];
 }
-export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
+export const LanguageSwitcher = ({ className, languages }: LanguageSwitcherProps) => {
   const router = useRouter();
   const { i18n, t } = useTranslation();
 
@@ -55,8 +61,18 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
           <SelectValue placeholder={t("selectLanguage")} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="fr">{t("languages.fr")}</SelectItem>
-          <SelectItem value="en">{t("languages.en")}</SelectItem>
+          {languages && languages.length > 0 ? (
+            languages.map((lang) => (
+              <SelectItem key={lang.code} value={lang.code}>
+                {lang.label}
+              </SelectItem>
+            ))
+          ) : (
+            <>
+              <SelectItem value="fr">{t("languages.fr")}</SelectItem>
+              <SelectItem value="en">{t("languages.en")}</SelectItem>
+            </>
+          )}
         </SelectContent>
       </Select>
     </div>

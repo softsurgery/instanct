@@ -14,6 +14,13 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
     i18n.resolvedLanguage ?? i18n.language,
   );
 
+  const handleLanguageChange = (lng: string) => {
+    void i18n.changeLanguage(lng);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -32,7 +39,7 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
           ) : null}
           <button
             type="button"
-            onClick={() => void i18n.changeLanguage(lng)}
+            onClick={() => handleLanguageChange(lng)}
             className={cn(
               "rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               currentLanguage === lng

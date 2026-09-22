@@ -10,11 +10,13 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@instanct/api-client": "workspace:*",
     "@instanct/components": "workspace:*",
     "@instanct/contexts": "workspace:*",
     "@instanct/i18n": "workspace:*",
     "@instanct/lib": "workspace:*",
     "@instanct/ui": "workspace:*",
+    "@tanstack/react-query": "^5.90.5",
     "i18next": "^24.2.3",
     "i18next-browser-languagedetector": "^8.0.2",
     "lucide-react": "^0.563.0",

@@ -52,12 +52,12 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <LanguageSwitcher className="hidden sm:flex" />
+        <div className="flex items-center gap-5">
           <ThemeSwitcher
             value={theme as "light" | "dark" | "system"}
             onChange={setTheme}
           />
+          <LanguageSwitcher className="hidden sm:flex" />
 
           <Button
             variant="outline"

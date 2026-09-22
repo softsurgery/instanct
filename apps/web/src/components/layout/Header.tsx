@@ -1,10 +1,16 @@
 import { cn } from "@/lib/utils";
 
-import { BreadcrumbCommon, ThemeSwitcher } from "@instanct/components";
+import {
+  BreadcrumbCommon,
+  ThemeSwitcher,
+  LanguageSwitcher,
+} from "@instanct/components";
 import { useBreadcrumb } from "@instanct/contexts";
 import { useTheme } from "next-themes";
 import { UserNav } from "./UserNav";
 import { Separator, SidebarTrigger } from "@instanct/ui";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
 interface HeaderProps {
   className?: string;
@@ -13,6 +19,17 @@ interface HeaderProps {
 export const Header = ({ className }: HeaderProps) => {
   const { routes } = useBreadcrumb();
   const { theme, setTheme } = useTheme();
+
+  const { data: config } = useQuery({
+    queryKey: ["configuration", "application"],
+    queryFn: () => api.admin.configuration.findOneById("application"),
+  });
+
+  const languagesParam = config?.params?.find((p) => p.name === "languages");
+  const languages = languagesParam?.value
+    ? JSON.parse(languagesParam.value)
+    : undefined;
+
   return (
     <header
       className={cn(
@@ -31,6 +48,7 @@ export const Header = ({ className }: HeaderProps) => {
           )}
         </div>
         <div className="flex flex-row gap-4 items-center">
+          <LanguageSwitcher languages={languages} />
           <ThemeSwitcher
             value={theme as "light" | "dark" | "system"}
             onChange={setTheme}

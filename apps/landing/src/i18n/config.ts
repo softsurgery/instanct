@@ -20,6 +20,11 @@ export const i18nConfig = {
 
 export function resolveSupportedLng(lng?: string): SupportedLng {
   if (!lng) return sharedConfig.fallbackLng;
-  const base = lng.split("-")[0];
-  return resolveSharedLng(base);
+  const primary = lng
+    .split(",")[0]
+    .split(";")[0]
+    .split("-")[0]
+    .trim()
+    .toLowerCase();
+  return resolveSharedLng(primary);
 }

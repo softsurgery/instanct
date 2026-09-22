@@ -40,34 +40,43 @@ export class ContentPageController {
   @Get('/slug/:slug')
   async findBySlug(
     @Param('slug') slug: string,
+    @Query('locale') locale?: string,
   ): Promise<ResponseContentPageDto> {
     return toDto(
       ResponseContentPageDto,
-      await this.contentPageService.findBySlug(slug),
+      await this.contentPageService.findBySlug(slug, locale ?? 'fr'),
     );
   }
 
+  @Public()
   @Get('/list')
   async findAllPaginated(
     @Query() query: IQueryObject,
+    @Query('locale') locale?: string,
   ): Promise<PageDto<ResponseContentPageDto>> {
-    const paginated = await this.contentPageService.findAllPaginated(query);
+    const paginated = await this.contentPageService.findAllPaginated(
+      query,
+      locale,
+    );
     return {
       ...paginated,
       data: toDtoArray(ResponseContentPageDto, paginated.data),
     };
   }
 
+  @Public()
   @Get('/all')
   async findAll(
     @Query() query: IQueryObject,
+    @Query('locale') locale?: string,
   ): Promise<ResponseContentPageDto[]> {
     return toDtoArray(
       ResponseContentPageDto,
-      await this.contentPageService.findAll(query),
+      await this.contentPageService.findAll(query, locale),
     );
   }
 
+  @Public()
   @Get(':id')
   async findOneById(@Param('id') id: string): Promise<ResponseContentPageDto> {
     return toDto(

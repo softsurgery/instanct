@@ -221,6 +221,9 @@ importers:
 
   apps/landing:
     dependencies:
+      '@instanct/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
       '@instanct/components':
         specifier: workspace:*
         version: link:../../packages/components
@@ -236,6 +239,9 @@ importers:
       '@instanct/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@tanstack/react-query':
+        specifier: ^5.90.5
+        version: 5.103.1(react@19.2.3)
       i18next:
         specifier: ^24.2.3
         version: 24.2.3(typescript@5.9.3)
