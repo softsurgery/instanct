@@ -75,9 +75,11 @@ export const useFeedbackColumns = (
         />
       ),
       cell: ({ row }) => (
-        <span>
-          {row.original.rating !== undefined ? row.original.rating : "N/A"}
-        </span>
+        <DataTableCell
+          variant={DataTableCellVariant.RATING}
+          value={row.original.rating}
+          
+        />
       ),
       enableSorting: true,
       enableHiding: true,
