@@ -201,11 +201,13 @@ export const DatePicker = ({
             classNames?.content,
           )}
           // Prevent parent ScrollView from stealing touches while interacting with the wheels
-          onStartShouldSetResponder={() => true}
-          onMoveShouldSetResponder={() => true}
-          onResponderTerminationRequest={() => false}
         >
-          <View className="flex-row items-center justify-center gap-4">
+          <View 
+            className="flex-row items-center justify-center gap-4"
+            onStartShouldSetResponder={() => true}
+            onMoveShouldSetResponder={() => true}
+            onResponderTerminationRequest={() => false}
+          >
             <StableScrollable
               options={days}
               value={day}
