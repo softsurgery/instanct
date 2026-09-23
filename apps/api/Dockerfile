@@ -1,5 +1,5 @@
 # Build from the repository root:
-#   docker build -f apps/api/dockerfile -t instanct-api .
+#   docker build -f apps/api/Dockerfile -t instanct-api .
 
 # --- Build Stage ---
 FROM node:22-alpine AS builder

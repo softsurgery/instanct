@@ -1,0 +1,53 @@
+# Build from the repository root:
+#   docker build -f apps/web/Dockerfile -t instanct-backoffice .
+
+FROM node:22-alpine AS builder
+
+WORKDIR /repo
+
+RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
+
+RUN printf 'ignore-scripts=true\n' > .npmrc
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/web/package.json ./apps/web/package.json
+COPY apps/mobile/package.json ./apps/mobile/package.json
+COPY packages/api-client/package.json ./packages/api-client/package.json
+COPY packages/components/package.json ./packages/components/package.json
+COPY packages/contexts/package.json ./packages/contexts/package.json
+COPY packages/datatable-builder/package.json ./packages/datatable-builder/package.json
+COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
+COPY packages/form-builder/package.json ./packages/form-builder/package.json
+COPY packages/hooks/package.json ./packages/hooks/package.json
+COPY packages/i18n/package.json ./packages/i18n/package.json
+COPY packages/lib/package.json ./packages/lib/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+COPY packages/ui/package.json ./packages/ui/package.json
+
+RUN pnpm install --frozen-lockfile --filter instanct-ui... --ignore-scripts
+
+COPY apps/web ./apps/web
+COPY packages ./packages
+COPY scripts/allowed-dev-origins.ts ./scripts/allowed-dev-origins.ts
+
+# NEXT_PUBLIC_* vars are baked at build time (create apps/web/.env.build before build).
+RUN set -a && \
+    [ -f apps/web/.env.build ] && . apps/web/.env.build; \
+    set +a && \
+    /repo/node_modules/.bin/turbo run build --filter=instanct-ui
+
+# ---- Production image ----
+FROM gcr.io/distroless/nodejs22-debian12 AS runner
+
+WORKDIR /app
+
+COPY --from=builder /repo/apps/web/.next ./.next
+COPY --from=builder /repo/apps/web/public ./public
+COPY --from=builder /repo/apps/web/package.json ./package.json
+COPY --from=builder /repo/apps/web/next.config.ts ./next.config.ts
+COPY --from=builder /repo/node_modules ./node_modules
+
+EXPOSE 3000
+
+CMD ["node_modules/next/dist/bin/next", "start"]
