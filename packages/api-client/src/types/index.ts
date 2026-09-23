@@ -10,3 +10,4 @@ export * from "./user-management";
 export * from "./utils/database-entity";
 export * from "./utils/pagination";
 export * from "./utils/errors";
+export * from "./system-reports";
