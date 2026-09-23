@@ -12,12 +12,12 @@ import {
 } from "@instanct/ui";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
-import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useTranslation } from "react-i18next";
+import { identifyUser, identifyUserAvatar } from "@instanct/lib";
 
 interface UserNavProps {
   className?: string;
