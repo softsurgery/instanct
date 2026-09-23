@@ -2,8 +2,9 @@ name: Deploy Test
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*.*.*-D'
+      - 'v*.*.*-D'
 
 concurrency:
   group: deploy-test
