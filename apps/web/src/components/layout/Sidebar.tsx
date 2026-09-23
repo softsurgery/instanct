@@ -13,6 +13,8 @@ import {
   Table2,
   Cog,
   FileText,
+  Bug,
+  MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@instanct/ui";
@@ -70,6 +72,16 @@ const navItems: NavItem[] = [
         title: "Logger",
         icon: User,
         href: "/audit-monitoring/logger",
+      },
+      {
+        title: "Bug Report",
+        href: "/audit-monitoring/bug-report",
+        icon: Bug,
+      },
+      {
+        title: "Feedback",
+        href: "/audit-monitoring/feedback",
+        icon: MessageSquare,
       },
     ],
   },

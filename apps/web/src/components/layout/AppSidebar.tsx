@@ -3,7 +3,22 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Home, Users, Bell, Folder, Settings, HelpCircle } from "lucide-react";
+import {
+  Home,
+  Users,
+  Bell,
+  Folder,
+  Settings,
+  HelpCircle,
+  User,
+  Shield,
+  Table,
+  Table2,
+  Cog,
+  FileText,
+  Bug,
+  MessageSquare,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -39,10 +54,12 @@ const data = {
         {
           title: "Users",
           url: "/user-management/users",
+          icon: User,
         },
         {
           title: "Roles",
           url: "/user-management/roles",
+          icon: Shield,
         },
       ],
     },
@@ -54,6 +71,17 @@ const data = {
         {
           title: "Logger",
           url: "/audit-monitoring/logger",
+          icon: User,
+        },
+        {
+          title: "Bug Report",
+          url: "/audit-monitoring/bug-report",
+          icon: Bug,
+        },
+        {
+          title: "Feedback",
+          url: "/audit-monitoring/feedback",
+          icon: MessageSquare,
         },
       ],
     },
@@ -65,21 +93,26 @@ const data = {
         {
           title: "Pages",
           url: "/content-management/pages",
+          icon: FileText,
         },
         {
           title: "Configuration",
           url: "/content-management/configuration",
+          icon: Cog,
         },
         {
           title: "Reference Types",
           url: "/content-management/reference-types",
+          icon: Table2,
         },
         {
           title: "Reference Parameters",
           url: "/content-management/reference-parameters",
+          icon: Table,
         },
       ],
     },
+
     {
       title: "Settings",
       url: "/settings",
