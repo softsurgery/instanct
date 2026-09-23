@@ -12,8 +12,8 @@ import { getSocket } from "@/lib/socket";
 import {
   createAndroidChannel,
   requestNotificationPermissions,
+  Notifications,
 } from "@/lib/notification";
-import * as Notifications from "expo-notifications";
 import { useCurrentUser } from "../users/useCurrentUser";
 import { identifyUser } from "@/lib/user";
 import {
@@ -154,7 +154,7 @@ export const useChat = (
         !isCurrentConversation &&
         !isOnChatPortal
       ) {
-        await Notifications.scheduleNotificationAsync({
+        await Notifications?.scheduleNotificationAsync({
           content: {
             title: identifyUser(sender),
             body: "is trying to contact you for the first time",
@@ -207,7 +207,7 @@ export const useChat = (
           updated.messages?.[0]?.variant === MessageVariant.STATIC &&
           updated.messages?.[0]?.static === StaticMessageEnum.POKE
         ) {
-          await Notifications.scheduleNotificationAsync({
+          await Notifications?.scheduleNotificationAsync({
             content: {
               title: "Poked!!!",
               body: `You've been poked by ${identifyUser(user)}`,
@@ -218,7 +218,7 @@ export const useChat = (
         } else if (
           updated.lastMessage?.static === StaticMessageEnum.FIRST_MESSAGE
         ) {
-          await Notifications.scheduleNotificationAsync({
+          await Notifications?.scheduleNotificationAsync({
             content: {
               title: identifyUser(user),
               body: "is trying to contact you for the first time",
@@ -230,7 +230,7 @@ export const useChat = (
           updated.messages?.[0]?.id === updated?.lastMessage?.id ||
           (!updated.messages?.length && updated.lastMessage)
         ) {
-          await Notifications.scheduleNotificationAsync({
+          await Notifications?.scheduleNotificationAsync({
             content: {
               title: identifyUser(user),
               body:

@@ -17,12 +17,16 @@ import "../global.css";
 import "../i18n";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
-import { useColorPalette } from "@instanct/mobile-components";
+import {
+  useColorPalette,
+  VideoThumbnailGeneratorHost,
+} from "@instanct/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { VideoThumbnailGeneratorHost } from "@instanct/mobile-components";
 import { LoaderProvider } from "@/contexts/LoaderContext";
 import { usePreferencePersistStore } from "@instanct/hooks";
+
+export { ErrorBoundary } from "expo-router";
 
 function RootLayoutContent() {
   const { colorScheme, palette } = useColorPalette();
