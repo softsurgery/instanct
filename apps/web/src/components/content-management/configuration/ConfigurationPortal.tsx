@@ -29,8 +29,8 @@ export const ConfigurationPortal = ({
   className,
 }: ConfigurationPortalProps) => {
   const { t } = useTranslation("content-management");
-  const { setIntro, setFloating, clearIntro, clearFloating } = useIntro();
   const { setRoutes, clearRoutes } = useBreadcrumb();
+  const { setIntro, clearIntro } = useIntro();
   const { setContent, clearContent } = useFooter();
   const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
   const { configurations, isConfigurationsPending, refetchConfigurations } =
@@ -94,24 +94,24 @@ export const ConfigurationPortal = ({
   }, [configStore, t]);
 
   const handleExport = React.useCallback(() => {
-    if (!namespaces.length) return;
+    if (!selectedNamespace) return;
     const payload = buildConfigurationExport(
-      namespaces,
+      [selectedNamespace],
       useConfigStore.getState().updateDtos,
     );
     downloadConfigurationExport(payload);
     toast.success(t("configuration.messages.exportSuccess"));
-  }, [namespaces, t]);
+  }, [selectedNamespace, t]);
 
   const handleImport = React.useCallback(
     async (file: File) => {
-      if (!namespaces.length) return;
+      if (!selectedNamespace) return;
 
       try {
         const raw = await file.text();
         const importedNamespaces = parseConfigurationImportFile(raw);
         const result = applyConfigurationImport(
-          namespaces,
+          [selectedNamespace],
           importedNamespaces,
           useConfigStore.getState().updateDtos,
         );
@@ -136,7 +136,7 @@ export const ConfigurationPortal = ({
         );
       }
     },
-    [configStore, namespaces, t],
+    [configStore, selectedNamespace, t],
   );
 
   React.useEffect(() => {
@@ -166,33 +166,8 @@ export const ConfigurationPortal = ({
     return () => {
       clearRoutes?.();
       clearIntro?.();
-      clearFloating?.();
     };
-  }, [clearFloating, clearIntro, clearRoutes, setIntro, setRoutes, t]);
-
-  React.useEffect(() => {
-    setFloating?.(
-      <ImportExportActions
-        exportLabel={t("configuration.actions.export")}
-        importLabel={t("configuration.actions.import")}
-        disabled={isSaving || !namespaces.length}
-        onExport={handleExport}
-        onImport={handleImport}
-      />,
-    );
-
-    return () => {
-      clearFloating?.();
-    };
-  }, [
-    clearFloating,
-    handleExport,
-    handleImport,
-    isSaving,
-    namespaces.length,
-    setFloating,
-    t,
-  ]);
+  }, [clearIntro, clearRoutes, setIntro, setRoutes, t]);
 
   React.useEffect(() => {
     if (!selectedNamespace) {
@@ -242,7 +217,6 @@ export const ConfigurationPortal = ({
       namespaces.map((namespace) => ({
         href: namespace.id,
         title: _.capitalize(namespace.name),
-        icon: <Settings className="h-4 w-4" />,
         description: namespace.description,
       })),
     [namespaces],
@@ -299,6 +273,13 @@ export const ConfigurationPortal = ({
                   </p>
                 )}
               </div>
+              <ImportExportActions
+                exportLabel={t("configuration.actions.export")}
+                importLabel={t("configuration.actions.import")}
+                disabled={isSaving || !selectedNamespace}
+                onExport={handleExport}
+                onImport={handleImport}
+              />
             </header>
 
             <div className="relative">

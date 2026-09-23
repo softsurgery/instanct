@@ -32,7 +32,7 @@ interface ContentPagesPortalProps {
 export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
   const { t } = useTranslation("content-management");
   const { setRoutes, clearRoutes } = useBreadcrumb();
-  const { setIntro, setFloating, clearIntro, clearFloating } = useIntro();
+  const { setIntro, clearIntro, setFloating, clearFloating } = useIntro();
   const { setContent, clearContent } = useFooter();
   const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
   const [selectedLocale, setSelectedLocale] = React.useState<string>("fr");
@@ -166,41 +166,22 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
     return () => {
       clearRoutes?.();
       clearIntro?.();
-      clearFloating?.();
     };
-  }, [clearFloating, clearIntro, clearRoutes, setIntro, setRoutes, t]);
+  }, [clearIntro, clearRoutes, setIntro, setRoutes, t]);
 
   React.useEffect(() => {
     setFloating?.(
-      <ImportExportActions
-        exportLabel={t("pages.actions.export")}
-        importLabel={t("pages.actions.import")}
-        disabled={isSaving || !selectedPage}
-        onExport={handleExport}
-        onImport={handleImport}
-      >
-        <PageLanguageToggle
-          value={selectedLocale}
-          onValueChange={setSelectedLocale}
-          languages={languages}
-        />
-      </ImportExportActions>,
+      <PageLanguageToggle
+        value={selectedLocale}
+        onValueChange={setSelectedLocale}
+        languages={languages}
+      />
     );
 
     return () => {
       clearFloating?.();
     };
-  }, [
-    clearFloating,
-    handleExport,
-    handleImport,
-    isSaving,
-    languages,
-    selectedLocale,
-    selectedPage,
-    setFloating,
-    t,
-  ]);
+  }, [clearFloating, languages, selectedLocale, setFloating]);
 
   React.useEffect(() => {
     if (!selectedPage) {
@@ -248,7 +229,6 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
     return contentPages.map((page: ResponseContentPageDto) => ({
       href: page.slug,
       title: page.title,
-      icon: <FileText className="h-4 w-4" />,
       description: `/${page.slug}`,
     }));
   }, [contentPages]);
@@ -296,6 +276,15 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
                 <p className="text-xs text-muted-foreground mt-0.5">
                   Editing page details for /{selectedPage.slug}
                 </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <ImportExportActions
+                  exportLabel={t("pages.actions.export")}
+                  importLabel={t("pages.actions.import")}
+                  disabled={isSaving || !selectedPage}
+                  onExport={handleExport}
+                  onImport={handleImport}
+                />
               </div>
             </header>
 

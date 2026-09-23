@@ -1,5 +1,13 @@
 import { Button } from "@instanct/ui";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@instanct/ui";
+import { Check } from "lucide-react";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 
 export interface LanguageOption {
   label: string;
@@ -27,33 +35,35 @@ export function PageLanguageToggle({
           { label: "EN", code: "en" },
         ];
 
+  const selectedOption = options.find((lang) => lang.code === value) || options[0];
+
   return (
-    <div
-      className={cn(
-        "inline-flex items-center rounded-lg border bg-muted p-0.5 text-muted-foreground",
-        className,
-      )}
-    >
-      {options.map((lang) => {
-        const isSelected = value === lang.code;
-        return (
-          <Button
-            key={lang.code}
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => onValueChange(lang.code)}
-            className={cn(
-              "h-7 px-2.5 text-xs font-semibold uppercase transition-all rounded-md",
-              isSelected
-                ? "bg-background text-foreground shadow-sm"
-                : "hover:bg-transparent hover:text-foreground opacity-70",
-            )}
-          >
-            {lang.code.toUpperCase()}
-          </Button>
-        );
-      })}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className={cn("flex items-center h-8", className)}
+        >
+          {selectedOption.label || selectedOption.code.toUpperCase()}
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-40">
+        {options.map((lang) => {
+          const isSelected = value === lang.code;
+          return (
+            <DropdownMenuItem
+              key={lang.code}
+              onClick={() => onValueChange(lang.code)}
+              className="flex items-center justify-between cursor-pointer"
+            >
+              <span>{lang.label || lang.code.toUpperCase()}</span>
+              {isSelected && <Check className="h-4 w-4" />}
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
