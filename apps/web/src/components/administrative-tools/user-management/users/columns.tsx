@@ -8,12 +8,12 @@ import { DataTableRowActions } from "@instanct/datatable-builder";
 import { ResponseUserDto } from "@/types";
 import { DataTableCell } from "@instanct/datatable-builder";
 import { useTranslation } from "react-i18next";
-import { identifyUserAvatar } from "@/lib/user";
 import UserAvatarCell from "./UserAvatarCell";
 import {
   DataTableCellVariant,
   DataTableConfig,
 } from "@instanct/datatable-builder";
+import { identifyUserAvatar } from "@instanct/lib";
 
 export const useUserColumns = (
   context: DataTableConfig<ResponseUserDto>,
