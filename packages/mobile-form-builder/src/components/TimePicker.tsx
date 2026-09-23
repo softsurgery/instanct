@@ -20,12 +20,7 @@ import { StableScrollable } from "@instanct/mobile-components";
 import { Separator } from "@instanct/mobile-ui";
 import { triggerHaptic } from "@instanct/mobile-components";
 
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+
 
 interface TimePickerProps {
   className?: string;

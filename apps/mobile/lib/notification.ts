@@ -4,7 +4,7 @@ export let Notifications: typeof import("expo-notifications") | null = null;
 try {
   Notifications = require("expo-notifications");
 } catch (error) {
-  console.warn("expo-notifications is not available");
+  // optionally handle or ignore if expo-notifications is not available
 }
 
 export async function requestNotificationPermissions() {
