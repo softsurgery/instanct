@@ -23,15 +23,14 @@ import { Separator } from "@instanct/ui";
 import { Notifications } from "../audit-monitoring/notifications/Notifications";
 import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
-import { identifyUserAvatar } from "@/lib/user";
 import { api } from "@/lib/api";
 import { Book } from "./cards/Book";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { toast } from "sonner";
 import { Edit } from "lucide-react";
 import { Button } from "@instanct/ui";
 import { useCoverPhoto } from "./cover/useCoverPhoto";
+import { identifyUserAvatar } from "@instanct/lib";
 
 interface BaseProfileProps {
   className?: string;
