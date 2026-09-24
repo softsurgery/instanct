@@ -11,6 +11,7 @@ import { MigrationRepository } from '../repositories/migration.repository';
 import { MigrationEntity } from '../entities/migration.entity';
 import { QueryBuilder } from '../utils/database-query-builder';
 import { MigrationFile } from '../utils/migration-file';
+import { splitSqlStatements } from '../utils/split-sql-statements';
 
 @Injectable()
 export class MigrationService {
@@ -164,12 +165,11 @@ export class MigrationService {
     migrationPath: string,
     migrationFile: MigrationFile,
   ) {
-    const queries = readFileSync(
+    const rawSql = readFileSync(
       `${migrationPath}/${migrationFile.script}`,
       'utf-8',
-    )
-      .split(';')
-      .map((line) => line.trim());
+    );
+    const queries = splitSqlStatements(rawSql);
     for (const query of queries) if (query) await this.dataSource.query(query);
 
     this.logger.log(

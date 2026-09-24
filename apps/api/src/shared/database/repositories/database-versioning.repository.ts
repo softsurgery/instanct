@@ -20,8 +20,7 @@ import { DatabaseVersioningInterfaceRepository } from '../interfaces/database-ve
 
 export abstract class DatabaseVersioningAbstractRepository<
   T extends ObjectLiteral,
-> implements DatabaseVersioningInterfaceRepository<T>
-{
+> implements DatabaseVersioningInterfaceRepository<T> {
   protected txHost?: TransactionHost<TransactionalAdapterTypeOrm>;
 
   protected constructor(

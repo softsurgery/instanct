@@ -17,9 +17,9 @@ import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-t
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { NotFoundException } from '@nestjs/common';
 
-export abstract class DatabaseAbstractRepository<T extends ObjectLiteral>
-  implements DatabaseInterfaceRepository<T>
-{
+export abstract class DatabaseAbstractRepository<
+  T extends ObjectLiteral,
+> implements DatabaseInterfaceRepository<T> {
   protected txHost?: TransactionHost<TransactionalAdapterTypeOrm>;
 
   protected constructor(
