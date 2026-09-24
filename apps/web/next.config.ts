@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   agentRules: false,
   outputFileTracingRoot: monorepoRoot,
+  output: "standalone",
   turbopack: {
     root: monorepoRoot,
   },
