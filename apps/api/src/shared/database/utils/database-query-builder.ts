@@ -81,8 +81,8 @@ export class QueryBuilder {
       output.take = limit;
     }
     if (!this.notValid(query.page)) {
-      const limit = query.limit || (this.options.DEFAULT_LIMIT as string);
-      const limitnum = parseInt(limit, 10);
+      const limit = query.limit || this.options.DEFAULT_LIMIT;
+      const limitnum = parseInt(limit as string, 10);
       output.skip = limitnum * (parseInt(query.page as string, 10) - 1);
       output.take = limitnum;
     }

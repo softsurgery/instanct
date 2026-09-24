@@ -1,5 +1,4 @@
-export const privacyHtml = `<p>Version du 20 septembre 2026</p>
-<p>Les passages surlignés identifient soit des informations encore à confirmer, soit des traitements ou fonctionnalités qui ne sont pas encore appliqués.</p>
+export const privacyHtml = `<p>Les passages surlignés identifient soit des informations encore à confirmer, soit des traitements ou fonctionnalités qui ne sont pas encore appliqués.</p>
 <h2>1. Notre engagement</h2>
 <p>Instanct est une plateforme de networking professionnel en temps réel. Elle permet aux personnes présentes dans un même lieu, un même établissement ou un même événement de se rendre volontairement visibles, de découvrir des profils professionnels pertinents et d'entrer en relation.</p>
 <p>La protection de votre vie privée est intégrée au fonctionnement d'Instanct. Vous conservez notamment le contrôle sur :</p>

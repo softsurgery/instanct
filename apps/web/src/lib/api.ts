@@ -7,7 +7,7 @@ const baseURL =
     : process.env.BASE_URL;
 
 export const api = createApiClient({
-  baseURL: baseURL || "http://localhost:8080/api",
+  baseURL: baseURL || "http://localhost:5000/api",
   refreshPath: "/auth/refresh-token",
   onUnauthorized: () => {
     if (typeof window !== "undefined") {

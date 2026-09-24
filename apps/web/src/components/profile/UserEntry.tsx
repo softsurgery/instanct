@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { ResponseUserDto } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
 import { api } from "@/lib/api";
-import { identifyUser, identifyUserAvatar } from "@/lib/user";
+import { identifyUser, identifyUserAvatar } from "@instanct/lib";
 
 interface UserEntryProps {
   className?: string;

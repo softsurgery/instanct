@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@instanct/mobile-ui";
+import { Text, Icon } from "@instanct/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useEducations } from "@/hooks/content/users/useEducations";
 import { useExperiences } from "@/hooks/content/users/useExperiences";
@@ -18,7 +18,6 @@ import { View, Pressable } from "react-native";
 import { ProfileStat } from "./ProfileStat";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
-import { useServerImages } from "@/hooks/content/useServerImages";
 import { createMaterialTopTabNavigator } from "expo-router/js-top-tabs";
 import { AboutTab } from "./sections/AboutTab";
 import { CareerTab } from "./sections/CareerTab";
@@ -28,7 +27,6 @@ import { ProfileCover } from "./ProfileCover";
 import { toast } from "sonner-native";
 import { api } from "@/api";
 import { useMutation } from "@tanstack/react-query";
-import { Icon } from "@instanct/mobile-ui";
 import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
 import { ExperienceInstance } from "./experience/ExperienceInstance";
@@ -119,6 +117,12 @@ export const InspectBaseProfile = ({
   const { mutate: sendVerifyEmail, isPending: isSendVerifyEmailPending } =
     useMutation({
       mutationFn: () => api.auth.sendVerifyEmail(user?.email),
+      onMutate: () => {
+        setLoading(true);
+      },
+      onSettled: () => {
+        setLoading(false);
+      },
       onSuccess: () => {
         toast.success(t("menu.toasts.emailSent"), {
           description: t("menu.toasts.emailSentDescription"),

@@ -1,16 +1,58 @@
+# ---- Version control & IDE ----
+.git
+.gitignore
+.github
+.vscode
+.idea
+**/.DS_Store
+
+# ---- Build caches (rebuilt inside the image) ----
 node_modules
 **/.next
 **/dist
-.git
 .turbo
+**/.turbo
 **/.expo
+**/.cache
+
+# ---- Environment files (injected at runtime via env_file) ----
 **/.env
 **/.env.*
 !**/.env.example
 !**/.env.build
-coverage
-**/.DS_Store
+
+# ---- Tests & docs ----
+**/test
+**/tests
+**/__tests__
+**/coverage
+**/docs
+**/*.spec.ts
+**/*.test.ts
+
+# ---- Logs ----
 **/npm-debug.log*
 **/pnpm-debug.log*
 **/yarn-debug.log*
 **/yarn-error.log*
+
+# ---- Docker files (not needed inside images) ----
+docker-compose.yml
+**/Dockerfile
+**/.dockerignore
+
+# ---- Mobile app & packages (not used by web/api/landing builds) ----
+apps/mobile
+packages/mobile-components
+packages/mobile-form-builder
+packages/mobile-ui
+
+# ---- Env folder (runtime via env_file; web.env is also baked for NEXT_PUBLIC_*) ----
+env/*
+!env/web.env
+
+# ---- Misc ----
+README.md
+LICENSE
+*.md
+!packages/*/README.md

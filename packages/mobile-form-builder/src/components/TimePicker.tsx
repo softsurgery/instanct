@@ -6,7 +6,7 @@ import { cn } from "@instanct/lib";
 import { Clock, ChevronDown } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Platform, UIManager, View } from "react-native";
+import { Keyboard, Platform, UIManager, View, Pressable } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -16,17 +16,11 @@ import Animated, {
   FadeOut,
   LinearTransition,
 } from "react-native-reanimated";
-import { StablePressable } from "@instanct/mobile-components";
 import { StableScrollable } from "@instanct/mobile-components";
 import { Separator } from "@instanct/mobile-ui";
 import { triggerHaptic } from "@instanct/mobile-components";
 
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+
 
 interface TimePickerProps {
   className?: string;
@@ -208,11 +202,13 @@ export const TimePicker = ({
             "mt-2 rounded-xl border border-border bg-card p-3",
             classNames?.content,
           )}
-          onStartShouldSetResponder={() => true}
-          onMoveShouldSetResponder={() => true}
-          onResponderTerminationRequest={() => false}
         >
-          <View className="flex-row items-center justify-center gap-4">
+          <View 
+            className="flex-row items-center justify-center gap-4"
+            onStartShouldSetResponder={() => true}
+            onMoveShouldSetResponder={() => true}
+            onResponderTerminationRequest={() => false}
+          >
             <StableScrollable
               options={HOURS}
               value={hour}
@@ -234,7 +230,7 @@ export const TimePicker = ({
           </View>
           <Separator className="my-2" />
           <View className="flex-row justify-between">
-            <StablePressable
+            <Pressable
               className="p-2 rounded-lg"
               onPress={() => {
                 triggerHaptic();
@@ -245,8 +241,8 @@ export const TimePicker = ({
               <Text className="font-bold">
                 {t("formBuilder.timePicker.remove")}
               </Text>
-            </StablePressable>
-            <StablePressable
+            </Pressable>
+            <Pressable
               className="p-2 rounded-lg"
               onPress={() => {
                 triggerHaptic();
@@ -256,7 +252,7 @@ export const TimePicker = ({
               <Text className="text-primary font-bold">
                 {t("formBuilder.timePicker.done")}
               </Text>
-            </StablePressable>
+            </Pressable>
           </View>
         </Animated.View>
       )}

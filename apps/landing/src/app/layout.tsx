@@ -4,6 +4,8 @@ import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SkipToContent } from "@/components/skip-to-content";
+import { headers } from "next/headers";
+import { resolveSupportedLng } from "@/i18n/config";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,13 +36,17 @@ export const metadata: Metadata = {
 
 const themeInit = `(function(){try{var k="theme";var t=localStorage.getItem(k);var theme=t==="light"||t==="dark"||t==="system"?t:"dark";var resolved=theme==="system"?(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):theme;var r=document.documentElement;r.classList.remove("light","dark");r.classList.add(resolved);r.style.colorScheme=resolved;}catch(e){}})();`;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const acceptLanguage = headersList.get("accept-language") || "";
+  const resolvedLng = resolveSupportedLng(acceptLanguage);
+
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html lang={resolvedLng} suppressHydrationWarning className={inter.variable} data-scroll-behavior="smooth">
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>

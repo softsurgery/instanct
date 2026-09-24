@@ -20,12 +20,7 @@ import { StableScrollable } from "@instanct/mobile-components";
 import { Separator } from "@instanct/mobile-ui";
 import { triggerHaptic } from "@instanct/mobile-components";
 
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+
 
 const MONTHS = [
   { label: "January", value: "jan" },
@@ -201,11 +196,13 @@ export const DatePicker = ({
             classNames?.content,
           )}
           // Prevent parent ScrollView from stealing touches while interacting with the wheels
-          onStartShouldSetResponder={() => true}
-          onMoveShouldSetResponder={() => true}
-          onResponderTerminationRequest={() => false}
         >
-          <View className="flex-row items-center justify-center gap-4">
+          <View 
+            className="flex-row items-center justify-center gap-4"
+            onStartShouldSetResponder={() => true}
+            onMoveShouldSetResponder={() => true}
+            onResponderTerminationRequest={() => false}
+          >
             <StableScrollable
               options={days}
               value={day}

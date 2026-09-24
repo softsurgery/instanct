@@ -61,11 +61,6 @@ const NavButton = ({
       "group flex items-center",
     )}
   >
-    {/* Subtle active indicator bar */}
-    {isActive && (
-      <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-3/5 bg-primary rounded-r-full shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
-    )}
-
     <div className="flex items-center gap-3 min-w-0 truncate z-10 pl-1">
       {item.icon && (
         <span
@@ -79,7 +74,7 @@ const NavButton = ({
           {item.icon}
         </span>
       )}
-      <span className="truncate tracking-wide">{item.title}</span>
+      <span className="text-sm truncate tracking-wide">{item.title}</span>
     </div>
 
     <div className="flex items-center gap-2 shrink-0 ml-2 z-10">
@@ -237,7 +232,7 @@ export function SideNav({
             ? sections.map((section, sectionIdx) => (
                 <div key={section.title || sectionIdx} className="space-y-1">
                   {section.title && (
-                    <p className="px-3 pt-2 pb-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                    <p className="px-3 pt-2 pb-1 text-sm font-bold uppercase tracking-wider text-muted-foreground/80">
                       {section.title}
                     </p>
                   )}

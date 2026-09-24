@@ -1,12 +1,12 @@
 import React from "react";
 import {
   Button,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@instanct/ui";
-import { Download, Upload } from "lucide-react";
+import { Download, MoreHorizontal, Upload } from "lucide-react";
 
 type ImportExportActionsProps = {
   exportLabel: string;
@@ -14,42 +14,7 @@ type ImportExportActionsProps = {
   disabled?: boolean;
   onExport: () => void;
   onImport: (file: File) => void | Promise<void>;
-  children?: React.ReactNode;
 };
-
-function IconAction({
-  label,
-  disabled,
-  onClick,
-  icon,
-}: {
-  label: string;
-  disabled?: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-}) {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span className="inline-flex">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={onClick}
-            disabled={disabled}
-          >
-            {icon}
-            <span className="sr-only">{label}</span>
-          </Button>
-        </span>
-      </TooltipTrigger>
-      <TooltipContent side="bottom" sideOffset={6}>
-        {label}
-      </TooltipContent>
-    </Tooltip>
-  );
-}
 
 export function ImportExportActions({
   exportLabel,
@@ -57,7 +22,6 @@ export function ImportExportActions({
   disabled,
   onExport,
   onImport,
-  children,
 }: ImportExportActionsProps) {
   const importInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -76,7 +40,7 @@ export function ImportExportActions({
   );
 
   return (
-    <TooltipProvider delayDuration={300}>
+    <>
       <input
         ref={importInputRef}
         type="file"
@@ -84,23 +48,28 @@ export function ImportExportActions({
         className="hidden"
         onChange={handleImportFile}
       />
-      <div className="flex items-center gap-2">
-        {children}
-        <div className="flex items-center gap-1">
-          <IconAction
-            label={exportLabel}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
             disabled={disabled}
-            onClick={onExport}
-            icon={<Download />}
-          />
-          <IconAction
-            label={importLabel}
-            disabled={disabled}
-            onClick={handleImportClick}
-            icon={<Upload />}
-          />
-        </div>
-      </div>
-    </TooltipProvider>
+          >
+            <MoreHorizontal className="size-6" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-40">
+          <DropdownMenuItem onClick={handleImportClick} disabled={disabled}>
+            <Upload />
+            {importLabel}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={onExport} disabled={disabled}>
+            <Download />
+            {exportLabel}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 }

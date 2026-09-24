@@ -7,7 +7,7 @@ import { useNotifications } from "@/hooks/content/notification/useNotifications"
 import { useCheckHealth } from "@/hooks/content/useCheckHealth";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { Stack } from "expo-router";
-import * as Notifications from "expo-notifications";
+import { Notifications } from "@/lib/notification";
 import React from "react";
 import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
@@ -15,15 +15,17 @@ import { useColorPalette } from "@instanct/mobile-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { NotificationType } from "@/types";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+if (Notifications) {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 export default function MainLayout() {
   const queryClient = useQueryClient();

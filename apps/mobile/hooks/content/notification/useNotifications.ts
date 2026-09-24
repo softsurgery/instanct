@@ -2,11 +2,11 @@ import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import {
   createAndroidChannel,
   requestNotificationPermissions,
+  Notifications,
 } from "@/lib/notification";
 import { disconnectSocket, getSocket } from "@/lib/socket";
 import { sanitizeText } from "@/lib/string";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import * as Notifications from "expo-notifications";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Socket } from "socket.io-client";
@@ -77,7 +77,7 @@ export function useNotifications(
       }
 
       consequences?.[notification.type]?.(notification);
-      await Notifications.scheduleNotificationAsync({
+      await Notifications?.scheduleNotificationAsync({
         content: {
           title: sanitizeText(
             t(`titles.${notification.type}`, notification.payload).toString(),

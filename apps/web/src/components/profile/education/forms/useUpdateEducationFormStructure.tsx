@@ -123,7 +123,6 @@ export const useUpdateEducationFormStructure = ({
         educationStore.setNested("updateDto.description", value);
         educationStore.setNested("updateDtoErrors.description", []);
       },
-      rows: 5,
     },
   };
 

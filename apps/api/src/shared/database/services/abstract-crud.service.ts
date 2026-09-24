@@ -23,9 +23,7 @@ export class AbstractCrudService<T extends ObjectLiteral> {
     const queryBuilder = new QueryBuilder(this.repository.getMetadata());
     const queryOptions = queryBuilder.build({ join });
     queryOptions.where = { id };
-    const entity = await this.repository.findOne(
-      queryOptions as FindOneOptions<T>,
-    );
+    const entity = await this.repository.findOne(queryOptions);
     if (!entity) {
       throw new Error(
         `${this.repository.getMetadata().name} with id ${id} is not found`,
@@ -37,9 +35,7 @@ export class AbstractCrudService<T extends ObjectLiteral> {
   async findOneByCondition(query: IQueryObject): Promise<T | null> {
     const queryBuilder = new QueryBuilder(this.repository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    const entity = await this.repository.findOne(
-      queryOptions as FindOneOptions<T>,
-    );
+    const entity = await this.repository.findOne(queryOptions);
     if (!entity) return null;
     return entity;
   }
@@ -47,7 +43,7 @@ export class AbstractCrudService<T extends ObjectLiteral> {
   async findAll(query: IQueryObject = {}): Promise<T[]> {
     const queryBuilder = new QueryBuilder(this.repository.getMetadata());
     const queryOptions = queryBuilder.build(query);
-    return await this.repository.findAll(queryOptions as FindManyOptions<T>);
+    return await this.repository.findAll(queryOptions);
   }
 
   async findAllPaginated(query: IQueryObject): Promise<PageDto<T>> {
@@ -57,9 +53,7 @@ export class AbstractCrudService<T extends ObjectLiteral> {
       where: queryOptions.where,
     });
 
-    const entities = await this.repository.findAll(
-      queryOptions as FindManyOptions<T>,
-    );
+    const entities = await this.repository.findAll(queryOptions);
 
     const pageMetaDto = new PageMetaDto({
       pageOptionsDto: {

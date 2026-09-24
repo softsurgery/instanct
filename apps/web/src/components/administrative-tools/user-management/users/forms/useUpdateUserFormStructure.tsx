@@ -15,9 +15,9 @@ import {
 } from "@instanct/form-builder";
 import { UserStore } from "@/hooks/stores/useUserStore";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
-import { identifyUserAvatar } from "@/lib/user";
 import { Gender } from "@/types";
 import { useTranslation } from "react-i18next";
+import { identifyUserAvatar } from "@instanct/lib";
 
 interface useUpdateUserFormStructureProps {
   userStore: UserStore;
@@ -336,7 +336,6 @@ export const useUpdateUserFormStructure = ({
         userStore.setNested("updateDto.bio", value);
         userStore.setNested("updateDtoErrors.bio", []);
       },
-      rows: 5,
     },
   };
 

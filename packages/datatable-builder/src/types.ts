@@ -82,4 +82,5 @@ export enum DataTableCellVariant {
   CURRENCY = "currency",
   EMAIL = "email",
   PHONE = "phone",
+  RATING = "rating",
 }

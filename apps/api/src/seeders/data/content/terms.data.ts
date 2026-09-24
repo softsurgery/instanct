@@ -1,5 +1,4 @@
-export const termsHtml = `<p>Version du 20 septembre 2026</p>
-<p>Les passages surlignés identifient soit des informations encore à confirmer (identité de la société, hébergeur, prestataire de carte), soit des fonctionnalités qui ne sont pas encore en production.</p>
+export const termsHtml = `<p>Les passages surlignés identifient soit des informations encore à confirmer (identité de la société, hébergeur, prestataire de carte), soit des fonctionnalités qui ne sont pas encore en production.</p>
 <h2>1. Objet</h2>
 <p>Instanct est une plateforme de networking professionnel en temps réel. Elle permet aux personnes présentes dans un même lieu de se rendre volontairement visibles, de découvrir des profils professionnels pertinents et d'entrer en relation.</p>
 <p>Les présentes conditions régissent l'accès et l'utilisation :</p>

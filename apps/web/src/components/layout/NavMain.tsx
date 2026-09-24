@@ -30,6 +30,7 @@ export function NavMain({
     items?: {
       title: string;
       url: string;
+      icon?: LucideIcon;
     }[];
   }[];
 }) {
@@ -64,6 +65,7 @@ export function NavMain({
                             isActive={pathname.startsWith(subItem.url)}
                           >
                             <Link href={subItem.url}>
+                              {subItem.icon && <subItem.icon className="size-4" />}
                               <span>{subItem.title}</span>
                             </Link>
                           </SidebarMenuSubButton>

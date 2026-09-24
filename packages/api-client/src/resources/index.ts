@@ -15,6 +15,8 @@ import { createRoleResource } from "./roles";
 import { createStoreResource } from "./store";
 import { createUploadResource } from "./storage";
 import { createUserResource } from "./users";
+import { createBugResource } from "./bug";
+import { createFeedbackResource } from "./feedback";
 
 export function createResources(http: AxiosInstance) {
   return {
@@ -28,6 +30,8 @@ export function createResources(http: AxiosInstance) {
       user: createUserResource(http),
       configuration: createConfigurationResource(http),
       contentPage: createContentPageResource(http),
+      bugReport: createBugResource(http),
+      feedback: createFeedbackResource(http),
     },
     store: createStoreResource(http),
     contentPage: createContentPageResource(http),

@@ -214,7 +214,7 @@ export class ClientAuthService {
         codeVerifier,
         redirectUri,
       );
-      newUser.email = data?.email as string;
+      newUser.email = data?.email;
       newUser.firstName = data?.given_name;
       newUser.lastName = data?.family_name;
       newUser.username = data?.email?.split('@')[0];
@@ -228,7 +228,7 @@ export class ClientAuthService {
         idToken,
         redirectUri,
       );
-      newUser.email = data?.email as string;
+      newUser.email = data?.email;
       newUser.username = data?.username;
       pictureUrl = data?.picture;
     } else if (provider == OAuthProvider.APPLE) {
@@ -281,7 +281,7 @@ export class ClientAuthService {
         await this.userService.restore(userByEmail.id);
         userByEmail.deletedAt = undefined;
       }
-      newUser = userByEmail as UserEntity;
+      newUser = userByEmail;
     } else {
       if (userByUsername?.deletedAt) {
         await this.userService.restore(userByUsername.id);

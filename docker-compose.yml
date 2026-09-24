@@ -1,0 +1,103 @@
+services:
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: instanct_mysql
+  #   restart: always
+  #   env_file: env/infra.env
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # minio:
+  #   image: minio/minio:latest
+  #   container_name: instanct_minio
+  #   restart: always
+  #   env_file: env/infra.env
+  #   command: server /data --console-address ":9001"
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - minio_data:/data
+  #   healthcheck:
+  #     test: ["CMD", "mc", "ready", "local"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # minio-setup:
+  #   image: minio/mc:latest
+  #   container_name: instanct_minio_setup
+  #   depends_on:
+  #     minio:
+  #       condition: service_healthy
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     sleep 5;
+  #     /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
+  #     /usr/bin/mc mb myminio/uploads || true;
+  #     /usr/bin/mc anonymous set public myminio/uploads;
+  #     "
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: instanct_api
+    restart: on-failure
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    #   minio-setup:
+    #     condition: service_completed_successfully
+    env_file: env/api.env
+    ports:
+      - "5000:5000"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: instanct_web
+    restart: on-failure
+    depends_on:
+      - api
+    env_file: env/web.env
+    ports:
+      - "3000:3000"
+
+  landing:
+    build:
+      context: .
+      dockerfile: apps/landing/Dockerfile
+    container_name: instanct_landing
+    restart: on-failure
+    depends_on:
+      - api
+    env_file: env/landing.env
+    ports:
+      - "3001:3001"
+
+  nginx:
+    image: nginx:alpine
+    container_name: instanct_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+      - web
+      - landing
+
+# volumes:
+#   mysql_data:
+#   minio_data:

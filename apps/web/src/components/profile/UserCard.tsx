@@ -7,7 +7,7 @@ import { ResponseUserDto } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import React from "react";
-import { identifyUser, identifyUserAvatar } from "@/lib/user";
+import { identifyUser, identifyUserAvatar } from "@instanct/lib";
 
 interface UserCardProps {
   className?: string;
