@@ -20,5 +20,14 @@ export function getAllowedDevOrigins() {
     .filter((iface) => !iface.internal)
     .map((iface) => iface.address.split("%")[0]);
 
-  return [...new Set([...fromEnv, ...fromNetwork])];
+  return [
+    ...new Set([
+      ...fromEnv,
+      ...fromNetwork,
+      "localhost",
+      "app-dev.instanct.com",
+      "api-dev.instanct.com",
+      "landing-dev.instanct.com",
+    ]),
+  ];
 }

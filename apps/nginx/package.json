@@ -1,0 +1,8 @@
+{
+  "name": "instanct-nginx",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "docker compose -f ../../docker-compose.dev.yml up"
+  }
+}

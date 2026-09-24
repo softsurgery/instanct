@@ -8,7 +8,6 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "postinstall": "pnpm run seed:all",
     "seed": "ts-node scripts/seed.ts",
     "seed:all": "pnpm run seed:configuration && pnpm run seed:content && pnpm run seed:permissions && pnpm run seed:roles && pnpm run seed:admin && pnpm run seed:templates && pnpm run seed:industries && pnpm run seed:objectives",
     "seed:playground": "nestjs-command seed:playground-users",
