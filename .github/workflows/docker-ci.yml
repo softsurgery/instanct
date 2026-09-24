@@ -28,7 +28,8 @@ jobs:
         run: |
           mkdir -p apps/web
           cat > apps/web/.env.build <<'EOF'
-          NEXT_PUBLIC_API_URL=http://localhost:5000
+          NEXT_PUBLIC_BASE_URL=http://localhost:5000/api
+          BASE_URL=http://localhost:5000/api
           EOF
 
       - name: Build API image

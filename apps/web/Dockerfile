@@ -47,10 +47,16 @@ COPY packages/ui ./packages/ui
 
 ENV npm_config_ignore_scripts=true
 
-# NEXT_PUBLIC_* vars are baked at build time (create apps/web/.env.build before build).
-RUN set -a && \
-    [ -f apps/web/.env.build ] && . apps/web/.env.build; \
-    set +a && \
+# Next.js inlines NEXT_PUBLIC_* at build time from apps/web/.env
+COPY env/web.en[v] /tmp/
+RUN if [ -f /tmp/web.env ]; then \
+      grep -E '^(NEXT_PUBLIC_|BASE_URL=)' /tmp/web.env > apps/web/.env; \
+    elif [ -f apps/web/.env.build ]; then \
+      cp apps/web/.env.build apps/web/.env; \
+    else \
+      touch apps/web/.env; \
+    fi && \
+    set -a && . apps/web/.env && set +a && \
     /repo/node_modules/.bin/turbo run build --filter=instanct-ui
 
 # ---- Production image ----
@@ -63,6 +69,7 @@ WORKDIR /app
 COPY --from=builder --chown=app:app /repo/apps/web/public ./apps/web/public
 COPY --from=builder --chown=app:app /repo/apps/web/.next/standalone ./
 COPY --from=builder --chown=app:app /repo/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=app:app /repo/apps/web/next-i18next.config.mjs ./apps/web/next-i18next.config.mjs
 
 USER app
 

@@ -47,8 +47,9 @@ packages/mobile-components
 packages/mobile-form-builder
 packages/mobile-ui
 
-# ---- Env folder (injected at runtime, not baked into images) ----
-env
+# ---- Env folder (runtime via env_file; web.env is also baked for NEXT_PUBLIC_*) ----
+env/*
+!env/web.env
 
 # ---- Misc ----
 README.md
