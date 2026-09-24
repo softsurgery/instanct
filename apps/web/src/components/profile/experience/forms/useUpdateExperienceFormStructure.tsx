@@ -125,7 +125,6 @@ export const useUpdateExperienceFormStructure = ({
         experienceStore.setNested("updateDto.description", value);
         experienceStore.setNested("updateDtoErrors.description", []);
       },
-      rows: 5,
     },
   };
 

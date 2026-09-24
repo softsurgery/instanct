@@ -5,7 +5,7 @@ import { FormBuilder } from "@instanct/form-builder";
 import { SideNav, SideNavItem } from "@instanct/components";
 import { Button, cn } from "@instanct/ui";
 import { useMutation } from "@tanstack/react-query";
-import { FileText, Loader2, RotateCcw, Save } from "lucide-react";
+import { Loader2, RotateCcw, Save } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
@@ -175,7 +175,7 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
         value={selectedLocale}
         onValueChange={setSelectedLocale}
         languages={languages}
-      />
+      />,
     );
 
     return () => {

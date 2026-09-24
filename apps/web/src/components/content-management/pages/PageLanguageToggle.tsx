@@ -8,16 +8,12 @@ import {
 } from "@instanct/ui";
 import { Check } from "lucide-react";
 import { CaretSortIcon } from "@radix-ui/react-icons";
-
-export interface LanguageOption {
-  label: string;
-  code: string;
-}
+import { SelectOption } from "@instanct/form-builder";
 
 interface PageLanguageToggleProps {
   value: string;
   onValueChange: (code: string) => void;
-  languages?: LanguageOption[];
+  languages?: SelectOption[];
   className?: string;
 }
 
@@ -31,11 +27,12 @@ export function PageLanguageToggle({
     languages && languages.length > 0
       ? languages
       : [
-          { label: "FR", code: "fr" },
-          { label: "EN", code: "en" },
+          { label: "FR", value: "fr" },
+          { label: "EN", value: "en" },
         ];
 
-  const selectedOption = options.find((lang) => lang.code === value) || options[0];
+  const selectedOption =
+    options.find((lang) => lang.value === value) || options[0];
 
   return (
     <DropdownMenu>
@@ -45,20 +42,20 @@ export function PageLanguageToggle({
           size="sm"
           className={cn("flex items-center h-8", className)}
         >
-          {selectedOption.label || selectedOption.code.toUpperCase()}
+          {selectedOption.label || selectedOption.value.toUpperCase()}
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
         {options.map((lang) => {
-          const isSelected = value === lang.code;
+          const isSelected = value === lang.value;
           return (
             <DropdownMenuItem
-              key={lang.code}
-              onClick={() => onValueChange(lang.code)}
+              key={lang.value}
+              onClick={() => onValueChange(lang.value)}
               className="flex items-center justify-between cursor-pointer"
             >
-              <span>{lang.label || lang.code.toUpperCase()}</span>
+              <span>{lang.label || lang.value.toUpperCase()}</span>
               {isSelected && <Check className="h-4 w-4" />}
             </DropdownMenuItem>
           );
