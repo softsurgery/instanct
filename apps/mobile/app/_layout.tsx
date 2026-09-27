@@ -1,3 +1,4 @@
+import Sentry from "@/lib/sentry";
 import { splashPrevented } from "@/lib/splash-screen";
 import { NAV_THEME } from "@/lib/theme";
 import { cn } from "@instanct/lib";
@@ -72,7 +73,7 @@ function RootLayoutContent() {
   );
 }
 
-export default function RootLayout() {
+function RootLayout() {
   const { colorScheme } = useColorPalette();
   const isPreferenceReady = usePreferencePersistStore((state) => state.isReady);
 
@@ -107,3 +108,6 @@ export default function RootLayout() {
     </ThemeProvider>
   );
 }
+
+export default Sentry.wrap(RootLayout);
+

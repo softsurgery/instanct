@@ -1,3 +1,4 @@
+import './instrument';
 import { NestApplication, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { join } from 'path';

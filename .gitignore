@@ -42,3 +42,7 @@ expo-env.d.ts
 # Misc
 .DS_Store
 *.pem
+
+# Sentry self-hosted (separate git repo)
+infra/sentry/
+

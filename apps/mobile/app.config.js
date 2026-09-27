@@ -1,8 +1,10 @@
+const { version } = require("./package.json");
+
 export default ({ config }) => ({
   ...config,
   name: "Instanct",
   slug: "instanct-mobile-app",
-  version: "1.0.0",
+  version,
   orientation: "portrait",
   icon: "./assets/images/icon.png",
   scheme: "com.instanct.instanctma",
@@ -66,7 +68,15 @@ export default ({ config }) => ({
         "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
       }
     ],
-    "expo-video"
+    "expo-video",
+    [
+      "@sentry/react-native/expo",
+      {
+        url: process.env.SENTRY_URL,
+        organization: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,
@@ -74,5 +84,6 @@ export default ({ config }) => ({
   },
   extra: {
     router: {},
+    sentryDsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
   },
 });
