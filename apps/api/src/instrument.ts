@@ -1,6 +1,13 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import * as Sentry from '@sentry/nestjs';
-import { name, version } from '../package.json';
 import { loadEnv } from './utils/load-env';
+
+// Read at runtime so package.json stays outside the TypeScript program.
+// Importing it would make tsc emit under dist/src instead of dist/.
+const { name, version } = JSON.parse(
+  readFileSync(join(__dirname, '..', 'package.json'), 'utf8'),
+) as { name: string; version: string };
 
 // Sentry.init runs before Nest ConfigModule, so load env files here.
 loadEnv();

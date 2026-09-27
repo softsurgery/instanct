@@ -1,13 +1,13 @@
-# Production stack:
-#   docker compose up --build
-name: instanct
+# Development stack:
+#   docker compose -f docker-compose.dev.yml up --build
+name: instanct-dev
 
 services:
   # mysql:
   #   image: mysql:8.0
-  #   container_name: instanct_mysql
+  #   container_name: instanct_mysql_dev
   #   restart: always
-  #   env_file: env/prod/infra.env
+  #   env_file: env/dev/infra.env
   #   ports:
   #     - "3306:3306"
   #   volumes:
@@ -20,9 +20,9 @@ services:
 
   # minio:
   #   image: minio/minio:latest
-  #   container_name: instanct_minio
+  #   container_name: instanct_minio_dev
   #   restart: always
-  #   env_file: env/prod/infra.env
+  #   env_file: env/dev/infra.env
   #   command: server /data --console-address ":9001"
   #   ports:
   #     - "9000:9000"
@@ -37,7 +37,7 @@ services:
 
   # minio-setup:
   #   image: minio/mc:latest
-  #   container_name: instanct_minio_setup
+  #   container_name: instanct_minio_setup_dev
   #   depends_on:
   #     minio:
   #       condition: service_healthy
@@ -53,8 +53,8 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
-    image: instanct-api:prod
-    container_name: instanct_api
+    image: instanct-api:dev
+    container_name: instanct_api_dev
     restart: on-failure
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -63,43 +63,43 @@ services:
     #     condition: service_healthy
     #   minio-setup:
     #     condition: service_completed_successfully
-    env_file: env/prod/api.env
+    env_file: env/dev/api.env
     ports:
-      - "5000:5000"
+      - "5005:5005"
 
   web:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
       args:
-        WEB_ENV_FILE: env/prod/web.env
-    image: instanct-web:prod
-    container_name: instanct_web
+        WEB_ENV_FILE: env/dev/web.env
+    image: instanct-web:dev
+    container_name: instanct_web_dev
     restart: on-failure
     depends_on:
       - api
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    env_file: env/prod/web.env
+    env_file: env/dev/web.env
     ports:
-      - "3000:3000"
+      - "3007:3007"
 
   landing:
     build:
       context: .
       dockerfile: apps/landing/Dockerfile
       args:
-        LANDING_ENV_FILE: env/prod/landing.env
-    image: instanct-landing:prod
-    container_name: instanct_landing
+        LANDING_ENV_FILE: env/dev/landing.env
+    image: instanct-landing:dev
+    container_name: instanct_landing_dev
     restart: on-failure
     depends_on:
       - api
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    env_file: env/prod/landing.env
+    env_file: env/dev/landing.env
     ports:
-      - "3001:3001"
+      - "3008:3008"
 
 # volumes:
 #   mysql_data:

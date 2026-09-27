@@ -4,6 +4,7 @@ coverage/
 coverage-e2e/
 coverage-integration/
 dist/
+*.tsbuildinfo
 .husky/
 .github/
 prod/

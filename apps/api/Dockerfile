@@ -36,8 +36,9 @@ RUN pnpm install --frozen-lockfile --filter instanct-api... --ignore-scripts && 
 COPY apps/api ./apps/api
 RUN sed -i '/"postinstall":/d' apps/api/package.json
 
-# Build the app — run from the api directory so nest-cli.json is found
-RUN cd apps/api && /repo/node_modules/.bin/nest build
+# Build the app — run from the api directory so nest-cli.json is found.
+# A copied tsbuildinfo makes incremental tsc skip emit after Nest deletes dist.
+RUN rm -f apps/api/*.tsbuildinfo && cd apps/api && /repo/node_modules/.bin/nest build
 
 # Fail fast if dist/main.js was not produced
 RUN test -f /repo/apps/api/dist/main.js || \
