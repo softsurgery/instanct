@@ -1,5 +1,0 @@
----
-- name: Deploy Instanct containers
-  hosts: app_servers
-  roles:
-    - instanct_deploy
