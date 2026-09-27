@@ -7,7 +7,8 @@ export function buildStaticUrl(
     return '';
   }
   const protocol = secure ? 'https' : 'http';
-  if (!port || port === 80) {
+  const defaultPort = secure ? 443 : 80;
+  if (!port || port === defaultPort) {
     return `${protocol}://${host}`;
   }
 

@@ -317,10 +317,13 @@ export class ClientAuthService {
         },
       );
 
+      const publicUrl = (
+        this.configService.get<string>('app.publicUrl') || ''
+      ).replace(/\/$/, '');
       const host = this.configService.get<string | null>('app.http.host') || '';
       const port = this.configService.get<number>('app.http.port') || 80;
       const secure = this.configService.get<boolean>('app.http.secure');
-      const url = buildStaticUrl(host, port, secure);
+      const url = publicUrl || buildStaticUrl(host, port, secure);
       const verifyLink = `${url}/api/client-auth/verify-email?token=${verifyToken}`;
 
       const name =
