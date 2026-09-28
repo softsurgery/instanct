@@ -1,35 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Instanct web
 
-## Getting Started
+Backoffice for Instanct (`instanct-ui`). Operators manage users, roles, content pages, configuration, reference data, logs, bug reports, and feedback, and they can open a user profile. It is a Next.js **pages router** app. Shared UI and data access come from `@instanct/*` packages. The abstractions themselves are described in the [root README](../../README.md).
 
-First, install from the monorepo root with pnpm, then run the development server:
+## Run
 
-```bash
-pnpm install --ignore-scripts
-pnpm --filter instanct-ui dev
+From the repository root:
+
+```sh
+pnpm install
+cp apps/web/.env.example apps/web/.env
+pnpm dev:web
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`pnpm dev:web` starts Next on port **3007**. The dev nginx host is `app-dev.instanct.com`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+| Variable | Role |
+| --- | --- |
+| `NEXT_PUBLIC_BASE_URL` | API base used in the browser |
+| `BASE_URL` | API base used on the server (NextAuth's `authorize`) |
+| `NEXTAUTH_URL`, `NEXTAUTH_SECRET` | NextAuth session |
+| `GITHUB_ID`, `GITHUB_SECRET`, `GOOGLE_ID`, `GOOGLE_SECRET` | OAuth providers. Credentials sign-in always goes through the API |
+| `NEXT_PUBLIC_SENTRY_DSN` | BugSink / Sentry-compatible reporting |
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Shell
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+`pages/_app.tsx` wraps every page:
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+SessionProvider
+  AuthTokenSync          # copies the NextAuth access token into useAuthPersistStore
+  QueryClientProvider
+    ThemeProvider        # @instanct/contexts, class strategy, default dark
+      AppProvider        # { appType: "admin", api }
+        Application
+```
 
-## Learn More
+`Application` treats `/auth` as public. Any other route redirects to `/auth` until `useSession()` has a session, and an authenticated visit to `/auth` redirects home. Signed-in pages render inside `Layout` (sidebar, header). `AppProviders` holds breadcrumb, page intro, and footer content that feature screens set on mount and clear on unmount.
 
-To learn more about Next.js, take a look at the following resources:
+`src/lib/api.ts` calls `createApiClient` from `@instanct/api-client`. The browser uses `NEXT_PUBLIC_BASE_URL`; the server uses `BASE_URL`. `onUnauthorized` signs out through NextAuth and returns to `/auth`. Feature code imports `api` and calls a resource (`api.admin.user`, `api.auth`, `api.upload`), not Axios.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+NextAuth lives at `pages/api/auth/[...nextauth].ts`. The credentials provider calls `api.auth.signIn`. GitHub and Google are NextAuth providers; the API remains the source of the access and refresh tokens stored on the session.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Routes
 
-## Deploy on Vercel
+Pages are thin. They render a feature component or a `*Portal`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Path | Screen |
+| --- | --- |
+| `/auth` | Sign-in |
+| `/dashboard` | Dashboard |
+| `/profile` | Current user profile (experience, education, follows) |
+| `/notifications` | Notifications |
+| `/user-management/users` | User table. `[id]` inspects one user |
+| `/user-management/roles` | Roles and permissions |
+| `/audit-monitoring/logger` | Request logs |
+| `/audit-monitoring/bug-report` | Bug reports |
+| `/audit-monitoring/feedback` | Feedback |
+| `/content-management/pages` | Content pages (landing legal HTML) |
+| `/content-management/configuration` | Configuration namespaces |
+| `/content-management/reference-types` | Reference type tree |
+| `/content-management/reference-parameters` | Reference parameters |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+The sidebar in `components/layout/AppSidebar.tsx` is the same map.
+
+## Screen pattern
+
+A management screen has four pieces. Users (`components/administrative-tools/user-management/users/Users.tsx`) is the reference:
+
+1. **Query.** `useQuery` / `useMutation` from TanStack Query. The query key includes the table state. The query function calls an `@instanct/api-client` resource with `page`, `limit`, `sort`, `search`, `filter`, and `join`. That string is what the API `QueryBuilder` compiles.
+2. **Table.** `DataTable` from `@instanct/datatable-builder` receives a `DataTableConfig`: names, pagination setters, sort, search, column filters, and callbacks for create, inspect, update, and delete. Column definitions live in a `columns.tsx` next to the screen and declare filter and export meta.
+3. **Form structure.** Create and update sheets call a hook such as `useUpdateUserFormStructure` or `useCreateEducationFormStructure`. The hook returns a `FormStructure` whose fields bind `props.value` / `props.onChange` to a Zustand store. `FormBuilder` renders it. Zod schemas in `src/types/validations` check the DTO before the mutation runs.
+4. **Chrome.** `useBreadcrumb` and `useIntro` from `@instanct/contexts` set the header for the lifetime of the screen.
+
+Portals (`DashboardPortal`, `LoggerPortal`, `ContentPagesPortal`, `ConfigurationPortal`, `RefTypePortal`, `RefParamPortal`, `BugReportPortal`, `FeedbackPortal`) are the same pattern behind a single component the page renders.
+
+Profile editors (experience, education, cover) reuse the form-structure hooks and the upload helpers in `hooks/content/useUploads.ts`. Uploads go through `api.upload`, which hits the API `StorageService`.
+
+## Layout of `src/`
+
+```text
+src/
+├── pages/            # routes only
+├── components/
+│   ├── layout/       # sidebar, header, page shell
+│   ├── auth/
+│   ├── administrative-tools/   # users, roles
+│   ├── audit-monitoring/       # logger, bugs, feedback
+│   ├── content-management/     # pages, configuration, reference data
+│   ├── profile/
+│   └── dashboard/
+├── hooks/
+│   ├── content/      # React Query wrappers around api resources
+│   └── stores/       # Zustand drafts for forms (user, education, …)
+├── lib/api.ts        # createApiClient
+└── types/            # DTOs re-exported for screens, Zod schemas
+```
+
+Copy and chrome strings go through `next-i18next` (`appWithTranslation` in `_app.tsx`).
+
+## Adding a management screen
+
+1. Add a page under `src/pages` that renders a portal or feature component.
+2. Add the route to `AppSidebar`.
+3. Define columns and a `DataTableConfig` fed by `useQuery` on the matching `api.admin.*` resource.
+4. If the screen edits data, add a `useXFormStructure` hook and a Zustand store. Pass the structure to `FormBuilder`.
+5. Validate with a Zod schema, then `useMutation` and invalidate the list query.

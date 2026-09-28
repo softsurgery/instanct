@@ -1,214 +1,93 @@
-# Instanct Mobile App
+# Instanct mobile
 
-A modern, cross-platform mobile application built with React Native and Expo for connecting professionals and exploring opportunities.
+Expo Router client for Instanct (`instanct-mobile-app`). People discover nearby professionals, manage a profile, chat, schedule sessions, and send meeting requests. UI primitives come from `@instanct/mobile-ui` and `@instanct/mobile-components`. Forms use `@instanct/mobile-form-builder`. Auth and theme persistence use `@instanct/hooks`. The shared abstractions are described in the [root README](../../README.md).
 
-## 📱 Features
+This app does not use `@instanct/api-client`. It has its own Axios instance and one module per resource, with the same interceptor contract as the shared client.
 
-- **Authentication** - Secure user authentication, SSO support (Google, LinkedIn, Apple), and session management
-- **Profile Management** - Create and manage user profiles with photos and information
-- **Network Discovery** - Explore and connect with professionals in your area
-- **Messaging** - Real-time chat with networking contacts, featuring smart caching, media sharing, and quick interactions (Pokes)
-- **Notifications** - Smart push notifications and in-app alerts that respect active user views
-- **Location Services** - Map-based discovery of nearby professionals
-- **Bookmarks** - Save and organize interesting profiles
-- **Sessions** - Schedule and manage professional sessions
-- **Experience & Education** - Showcase professional background
-- **Feedback System** - Rate and provide feedback on interactions
-- **Multi-language Support** - Built-in internationalization support
-- **Responsive Design** - Optimized for both iOS and Android
+## Run
 
-## 🛠️ Tech Stack
+From the repository root:
 
-- **Framework**: React Native 0.81.5 with Expo 54.0.32
-- **Navigation**: Expo Router for file-based routing
-- **State Management**: Zustand
-- **Data Fetching**: React Query (TanStack Query)
-- **HTTP Client**: Axios
-- **Styling**: NativeWind (Tailwind CSS for React Native)
-- **Validation**: Zod
-- **Icons**: Tabler Icons, Lucide React Native
-- **Animations**: Lottie, React Native Reanimated
-- **Maps**: React Native Maps with clustering
-- **Localization**: i18next + react-i18next
-- **Storage**: AsyncStorage
-- **Real-time**: Socket.io client
-- **UI Components**: React Native Primitives
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- pnpm 11+
-- Expo CLI: `pnpm add -g expo-cli`
-- For iOS development: Xcode (macOS only)
-- For Android development: Android Studio or Android SDK
-
-### Installation
-
-1. **Clone and install dependencies**
-
-   ```bash
-   pnpm install --ignore-scripts
-   ```
-
-2. **Set up environment variables**
-   Create a `.env` file in the root directory with the necessary API endpoint configuration.
-
-3. **Start the development server**
-   ```bash
-   pnpm dev
-   ```
-
-### Available Scripts
-
-- `pnpm dev` - Start Expo dev client with development build
-- `pnpm start` - Start Expo development server
-- `pnpm android` - Run on Android emulator/device
-- `pnpm ios` - Run on iOS simulator/device
-- `pnpm web` - Run on web browser
-- `pnpm lint` - Run ESLint
-- `pnpm reset-project` - Reset project to initial state
-
-## 📁 Project Structure
-
-```
-src/
-├── app/                  # Expo Router screens and layouts
-│   ├── _layout.tsx      # Root layout
-│   ├── index.tsx        # Home screen
-│   ├── auth/            # Authentication screens
-│   └── main/            # Main app screens
-├── api/                 # API client integration
-│   ├── auth.ts          # Authentication endpoints
-│   ├── user.ts          # User endpoints
-│   ├── chat/            # Chat/messaging endpoints
-│   ├── axios.ts         # Axios configuration
-│   └── ...
-├── components/          # Reusable UI components
-│   ├── auth/            # Auth-related components
-│   ├── chat/            # Chat components
-│   ├── map/             # Map components
-│   ├── profile/         # Profile components
-│   ├── ui/              # Basic UI primitives
-│   └── ...
-├── contexts/            # React contexts
-├── hooks/               # Custom React hooks
-├── lib/                 # Utility libraries
-├── stores/              # Zustand stores
-├── types/               # TypeScript type definitions
-├── i18n/                # Internationalization configuration
-└── assets/              # Images, fonts, lottie files
+```sh
+pnpm install
+cp apps/mobile/.env.example apps/mobile/.env
+pnpm dev:mobile
 ```
 
-## 🏗️ Key Architecture Patterns
+`pnpm dev:mobile` starts the Expo dev client. `pnpm --filter instanct-mobile-app android` and `ios` run a native build. iOS needs Xcode. Android needs a device or emulator and the maps setup in [docs/ANDROID_MAPS_FIX.md](docs/ANDROID_MAPS_FIX.md).
 
-### State Management
+| Variable | Role |
+| --- | --- |
+| `EXPO_PUBLIC_API_BASE_URL` | REST base URL, including the `/api` prefix |
+| `EXPO_PUBLIC_API_SOCKET_URL` | Origin for Socket.IO (`/chat`, `/notifications`, `/geolocation`) |
+| `EXPO_PUBLIC_GLOBAL_DELAY` | Artificial delay on HTTP and socket emits, `0` in normal use |
+| `GOOGLE_MAPS_API_KEY` | Native maps |
+| `EXPO_PUBLIC_GOOGLE_CLIENT_ID`, `EXPO_PUBLIC_LINKEDIN_CLIENT_ID` | SSO |
+| `EXPO_PUBLIC_OAUTH_REDIRECT_URI` | Deep link the provider returns to (`app/oauth.tsx`) |
+| `EXPO_PUBLIC_SENTRY_DSN` | BugSink / Sentry-compatible reporting |
 
-Uses Zustand for global state management with persistence:
+## Navigation
 
-- `useAuthStore` - Authentication state
-- `useUserStore` - User profile information
-- `useSessionStore` - Session management
-- And more specific stores for different features
+Routes are files under `app/`. `app/_layout.tsx` is the root: gesture handler, safe area, keyboard controller, TanStack Query with an AsyncStorage persister, splash screen, and the NativeWind theme from `usePreferencePersistStore`.
 
-### API Integration
+| Group | Role |
+| --- | --- |
+| `app/index.tsx` | Entry redirect |
+| `app/auth/` | Sign-in, sign-up, legal |
+| `app/oauth.tsx` | SSO return |
+| `app/main/(tabs)/` | Home, map, activities, menu |
+| `app/main/chat/` | Conversation, details, report |
+| `app/main/sessions/` | List, details, manage |
+| `app/main/request/` | New request, answer |
+| `app/main/explore/` | Session starter, user filters |
+| `app/main/profile/` | Profile, education, experience, industries, devices |
+| `app/main/settings/` | Language, theme, about, privacy, terms |
+| `app/main/notifications.tsx` | Notification inbox |
 
-- Centralized Axios instance with interceptors
-- API clients organized by domain/feature
-- React Query for server state, advanced data caching, and optimized infinite scrolling
+Tabs are declared in `app/main/(tabs)/_layout.tsx`. Stack screens push on top of that layout.
 
-### Navigation
+## Data flow
 
-File-based routing with Expo Router:
-
-- Automatic route generation from file structure
-- Deep linking support
-- Tab navigation and stack navigation
-
-### UI Components
-
-Built with React Native Primitives:
-
-- Customizable UI components
-- Tailwind CSS styling via NativeWind
-- Theme support
-- Dynamic skeleton loaders for smooth perceived performance
-- Polished layouts with intelligent conditional scrolling behaviors
-
-## 📍 Platform-Specific Setup
-
-### Android
-
-```bash
-pnpm android
+```text
+Screen
+  -> hooks/content/<domain>/useX.ts     # useQuery / useMutation / useInfiniteQuery
+       -> api/<resource>.ts             # typed functions, query-string params
+            -> api/axios.ts             # bearer, x-timezone, one refresh, logout
+                 -> API QueryBuilder / CRUD services
 ```
 
-See [ANDROID_MAPS_FIX.md](docs/ANDROID_MAPS_FIX.md) for maps integration setup.
+`api/axios.ts` reads the access token from the app's `useAuthPersistStore` (`hooks/useAuthPersistStore.ts`), a Zustand store persisted on the device. On 401 it retries `/auth/refresh-token` once, then `performLogout`. `FormData` uploads drop the JSON content type so multipart boundaries stay intact. The web client uses the store in `@instanct/hooks` instead; the interceptor behavior matches.
 
-### iOS
+Resource modules (`api/auth.ts`, `api/user.ts`, `api/session.ts`, `api/request.ts`, `api/education.ts`, `api/experience.ts`, `api/notifications.ts`, `api/upload.ts`, `api/configuration.ts`, `api/content-page.ts`, `api/bookmark.ts`, `api/bug.ts`, `api/feedback.ts`, `api/devices.ts`, `api/store.ts`) return the DTOs in `types/`. List functions take the same `page`, `limit`, `sort`, `search`, `filter`, and `join` fields the API `QueryBuilder` understands. Infinite lists (sessions, bookmarks, incoming and outgoing requests) use that pagination with `useInfiniteQuery`.
 
-```bash
-pnpm ios
+Hooks under `hooks/content/` are the only place screens should fetch. Group them by domain: `users`, `sessions`, `chat`, `notification`, `reference-types`, `configurations`. Reference data hooks (`useIndustries`, `useObjectives`) read the `RefType` / `RefParam` tree. Configuration hooks read namespaces the map and the client need.
+
+Chat does not poll. `lib/socket.ts` keeps one Socket.IO connection per namespace (`chat`, `notifications`, `geolocation`) against `EXPO_PUBLIC_API_SOCKET_URL`, with the access token. A token change disconnects and opens a new socket. Hooks such as `useConversationMessages`, `useUserPresence`, and `useNotifications` subscribe to those sockets and write through the React Query cache.
+
+## Forms
+
+Create and edit screens use `@instanct/mobile-form-builder`. A hook such as `useSigninFormStructure` or `useSessionStarterFormStructure` returns a `FormStructure`: fieldsets, rows, and fields. `FormBuilder` renders native controls (text, select, date, time, picture, map pin). The field `props` write into a local store. Zod schemas in `types/validations/` check the payload before the resource function runs. Translation keys for those errors live in the namespace named at the top of each schema file.
+
+## Layout of the app
+
+```text
+app/                 # Expo Router screens
+api/                 # Axios instance and resource functions
+components/          # auth, chat, map, profile, request, session, settings
+contexts/            # loader and other screen-level providers
+hooks/
+  content/           # React Query hooks by domain
+  useAuthPersistStore.ts
+i18n/locales/        # en, and further locales
+lib/                 # socket, query client, theme, sentry, logout
+stores/              # feature Zustand stores
+types/               # DTOs and Zod schemas
 ```
 
-### Web
+Internationalization is i18next. `app/_layout.tsx` imports `../i18n`. Add a locale under `i18n/locales` and a settings entry; the language screen writes the preference the detector reads.
 
-```bash
-pnpm web
-```
+## Related docs
 
-## 🌍 Internationalization
-
-The app supports multiple languages through i18next configuration in `i18n/`. Add new language resources in `i18n/locales/`.
-
-Usage in components:
-
-```typescript
-import { useTranslation } from 'react-i18next';
-
-function MyComponent() {
-  const { t } = useTranslation();
-  return <Text>{t('key.path')}</Text>;
-}
-```
-
-## 🔐 Authentication
-
-User authentication is managed through:
-
-- JWT-based token storage in AsyncStorage
-- Auth store for state persistence
-- Automatic token refresh on session expiry
-- Protected routes via Expo Router
-- Single Sign-On (SSO) support with seamless mobile deep linking and redirection flows
-
-## 📡 API Integration
-
-API requests are configured in `/api/axios.ts` with:
-
-- Automatic token attachment
-- Error handling and response interceptors
-- Support for file uploads
-- Configurable base URL
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-- **Metro bundler errors**: Run `pnpm reset-project`
-- **Navigation issues**: Clear Expo cache with `expo start -c`
-- **Maps not showing**: See [ANDROID_MAPS_FIX.md](docs/ANDROID_MAPS_FIX.md)
-- **AsyncStorage errors**: Ensure persistence setup is correct
-
-## 🤝 Contributing
-
-Please follow the existing code style and structure when contributing. Run linting before submitting:
-
-```bash
-pnpm lint
-```
-
-## 📄 License
-
-This project is part of the Instanct ecosystem.
+- [Chat module](docs/CHAT_MODULE.md)
+- [Android maps](docs/ANDROID_MAPS_FIX.md)
+- [API](../api/README.md)
