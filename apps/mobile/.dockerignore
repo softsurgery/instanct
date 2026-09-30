@@ -1,0 +1,10 @@
+node_modules
+.expo
+.cache
+web-build
+android
+ios
+.dockerignore
+Dockerfile
+*.log
+

@@ -42,12 +42,6 @@ docker-compose.yml
 **/Dockerfile
 **/.dockerignore
 
-# ---- Mobile app & packages (not used by web/api/landing builds) ----
-apps/mobile
-packages/mobile-components
-packages/mobile-form-builder
-packages/mobile-ui
-
 # ---- Env folder (runtime via env_file). Public Next vars are copied at build time. ----
 env/*
 !env/dev
@@ -58,6 +52,7 @@ env/prod/*
 !env/prod/web.env
 !env/dev/landing.env
 !env/prod/landing.env
+!env/dev/mobile.env
 
 # ---- Misc ----
 README.md

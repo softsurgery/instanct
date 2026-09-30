@@ -42,3 +42,6 @@ expo-env.d.ts
 # Misc
 .DS_Store
 *.pem
+
+#python
+*.pyc

@@ -7,10 +7,13 @@
 from __future__ import annotations
 
 import curses
+import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+os.environ.setdefault("ESCDELAY", "25")
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -57,21 +60,64 @@ MENU: list[tuple[str, object]] = [
     ("item", ("nginx", "up", "Start")),
     ("item", ("nginx", "down", "Stop and remove")),
     ("item", ("nginx", "logs", "Follow logs")),
+    ("header", "Build"),
+    ("item", (None, "build-indiv", "Build indiv image")),
+    ("header", "Logs"),
+    ("item", (None, "logs-indiv", "Follow indiv container logs")),
     ("header", "All stacks"),
     ("item", (None, "status", "Show status")),
     ("header", "Cleanup"),
+    ("item", (None, "delete-old-dev", "Delete old dev images")),
+    ("item", (None, "delete-old-prod", "Delete old prod images")),
+    ("item", (None, "delete-dangling", "Delete all dangling images")),
     ("item", (None, "delete-dev", "Delete dev images")),
     ("item", (None, "delete-prod", "Delete prod images")),
     ("item", (None, "clear-cache", "Clear Docker build cache")),
 ]
 
+BUILD_MENU: list[tuple[str, object]] = [
+    ("header", "Development"),
+    ("item", ("dev", "build:api", "instanct-api:dev (API)")),
+    ("item", ("dev", "build:web", "instanct-web:dev (Web)")),
+    ("item", ("dev", "build:landing", "instanct-landing:dev (Landing)")),
+    ("item", ("dev", "build:mobile", "instanct-mobile:dev (Mobile)")),
+    ("header", "Production"),
+    ("item", ("prod", "build:api", "instanct-api:prod (API)")),
+    ("item", ("prod", "build:web", "instanct-web:prod (Web)")),
+    ("item", ("prod", "build:landing", "instanct-landing:prod (Landing)")),
+    ("header", "Navigation"),
+    ("item", (None, "back", "« Back to main menu")),
+]
+
+LOGS_MENU: list[tuple[str, object]] = [
+    ("header", "Development"),
+    ("item", ("dev", "logs:api", "api (API)")),
+    ("item", ("dev", "logs:web", "web (Web)")),
+    ("item", ("dev", "logs:landing", "landing (Landing)")),
+    ("item", ("dev", "logs:mobile", "mobile (Mobile)")),
+    ("header", "Production"),
+    ("item", ("prod", "logs:api", "api (API)")),
+    ("item", ("prod", "logs:web", "web (Web)")),
+    ("item", ("prod", "logs:landing", "landing (Landing)")),
+    ("header", "Nginx"),
+    ("item", ("nginx", "logs:nginx", "nginx (Nginx)")),
+    ("header", "Navigation"),
+    ("item", (None, "back", "« Back to main menu")),
+]
+
+
+COMPOSE_PROJECTS = {
+    "dev": "instanct-dev",
+    "prod": "instanct",
+}
+
 IMAGE_TAGS = {
-    "dev": ["instanct-api:dev", "instanct-web:dev", "instanct-landing:dev"],
+    "dev": ["instanct-api:dev", "instanct-web:dev", "instanct-landing:dev", "instanct-mobile:dev"],
     "prod": ["instanct-api:prod", "instanct-web:prod", "instanct-landing:prod"],
 }
 
 
-def compose_command(stack: str, action: str) -> list[str]:
+def compose_command(stack: str, action: str, *extra_args: str) -> list[str]:
     spec = STACKS[stack]
     compose_file = ROOT / str(spec["file"])
     if not compose_file.is_file():
@@ -79,10 +125,12 @@ def compose_command(stack: str, action: str) -> list[str]:
 
     if action in {"up", "detach"}:
         compose_args = list(spec[action])  # type: ignore[arg-type]
-    else:
+    elif action in ACTIONS:
         compose_args = list(ACTIONS[action])
+    else:
+        compose_args = [action]
 
-    return ["docker", "compose", "-f", str(compose_file), *compose_args]
+    return ["docker", "compose", "-f", str(compose_file), *compose_args, *extra_args]
 
 
 def run_command(command: list[str]) -> int:
@@ -133,7 +181,29 @@ def delete_images(kind: str) -> int:
             print(f"\n{image} is not present.")
             continue
         exit_code = exit_code or run_command(["docker", "image", "rm", image])
+
+    project = COMPOSE_PROJECTS[kind]
+    run_command([
+        "docker", "image", "prune", "-f",
+        "--filter", f"label=com.docker.compose.project={project}",
+    ])
     return exit_code
+
+
+def delete_old_images(kind: str) -> int:
+    project = COMPOSE_PROJECTS[kind]
+    if not confirm(f"Delete old (dangling) images for the {kind} stack?"):
+        return 0
+    return run_command([
+        "docker", "image", "prune", "-f",
+        "--filter", f"label=com.docker.compose.project={project}",
+    ])
+
+
+def clear_dangling_images() -> int:
+    if not confirm("Delete all dangling (<none>) Docker images?"):
+        return 0
+    return run_command(["docker", "image", "prune", "-f"])
 
 
 def clear_build_cache() -> int:
@@ -145,11 +215,28 @@ def clear_build_cache() -> int:
 
 
 def run_selection(stack: str | None, action: str) -> int:
+    if action.startswith("build:"):
+        service = action.split(":", 1)[1]
+        if stack is None:
+            raise SystemExit("Stack must be specified to build a service.")
+        return run_command(compose_command(stack, "build", service))
+    if action.startswith("logs:"):
+        service = action.split(":", 1)[1]
+        if stack is None:
+            raise SystemExit("Stack must be specified to view service logs.")
+        return run_command(compose_command(stack, "logs", service))
     if action == "status":
+
         exit_code = 0
         for name in STACKS:
             exit_code = exit_code or run_command(compose_command(name, "ps"))
         return exit_code
+    if action == "delete-old-dev":
+        return delete_old_images("dev")
+    if action == "delete-old-prod":
+        return delete_old_images("prod")
+    if action == "delete-dangling":
+        return clear_dangling_images()
     if action == "delete-dev":
         return delete_images("dev")
     if action == "delete-prod":
@@ -161,8 +248,8 @@ def run_selection(stack: str | None, action: str) -> int:
     return run_command(compose_command(stack, action))
 
 
-def selectable_indexes() -> list[int]:
-    return [index for index, (kind, _payload) in enumerate(MENU) if kind == "item"]
+def selectable_indexes(menu: list[tuple[str, object]]) -> list[int]:
+    return [index for index, (kind, _payload) in enumerate(menu) if kind == "item"]
 
 
 def draw_menu(stdscr: curses.window) -> tuple[str | None, str] | None:
@@ -174,7 +261,10 @@ def draw_menu(stdscr: curses.window) -> tuple[str | None, str] | None:
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_CYAN)
         curses.init_pair(2, curses.COLOR_CYAN, -1)
 
-    choices = selectable_indexes()
+    menu_stack: list[tuple[list[tuple[str, object]], str, int]] = []
+    current_menu = MENU
+    menu_title = "Instanct"
+    choices = selectable_indexes(current_menu)
     position = 0
 
     while True:
@@ -185,20 +275,24 @@ def draw_menu(stdscr: curses.window) -> tuple[str | None, str] | None:
             stdscr.refresh()
             key = stdscr.getch()
             if key in (ord("q"), 27):
+                if menu_stack:
+                    current_menu, menu_title, position = menu_stack.pop()
+                    choices = selectable_indexes(current_menu)
+                    continue
                 return None
             continue
 
-        stdscr.addnstr(0, 0, "Instanct", width, curses.A_BOLD)
-        hint = "↑↓ move    Enter run    q quit"
+        stdscr.addnstr(0, 0, menu_title, width, curses.A_BOLD)
+        hint = "↑↓ move    Enter select    Esc / q back" if menu_stack else "↑↓ move    Enter run    q quit"
         stdscr.addnstr(1, 0, hint, width, curses.A_DIM)
 
         selected_index = choices[position]
         visible = max(1, height - 4)
         offset = selected_index - (visible // 2)
-        offset = max(0, min(offset, max(0, len(MENU) - visible)))
+        offset = max(0, min(offset, max(0, len(current_menu) - visible)))
 
         line = 3
-        for index, (kind, payload) in enumerate(MENU):
+        for index, (kind, payload) in enumerate(current_menu):
             if index < offset:
                 continue
             if line >= height - 1:
@@ -225,10 +319,35 @@ def draw_menu(stdscr: curses.window) -> tuple[str | None, str] | None:
         elif key in (curses.KEY_DOWN, ord("j")):
             position = (position + 1) % len(choices)
         elif key in (curses.KEY_ENTER, 10, 13):
-            _kind, payload = MENU[choices[position]]
+            _kind, payload = current_menu[choices[position]]
             stack, action, _label = payload  # type: ignore[misc]
+            if action == "build-indiv":
+                menu_stack.append((current_menu, menu_title, position))
+                current_menu = BUILD_MENU
+                menu_title = "Instanct - Build Individual Image"
+                choices = selectable_indexes(current_menu)
+                position = 0
+                continue
+            if action == "logs-indiv":
+                menu_stack.append((current_menu, menu_title, position))
+                current_menu = LOGS_MENU
+                menu_title = "Instanct - Individual Container Logs"
+                choices = selectable_indexes(current_menu)
+                position = 0
+                continue
+
+            if action == "back":
+                if menu_stack:
+                    current_menu, menu_title, position = menu_stack.pop()
+                    choices = selectable_indexes(current_menu)
+                    continue
+                return None
             return stack, action
         elif key in (ord("q"), ord("Q"), 27):
+            if menu_stack:
+                current_menu, menu_title, position = menu_stack.pop()
+                choices = selectable_indexes(current_menu)
+                continue
             return None
 
 

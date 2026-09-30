@@ -101,6 +101,25 @@ services:
     ports:
       - "3008:3008"
 
+  mobile:
+    build:
+      context: .
+      dockerfile: apps/mobile/Dockerfile
+      args:
+        MOBILE_ENV_FILE: env/dev/mobile.env
+    image: instanct-mobile:dev
+    container_name: instanct_mobile_dev
+    restart: on-failure
+    depends_on:
+      - api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file: env/dev/mobile.env
+    ports:
+      - "${MOBILE_PORT:-8081}:8081"
+    stdin_open: true
+    tty: true
+
 # volumes:
 #   mysql_data:
 #   minio_data:
