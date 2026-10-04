@@ -8,7 +8,7 @@ export default ({ config }) => ({
   orientation: "portrait",
   icon: "./assets/images/icon.png",
   scheme: "com.instanct.instanctma",
-  userInterfaceStyle: "automatic",
+  userInterfaceStyle: "light",
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
   ios: {

@@ -30,7 +30,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
