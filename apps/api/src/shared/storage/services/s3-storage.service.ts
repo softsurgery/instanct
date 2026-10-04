@@ -8,12 +8,19 @@ import { StorageEntity } from '../entities/storage.entity';
 import { StorageBadRequestException } from '../errors/storage.bad-request.error';
 import { FileNotFoundException } from '../errors/file.not-found.error';
 import { StorageService } from './storage.service';
-import { Client as MinioClient } from 'minio';
+import {
+  S3Client,
+  HeadBucketCommand,
+  CreateBucketCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from '@aws-sdk/client-s3';
 import { ReadStream } from 'typeorm/platform/PlatformTools';
 
 @Injectable()
-export class MinioStorageService extends StorageService {
-  private minio: MinioClient;
+export class S3StorageService extends StorageService {
+  private s3Client: S3Client;
   private bucket: string;
 
   constructor(
@@ -23,31 +30,53 @@ export class MinioStorageService extends StorageService {
     super(storageRepository);
 
     this.bucket = this.configService.get<string>('s3.bucket') || 'uploads';
-    this.minio = new MinioClient({
-      endPoint: this.configService.get<string>('s3.endpoint') || 'localhost',
-      port: this.configService.get<number>('s3.port') || 9000,
-      useSSL: this.configService.get<boolean>('s3.useSSL') || false,
-      accessKey: this.configService.get<string>('s3.accessKey') || 'minioadmin',
-      secretKey: this.configService.get<string>('s3.secretKey') || 'minioadmin',
+
+    const endpoint =
+      this.configService.get<string>('s3.endpoint') || 'localhost';
+    const port = this.configService.get<number>('s3.port') || 9000;
+    const useSSL = this.configService.get<boolean>('s3.useSSL') || false;
+    const protocol = useSSL ? 'https' : 'http';
+    const url = endpoint.startsWith('http')
+      ? endpoint
+      : `${protocol}://${endpoint}:${port}`;
+
+    this.s3Client = new S3Client({
+      endpoint: url,
+      region: 'us-east-1',
+      credentials: {
+        accessKeyId:
+          this.configService.get<string>('s3.accessKey') || 's3admin',
+        secretAccessKey:
+          this.configService.get<string>('s3.secretKey') || 's3admin',
+      },
+      forcePathStyle: true,
     });
 
     void this.ensureBucketExists();
   }
 
   getStorageType(): string {
-    return 'minio';
+    return 's3';
   }
 
   private async ensureBucketExists(): Promise<void> {
     try {
-      const exists = await this.minio.bucketExists(this.bucket);
-      if (!exists) {
-        await this.minio.makeBucket(this.bucket);
-        console.log(`Bucket ${this.bucket} created successfully`);
+      await this.s3Client.send(new HeadBucketCommand({ Bucket: this.bucket }));
+    } catch (err: any) {
+      if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
+        try {
+          await this.s3Client.send(
+            new CreateBucketCommand({ Bucket: this.bucket }),
+          );
+          console.log(`Bucket ${this.bucket} created successfully`);
+        } catch (createErr) {
+          console.error('Error creating bucket', createErr);
+          throw createErr;
+        }
+      } else {
+        console.error('Error ensuring bucket exists', err);
+        throw err;
       }
-    } catch (err) {
-      console.error('Error ensuring bucket exists', err);
-      throw err;
     }
   }
 
@@ -63,33 +92,20 @@ export class MinioStorageService extends StorageService {
     const upload = await this.findBySlug(slug);
 
     try {
+      let range: string | undefined;
       if (start !== undefined || end !== undefined) {
-        const offset = start || 0;
-        let length = 0;
-        if (start !== undefined && end !== undefined) {
-          length = end - start + 1;
-        } else if (start !== undefined) {
-          length = upload.size - start;
-        } else if (end !== undefined) {
-          length = end + 1;
-        }
-
-        if (length > 0) {
-          const stream = await this.minio.getPartialObject(
-            this.bucket,
-            upload.relativePath,
-            offset,
-            length,
-          );
-          return stream as unknown as ReadStream;
-        }
+        range = `bytes=${start !== undefined ? start : 0}-${end !== undefined ? end : ''}`;
       }
 
-      const stream = await this.minio.getObject(
-        this.bucket,
-        upload.relativePath,
+      const response = await this.s3Client.send(
+        new GetObjectCommand({
+          Bucket: this.bucket,
+          Key: upload.relativePath,
+          Range: range,
+        }),
       );
-      return stream as unknown as ReadStream;
+
+      return response.Body as unknown as ReadStream;
     } catch (error) {
       throw new FileNotFoundException(error);
     }
@@ -124,12 +140,14 @@ export class MinioStorageService extends StorageService {
         throw new StorageBadRequestException('Failed to store empty file.');
       }
 
-      await this.minio.putObject(
-        this.bucket,
-        key,
-        this.bufferToStream(file.buffer),
-        size,
-        { 'Content-Type': mimetype },
+      await this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+          Body: file.buffer,
+          ContentLength: size,
+          ContentType: mimetype,
+        }),
       );
     } catch (error) {
       throw new StorageBadRequestException(`Failed to store file: ${error}`);
@@ -142,7 +160,12 @@ export class MinioStorageService extends StorageService {
     const upload = await this.findOneById(id);
 
     try {
-      await this.minio.removeObject(this.bucket, upload.relativePath);
+      await this.s3Client.send(
+        new DeleteObjectCommand({
+          Bucket: this.bucket,
+          Key: upload.relativePath,
+        }),
+      );
       await this.storageRepository.softDelete(upload.id);
       return upload;
     } catch (error) {
@@ -159,7 +182,9 @@ export class MinioStorageService extends StorageService {
     isPrivate = true,
   ): Promise<StorageEntity[]> {
     return Promise.all(
-      files.map((file) => this.store(file, isTemporary, isPrivate)),
+      files.map((file) =>
+        this.store(file, isTemporary, isPrivate, undefined),
+      ),
     );
   }
 
@@ -186,22 +211,26 @@ export class MinioStorageService extends StorageService {
     const newKey = extension ? `${newSlug}.${extension}` : newSlug;
 
     try {
-      const originalStream = await this.minio.getObject(
-        this.bucket,
-        original.relativePath,
+      const response = await this.s3Client.send(
+        new GetObjectCommand({
+          Bucket: this.bucket,
+          Key: original.relativePath,
+        }),
       );
+
+      const stream = response.Body as Readable;
       const chunks: Buffer[] = [];
-      for await (const chunk of originalStream) chunks.push(chunk);
+      for await (const chunk of stream) chunks.push(chunk as Buffer);
       const buffer = Buffer.concat(chunks);
 
-      await this.minio.putObject(
-        this.bucket,
-        newKey,
-        this.bufferToStream(buffer),
-        buffer.length,
-        {
-          'Content-Type': original.mimetype,
-        },
+      await this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: this.bucket,
+          Key: newKey,
+          Body: buffer,
+          ContentLength: buffer.length,
+          ContentType: original.mimetype,
+        }),
       );
     } catch (err) {
       throw new StorageBadRequestException(`Failed to duplicate file: ${err}`);

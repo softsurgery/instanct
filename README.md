@@ -173,7 +173,7 @@ Accounts are one MySQL table with a discriminator column. `AbstractUserEntity` i
 
 ### File storage as a strategy
 
-`StorageService` is abstract. Callers inject that class. `storageProvider` reads `s3.driver` (`STORAGE_DRIVER`) and constructs either `LocalStorageService` or `MinioStorageService`. Both implement `store`, `loadResource`, `duplicate`, and `delete`. Shared behavior lives on the base class: lookup by slug or systematic name, expose/hide, confirm a temporary upload, and a cron that deletes temporary files every two hours. Metadata for every file is a `StorageEntity` row, independent of where the bytes sit.
+`StorageService` is abstract. Callers inject that class. `storageProvider` reads `s3.driver` (`STORAGE_DRIVER`) and constructs either `LocalStorageService` or `S3StorageService`. Both implement `store`, `loadResource`, `duplicate`, and `delete`. Shared behavior lives on the base class: lookup by slug or systematic name, expose/hide, confirm a temporary upload, and a cron that deletes temporary files every two hours. Metadata for every file is a `StorageEntity` row, independent of where the bytes sit.
 
 ### Workflows
 

@@ -18,36 +18,19 @@ services:
   #     timeout: 5s
   #     retries: 5
 
-  # minio:
-  #   image: minio/minio:latest
-  #   container_name: instanct_minio_dev
-  #   restart: always
-  #   env_file: env/dev/infra.env
-  #   command: server /data --console-address ":9001"
-  #   ports:
-  #     - "9000:9000"
-  #     - "9001:9001"
-  #   volumes:
-  #     - minio_data:/data
-  #   healthcheck:
-  #     test: ["CMD", "mc", "ready", "local"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: instanct_rustfs_dev
+    restart: always
+    env_file: env/dev/infra.env
+    command: --address :9000 --console-address :9001 /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - rustfs_data:/data
 
-  # minio-setup:
-  #   image: minio/mc:latest
-  #   container_name: instanct_minio_setup_dev
-  #   depends_on:
-  #     minio:
-  #       condition: service_healthy
-  #   entrypoint: >
-  #     /bin/sh -c "
-  #     sleep 5;
-  #     /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
-  #     /usr/bin/mc mb myminio/uploads || true;
-  #     /usr/bin/mc anonymous set public myminio/uploads;
-  #     "
+
 
   api:
     build:
@@ -61,8 +44,6 @@ services:
     # depends_on:
     #   mysql:
     #     condition: service_healthy
-    #   minio-setup:
-    #     condition: service_completed_successfully
     env_file: env/dev/api.env
     ports:
       - "5005:5005"
@@ -122,4 +103,5 @@ services:
 
 # volumes:
 #   mysql_data:
-#   minio_data:
+volumes:
+  rustfs_data:

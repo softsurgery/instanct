@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageRepository } from '../repositories/storage.repository';
 import { StorageService } from '../services/storage.service';
-import { MinioStorageService } from '../services/s3-storage.service';
+import { S3StorageService } from '../services/s3-storage.service';
 
 export const storageProvider = {
   provide: StorageService,
@@ -12,8 +12,8 @@ export const storageProvider = {
     storageRepository: StorageRepository,
   ) => {
     const driver = configService.get<string>('s3.driver') || 'local';
-    if (driver === 'minio') {
-      return new MinioStorageService(storageRepository, configService);
+    if (driver === 's3') {
+      return new S3StorageService(storageRepository, configService);
     }
     return new LocalStorageService(storageRepository, configService);
   },

@@ -127,7 +127,7 @@ Chat counters that must stay correct under concurrent writes are MySQL triggers 
 
 **Reference data.** `RefTypeEntity` / `RefParamEntity` are the catalogs (industries, objectives). **Configuration** namespaces hold runtime key/value params, including map behavior. **Content pages** are HTML documents keyed by slug and locale; the landing site reads them. **Templates** are seeded email and document layouts.
 
-**Storage.** Inject `StorageService`. The provider in `storage.module.ts` chooses `LocalStorageService` or `MinioStorageService` from `STORAGE_DRIVER`. Temporary uploads are deleted on a two-hour cron defined on the base class.
+**Storage.** Inject `StorageService`. The provider in `storage.module.ts` chooses `LocalStorageService` or `S3StorageService` from `STORAGE_DRIVER`. Temporary uploads are deleted on a two-hour cron defined on the base class.
 
 **Reports.** Bugs, feedback, and device info are `system-reports`. They use the same repository base as the rest of the API.
 
