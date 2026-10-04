@@ -57,12 +57,13 @@ export const useFeedbackColumns = (
         />
       ),
       cell: ({ row }) => (
-        <span className="text-muted-foreground break-words">
+        <div className="text-muted-foreground wrap-break-word whitespace-normal">
           {row.original.message}
-        </span>
+        </div>
       ),
       enableSorting: false,
       enableHiding: true,
+      size: 200,
     },
     {
       accessorKey: "rating",
@@ -78,7 +79,6 @@ export const useFeedbackColumns = (
         <DataTableCell
           variant={DataTableCellVariant.RATING}
           value={row.original.rating}
-          
         />
       ),
       enableSorting: true,

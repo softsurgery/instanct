@@ -11,6 +11,7 @@ import { BugNotFoundException } from '../errors/bug/bug.notfound.error';
 import { BugEntity } from '../entities/bug.entity';
 import { CreateBugDto } from '../dtos/bug/create-bug.dto';
 import { DeviceInfoEntity } from '../entities/device-info.entity';
+import { BugStatus } from '../enums/bug-status.enum';
 
 @Injectable()
 export class BugService {
@@ -108,5 +109,12 @@ export class BugService {
       deviceId: existingDevice?.id,
       userId,
     });
+  }
+
+  @Transactional()
+  async updateStatus(id: string, status: BugStatus): Promise<BugEntity> {
+    const bug = await this.findOneById(id);
+    bug.status = status;
+    return this.bugRepository.save(bug);
   }
 }

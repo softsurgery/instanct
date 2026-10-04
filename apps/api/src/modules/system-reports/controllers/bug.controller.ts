@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Request,
@@ -20,6 +21,7 @@ import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { CreateBugDto } from '../dtos/bug/create-bug.dto';
+import { BugStatus } from '../enums/bug-status.enum';
 import { AdvancedRequest } from 'src/types';
 
 @ApiTags('bug')
@@ -76,6 +78,15 @@ export class BugController {
   ): Promise<ResponseBugDto | null> {
     const bug = await this.bugService.softDelete(id);
     req.logInfo = { id, variant: bug?.variant };
+    return toDto(ResponseBugDto, bug);
+  }
+
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: string,
+    @Body('status') status: BugStatus,
+  ): Promise<ResponseBugDto> {
+    const bug = await this.bugService.updateStatus(id, status);
     return toDto(ResponseBugDto, bug);
   }
 }

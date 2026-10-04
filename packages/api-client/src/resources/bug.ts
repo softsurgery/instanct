@@ -25,6 +25,15 @@ export function createBugResource(http: AxiosInstance) {
       const { data } = await http.get<ResponseBugDto>(`/bug/${id}`);
       return data;
     },
+    updateStatus: async (
+      id: string,
+      status: string
+    ): Promise<ResponseBugDto> => {
+      const { data } = await http.patch<ResponseBugDto>(`/bug/${id}/status`, {
+        status,
+      });
+      return data;
+    },
     delete: async (id: string): Promise<ResponseBugDto> => {
       const { data } = await http.delete<ResponseBugDto>(`/bug/${id}`);
       return data;

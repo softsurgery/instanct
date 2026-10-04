@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@instanct/hooks/utils";
@@ -8,8 +8,11 @@ import { useIntro } from "@instanct/contexts";
 import { ResponseBugDto } from "@instanct/api-client";
 import { useTranslation } from "react-i18next";
 import { useBugReportColumns } from "./useBugReportColumns";
+import { useBugDeviceDialog } from "./modals/BugDeviceDialog";
 import { DataTableConfig } from "@instanct/datatable-builder";
+import { ResponseDeviceInfoDto } from "@instanct/api-client";
 import { DataTable } from "@instanct/datatable-builder";
+import { Check, Clock, X } from "lucide-react";
 
 interface BugReportPortalProps {
   className?: string;
@@ -95,6 +98,23 @@ export const BugReportPortal = ({
     return bugResponse.data;
   }, [bugResponse]);
 
+  const queryClient = useQueryClient();
+
+  const { mutate: updateStatus } = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: string }) =>
+      api.admin.bugReport.updateStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bugs"] });
+    },
+  });
+
+  const { mutate: deleteBug } = useMutation({
+    mutationFn: (id: string) => api.admin.bugReport.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bugs"] });
+    },
+  });
+
   const context: DataTableConfig<ResponseBugDto> = {
     singularName: "Bug Report",
     pluralName: "Bug Reports",
@@ -109,9 +129,49 @@ export const BugReportPortal = ({
       setSortDetails({ order, sortKey }),
     searchTerm,
     setSearchTerm,
+    deleteCallback: (entity) => deleteBug(String(entity.id)),
+    additionalActions: {
+      1: [
+        {
+          actionLabel: "Resolve",
+          actionIcon: <Check className="w-4 h-4" />,
+          isActionVisible: (entity: ResponseBugDto) =>
+            entity.status !== "Resolved",
+          actionCallback: (entity: ResponseBugDto) =>
+            updateStatus({ id: String(entity.id), status: "Resolved" }),
+        },
+        {
+          actionLabel: "Unresolve",
+          actionIcon: <X className="w-4 h-4" />,
+          isActionVisible: (entity: ResponseBugDto) =>
+            entity.status !== "Not Resolved",
+          actionCallback: (entity: ResponseBugDto) =>
+            updateStatus({ id: String(entity.id), status: "Not Resolved" }),
+        },
+        {
+          actionLabel: "Pend",
+          actionIcon: <Clock className="w-4 h-4" />,
+          isActionVisible: (entity: ResponseBugDto) =>
+            entity.status !== "Pending" && !!entity.status,
+          actionCallback: (entity: ResponseBugDto) =>
+            updateStatus({ id: String(entity.id), status: "Pending" }),
+        },
+      ],
+    },
   };
 
-  const columns = useBugReportColumns(context);
+  const [selectedDevice, setSelectedDevice] = React.useState<
+    ResponseDeviceInfoDto | undefined
+  >(undefined);
+  const { BugDeviceDialog, openBugDeviceDialog } = useBugDeviceDialog({
+    device: selectedDevice,
+    resetDevice: () => setSelectedDevice(undefined),
+  });
+
+  const columns = useBugReportColumns(context, (device) => {
+    setSelectedDevice(device);
+    openBugDeviceDialog();
+  });
 
   const isPending = isBugsPending || paging || resizing || searching || sorting;
 
@@ -125,6 +185,7 @@ export const BugReportPortal = ({
         context={context}
         isPending={isPending}
       />
+      {BugDeviceDialog}
     </div>
   );
 };
