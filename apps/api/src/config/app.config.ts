@@ -1,9 +1,13 @@
 import { registerAs } from '@nestjs/config';
+import { parseCorsOrigins } from '../utils/cors.util';
 
 export default registerAs('app', (): Record<string, unknown> => ({
   name: process.env.APP_NAME ?? 'Instanct API Server',
   globalPrefix: process.env.API_PREFIX ?? '/api',
   publicUrl: process.env.APP_PUBLIC_URL ?? '',
+  cors: {
+    origins: parseCorsOrigins(process.env.CORS_ORIGINS),
+  },
   http: {
     enable: process.env.HTTP_ENABLE === 'true',
     host: process.env.APP_HOST ?? 'localhost',

@@ -36,9 +36,10 @@ import { SentryCatchAllFilter } from 'src/shared/sentry/sentry-catch-all.filter'
       load: config,
       isGlobal: true,
       cache: true,
-      envFilePath: !process.env.NODE_ENV
-        ? '.env'
-        : `.env.${process.env.NODE_ENV}`,
+      envFilePath: [
+        process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '',
+        '.env',
+      ].filter(Boolean),
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
