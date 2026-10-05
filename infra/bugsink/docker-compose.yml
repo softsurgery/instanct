@@ -1,0 +1,20 @@
+# Isolated Bugsink error tracker. Start it on its own:
+#   docker compose -f infra/bugsink/docker-compose.yml up -d
+name: instanct-bugsink
+
+services:
+  bugsink:
+    image: bugsink/bugsink:latest
+    container_name: instanct_bugsink
+    restart: unless-stopped
+    ports:
+      - "${BUGSINK_PORT:-7777}:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env
+    volumes:
+      - bugsink_data:/data
+
+volumes:
+  bugsink_data:

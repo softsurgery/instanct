@@ -33,6 +33,11 @@ STACKS: dict[str, dict[str, object]] = {
         "up": ["up", "-d"],
         "detach": ["up", "-d"],
     },
+    "bugsink": {
+        "file": "infra/bugsink/docker-compose.yml",
+        "up": ["up", "-d"],
+        "detach": ["up", "-d"],
+    },
 }
 
 ACTIONS: dict[str, list[str]] = {
@@ -60,6 +65,10 @@ MENU: list[tuple[str, object]] = [
     ("item", ("nginx", "up", "Start")),
     ("item", ("nginx", "down", "Stop and remove")),
     ("item", ("nginx", "logs", "Follow logs")),
+    ("header", "Bugsink"),
+    ("item", ("bugsink", "up", "Start")),
+    ("item", ("bugsink", "down", "Stop and remove")),
+    ("item", ("bugsink", "logs", "Follow logs")),
     ("header", "Build"),
     ("item", (None, "build-indiv", "Build indiv image")),
     ("header", "Logs"),
@@ -101,6 +110,8 @@ LOGS_MENU: list[tuple[str, object]] = [
     ("item", ("prod", "logs:landing", "landing (Landing)")),
     ("header", "Nginx"),
     ("item", ("nginx", "logs:nginx", "nginx (Nginx)")),
+    ("header", "Bugsink"),
+    ("item", ("bugsink", "logs:bugsink", "bugsink (Bugsink)")),
     ("header", "Navigation"),
     ("item", (None, "back", "« Back to main menu")),
 ]
