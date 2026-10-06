@@ -4,6 +4,7 @@ import { isOriginAllowed } from '../utils/cors.util';
 
 export function corsConfig(
   allowedOrigins: string[],
+  debug: boolean = false,
   logger: Logger = new Logger('CORS'),
 ): CorsOptions {
   return {
@@ -15,7 +16,11 @@ export function corsConfig(
         return callback(null, true);
       }
 
-      logger.warn(`CORS: Blocked request from unauthorized origin: ${origin}`);
+      if (debug) {
+        logger.warn(
+          `CORS: Blocked request from unauthorized origin: ${origin}`,
+        );
+      }
       return callback(new Error(`Origin ${origin} not allowed by CORS`), false);
     },
     credentials: true,

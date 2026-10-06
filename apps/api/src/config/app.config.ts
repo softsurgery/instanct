@@ -7,6 +7,7 @@ export default registerAs('app', (): Record<string, unknown> => ({
   publicUrl: process.env.APP_PUBLIC_URL ?? '',
   cors: {
     origins: parseCorsOrigins(process.env.CORS_ORIGINS),
+    debug: process.env.DEBUG_CORS === 'true',
   },
   http: {
     enable: process.env.HTTP_ENABLE === 'true',

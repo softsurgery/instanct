@@ -29,6 +29,7 @@ async function bootstrap() {
 
   // CORS Configuration ===================================================
   const allowedOrigins = configService.get<string[]>('app.cors.origins') ?? [];
+  const debugCors = configService.get<boolean>('app.cors.debug') ?? false;
 
   logger.log(
     `Configured CORS allowed origins: ${
@@ -36,7 +37,7 @@ async function bootstrap() {
     }`,
   );
 
-  app.enableCors(corsConfig(allowedOrigins, logger));
+  app.enableCors(corsConfig(allowedOrigins, debugCors, logger));
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalPipes(
