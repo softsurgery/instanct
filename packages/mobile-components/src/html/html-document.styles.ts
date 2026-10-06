@@ -1,5 +1,5 @@
 import type { MixedStyleRecord } from "@native-html/render";
-import { hslToHex } from "./lib/theme";
+import { hslToHex } from "../hooks/useColorPalette";
 
 export const getHtmlDocumentTagsStyles = (palette: any): MixedStyleRecord => ({
   body: {
@@ -77,14 +77,14 @@ export const getHtmlDocumentTagsStyles = (palette: any): MixedStyleRecord => ({
     textDecorationLine: "underline",
   },
   mark: {
-    backgroundColor: hslToHex(palette.primary, 0.25),
-    borderRadius: 4,
+    backgroundColor: hslToHex(palette.primary, 0.32),
+    borderRadius: 5,
     paddingHorizontal: 4,
     paddingVertical: 1,
   },
   blockquote: {
-    backgroundColor: hslToHex(palette.card),
-    borderRadius: 10,
+    backgroundColor: hslToHex(palette.primary, 0.12),
+    borderRadius: 4,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginVertical: 12,
@@ -104,10 +104,12 @@ export const getHtmlDocumentTagsStyles = (palette: any): MixedStyleRecord => ({
   },
 });
 
-export const getHtmlDocumentClassesStyles = (palette: any): MixedStyleRecord => ({
+export const getHtmlDocumentClassesStyles = (
+  palette: any,
+): MixedStyleRecord => ({
   "legal-not-applied": {
-    backgroundColor: hslToHex(palette.card),
-    borderRadius: 10,
+    backgroundColor: hslToHex(palette.primary, 0.12),
+    borderRadius: 4,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginVertical: 12,

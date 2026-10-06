@@ -1,7 +1,7 @@
 "use client";
 
 import { prepareLegalHtml } from "@instanct/lib";
-import "@instanct/lib/legal-html.css";
+import "@instanct/lib/legal/legal-html.css";
 import { useTranslation } from "react-i18next";
 import { resolveSupportedLng } from "@/i18n/config";
 import { ResponseContentPageDto } from "@instanct/api-client";

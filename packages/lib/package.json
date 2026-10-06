@@ -11,8 +11,7 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./*": "./src/*.ts",
-    "./legal-html.css": "./src/legal-html.css"
+    "./*": "./src/*"
   },
   "dependencies": {
     "clsx": "^2.1.1",

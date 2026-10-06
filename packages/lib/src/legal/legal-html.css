@@ -101,7 +101,7 @@
 }
 
 .legal-html mark {
-  background: color-mix(in oklab, #f59e0b 32%, transparent);
+  background: color-mix(in oklab, var(--primary) 32%, transparent);
   color: inherit;
   border-radius: 0.3rem;
   padding: 0.08em 0.32em;
@@ -112,9 +112,8 @@
 .legal-html .legal-not-applied {
   margin: 1.15rem 0;
   padding: 0.95rem 1.05rem;
-  border-left: 4px solid #d97706;
-  border-radius: 0.75rem;
-  background: color-mix(in oklab, #f59e0b 12%, transparent);
+  border-radius: 0.25rem;
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
   color: inherit;
   font-style: normal;
 }
