@@ -1,7 +1,6 @@
 import { Text } from "@instanct/mobile-ui";
 import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
-import { useColorPalette } from "@instanct/mobile-components";
-import { hslToHex } from "@/lib/theme";
+import { useColorPalette, hslToHex } from "@instanct/mobile-components";
 import { MessageVariant, ResponseMessageDto } from "@/types";
 import { LegendList } from "@legendapp/list";
 import React from "react";

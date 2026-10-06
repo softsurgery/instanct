@@ -31,8 +31,7 @@ import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
 import { ExperienceInstance } from "./experience/ExperienceInstance";
 import { EducationInstance } from "./education/EducationInstance";
-import { hslToHex } from "@/lib/theme";
-import { useColorPalette } from "@instanct/mobile-components";
+import { hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { useScrollableElement } from "@/hooks/useScrollableElement";
 import Animated, {
   useAnimatedStyle,

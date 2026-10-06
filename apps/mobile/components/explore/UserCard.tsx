@@ -1,6 +1,6 @@
 import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { hslToHex } from "@/lib/theme";
+import { hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
 import {
   ResponseConversationDto,
@@ -24,12 +24,10 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Icon, Text } from "@instanct/mobile-ui";
 import { useStartConversation } from "@/hooks/content/chat/useStartConversation";
 import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";
 import { useServerImages } from "@/hooks/content/useServerImages";
-import { useColorPalette } from "@instanct/mobile-components";
 import { IconMoodPlus } from "@tabler/icons-react-native";
 import Animated, {
   useSharedValue,

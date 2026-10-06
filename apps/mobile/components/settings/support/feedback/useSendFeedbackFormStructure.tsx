@@ -1,5 +1,4 @@
-import { useColorPalette } from "@instanct/mobile-components";
-import { hslToHex } from "@/lib/theme";
+import { hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { SendFeedbackStore } from "@/stores/useFeedbackManager";
 import { useTranslation } from "react-i18next";
 import {
@@ -38,8 +37,12 @@ export const useSendFeedbackFormStructure = ({
     label: t("settings.support.screens.send-feedback.forms.message"),
     variant: FieldVariant.TEXTAREA,
     required: true,
-    placeholder: t("settings.support.screens.send-feedback.forms.placeholders.message"),
-    description: t("settings.support.screens.send-feedback.forms.descriptions.message"),
+    placeholder: t(
+      "settings.support.screens.send-feedback.forms.placeholders.message",
+    ),
+    description: t(
+      "settings.support.screens.send-feedback.forms.descriptions.message",
+    ),
     error: t(store.errors.message?.[0]),
     props: {
       value: store.createDto.message,
@@ -56,8 +59,12 @@ export const useSendFeedbackFormStructure = ({
     label: t("settings.support.screens.send-feedback.forms.category"),
     variant: FieldVariant.SELECT,
     required: true,
-    placeholder: t("settings.support.screens.send-feedback.forms.placeholders.category"),
-    description: t("settings.support.screens.send-feedback.forms.descriptions.category"),
+    placeholder: t(
+      "settings.support.screens.send-feedback.forms.placeholders.category",
+    ),
+    description: t(
+      "settings.support.screens.send-feedback.forms.descriptions.category",
+    ),
     error: t(store.errors.category?.[0]),
     props: {
       value: store.createDto.category,
@@ -80,8 +87,12 @@ export const useSendFeedbackFormStructure = ({
     label: t("settings.support.screens.send-feedback.forms.rating"),
     variant: FieldVariant.RATING,
     required: true,
-    placeholder: t("settings.support.screens.send-feedback.forms.placeholders.rating"),
-    description: t("settings.support.screens.send-feedback.forms.descriptions.rating"),
+    placeholder: t(
+      "settings.support.screens.send-feedback.forms.placeholders.rating",
+    ),
+    description: t(
+      "settings.support.screens.send-feedback.forms.descriptions.rating",
+    ),
     error: t(store.errors.rating?.[0]),
     props: {
       color: hslToHex(palette.primary),

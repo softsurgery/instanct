@@ -17,14 +17,13 @@ import * as Haptics from "expo-haptics";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
 import { cn } from "@instanct/lib";
-import { hslToHex } from "./lib/theme";
 
 interface SelectOption {
   label: string;
   value: string;
 }
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { useColorPalette } from "./hooks/useColorPalette";
+import { hslToHex, useColorPalette } from "./hooks/useColorPalette";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const ITEM_HEIGHT = 25;

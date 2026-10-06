@@ -1,7 +1,6 @@
 import React from "react";
 import { cn } from "@instanct/lib";
-import { useColorPalette } from "@instanct/mobile-components";
-import { hslToHex } from "@/lib/theme";
+import { hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { MapPinOff } from "lucide-react-native";
