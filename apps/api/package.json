@@ -24,6 +24,8 @@
     "seed:content": "nestjs-command seed:content",
     "seed:public-resource": "nestjs-command seed:public-resource",
     "seed:playground-users": "nestjs-command seed:playground-users",
+    "schema:update-namespaces": "nestjs-command schema:update-namespaces",
+    "schema:adapt": "nestjs-command schema:adapt",
     "dev": "nest start --watch",
     "start": "nest start",
     "start:dev": "nest start --watch",

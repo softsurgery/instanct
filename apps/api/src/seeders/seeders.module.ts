@@ -19,6 +19,7 @@ import { PublicResourceSeedCommand } from './public-resource.seeder';
 import { StorageModule } from 'src/shared/storage/storage.module';
 import { ContentModule } from '@/shared/content/content.module';
 import { ContentSeedCommand } from './content.seeder';
+import { UpdateNamespacesCommand } from './update-namespaces.seeder';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ContentSeedCommand } from './content.seeder';
     ConfigurationApplicationSeedCommand,
     ContentSeedCommand,
     PublicResourceSeedCommand,
+    UpdateNamespacesCommand,
     //reference types
     IndustriesSeedCommand,
     ObjectivesSeedCommand,
