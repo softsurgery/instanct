@@ -10,10 +10,7 @@ import { RoutesTestModule } from './routes/routes.test.module';
 export class RouterModule {
   static forRoot(): DynamicModule {
     const imports: (
-      | DynamicModule
-      | Type
-      | Promise<DynamicModule>
-      | ForwardReference
+      DynamicModule | Type | Promise<DynamicModule> | ForwardReference
     )[] = [];
 
     if (process.env.HTTP_ENABLE === 'true') {

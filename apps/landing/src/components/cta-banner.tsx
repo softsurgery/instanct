@@ -2,10 +2,12 @@
 
 import { useTranslation } from "react-i18next";
 import { StoreBadges } from "@/components/store-badges";
-import { site } from "@/lib/site";
+import { useData } from "@/contexts/data-context";
 
 export function CtaBanner() {
   const { t } = useTranslation("landing");
+
+  const { contactEmail } = useData();
 
   return (
     <section id="get-started" className="scroll-mt-24 border-t">
@@ -22,7 +24,7 @@ export function CtaBanner() {
           </p>
           <StoreBadges className="mt-6 justify-center" />
           <a
-            href={`mailto:${site.urls.contact}`}
+            href={`mailto:${contactEmail}`}
             className="mt-4 inline-block text-sm text-muted-foreground underline-offset-4 hover:underline"
           >
             {t("cta.talkWithUs")}

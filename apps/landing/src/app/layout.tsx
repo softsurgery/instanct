@@ -7,6 +7,7 @@ import { SkipToContent } from "@/components/skip-to-content";
 import { headers } from "next/headers";
 import { resolveSupportedLng } from "@/i18n/config";
 import "./globals.css";
+import { cn } from "@instanct/lib";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -108,7 +109,7 @@ export default async function RootLayout({
     <html
       lang={resolvedLng}
       suppressHydrationWarning
-      className={inter.variable}
+      className={cn(inter.variable, "no-scrollbar")}
       data-scroll-behavior="smooth"
     >
       <head>
@@ -118,8 +119,11 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
       </head>
-      <body className="min-h-screen font-sans" suppressHydrationWarning>
-        <Providers>
+      <body
+        className="no-scrollbar min-h-screen font-sans"
+        suppressHydrationWarning
+      >
+        <Providers lng={resolvedLng}>
           <SkipToContent />
           <SiteHeader />
           <main id="main">{children}</main>
