@@ -77,6 +77,7 @@ export default ({ config }) => ({
         project: process.env.SENTRY_PROJECT,
       },
     ],
+    "@sentry/react-native"
   ],
   experiments: {
     typedRoutes: true,

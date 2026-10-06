@@ -1,4 +1,4 @@
-import type { MixedStyleRecord } from "react-native-render-html";
+import type { MixedStyleRecord } from "@native-html/render";
 import { hslToHex } from "./lib/theme";
 
 export const getHtmlDocumentTagsStyles = (palette: any): MixedStyleRecord => ({

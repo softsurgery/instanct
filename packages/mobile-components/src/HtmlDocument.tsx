@@ -1,6 +1,6 @@
 import React from "react";
 import { useWindowDimensions, View } from "react-native";
-import RenderHtml from "react-native-render-html";
+import RenderHtml from "@native-html/render";
 import { cn } from "@instanct/lib";
 import {
   getHtmlDocumentClassesStyles,
@@ -18,8 +18,14 @@ export function HtmlDocument({ html, className }: HtmlDocumentProps) {
   const source = React.useMemo(() => ({ html: html ?? "" }), [html]);
   const { palette } = useColorPalette();
 
-  const tagsStyles = React.useMemo(() => getHtmlDocumentTagsStyles(palette), [palette]);
-  const classesStyles = React.useMemo(() => getHtmlDocumentClassesStyles(palette), [palette]);
+  const tagsStyles = React.useMemo(
+    () => getHtmlDocumentTagsStyles(palette),
+    [palette],
+  );
+  const classesStyles = React.useMemo(
+    () => getHtmlDocumentClassesStyles(palette),
+    [palette],
+  );
 
   return (
     <View className={cn(className)}>
