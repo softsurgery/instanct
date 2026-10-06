@@ -5,12 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { LegalHtmlPage, LegalUnavailable } from "@/components/legal-html-page";
 import { api } from "@/lib/api";
-import type { ResponseContentPageDto as ContentPage } from "@instanct/api-client";
+import type { ResponseContentPageDto } from "@instanct/api-client";
 import { resolveSupportedLng } from "@/i18n/config";
 import { Spinner } from "@instanct/components";
 
 type LegalPageShellProps = {
-  page: ContentPage | null;
+  page: ResponseContentPageDto | null;
   kind: "privacy" | "terms";
 };
 
@@ -25,7 +25,8 @@ export function LegalPageShell({
 
   const { data: page = null, isPending } = useQuery({
     queryKey: ["content-page", kind, currentLocale],
-    queryFn: () => api.contentPage.findBySlug(kind, currentLocale).catch(() => null),
+    queryFn: () =>
+      api.contentPage.findBySlug(kind, currentLocale).catch(() => null),
     initialData:
       initialPage?.locale === currentLocale ? initialPage : undefined,
     staleTime: 1000 * 60 * 5,

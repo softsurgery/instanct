@@ -3,11 +3,11 @@
 import { prepareLegalHtml } from "@instanct/lib";
 import "@instanct/lib/legal-html.css";
 import { useTranslation } from "react-i18next";
-import type { ContentPage } from "@/lib/content";
 import { resolveSupportedLng } from "@/i18n/config";
+import { ResponseContentPageDto } from "@instanct/api-client";
 
 type LegalHtmlPageProps = {
-  page: ContentPage;
+  page: ResponseContentPageDto;
 };
 
 function formatUpdatedAt(value: string | Date | undefined, locale: string) {
@@ -48,7 +48,7 @@ export function LegalHtmlPage({ page }: LegalHtmlPageProps) {
       ) : null}
 
       {showNotice ? (
-        <aside className="mt-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-950 dark:text-amber-100">
+        <aside className="mt-8 rounded-lg border border-accent-foreground/20 bg-accent p-2 text-sm text-accent-foreground">
           {t("legal.notice")}
         </aside>
       ) : null}
