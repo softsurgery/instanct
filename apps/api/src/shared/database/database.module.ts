@@ -5,6 +5,7 @@ import { MigrationEntity } from './entities/migration.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TriggerRegistry } from './services/trigger-registry.service';
 import { TriggerSynchronizer } from './services/trigger-synchronizer.service';
+import { SchemaSyncCommand } from './commands/schema-sync.command';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MigrationEntity])],
@@ -13,6 +14,7 @@ import { TriggerSynchronizer } from './services/trigger-synchronizer.service';
     MigrationRepository,
     TriggerRegistry,
     TriggerSynchronizer,
+    SchemaSyncCommand,
   ],
   exports: [MigrationService, TriggerRegistry],
 })
