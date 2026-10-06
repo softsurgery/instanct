@@ -6,17 +6,18 @@ import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
-import { Text } from "@instanct/mobile-ui";
+import { Text, Icon } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import { StableSafeAreaView } from "@instanct/mobile-components";
 import { SSOButtons } from "./SSOButtons";
 import { AcceptTerms } from "./AcceptTerms";
 import { Rocket, Zap, ShieldCheck, Languages } from "lucide-react-native";
-import { useColorPalette } from "@instanct/mobile-components";
-import { ThemeToggle } from "@instanct/mobile-components";
+import {
+  ThemeToggle,
+  LanguageSwitcher,
+  useColorPalette,
+  StableSafeAreaView,
+} from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { LanguageSwitcher } from "@instanct/mobile-components";
-import { Icon } from "@instanct/mobile-ui";
 
 const width = Dimensions.get("window").width;
 
@@ -32,7 +33,7 @@ interface OnBoardingProps {
 
 export default function OnBoarding({ className }: OnBoardingProps) {
   const { t } = useTranslation("explore");
-  const { palette } = useColorPalette();
+  const { palette, colorScheme } = useColorPalette();
   const [acceptedTerms, setAcceptedTerms] = React.useState(false);
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
@@ -68,12 +69,13 @@ export default function OnBoarding({ className }: OnBoardingProps) {
                 </View>
               }
             />
-            <ThemeToggle className="mx-2" />
+            <ThemeToggle classNames={{ trigger: "mx-2" }} />
           </View>
         </View>
 
         <View className="flex-1 justify-center mt-8">
           <Carousel
+            key={`carousel-${colorScheme}`}
             width={width}
             ref={ref}
             style={{ width: width, height: 250 }}
@@ -104,6 +106,7 @@ export default function OnBoarding({ className }: OnBoardingProps) {
           />
 
           <Pagination.Basic
+            key={`pagination-${colorScheme}`}
             progress={progress}
             data={ONBOARDING_DATA}
             dotStyle={{

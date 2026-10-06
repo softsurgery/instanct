@@ -110,4 +110,3 @@ function RootLayout() {
 }
 
 export default Sentry.wrap(RootLayout);
-
