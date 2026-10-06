@@ -7,8 +7,6 @@ import { Ellipsis, type LucideIcon } from "lucide-react-native";
 import { Icon } from "@instanct/mobile-ui";
 import { useColorPalette } from "./hooks/useColorPalette";
 import { Text } from "@instanct/mobile-ui";
-import { VariantProps } from "class-variance-authority";
-import { Button } from "@instanct/mobile-ui";
 
 interface ThreeDotsActionSheetProps {
   icon?: LucideIcon;
@@ -19,7 +17,6 @@ interface ThreeDotsActionSheetProps {
     label: string;
     onPress: () => void;
     disabled?: boolean;
-    variant?: VariantProps<typeof Button>["variant"];
     icon?: LucideIcon;
   }[];
 }
@@ -65,17 +62,15 @@ export const ThreeDotsActionSheet = forwardRef<
           backgroundColor: palette.background,
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
-          paddingHorizontal: 16,
           paddingTop: 12,
           paddingBottom: 32,
         }}
       >
-        <View className="flex flex-col gap-2.5 pt-2">
+        <View className="flex flex-col gap-2 ">
           {options.map((option) => (
-            <Button
+            <Pressable
               key={option.label}
               disabled={option.disabled}
-              variant={"ghost"}
               onPress={async () => {
                 if (option.disabled) return;
                 await Haptics.selectionAsync();
@@ -83,7 +78,7 @@ export const ThreeDotsActionSheet = forwardRef<
                 sheetRef.current?.hide();
               }}
               className={cn(
-                "flex flex-row items-center gap-2 rounded-2xl h-12",
+                "flex flex-row items-center gap-2 rounded-2xl h-12 px-6 active:opacity-50",
                 option.disabled && "opacity-50",
               )}
             >
@@ -120,7 +115,7 @@ export const ThreeDotsActionSheet = forwardRef<
                   {option.label}
                 </Text>
               </View>
-            </Button>
+            </Pressable>
           ))}
         </View>
       </ActionSheet>
