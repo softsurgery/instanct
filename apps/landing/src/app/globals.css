@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../../../../packages/ui/src/styles/scrollbar.css";
 
 @source "../../../../packages/ui/src";
 @source "../../../../packages/components/src";
