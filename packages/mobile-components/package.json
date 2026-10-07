@@ -13,7 +13,8 @@
   },
   "scripts": {
     "build": "tsc --noEmit",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
     "@instanct/hooks": "workspace:*",

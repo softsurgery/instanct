@@ -36,7 +36,7 @@
   },
   "scripts": {
     "build": "node ../../scripts/build-shared-packages.mjs",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1146.0",

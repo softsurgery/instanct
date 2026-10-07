@@ -18,7 +18,8 @@
   "scripts": {
     "build": "tsc --noEmit",
     "check-types": "tsc --noEmit",
-    "dev": "tsc --noEmit --watch"
+    "dev": "tsc --noEmit --watch",
+    "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
     "@instanct/lib": "workspace:*",

@@ -9,7 +9,8 @@
     "dev": "nest start --watch",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
-    "check-types": "tsc --noEmit -p tsconfig.build.json"
+    "check-types": "tsc --noEmit -p tsconfig.build.json",
+    "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
