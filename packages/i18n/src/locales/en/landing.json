@@ -95,7 +95,7 @@
       "filters": "Filter by industry and objectives",
       "sessions": "Share when you are available to connect",
       "chat": "Chat, poke, and bookmark in one flow",
-      "languages": "English, French, and Arabic"
+      "languages": "English and French"
     },
     "cards": {
       "explore": {
@@ -157,7 +157,7 @@
       },
       "platforms": {
         "question": "Which platforms are supported?",
-        "answer": "The Instanct experience is built for iOS and Android. A web backoffice exists for administration. The product is available in English, French, and Arabic."
+        "answer": "The Instanct experience is built for iOS and Android. A web backoffice exists for administration. The product is available in English and French."
       },
       "deleteAccount": {
         "question": "How do I delete my account?",

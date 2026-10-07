@@ -95,7 +95,7 @@
       "filters": "Filtrez par secteur et objectifs",
       "sessions": "Indiquez quand vous êtes disponible",
       "chat": "Chat, poke et favoris dans un même flux",
-      "languages": "Anglais, français et arabe"
+      "languages": "Anglais et français"
     },
     "cards": {
       "explore": {
@@ -157,7 +157,7 @@
       },
       "platforms": {
         "question": "Quelles plateformes sont prises en charge ?",
-        "answer": "L’expérience Instanct est disponible sur iOS et Android. Un backoffice web existe pour l’administration. Le produit est disponible en anglais, français et arabe."
+        "answer": "L’expérience Instanct est disponible sur iOS et Android. Un backoffice web existe pour l’administration. Le produit est disponible en anglais et français."
       },
       "deleteAccount": {
         "question": "Comment supprimer mon compte ?",

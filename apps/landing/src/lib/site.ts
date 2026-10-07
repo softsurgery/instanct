@@ -9,10 +9,10 @@ export const site = {
 };
 
 export const navLinks = [
-  { href: "/#features", labelKey: "nav.features" },
-  { href: "/#how-it-works", labelKey: "nav.howItWorks" },
-  { href: "/#safety", labelKey: "nav.safety" },
-  { href: "/#faq", labelKey: "nav.faq" },
+  // { href: "/#features", labelKey: "nav.features" },
+  // { href: "/#how-it-works", labelKey: "nav.howItWorks" },
+  // { href: "/#safety", labelKey: "nav.safety" },
+  // { href: "/#faq", labelKey: "nav.faq" },
 ] as const;
 
 export const featureItems = [

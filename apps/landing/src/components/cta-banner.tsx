@@ -12,7 +12,7 @@ export function CtaBanner() {
   return (
     <section id="get-started" className="scroll-mt-24 border-t">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="rounded-2xl border bg-accent px-6 py-12 text-center shadow-sm sm:px-12">
+        <div className="px-6 py-12 text-center sm:px-12">
           <p className="text-sm font-medium text-accent-foreground">
             {t("cta.eyebrow")}
           </p>
