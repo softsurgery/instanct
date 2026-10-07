@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import React from "react";
 import ReactDOM from "react-dom";
 import {
   Sheet,
@@ -39,7 +41,7 @@ export function useSheet({
   side,
   onToggle,
 }: UseSheetOptions): UseSheetReturn {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   const openSheet = (): void => setIsOpen(true);
   const closeSheet = (): void => setIsOpen(false);
@@ -64,7 +66,7 @@ export function useSheet({
           suitableHeight,
           "flex flex-col flex-1",
           canScroll ? "overflow-auto" : "overflow-hidden",
-          className
+          className,
         )}
         onPointerDownOutside={(e) => {
           e.preventDefault();
@@ -77,7 +79,7 @@ export function useSheet({
         {children}
       </SheetContent>
     </Sheet>,
-    document.body
+    document.body,
   );
 
   return { SheetFragment, openSheet, closeSheet };

@@ -1,3 +1,5 @@
+"use client";
+
 import type { Editor } from "@tiptap/react";
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 
@@ -5,7 +7,7 @@ const defaultEqual = <T>(a: T, b: T) => a === b;
 
 export const shallowEqual = <T extends Record<string, unknown>>(
   a: T,
-  b: T
+  b: T,
 ): boolean => {
   if (a === b) {
     return true;
@@ -24,7 +26,7 @@ export const shallowEqual = <T extends Record<string, unknown>>(
 export const useEditorState = <T>(
   editor: Editor | null,
   selector: (e: Editor) => T,
-  isEqual: (a: T, b: T) => boolean = defaultEqual
+  isEqual: (a: T, b: T) => boolean = defaultEqual,
 ): T => {
   const selectorRef = useRef(selector);
   const isEqualRef = useRef(isEqual);
@@ -70,7 +72,7 @@ export const useEditorState = <T>(
         editor.off("transaction", update);
       };
     },
-    [editor, updateSnapshot]
+    [editor, updateSnapshot],
   );
 
   const getSnapshot = useCallback((): T => snapshotRef.current.value, []);
