@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { SessionType } from 'src/app/enums/session.enum';
 import { SessionStatus } from '../enums/session-status.enum';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';

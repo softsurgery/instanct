@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 
 export class ResponseContentPageDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })

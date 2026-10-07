@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ResponseBugDto } from '../bug/response-bug.dto';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { ResponseFeedbackDto } from '../feedback/response-feedback.dto';
 
 export class ResponseDeviceInfoDto extends ResponseDtoHelper {

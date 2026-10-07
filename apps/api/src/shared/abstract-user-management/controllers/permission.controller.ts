@@ -8,10 +8,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PermissionService } from '../services/permission.service';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
 import { ResponsePermissionDto } from '../dtos/permission/response-permission.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { toDto, toDtoArray } from 'nsa-database';
 
 @ApiTags('permission')
 @ApiBearerAuth('access_token')

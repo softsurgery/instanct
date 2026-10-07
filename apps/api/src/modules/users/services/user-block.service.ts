@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { UserBlockEntity } from '../entities/user-block.entity';
 import { UserBlockRepository } from '../repositories/user-block.repository';
 

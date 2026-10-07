@@ -15,7 +15,7 @@ import { getTokenPayloadForWebSocket } from 'src/shared/auth/utils/token-payload
 import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { MapConfigurationParam } from 'src/app/configurations/map-configuration.enum';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { IQueryObject } from 'nsa-database';
 import { SessionService } from 'src/shared/sessions/services/session.service';
 
 @WebSocketGateway({

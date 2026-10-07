@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { toDto, toDtoArray } from 'nsa-database';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
@@ -24,8 +24,8 @@ import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dto
 import { UpdateUserCoverDto } from '../dtos/user/update-user-cover.dto';
 import { UserBookmarkService } from '../services/user-bookmark.service';
 import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
 
 @ApiTags('current-user')
 @ApiBearerAuth('access_token')

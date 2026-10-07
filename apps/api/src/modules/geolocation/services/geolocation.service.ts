@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { IQueryObject } from 'nsa-database';
 import { GeolocationRepository } from '../repositories/geolocation.repository';
 import { GeolocationEntity } from '../entities/geolocation.entity';
 import { CreateGeolocationDto } from '../dtos/create-geolocation.dto';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { RequestService } from '@/modules/requests/services/request.service';
 import { RequestStatus } from '@/modules/requests/enums/request-status.enum';
 import { SessionStatus } from '@/shared/sessions/enums/session-status.enum';

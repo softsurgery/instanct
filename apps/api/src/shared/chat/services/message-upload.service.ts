@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { MessageUploadEntity } from '../entities/message-upload.entity';
 import { CreateMessageUploadDto } from '../dtos/message-upload/create-message-upload.dto';
 import { StorageService } from 'src/shared/storage/services/storage.service';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { MessageUploadRepository } from '../repositories/message-upload.repository';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import { EntityHelper } from 'nsa-database';
 import {
   BeforeInsert,
   BeforeUpdate,

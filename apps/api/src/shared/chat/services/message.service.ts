@@ -1,13 +1,13 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOptionsWhere, Not } from 'typeorm';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
+import { IQueryObject } from 'nsa-database';
+import { QueryBuilder } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { PageMetaDto } from 'nsa-database';
 import { MessageRepository } from '../repositories/message.repository';
 import { MessageEntity } from '../entities/message.entity';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { MessageUploadService } from './message-upload.service';
 import { MessageLinkService } from './message-link.service';
 import { StorageService } from 'src/shared/storage/services/storage.service';

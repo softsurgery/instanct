@@ -12,7 +12,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { NotificationInterceptor } from 'src/shared/notifications/decorators/notification.interceptor';
-import { toDto } from 'src/shared/database/utils/dtos';
+import { toDto } from 'nsa-database';
 import { RequestWorkflowService } from '../services/request-workflow.service';
 import { RequestService } from '../services/request.service';
 import { ResponseRequestWorkflowDto } from '../dtos/response-request-workflow.dto';

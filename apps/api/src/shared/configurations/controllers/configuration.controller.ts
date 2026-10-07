@@ -11,8 +11,8 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { ResponseConfigurationNamespaceDto } from '../dtos/namespace/response-configuration-namespace.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { toDto, toDtoArray } from 'nsa-database';
+import { IQueryObject } from 'nsa-database';
 import { ConfigurationNamespaceService } from '../services/configuration-namespace.service';
 import { ConfigurationParamService } from '../services/configuration-param.service';
 import { UpdateConfigurationParamaterDto } from '../dtos/paramater/update-configuration-paramater.dto';

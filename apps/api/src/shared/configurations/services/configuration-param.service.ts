@@ -1,4 +1,4 @@
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { Injectable } from '@nestjs/common';
 import { ConfigurationParamEntity } from '../entities/configuration-param.entity';
 import { ConfigurationParamRepository } from '../repositories/configuration-param.repository';

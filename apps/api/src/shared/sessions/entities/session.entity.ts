@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { SessionType } from 'src/app/enums/session.enum';
-import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import { EntityHelper } from 'nsa-database';
 import {
   AfterLoad,
   Column,

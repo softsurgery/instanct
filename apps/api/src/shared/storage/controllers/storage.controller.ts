@@ -16,9 +16,9 @@ import {
 import { Request, Response } from 'express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { IQueryObject } from 'nsa-database';
+import { ApiPaginatedResponse } from 'nsa-database';
+import { PageDto } from 'nsa-database';
 import { StorageService } from '../services/storage.service';
 import { StorageEntity } from '../entities/storage.entity';
 import { Public } from 'src/shared/auth/utils/public-strategy';

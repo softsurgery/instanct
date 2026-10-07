@@ -6,10 +6,10 @@ import {
   FindOneOptions,
   ObjectLiteral,
 } from 'typeorm';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
+import { IQueryObject } from '../interfaces/database-query-options.interface';
+import { QueryBuilder } from '../utils/database-query-builder';
+import { PageDto } from '../dtos/database.page.dto';
+import { PageMetaDto } from '../dtos/database.page-meta.dto';
 import { DatabaseAbstractRepository } from '../repositories/database.repository';
 
 @Injectable()

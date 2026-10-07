@@ -9,7 +9,7 @@ import { UpdateRoleDto } from '../dtos/role/update-role.dto';
 import { RolePermissionEntity } from '../entities/role-permission.entity';
 import { CreateRolePermissionDto } from '../dtos/role-permission/create-role-permission.dto';
 import { RoleEntity } from '../entities/role.entity';
-import { AbstractCrudService } from '@/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 
 @Injectable()
 export class RoleService extends AbstractCrudService<RoleEntity> {

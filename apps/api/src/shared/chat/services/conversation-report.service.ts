@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { ConversationReportEntity } from '../entities/conversation-report.entity';
 import { ConversationReportRepository } from '../repositories/conversation-report.repository';
 import { CreateConversationReportDto } from '../dtos/conversation/create-conversation-report.dto';

@@ -1,5 +1,5 @@
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import { EntityHelper } from 'nsa-database';
 import { SessionEntity } from 'src/shared/sessions/entities/session.entity';
 import {
   Column,

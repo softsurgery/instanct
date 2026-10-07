@@ -1,8 +1,8 @@
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { ApiPaginatedResponse } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import {
   Body,

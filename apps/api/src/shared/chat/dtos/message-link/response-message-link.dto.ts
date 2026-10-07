@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { Expose } from 'class-transformer';
 
 export class ResponseMessageLinkDto extends ResponseDtoHelper {

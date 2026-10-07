@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { ExperienceEntity } from '../entities/experience.entity';
 import { ExperienceRepository } from '../repositories/experience.repository';
 import { UserService } from './user.service';

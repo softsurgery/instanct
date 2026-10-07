@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { branding } from './utils/branding';
 import { corsConfig } from './config/cors.config';
-import { MigrationService } from './shared/database/services/database-migration.service';
+import { MigrationService } from 'nsa-database';
 
 async function bootstrap() {
   const app: NestApplication = await NestFactory.create(AppModule);

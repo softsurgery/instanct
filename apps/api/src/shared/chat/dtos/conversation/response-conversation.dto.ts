@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { ResponseMessageDto } from '../message/response-message.dto';
 import { ResponseConversationUserDto } from '../conversation-user/response-conversation-user.dto';
 

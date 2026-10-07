@@ -13,7 +13,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { EducationService } from '../services/education.service';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { toDto, toDtoArray } from 'nsa-database';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { AdvancedRequest } from 'src/types';

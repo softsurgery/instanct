@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
 import { AbstractUserEntity } from '../entities/abstract-user.entity';
-import { DatabaseAbstractRepository } from 'src/shared/database/repositories/database.repository';
+import { DatabaseAbstractRepository } from 'nsa-database';
 
 @Injectable()
 export class AbstractUserRepository extends DatabaseAbstractRepository<AbstractUserEntity> {

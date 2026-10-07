@@ -1,11 +1,11 @@
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { ConfigurationNamespaceEntity } from '../entities/configuration-namespace.entity';
 import { Injectable } from '@nestjs/common';
 import { ConfigurationNamespaceRepository } from '../repositories/configuration-namespace.repository';
 import { ParamVariant } from '../enums/param-variant.enum';
 import { parseConfigurationListValue } from '../utils/configuration-list-schema';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
+import { IQueryObject } from 'nsa-database';
+import { QueryBuilder } from 'nsa-database';
 import { FindManyOptions, FindOneOptions, IsNull } from 'typeorm';
 
 @Injectable()

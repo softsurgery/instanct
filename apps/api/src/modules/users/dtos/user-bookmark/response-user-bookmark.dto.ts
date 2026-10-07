@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { ResponseUserDto } from '../user/response-user.dto';
 
 export class ResponseUserBookmarkDto extends ResponseDtoHelper {

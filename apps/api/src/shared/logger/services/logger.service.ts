@@ -3,10 +3,10 @@ import { FindManyOptions } from 'typeorm';
 import { LogRepository } from '../repositories/log.repository';
 import { LogEntity } from '../entities/log.entity';
 import { LogNotFoundException } from '../errors/log.notfound.error';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
+import { IQueryObject } from 'nsa-database';
+import { QueryBuilder } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { PageMetaDto } from 'nsa-database';
 
 @Injectable()
 export class LoggerService {

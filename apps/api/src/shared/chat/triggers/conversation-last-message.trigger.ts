@@ -1,7 +1,7 @@
 import {
   AbstractTrigger,
   TriggerApply,
-} from 'src/shared/database/interfaces/database-trigger.interface';
+} from 'nsa-database';
 
 export class ConversationLastMessageTrigger extends AbstractTrigger {
   name = 'conv_last_message_sync';

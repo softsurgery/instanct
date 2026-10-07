@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { RolePermissionEntity } from '../../entities/role-permission.entity';
 import { Expose, Type } from 'class-transformer';
 

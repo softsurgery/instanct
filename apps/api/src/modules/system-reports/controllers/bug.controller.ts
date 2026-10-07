@@ -14,10 +14,10 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { BugService } from '../services/bug.service';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { IQueryObject } from 'nsa-database';
 import { ResponseBugDto } from '../dtos/bug/response-bug.dto';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { PageDto } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { CreateBugDto } from '../dtos/bug/create-bug.dto';

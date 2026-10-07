@@ -16,9 +16,9 @@ import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor'
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { Public } from 'src/shared/auth/utils/public-strategy';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
 import { AdvancedRequest } from 'src/types';
 import { ContentPageService } from '../services/content-page.service';
 import { ResponseContentPageDto } from '../dtos/response-content-page.dto';

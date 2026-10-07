@@ -15,7 +15,7 @@ import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { AdvancedRequest } from 'src/types';
 import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
-import { toDto } from 'src/shared/database/utils/dtos';
+import { toDto } from 'nsa-database';
 import { UserService } from '../services/user.service';
 import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
 

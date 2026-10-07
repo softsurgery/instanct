@@ -1,17 +1,17 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { SessionEntity } from '../entities/session.entity';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { SessionRepository } from '../repositories/session.repository';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { QueryBuilder } from 'nsa-database';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
 import {
   FindManyOptions,
   IsNull,
   LessThanOrEqual,
   MoreThanOrEqual,
 } from 'typeorm';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
+import { PageMetaDto } from 'nsa-database';
 import { UserService } from 'src/modules/users/services/user.service';
 import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
 import { getNowInTimezone, mergeTodayWithTime } from 'src/utils/date';

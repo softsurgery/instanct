@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { ResponseConversationDto } from '../conversation/response-conversation.dto';
 import { Expose, Type } from 'class-transformer';
 import { MessageVariant } from '../../enums/message-variant.enum';

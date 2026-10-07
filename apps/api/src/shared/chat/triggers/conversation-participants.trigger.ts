@@ -1,7 +1,7 @@
 import {
   AbstractTrigger,
   TriggerApply,
-} from 'src/shared/database/interfaces/database-trigger.interface';
+} from 'nsa-database';
 
 export class ConversationParticipantsTrigger extends AbstractTrigger {
   name = 'conv_participants_sync';

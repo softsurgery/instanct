@@ -11,9 +11,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
 import { DeviceInfoService } from '../services/device-info.service';
 import { ResponseDeviceInfoDto } from '../dtos/device-info/response-device-info.dto';
 import { CreateDeviceInfoDto } from '../dtos/device-info/create-device-info.dto';

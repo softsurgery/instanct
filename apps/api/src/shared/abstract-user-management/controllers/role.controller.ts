@@ -13,13 +13,13 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RoleService } from '../services/role.service';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
 import { CreateRoleDto } from '../dtos/role/create-role.dto';
 import { UpdateRoleDto } from '../dtos/role/update-role.dto';
 import { ResponseRoleDto } from '../dtos/role/response-role.dto';
-import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { ApiPaginatedResponse } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
 import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
 import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
