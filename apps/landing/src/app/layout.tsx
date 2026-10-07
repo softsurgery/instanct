@@ -4,6 +4,7 @@ import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SkipToContent } from "@/components/skip-to-content";
+import { ScrollToTop } from "@instanct/components";
 import { headers } from "next/headers";
 import { resolveSupportedLng } from "@/i18n/config";
 import "./globals.css";
@@ -128,6 +129,7 @@ export default async function RootLayout({
           <SiteHeader />
           <main id="main">{children}</main>
           <SiteFooter />
+          <ScrollToTop />
         </Providers>
       </body>
     </html>
