@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 
-import { BackupError } from "./error";
+import { DataFlowError } from "./error";
 
 export function loadEnvFile(file: string): void {
   if (!existsSync(file)) {
@@ -33,7 +33,7 @@ export function loadEnvFile(file: string): void {
 export function required(name: string): string {
   const value = process.env[name]?.trim() ?? "";
   if (!value) {
-    throw new BackupError(`${name} is required`);
+    throw new DataFlowError(`${name} is required`);
   }
   return value;
 }
@@ -45,7 +45,7 @@ export function folderId(raw: string): string {
     value = value.split(marker)[1]?.split("?")[0]?.split("/")[0] ?? "";
   }
   if (!value || /[\s/\\]/.test(value)) {
-    throw new BackupError("GDRIVE_FOLDER_ID must be a Google Drive folder id");
+    throw new DataFlowError("GDRIVE_FOLDER_ID must be a Google Drive folder id");
   }
   return value;
 }

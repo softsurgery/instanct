@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { pipeline } from "node:stream/promises";
 import { createGzip } from "node:zlib";
 
-import { BackupError } from "../lib/error";
+import { DataFlowError } from "../lib/error";
 import { dumpArgs, quoteCnf, resolveBinary } from "../lib/mysql";
 import { ConfigService } from "./config.service";
 
@@ -18,9 +18,9 @@ export class DumpService {
   async dump(): Promise<string> {
     const config = this.configService.load();
     const binary = resolveBinary("mysqldump");
-    await mkdir(config.backupDir, { recursive: true });
-    const outfile = join(config.backupDir, `${config.database}-${this.stamp()}.sql.gz`);
-    const tempDir = await mkdtemp(join(tmpdir(), "instanct-backup-"));
+    await mkdir(config.dataFlowDir, { recursive: true });
+    const outfile = join(config.dataFlowDir, `${config.database}-${this.stamp()}.sql.gz`);
+    const tempDir = await mkdtemp(join(tmpdir(), "instanct-data-flow-"));
     const defaultsFile = join(tempDir, "client.cnf");
 
     console.log(`Dumping ${config.database} from ${config.host}:${config.port}`);
@@ -49,7 +49,7 @@ export class DumpService {
 
       try {
         if (!child.stdout) {
-          throw new BackupError("mysqldump produced no output");
+          throw new DataFlowError("mysqldump produced no output");
         }
         await pipeline(child.stdout, createGzip(), createWriteStream(outfile));
       } catch (error) {
@@ -68,12 +68,12 @@ export class DumpService {
       const stderr = Buffer.concat(stderrChunks).toString("utf8").trim();
       if (code !== 0) {
         await rm(outfile, { force: true });
-        throw new BackupError(stderr || `mysqldump exited ${code}`);
+        throw new DataFlowError(stderr || `mysqldump exited ${code}`);
       }
 
       if ((await stat(outfile)).size < 32) {
         await rm(outfile, { force: true });
-        throw new BackupError("mysqldump wrote an empty file");
+        throw new DataFlowError("mysqldump wrote an empty file");
       }
       if (stderr) {
         console.log(`mysqldump warnings:\n${stderr}`);

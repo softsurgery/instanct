@@ -1,11 +1,11 @@
 # Build from the repository root:
-#   docker build -f apps/backup/Dockerfile -t instanct-backup .
+#   docker build -f apps/dataFlow/Dockerfile -t instanct-data-flow .
 #
-#   docker run --rm --env-file apps/backup/.env \
+#   docker run --rm --env-file apps/dataFlow/.env \
 #     -e GDRIVE_SERVICE_ACCOUNT_FILE=/secrets/gdrive-service-account.json \
 #     -v /path/to/gdrive-service-account.json:/secrets/gdrive-service-account.json:ro \
-#     -v instanct-backups:/backups \
-#     instanct-backup
+#     -v instanct-data-flows:/dataFlows \
+#     instanct-data-flow
 
 FROM node:22-bookworm-slim AS builder
 
@@ -16,7 +16,7 @@ RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 COPY apps/api/package.json ./apps/api/package.json
-COPY apps/backup/package.json ./apps/backup/package.json
+COPY apps/dataFlow/package.json ./apps/dataFlow/package.json
 COPY apps/landing/package.json ./apps/landing/package.json
 COPY apps/mobile/package.json ./apps/mobile/package.json
 COPY apps/web/package.json ./apps/web/package.json
@@ -36,13 +36,13 @@ COPY packages/mobile-ui/package.json ./packages/mobile-ui/package.json
 COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
 COPY packages/ui/package.json ./packages/ui/package.json
 
-RUN pnpm install --frozen-lockfile --filter instanct-backup... --ignore-scripts
+RUN pnpm install --frozen-lockfile --filter instanct-data-flow... --ignore-scripts
 
-COPY apps/backup ./apps/backup
-RUN rm -rf apps/backup/dist && cd apps/backup && /repo/node_modules/.bin/nest build
-RUN test -f /repo/apps/backup/dist/main.js
+COPY apps/dataFlow ./apps/dataFlow
+RUN rm -rf apps/dataFlow/dist && cd apps/dataFlow && /repo/node_modules/.bin/nest build
+RUN test -f /repo/apps/dataFlow/dist/main.js
 
-RUN pnpm deploy --legacy --filter instanct-backup --prod --ignore-scripts /pruned
+RUN pnpm deploy --legacy --filter instanct-data-flow --prod --ignore-scripts /pruned
 
 FROM node:22-bookworm-slim AS runner
 
@@ -53,18 +53,18 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY --from=builder --chown=app:app /repo/apps/backup/dist ./dist
+COPY --from=builder --chown=app:app /repo/apps/dataFlow/dist ./dist
 COPY --from=builder --chown=app:app /pruned/node_modules ./node_modules
-COPY --from=builder --chown=app:app /repo/apps/backup/package.json ./
+COPY --from=builder --chown=app:app /repo/apps/dataFlow/package.json ./
 
-RUN mkdir -p /backups && chown app:app /backups
+RUN mkdir -p /dataFlows && chown app:app /dataFlows
 
 USER app
 
 ENV NODE_ENV=production
-ENV BACKUP_DIR=/backups
+ENV DATA_FLOW_DIR=/dataFlows
 ENV GDRIVE_SERVICE_ACCOUNT_FILE=/secrets/gdrive-service-account.json
 
-VOLUME ["/backups"]
+VOLUME ["/dataFlows"]
 
 CMD ["node", "dist/main.js"]

@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 
-import { BackupService } from "./services/backup.service";
+import { DataFlowService } from "./services/data-flow.service";
 import { ConfigService } from "./services/config.service";
 import { DriveService } from "./services/drive.service";
 import { DumpService } from "./services/dump.service";
 
 @Module({
-  providers: [ConfigService, DumpService, DriveService, BackupService],
+  providers: [ConfigService, DumpService, DriveService, DataFlowService],
 })
 export class AppModule {}

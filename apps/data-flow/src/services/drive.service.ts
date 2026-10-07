@@ -5,7 +5,7 @@ import { basename, join } from "node:path";
 
 import { google } from "googleapis";
 
-import { BackupError } from "../lib/error";
+import { DataFlowError } from "../lib/error";
 import type { DriveFile } from "../types/drive-file";
 import { ConfigService } from "./config.service";
 
@@ -30,7 +30,7 @@ export class DriveService {
     });
     const fileId = created.data.id;
     if (!fileId) {
-      throw new BackupError("Google Drive did not return a file id");
+      throw new DataFlowError("Google Drive did not return a file id");
     }
     console.log(`Uploaded ${basename(filePath)} to Drive as ${fileId}`);
     return fileId;
@@ -45,7 +45,7 @@ export class DriveService {
     const cutoff = Date.now() - config.retentionDays * 86_400_000;
     let names: string[] = [];
     try {
-      names = await readdir(config.backupDir);
+      names = await readdir(config.dataFlowDir);
     } catch {
       names = [];
     }
@@ -53,7 +53,7 @@ export class DriveService {
       if (!this.isDumpName(name, config.database)) {
         continue;
       }
-      const path = join(config.backupDir, name);
+      const path = join(config.dataFlowDir, name);
       if ((await stat(path)).mtimeMs < cutoff) {
         await unlink(path);
       }
@@ -68,7 +68,7 @@ export class DriveService {
         continue;
       }
       await drive.files.delete({ fileId: file.id, supportsAllDrives: true });
-      console.log(`Deleted old Drive backup ${file.name ?? file.id}`);
+      console.log(`Deleted old Drive dataFlow ${file.name ?? file.id}`);
     }
   }
 

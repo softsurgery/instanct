@@ -2,8 +2,8 @@ import { execFileSync } from "node:child_process";
 import { accessSync, constants } from "node:fs";
 import { delimiter, join } from "node:path";
 
-import type { BackupConfig } from "../types/backup-config";
-import { BackupError } from "./error";
+import type { DataFlowConfig } from "../types/data-flow-config";
+import { DataFlowError } from "./error";
 
 export function resolveBinary(name: string): string {
   for (const directory of (process.env.PATH ?? "").split(delimiter)) {
@@ -18,7 +18,7 @@ export function resolveBinary(name: string): string {
       continue;
     }
   }
-  throw new BackupError(`${name} is not installed`);
+  throw new DataFlowError(`${name} is not installed`);
 }
 
 export function quoteCnf(value: string): string {
@@ -40,7 +40,7 @@ function mysqldumpHelp(binary: string): string {
 export function dumpArgs(
   binary: string,
   defaultsFile: string,
-  config: Pick<BackupConfig, "database" | "sslEnabled">,
+  config: Pick<DataFlowConfig, "database" | "sslEnabled">,
 ): string[] {
   const helpText = mysqldumpHelp(binary);
   const args = [
