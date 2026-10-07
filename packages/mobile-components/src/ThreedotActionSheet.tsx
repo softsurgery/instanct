@@ -88,32 +88,14 @@ export const ThreeDotsActionSheet = forwardRef<
                 )}
               >
                 {option.icon ? (
-                  <Icon
-                    as={option.icon}
-                    size={20}
-                    className={cn(
-                      option.variant === "destructive"
-                        ? "text-destructive"
-                        : "text-foreground",
-                    )}
-                  />
+                  <Icon as={option.icon} size={20} />
                 ) : (
                   <Icon as={Ellipsis} size={20} className="text-foreground" />
                 )}
               </View>
 
               <View className="flex-1">
-                <Text
-                  variant={"large"}
-                  className={cn(
-                    "text-md font-medium",
-                    option.variant === "destructive"
-                      ? "text-destructive"
-                      : "text-foreground",
-                  )}
-                >
-                  {option.label}
-                </Text>
+                <Text variant={"large"}>{option.label}</Text>
               </View>
             </Pressable>
           ))}
