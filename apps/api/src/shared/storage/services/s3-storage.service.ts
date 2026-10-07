@@ -182,9 +182,7 @@ export class S3StorageService extends StorageService {
     isPrivate = true,
   ): Promise<StorageEntity[]> {
     return Promise.all(
-      files.map((file) =>
-        this.store(file, isTemporary, isPrivate, undefined),
-      ),
+      files.map((file) => this.store(file, isTemporary, isPrivate, undefined)),
     );
   }
 

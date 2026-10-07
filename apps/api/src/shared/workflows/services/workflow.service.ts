@@ -69,8 +69,7 @@ export class AbstractWorkflowService<
 
     // pick the first (and only) meta entry
     const stateMeta = Object.values(meta)[0] as
-      | { isUpdatable?: boolean }
-      | undefined;
+      { isUpdatable?: boolean } | undefined;
 
     return stateMeta?.isUpdatable ?? false;
   }
