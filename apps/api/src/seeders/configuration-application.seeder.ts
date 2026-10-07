@@ -1,7 +1,7 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { ConfigurationParamRepository } from 'src/shared/configurations/repositories/configuration-param.repository';
-import { ConfigurationNamespaceRepository } from 'src/shared/configurations/repositories/configuration-namespace.repository';
+import { ConfigurationParamRepository } from 'nsa-configurations/repositories/configuration-param.repository';
+import { ConfigurationNamespaceRepository } from 'nsa-configurations/repositories/configuration-namespace.repository';
 import { applicationConfiguration } from './data/configuration.data';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { seedConfigurationParams } from './configuration-seeder.helper';

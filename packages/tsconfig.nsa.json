@@ -1,0 +1,143 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": false,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./.nsa-out",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "nsa-um/*": [
+        "nsa-um/src/*"
+      ],
+      "nsa-auth/*": [
+        "nsa-auth/src/*"
+      ],
+      "nsa-chat/*": [
+        "nsa-chat/src/*"
+      ],
+      "nsa-configurations/*": [
+        "nsa-configurations/src/*"
+      ],
+      "nsa-content/*": [
+        "nsa-content/src/*"
+      ],
+      "nsa-helpers/*": [
+        "nsa-helpers/src/*"
+      ],
+      "nsa-logger/*": [
+        "nsa-logger/src/*"
+      ],
+      "nsa-mail/*": [
+        "nsa-mail/src/*"
+      ],
+      "nsa-notifications/*": [
+        "nsa-notifications/src/*"
+      ],
+      "nsa-reference-types/*": [
+        "nsa-reference-types/src/*"
+      ],
+      "nsa-sentry/*": [
+        "nsa-sentry/src/*"
+      ],
+      "nsa-sessions/*": [
+        "nsa-sessions/src/*"
+      ],
+      "nsa-storage/*": [
+        "nsa-storage/src/*"
+      ],
+      "nsa-templates/*": [
+        "nsa-templates/src/*"
+      ],
+      "nsa-workflows/*": [
+        "nsa-workflows/src/*"
+      ],
+      "nsa-um": [
+        "nsa-um/src/index.ts"
+      ],
+      "nsa-auth": [
+        "nsa-auth/src/index.ts"
+      ],
+      "nsa-chat": [
+        "nsa-chat/src/index.ts"
+      ],
+      "nsa-configurations": [
+        "nsa-configurations/src/index.ts"
+      ],
+      "nsa-content": [
+        "nsa-content/src/index.ts"
+      ],
+      "nsa-helpers": [
+        "nsa-helpers/src/index.ts"
+      ],
+      "nsa-logger": [
+        "nsa-logger/src/index.ts"
+      ],
+      "nsa-mail": [
+        "nsa-mail/src/index.ts"
+      ],
+      "nsa-notifications": [
+        "nsa-notifications/src/index.ts"
+      ],
+      "nsa-reference-types": [
+        "nsa-reference-types/src/index.ts"
+      ],
+      "nsa-sentry": [
+        "nsa-sentry/src/index.ts"
+      ],
+      "nsa-sessions": [
+        "nsa-sessions/src/index.ts"
+      ],
+      "nsa-storage": [
+        "nsa-storage/src/index.ts"
+      ],
+      "nsa-templates": [
+        "nsa-templates/src/index.ts"
+      ],
+      "nsa-workflows": [
+        "nsa-workflows/src/index.ts"
+      ],
+      "src/*": [
+        "../apps/api/src/*"
+      ],
+      "@/*": [
+        "../apps/api/src/*"
+      ]
+    },
+    "strict": false,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false
+  },
+  "include": [
+    "nsa-um/src/**/*.ts",
+    "nsa-auth/src/**/*.ts",
+    "nsa-chat/src/**/*.ts",
+    "nsa-configurations/src/**/*.ts",
+    "nsa-content/src/**/*.ts",
+    "nsa-helpers/src/**/*.ts",
+    "nsa-logger/src/**/*.ts",
+    "nsa-mail/src/**/*.ts",
+    "nsa-notifications/src/**/*.ts",
+    "nsa-reference-types/src/**/*.ts",
+    "nsa-sentry/src/**/*.ts",
+    "nsa-sessions/src/**/*.ts",
+    "nsa-storage/src/**/*.ts",
+    "nsa-templates/src/**/*.ts",
+    "nsa-workflows/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".nsa-out",
+    "**/*.spec.ts"
+  ]
+}

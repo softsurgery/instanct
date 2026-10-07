@@ -1,9 +1,9 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { RefTypeRepository } from 'src/shared/reference-types/repositories/ref-type.repository';
-import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-param.repository';
+import { RefTypeRepository } from 'nsa-reference-types/repositories/ref-type.repository';
+import { RefParamRepository } from 'nsa-reference-types/repositories/ref-param.repository';
 import { industries } from './data/industries.data';
-import { getRandomHexColor } from 'src/shared/reference-types/utils/colors';
+import { getRandomHexColor } from 'nsa-reference-types/utils/colors';
 
 @Injectable()
 export class IndustriesSeedCommand {

@@ -2,9 +2,9 @@ import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { TemplateService } from 'src/shared/templates/services/template.service';
-import { TemplateStyleService } from 'src/shared/templates/services/template-style.service';
-import { TemplateStyleEntity } from 'src/shared/templates/entities/template-style.entity';
+import { TemplateService } from 'nsa-templates/services/template.service';
+import { TemplateStyleService } from 'nsa-templates/services/template-style.service';
+import { TemplateStyleEntity } from 'nsa-templates/entities/template-style.entity';
 
 @Injectable()
 export class TemplatesSeedCommand {

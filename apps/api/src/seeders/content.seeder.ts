@@ -1,6 +1,6 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { ContentPageService } from '@/shared/content/services/content-page.service';
+import { ContentPageService } from 'nsa-content/services/content-page.service';
 import { ContentPageSlug } from '@/app/enums/content-page-slug.enum';
 import { termsHtml, termsHtmlEn } from './data/content/terms.data';
 import { privacyHtml, privacyHtmlEn } from './data/content/privacy.data';

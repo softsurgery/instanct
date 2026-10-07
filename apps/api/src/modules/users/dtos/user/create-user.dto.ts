@@ -8,8 +8,8 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { CreateAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/create-abstract-user.dto';
-import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
+import { CreateAbstractUserDto } from 'nsa-um/dtos/abstract-user/create-abstract-user.dto';
+import { Gender } from 'nsa-um/enums/gender.enum';
 import { UserUploadEntity } from '../../entities/user-upload.entity';
 
 export class CreateUserDto extends CreateAbstractUserDto {

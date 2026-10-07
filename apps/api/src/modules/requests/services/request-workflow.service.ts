@@ -1,4 +1,4 @@
-import { AbstractWorkflowService } from 'src/shared/workflows/services/workflow.service';
+import { AbstractWorkflowService } from 'nsa-workflows/services/workflow.service';
 import { Injectable } from '@nestjs/common';
 import { RequestStatus } from '../enums/request-status.enum';
 import { RequestEvent } from '../enums/request-event.enum';

@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { AbstractCrudService } from 'nsa-database';
-import { SessionEntity } from 'src/shared/sessions/entities/session.entity';
-import { SessionRepository } from 'src/shared/sessions/repositories/session.repository';
+import { SessionEntity } from 'nsa-sessions/entities/session.entity';
+import { SessionRepository } from 'nsa-sessions/repositories/session.repository';
 import { IQueryObject } from 'nsa-database';
 import { PageDto } from 'nsa-database';
 import { PageMetaDto } from 'nsa-database';
@@ -21,7 +21,7 @@ import { UserService } from 'src/modules/users/services/user.service';
 import { CreateRequestDto } from '../dtos/create-request.dto';
 import { UpdateRequestDto } from '../dtos/update-request.dto';
 import { RequestStatus } from '../enums/request-status.enum';
-import { SessionService } from 'src/shared/sessions/services/session.service';
+import { SessionService } from 'nsa-sessions/services/session.service';
 
 @Injectable()
 export class RequestService

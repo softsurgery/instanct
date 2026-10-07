@@ -1,6 +1,6 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { StorageService } from 'src/shared/storage/services/storage.service';
+import { StorageService } from 'nsa-storage/services/storage.service';
 import * as fs from 'fs';
 import * as path from 'path';
 import { STORAGE_SYSTEMATICS } from '@/app/constants/storage-systematics.constants';

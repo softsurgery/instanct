@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserUploadEntity } from '../../entities/user-upload.entity';
-import { UpdateAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/update-abstract-user.dto';
+import { UpdateAbstractUserDto } from 'nsa-um/dtos/abstract-user/update-abstract-user.dto';
 import {
   IsArray,
   IsEnum,
@@ -9,7 +9,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
+import { Gender } from 'nsa-um/enums/gender.enum';
 
 export class UpdateUserDto extends UpdateAbstractUserDto {
   @ApiProperty({ type: String })

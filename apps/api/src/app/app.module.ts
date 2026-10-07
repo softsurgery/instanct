@@ -13,15 +13,15 @@ import { DatabaseModule } from 'nsa-database';
 import { JwtModule } from '@nestjs/jwt';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailModule } from 'src/shared/mail/mail.module';
-import { resolveMX } from 'src/shared/mail/utils/mx-resolve.util';
+import { MailModule } from 'nsa-mail/mail.module';
+import { resolveMX } from 'nsa-mail/utils/mx-resolve.util';
 import { RouterModule } from 'src/routers/router.module';
 import { SeedersModule } from 'src/seeders/seeders.module';
-import { StorageModule } from 'src/shared/storage/storage.module';
+import { StorageModule } from 'nsa-storage/storage.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { SentryModule } from '@sentry/nestjs/setup';
-import { SentryCatchAllFilter } from 'src/shared/sentry/sentry-catch-all.filter';
+import { SentryCatchAllFilter } from 'nsa-sentry/sentry-catch-all.filter';
 
 @Module({
   imports: [

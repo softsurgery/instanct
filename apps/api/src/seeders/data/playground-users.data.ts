@@ -1,5 +1,5 @@
-import { BasicRoles } from 'src/shared/abstract-user-management/enums/basic-roles.enum';
-import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
+import { BasicRoles } from 'nsa-um/enums/basic-roles.enum';
+import { Gender } from 'nsa-um/enums/gender.enum';
 
 export const mockUsersSeed = [
   {

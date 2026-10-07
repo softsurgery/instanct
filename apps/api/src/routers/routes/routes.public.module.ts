@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LandingConfigurationController } from 'src/shared/configurations/controllers/landing-configuration.controller';
-import { ConfigurationsModule } from 'src/shared/configurations/configurations.module';
+import { LandingConfigurationController } from 'nsa-configurations/controllers/landing-configuration.controller';
+import { ConfigurationsModule } from 'nsa-configurations/configurations.module';
 
 @Module({
   controllers: [LandingConfigurationController],

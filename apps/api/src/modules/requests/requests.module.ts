@@ -5,7 +5,7 @@ import { RequestRepository } from './repositories/request.repository';
 import { RequestService } from './services/request.service';
 import { RequestWorkflowService } from './services/request-workflow.service';
 import { UserManagementModule } from '../users/user-management.module';
-import { SessionModule } from 'src/shared/sessions/sessions.module';
+import { SessionModule } from 'nsa-sessions/sessions.module';
 
 @Module({
   providers: [RequestRepository, RequestService, RequestWorkflowService],

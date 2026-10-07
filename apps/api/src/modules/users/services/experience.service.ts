@@ -3,7 +3,7 @@ import { AbstractCrudService } from 'nsa-database';
 import { ExperienceEntity } from '../entities/experience.entity';
 import { ExperienceRepository } from '../repositories/experience.repository';
 import { UserService } from './user.service';
-import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
+import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
 import { ExperienceNotFoundException } from '../errors/experiences/experience.notfound.error';
 import { LocationTypes } from '../enums/experience.location-type.enum';
 

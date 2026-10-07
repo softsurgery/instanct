@@ -6,8 +6,8 @@ import { CreateGeolocationDto } from '../dtos/create-geolocation.dto';
 import { AbstractCrudService } from 'nsa-database';
 import { RequestService } from '@/modules/requests/services/request.service';
 import { RequestStatus } from '@/modules/requests/enums/request-status.enum';
-import { SessionStatus } from '@/shared/sessions/enums/session-status.enum';
-import { SessionService } from '@/shared/sessions/services/session.service';
+import { SessionStatus } from 'nsa-sessions/enums/session-status.enum';
+import { SessionService } from 'nsa-sessions/services/session.service';
 
 @Injectable()
 export class GeolocationService extends AbstractCrudService<GeolocationEntity> {

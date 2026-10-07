@@ -1,6 +1,6 @@
-import { ConfigurationParamRepository } from 'src/shared/configurations/repositories/configuration-param.repository';
-import { ConfigurationNamespaceRepository } from 'src/shared/configurations/repositories/configuration-namespace.repository';
-import { ConfigurationParamEntity } from '@/shared/configurations/entities/configuration-param.entity';
+import { ConfigurationParamRepository } from 'nsa-configurations/repositories/configuration-param.repository';
+import { ConfigurationNamespaceRepository } from 'nsa-configurations/repositories/configuration-namespace.repository';
+import { ConfigurationParamEntity } from 'nsa-configurations/entities/configuration-param.entity';
 import { DeepPartial } from 'typeorm';
 
 export async function seedConfigurationParams(
