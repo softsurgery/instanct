@@ -30,7 +30,7 @@ export const ConfigurationPortal = ({
 }: ConfigurationPortalProps) => {
   const { t } = useTranslation("content-management");
   const { setRoutes, clearRoutes } = useBreadcrumb();
-  const { setIntro, clearIntro } = useIntro();
+  const { setIntro, clearIntro, setFloating, clearFloating } = useIntro();
   const { setContent, clearContent } = useFooter();
   const {
     setEnableMainOverflow,
@@ -183,6 +183,35 @@ export const ConfigurationPortal = ({
 
   React.useEffect(() => {
     if (!selectedNamespace) {
+      clearFloating?.();
+      return;
+    }
+
+    setFloating?.(
+      <ImportExportActions
+        exportLabel={t("configuration.actions.export")}
+        importLabel={t("configuration.actions.import")}
+        disabled={isSaving || !selectedNamespace}
+        onExport={handleExport}
+        onImport={handleImport}
+      />,
+    );
+
+    return () => {
+      clearFloating?.();
+    };
+  }, [
+    clearFloating,
+    handleExport,
+    handleImport,
+    isSaving,
+    selectedNamespace,
+    setFloating,
+    t,
+  ]);
+
+  React.useEffect(() => {
+    if (!selectedNamespace) {
       clearContent?.();
       return;
     }
@@ -196,7 +225,6 @@ export const ConfigurationPortal = ({
           onClick={handleReset}
           disabled={isSaving}
         >
-          <RotateCcw />
           {t("configuration.actions.resetAll")}
         </Button>
         <Button
@@ -205,7 +233,6 @@ export const ConfigurationPortal = ({
           onClick={handleSave}
           disabled={isSaving}
         >
-          <Save />
           {t("configuration.actions.saveChanges")}
         </Button>
       </div>,
@@ -261,7 +288,7 @@ export const ConfigurationPortal = ({
 
   return (
     <div className={cn("flex flex-col gap-6 w-full h-auto", className)}>
-      <div className="w-full space-y-3">
+      <div className="w-full space-y-3 mt-4">
         <SideNav
           items={sideNavItems}
           activeHref={selectedNamespace?.id}
@@ -272,26 +299,6 @@ export const ConfigurationPortal = ({
       <main className="flex-1 w-full space-y-6">
         {selectedNamespace ? (
           <div className="flex flex-col space-y-6">
-            <header className="flex items-center justify-between border-b pb-4">
-              <div>
-                <h2 className="text-xl font-bold text-foreground">
-                  {_.capitalize(selectedNamespace.name)}
-                </h2>
-                {selectedNamespace.description && (
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {selectedNamespace.description}
-                  </p>
-                )}
-              </div>
-              <ImportExportActions
-                exportLabel={t("configuration.actions.export")}
-                importLabel={t("configuration.actions.import")}
-                disabled={isSaving || !selectedNamespace}
-                onExport={handleExport}
-                onImport={handleImport}
-              />
-            </header>
-
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input

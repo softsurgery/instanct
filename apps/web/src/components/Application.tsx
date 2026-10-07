@@ -58,21 +58,23 @@ function Application({ className, Component, pageProps }: ApplicationProps) {
   }
 
   return (
-    <div
-      className={cn(
-        `flex flex-col flex-1 overflow-hidden min-h-screen max-h-screen`,
-        className,
-      )}
-    >
-      {isAuthPage ? (
-        <Component {...pageProps} />
-      ) : (
-        <Layout>
+    <>
+      <div
+        className={cn(
+          `flex flex-col flex-1 overflow-hidden min-h-screen max-h-screen`,
+          className,
+        )}
+      >
+        {isAuthPage ? (
           <Component {...pageProps} />
-        </Layout>
-      )}
-      <Toaster className="m-5" />
-    </div>
+        ) : (
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        )}
+      </div>
+      <Toaster />
+    </>
   );
 }
 

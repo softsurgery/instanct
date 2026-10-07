@@ -89,51 +89,49 @@ export function SideNav({
   };
 
   return (
-    <div className="p-1 w-full">
-      <Select value={activeItem?.href || ""} onValueChange={handleMobileSelect}>
-        <SelectTrigger className="h-11 w-full bg-background border-input font-medium">
-          <SelectValue placeholder="Navigation">
-            <div className="flex items-center gap-2.5 truncate pointer-events-none">
-              {activeItem?.icon && (
-                <span className="shrink-0">{activeItem.icon}</span>
-              )}
-              <span className="truncate">
-                {activeItem?.title || "Navigation"}
-              </span>
-            </div>
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {flatItems.map((item) => (
-            <SelectItem
-              key={item.href}
-              value={item.href}
-              disabled={item.disabled}
-            >
-              <div className="flex items-center justify-between w-full gap-3 py-0.5">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  {item.icon && (
-                    <span className="shrink-0 text-muted-foreground">
-                      {item.icon}
-                    </span>
-                  )}
-                  <span className="font-medium text-sm truncate">
-                    {item.title}
+    <Select value={activeItem?.href || ""} onValueChange={handleMobileSelect}>
+      <SelectTrigger className="h-11 w-full bg-background border-input font-medium">
+        <SelectValue placeholder="Navigation">
+          <div className="flex items-center gap-2.5 truncate pointer-events-none">
+            {activeItem?.icon && (
+              <span className="shrink-0">{activeItem.icon}</span>
+            )}
+            <span className="truncate">
+              {activeItem?.title || "Navigation"}
+            </span>
+          </div>
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {flatItems.map((item) => (
+          <SelectItem
+            key={item.href}
+            value={item.href}
+            disabled={item.disabled}
+          >
+            <div className="flex items-center justify-between w-full gap-3 py-0.5">
+              <div className="flex items-center gap-2.5 min-w-0">
+                {item.icon && (
+                  <span className="shrink-0 text-muted-foreground">
+                    {item.icon}
                   </span>
-                </div>
-                {item.badge !== undefined && (
-                  <Badge
-                    variant={item.badgeVariant || "secondary"}
-                    className="text-[10px] px-1.5 py-0 shrink-0"
-                  >
-                    {item.badge}
-                  </Badge>
                 )}
+                <span className="font-medium text-sm truncate">
+                  {item.title}
+                </span>
               </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+              {item.badge !== undefined && (
+                <Badge
+                  variant={item.badgeVariant || "secondary"}
+                  className="text-[10px] px-1.5 py-0 shrink-0"
+                >
+                  {item.badge}
+                </Badge>
+              )}
+            </div>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

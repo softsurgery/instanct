@@ -10,8 +10,8 @@ export const Footer = ({ className }: FooterProps) => {
   return (
     <footer
       className={cn(
-        "flex flex-col gap-2 p-2 text-xs lg:text-sm w-full",
-        className
+        "flex flex-col gap-2 p-2 text-xs lg:text-sm w-full border",
+        className,
       )}
     >
       {content}
