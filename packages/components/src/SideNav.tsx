@@ -8,6 +8,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from "@instanct/ui";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -173,20 +174,22 @@ export function SideNav({
   return (
     <React.Fragment>
       {/* Mobile/Tablet view select dropdown */}
-      <div className="lg:hidden p-1">
+      <div className="xl:hidden p-1">
         <Select
           value={activeItem?.href || ""}
           onValueChange={handleMobileSelect}
         >
           <SelectTrigger className="h-11 w-full bg-background border-input font-medium">
-            <div className="flex items-center gap-2.5 truncate">
+            <SelectValue placeholder="Navigation">
+              <div className="flex items-center gap-2.5 truncate pointer-events-none">
               {activeItem?.icon && (
                 <span className="shrink-0">{activeItem.icon}</span>
               )}
               <span className="truncate">
                 {activeItem?.title || "Navigation"}
               </span>
-            </div>
+              </div>
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {flatItems.map((item) => (
@@ -222,7 +225,7 @@ export function SideNav({
       </div>
 
       {/* Desktop view sidebar nav */}
-      <div className="hidden w-full px-1 bg-background py-2 lg:block">
+      <div className="hidden w-full px-1 bg-background py-2 xl:block">
         <nav
           aria-label="Sidebar navigation"
           className={cn("flex flex-col space-y-1.5", className)}
