@@ -10,7 +10,7 @@ import { Label } from "@instanct/ui";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
-import { Loader2, RotateCcw, Save, Search, Settings } from "lucide-react";
+import { Loader2, RotateCcw, Save, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@instanct/ui";
 import { SideNav, SideNavItem } from "@instanct/components";
@@ -32,7 +32,12 @@ export const ConfigurationPortal = ({
   const { setRoutes, clearRoutes } = useBreadcrumb();
   const { setIntro, clearIntro } = useIntro();
   const { setContent, clearContent } = useFooter();
-  const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
+  const {
+    setEnableMainOverflow,
+    clearEnableMainOverflow,
+    setEnableContainer,
+    clearEnableContainer,
+  } = useUI();
   const { configurations, isConfigurationsPending, refetchConfigurations } =
     useConfigurations();
   const configStore = useConfigStore();
@@ -141,10 +146,17 @@ export const ConfigurationPortal = ({
 
   React.useEffect(() => {
     setEnableMainOverflow?.(true);
+    setEnableContainer?.(true);
     return () => {
       clearEnableMainOverflow?.();
+      clearEnableContainer?.();
     };
-  }, [clearEnableMainOverflow, setEnableMainOverflow]);
+  }, [
+    clearEnableContainer,
+    clearEnableMainOverflow,
+    setEnableContainer,
+    setEnableMainOverflow,
+  ]);
 
   React.useEffect(() => {
     setRoutes?.([
@@ -248,16 +260,14 @@ export const ConfigurationPortal = ({
   }
 
   return (
-    <div
-      className={cn("flex flex-col lg:flex-row gap-6 w-full h-auto", className)}
-    >
-      <aside className="w-full lg:w-72 shrink-0 space-y-3">
+    <div className={cn("flex flex-col gap-6 w-full h-auto", className)}>
+      <div className="w-full space-y-3">
         <SideNav
           items={sideNavItems}
           activeHref={selectedNamespace?.id}
           onSelect={(item) => setSelectedNamespaceId(item.href)}
         />
-      </aside>
+      </div>
 
       <main className="flex-1 w-full space-y-6">
         {selectedNamespace ? (

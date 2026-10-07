@@ -11,12 +11,21 @@ export function useApplicationLanguages() {
 
   const languagesParam = config?.params?.find((p) => p.name === "languages");
 
-  const languages: SelectOption[] | undefined = React.useMemo(() => {
-    if (!languagesParam?.value) return undefined;
+  const languages: SelectOption[] = React.useMemo(() => {
+    if (!languagesParam?.value) return [];
     try {
-      return JSON.parse(languagesParam.value);
+      const parsed = JSON.parse(languagesParam.value);
+      if (Array.isArray(parsed)) {
+        return parsed.map((lang) => {
+          return {
+            label: lang.label,
+            value: lang.code,
+          };
+        });
+      }
+      return [];
     } catch {
-      return undefined;
+      return [];
     }
   }, [languagesParam]);
 

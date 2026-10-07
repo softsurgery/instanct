@@ -34,7 +34,12 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
   const { setRoutes, clearRoutes } = useBreadcrumb();
   const { setIntro, clearIntro, setFloating, clearFloating } = useIntro();
   const { setContent, clearContent } = useFooter();
-  const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
+  const {
+    setEnableMainOverflow,
+    clearEnableMainOverflow,
+    setEnableContainer,
+    clearEnableContainer,
+  } = useUI();
   const [selectedLocale, setSelectedLocale] = React.useState<string>("fr");
   const { contentPages, isContentPagesPending, refetchContentPages } =
     useContentPages({ enabled: true, locale: selectedLocale });
@@ -84,30 +89,32 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
   const handleReset = React.useCallback(() => {
     if (!selectedPage) return;
     hydrateFromPage(selectedPage);
-    toast.info("Form values reset");
   }, [hydrateFromPage, selectedPage]);
 
-  const { mutate: updatePage, isPending: isSaving } = useMutation({
+  const { mutateAsync: updatePageAsync, isPending: isSaving } = useMutation({
     mutationFn: (data: { id: string; payload: UpdateContentPageDto }) =>
       api.admin.contentPage.update(data.id, data.payload),
     onSuccess: () => {
-      toast.success(t("pages.messages.updateSuccess"));
       refetchContentPages();
-    },
-    onError: (error: ServerErrorResponse) => {
-      toast.error(
-        error.response?.data?.message || t("pages.messages.updateError"),
-      );
     },
   });
 
-  const handleSave = React.useCallback(() => {
+  const handleSave = React.useCallback(async () => {
     if (!selectedPage) return;
-    updatePage({
-      id: selectedPage.id,
-      payload: useContentPageStore.getState().updateDto,
-    });
-  }, [selectedPage, updatePage]);
+
+    try {
+      await updatePageAsync({
+        id: selectedPage.id,
+        payload: useContentPageStore.getState().updateDto,
+      });
+      toast.success(t("pages.messages.updateSuccess"));
+    } catch (error: unknown) {
+      const err = error as ServerErrorResponse;
+      toast.error(
+        err.response?.data?.message || t("pages.messages.updateError"),
+      );
+    }
+  }, [selectedPage, updatePageAsync, t]);
 
   const handleExport = React.useCallback(() => {
     if (!selectedPage) return;
@@ -146,10 +153,17 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
 
   React.useEffect(() => {
     setEnableMainOverflow?.(true);
+    setEnableContainer?.(true);
     return () => {
       clearEnableMainOverflow?.();
+      clearEnableContainer?.();
     };
-  }, [clearEnableMainOverflow, setEnableMainOverflow]);
+  }, [
+    clearEnableContainer,
+    clearEnableMainOverflow,
+    setEnableContainer,
+    setEnableMainOverflow,
+  ]);
 
   React.useEffect(() => {
     setRoutes?.([
@@ -245,14 +259,9 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
   }
 
   return (
-    <div
-      className={cn(
-        "mt-4 flex flex-col lg:flex-row gap-6 w-full h-auto",
-        className,
-      )}
-    >
-      {/* Sidenav component for pages navigation */}
-      <aside className="w-full lg:w-72 shrink-0 space-y-3">
+    <div className={cn("mt-4 flex flex-col gap-6 w-full h-auto", className)}>
+      {/* Navigation select */}
+      <div className="w-full space-y-3">
         <SideNav
           items={sideNavItems}
           activeHref={selectedPage?.slug}
@@ -262,7 +271,7 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
             if (page) hydrateFromPage(page);
           }}
         />
-      </aside>
+      </div>
 
       {/* Main Content Form area (no Card component) */}
       <main className="flex-1 w-full space-y-6">
