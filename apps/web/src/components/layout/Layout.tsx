@@ -39,7 +39,12 @@ function LayoutShell({ className, children }: LayoutProps) {
               className,
             )}
           >
-            <div className={cn(enableContainer ? "container mx-auto" : "")}>
+            <div
+              className={cn(
+                "flex flex-col flex-1 overflow-hidden",
+                enableContainer ? "container mx-auto" : "",
+              )}
+            >
               {(title || description || floating) && (
                 <div className="shrink-0 flex flex-row items-center justify-between gap-4">
                   <div className="space-y-1">
