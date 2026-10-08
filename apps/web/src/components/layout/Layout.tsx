@@ -41,7 +41,8 @@ function LayoutShell({ className, children }: LayoutProps) {
           >
             <div
               className={cn(
-                "flex flex-col flex-1 overflow-hidden",
+                "flex flex-col flex-1",
+                enableMainOverflow ? "overflow-visible" : "overflow-hidden",
                 enableContainer ? "container mx-auto" : "",
               )}
             >
