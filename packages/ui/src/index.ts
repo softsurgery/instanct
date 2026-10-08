@@ -123,6 +123,7 @@ export { Calendar, CalendarDayButton } from "./components/calendar";
 export { Popover, PopoverContent, PopoverTrigger } from "./components/popover";
 export { RadioGroup, RadioGroupItem } from "./components/radio-group";
 export { Switch } from "./components/switch";
+export { Slider } from "./components/slider";
 export { Textarea } from "./components/textarea";
 export { Progress } from "./components/progress";
 export {
