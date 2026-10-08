@@ -17,7 +17,12 @@ interface ApplicationProps {
 const publicRoutes = ["/auth"];
 const protectedHome = "/";
 
-function Application({ className, Component, pageProps, router }: ApplicationProps) {
+function Application({
+  className,
+  Component,
+  pageProps,
+  router,
+}: ApplicationProps) {
   const { data: session, status } = useSession();
   const [hasMounted, setHasMounted] = React.useState(false);
 
@@ -73,7 +78,7 @@ function Application({ className, Component, pageProps, router }: ApplicationPro
           </Layout>
         )}
       </div>
-      <Toaster />
+      <Toaster position="bottom-left" />
     </>
   );
 }

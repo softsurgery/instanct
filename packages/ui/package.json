@@ -59,7 +59,7 @@
     "react-day-picker": "^10.0.1",
     "react-colorful": "^5.6.1",
     "react-i18next": "^15.0.2",
-    "sonner": "^1.7.4",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "vaul": "^1.1.2",
     "@instanct/lib": "workspace:*"

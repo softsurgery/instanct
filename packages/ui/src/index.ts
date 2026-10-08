@@ -165,7 +165,7 @@ export {
 } from "./components/drawer";
 export { ThemeProvider, useTheme } from "./components/theme/theme-provider";
 export { ModeToggle } from "./components/theme/mode-toggle";
-export { Toaster } from "./components/sonner";
+export { Toaster, toast } from "./components/sonner";
 export * from "./components/reui/stepper";
 export * from "./components/editor/rte-text-editor";
 export * from "./components/editor/extensions";
