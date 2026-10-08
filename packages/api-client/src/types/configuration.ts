@@ -25,6 +25,8 @@ export interface ResponseConfigurationParamDto {
   value?: string;
   options?: { label: string; value: string }[];
   schema?: ConfigurationListFieldSchema[];
+  min?: number;
+  max?: number;
 }
 
 export interface ResponseConfigurationNamespaceDto {

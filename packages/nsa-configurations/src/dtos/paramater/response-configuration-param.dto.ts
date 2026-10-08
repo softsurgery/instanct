@@ -46,4 +46,12 @@ export class ResponseConfigurationParamDto extends ResponseDtoHelper {
   @ApiProperty({ type: Object, required: false })
   @Expose()
   schema?: ConfigurationListFieldSchema[];
+
+  @ApiProperty({ type: Number, required: false })
+  @Expose()
+  min?: number;
+
+  @ApiProperty({ type: Number, required: false })
+  @Expose()
+  max?: number;
 }
