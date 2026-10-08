@@ -1,23 +1,28 @@
 import React from "react";
 import { AppProps } from "next/app";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { Layout } from "./layout/Layout";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@instanct/ui";
 import { Spinner } from "@instanct/components";
+import { NextRouter } from "next/router";
 
 interface ApplicationProps {
   className?: string;
   Component: AppProps["Component"];
   pageProps: AppProps["pageProps"];
+  router: NextRouter;
 }
 
 const publicRoutes = ["/auth"];
 const protectedHome = "/";
 
-function Application({ className, Component, pageProps }: ApplicationProps) {
-  const router = useRouter();
+function Application({
+  className,
+  Component,
+  pageProps,
+  router,
+}: ApplicationProps) {
   const { data: session, status } = useSession();
   const [hasMounted, setHasMounted] = React.useState(false);
 
@@ -58,21 +63,23 @@ function Application({ className, Component, pageProps }: ApplicationProps) {
   }
 
   return (
-    <div
-      className={cn(
-        `flex flex-col flex-1 overflow-hidden min-h-screen max-h-screen`,
-        className,
-      )}
-    >
-      {isAuthPage ? (
-        <Component {...pageProps} />
-      ) : (
-        <Layout>
+    <>
+      <div
+        className={cn(
+          `flex flex-col flex-1 overflow-hidden min-h-screen max-h-screen`,
+          className,
+        )}
+      >
+        {isAuthPage ? (
           <Component {...pageProps} />
-        </Layout>
-      )}
-      <Toaster className="m-5" />
-    </div>
+        ) : (
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        )}
+      </div>
+      <Toaster position="bottom-left" />
+    </>
   );
 }
 

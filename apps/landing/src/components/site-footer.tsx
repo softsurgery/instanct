@@ -4,14 +4,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { navLinks, site } from "@/lib/site";
+import { useData } from "@/contexts/data-context";
 
-const footerProductLinks = navLinks.filter(
-  (item) => item.href !== "/#faq",
-);
+const footerProductLinks = navLinks.filter((item) => item.href !== "/#faq");
 
 export function SiteFooter() {
   const { t } = useTranslation("landing");
   const year = new Date().getFullYear();
+
+  const { contactEmail } = useData();
 
   return (
     <footer className="border-t">
@@ -63,10 +64,10 @@ export function SiteFooter() {
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <a
-                  href={`mailto:${site.urls.contact}`}
+                  href={`mailto:${contactEmail}`}
                   className="hover:text-foreground"
                 >
-                  {site.urls.contact}
+                  {contactEmail}
                 </a>
               </li>
             </ul>

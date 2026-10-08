@@ -2,14 +2,12 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import * as Haptics from "expo-haptics";
 import { type ActionSheetRef } from "react-native-actions-sheet";
-import { Text } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
+import { Icon,Text } from "@instanct/mobile-ui";
 import { ResponseUserDto } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";
 import { useRouter } from "expo-router";
-import { hslToHex, THEME } from "@/lib/theme";
 import {
   Bookmark,
   BookmarkX,
@@ -29,8 +27,6 @@ interface BookmarkCardProps {
   user?: ResponseUserDto;
   onRemoved?: (user?: ResponseUserDto) => void;
 }
-
-const PRIMARY = hslToHex(THEME.light.primary);
 
 export const BookmarkCard = ({
   className,
@@ -117,13 +113,13 @@ export const BookmarkCard = ({
           <View className="relative">
             <View
               className="rounded-full p-[3px]"
-              style={{ backgroundColor: `${PRIMARY}1f` }}
+              style={{ backgroundColor: `${palette.primary}1f` }}
             >
               <View className="rounded-full bg-muted">{bookmarkImages[0]}</View>
             </View>
             <View
               className="absolute -bottom-0.5 -right-0.5 h-6 w-6 items-center justify-center rounded-full border-2 border-card"
-              style={{ backgroundColor: PRIMARY }}
+              style={{ backgroundColor: palette.primary }}
             >
               <Icon as={Bookmark} size={12} color="#ffffff" fill="#ffffff" />
             </View>

@@ -12,6 +12,7 @@ export interface ResponseDeviceInfoDto extends DatabaseEntity {
 export interface ResponseBugDto extends DatabaseEntity {
   id: number;
   variant: string;
+  status: string;
   title: string;
   description: string;
   device: ResponseDeviceInfoDto;

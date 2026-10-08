@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+.pnpm-store
 
 # Local env files
 .env
@@ -27,6 +28,9 @@ coverage
 out/
 build
 dist
+.nsa-out/
+.nsa-build.lock
+.nsa-build.stamp
 
 
 # Debug
@@ -42,3 +46,6 @@ expo-env.d.ts
 # Misc
 .DS_Store
 *.pem
+
+#python
+*.pyc

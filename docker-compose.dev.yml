@@ -1,11 +1,107 @@
+# Development stack:
+#   docker compose -f docker-compose.dev.yml up --build
+name: instanct-dev
+
 services:
-  nginx:
-    image: nginx:alpine
-    container_name: instanct_nginx_dev
-    restart: unless-stopped
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: instanct_mysql_dev
+  #   restart: always
+  #   env_file: env/dev/infra.env
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: instanct_rustfs_dev
+    restart: always
+    env_file: env/dev/infra.env
+    command: --address :9000 --console-address :9001 /data
     ports:
-      - "80:80"
+      - "9000:9000"
+      - "9001:9001"
     volumes:
-      - ./infra/nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      - rustfs_data:/data
+
+
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: instanct-api:dev
+    container_name: instanct_api_dev
+    restart: on-failure
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    env_file: env/dev/api.env
+    ports:
+      - "5005:5005"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        WEB_ENV_FILE: env/dev/web.env
+    image: instanct-web:dev
+    container_name: instanct_web_dev
+    restart: on-failure
+    depends_on:
+      - api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file: env/dev/web.env
+    ports:
+      - "3007:3007"
+
+  landing:
+    build:
+      context: .
+      dockerfile: apps/landing/Dockerfile
+      args:
+        LANDING_ENV_FILE: env/dev/landing.env
+    image: instanct-landing:dev
+    container_name: instanct_landing_dev
+    restart: on-failure
+    depends_on:
+      - api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file: env/dev/landing.env
+    ports:
+      - "3008:3008"
+
+  mobile:
+    build:
+      context: .
+      dockerfile: apps/mobile/Dockerfile
+      args:
+        MOBILE_ENV_FILE: env/dev/mobile.env
+    image: instanct-mobile:dev
+    container_name: instanct_mobile_dev
+    restart: on-failure
+    depends_on:
+      - api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file: env/dev/mobile.env
+    ports:
+      - "${MOBILE_PORT:-8081}:8081"
+    stdin_open: true
+    tty: true
+
+# volumes:
+#   mysql_data:
+volumes:
+  rustfs_data:

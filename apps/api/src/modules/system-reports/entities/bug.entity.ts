@@ -1,4 +1,5 @@
-import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import { BugStatus } from '../enums/bug-status.enum';
+import { EntityHelper } from 'nsa-database';
 import {
   Column,
   Entity,
@@ -17,6 +18,9 @@ export class BugEntity extends EntityHelper {
 
   @Column({ type: 'enum', enum: BugVariant, nullable: false })
   variant: BugVariant;
+
+  @Column({ type: 'enum', enum: BugStatus, default: BugStatus.PENDING })
+  status: BugStatus;
 
   @Column({ nullable: false })
   title: string;

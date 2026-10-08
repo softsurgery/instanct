@@ -6,7 +6,7 @@ import { Icon } from "@instanct/mobile-ui";
 import { IconBadge } from "@instanct/mobile-ui";
 import { Text, TextVariantDefaults } from "@instanct/mobile-ui";
 import React from "react";
-import { hslToHex } from "./lib/theme";
+import { hslToHex } from "./hooks/useColorPalette";
 import { useColorPalette } from "./hooks/useColorPalette";
 
 type Shortcut =

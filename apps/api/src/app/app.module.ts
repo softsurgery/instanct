@@ -4,25 +4,28 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { config } from 'src/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from 'src/shared/database/services/database-config.service';
+import { TypeOrmConfigService } from 'nsa-database';
 import { ClsModule } from 'nestjs-cls';
 import { ClsPluginTransactional } from '@nestjs-cls/transactional';
 import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
 import { DataSource } from 'typeorm';
-import { DatabaseModule } from 'src/shared/database/database.module';
+import { DatabaseModule } from 'nsa-database';
 import { JwtModule } from '@nestjs/jwt';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailModule } from 'src/shared/mail/mail.module';
-import { resolveMX } from 'src/shared/mail/utils/mx-resolve.util';
+import { MailModule } from 'nsa-mail/mail.module';
+import { resolveMX } from 'nsa-mail/utils/mx-resolve.util';
 import { RouterModule } from 'src/routers/router.module';
 import { SeedersModule } from 'src/seeders/seeders.module';
-import { StorageModule } from 'src/shared/storage/storage.module';
+import { StorageModule } from 'nsa-storage/storage.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { SentryModule } from '@sentry/nestjs/setup';
+import { SentryCatchAllFilter } from 'nsa-sentry/sentry-catch-all.filter';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -33,9 +36,10 @@ import { APP_GUARD } from '@nestjs/core';
       load: config,
       isGlobal: true,
       cache: true,
-      envFilePath: !process.env.NODE_ENV
-        ? '.env'
-        : `.env.${process.env.NODE_ENV}`,
+      envFilePath: [
+        process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '',
+        '.env',
+      ].filter(Boolean),
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
@@ -116,6 +120,10 @@ import { APP_GUARD } from '@nestjs/core';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: SentryCatchAllFilter,
     },
   ],
 })

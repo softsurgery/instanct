@@ -1,4 +1,4 @@
-import { EntityHelper } from 'src/shared/database/interfaces/database.entity.interface';
+import { EntityHelper } from 'nsa-database';
 import {
   Column,
   Entity,
@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { StorageEntity } from 'src/shared/storage/entities/storage.entity';
+import { StorageEntity } from 'nsa-storage/entities/storage.entity';
 import { UserEntity } from './user.entity';
 
 @Entity('user_uploads')

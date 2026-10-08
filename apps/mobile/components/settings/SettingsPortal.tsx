@@ -6,24 +6,18 @@ import { router } from "expo-router";
 import { ChevronRight, LogOut, Trash2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { StableScrollView } from "@instanct/mobile-components";
-import { Badge } from "@instanct/mobile-ui";
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Separator } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { AppHeaderBack, ApplicationHeader, StableSafeAreaView, StableScrollView } from "@instanct/mobile-components";
 import { createSettingRow, SettingRow } from "./SettingsRow";
 import type { SettingRowConfig } from "./SettingsRow";
 import { useLogout } from "@/hooks/useLogout";
-import { AppHeaderBack } from "@instanct/mobile-components";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner-native";
 import { api } from "@/api";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
 import type { ServerErrorResponse } from "~/types";
+import Sentry from "@/lib/sentry";
+import { Badge, Button, Icon, Separator, Text } from "@instanct/mobile-ui";
 
 interface SettingsPortalProps {
   className?: string;
@@ -160,6 +154,46 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
           rightIcon: ChevronRight,
           className: "p-1 px-4",
           onPress: () => router.push("/main/settings/about"),
+        }),
+      ],
+      showOnDevelopment: false,
+    },
+    {
+      key: "bugsink-testing",
+      title: "Bugsink Testing",
+      description: "Test error reporting and tracking",
+      rows: [
+        createSettingRow({
+          title: "Send Test Error (Handled)",
+          description: "Capture an error via Sentry.captureException and send to Bugsink",
+          rightIcon: ChevronRight,
+          className: "p-1 px-4",
+          onPress: () => {
+            try {
+              const eventId = Sentry.captureException(
+                new Error("Test Bugsink error from Mobile settings")
+              );
+              toast.success("Test error sent to Bugsink!", {
+                description: `Event ID: ${eventId || "sent"}`,
+              });
+            } catch (err) {
+              toast.error("Failed to send test error", {
+                description: String(err),
+              });
+            }
+          },
+        }),
+        createSettingRow({
+          title: "Trigger Uncaught Crash",
+          description: "Throw an unhandled error to test global crash reporting",
+          rightIcon: ChevronRight,
+          className: "p-1 px-4",
+          onPress: () => {
+            toast.info("Triggering uncaught crash...");
+            setTimeout(() => {
+              throw new Error("Test Bugsink Uncaught Crash from Mobile App");
+            }, 500);
+          },
         }),
       ],
       showOnDevelopment: false,

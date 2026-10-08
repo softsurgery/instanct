@@ -8,12 +8,14 @@ export const site = {
   },
 };
 
-export const navLinks = [
-  { href: "/#features", labelKey: "nav.features" },
-  { href: "/#how-it-works", labelKey: "nav.howItWorks" },
-  { href: "/#safety", labelKey: "nav.safety" },
-  { href: "/#faq", labelKey: "nav.faq" },
-] as const;
+export type NavLink = { href: string; labelKey: string };
+
+export const navLinks: readonly NavLink[] = [
+  // { href: "/#features", labelKey: "nav.features" },
+  // { href: "/#how-it-works", labelKey: "nav.howItWorks" },
+  // { href: "/#safety", labelKey: "nav.safety" },
+  // { href: "/#faq", labelKey: "nav.faq" },
+];
 
 export const featureItems = [
   { icon: "map", key: "nearbyDiscovery" },

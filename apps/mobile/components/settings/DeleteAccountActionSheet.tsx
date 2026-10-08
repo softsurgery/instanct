@@ -1,11 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
-import { Text } from "@instanct/mobile-ui";
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { useColorPalette } from "@instanct/mobile-components";
-import { hslToHex } from "@/lib/theme";
+import { Text, Button, Icon } from "@instanct/mobile-ui";
+import { useColorPalette, hslToHex } from "@instanct/mobile-components";
 import { Trash2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 
@@ -44,7 +41,11 @@ export const DeleteAccountActionSheet = React.forwardRef<
         <View className="px-4 py-2">
           <View className="flex-row items-center gap-2 mb-2">
             <View className="h-9 w-9 items-center justify-center rounded-xl bg-destructive/10">
-              <Icon as={Trash2} size={19} color={hslToHex(palette.destructive)} />
+              <Icon
+                as={Trash2}
+                size={19}
+                color={hslToHex(palette.destructive)}
+              />
             </View>
 
             <Text variant="large" className="text-foreground">

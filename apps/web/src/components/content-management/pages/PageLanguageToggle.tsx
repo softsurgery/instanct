@@ -1,13 +1,11 @@
-import { Button } from "@instanct/ui";
 import { cn } from "@/lib/utils";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@instanct/ui";
-import { Check } from "lucide-react";
-import { CaretSortIcon } from "@radix-ui/react-icons";
 import { SelectOption } from "@instanct/form-builder";
 
 interface PageLanguageToggleProps {
@@ -23,44 +21,18 @@ export function PageLanguageToggle({
   languages,
   className,
 }: PageLanguageToggleProps) {
-  const options =
-    languages && languages.length > 0
-      ? languages
-      : [
-          { label: "FR", value: "fr" },
-          { label: "EN", value: "en" },
-        ];
-
-  const selectedOption =
-    options.find((lang) => lang.value === value) || options[0];
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={cn("flex items-center h-8", className)}
-        >
-          {selectedOption.label || selectedOption.value.toUpperCase()}
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40">
-        {options.map((lang) => {
-          const isSelected = value === lang.value;
-          return (
-            <DropdownMenuItem
-              key={lang.value}
-              onClick={() => onValueChange(lang.value)}
-              className="flex items-center justify-between cursor-pointer"
-            >
-              <span>{lang.label || lang.value.toUpperCase()}</span>
-              {isSelected && <Check className="h-4 w-4" />}
-            </DropdownMenuItem>
-          );
-        })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger className={cn("h-8", className)}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent align="start" side="left">
+        {languages?.map((lang) => (
+          <SelectItem key={String(lang.value)} value={String(lang.value)}>
+            {lang.label || String(lang.value).toUpperCase()}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

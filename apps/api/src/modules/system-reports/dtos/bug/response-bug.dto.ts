@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BugVariant } from '../../enums/bug-variant.enum';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { BugStatus } from '../../enums/bug-status.enum';
+import { ResponseDtoHelper } from 'nsa-database';
 import { Expose, Type } from 'class-transformer';
 import { ResponseDeviceInfoDto } from '../device-info/response-device-info.dto';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
@@ -13,6 +14,10 @@ export class ResponseBugDto extends ResponseDtoHelper {
   @ApiProperty({ type: String, enum: BugVariant })
   @Expose()
   variant: BugVariant;
+
+  @ApiProperty({ type: String, enum: BugStatus })
+  @Expose()
+  status: BugStatus;
 
   @ApiProperty({ type: String })
   @Expose()

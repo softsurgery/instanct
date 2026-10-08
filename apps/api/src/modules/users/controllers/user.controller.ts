@@ -12,14 +12,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { ApiPaginatedResponse } from 'src/shared/database/decorators/api-paginated-resposne.decorator';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
-import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
-import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { ApiPaginatedResponse } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
+import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'src/types';
+import { AdvancedRequest } from 'nsa-helpers/http';
 import { UserService } from '../services/user.service';
 import { ResponseUserDto } from '../dtos/user/response-user.dto';
 import { CreateUserDto } from '../dtos/user/create-user.dto';
@@ -27,8 +27,8 @@ import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UpdateUserIndustriesDto } from '../dtos/user/update-user-industries.dto';
 import { UserConfigurationService } from '../services/user-configuration.service';
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
-import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dtos/namespace/response-configuration-namespace.dto';
-import { Public } from 'src/shared/auth/utils/public-strategy';
+import { ResponseConfigurationNamespaceDto } from 'nsa-configurations/dtos/namespace/response-configuration-namespace.dto';
+import { Public } from 'nsa-auth/utils/public-strategy';
 
 @ApiTags('user')
 @ApiBearerAuth('access_token')

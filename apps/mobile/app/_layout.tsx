@@ -1,7 +1,9 @@
+import Sentry from "@/lib/sentry";
 import { splashPrevented } from "@/lib/splash-screen";
-import { NAV_THEME } from "@/lib/theme";
+import { NAV_THEME, THEME } from "@/lib/theme";
 import { cn } from "@instanct/lib";
 import { ThemeProvider } from "expo-router/react-navigation";
+import { useColorScheme } from "nativewind";
 import { PortalHost } from "@rn-primitives/portal";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import * as SplashScreen from "expo-splash-screen";
@@ -19,6 +21,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
 import {
   useColorPalette,
+  PaletteProvider,
   VideoThumbnailGeneratorHost,
 } from "@instanct/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
@@ -72,8 +75,8 @@ function RootLayoutContent() {
   );
 }
 
-export default function RootLayout() {
-  const { colorScheme } = useColorPalette();
+function RootLayout() {
+  const { colorScheme } = useColorScheme();
   const isPreferenceReady = usePreferencePersistStore((state) => state.isReady);
 
   React.useEffect(() => {
@@ -90,20 +93,24 @@ export default function RootLayout() {
   }, [isPreferenceReady]);
 
   return (
-    <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{
-          persister: asyncStoragePersister,
-          maxAge: 1000 * 60 * 60 * 24,
-        }}
-      >
-        <SafeAreaProvider>
-          <LoaderProvider>
-            <RootLayoutContent />
-          </LoaderProvider>
-        </SafeAreaProvider>
-      </PersistQueryClientProvider>
-    </ThemeProvider>
+    <PaletteProvider theme={THEME}>
+      <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
+        <PersistQueryClientProvider
+          client={queryClient}
+          persistOptions={{
+            persister: asyncStoragePersister,
+            maxAge: 1000 * 60 * 60 * 24,
+          }}
+        >
+          <SafeAreaProvider>
+            <LoaderProvider>
+              <RootLayoutContent />
+            </LoaderProvider>
+          </SafeAreaProvider>
+        </PersistQueryClientProvider>
+      </ThemeProvider>
+    </PaletteProvider>
   );
 }
+
+export default Sentry.wrap(RootLayout);

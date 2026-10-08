@@ -5,22 +5,24 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
+import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
 import { BugService } from '../services/bug.service';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
+import { IQueryObject } from 'nsa-database';
 import { ResponseBugDto } from '../dtos/bug/response-bug.dto';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
-import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { PageDto } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
+import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { CreateBugDto } from '../dtos/bug/create-bug.dto';
-import { AdvancedRequest } from 'src/types';
+import { BugStatus } from '../enums/bug-status.enum';
+import { AdvancedRequest } from 'nsa-helpers/http';
 
 @ApiTags('bug')
 @ApiBearerAuth('access_token')
@@ -76,6 +78,15 @@ export class BugController {
   ): Promise<ResponseBugDto | null> {
     const bug = await this.bugService.softDelete(id);
     req.logInfo = { id, variant: bug?.variant };
+    return toDto(ResponseBugDto, bug);
+  }
+
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: string,
+    @Body('status') status: BugStatus,
+  ): Promise<ResponseBugDto> {
+    const bug = await this.bugService.updateStatus(id, status);
     return toDto(ResponseBugDto, bug);
   }
 }

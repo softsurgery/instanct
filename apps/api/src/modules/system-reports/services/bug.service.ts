@@ -1,16 +1,17 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { QueryBuilder } from 'src/shared/database/utils/database-query-builder';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { PageMetaDto } from 'src/shared/database/dtos/database.page-meta.dto';
+import { IQueryObject } from 'nsa-database';
+import { QueryBuilder } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { PageMetaDto } from 'nsa-database';
 import { BugRepository } from '../repositories/bug.repository';
 import { DeviceInfoService } from './device-info.service';
 import { BugNotFoundException } from '../errors/bug/bug.notfound.error';
 import { BugEntity } from '../entities/bug.entity';
 import { CreateBugDto } from '../dtos/bug/create-bug.dto';
 import { DeviceInfoEntity } from '../entities/device-info.entity';
+import { BugStatus } from '../enums/bug-status.enum';
 
 @Injectable()
 export class BugService {
@@ -108,5 +109,12 @@ export class BugService {
       deviceId: existingDevice?.id,
       userId,
     });
+  }
+
+  @Transactional()
+  async updateStatus(id: string, status: BugStatus): Promise<BugEntity> {
+    const bug = await this.findOneById(id);
+    bug.status = status;
+    return this.bugRepository.save(bug);
   }
 }

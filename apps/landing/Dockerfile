@@ -47,10 +47,11 @@ COPY packages/ui ./packages/ui
 
 ENV npm_config_ignore_scripts=true
 
-RUN set -a && \
-    [ -f apps/landing/.env.build ] && . apps/landing/.env.build; \
-    set +a && \
-    /repo/node_modules/.bin/turbo run build --filter=instanct-landing
+ARG LANDING_ENV_FILE=env/prod/landing.env
+COPY ${LANDING_ENV_FILE} /tmp/landing.env
+RUN grep -E '^(NEXT_PUBLIC_|API_BASE_URL=)' /tmp/landing.env > apps/landing/.env && \
+    set -a && . apps/landing/.env && set +a && \
+    NODE_ENV=production /repo/node_modules/.bin/turbo run build --filter=instanct-landing
 
 # ---- Production image ----
 FROM node:22-alpine AS runner

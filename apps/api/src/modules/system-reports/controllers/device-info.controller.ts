@@ -11,16 +11,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
+import { toDto, toDtoArray } from 'nsa-database';
 import { DeviceInfoService } from '../services/device-info.service';
 import { ResponseDeviceInfoDto } from '../dtos/device-info/response-device-info.dto';
 import { CreateDeviceInfoDto } from '../dtos/device-info/create-device-info.dto';
-import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
-import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'src/types';
+import { AdvancedRequest } from 'nsa-helpers/http';
 
 @ApiTags('device-info')
 @ApiBearerAuth('access_token')

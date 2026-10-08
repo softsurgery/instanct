@@ -1,0 +1,54 @@
+{
+  "name": "nsa-mail",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Instanct shared mail module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    },
+    "./*/*": {
+      "types": "./dist/*/*.d.ts",
+      "default": "./dist/*/*.js"
+    },
+    "./*/*/*": {
+      "types": "./dist/*/*/*.d.ts",
+      "default": "./dist/*/*/*.js"
+    },
+    "./*/*/*/*": {
+      "types": "./dist/*/*/*/*.d.ts",
+      "default": "./dist/*/*/*/*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-shared-packages.mjs",
+    "clean": "rm -rf node_modules .next dist build .turbo"
+  },
+  "dependencies": {
+    "@nestjs-modules/mailer": "^2.0.2",
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
+    "ejs": "^5.0.2",
+    "juice": "^11.1.1",
+    "nsa-templates": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/node": "^22.10.7",
+    "typescript": "5.9.3"
+  }
+}

@@ -10,7 +10,7 @@ import { Label } from "@instanct/ui";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
-import { Loader2, RotateCcw, Save, Search, Settings } from "lucide-react";
+import { Loader2, RotateCcw, Save, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@instanct/ui";
 import { SideNav, SideNavItem } from "@instanct/components";
@@ -30,9 +30,14 @@ export const ConfigurationPortal = ({
 }: ConfigurationPortalProps) => {
   const { t } = useTranslation("content-management");
   const { setRoutes, clearRoutes } = useBreadcrumb();
-  const { setIntro, clearIntro } = useIntro();
+  const { setIntro, clearIntro, setFloating, clearFloating } = useIntro();
   const { setContent, clearContent } = useFooter();
-  const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
+  const {
+    setEnableMainOverflow,
+    clearEnableMainOverflow,
+    setEnableContainer,
+    clearEnableContainer,
+  } = useUI();
   const { configurations, isConfigurationsPending, refetchConfigurations } =
     useConfigurations();
   const configStore = useConfigStore();
@@ -141,10 +146,17 @@ export const ConfigurationPortal = ({
 
   React.useEffect(() => {
     setEnableMainOverflow?.(true);
+    setEnableContainer?.(true);
     return () => {
       clearEnableMainOverflow?.();
+      clearEnableContainer?.();
     };
-  }, [clearEnableMainOverflow, setEnableMainOverflow]);
+  }, [
+    clearEnableContainer,
+    clearEnableMainOverflow,
+    setEnableContainer,
+    setEnableMainOverflow,
+  ]);
 
   React.useEffect(() => {
     setRoutes?.([
@@ -171,6 +183,35 @@ export const ConfigurationPortal = ({
 
   React.useEffect(() => {
     if (!selectedNamespace) {
+      clearFloating?.();
+      return;
+    }
+
+    setFloating?.(
+      <ImportExportActions
+        exportLabel={t("configuration.actions.export")}
+        importLabel={t("configuration.actions.import")}
+        disabled={isSaving || !selectedNamespace}
+        onExport={handleExport}
+        onImport={handleImport}
+      />,
+    );
+
+    return () => {
+      clearFloating?.();
+    };
+  }, [
+    clearFloating,
+    handleExport,
+    handleImport,
+    isSaving,
+    selectedNamespace,
+    setFloating,
+    t,
+  ]);
+
+  React.useEffect(() => {
+    if (!selectedNamespace) {
       clearContent?.();
       return;
     }
@@ -184,7 +225,6 @@ export const ConfigurationPortal = ({
           onClick={handleReset}
           disabled={isSaving}
         >
-          <RotateCcw />
           {t("configuration.actions.resetAll")}
         </Button>
         <Button
@@ -193,7 +233,6 @@ export const ConfigurationPortal = ({
           onClick={handleSave}
           disabled={isSaving}
         >
-          <Save />
           {t("configuration.actions.saveChanges")}
         </Button>
       </div>,
@@ -248,40 +287,18 @@ export const ConfigurationPortal = ({
   }
 
   return (
-    <div
-      className={cn("flex flex-col lg:flex-row gap-6 w-full h-auto", className)}
-    >
-      <aside className="w-full lg:w-72 shrink-0 space-y-3">
+    <div className={cn("flex flex-col gap-6 w-full h-auto", className)}>
+      <div className="w-full space-y-3 mt-4">
         <SideNav
           items={sideNavItems}
           activeHref={selectedNamespace?.id}
           onSelect={(item) => setSelectedNamespaceId(item.href)}
         />
-      </aside>
+      </div>
 
       <main className="flex-1 w-full space-y-6">
         {selectedNamespace ? (
           <div className="flex flex-col space-y-6">
-            <header className="flex items-center justify-between border-b pb-4">
-              <div>
-                <h2 className="text-xl font-bold text-foreground">
-                  {_.capitalize(selectedNamespace.name)}
-                </h2>
-                {selectedNamespace.description && (
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {selectedNamespace.description}
-                  </p>
-                )}
-              </div>
-              <ImportExportActions
-                exportLabel={t("configuration.actions.export")}
-                importLabel={t("configuration.actions.import")}
-                disabled={isSaving || !selectedNamespace}
-                onExport={handleExport}
-                onImport={handleImport}
-              />
-            </header>
-
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input

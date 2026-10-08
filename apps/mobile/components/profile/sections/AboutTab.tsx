@@ -1,9 +1,11 @@
-import { SeeMoreText } from "@instanct/mobile-components";
-import { StablePressable } from "@instanct/mobile-components";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { useColorPalette } from "@instanct/mobile-components";
-import { hslToHex, THEME } from "@/lib/theme";
+import {
+  hslToHex,
+  SeeMoreText,
+  useColorPalette,
+  StablePressable,
+} from "@instanct/mobile-components";
+import { Text, Icon } from "@instanct/mobile-ui";
+import { THEME } from "@/lib/theme";
 import { cn } from "@instanct/lib";
 import { ResponseUserDto } from "@/types";
 import {

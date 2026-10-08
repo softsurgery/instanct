@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
+import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
-import { ConfigurationParamService } from 'src/shared/configurations/services/configuration-param.service';
-import { ParamVariant } from 'src/shared/configurations/enums/param-variant.enum';
-import { ConfigurationNamespaceEntity } from 'src/shared/configurations/entities/configuration-namespace.entity';
+import { ConfigurationParamService } from 'nsa-configurations/services/configuration-param.service';
+import { ParamVariant } from 'nsa-configurations/enums/param-variant.enum';
+import { ConfigurationNamespaceEntity } from 'nsa-configurations/entities/configuration-namespace.entity';
 
 @Injectable()
 export class UserConfigurationService {

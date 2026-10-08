@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
+// import { Public } from 'nsa-auth/utils/public-strategy';
 
 @Controller('app')
 @ApiBearerAuth('access_token')
@@ -22,4 +23,10 @@ export class AppController {
   getStorageType() {
     return this.appService.getStorageType();
   }
+
+  // @Public()
+  // @Get('sentry')
+  // getSentry() {
+  //   throw new Error('Test error');
+  // }
 }

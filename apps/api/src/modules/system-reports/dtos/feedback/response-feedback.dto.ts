@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
+import { ResponseDtoHelper } from 'nsa-database';
 import { Expose, Type } from 'class-transformer';
 import { FeedbackCategory } from '../../enums/feedback-category.enum';
 import { ResponseDeviceInfoDto } from '../device-info/response-device-info.dto';

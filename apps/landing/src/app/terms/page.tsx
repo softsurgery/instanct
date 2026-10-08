@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPageShell } from "@/components/legal-page-shell";
-import { findBySlug } from "@/lib/content";
+import { api } from "@/lib/api";
 import { headers } from "next/headers";
 import { resolveSupportedLng } from "@/i18n/config";
 
@@ -13,6 +13,6 @@ export default async function TermsPage() {
   const acceptLanguage = headersList.get("accept-language");
   const locale = resolveSupportedLng(acceptLanguage ?? undefined);
 
-  const page = await findBySlug("terms", locale);
+  const page = await api.contentPage.findBySlug("terms", locale).catch(() => null);
   return <LegalPageShell page={page} kind="terms" />;
 }

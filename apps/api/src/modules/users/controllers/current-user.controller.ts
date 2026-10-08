@@ -10,22 +10,22 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
-import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
-import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { toDto, toDtoArray } from 'nsa-database';
+import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'src/types';
+import { AdvancedRequest } from 'nsa-helpers/http';
 import { UserService } from '../services/user.service';
 import { ResponseUserDto } from '../dtos/user/response-user.dto';
 import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UserConfigurationService } from '../services/user-configuration.service';
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
-import { ResponseConfigurationNamespaceDto } from 'src/shared/configurations/dtos/namespace/response-configuration-namespace.dto';
+import { ResponseConfigurationNamespaceDto } from 'nsa-configurations/dtos/namespace/response-configuration-namespace.dto';
 import { UpdateUserCoverDto } from '../dtos/user/update-user-cover.dto';
 import { UserBookmarkService } from '../services/user-bookmark.service';
 import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
-import { IQueryObject } from 'src/shared/database/interfaces/database-query-options.interface';
-import { PageDto } from 'src/shared/database/dtos/database.page.dto';
+import { IQueryObject } from 'nsa-database';
+import { PageDto } from 'nsa-database';
 
 @ApiTags('current-user')
 @ApiBearerAuth('access_token')

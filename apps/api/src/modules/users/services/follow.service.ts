@@ -1,13 +1,13 @@
-import { FollowCannotFollowYourselfException } from '@/shared/abstract-user-management/errors/follow/follow.cannotfollowyourself.error';
-import { FollowRepository } from '@/shared/abstract-user-management/repositories/follow.repository';
+import { FollowCannotFollowYourselfException } from 'nsa-um/errors/follow/follow.cannotfollowyourself.error';
+import { FollowRepository } from '../repositories/follow.repository';
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories/user.repository';
-import { UserNotFoundException } from '@/shared/abstract-user-management/errors/user/user.notfound.error';
-import { FollowAlreadyExistsException } from '@/shared/abstract-user-management/errors/follow/follow.alreadyexists.error';
-import { FollowNotFoundException } from '@/shared/abstract-user-management/errors/follow/follow.notfound.error';
-import { ResponseFollowDto } from '@/shared/abstract-user-management/dtos/follow/response-follow.dto';
-import { ResponseIsFollowingDto } from '@/shared/abstract-user-management/dtos/follow/response-is-following.dto';
-import { ResponseFollowCountsDto } from '@/shared/abstract-user-management/dtos/follow/response-follow-counts.dto';
+import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
+import { FollowAlreadyExistsException } from 'nsa-um/errors/follow/follow.alreadyexists.error';
+import { FollowNotFoundException } from 'nsa-um/errors/follow/follow.notfound.error';
+import { ResponseFollowDto } from 'nsa-um/dtos/follow/response-follow.dto';
+import { ResponseIsFollowingDto } from 'nsa-um/dtos/follow/response-is-following.dto';
+import { ResponseFollowCountsDto } from 'nsa-um/dtos/follow/response-follow-counts.dto';
 
 @Injectable()
 export class FollowService {

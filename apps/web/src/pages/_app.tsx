@@ -16,7 +16,7 @@ import { api } from "@/lib/api";
 const inter = { className: "font-inter" };
 const queryClient = new QueryClient();
 
-const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
+const App = ({ Component, pageProps: { session, ...pageProps }, router }: AppProps) => {
   return (
     <React.Fragment>
       <Head>
@@ -30,7 +30,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
@@ -39,6 +39,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                 Component={Component}
                 pageProps={pageProps}
                 className={inter.className}
+                router={router}
               />
             </AppProvider>
           </ThemeProvider>

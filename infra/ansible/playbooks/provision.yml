@@ -1,6 +1,0 @@
----
-- name: Provision application server
-  hosts: app_servers
-  become: true
-  roles:
-    - docker

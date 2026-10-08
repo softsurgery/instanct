@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseAbstractRepository } from 'src/shared/database/repositories/database.repository';
+import { DatabaseAbstractRepository } from 'nsa-database';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';

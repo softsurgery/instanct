@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'src/shared/database/services/abstract-crud.service';
+import { AbstractCrudService } from 'nsa-database';
 import { UserService } from './user.service';
-import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
+import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
 import { EducationRepository } from '../repositories/education.repository';
 import { EducationEntity } from '../entities/education.entity';
 import { EducationNotFoundException } from '../errors/educations/education.notfound.error';

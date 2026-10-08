@@ -1,15 +1,12 @@
 import React, { forwardRef } from "react";
-import { useColorScheme } from "nativewind";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable, View } from "react-native";
 import { cn } from "@instanct/lib";
 import { Ellipsis, type LucideIcon } from "lucide-react-native";
 import { Icon } from "@instanct/mobile-ui";
-import { THEME } from "./lib/theme";
+import { useColorPalette } from "./hooks/useColorPalette";
 import { Text } from "@instanct/mobile-ui";
-import { VariantProps } from "class-variance-authority";
-import { Button } from "@instanct/mobile-ui";
 
 interface ThreeDotsActionSheetProps {
   icon?: LucideIcon;
@@ -20,7 +17,6 @@ interface ThreeDotsActionSheetProps {
     label: string;
     onPress: () => void;
     disabled?: boolean;
-    variant?: VariantProps<typeof Button>["variant"];
     icon?: LucideIcon;
   }[];
 }
@@ -29,8 +25,7 @@ export const ThreeDotsActionSheet = forwardRef<
   ActionSheetRef,
   ThreeDotsActionSheetProps
 >(({ icon, disabled, size, options, renderTrigger = true }, ref) => {
-  const { colorScheme } = useColorScheme();
-  const isDarkColorScheme = colorScheme === "dark";
+  const { palette } = useColorPalette();
   const sheetRef = React.useRef<ActionSheetRef>(null);
 
   React.useImperativeHandle(ref, () => sheetRef.current as ActionSheetRef);
@@ -64,22 +59,18 @@ export const ThreeDotsActionSheet = forwardRef<
         defaultOverlayOpacity={0.45}
         onClose={handleClose}
         containerStyle={{
-          backgroundColor: isDarkColorScheme
-            ? THEME.dark.background
-            : THEME.light.background,
+          backgroundColor: palette.background,
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
-          paddingHorizontal: 16,
           paddingTop: 12,
           paddingBottom: 32,
         }}
       >
-        <View className="flex flex-col gap-2.5 pt-2">
+        <View className="flex flex-col gap-2 ">
           {options.map((option) => (
-            <Button
+            <Pressable
               key={option.label}
               disabled={option.disabled}
-              variant={"ghost"}
               onPress={async () => {
                 if (option.disabled) return;
                 await Haptics.selectionAsync();
@@ -87,7 +78,7 @@ export const ThreeDotsActionSheet = forwardRef<
                 sheetRef.current?.hide();
               }}
               className={cn(
-                "flex flex-row items-center gap-2 rounded-2xl h-12",
+                "flex flex-row items-center gap-2 rounded-2xl h-12 px-6 active:opacity-50",
                 option.disabled && "opacity-50",
               )}
             >
@@ -97,34 +88,16 @@ export const ThreeDotsActionSheet = forwardRef<
                 )}
               >
                 {option.icon ? (
-                  <Icon
-                    as={option.icon}
-                    size={20}
-                    className={cn(
-                      option.variant === "destructive"
-                        ? "text-destructive"
-                        : "text-foreground",
-                    )}
-                  />
+                  <Icon as={option.icon} size={20} />
                 ) : (
                   <Icon as={Ellipsis} size={20} className="text-foreground" />
                 )}
               </View>
 
               <View className="flex-1">
-                <Text
-                  variant={"large"}
-                  className={cn(
-                    "text-md font-medium",
-                    option.variant === "destructive"
-                      ? "text-destructive"
-                      : "text-foreground",
-                  )}
-                >
-                  {option.label}
-                </Text>
+                <Text variant={"large"}>{option.label}</Text>
               </View>
-            </Button>
+            </Pressable>
           ))}
         </View>
       </ActionSheet>

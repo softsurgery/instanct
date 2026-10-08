@@ -4,20 +4,20 @@ import { DeepPartial, In } from 'typeorm';
 import { UserRepository } from '../repositories/user.repository';
 import { UserUploadService } from './user-upload.service';
 import { UserEntity } from '../entities/user.entity';
-import { UserNotFoundException } from 'src/shared/abstract-user-management/errors/user/user.notfound.error';
+import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
 import { UserUploadEntity } from '../entities/user-upload.entity';
 import { CreateUserUploadDto } from '../dtos/user-upload/create-user-upload.dto';
 import { UpdateUserUploadDto } from '../dtos/user-upload/update-user-upload.dto';
-import { AbstractUserService } from 'src/shared/abstract-user-management/services/abstract-user.service';
-import { hashPassword } from 'src/shared/helpers/hash.utils';
-import { RefParamRepository } from 'src/shared/reference-types/repositories/ref-param.repository';
-import { RefParamEntity } from 'src/shared/reference-types/entities/ref-param.entity';
-import { StorageService } from 'src/shared/storage/services/storage.service';
+import { AbstractUserService } from 'nsa-um/services/abstract-user.service';
+import { hashPassword } from 'nsa-helpers/hash.utils';
+import { RefParamRepository } from 'nsa-reference-types/repositories/ref-param.repository';
+import { RefParamEntity } from 'nsa-reference-types/entities/ref-param.entity';
+import { StorageService } from 'nsa-storage/services/storage.service';
 import { UserConfigurationService } from './user-configuration.service';
-import { NotificationService } from 'src/shared/notifications/services/notification.service';
-import { LoggerService } from 'src/shared/logger/services/logger.service';
-import { SessionService } from 'src/shared/sessions/services/session.service';
-import { ConfigurationNamespaceService } from 'src/shared/configurations/services/configuration-namespace.service';
+import { NotificationService } from 'nsa-notifications/services/notification.service';
+import { LoggerService } from 'nsa-logger/services/logger.service';
+import { SessionService } from 'nsa-sessions/services/session.service';
+import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
 
 @Injectable()
 export class UserService extends AbstractUserService {

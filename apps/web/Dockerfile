@@ -47,15 +47,10 @@ COPY packages/ui ./packages/ui
 
 ENV npm_config_ignore_scripts=true
 
-# Next.js inlines NEXT_PUBLIC_* at build time from apps/web/.env
-COPY env/web.en[v] /tmp/
-RUN if [ -f /tmp/web.env ]; then \
-      grep -E '^(NEXT_PUBLIC_|BASE_URL=)' /tmp/web.env > apps/web/.env; \
-    elif [ -f apps/web/.env.build ]; then \
-      cp apps/web/.env.build apps/web/.env; \
-    else \
-      touch apps/web/.env; \
-    fi && \
+# Next.js inlines NEXT_PUBLIC_* at build time. Compose selects dev or prod.
+ARG WEB_ENV_FILE=env/prod/web.env
+COPY ${WEB_ENV_FILE} /tmp/web.env
+RUN grep -E '^(NEXT_PUBLIC_|BASE_URL=)' /tmp/web.env > apps/web/.env && \
     set -a && . apps/web/.env && set +a && \
     /repo/node_modules/.bin/turbo run build --filter=instanct-ui
 

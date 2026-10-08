@@ -9,15 +9,15 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
+import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
 import { UserBookmarkService } from '../services/user-bookmark.service';
-import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'src/types';
+import { AdvancedRequest } from 'nsa-helpers/http';
 import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
-import { toDto } from 'src/shared/database/utils/dtos';
+import { toDto } from 'nsa-database';
 import { UserService } from '../services/user.service';
-import { identifyUser } from 'src/shared/abstract-user-management/utils/identify-user';
+import { identifyUser } from 'nsa-um/utils/identify-user';
 
 @ApiTags('user-bookmark')
 @ApiBearerAuth('access_token')

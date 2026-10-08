@@ -14,19 +14,21 @@ import {
   View,
 } from "react-native";
 import Animated from "react-native-reanimated";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
 import { UserCard } from "./UserCard";
 import { Text } from "@instanct/mobile-ui";
 import { SessionCountdown } from "../session/SessionCountdown";
 import { SessionStarter } from "../session/SessionStarter";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
-import { Loader } from "@instanct/mobile-components";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
-import { NotFound } from "@instanct/mobile-components";
-import { hslToHex } from "@/lib/theme";
-import { useColorPalette } from "@instanct/mobile-components";
+import {
+  ApplicationHeader,
+  hslToHex,
+  useColorPalette,
+  NotFound,
+  StableSafeAreaView,
+  Loader,
+} from "@instanct/mobile-components";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";

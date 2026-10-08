@@ -1,7 +1,5 @@
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { useColorPalette } from "@instanct/mobile-components";
-import { hslToHex } from "@/lib/theme";
+import { Icon, Text } from "@instanct/mobile-ui";
+import { hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
 import { router } from "expo-router";
 import {

@@ -11,14 +11,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
+import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
 import { ExperienceService } from '../services/experience.service';
 import { ResponseExperienceDto } from '../dtos/experience/response-experience.dto';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
+import { toDto, toDtoArray } from 'nsa-database';
 import { CreateExperienceDto } from '../dtos/experience/create-experience.dto';
-import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'src/types';
+import { AdvancedRequest } from 'nsa-helpers/http';
 import { UpdateExperienceDto } from '../dtos/experience/update-experience.dto';
 
 @ApiTags('experience')

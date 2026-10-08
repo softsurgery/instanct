@@ -1,3 +1,5 @@
+import './instrument';
+import './bind-app-values';
 import { NestApplication, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { join } from 'path';
@@ -10,7 +12,8 @@ import { useContainer } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { branding } from './utils/branding';
-import { MigrationService } from './shared/database/services/database-migration.service';
+import { corsConfig } from './config/cors.config';
+import { MigrationService } from 'nsa-database';
 
 async function bootstrap() {
   const app: NestApplication = await NestFactory.create(AppModule);
@@ -18,16 +21,34 @@ async function bootstrap() {
     prefix: '/',
   });
 
-  app.enableCors();
+  const logger: Logger = new Logger('Bootstrap');
+  const configService = app.get(ConfigService);
+  const env =
+    configService.get<string>('app.env') ||
+    process.env.NODE_ENV ||
+    'development';
+
+  // CORS Configuration ===================================================
+  const allowedOrigins = configService.get<string[]>('app.cors.origins') ?? [];
+  const debugCors = configService.get<boolean>('app.cors.debug') ?? false;
+
+  logger.log(
+    `Configured CORS allowed origins: ${
+      allowedOrigins.length > 0 ? allowedOrigins.join(', ') : 'None (strict)'
+    }`,
+  );
+
+  app.enableCors(corsConfig(allowedOrigins, debugCors, logger));
+
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
       exceptionFactory: (errors) => {
-        const logger = new Logger('Validation');
+        const validationLogger = new Logger('Validation');
 
-        logger.error(JSON.stringify(errors, null, 2));
+        validationLogger.error(JSON.stringify(errors, null, 2));
 
         return errors;
       },
@@ -35,15 +56,6 @@ async function bootstrap() {
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
-  const logger: Logger = new Logger('Bootstrap');
-
-  // Config Variables =====================================================
-  const configService = app.get(ConfigService);
-  const env =
-    configService.get<string>('app.env') ||
-    process.env.NODE_ENV ||
-    'development';
 
   const host = configService.get<string>('app.http.host') || 'localhost';
   const port = configService.get<number>('app.http.port') || 5000;

@@ -5,14 +5,17 @@ import {
   DataTableConfig,
 } from "@instanct/datatable-builder";
 
-import { ResponseBugDto } from "@instanct/api-client";
+import { ResponseBugDto, ResponseDeviceInfoDto } from "@instanct/api-client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { identifyUser } from "@instanct/lib";
+import { Badge, Button } from "@instanct/ui";
+import { DataTableRowActions } from "@instanct/datatable-builder";
 
 export const useBugReportColumns = (
   context: DataTableConfig<ResponseBugDto>,
+  onDeviceClick?: (device: ResponseDeviceInfoDto) => void,
 ): ColumnDef<ResponseBugDto>[] => {
   const { t } = useTranslation("common");
   return [
@@ -61,6 +64,35 @@ export const useBugReportColumns = (
       enableHiding: true,
     },
     {
+      accessorKey: "status",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="Status"
+          attribute="status"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const status = row.original.status || "Pending";
+        return (
+          <Badge
+            variant={
+              status === "Resolved"
+                ? "default"
+                : status === "Not Resolved"
+                  ? "destructive"
+                  : "secondary"
+            }
+          >
+            {status}
+          </Badge>
+        );
+      },
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
       accessorKey: "description",
       header: ({ column }) => (
         <DataTableColumnHeader
@@ -71,12 +103,13 @@ export const useBugReportColumns = (
         />
       ),
       cell: ({ row }) => (
-        <span className="text-muted-foreground break-words">
+        <div className="text-muted-foreground wrap-break-word whitespace-normal">
           {row.original.description}
-        </span>
+        </div>
       ),
       enableSorting: false,
       enableHiding: true,
+      size: 200,
     },
     {
       accessorKey: "user",
@@ -104,6 +137,33 @@ export const useBugReportColumns = (
       enableHiding: true,
     },
     {
+      accessorKey: "device",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="Device"
+          attribute="device"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const device = row.original.device;
+        if (!device)
+          return <span className="text-muted-foreground">Unknown</span>;
+        return (
+          <Button
+            variant="link"
+            className="p-0 h-auto font-medium text-xs"
+            onClick={() => onDeviceClick?.(device)}
+          >
+            {device.model || device.platform || "View Device"}
+          </Button>
+        );
+      },
+      enableSorting: false,
+      enableHiding: true,
+    },
+    {
       accessorKey: "createdAt",
       header: ({ column }) => (
         <DataTableColumnHeader
@@ -124,6 +184,14 @@ export const useBugReportColumns = (
       },
       enableSorting: true,
       enableHiding: true,
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => (
+        <div className="flex justify-center">
+          <DataTableRowActions row={row} context={context} />
+        </div>
+      ),
     },
   ];
 };

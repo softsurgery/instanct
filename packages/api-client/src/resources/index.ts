@@ -1,5 +1,6 @@
 import type { AxiosInstance } from "axios";
 import { createAuthResource } from "./auth";
+import { createLandingConfigurationResource } from "./landing-configuration";
 import { createConfigurationResource } from "./configuration";
 import { createContentPageResource } from "./content";
 import { createEducationResource } from "./education";
@@ -41,6 +42,7 @@ export function createResources(http: AxiosInstance) {
     experience: createExperienceResource(http),
     education: createEducationResource(http),
     refImpl: createRefImplResource(http),
+    landingConfiguration: createLandingConfigurationResource(http),
   };
 }
 

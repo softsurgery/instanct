@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseStorageDto } from 'src/shared/storage/dtos/response-storage.dto';
-import { ResponseAbstractUserDto } from 'src/shared/abstract-user-management/dtos/abstract-user/response-abstract-user.dto';
-import { Gender } from 'src/shared/abstract-user-management/enums/gender.enum';
+import { ResponseStorageDto } from 'nsa-storage/dtos/response-storage.dto';
+import { ResponseAbstractUserDto } from 'nsa-um/dtos/abstract-user/response-abstract-user.dto';
+import { Gender } from 'nsa-um/enums/gender.enum';
 import { ResponseUserUploadDto } from '../user-upload/response-user-upload.dto';
 import { ResponseExperienceDto } from '../experience/response-experience.dto';
-import { ResponseRefParamDto } from 'src/shared/reference-types/dtos/ref-param/response-ref-param.dto';
+import { ResponseRefParamDto } from 'nsa-reference-types/dtos/ref-param/response-ref-param.dto';
 import { ResponseEducationDto } from '../education/response-education.dto';
-import { ResponseSessionDto } from 'src/shared/sessions/dtos/response-session.dto';
+import { ResponseSessionDto } from 'nsa-sessions/dtos/response-session.dto';
 
 export class ResponseUserDto extends ResponseAbstractUserDto {
   @ApiProperty({ type: String })

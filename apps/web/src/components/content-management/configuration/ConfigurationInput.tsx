@@ -1,4 +1,4 @@
-import { Input } from "@instanct/ui";
+import { Input, Switch } from "@instanct/ui";
 import {
   Select,
   SelectContent,
@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { ParamVariant, ResponseConfigurationParamDto } from "@/types";
 import { useTranslation } from "react-i18next";
 import { ConfigurationListInput } from "./ConfigurationListInput";
+import { ConfigurationSliderInput } from "./ConfigurationSliderInput";
 
 interface ConfigurationInputProps {
   className?: string;
@@ -51,14 +52,19 @@ export const ConfigurationInput = ({
 
     case ParamVariant.NUMBER:
       return (
-        <Input
-          type="number"
-          className={cn("w-full", className)}
+        <ConfigurationSliderInput
+          className={className}
+          configurationParam={configurationParam}
           value={currentValue}
-          onChange={(e) => handleChange(e.target.value)}
-          placeholder={t("configuration.inputs.enter", {
-            name: configurationParam.name,
-          })}
+          onChange={handleChange}
+        />
+      );
+
+    case ParamVariant.BOOLEAN:
+      return (
+        <Switch
+          checked={currentValue === "true"}
+          onCheckedChange={(checked) => handleChange(String(checked))}
         />
       );
 

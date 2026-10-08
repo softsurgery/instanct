@@ -1,0 +1,8 @@
+instanct.com
+www.instanct.com
+app.instanct.com
+api.instanct.com
+app-dev.instanct.com
+api-dev.instanct.com
+landing-dev.instanct.com
+mobile-dev.instanct.com

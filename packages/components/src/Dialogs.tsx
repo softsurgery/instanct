@@ -1,3 +1,5 @@
+"use client";
+
 import { useMediaQuery } from "@instanct/ui";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
@@ -75,7 +77,7 @@ export function useDialog({
         </Drawer>
       )}
     </React.Fragment>,
-    document.body
+    document.body,
   );
 
   return { DialogFragment, openDialog, closeDialog };

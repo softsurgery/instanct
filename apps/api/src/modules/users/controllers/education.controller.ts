@@ -11,12 +11,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'src/shared/logger/decorators/logger.interceptor';
+import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
 import { EducationService } from '../services/education.service';
-import { toDto, toDtoArray } from 'src/shared/database/utils/dtos';
-import { LogEvent } from 'src/shared/logger/decorators/log-event.decorator';
+import { toDto, toDtoArray } from 'nsa-database';
+import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'src/types';
+import { AdvancedRequest } from 'nsa-helpers/http';
 import { ResponseEducationDto } from '../dtos/education/response-education.dto';
 import { CreateEducationDto } from '../dtos/education/create-education.dto';
 import { UpdateEducationDto } from '../dtos/education/update-education.dto';

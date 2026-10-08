@@ -1,0 +1,64 @@
+{
+  "name": "nsa-chat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Instanct shared chat module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    },
+    "./*/*": {
+      "types": "./dist/*/*.d.ts",
+      "default": "./dist/*/*.js"
+    },
+    "./*/*/*": {
+      "types": "./dist/*/*/*.d.ts",
+      "default": "./dist/*/*/*.js"
+    },
+    "./*/*/*/*": {
+      "types": "./dist/*/*/*/*.d.ts",
+      "default": "./dist/*/*/*/*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-shared-packages.mjs",
+    "clean": "rm -rf node_modules .next dist build .turbo"
+  },
+  "dependencies": {
+    "@nestjs-cls/transactional": "^2.4.2",
+    "@nestjs-cls/transactional-adapter-typeorm": "^1.2.4",
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/mapped-types": "^2.1.0",
+    "@nestjs/swagger": "^11.2.1",
+    "@nestjs/typeorm": "^11.0.0",
+    "@nestjs/websockets": "^11.1.7",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "nsa-um": "workspace:*",
+    "nsa-auth": "workspace:*",
+    "nsa-database": "workspace:*",
+    "nsa-helpers": "workspace:*",
+    "nsa-logger": "workspace:*",
+    "nsa-storage": "workspace:*",
+    "socket.io": "^4.8.1",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "^22.10.7"
+  }
+}

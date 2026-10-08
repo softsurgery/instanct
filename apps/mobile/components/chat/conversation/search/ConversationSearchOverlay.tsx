@@ -4,16 +4,17 @@ import { LegendList } from "@legendapp/list";
 import { ChevronLeft, Search } from "lucide-react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Icon, Text } from "@instanct/mobile-ui";
 import { ResponseMessageDto } from "~/types";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { useColorPalette } from "@instanct/mobile-components";
+import {
+  hslToHex,
+  StableSafeAreaView,
+  MarkedInput,
+  useColorPalette,
+} from "@instanct/mobile-components";
 import { useGradualAnimation } from "@/hooks/useGradualAnimation";
-import { hslToHex } from "@/lib/theme";
 import { useConversationMessageSearch } from "@/hooks/content/chat/useConversationMessageSearch";
 import { ConversationSearchResultItem } from "./ConversationSearchResultItem";
-import { MarkedInput } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
 
 interface ConversationSearchOverlayProps {

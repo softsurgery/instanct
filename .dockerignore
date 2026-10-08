@@ -10,6 +10,7 @@
 node_modules
 **/.next
 **/dist
+**/*.tsbuildinfo
 .turbo
 **/.turbo
 **/.expo
@@ -41,15 +42,17 @@ docker-compose.yml
 **/Dockerfile
 **/.dockerignore
 
-# ---- Mobile app & packages (not used by web/api/landing builds) ----
-apps/mobile
-packages/mobile-components
-packages/mobile-form-builder
-packages/mobile-ui
-
-# ---- Env folder (runtime via env_file; web.env is also baked for NEXT_PUBLIC_*) ----
+# ---- Env folder (runtime via env_file). Public Next vars are copied at build time. ----
 env/*
-!env/web.env
+!env/dev
+!env/prod
+env/dev/*
+env/prod/*
+!env/dev/web.env
+!env/prod/web.env
+!env/dev/landing.env
+!env/prod/landing.env
+!env/dev/mobile.env
 
 # ---- Misc ----
 README.md

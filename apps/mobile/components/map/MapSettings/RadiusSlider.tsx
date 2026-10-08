@@ -1,12 +1,10 @@
-import { Badge } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { hslToHex } from "@/lib/theme";
+import { Badge, Text } from "@instanct/mobile-ui";
+import { hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
 import { View } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useTranslation } from "react-i18next";
-import { useColorPalette } from "@instanct/mobile-components";
 
 interface RadiusSliderProps {
   initialValue: number;

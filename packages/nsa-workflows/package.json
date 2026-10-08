@@ -1,0 +1,51 @@
+{
+  "name": "nsa-workflows",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Instanct shared workflows module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    },
+    "./*/*": {
+      "types": "./dist/*/*.d.ts",
+      "default": "./dist/*/*.js"
+    },
+    "./*/*/*": {
+      "types": "./dist/*/*/*.d.ts",
+      "default": "./dist/*/*/*.js"
+    },
+    "./*/*/*/*": {
+      "types": "./dist/*/*/*/*.d.ts",
+      "default": "./dist/*/*/*/*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-shared-packages.mjs",
+    "clean": "rm -rf node_modules .next dist build .turbo"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/swagger": "^11.2.1",
+    "class-transformer": "^0.5.1",
+    "xstate": "^5.32.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "^22.10.7"
+  }
+}

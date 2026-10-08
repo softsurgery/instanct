@@ -18,7 +18,8 @@
   "scripts": {
     "build": "tsc",
     "check-types": "tsc --noEmit",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "devDependencies": {
     "typescript": "^5.5.3"

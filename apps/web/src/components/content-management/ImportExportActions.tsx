@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@instanct/ui";
-import { Download, MoreHorizontal, Upload } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 type ImportExportActionsProps = {
   exportLabel: string;
@@ -61,11 +61,9 @@ export function ImportExportActions({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">
           <DropdownMenuItem onClick={handleImportClick} disabled={disabled}>
-            <Upload />
             {importLabel}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={onExport} disabled={disabled}>
-            <Download />
             {exportLabel}
           </DropdownMenuItem>
         </DropdownMenuContent>

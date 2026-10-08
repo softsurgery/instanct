@@ -1,26 +1,19 @@
 import React from "react";
 import { View } from "react-native";
 import { router } from "expo-router";
-import {
-  ChevronRight,
-  Download,
-  Eye,
-  Lock,
-  Mail,
-  Smartphone,
-} from "lucide-react-native";
+import { ChevronRight, Lock, Mail, Smartphone } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { cn } from "@instanct/lib";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
 import { SettingRow, createSettingRow } from "../SettingsRow";
 import type { SettingRowConfig } from "../SettingsRow";
-import { Text } from "@instanct/mobile-ui";
-import { Separator } from "@instanct/mobile-ui";
-import { Badge } from "@instanct/mobile-ui";
-import { StableScrollView } from "@instanct/mobile-components";
+import { Text, Separator } from "@instanct/mobile-ui";
+import {
+  AppHeaderBack,
+  ApplicationHeader,
+  StableScrollView,
+  StableSafeAreaView,
+} from "@instanct/mobile-components";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
 interface PrivacySecurityPortalProps {
   className?: string;
 }
@@ -43,21 +36,21 @@ export const PrivacySecurityPortal = ({
       key: "security",
       title: t(
         "settings.account.screens.privacy-security.screens.account-security.title",
-        "Account Security"
+        "Account Security",
       ),
       description: t(
         "settings.account.screens.privacy-security.screens.account-security.description",
-        "Manage the most important account security actions."
+        "Manage the most important account security actions.",
       ),
       rows: [
         createSettingRow({
           title: t(
             "settings.account.screens.privacy-security.screens.account-security.change-email.title",
-            "Change Email"
+            "Change Email",
           ),
           description: t(
             "settings.account.screens.privacy-security.screens.account-security.change-email.description",
-            "Update the email address linked to your account"
+            "Update the email address linked to your account",
           ),
           leftIcon: Mail,
           rightIcon: ChevronRight,
@@ -67,11 +60,11 @@ export const PrivacySecurityPortal = ({
         createSettingRow({
           title: t(
             "settings.account.screens.privacy-security.screens.account-security.change-password.title",
-            "Change Password"
+            "Change Password",
           ),
           description: t(
             "settings.account.screens.privacy-security.screens.account-security.change-password.description",
-            "Update your password and keep your account protected"
+            "Update your password and keep your account protected",
           ),
           leftIcon: Lock,
           rightIcon: ChevronRight,

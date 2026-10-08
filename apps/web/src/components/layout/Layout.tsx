@@ -15,7 +15,7 @@ interface LayoutProps {
 function LayoutShell({ className, children }: LayoutProps) {
   const { title, description, floating } = useIntro();
   const { content } = useFooter();
-  const { enableMainOverflow, showSidebar = true } = useUI();
+  const { enableMainOverflow, showSidebar = true, enableContainer } = useUI();
 
   return (
     <SidebarProvider
@@ -39,32 +39,40 @@ function LayoutShell({ className, children }: LayoutProps) {
               className,
             )}
           >
-            {(title || description || floating) && (
-              <div className="shrink-0 flex flex-row items-center justify-between gap-4">
-                <div className="space-y-1">
-                  {title && (
-                    <h2 className="text-2xl font-semibold tracking-tight">
-                      {title}
-                    </h2>
-                  )}
-                  {description && (
-                    <p className="text-sm text-muted-foreground">
-                      {description}
-                    </p>
-                  )}
-                </div>
-                {floating ? <div>{floating}</div> : null}
-              </div>
-            )}
             <div
               className={cn(
-                "flex flex-col",
-                enableMainOverflow
-                  ? "overflow-visible"
-                  : "min-h-0 flex-1 overflow-hidden",
+                "flex flex-col flex-1",
+                enableMainOverflow ? "overflow-visible" : "overflow-hidden",
+                enableContainer ? "container mx-auto" : "",
               )}
             >
-              {children}
+              {(title || description || floating) && (
+                <div className="shrink-0 flex flex-row items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    {title && (
+                      <h2 className="text-2xl font-semibold tracking-tight">
+                        {title}
+                      </h2>
+                    )}
+                    {description && (
+                      <p className="text-sm text-muted-foreground">
+                        {description}
+                      </p>
+                    )}
+                  </div>
+                  {floating ? <div>{floating}</div> : null}
+                </div>
+              )}
+              <div
+                className={cn(
+                  "flex flex-col",
+                  enableMainOverflow
+                    ? "overflow-visible"
+                    : "min-h-0 flex-1 overflow-hidden",
+                )}
+              >
+                {children}
+              </div>
             </div>
           </div>
           {content ? (

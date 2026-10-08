@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
-import { ResponseDtoHelper } from 'src/shared/database/dtos/database.response.dto';
-import { ResponseSessionDto } from 'src/shared/sessions/dtos/response-session.dto';
+import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseSessionDto } from 'nsa-sessions/dtos/response-session.dto';
 import { RequestStatus } from '../enums/request-status.enum';
 
 export class ResponseRequestDto extends ResponseDtoHelper {

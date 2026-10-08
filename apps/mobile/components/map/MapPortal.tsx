@@ -7,14 +7,16 @@ import { Bell } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
 import { MapRenderer } from "./MapRenderer";
-import { Loader } from "@instanct/mobile-components";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
-import { hslToHex } from "@/lib/theme";
-import { useColorPalette } from "@instanct/mobile-components";
+import {
+  hslToHex,
+  useColorPalette,
+  Loader,
+  StableSafeAreaView,
+  ApplicationHeader,
+} from "@instanct/mobile-components";
 import { MapStatus } from "./MapDebugging/MapStatus";
 import { MapLockedOverlay } from "./MaplLockedOverlay";
 

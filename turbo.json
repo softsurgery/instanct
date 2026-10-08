@@ -14,14 +14,78 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "clean": {
+      "cache": false
+    },
     "dev": {
       "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
     "start:dev": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
+    },
+    "nsa-abstract-user-management#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-auth#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-chat#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-configurations#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-content#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-helpers#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-logger#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-mail#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-notifications#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-reference-types#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-sentry#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-sessions#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-storage#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-templates#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
+    },
+    "nsa-workflows#build": {
+      "dependsOn": ["nsa-database#build"],
+      "cache": false
     }
   }
 }

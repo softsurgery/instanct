@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import { cn } from "@instanct/lib";
 import {
@@ -19,7 +21,10 @@ interface LanguageSwitcherProps {
   className?: string;
   languages?: Language[];
 }
-export const LanguageSwitcher = ({ className, languages }: LanguageSwitcherProps) => {
+export const LanguageSwitcher = ({
+  className,
+  languages,
+}: LanguageSwitcherProps) => {
   const router = useRouter();
   const { i18n, t } = useTranslation();
 
