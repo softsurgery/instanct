@@ -70,14 +70,14 @@ export default ({ config }) => ({
     ],
     "expo-video",
     [
-      "@sentry/react-native/expo",
+      "@sentry/react-native",
       {
         url: process.env.SENTRY_URL,
         organization: process.env.SENTRY_ORG,
         project: process.env.SENTRY_PROJECT,
       },
     ],
-    "@sentry/react-native"
+    "./plugins/withSentryUploadGuard",
   ],
   experiments: {
     typedRoutes: true,
@@ -85,6 +85,6 @@ export default ({ config }) => ({
   },
   extra: {
     router: {},
-    sentryDsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+    sentryDsn: process.env.EXPO_PUBLIC_SENTCRY_DSN,
   },
 });

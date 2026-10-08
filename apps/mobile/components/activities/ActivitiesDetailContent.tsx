@@ -14,7 +14,7 @@ import { cn } from "@instanct/lib";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { NotFound } from "@instanct/mobile-components";
 import { BookmarkSkeleton } from "./skeletons/BookmarkSkeleton";
-import { createMaterialTopTabNavigator } from "expo-router/js-top-tabs";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTranslation } from "react-i18next";
 
 interface ActivitiesDetailContentProps {

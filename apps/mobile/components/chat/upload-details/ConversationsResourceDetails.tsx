@@ -1,6 +1,6 @@
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { ApplicationHeader } from "@instanct/mobile-components";
-import { createMaterialTopTabNavigator } from "expo-router/js-top-tabs";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { ConversationMediaDetails } from "./ConversationMediaDetails";
 import { ConversationFilesDetails } from "./ConversationFilesDetails";
 import { ConversationLinksDetails } from "./ConversationLinksDetails";

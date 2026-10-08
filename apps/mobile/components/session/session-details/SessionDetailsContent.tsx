@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { Badge } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import { createMaterialTopTabNavigator } from "expo-router/js-top-tabs";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Separator } from "@instanct/mobile-ui";
 import { ArrowRight } from "lucide-react-native";
 import { Icon } from "@instanct/mobile-ui";
