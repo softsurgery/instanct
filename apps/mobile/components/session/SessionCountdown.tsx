@@ -1,8 +1,7 @@
 import { cn } from "@instanct/lib";
 import { ResponseSessionDto } from "@/types/session";
 import React from "react";
-import { StyleProp, TextStyle, View, ViewStyle } from "react-native";
-import { Text } from "react-native-gesture-handler";
+import { StyleProp, Text, TextStyle, View, ViewStyle } from "react-native";
 
 interface SessionCountdownProps {
   session: ResponseSessionDto;

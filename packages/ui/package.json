@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
-    "@tanstack/react-table": "^8.20.5",
+    "@tanstack/react-table": "^8.21.3",
     "@tiptap/core": "^3.31.3",
     "@tiptap/extension-character-count": "^3.31.3",
     "@tiptap/extension-code-block-lowlight": "^3.31.3",
@@ -49,7 +49,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "date-fns": "^4.4.0",
+    "date-fns": "^4.1.0",
     "i18next": "^23.15.1",
     "lowlight": "^3.3.0",
     "lucide-react": ">=0.400.0 <1.0.0",
@@ -60,7 +60,7 @@
     "react-colorful": "^5.6.1",
     "react-i18next": "^15.0.2",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.6.0",
+    "tailwind-merge": "^3.3.1",
     "vaul": "^1.1.2",
     "@instanct/lib": "workspace:*"
   },

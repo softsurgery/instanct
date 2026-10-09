@@ -14,11 +14,11 @@ import {
   ServerErrorResponse,
 } from "@/types";
 import { useFocusEffect, useNavigation } from "expo-router";
-import { View, Pressable } from "react-native";
+import { View, Pressable, useWindowDimensions } from "react-native";
 import { ProfileStat } from "./ProfileStat";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { TabView, TabBar } from "react-native-tab-view";
 import { AboutTab } from "./sections/AboutTab";
 import { CareerTab } from "./sections/CareerTab";
 import { RenderSection } from "./sections/RenderSection";
@@ -216,7 +216,68 @@ export const InspectBaseProfile = ({
     ],
   );
 
-  const Tab = createMaterialTopTabNavigator();
+  const layout = useWindowDimensions();
+  const [tabIndex, setTabIndex] = React.useState(0);
+  const routes = React.useMemo(
+    () => [
+      { key: "about", title: t("menu.tabs.about.title") },
+      { key: "career", title: t("menu.tabs.career.title") },
+    ],
+    [t],
+  );
+
+  const tabOptions = React.useMemo(
+    () => ({
+      about: {
+        labelText: t("menu.tabs.about.title"),
+        labelStyle: {
+          fontSize: 12,
+          fontWeight: "600" as const,
+          textTransform: "none" as const,
+        },
+      },
+      career: {
+        labelText: t("menu.tabs.career.title"),
+        labelStyle: {
+          fontSize: 12,
+          fontWeight: "600" as const,
+          textTransform: "none" as const,
+        },
+      },
+    }),
+    [t],
+  );
+
+  const renderScene = React.useCallback(
+    ({ route }: { route: { key: string } }) => {
+      switch (route.key) {
+        case "about":
+          return (
+            <AboutTab
+              className="flex-1"
+              user={user}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              onScroll={handleScroll}
+            />
+          );
+        case "career":
+          return (
+            <CareerTab
+              profileSections={profileSections}
+              renderSection={RenderSection}
+              userId={id}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              onScroll={handleScroll}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [user, onRefresh, refreshing, handleScroll, profileSections, id],
+  );
 
   const animatedTabsStyle = useAnimatedStyle(() => {
     return {
@@ -279,8 +340,12 @@ export const InspectBaseProfile = ({
                         disabled={isSendVerifyEmailPending}
                         className="flex-row items-center gap-1.5 rounded-xl border border-border px-3.5 py-2 active:opacity-80 bg-yellow-700"
                       >
-                        <Icon as={Mail} size={16} color={"white"} />
-                        <Text className="text-md font-semibold text-white">
+                        <Icon
+                          as={Mail}
+                          size={16}
+                          color={palette.primaryForeground}
+                        />
+                        <Text className="text-md font-semibold text-primary-foreground">
                           {t("menu.actions.verifyEmail")}
                         </Text>
                       </Pressable>
@@ -296,74 +361,32 @@ export const InspectBaseProfile = ({
         className={cn("flex-1", !user?.emailVerified ? "mt-2" : "")}
         style={animatedTabsStyle}
       >
-        <Tab.Navigator
-          screenOptions={{
-            tabBarScrollEnabled: false,
-            tabBarLabelStyle: {
-              fontSize: 12,
-              fontWeight: "600",
-              textTransform: "none",
-            },
-            tabBarIndicatorStyle: {
-              backgroundColor: hslToHex(palette.primary),
-            },
-            tabBarStyle: { backgroundColor: "transparent" },
-            sceneStyle: { flex: 1 },
-            swipeEnabled: true,
-            animationEnabled: true,
-          }}
-        >
-          <Tab.Screen
-            name={t("menu.tabs.about.title")}
-            options={{
-              tabBarLabel: t("menu.tabs.about.title"),
-            }}
-          >
-            {() => (
-              <AboutTab
-                className="flex-1"
-                user={user}
-                onRefresh={onRefresh}
-                refreshing={refreshing}
-                onScroll={handleScroll}
-              />
-            )}
-          </Tab.Screen>
-          <Tab.Screen
-            name={t("menu.tabs.career.title")}
-            options={{
-              tabBarLabel: t("menu.tabs.career.title"),
-            }}
-          >
-            {() => (
-              <CareerTab
-                profileSections={profileSections}
-                renderSection={RenderSection}
-                userId={id}
-                onRefresh={onRefresh}
-                refreshing={refreshing}
-                onScroll={handleScroll}
-              />
-            )}
-          </Tab.Screen>
-          {/* <Tab.Screen
-            name="Interests"
-            options={{
-              tabBarLabel: "Interests",
-            }}
-          >
-            {() => (
-              <InterestsTab
-                profileSections={profileSections}
-                renderSection={RenderSection}
-                userId={id}
-                onRefresh={onRefresh}
-                refreshing={refreshing}
-                onScroll={handleScroll}
-              />
-            )}
-          </Tab.Screen> */}
-        </Tab.Navigator>
+        <TabView
+          navigationState={{ index: tabIndex, routes }}
+          renderScene={renderScene}
+          onIndexChange={setTabIndex}
+          initialLayout={{ width: layout.width }}
+          swipeEnabled={true}
+          renderTabBar={(props) => (
+            <TabBar
+              {...props}
+              scrollEnabled={false}
+              options={tabOptions}
+              indicatorStyle={{
+                backgroundColor: hslToHex(palette.primary),
+                height: 2,
+              }}
+              style={{
+                backgroundColor: "transparent",
+                elevation: 0,
+                shadowOpacity: 0,
+              }}
+              activeColor={hslToHex(palette.foreground)}
+              inactiveColor={hslToHex(palette.mutedForeground)}
+              pressColor="transparent"
+            />
+          )}
+        />
       </Animated.View>
     </View>
   );

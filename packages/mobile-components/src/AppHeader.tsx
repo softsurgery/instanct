@@ -2,13 +2,10 @@ import { LucideIcon } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { useRTL } from "./hooks/useRTL";
 import { cn } from "@instanct/lib";
-import { Icon } from "@instanct/mobile-ui";
-import { IconBadge } from "@instanct/mobile-ui";
+import { Icon, IconBadge } from "@instanct/mobile-ui";
 import { Text, TextVariantDefaults } from "@instanct/mobile-ui";
 import React from "react";
-import { hslToHex } from "./hooks/useColorPalette";
-import { useColorPalette } from "./hooks/useColorPalette";
-
+import { hslToHex, useColorPalette } from "./hooks/useColorPalette";
 type Shortcut =
   | {
       key: string;
@@ -19,18 +16,13 @@ type Shortcut =
       hidden?: boolean;
     }
   | { key: string; render: React.ReactNode; hidden?: boolean };
-
 interface ApplicationHeaderProps {
-  classNames?: {
-    wrapper?: string;
-    title?: string;
-  };
+  classNames?: { wrapper?: string; title?: string };
   title?: string | React.ReactNode;
   titleVariant?: TextVariantDefaults;
   shortcuts?: Shortcut[];
   reverse?: boolean;
 }
-
 export const ApplicationHeader = ({
   classNames,
   title,
@@ -42,44 +34,54 @@ export const ApplicationHeader = ({
   const color = hslToHex(palette.foreground);
   const isRTL = useRTL();
 
-  const renderTitle = () => {
-    if (!title) return null;
-
-    if (typeof title === "string") {
-      return (
-        <Text variant={titleVariant} className={cn("mx-2", classNames?.title)}>
-          {title}
-        </Text>
-      );
-    }
-
-    return <View className="mx-2">{title}</View>;
-  };
   return (
     <View
       className={cn(
-        "flex flex-row justify-between items-center gap-2 px-2",
+        "flex flex-row items-center gap-2 px-2",
         isRTL || reverse ? "flex-row-reverse" : "flex-row",
         classNames?.wrapper,
       )}
     >
-      {renderTitle()}
+      <View className="flex-1 min-w-0">
+        {typeof title === "string" ? (
+          <Text
+            variant={titleVariant}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            className={cn(
+              "mx-2",
+              classNames?.title,
+              isRTL || reverse ? "text-right" : "text-left",
+            )}
+          >
+            {title}
+          </Text>
+        ) : (
+          title && (
+            <View
+              className={cn(
+                "mx-2",
+                isRTL || reverse ? "flex-row-reverse" : "flex-row",
+              )}
+            >
+              {title}
+            </View>
+          )
+        )}
+      </View>
       <View
-        className={cn("flex gap-2", reverse ? "flex-row-reverse" : "flex-row")}
+        className={cn(
+          "flex-row items-center justify-between shrink-0 gap-2",
+          reverse && "flex-row-reverse",
+        )}
       >
         {shortcuts?.map((shortcut) => {
-          if (
-            shortcut !== null &&
-            typeof shortcut === "object" &&
-            "icon" in shortcut
-          ) {
+          if (shortcut.hidden) return null;
+          if ("icon" in shortcut) {
             return (
               <Pressable
                 key={shortcut.key}
-                className={cn(
-                  "p-1 rounded-full active:opacity-50",
-                  shortcut.hidden && "hidden",
-                )}
+                className="p-1 rounded-full active:opacity-50"
                 onPress={shortcut.onPress}
               >
                 {shortcut.badgeText ? (
@@ -98,14 +100,12 @@ export const ApplicationHeader = ({
                 )}
               </Pressable>
             );
-          } else {
-            if (!shortcut.hidden)
-              return (
-                <React.Fragment key={shortcut.key}>
-                  {shortcut.render}
-                </React.Fragment>
-              );
           }
+          return (
+            <React.Fragment key={shortcut.key}>
+              {shortcut.render}
+            </React.Fragment>
+          );
         })}
       </View>
     </View>

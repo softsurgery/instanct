@@ -9,10 +9,10 @@
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**", "dist/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": []
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": []
     },
     "clean": {
       "cache": false

@@ -9,7 +9,7 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "nativewind",
-    "declaration": true,
+    "declaration": false,
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
@@ -38,7 +38,7 @@
   },
   "include": [
     "src/**/*",
-    "src/nativewind-env.d.ts"
+    "nativewind-env.d.ts"
   ],
   "exclude": [
     "dist",

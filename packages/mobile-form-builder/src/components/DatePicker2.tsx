@@ -6,7 +6,14 @@ import { ScrollViewContext } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
 import { Calendar, ChevronDown } from "lucide-react-native";
 import React from "react";
-import { Keyboard, Platform, Pressable, UIManager, View } from "react-native";
+import {
+  Keyboard,
+  Platform,
+  Pressable,
+  UIManager,
+  View,
+  ViewInstance,
+} from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -19,8 +26,6 @@ import Animated, {
 import { StableScrollable } from "@instanct/mobile-components";
 import { Separator } from "@instanct/mobile-ui";
 import { triggerHaptic } from "@instanct/mobile-components";
-
-
 
 const MONTHS = [
   { label: "January", value: "jan" },
@@ -60,7 +65,7 @@ export const DatePicker = ({
   const [expanded, setExpanded] = React.useState(false);
   const rotation = useSharedValue(0);
   const { scrollToView } = React.useContext(ScrollViewContext);
-  const contentRef = React.useRef<View>(null);
+  const contentRef = React.useRef<ViewInstance>(null);
 
   const toggle = () => {
     if (disabled) return;
@@ -197,7 +202,7 @@ export const DatePicker = ({
           )}
           // Prevent parent ScrollView from stealing touches while interacting with the wheels
         >
-          <View 
+          <View
             className="flex-row items-center justify-center gap-4"
             onStartShouldSetResponder={() => true}
             onMoveShouldSetResponder={() => true}

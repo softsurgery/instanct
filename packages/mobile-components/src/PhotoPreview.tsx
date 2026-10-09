@@ -13,6 +13,7 @@ import {
   useWindowDimensions,
   FlatList,
   StyleSheet,
+  ViewInstance,
 } from "react-native";
 import { Image, ImageSource } from "expo-image";
 import { cn } from "@instanct/lib";
@@ -45,10 +46,7 @@ interface PhotoPreviewProps {
   index?: number;
   color?: string;
   presentationStyle?:
-    | "fullScreen"
-    | "overFullScreen"
-    | "pageSheet"
-    | "formSheet";
+    "fullScreen" | "overFullScreen" | "pageSheet" | "formSheet";
   onPress?: () => void;
   footer?: (helpers: {
     close: () => void;
@@ -97,35 +95,71 @@ function GestureImage({
   const scale = useSharedValue(triggerRect ? targetScale : 1);
   const savedScale = useSharedValue(triggerRect ? targetScale : 1);
   const translateX = useSharedValue(triggerRect ? targetTranslateX : 0);
-  const translateY = useSharedValue(triggerRect ? targetTranslateY : screenHeight);
+  const translateY = useSharedValue(
+    triggerRect ? targetTranslateY : screenHeight,
+  );
   const savedTranslateX = useSharedValue(triggerRect ? targetTranslateX : 0);
-  const savedTranslateY = useSharedValue(triggerRect ? targetTranslateY : screenHeight);
+  const savedTranslateY = useSharedValue(
+    triggerRect ? targetTranslateY : screenHeight,
+  );
 
   // Trigger open animation on mount
   useEffect(() => {
-    translateX.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-    translateY.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-    scale.value = withTiming(1, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-    backdropOpacity.value = withTiming(1, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+    translateX.value = withTiming(0, {
+      duration: ANIMATION_DURATION,
+      easing: ANIMATION_EASING,
+    });
+    translateY.value = withTiming(0, {
+      duration: ANIMATION_DURATION,
+      easing: ANIMATION_EASING,
+    });
+    scale.value = withTiming(1, {
+      duration: ANIMATION_DURATION,
+      easing: ANIMATION_EASING,
+    });
+    backdropOpacity.value = withTiming(1, {
+      duration: ANIMATION_DURATION,
+      easing: ANIMATION_EASING,
+    });
   }, [triggerRect, translateX, translateY, scale, backdropOpacity]);
 
   const dismiss = useCallback(() => {
     if (triggerRect) {
-      translateX.value = withTiming(targetTranslateX, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-      translateY.value = withTiming(targetTranslateY, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-      scale.value = withTiming(targetScale, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-      backdropOpacity.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING }, (finished) => {
-        if (finished) {
-          runOnJS(onDismiss)();
-        }
+      translateX.value = withTiming(targetTranslateX, {
+        duration: ANIMATION_DURATION,
+        easing: ANIMATION_EASING,
       });
+      translateY.value = withTiming(targetTranslateY, {
+        duration: ANIMATION_DURATION,
+        easing: ANIMATION_EASING,
+      });
+      scale.value = withTiming(targetScale, {
+        duration: ANIMATION_DURATION,
+        easing: ANIMATION_EASING,
+      });
+      backdropOpacity.value = withTiming(
+        0,
+        { duration: ANIMATION_DURATION, easing: ANIMATION_EASING },
+        (finished) => {
+          if (finished) {
+            runOnJS(onDismiss)();
+          }
+        },
+      );
     } else {
-      translateY.value = withTiming(screenHeight, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-      backdropOpacity.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING }, (finished) => {
-        if (finished) {
-          runOnJS(onDismiss)();
-        }
+      translateY.value = withTiming(screenHeight, {
+        duration: ANIMATION_DURATION,
+        easing: ANIMATION_EASING,
       });
+      backdropOpacity.value = withTiming(
+        0,
+        { duration: ANIMATION_DURATION, easing: ANIMATION_EASING },
+        (finished) => {
+          if (finished) {
+            runOnJS(onDismiss)();
+          }
+        },
+      );
     }
   }, [
     triggerRect,
@@ -156,15 +190,27 @@ function GestureImage({
     })
     .onEnd(() => {
       if (scale.value < 1) {
-        scale.value = withTiming(1, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+        scale.value = withTiming(1, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
         savedScale.value = 1;
-        translateX.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-        translateY.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+        translateX.value = withTiming(0, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
+        translateY.value = withTiming(0, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
         savedTranslateX.value = 0;
         savedTranslateY.value = 0;
         runOnJS(onZoomStateChange)(false);
       } else if (scale.value > 4) {
-        scale.value = withTiming(4, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+        scale.value = withTiming(4, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
         savedScale.value = 4;
       } else {
         savedScale.value = scale.value;
@@ -189,11 +235,11 @@ function GestureImage({
 
         translateX.value = Math.min(
           Math.max(savedTranslateX.value + event.translationX, -maxTranslateX),
-          maxTranslateX
+          maxTranslateX,
         );
         translateY.value = Math.min(
           Math.max(savedTranslateY.value + event.translationY, -maxTranslateY),
-          maxTranslateY
+          maxTranslateY,
         );
       } else {
         // Single image: drag in any direction
@@ -223,9 +269,18 @@ function GestureImage({
         if (dist > DISMISS_THRESHOLD) {
           runOnJS(dismiss)();
         } else {
-          translateX.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-          translateY.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-          backdropOpacity.value = withTiming(1, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+          translateX.value = withTiming(0, {
+            duration: ANIMATION_DURATION,
+            easing: ANIMATION_EASING,
+          });
+          translateY.value = withTiming(0, {
+            duration: ANIMATION_DURATION,
+            easing: ANIMATION_EASING,
+          });
+          backdropOpacity.value = withTiming(1, {
+            duration: ANIMATION_DURATION,
+            easing: ANIMATION_EASING,
+          });
         }
       }
     });
@@ -234,15 +289,27 @@ function GestureImage({
     .numberOfTaps(2)
     .onEnd(() => {
       if (scale.value > 1) {
-        scale.value = withTiming(1, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+        scale.value = withTiming(1, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
         savedScale.value = 1;
-        translateX.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
-        translateY.value = withTiming(0, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+        translateX.value = withTiming(0, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
+        translateY.value = withTiming(0, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
         savedTranslateX.value = 0;
         savedTranslateY.value = 0;
         runOnJS(onZoomStateChange)(false);
       } else {
-        scale.value = withTiming(2.5, { duration: ANIMATION_DURATION, easing: ANIMATION_EASING });
+        scale.value = withTiming(2.5, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
         savedScale.value = 2.5;
         runOnJS(onZoomStateChange)(true);
       }
@@ -250,16 +317,17 @@ function GestureImage({
 
   const gesture = Gesture.Simultaneous(
     Gesture.Race(pinchGesture, doubleTapGesture),
-    panGesture
+    panGesture,
   );
 
   const animatedStyle = useAnimatedStyle(() => {
     const dx = isSingleImage ? translateX.value : 0;
     const dy = translateY.value;
     const dist = Math.sqrt(dx * dx + dy * dy);
-    
+
     // Scale down image slightly as it gets dragged further from center (min scale 0.85)
-    const dragScale = scale.value === 1 ? Math.max(0.85, 1 - dist / 1000) : scale.value;
+    const dragScale =
+      scale.value === 1 ? Math.max(0.85, 1 - dist / 1000) : scale.value;
 
     return {
       transform: [
@@ -319,7 +387,7 @@ export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
       height: number;
     } | null>(null);
 
-    const containerRef = useRef<View>(null);
+    const containerRef = useRef<ViewInstance>(null);
     const { width: screenWidth, height: screenHeight } = useWindowDimensions();
     const insets = useSafeAreaInsets();
 
@@ -369,7 +437,10 @@ export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
     return (
       <View ref={containerRef} className={className}>
         {children && (
-          <Pressable className={cn("active:opacity-80", className)} onPress={open}>
+          <Pressable
+            className={cn("active:opacity-80", className)}
+            onPress={open}
+          >
             {children}
           </Pressable>
         )}

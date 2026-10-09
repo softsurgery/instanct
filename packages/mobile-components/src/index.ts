@@ -6,6 +6,7 @@ export * from "./DividedText";
 export * from "./FileTypeIcon";
 export * from "./html/HTMLText";
 export { default as HtmlDocument } from "./html/HtmlDocument";
+export type { HtmlDocumentProps } from "./html/HtmlDocument";
 export * from "./LanguageSwitcher";
 export * from "./Loader";
 export * from "./MarkedInput";

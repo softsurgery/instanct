@@ -1,8 +1,8 @@
 import React from "react";
-import { View } from "react-native";
+import { ViewInstance } from "react-native";
 
 export type ScrollViewContextType = {
-  scrollToView: (viewRef: React.RefObject<View | null>) => void;
+  scrollToView: (viewRef: React.RefObject<ViewInstance | null>) => void;
 };
 
 export const ScrollViewContext = React.createContext<ScrollViewContextType>({

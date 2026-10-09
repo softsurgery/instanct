@@ -6,7 +6,14 @@ import { cn } from "@instanct/lib";
 import { Clock, ChevronDown } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Platform, UIManager, View, Pressable } from "react-native";
+import {
+  Keyboard,
+  Platform,
+  UIManager,
+  View,
+  Pressable,
+  ViewInstance,
+} from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -19,8 +26,6 @@ import Animated, {
 import { StableScrollable } from "@instanct/mobile-components";
 import { Separator } from "@instanct/mobile-ui";
 import { triggerHaptic } from "@instanct/mobile-components";
-
-
 
 interface TimePickerProps {
   className?: string;
@@ -69,7 +74,7 @@ export const TimePicker = ({
   const [expanded, setExpanded] = React.useState(false);
   const rotation = useSharedValue(0);
   const { scrollToView } = React.useContext(ScrollViewContext);
-  const contentRef = React.useRef<View>(null);
+  const contentRef = React.useRef<ViewInstance>(null);
 
   const toggle = () => {
     if (disabled) return;
@@ -203,7 +208,7 @@ export const TimePicker = ({
             classNames?.content,
           )}
         >
-          <View 
+          <View
             className="flex-row items-center justify-center gap-4"
             onStartShouldSetResponder={() => true}
             onMoveShouldSetResponder={() => true}
