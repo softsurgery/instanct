@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@instanct/lib": "workspace:*",
-    "@instanct/mobile-ui": "workspace:*",
-    "@instanct/mobile-components": "workspace:*"
+    "@instanct/mobile-components": "workspace:*",
+    "@instanct/mobile-ui": "workspace:*"
   },
   "peerDependencies": {
     "expo-haptics": "*",
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
+    "nativewind": "^4.2.7",
     "react": "19.2.3",
     "typescript": "^5.5.3"
   }

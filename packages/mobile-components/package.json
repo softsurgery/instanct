@@ -26,7 +26,7 @@
   "peerDependencies": {
     "@react-native-masked-view/masked-view": "*",
     "@react-native-ohos/react-native-keyboard-aware-scroll-view": "*",
-    "expo": "*",
+    "expo": "^58.0.6",
     "expo-haptics": "*",
     "expo-image": "*",
     "expo-linear-gradient": "*",
@@ -34,10 +34,10 @@
     "expo-navigation-bar": "*",
     "expo-router": "*",
     "expo-video": "*",
+    "i18next": "*",
     "lottie-react-native": "*",
     "lucide-react-native": "*",
     "nativewind": "*",
-    "i18next": "*",
     "react": "^19.0.0",
     "react-i18next": "*",
     "react-native": "*",
@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
+    "nativewind": "^4.2.7",
     "react": "19.2.3",
     "typescript": "^5.5.3"
   }

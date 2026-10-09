@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
 import React, { createContext, useContext, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewInstance } from "react-native";
 import { cn } from "@instanct/lib";
 
 const AvatarContext = createContext<{
@@ -8,8 +8,10 @@ const AvatarContext = createContext<{
   setShowFallback: (value: boolean) => void;
 } | null>(null);
 
+import type {} from "react-native";
+
 const Avatar = React.forwardRef<
-  View,
+  ViewInstance,
   React.ComponentPropsWithoutRef<typeof View> & { alt?: string }
 >(({ className, style, children, ...props }, ref) => {
   const [showFallback, setShowFallback] = useState(false);
@@ -21,7 +23,7 @@ const Avatar = React.forwardRef<
         style={[styles.container, style]}
         className={cn(
           "relative flex items-center justify-center overflow-hidden rounded-full bg-muted",
-          className
+          className,
         )}
         {...props}
       >
@@ -80,7 +82,7 @@ const AvatarImage = React.forwardRef<
 AvatarImage.displayName = "AvatarImage";
 
 const AvatarFallback = React.forwardRef<
-  View,
+  ViewInstance,
   React.ComponentPropsWithoutRef<typeof View>
 >(({ className, children, style, ...props }, ref) => {
   const context = useContext(AvatarContext);

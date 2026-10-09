@@ -17,6 +17,9 @@ import * as Haptics from "expo-haptics";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
 import { cn } from "@instanct/lib";
+import type { ComponentType, ReactNode } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
+import type { ComponentProps } from "react";
 
 interface SelectOption {
   label: string;
@@ -34,6 +37,15 @@ const HALF = Math.floor(VISIBLE_ITEMS / 2);
 const SNAP_SPRING = { damping: 20, stiffness: 260, mass: 0.8 };
 const DECAY_DECELERATION = 0.997;
 const RUBBER_BAND_FACTOR = 0.3;
+
+type StableMaskedViewProps = {
+  children?: ReactNode;
+  style?: StyleProp<ViewStyle>;
+  maskElement: React.ReactElement;
+};
+
+const StableMaskedView =
+  MaskedView as unknown as ComponentType<StableMaskedViewProps>;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface StableScrollableProps<T extends string = string> {
@@ -332,7 +344,7 @@ export const StableScrollable = <T extends string = string>({
       className={cn("items-center justify-center overflow-hidden", className)}
       style={styles.container}
     >
-      <MaskedView
+      <StableMaskedView
         style={styles.mask}
         maskElement={
           <LinearGradient
@@ -347,7 +359,7 @@ export const StableScrollable = <T extends string = string>({
             {renderedItems}
           </Animated.View>
         </GestureDetector>
-      </MaskedView>
+      </StableMaskedView>
     </View>
   );
 };

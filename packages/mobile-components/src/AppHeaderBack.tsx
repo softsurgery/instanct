@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronLeft } from "lucide-react-native";
-import { TouchableOpacity, Dimensions } from "react-native";
+import { TouchableOpacity, Dimensions, Pressable } from "react-native";
 import { Icon } from "@instanct/mobile-ui";
 import { router, useNavigation } from "expo-router";
 import { Text } from "@instanct/mobile-ui";
@@ -143,8 +143,8 @@ export const AppHeaderBack = ({ className }: AppHeaderBackProps) => {
   const SCREEN_WIDTH = Dimensions.get("screen").width;
 
   return (
-    <TouchableOpacity
-      onPress={router.back}
+    <Pressable
+      onPress={() => router.back()}
       className={cn("flex-row items-center h-9", className)}
       style={{
         width: SCREEN_WIDTH * 0.4,
@@ -179,6 +179,6 @@ export const AppHeaderBack = ({ className }: AppHeaderBackProps) => {
       >
         {getPreviousRouteTitle()}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };

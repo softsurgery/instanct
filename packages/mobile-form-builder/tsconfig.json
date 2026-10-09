@@ -9,7 +9,7 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "nativewind",
-    "declaration": true,
+    "declaration": false,
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true,

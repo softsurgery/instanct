@@ -85,7 +85,7 @@
     "lodash": "^4.17.21",
     "lottie-react-native": "^7.5.0",
     "lucide-react-native": "^0.546.0",
-    "nativewind": "^4.2.1",
+    "nativewind": "^4.2.7",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-i18next": "^16.2.3",

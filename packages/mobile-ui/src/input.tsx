@@ -1,11 +1,18 @@
 import { cn } from "@instanct/lib";
-import { Platform, TextInput, type TextInputProps } from "react-native";
+import {
+  Platform,
+  TextInput,
+  type TextInputProps,
+  type TextInputInstance,
+} from "react-native";
+import type { Ref } from "react";
 
-function Input({
-  className,
-  ref,
-  ...props
-}: TextInputProps & React.RefAttributes<TextInput>) {
+type InputProps = Omit<TextInputProps, "ref"> & {
+  className?: string;
+  ref?: Ref<TextInputInstance>;
+};
+
+function Input({ className, ref, ...props }: InputProps) {
   return (
     <TextInput
       ref={ref}
