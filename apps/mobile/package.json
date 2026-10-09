@@ -2,7 +2,7 @@
   "name": "instanct-mobile-app",
   "author": "softsurgery",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "expo start --dev-client",
     "start": "expo start",
