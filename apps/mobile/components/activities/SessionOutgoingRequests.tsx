@@ -1,10 +1,9 @@
 import React from "react";
 import { cn } from "@instanct/lib";
 import { LegendList } from "@legendapp/list";
-import { View } from "react-native";
+import { RefreshControl, View } from "react-native";
 import { ResponseRequestDto } from "@/types";
 import { Loader } from "@instanct/mobile-components";
-import { RefreshControl } from "react-native-gesture-handler";
 import { SessionRequestCard } from "../session/session-details/SessionRequestCard";
 import { useInfiniteOutgoingSessionRequests } from "@/hooks/content/sessions/useInfiniteOutgoingSessionRequests";
 import { NotFound } from "@instanct/mobile-components";
@@ -115,7 +114,12 @@ export const SessionOutgoingRequests = ({
           }
         }}
         refreshControl={
-          <RefreshControl refreshing={false} onRefresh={refetchRequests} />
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => {
+              refetchRequests();
+            }}
+          />
         }
         onEndReachedThreshold={0.5}
         contentContainerStyle={{
