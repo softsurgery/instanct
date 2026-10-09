@@ -115,7 +115,8 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "types": ["node", "multer"]
   },
   "include": [
     "nsa-um/src/**/*.ts",

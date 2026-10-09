@@ -17,6 +17,6 @@
       "@instanct/lib/*": ["../lib/src/*"]
     }
   },
-  "include": ["src/**/*", "src/nativewind-env.d.ts"],
+  "include": ["src/**/*", "nativewind-env.d.ts"],
   "exclude": ["dist", "node_modules"]
 }

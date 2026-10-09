@@ -41,7 +41,7 @@ function newestSource(dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       max = Math.max(max, newestSource(full));
-    } else if (entry.name.endsWith('.ts') || entry.name === 'tsconfig.nsa.json') {
+    } else if (/\.(?:[cm]?ts|tsx|json)$/.test(entry.name)) {
       max = Math.max(max, fs.statSync(full).mtimeMs);
     }
   }

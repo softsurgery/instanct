@@ -16,6 +16,12 @@ overrides:
   react-native-worklets: "0.13.0"
   react: "19.3.0"
   react-dom: "19.3.0"
+  react-native: "~0.88.0-rc.3"
+  typescript: "5.9.3"
+  nativewind: "^4.2.7"
+  react-native-reanimated: "4.7.0"
+  "@types/react": "^19.0.0"
+  "@types/react-dom": "^19.0.0"
 
 allowBuilds:
   bcrypt: true
