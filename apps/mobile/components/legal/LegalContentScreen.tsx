@@ -31,7 +31,30 @@ export function LegalContentScreen({
     queryFn: () => api.contentPage.findBySlug(slug, i18n.language),
   });
   const { palette } = useColorPalette();
+  const paletteStr = React.useMemo(
+    () => (palette ? JSON.stringify(palette) : undefined),
+    [palette],
+  );
+
   const [isHtmlLoading, setIsHtmlLoading] = React.useState(true);
+
+  const handleReady = React.useCallback(() => {
+    setIsHtmlLoading(false);
+  }, []);
+
+  const htmlStyles = React.useMemo(() => ({ paddingBlock: 16 }), []);
+
+  const domProps = React.useMemo<import("expo/dom").DOMProps>(
+    () => ({
+      style: {
+        flex: 1,
+        backgroundColor: "transparent",
+      },
+      showsVerticalScrollIndicator: false,
+      showsHorizontalScrollIndicator: false,
+    }),
+    [],
+  );
 
   const title = data?.title ?? fallbackTitle;
 
@@ -61,7 +84,7 @@ export function LegalContentScreen({
         ]}
       />
       <View className="flex-1 bg-background px-4">
-        <View className="flex-1 relative">
+        <View key={`${slug}-${i18n.language}`} className="flex-1 relative">
           {isHtmlLoading && (
             <View className="absolute inset-0 items-center justify-center z-10 bg-background">
               <Loader />
@@ -69,17 +92,13 @@ export function LegalContentScreen({
           )}
           <HtmlDocument
             html={data.body}
-            paletteStr={JSON.stringify(palette)}
-            onReady={async () => setIsHtmlLoading(false)}
-            htmlStyles={{ paddingBlock: 16 }}
-            dom={{
-              style: {
-                flex: 1,
-                backgroundColor: "transparent",
-              },
-              showsVerticalScrollIndicator: false,
-              showsHorizontalScrollIndicator: false,
-            }}
+            paletteStr={paletteStr}
+            htmlStyles={htmlStyles}
+            dom={domProps}
+            enableBridgeInjection
+            onReady={handleReady}
+            scrollEnabled
+            bounces={false}
           />
         </View>
       </View>
