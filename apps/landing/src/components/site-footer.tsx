@@ -33,18 +33,6 @@ export function SiteFooter() {
 
         <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
           <div className="space-y-3">
-            <p className="font-medium">{t("footer.product")}</p>
-            <ul className="space-y-2 text-muted-foreground">
-              {footerProductLinks.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="hover:text-foreground">
-                    {t(item.labelKey)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-3">
             <p className="font-medium">{t("footer.legal")}</p>
             <ul className="space-y-2 text-muted-foreground">
               <li>

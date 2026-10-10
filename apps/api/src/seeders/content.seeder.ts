@@ -4,6 +4,8 @@ import { ContentPageService } from 'nsa-content/services/content-page.service';
 import { ContentPageSlug } from '@/app/enums/content-page-slug.enum';
 import { termsHtml, termsHtmlEn } from './data/content/terms.data';
 import { privacyHtml, privacyHtmlEn } from './data/content/privacy.data';
+import { aboutHtml, aboutHtmlEn } from './data/content/about.data';
+import { faqsHtml, faqsHtmlEn } from './data/content/faqs.data';
 
 @Injectable()
 export class ContentSeedCommand {
@@ -35,6 +37,22 @@ export class ContentSeedCommand {
         locale: 'fr',
       },
       {
+        slug: ContentPageSlug.ABOUT,
+        title: "À propos d'Instanct",
+        subtitle:
+          "Découvrez la mission d'Instanct, nos fonctionnalités et nos engagements.",
+        body: aboutHtml,
+        locale: 'fr',
+      },
+      {
+        slug: ContentPageSlug.FAQS,
+        title: 'Questions fréquentes',
+        subtitle:
+          "Trouvez des réponses aux questions fréquemment posées sur l'application.",
+        body: faqsHtml,
+        locale: 'fr',
+      },
+      {
         slug: ContentPageSlug.TERMS,
         title: 'Terms of Service',
         subtitle: 'Rules for using Instanct.',
@@ -46,6 +64,21 @@ export class ContentSeedCommand {
         title: 'Privacy Policy',
         subtitle: 'How Instanct processes your data.',
         body: privacyHtmlEn,
+        locale: 'en',
+      },
+      {
+        slug: ContentPageSlug.ABOUT,
+        title: 'About Instanct',
+        subtitle:
+          'Discover the Instanct mission, our features, and our commitments.',
+        body: aboutHtmlEn,
+        locale: 'en',
+      },
+      {
+        slug: ContentPageSlug.FAQS,
+        title: 'Frequently Asked Questions',
+        subtitle: 'Find answers to frequently asked questions about the app.',
+        body: faqsHtmlEn,
         locale: 'en',
       },
     ];
