@@ -2,14 +2,13 @@ import {
   hslToHex,
   SeeMoreText,
   useColorPalette,
-  StablePressable,
 } from "@instanct/mobile-components";
 import { Text, Icon } from "@instanct/mobile-ui";
 import { THEME } from "@/lib/theme";
 import { cn } from "@instanct/lib";
 import { ResponseUserDto } from "@/types";
 import {
-  ExternalLink,
+  ArrowUpRight,
   Globe,
   Linkedin,
   Link2,
@@ -21,6 +20,7 @@ import {
   Linking,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Pressable,
   RefreshControl,
   ScrollView,
   View,
@@ -43,10 +43,52 @@ const SectionHeader = ({
   title: string;
   color?: string;
 }) => (
-  <View className="mb-3 flex-row items-center gap-2">
+  <View className="mb-4 flex-row items-center gap-2.5">
     <Icon as={icon} size={18} color={color} />
-    <Text className="text-base font-bold text-foreground">{title}</Text>
+    <Text className="text-base font-semibold text-foreground">{title}</Text>
   </View>
+);
+
+const cleanUrl = (url: string) =>
+  url
+    .replace(/^https?:\/\//i, "")
+    .replace(/^www\./i, "")
+    .replace(/\/$/, "");
+
+const AboutLink = ({
+  icon,
+  label,
+  subtitle,
+  color,
+  onPress,
+}: {
+  icon: LucideIcon;
+  label: string;
+  subtitle?: string;
+  color: string;
+  onPress: () => void;
+}) => (
+  <Pressable
+    accessibilityRole="link"
+    onPress={onPress}
+    className="flex-row items-center gap-3 py-3 active:opacity-60"
+  >
+    <Icon as={icon} size={20} color={color} />
+
+    <View className="min-w-0 flex-1 gap-1">
+      <Text className="text-sm font-medium text-foreground" numberOfLines={1}>
+        {label}
+      </Text>
+
+      {subtitle ? (
+        <Text className="text-xs text-muted-foreground" numberOfLines={1}>
+          {subtitle}
+        </Text>
+      ) : null}
+    </View>
+
+    <Icon as={ArrowUpRight} size={18} color={color} />
+  </Pressable>
 );
 
 export const AboutTab = ({
@@ -58,83 +100,74 @@ export const AboutTab = ({
 }: AboutTabProps) => {
   const { t } = useTranslation("menu");
   const { palette } = useColorPalette();
-  const fg = hslToHex(palette.foreground);
+
   const primary = hslToHex(palette.primary);
+  const hasLinks = !!(user?.website || user?.linkedin);
 
   return (
     <ScrollView
       className={cn(className)}
       onScroll={onScroll}
-      contentContainerStyle={{ paddingTop: 20, paddingBottom: 32 }}
+      scrollEventThrottle={16}
+      contentContainerStyle={{
+        paddingTop: 24,
+        paddingBottom: 36,
+      }}
       refreshControl={
         <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} />
       }
+      showsVerticalScrollIndicator={false}
     >
-      <View className="flex flex-col gap-6 px-4">
+      <View className="gap-8 px-5">
         {/* Bio */}
         <View>
-          <SectionHeader icon={UserRound} title={t("menu.tabs.about.title")} />
+          <SectionHeader
+            icon={UserRound}
+            title={t("menu.tabs.about.title")}
+            color={primary}
+          />
+
           {user?.bio ? (
             <SeeMoreText
-              textClassname="text-sm leading-6 text-foreground"
+              textClassname="text-sm leading-7 text-foreground"
               numberOfLines={4}
             >
-              {user.bio}
+              {user.bio.trim()}
             </SeeMoreText>
           ) : (
-            <View className="items-center rounded-2xl border border-dashed border-border py-6">
-              <Text className="text-sm italic text-muted-foreground">
-                {t("menu.tabs.about.empty")}
-              </Text>
-            </View>
+            <Text className="text-sm leading-6 text-muted-foreground">
+              {t("menu.tabs.about.empty")}
+            </Text>
           )}
         </View>
 
         {/* Links */}
-        {(user?.website || user?.linkedin) && (
+        {hasLinks && (
           <View>
             <SectionHeader
               icon={Link2}
               title={t("menu.tabs.about.links.title")}
               color={primary}
             />
-            <View className="flex flex-col gap-2.5">
+
+            <View>
               {user?.website && (
-                <StablePressable
-                  className="flex-row items-center gap-3 rounded-2xl border border-border bg-card p-4"
-                  onPress={() => {
-                    if (user?.website) Linking.openURL(user?.website);
-                  }}
-                  onPressClassname="bg-muted"
-                >
-                  <View className="h-9 w-9 items-center justify-center rounded-xl">
-                    <Icon as={Globe} size={24} color={primary} />
-                  </View>
-                  <Text
-                    className="flex-1 text-sm font-medium text-foreground"
-                    numberOfLines={1}
-                  >
-                    {user.website}
-                  </Text>
-                  <Icon as={ExternalLink} size={24} color={fg} />
-                </StablePressable>
+                <AboutLink
+                  icon={Globe}
+                  label="Website"
+                  subtitle={cleanUrl(user.website)}
+                  color={primary}
+                  onPress={() => Linking.openURL(user.website!)}
+                />
               )}
+
               {user?.linkedin && (
-                <StablePressable
-                  className="flex-row items-center gap-3 rounded-2xl border border-border bg-card p-4"
-                  onPress={() => {
-                    if (user?.linkedin) Linking.openURL(user?.linkedin);
-                  }}
-                  onPressClassname="bg-muted"
-                >
-                  <View className="h-9 w-9 items-center justify-center rounded-xl">
-                    <Icon as={Linkedin} size={24} color={primary} />
-                  </View>
-                  <Text className="flex-1 text-sm font-medium text-foreground">
-                    {t("menu.tabs.about.links.linkedin")}
-                  </Text>
-                  <Icon as={ExternalLink} size={24} color={fg} />
-                </StablePressable>
+                <AboutLink
+                  icon={Linkedin}
+                  label={t("menu.tabs.about.links.linkedin")}
+                  color={primary}
+                  onPress={() => Linking.openURL(user.linkedin!)}
+                />
               )}
             </View>
           </View>

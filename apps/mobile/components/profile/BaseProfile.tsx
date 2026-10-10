@@ -174,19 +174,6 @@ export const InspectBaseProfile = ({
   const profileSections: ProfileSection[] = React.useMemo(
     () => [
       {
-        key: "industries",
-        title: t("menu.tabs.career.industries.title"),
-        data: industries.filter((industry) =>
-          userIndustries?.some((id) => id === industry.id),
-        ) as unknown[],
-        editable: currentUser?.id === user?.id,
-        renderItem: (industry: ResponseRefParamDto) => (
-          <View className="rounded-full border border-border px-3 py-1.5">
-            <Text className="text-[13px] font-semibold">{industry.label}</Text>
-          </View>
-        ),
-      },
-      {
         key: "experience",
         title: t("menu.tabs.career.experience.title"),
         data: experiences as unknown[],
@@ -202,6 +189,19 @@ export const InspectBaseProfile = ({
         editable: currentUser?.id === user?.id,
         renderItem: (education: ResponseEducationDto) => (
           <EducationInstance education={education} />
+        ),
+      },
+      {
+        key: "industries",
+        title: t("menu.tabs.career.industries.title"),
+        data: industries.filter((industry) =>
+          userIndustries?.some((id) => id === industry.id),
+        ) as unknown[],
+        editable: currentUser?.id === user?.id,
+        renderItem: (industry: ResponseRefParamDto) => (
+          <View className="rounded-full border border-border px-3 py-1.5">
+            <Text className="text-[13px] font-semibold">{industry.label}</Text>
+          </View>
         ),
       },
     ],
