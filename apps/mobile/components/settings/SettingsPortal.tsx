@@ -6,7 +6,12 @@ import { router } from "expo-router";
 import { ChevronRight, LogOut, Trash2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { AppHeaderBack, ApplicationHeader, StableSafeAreaView, StableScrollView } from "@instanct/mobile-components";
+import {
+  AppHeaderBack,
+  ApplicationHeader,
+  StableSafeAreaView,
+  StableScrollView,
+} from "@instanct/mobile-components";
 import { createSettingRow, SettingRow } from "./SettingsRow";
 import type { SettingRowConfig } from "./SettingsRow";
 import { useLogout } from "@/hooks/useLogout";
@@ -100,7 +105,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
 
           rightIcon: ChevronRight,
           className: "p-1 px-4",
-          onPress: () => router.push("/main/profile/support/report-bug"),
+          onPress: () => router.push("/main/settings/report-bug"),
         }),
         createSettingRow({
           title: tSettings("settings.support.screens.send-feedback.title"),
@@ -109,14 +114,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
           ),
           rightIcon: ChevronRight,
           className: "p-1 px-4",
-          onPress: () => router.push("/main/profile/support/send-feedback"),
-        }),
-        createSettingRow({
-          title: tSettings("settings.support.screens.faqs.title"),
-          description: tSettings("settings.support.screens.faqs.description"),
-          rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => router.push("/main/profile/support/faqs"),
+          onPress: () => router.push("/main/settings/send-feedback"),
         }),
       ],
       showOnDevelopment: false,
@@ -126,6 +124,13 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       title: tSettings("settings.info-legal.title"),
       description: tSettings("settings.info-legal.description"),
       rows: [
+        createSettingRow({
+          title: tSettings("settings.support.screens.faqs.title"),
+          description: tSettings("settings.support.screens.faqs.description"),
+          rightIcon: ChevronRight,
+          className: "p-1 px-4",
+          onPress: () => router.push("/main/settings/faqs"),
+        }),
         createSettingRow({
           title: tSettings(
             "settings.info-legal.screens.terms-of-service.title",
@@ -165,13 +170,14 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       rows: [
         createSettingRow({
           title: "Send Test Error (Handled)",
-          description: "Capture an error via Sentry.captureException and send to Bugsink",
+          description:
+            "Capture an error via Sentry.captureException and send to Bugsink",
           rightIcon: ChevronRight,
           className: "p-1 px-4",
           onPress: () => {
             try {
               const eventId = Sentry.captureException(
-                new Error("Test Bugsink error from Mobile settings")
+                new Error("Test Bugsink error from Mobile settings"),
               );
               toast.success("Test error sent to Bugsink!", {
                 description: `Event ID: ${eventId || "sent"}`,
@@ -185,7 +191,8 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
         }),
         createSettingRow({
           title: "Trigger Uncaught Crash",
-          description: "Throw an unhandled error to test global crash reporting",
+          description:
+            "Throw an unhandled error to test global crash reporting",
           rightIcon: ChevronRight,
           className: "p-1 px-4",
           onPress: () => {

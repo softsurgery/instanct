@@ -319,21 +319,21 @@ export default function MainLayout() {
             />
 
             <Stack.Screen
-              name="profile/support/report-bug"
+              name="settings/report-bug"
               options={{
                 title: "settings.reportBug",
                 headerShown: false,
               }}
             />
             <Stack.Screen
-              name="profile/support/send-feedback"
+              name="settings/send-feedback"
               options={{
                 title: "settings.sendFeedback",
                 headerShown: false,
               }}
             />
             <Stack.Screen
-              name="profile/support/faqs"
+              name="settings/faqs"
               options={{
                 title: "settings.faqs",
                 headerShown: false,

@@ -151,3 +151,28 @@
   border: none;
   border-top: 1px solid var(--border);
 }
+
+.legal-html details {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 0.5rem);
+  background: color-mix(in oklab, var(--muted) 40%, transparent);
+  transition: background-color 0.2s ease;
+}
+
+.legal-html details[open] {
+  background: color-mix(in oklab, var(--muted) 70%, transparent);
+}
+
+.legal-html summary {
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+
+.legal-html details p {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}

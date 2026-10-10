@@ -14,17 +14,17 @@ import { api } from "@/api";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
-type LegalContentScreenProps = {
-  slug: "terms" | "privacy";
+type ContentScreenProps = {
+  slug: "terms" | "privacy" | "about" | "faqs";
   fallbackTitle: string;
   className?: string;
 };
 
-export function LegalContentScreen({
+export function ContentScreen({
   slug,
   fallbackTitle,
   className,
-}: LegalContentScreenProps) {
+}: ContentScreenProps) {
   const { i18n } = useTranslation();
   const { data, isPending, isError } = useQuery({
     queryKey: ["content-page", slug, i18n.language],
@@ -57,10 +57,6 @@ export function LegalContentScreen({
   );
 
   const title = data?.title ?? fallbackTitle;
-
-  if (isPending) {
-    return <Loader className="flex-1 items-center justify-center" />;
-  }
 
   if (isError || !data)
     return (
