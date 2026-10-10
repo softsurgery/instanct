@@ -94,7 +94,7 @@ export function ContentScreen({
             enableBridgeInjection
             onReady={handleReady}
             scrollEnabled
-            bounces={false}
+            bounces={true}
           />
         </View>
       </View>
