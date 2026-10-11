@@ -13,6 +13,7 @@ import {
   Table2,
   Cog,
   FileText,
+  FileCode2,
   Bug,
   MessageSquare,
 } from "lucide-react";
@@ -108,6 +109,11 @@ const navItems: NavItem[] = [
         title: "Pages",
         href: "/content-management/pages",
         icon: FileText,
+      },
+      {
+        title: "Templates",
+        href: "/content-management/templates",
+        icon: FileCode2,
       },
       {
         title: "Configuration",

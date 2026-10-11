@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
     "@instanct/hooks",
     "@instanct/contexts",
     "@instanct/lib",
+    "@softsurgery/template",
   ],
   reactStrictMode: true,
   agentRules: false,

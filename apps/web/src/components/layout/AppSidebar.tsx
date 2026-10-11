@@ -16,6 +16,7 @@ import {
   Table2,
   Cog,
   FileText,
+  FileCode2,
   Bug,
   MessageSquare,
 } from "lucide-react";
@@ -94,6 +95,11 @@ const data = {
           title: "Pages",
           url: "/content-management/pages",
           icon: FileText,
+        },
+        {
+          title: "Templates",
+          url: "/content-management/templates",
+          icon: FileCode2,
         },
         {
           title: "Configuration",
