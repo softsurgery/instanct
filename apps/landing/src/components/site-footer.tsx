@@ -45,6 +45,11 @@ export function SiteFooter() {
                   {t("footer.termsOfService")}
                 </Link>
               </li>
+              <li>
+                <Link href="/support" className="hover:text-foreground">
+                  {t("footer.support")}
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="space-y-3">

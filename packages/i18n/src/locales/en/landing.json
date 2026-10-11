@@ -177,6 +177,7 @@
     "contact": "Contact",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
+    "support": "Support",
     "copyright": "© {{year}} Instanct. Built for people who want to connect with confidence."
   },
   "legal": {
@@ -191,6 +192,11 @@
       "title": "Terms of Service",
       "unavailableTitle": "Terms & Conditions",
       "unavailableSubtitle": "The terms of service are temporarily unavailable. Please try again later."
+    },
+    "support": {
+      "title": "Support & Help Center",
+      "unavailableTitle": "Support & Help Center",
+      "unavailableSubtitle": "Support information is temporarily unavailable. Please contact our team at support@instanct.com or try again later."
     }
   }
 }

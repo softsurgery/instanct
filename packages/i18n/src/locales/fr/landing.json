@@ -177,6 +177,7 @@
     "contact": "Contact",
     "privacyPolicy": "Politique de confidentialité",
     "termsOfService": "Conditions d’utilisation",
+    "support": "Support",
     "copyright": "© {{year}} Instanct. Pour celles et ceux qui veulent connecter en confiance."
   },
   "legal": {
@@ -191,6 +192,11 @@
       "title": "Conditions d’utilisation",
       "unavailableTitle": "Conditions générales",
       "unavailableSubtitle": "Les conditions d’utilisation sont temporairement indisponibles. Veuillez réessayer plus tard."
+    },
+    "support": {
+      "title": "Support & Centre d'aide",
+      "unavailableTitle": "Support & Centre d'aide",
+      "unavailableSubtitle": "Les informations d'assistance sont temporairement indisponibles. Veuillez contacter notre équipe à support@instanct.com ou réessayer plus tard."
     }
   }
 }

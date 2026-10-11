@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 
 type ContentScreenProps = {
-  slug: "terms" | "privacy" | "about" | "faqs";
+  slug: "terms" | "privacy" | "about" | "faqs" | "support";
   fallbackTitle: string;
   className?: string;
 };
@@ -58,12 +58,51 @@ export function ContentScreen({
 
   const title = data?.title ?? fallbackTitle;
 
-  if (isError || !data)
+  if (isPending) {
     return (
-      <Text className="text-sm leading-6 text-des">
-        This document is temporarily unavailable. Please try again later.
-      </Text>
+      <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+        <ApplicationHeader
+          classNames={{ wrapper: "border-b border-border pb-2" }}
+          title={fallbackTitle}
+          titleVariant="large"
+          reverse
+          shortcuts={[
+            {
+              key: "back",
+              render: <AppHeaderBack />,
+            },
+          ]}
+        />
+        <View className="flex-1 items-center justify-center bg-background">
+          <Loader />
+        </View>
+      </StableSafeAreaView>
     );
+  }
+
+  if (isError || !data) {
+    return (
+      <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+        <ApplicationHeader
+          classNames={{ wrapper: "border-b border-border pb-2" }}
+          title={fallbackTitle}
+          titleVariant="large"
+          reverse
+          shortcuts={[
+            {
+              key: "back",
+              render: <AppHeaderBack />,
+            },
+          ]}
+        />
+        <View className="flex-1 items-center justify-center bg-background px-6">
+          <Text className="text-sm leading-6 text-muted-foreground text-center">
+            This document is temporarily unavailable. Please try again later.
+          </Text>
+        </View>
+      </StableSafeAreaView>
+    );
+  }
 
   return (
     <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
@@ -101,3 +140,5 @@ export function ContentScreen({
     </StableSafeAreaView>
   );
 }
+
+export { ContentScreen as LegalContentScreen };

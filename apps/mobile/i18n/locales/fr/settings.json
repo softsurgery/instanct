@@ -194,6 +194,10 @@
       "title": "Assistance",
       "description": "Signalez des problèmes ou envoyez-nous vos commentaires.",
       "screens": {
+        "support": {
+          "title": "Centre d'aide & Support",
+          "description": "Obtenez de l'aide, contactez notre équipe et consultez nos guides d'utilisation."
+        },
         "report-bug": {
           "title": "Signaler un bug",
           "description": "Aidez-nous à améliorer l’application en signalant les bugs que vous rencontrez.",

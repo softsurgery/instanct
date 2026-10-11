@@ -162,6 +162,10 @@
             "title": "Support",
             "description": "Report issues or send us your feedback.",
             "screens": {
+                "support": {
+                    "title": "Help & Support",
+                    "description": "Get help, contact our support team, and learn how to use Instanct."
+                },
                 "report-bug": {
                     "title": "Report a Bug",
                     "description": "Help us improve the app by reporting any bugs you encounter.",

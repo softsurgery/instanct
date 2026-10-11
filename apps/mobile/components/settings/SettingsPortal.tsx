@@ -98,6 +98,15 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       description: tSettings("settings.support.description"),
       rows: [
         createSettingRow({
+          title: tSettings("settings.support.screens.support.title"),
+          description: tSettings(
+            "settings.support.screens.support.description",
+          ),
+          rightIcon: ChevronRight,
+          className: "p-1 px-4",
+          onPress: () => router.push("/main/settings/support"),
+        }),
+        createSettingRow({
           title: tSettings("settings.support.screens.report-bug.title"),
           description: tSettings(
             "settings.support.screens.report-bug.description",

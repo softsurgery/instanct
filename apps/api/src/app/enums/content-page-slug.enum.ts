@@ -3,4 +3,5 @@ export enum ContentPageSlug {
   PRIVACY = 'privacy',
   ABOUT = 'about',
   FAQS = 'faqs',
+  SUPPORT = 'support',
 }

@@ -332,10 +332,11 @@ export default function MainLayout() {
                 headerShown: false,
               }}
             />
+
             <Stack.Screen
-              name="settings/faqs"
+              name="settings/support"
               options={{
-                title: "settings.faqs",
+                title: "settings.support",
                 headerShown: false,
               }}
             />
