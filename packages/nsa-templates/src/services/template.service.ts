@@ -73,6 +73,14 @@ export class TemplateService {
 
   @Transactional()
   async save(template: Partial<TemplateEntity>): Promise<TemplateEntity> {
+    if (
+      template.content !== undefined &&
+      template.content !== null &&
+      template.size === undefined
+    ) {
+      template.size = Buffer.byteLength(template.content, 'utf8');
+    }
+
     const existingTemplate = await this.findOneByName(template.name);
 
     if (existingTemplate) {
@@ -87,7 +95,29 @@ export class TemplateService {
   async saveMany(
     templates: Partial<TemplateEntity>[],
   ): Promise<TemplateEntity[]> {
+    for (const template of templates) {
+      if (
+        template.content !== undefined &&
+        template.content !== null &&
+        template.size === undefined
+      ) {
+        template.size = Buffer.byteLength(template.content, 'utf8');
+      }
+    }
     return this.templateRepository.saveMany(templates);
+  }
+
+  @Transactional()
+  async update(
+    id: string,
+    template: Partial<TemplateEntity>,
+  ): Promise<TemplateEntity> {
+    const existingTemplate = await this.findOneById(id);
+    if (template.content !== undefined && template.content !== null) {
+      template.size = Buffer.byteLength(template.content, 'utf8');
+    }
+    Object.assign(existingTemplate, template);
+    return await this.templateRepository.save(existingTemplate);
   }
 
   async softDelete(id: string): Promise<TemplateEntity | null> {

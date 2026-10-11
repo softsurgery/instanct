@@ -18,6 +18,7 @@ import { createUploadResource } from "./storage";
 import { createUserResource } from "./users";
 import { createBugResource } from "./bug";
 import { createFeedbackResource } from "./feedback";
+import { createTemplateResource } from "./template";
 
 export function createResources(http: AxiosInstance) {
   return {
@@ -31,11 +32,13 @@ export function createResources(http: AxiosInstance) {
       user: createUserResource(http),
       configuration: createConfigurationResource(http),
       contentPage: createContentPageResource(http),
+      template: createTemplateResource(http),
       bugReport: createBugResource(http),
       feedback: createFeedbackResource(http),
     },
     store: createStoreResource(http),
     contentPage: createContentPageResource(http),
+    template: createTemplateResource(http),
     upload: createUploadResource(http),
     notification: createNotificationResource(http),
     follow: createFollowResource(http),

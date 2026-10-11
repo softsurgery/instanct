@@ -1,5 +1,7 @@
 import { EntityHelper } from 'nsa-database';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinTable,
@@ -19,6 +21,9 @@ export class TemplateEntity extends EntityHelper {
   @Column({ type: 'longtext' })
   content?: string;
 
+  @Column({ type: 'int', default: 0 })
+  size: number;
+
   @ManyToMany('TemplateStyleEntity', (style: any) => style.templates, {
     cascade: true,
   })
@@ -34,4 +39,12 @@ export class TemplateEntity extends EntityHelper {
     },
   })
   styles: TemplateStyleEntity[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateSize() {
+    if (this.content !== undefined && this.content !== null) {
+      this.size = Buffer.byteLength(this.content, 'utf8');
+    }
+  }
 }

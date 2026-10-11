@@ -37,6 +37,8 @@ import { ClientCustomAuthController } from 'src/modules/users/controllers/custom
 import { UserDeviceController } from 'nsa-auth/controllers/user-device.controller';
 import { ContentModule } from 'nsa-content/content.module';
 import { ContentPageController } from 'nsa-content/controllers/content-page.controller';
+import { TemplateModule } from 'nsa-templates/template.module';
+import { TemplateController } from 'nsa-templates/controllers/template.controller';
 
 @Module({
   controllers: [
@@ -72,6 +74,8 @@ import { ContentPageController } from 'nsa-content/controllers/content-page.cont
     RefTypeController,
     RefParamController,
     ContentPageController,
+    //templates
+    TemplateController,
   ],
   providers: [],
   exports: [],
@@ -89,6 +93,7 @@ import { ContentPageController } from 'nsa-content/controllers/content-page.cont
     GeolocationModule,
     RequestsModule,
     ContentModule,
+    TemplateModule,
   ],
 })
 export class RoutesModule {}

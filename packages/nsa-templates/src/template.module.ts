@@ -19,3 +19,4 @@ import { TemplateStyleRepository } from './repositories/template-style.repositor
   imports: [TypeOrmModule.forFeature([TemplateEntity, TemplateStyleEntity])],
 })
 export class TemplateModule {}
+

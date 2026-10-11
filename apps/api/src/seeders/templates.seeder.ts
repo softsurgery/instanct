@@ -62,6 +62,7 @@ export class TemplatesSeedCommand {
         const template = await this.templateService.save({
           name: folderName,
           content,
+          size: Buffer.byteLength(content, 'utf8'),
           styles: Array.from(stylesMap.values()),
         });
 
