@@ -8,6 +8,8 @@ export { setNestedValue } from "./store";
 
 export { slugify } from "./string.utils";
 
+export { formatFileSize } from "./file.utils";
+
 export {
   LEGAL_PLACEHOLDERS,
   hasNotAppliedBlocks,

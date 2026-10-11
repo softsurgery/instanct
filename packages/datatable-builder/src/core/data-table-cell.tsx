@@ -3,7 +3,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@instanct/ui/components/avatar";
-import { cn } from "@instanct/lib";
+import { cn, formatFileSize } from "@instanct/lib";
 import { DataTableCellVariant } from "../types";
 import { Star } from "lucide-react";
 
@@ -55,12 +55,19 @@ export default function DataTableCell({
             key={i}
             className={cn(
               "w-4 h-4",
-              i < (value as number)
-                ? color
-                : "text-muted-foreground/30",
+              i < (value as number) ? color : "text-muted-foreground/30",
             )}
           />
         ))}
+      </div>
+    );
+  } else if (variant === DataTableCellVariant.FILE_SIZE) {
+    if (value === undefined || value === null || value === "") {
+      return <div className={cn("text-muted-foreground", className)}>—</div>;
+    }
+    return (
+      <div className={cn("font-mono text-xs", className)}>
+        {formatFileSize(value)}
       </div>
     );
   }

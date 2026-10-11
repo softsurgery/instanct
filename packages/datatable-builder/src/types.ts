@@ -83,4 +83,5 @@ export enum DataTableCellVariant {
   EMAIL = "email",
   PHONE = "phone",
   RATING = "rating",
+  FILE_SIZE = "file-size",
 }
