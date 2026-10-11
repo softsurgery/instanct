@@ -42,3 +42,17 @@ export interface UpdateConfigurationParameterDto {
   id: number;
   value: string;
 }
+
+export enum ConfigurationNamespaces {
+  MAPS = "maps",
+  PERSONAL_MAP = "personalMap",
+  CORE = "core",
+  APPLICATION = "application",
+}
+
+export enum ApplicationConfigurationParam {
+  LANGUAGES = "languages",
+  APP_METADATA_NAME = "appMetaData.name",
+  APP_METADATA_DESCRIPTION = "appMetaData.description",
+}
+

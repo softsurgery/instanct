@@ -183,4 +183,16 @@ export const applicationConfiguration = [
       },
     ],
   },
+  {
+    name: 'appMetaData.name',
+    description: 'Application name',
+    variant: ParamVariant.STRING,
+    value: 'Instanct',
+  },
+  {
+    name: 'appMetaData.description',
+    description: 'Application description',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
 ];

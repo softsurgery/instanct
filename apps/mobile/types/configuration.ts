@@ -37,7 +37,15 @@ export enum ConfigurationNamespaces {
   MAPS = "maps",
   PERSONAL_MAP = "personalMap",
   CORE = "core",
+  APPLICATION = "application",
 }
+
+export enum ApplicationConfigurationParam {
+  LANGUAGES = "languages",
+  APP_METADATA_NAME = "appMetaData.name",
+  APP_METADATA_DESCRIPTION = "appMetaData.description",
+}
+
 
 export enum MapConfigurationParam {
   REFRESH_UNIT = "refresh.unit",

@@ -316,7 +316,7 @@ export const ConfigurationPortal = ({
                   <section key={groupKey} className="space-y-4">
                     <div className="flex items-center gap-2 border-b pb-2">
                       <h3 className="text-sm font-semibold capitalize tracking-tight">
-                        {groupKey}
+                        {_.startCase(groupKey)}
                       </h3>
                       <span className="text-xs text-muted-foreground">
                         {t("configuration.groups.count", {
