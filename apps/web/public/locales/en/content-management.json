@@ -111,6 +111,17 @@
       "title": "Configuration",
       "description": "Manage and configure application properties in a structured format"
     },
+    "singularName": "Configuration",
+    "pluralName": "Configurations",
+    "columns": {
+      "name": "Namespace",
+      "description": "Description",
+      "paramsCount": "Parameters",
+      "paramsPreview": "Key Parameters",
+      "paramKey": "Key",
+      "variant": "Type",
+      "value": "Value"
+    },
     "breadcrumbs": {
       "contentManagement": "Content Management",
       "configuration": "Configuration"
@@ -122,9 +133,37 @@
       "export": "Export",
       "import": "Import"
     },
+    "tree": {
+      "expandAll": "Expand all",
+      "collapseAll": "Collapse all",
+      "param": "param",
+      "params": "params",
+      "copyParam": "Copy parameter",
+      "copied": "Copied to clipboard"
+    },
+    "createPage": {
+      "title": "Create Configuration",
+      "description": "Define a new configuration namespace to manage application settings."
+    },
+    "editPage": {
+      "title": "Edit Configuration",
+      "description": "Configure and update runtime parameters for this configuration namespace."
+    },
+    "dialogs": {
+      "delete": {
+        "title": "Delete Configuration",
+        "description": "Are you sure you want to delete this configuration namespace and its parameters? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
+    },
     "messages": {
+      "createSuccess": "Configuration created successfully",
+      "createError": "Failed to create configuration",
       "updateSuccess": "Configuration updated successfully",
       "updateError": "Failed to update configuration",
+      "deleteSuccess": "Configuration deleted successfully",
+      "deleteError": "Failed to delete configuration",
       "resetSuccess": "Configuration reset to original values",
       "exportSuccess": "Configuration exported",
       "importSuccess": "Imported {{count}} configuration values",
@@ -151,12 +190,39 @@
   },
   "pages": {
     "page": {
-      "title": "Legal pages",
-      "description": "Edit terms, privacy, and other public HTML documents."
+      "title": "Pages",
+      "description": "Manage static and dynamic content pages, localized versions, and legal policies."
+    },
+    "singularName": "Content Page",
+    "pluralName": "Content Pages",
+    "columns": {
+      "id": "ID",
+      "title": "Title",
+      "slug": "Slug",
+      "subtitle": "Subtitle",
+      "locale": "Language",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
     },
     "breadcrumbs": {
       "contentManagement": "Content Management",
       "pages": "Pages"
+    },
+    "createPage": {
+      "title": "Create Content Page",
+      "description": "Draft a new content page with title, slug, locale and formatted body."
+    },
+    "editPage": {
+      "title": "Edit Content Page",
+      "description": "Update page title, slug, subtitle and formatted body content."
+    },
+    "dialogs": {
+      "delete": {
+        "title": "Delete Content Page",
+        "description": "Are you sure you want to delete this content page? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
     },
     "actions": {
       "saveChanges": "Save changes",
@@ -165,17 +231,24 @@
       "import": "Import"
     },
     "messages": {
+      "createSuccess": "Content page created successfully",
+      "createError": "Failed to create content page",
       "updateSuccess": "Content page updated successfully",
       "updateError": "Failed to update content page",
+      "deleteSuccess": "Content page deleted successfully",
+      "deleteError": "Failed to delete content page",
       "exportSuccess": "Page exported",
       "importSuccess": "Page content imported",
       "importError": "Failed to import page file"
     },
     "loading": "Loading pages...",
-    "empty": "No content pages yet. Run the content seeder first.",
+    "empty": "No content pages found.",
     "fields": {
       "title": "Title",
-      "subtitle": "Subtitle"
+      "subtitle": "Subtitle",
+      "slug": "Slug",
+      "locale": "Language",
+      "body": "Page Content"
     },
     "editor": {
       "hint": "Use HTML rich text editor. Wrap unfinished features with Not applied block. Insert {{placeholders}} for company, hosting, and map values from Configuration.",

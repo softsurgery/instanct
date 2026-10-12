@@ -1,26 +1,29 @@
 import React from "react";
-import { Button } from "@instanct/ui";
-import { useBreadcrumb, useFooter, useIntro, useUI } from "@instanct/contexts";
+import { useRouter } from "next/router";
+import { useBreadcrumb, useIntro } from "@instanct/contexts";
 import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
-import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import { cn } from "@/lib/utils";
-import _ from "lodash";
-import { ConfigurationInput } from "./ConfigurationInput";
-import { Label } from "@instanct/ui";
+import { DataTable, DataTableConfig } from "@instanct/datatable-builder";
+import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
-import { Loader2, RotateCcw, Save, Search } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { Input } from "@instanct/ui";
-import { SideNav, SideNavItem } from "@instanct/components";
+import { Download } from "lucide-react";
+import {
+  ResponseConfigurationNamespaceDto,
+  ServerErrorResponse,
+} from "@/types";
+import { useConfigurationColumns } from "./useConfigurationColumns";
+import { useConfigurationDeleteDialog } from "./ConfigurationDeleteDialog";
 import { ImportExportActions } from "../ImportExportActions";
 import {
-  applyConfigurationImport,
   buildConfigurationExport,
   downloadConfigurationExport,
   parseConfigurationImportFile,
+  applyConfigurationImport,
 } from "./configurationTransfer";
+import { useConfigStore } from "@/hooks/stores/userConfigStore";
+
 interface ConfigurationPortalProps {
   className?: string;
 }
@@ -28,99 +31,74 @@ interface ConfigurationPortalProps {
 export const ConfigurationPortal = ({
   className,
 }: ConfigurationPortalProps) => {
-  const { t } = useTranslation("content-management");
+  const router = useRouter();
+  const { t, ready } = useTranslation("content-management");
   const { setRoutes, clearRoutes } = useBreadcrumb();
   const { setIntro, clearIntro, setFloating, clearFloating } = useIntro();
-  const { setContent, clearContent } = useFooter();
-  const {
-    setEnableMainOverflow,
-    clearEnableMainOverflow,
-    setEnableContainer,
-    clearEnableContainer,
-  } = useUI();
   const { configurations, isConfigurationsPending, refetchConfigurations } =
     useConfigurations();
-  const configStore = useConfigStore();
 
-  const originalValuesRef = React.useRef<{ id: number; value: string }[]>([]);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [selectedNamespaceId, setSelectedNamespaceId] = React.useState<
-    string | null
-  >(null);
 
-  const namespaces = React.useMemo(
-    () => configurations ?? [],
-    [configurations],
-  );
-  const activeNamespaceId = selectedNamespaceId ?? namespaces[0]?.id ?? null;
-  const selectedNamespace =
-    namespaces.find((namespace) => namespace.id === activeNamespaceId) ?? null;
+  const [selectedNamespaceForDelete, setSelectedNamespaceForDelete] =
+    React.useState<ResponseConfigurationNamespaceDto | null>(null);
 
-  React.useEffect(() => {
-    if (configurations && configStore.updateDtos.length === 0) {
-      const allParams = configurations.flatMap(
-        (namespace) => namespace.params || [],
-      );
-
-      const initialUpdateDtos = allParams.map((param) => ({
-        id: param.id,
-        value: param.value || "",
-      }));
-
-      originalValuesRef.current = initialUpdateDtos;
-      configStore.set("updateDtos", initialUpdateDtos);
-    }
-  }, [configurations, configStore]);
-
-  const { mutateAsync: updateConfigs, isPending: isSaving } = useMutation({
-    mutationFn: async (data: { id: number; value: string }[]) => {
-      return api.admin.configuration.update(data);
-    },
-    onSuccess: () => {
-      refetchConfigurations();
-    },
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [page, setPage] = React.useState(1);
+  const [size, setSize] = React.useState(10);
+  const [sortDetails, setSortDetails] = React.useState({
+    order: true,
+    sortKey: "name",
   });
 
-  const handleSave = React.useCallback(() => {
-    const latestUpdateDtos = useConfigStore.getState().updateDtos;
-    toast.promise(updateConfigs(latestUpdateDtos), {
-      loading: t("configuration.actions.saving"),
-      success: t("configuration.messages.updateSuccess"),
-      error: (error) =>
-        error.response?.data?.message ||
-        error.message ||
-        t("configuration.messages.updateError"),
-    });
-  }, [t, updateConfigs]);
+  React.useEffect(() => {
+    setRoutes?.([
+      {
+        title: t("configuration.breadcrumbs.contentManagement", "Content Management"),
+        href: "/content-management",
+      },
+      {
+        title: t("configuration.breadcrumbs.configuration", "Configuration"),
+        href: "/content-management/configuration",
+      },
+    ]);
 
-  const handleReset = React.useCallback(() => {
-    configStore.set("updateDtos", [...originalValuesRef.current]);
-    toast.info(t("configuration.messages.resetSuccess"));
-  }, [configStore, t]);
+    setIntro?.(
+      t("configuration.page.title", "Configuration"),
+      t(
+        "configuration.page.description",
+        "Manage and configure application properties in a structured format",
+      ),
+    );
 
-  const handleExport = React.useCallback(() => {
-    if (!selectedNamespace) return;
+    return () => {
+      clearRoutes?.();
+      clearIntro?.();
+    };
+  }, [clearIntro, clearRoutes, ready, setIntro, setRoutes, t]);
+
+  const handleExportAll = React.useCallback(() => {
+    if (!configurations || configurations.length === 0) return;
     const payload = buildConfigurationExport(
-      [selectedNamespace],
+      configurations,
       useConfigStore.getState().updateDtos,
     );
     downloadConfigurationExport(payload);
-    toast.success(t("configuration.messages.exportSuccess"));
-  }, [selectedNamespace, t]);
+    toast.success(t("configuration.messages.exportSuccess", "Configuration exported"));
+  }, [configurations, t]);
 
   const handleImport = React.useCallback(
     async (file: File) => {
-      if (!selectedNamespace) return;
+      if (!configurations || configurations.length === 0) return;
 
       try {
         const raw = await file.text();
         const importedNamespaces = parseConfigurationImportFile(raw);
         const result = applyConfigurationImport(
-          [selectedNamespace],
+          configurations,
           importedNamespaces,
           useConfigStore.getState().updateDtos,
         );
-        configStore.set("updateDtos", result.updateDtos);
+        useConfigStore.getState().set("updateDtos", result.updateDtos);
         toast.success(
           t("configuration.messages.importSuccess", {
             count: result.applied,
@@ -137,62 +115,20 @@ export const ConfigurationPortal = ({
         toast.error(
           error instanceof Error
             ? error.message
-            : t("configuration.messages.importError"),
+            : t("configuration.messages.importError", "Failed to import configuration"),
         );
       }
     },
-    [configStore, selectedNamespace, t],
+    [configurations, t],
   );
 
   React.useEffect(() => {
-    setEnableMainOverflow?.(true);
-    setEnableContainer?.(true);
-    return () => {
-      clearEnableMainOverflow?.();
-      clearEnableContainer?.();
-    };
-  }, [
-    clearEnableContainer,
-    clearEnableMainOverflow,
-    setEnableContainer,
-    setEnableMainOverflow,
-  ]);
-
-  React.useEffect(() => {
-    setRoutes?.([
-      {
-        title: t("configuration.breadcrumbs.contentManagement"),
-        href: "/content-management",
-      },
-      {
-        title: t("configuration.breadcrumbs.configuration"),
-        href: "/content-management/configuration",
-      },
-    ]);
-
-    setIntro?.(
-      t("configuration.page.title"),
-      t("configuration.page.description"),
-    );
-
-    return () => {
-      clearRoutes?.();
-      clearIntro?.();
-    };
-  }, [clearIntro, clearRoutes, setIntro, setRoutes, t]);
-
-  React.useEffect(() => {
-    if (!selectedNamespace) {
-      clearFloating?.();
-      return;
-    }
-
     setFloating?.(
       <ImportExportActions
-        exportLabel={t("configuration.actions.export")}
-        importLabel={t("configuration.actions.import")}
-        disabled={isSaving || !selectedNamespace}
-        onExport={handleExport}
+        exportLabel={t("configuration.actions.export", "Export All")}
+        importLabel={t("configuration.actions.import", "Import")}
+        disabled={isConfigurationsPending || !configurations?.length}
+        onExport={handleExportAll}
         onImport={handleImport}
       />,
     );
@@ -200,178 +136,133 @@ export const ConfigurationPortal = ({
     return () => {
       clearFloating?.();
     };
-  }, [
-    clearFloating,
-    handleExport,
-    handleImport,
-    isSaving,
-    selectedNamespace,
-    setFloating,
-    t,
-  ]);
+  }, [clearFloating, configurations, handleExportAll, handleImport, isConfigurationsPending, setFloating, t]);
 
-  React.useEffect(() => {
-    if (!selectedNamespace) {
-      clearContent?.();
-      return;
+  const { mutate: deleteNamespace, isPending: isDeletionPending } = useMutation({
+    mutationFn: (id: string) => api.admin.configuration.deleteNamespace(id),
+    onSuccess: () => {
+      toast.success(
+        t("configuration.messages.deleteSuccess", "Configuration deleted successfully."),
+      );
+      refetchConfigurations();
+      setSelectedNamespaceForDelete(null);
+      closeDeleteConfigurationDialog();
+    },
+    onError: (error: ServerErrorResponse) => {
+      toast.error(
+        error.response?.data?.message ||
+          t("configuration.messages.deleteError", "Failed to delete configuration."),
+      );
+    },
+  });
+
+  const {
+    deleteConfigurationDialog,
+    openDeleteConfigurationDialog,
+    closeDeleteConfigurationDialog,
+  } = useConfigurationDeleteDialog({
+    representation: selectedNamespaceForDelete?.name,
+    deleteConfiguration: () => {
+      if (selectedNamespaceForDelete?.id) {
+        deleteNamespace(selectedNamespaceForDelete.id);
+      }
+    },
+    isDeletionPending,
+    resetConfiguration: () => setSelectedNamespaceForDelete(null),
+  });
+
+  // Filtered and sorted namespaces
+  const filteredNamespaces = React.useMemo(() => {
+    if (!configurations) return [];
+    let list = [...configurations];
+    if (searchTerm.trim()) {
+      const q = searchTerm.toLowerCase();
+      list = list.filter(
+        (n) =>
+          n.name?.toLowerCase().includes(q) ||
+          n.description?.toLowerCase().includes(q) ||
+          n.params?.some(
+            (p) =>
+              p.name?.toLowerCase().includes(q) ||
+              p.value?.toLowerCase().includes(q),
+          ),
+      );
     }
+    list.sort((a, b) => {
+      const fieldA = (a[sortDetails.sortKey as keyof ResponseConfigurationNamespaceDto] || "").toString();
+      const fieldB = (b[sortDetails.sortKey as keyof ResponseConfigurationNamespaceDto] || "").toString();
+      return sortDetails.order ? fieldA.localeCompare(fieldB) : fieldB.localeCompare(fieldA);
+    });
+    return list;
+  }, [configurations, searchTerm, sortDetails]);
 
-    setContent?.(
-      <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleReset}
-          disabled={isSaving}
-        >
-          {t("configuration.actions.resetAll")}
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          onClick={handleSave}
-          disabled={isSaving}
-        >
-          {t("configuration.actions.saveChanges")}
-        </Button>
-      </div>,
-    );
+  // Paginated namespaces
+  const paginatedNamespaces = React.useMemo(() => {
+    const start = (page - 1) * size;
+    return filteredNamespaces.slice(start, start + size);
+  }, [filteredNamespaces, page, size]);
 
-    return () => {
-      clearContent?.();
-    };
-  }, [
-    clearContent,
-    handleReset,
-    handleSave,
-    isSaving,
-    selectedNamespace,
-    setContent,
-    t,
-  ]);
+  const totalNamespacePages = Math.ceil(filteredNamespaces.length / size) || 1;
 
-  const sideNavItems: SideNavItem[] = React.useMemo(
-    () =>
-      namespaces.map((namespace) => ({
-        href: namespace.id,
-        title: _.capitalize(namespace.name),
-        description: namespace.description,
-      })),
-    [namespaces],
-  );
 
-  const selectedParams = React.useMemo(() => {
-    const params = selectedNamespace?.params ?? [];
-    if (!searchQuery) return params;
+  // Namespace Table Context
+  const namespaceContext: DataTableConfig<ResponseConfigurationNamespaceDto> = {
+    singularName: t("configuration.singularName", "Configuration"),
+    pluralName: t("configuration.pluralName", "Configurations"),
+    createCallback: () => router.push("/content-management/configuration/create"),
+    updateCallback: (entity: ResponseConfigurationNamespaceDto) =>
+      router.push(`/content-management/configuration/${entity.id}`),
+    deleteCallback: (entity: ResponseConfigurationNamespaceDto) => {
+      setSelectedNamespaceForDelete(entity);
+      openDeleteConfigurationDialog();
+    },
+    additionalActions: {
+      1: [
+        {
+          actionCallback: (entity: ResponseConfigurationNamespaceDto) => {
+            const payload = buildConfigurationExport(
+              [entity],
+              useConfigStore.getState().updateDtos,
+            );
+            downloadConfigurationExport(payload);
+            toast.success(`Exported ${entity.name} configuration`);
+          },
+          actionLabel: "Export",
+          actionIcon: <Download className="h-4 w-4" />,
+          isActionVisible: () => true,
+        },
+      ],
+    },
+    searchTerm,
+    setSearchTerm: (term) => {
+      setSearchTerm(term);
+      setPage(1);
+    },
+    page,
+    totalPageCount: totalNamespacePages,
+    setPage,
+    size,
+    setSize,
+    order: sortDetails.order,
+    sortKey: sortDetails.sortKey,
+    setSortDetails: (order: boolean, sortKey: string) =>
+      setSortDetails({ order, sortKey }),
+  };
 
-    return params.filter((param) =>
-      param.name?.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
-  }, [selectedNamespace, searchQuery]);
-
-  const groupedParams = React.useMemo(
-    () => _.groupBy(selectedParams, (param) => param.name?.split(".")[0]),
-    [selectedParams],
-  );
-
-  if (isConfigurationsPending) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin" />
-        <span className="ml-2">
-          {t("configuration.loading.configurations")}
-        </span>
-      </div>
-    );
-  }
+  const namespaceColumns = useConfigurationColumns(namespaceContext);
 
   return (
-    <div className={cn("flex flex-col gap-6 w-full h-auto", className)}>
-      <div className="w-full space-y-3 mt-4">
-        <SideNav
-          items={sideNavItems}
-          activeHref={selectedNamespace?.id}
-          onSelect={(item) => setSelectedNamespaceId(item.href)}
-        />
-      </div>
+    <div className={cn("flex flex-col flex-1 overflow-hidden", className)}>
+      <DataTable
+        className="flex flex-col flex-1 overflow-hidden p-1"
+        containerClassName="overflow-auto"
+        columns={namespaceColumns}
+        data={paginatedNamespaces}
+        context={namespaceContext}
+        isPending={isConfigurationsPending}
+      />
 
-      <main className="flex-1 w-full space-y-6">
-        {selectedNamespace ? (
-          <div className="flex flex-col space-y-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search params..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-
-            {selectedParams.length ? (
-              <div className="flex flex-col gap-8">
-                {Object.entries(groupedParams).map(([groupKey, params]) => (
-                  <section key={groupKey} className="space-y-4">
-                    <div className="flex items-center gap-2 border-b pb-2">
-                      <h3 className="text-sm font-semibold capitalize tracking-tight">
-                        {_.startCase(groupKey)}
-                      </h3>
-                      <span className="text-xs text-muted-foreground">
-                        {t("configuration.groups.count", {
-                          count: params.length,
-                        })}
-                      </span>
-                    </div>
-
-                    <div className="space-y-4">
-                      {params
-                        .sort((a, b) => a.variant.localeCompare(b.variant))
-                        .map((param) => (
-                          <div
-                            key={param.id}
-                            className="flex flex-col gap-3 lg:flex-row lg:items-start"
-                          >
-                            <div className="lg:w-1/4">
-                              <Label className="text-sm font-bold">
-                                {_.startCase(
-                                  param.name?.includes(".")
-                                    ? param.name.split(".").slice(1).join(" ")
-                                    : param.name,
-                                )}
-                              </Label>
-                              {param.description && (
-                                <p className="text-xs text-muted-foreground">
-                                  {param.description}
-                                </p>
-                              )}
-                            </div>
-                            <div className="lg:w-3/4">
-                              <ConfigurationInput configurationParam={param} />
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </section>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground w-full text-center py-6">
-                {searchQuery
-                  ? "No configuration params match your search"
-                  : "No configuration params in this namespace"}
-              </p>
-            )}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center py-12">
-            <p className="text-sm text-muted-foreground">
-              No configuration namespaces available
-            </p>
-          </div>
-        )}
-      </main>
+      {deleteConfigurationDialog}
     </div>
   );
 };

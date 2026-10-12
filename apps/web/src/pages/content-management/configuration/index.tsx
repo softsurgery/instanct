@@ -1,5 +1,5 @@
 import { ConfigurationPortal } from "@/components/content-management/configuration/ConfigurationPortal";
 
-export default function Configuration() {
+export default function ConfigurationPage() {
   return <ConfigurationPortal />;
 }

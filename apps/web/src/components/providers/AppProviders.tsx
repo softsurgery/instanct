@@ -14,7 +14,7 @@ interface AppProvidersProps {
 export function AppProviders({ children }: AppProvidersProps) {
   const [routes, setRoutes] = useState<BreadcrumbRoute[]>([]);
   const clearRoutes = useCallback(() => {
-    setRoutes([]);
+    setRoutes((prev) => (prev.length === 0 ? prev : []));
   }, []);
   const breadcrumbContext = useMemo(
     () => ({
@@ -27,7 +27,7 @@ export function AppProviders({ children }: AppProvidersProps) {
 
   const [content, setContent] = useState<React.ReactNode>(null);
   const clearContent = useCallback(() => {
-    setContent(null);
+    setContent((prev) => (prev === null ? prev : null));
   }, []);
   const footerContext = useMemo(
     () => ({
@@ -43,17 +43,18 @@ export function AppProviders({ children }: AppProvidersProps) {
   const [floating, setFloating] = useState<React.ReactNode>(null);
 
   const setIntro = useCallback((newTitle: string, newDescription?: string) => {
-    setTitle(newTitle);
-    setDescription(newDescription || "");
+    setTitle((prev) => (prev === newTitle ? prev : newTitle));
+    const desc = newDescription || "";
+    setDescription((prev) => (prev === desc ? prev : desc));
   }, []);
 
   const clearIntro = useCallback(() => {
-    setTitle("");
-    setDescription("");
+    setTitle((prev) => (prev === "" ? prev : ""));
+    setDescription((prev) => (prev === "" ? prev : ""));
   }, []);
 
   const clearFloating = useCallback(() => {
-    setFloating(null);
+    setFloating((prev) => (prev === null ? prev : null));
   }, []);
 
   const introContext = useMemo(

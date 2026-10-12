@@ -29,11 +29,28 @@ export function createConfigurationResource(http: AxiosInstance) {
     return response.data;
   };
 
+  const createNamespace = async (data: {
+    name: string;
+    description?: string;
+  }): Promise<ResponseConfigurationNamespaceDto> => {
+    const response = await http.post(`/configuration/namespace`, data);
+    return response.data;
+  };
+
+  const deleteNamespace = async (
+    id: string,
+  ): Promise<ResponseConfigurationNamespaceDto | null> => {
+    const response = await http.delete(`/configuration/namespace/${id}`);
+    return response.data;
+  };
+
   return {
     findOneById,
     findAll,
     findAllGlobal,
     update,
+    createNamespace,
+    deleteNamespace,
   };
 }
 

@@ -107,6 +107,17 @@
       "title": "Configuration",
       "description": "Gérez et configurez les propriétés de l'application de manière structurée"
     },
+    "singularName": "Configuration",
+    "pluralName": "Configurations",
+    "columns": {
+      "name": "Namespace",
+      "description": "Description",
+      "paramsCount": "Paramètres",
+      "paramsPreview": "Paramètres clés",
+      "paramKey": "Clé",
+      "variant": "Type",
+      "value": "Valeur"
+    },
     "breadcrumbs": {
       "contentManagement": "Gestion de contenu",
       "configuration": "Configuration"
@@ -118,9 +129,37 @@
       "export": "Exporter",
       "import": "Importer"
     },
+    "tree": {
+      "expandAll": "Tout développer",
+      "collapseAll": "Tout réduire",
+      "param": "paramètre",
+      "params": "paramètres",
+      "copyParam": "Copier le paramètre",
+      "copied": "Copié dans le presse-papiers"
+    },
+    "createPage": {
+      "title": "Créer une configuration",
+      "description": "Définir un nouvel espace de configuration pour gérer les paramètres de l'application."
+    },
+    "editPage": {
+      "title": "Modifier la configuration",
+      "description": "Configurer et mettre à jour les paramètres pour cet espace de configuration."
+    },
+    "dialogs": {
+      "delete": {
+        "title": "Supprimer la configuration",
+        "description": "Êtes-vous sûr de vouloir supprimer cet espace de configuration et ses paramètres ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler"
+      }
+    },
     "messages": {
+      "createSuccess": "La configuration a été créée avec succès",
+      "createError": "Échec de la création de la configuration",
       "updateSuccess": "La configuration a été mise à jour avec succès",
       "updateError": "Échec de la mise à jour de la configuration",
+      "deleteSuccess": "La configuration a été supprimée avec succès",
+      "deleteError": "Échec de la suppression de la configuration",
       "resetSuccess": "La configuration a été réinitialisée aux valeurs d'origine",
       "exportSuccess": "Configuration exportée",
       "importSuccess": "{{count}} valeurs de configuration importées",
@@ -147,12 +186,39 @@
   },
   "pages": {
     "page": {
-      "title": "Pages légales",
-      "description": "Modifiez les CGU, la politique de confidentialité et les autres documents HTML publics."
+      "title": "Pages",
+      "description": "Gérez les pages de contenu statiques et dynamiques, leurs versions localisées et les mentions légales."
+    },
+    "singularName": "Page de contenu",
+    "pluralName": "Pages de contenu",
+    "columns": {
+      "id": "ID",
+      "title": "Titre",
+      "slug": "Slug",
+      "subtitle": "Sous-titre",
+      "locale": "Langue",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le"
     },
     "breadcrumbs": {
       "contentManagement": "Gestion de contenu",
       "pages": "Pages"
+    },
+    "createPage": {
+      "title": "Créer une page de contenu",
+      "description": "Rédiger une nouvelle page de contenu avec un titre, un slug, une langue et un corps formaté."
+    },
+    "editPage": {
+      "title": "Modifier la page de contenu",
+      "description": "Mettre à jour le titre, le slug, le sous-titre et le contenu formaté de la page."
+    },
+    "dialogs": {
+      "delete": {
+        "title": "Supprimer la page de contenu",
+        "description": "Êtes-vous sûr de vouloir supprimer cette page de contenu ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler"
+      }
     },
     "actions": {
       "saveChanges": "Enregistrer les modifications",
@@ -161,17 +227,24 @@
       "import": "Importer"
     },
     "messages": {
+      "createSuccess": "La page a été créée avec succès",
+      "createError": "Échec de la création de la page",
       "updateSuccess": "La page a été mise à jour avec succès",
       "updateError": "Échec de la mise à jour de la page",
+      "deleteSuccess": "La page a été supprimée avec succès",
+      "deleteError": "Échec de la suppression de la page",
       "exportSuccess": "Page exportée",
       "importSuccess": "Contenu de la page importé",
       "importError": "Échec de l'import du fichier de page"
     },
     "loading": "Chargement des pages...",
-    "empty": "Aucune page de contenu. Lancez d'abord le seeder de contenu.",
+    "empty": "Aucune page de contenu trouvée.",
     "fields": {
       "title": "Titre",
-      "subtitle": "Sous-titre"
+      "subtitle": "Sous-titre",
+      "slug": "Slug",
+      "locale": "Langue",
+      "body": "Contenu de la page"
     },
     "editor": {
       "hint": "Utilisez l'éditeur HTML. Encadrez les fonctionnalités non encore en production avec le bloc Non applicable. Insérez des {{placeholders}} pour la société, l'hébergeur et la carte depuis Configuration.",

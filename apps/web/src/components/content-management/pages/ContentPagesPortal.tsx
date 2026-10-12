@@ -1,187 +1,62 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { api } from "@/lib/api";
-import { useBreadcrumb, useFooter, useIntro, useUI } from "@instanct/contexts";
-import { FormBuilder } from "@instanct/form-builder";
-import { SideNav, SideNavItem } from "@instanct/components";
-import { Button, cn } from "@instanct/ui";
-import { useMutation } from "@tanstack/react-query";
-import { Loader2, RotateCcw, Save } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { useDebounce } from "@instanct/hooks/utils";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useBreadcrumb, useIntro } from "@instanct/contexts";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { DataTable, DataTableConfig } from "@instanct/datatable-builder";
+import { useTranslation } from "react-i18next";
 import {
   ResponseContentPageDto,
   ServerErrorResponse,
-  UpdateContentPageDto,
 } from "@/types";
 import { useApplicationLanguages } from "@/hooks/content/configuration/useApplicationLanguages";
-import { useContentPages } from "@/hooks/content/pages/useContentPages";
 import { useContentPageStore } from "@/hooks/stores/useContentPageStore";
-import { ImportExportActions } from "../ImportExportActions";
+import { useContentPageColumns } from "./useContentPageColumns";
+import { useContentPageDeleteDialog } from "./ContentPageDeleteDialog";
 import { PageLanguageToggle } from "./PageLanguageToggle";
-import { useContentPageFormStructure } from "./useContentPageFormStructure";
-import {
-  buildContentPageExport,
-  downloadContentPageExport,
-  parseContentPageImportFile,
-} from "./contentPageTransfer";
 
 interface ContentPagesPortalProps {
   className?: string;
 }
 
 export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
-  const { t } = useTranslation("content-management");
+  const router = useRouter();
+  const { t, ready } = useTranslation("content-management");
   const { setRoutes, clearRoutes } = useBreadcrumb();
   const { setIntro, clearIntro, setFloating, clearFloating } = useIntro();
-  const { setContent, clearContent } = useFooter();
-  const {
-    setEnableMainOverflow,
-    clearEnableMainOverflow,
-    setEnableContainer,
-    clearEnableContainer,
-  } = useUI();
-  const [selectedLocale, setSelectedLocale] = React.useState<string>("fr");
-  const { contentPages, isContentPagesPending, refetchContentPages } =
-    useContentPages({ enabled: true, locale: selectedLocale });
   const { languages } = useApplicationLanguages();
   const contentPageStore = useContentPageStore();
-  const { contentPageFormStructure } = useContentPageFormStructure({
-    contentPageStore,
-  });
 
-  const [selectedSlug, setSelectedSlug] = React.useState<string | null>(null);
-
-  const activeSlug = selectedSlug ?? contentPages[0]?.slug ?? null;
-  const selectedPage = React.useMemo(
-    () => contentPages.find((page) => page.slug === activeSlug) ?? null,
-    [contentPages, activeSlug],
-  );
-
-  const hydrateFromPage = React.useCallback((page: ResponseContentPageDto) => {
-    const { set } = useContentPageStore.getState();
-    set("response", page);
-    set<UpdateContentPageDto>("updateDto", {
-      title: page.title,
-      subtitle: page.subtitle ?? "",
-      body: page.body,
-      locale: page.locale,
-    });
-    set("updateDtoErrors", {});
-  }, []);
-
-  React.useEffect(() => {
-    if (!selectedPage) return;
-    const currentResp = useContentPageStore.getState().response;
-    if (
-      currentResp?.slug === selectedPage.slug &&
-      currentResp?.locale === selectedPage.locale
-    )
-      return;
-    hydrateFromPage(selectedPage);
-  }, [hydrateFromPage, selectedPage]);
-
-  React.useEffect(() => {
-    return () => {
-      useContentPageStore.getState().reset();
-    };
-  }, []);
-
-  const handleReset = React.useCallback(() => {
-    if (!selectedPage) return;
-    hydrateFromPage(selectedPage);
-  }, [hydrateFromPage, selectedPage]);
-
-  const { mutateAsync: updatePageAsync, isPending: isSaving } = useMutation({
-    mutationFn: (data: { id: string; payload: UpdateContentPageDto }) =>
-      api.admin.contentPage.update(data.id, data.payload),
-    onSuccess: () => {
-      refetchContentPages();
-    },
-  });
-
-  const handleSave = React.useCallback(async () => {
-    if (!selectedPage) return;
-
-    try {
-      await updatePageAsync({
-        id: selectedPage.id,
-        payload: useContentPageStore.getState().updateDto,
-      });
-      toast.success(t("pages.messages.updateSuccess"));
-    } catch (error: unknown) {
-      const err = error as ServerErrorResponse;
-      toast.error(
-        err.response?.data?.message || t("pages.messages.updateError"),
-      );
-    }
-  }, [selectedPage, updatePageAsync, t]);
-
-  const handleExport = React.useCallback(() => {
-    if (!selectedPage) return;
-    const payload = buildContentPageExport(
-      selectedPage.slug,
-      useContentPageStore.getState().updateDto,
-    );
-    downloadContentPageExport(payload);
-    toast.success(t("pages.messages.exportSuccess"));
-  }, [selectedPage, t]);
-
-  const handleImport = React.useCallback(
-    async (file: File) => {
-      if (!selectedPage) return;
-
-      try {
-        const raw = await file.text();
-        const page = parseContentPageImportFile(raw);
-        useContentPageStore.getState().set<UpdateContentPageDto>("updateDto", {
-          title: page.title,
-          subtitle: page.subtitle,
-          body: page.body,
-          locale: page.locale,
-        });
-        toast.success(t("pages.messages.importSuccess"));
-      } catch (error) {
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : t("pages.messages.importError"),
-        );
-      }
-    },
-    [selectedPage, t],
-  );
-
-  React.useEffect(() => {
-    setEnableMainOverflow?.(true);
-    setEnableContainer?.(true);
-    return () => {
-      clearEnableMainOverflow?.();
-      clearEnableContainer?.();
-    };
-  }, [
-    clearEnableContainer,
-    clearEnableMainOverflow,
-    setEnableContainer,
-    setEnableMainOverflow,
-  ]);
+  const [selectedLocale, setSelectedLocale] = React.useState<string>("fr");
+  const [selectedPageForDelete, setSelectedPageForDelete] =
+    React.useState<ResponseContentPageDto | null>(null);
 
   React.useEffect(() => {
     setRoutes?.([
       {
-        title: t("pages.breadcrumbs.contentManagement"),
+        title: t("pages.breadcrumbs.contentManagement", "Content Management"),
         href: "/content-management",
       },
       {
-        title: t("pages.breadcrumbs.pages"),
+        title: t("pages.breadcrumbs.pages", "Pages"),
         href: "/content-management/pages",
       },
     ]);
-    setIntro?.(t("pages.page.title"), t("pages.page.description"));
+    setIntro?.(
+      t("pages.page.title", "Pages"),
+      t(
+        "pages.page.description",
+        "Manage static and dynamic content pages, localized versions, and legal policies.",
+      ),
+    );
     return () => {
       clearRoutes?.();
       clearIntro?.();
     };
-  }, [clearIntro, clearRoutes, setIntro, setRoutes, t]);
+  }, [t, ready, setRoutes, clearRoutes, setIntro, clearIntro]);
 
   React.useEffect(() => {
     setFloating?.(
@@ -197,116 +72,136 @@ export function ContentPagesPortal({ className }: ContentPagesPortalProps) {
     };
   }, [clearFloating, languages, selectedLocale, setFloating]);
 
-  React.useEffect(() => {
-    if (!selectedPage) {
-      clearContent?.();
-      return;
-    }
+  const [page, setPage] = React.useState(1);
+  const { value: debouncedPage, loading: paging } = useDebounce<number>(
+    page,
+    500,
+  );
 
-    setContent?.(
-      <div className="flex items-center gap-2 sm:justify-end">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleReset}
-          disabled={isSaving}
-        >
-          <RotateCcw />
-          Reset
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          onClick={handleSave}
-          disabled={isSaving}
-        >
-          <Save /> Save
-        </Button>
-      </div>,
-    );
+  const [size, setSize] = React.useState(10);
+  const { value: debouncedSize, loading: resizing } = useDebounce<number>(
+    size,
+    500,
+  );
 
-    return () => {
-      clearContent?.();
-    };
-  }, [
-    clearContent,
-    handleReset,
-    handleSave,
-    isSaving,
-    selectedPage,
-    setContent,
-    t,
-  ]);
+  const [sortDetails, setSortDetails] = React.useState({
+    order: true,
+    sortKey: "title",
+  });
+  const { value: debouncedSortDetails, loading: sorting } = useDebounce<
+    typeof sortDetails
+  >(sortDetails, 500);
 
-  const sideNavItems: SideNavItem[] = React.useMemo(() => {
-    return contentPages.map((page: ResponseContentPageDto) => ({
-      href: page.slug,
-      title: page.title,
-      description: `/${page.slug}`,
-    }));
-  }, [contentPages]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const { value: debouncedSearchTerm, loading: searching } =
+    useDebounce<string>(searchTerm, 500);
 
-  const title = contentPageStore.updateDto.title;
+  const {
+    data: pagesResponse,
+    isFetching: isPagesPending,
+    refetch: refetchPages,
+  } = useQuery({
+    queryKey: [
+      "content-pages",
+      debouncedPage,
+      debouncedSize,
+      debouncedSortDetails.order,
+      debouncedSortDetails.sortKey,
+      debouncedSearchTerm,
+      selectedLocale,
+    ],
+    queryFn: () =>
+      api.admin.contentPage.findPaginated({
+        page: debouncedPage.toString(),
+        limit: debouncedSize.toString(),
+        sort: `${debouncedSortDetails.sortKey},${
+          debouncedSortDetails.order ? "ASC" : "DESC"
+        }`,
+        search: debouncedSearchTerm,
+        locale: selectedLocale,
+      }),
+  });
 
-  if (isContentPagesPending) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-        <span className="ml-2">{t("pages.loading")}</span>
-      </div>
-    );
-  }
+  const contentPages = React.useMemo(() => {
+    if (!pagesResponse) return [];
+    return pagesResponse.data;
+  }, [pagesResponse]);
+
+  const { mutate: deletePage, isPending: isDeletionPending } = useMutation({
+    mutationFn: (id: string) => api.admin.contentPage.remove(id),
+    onSuccess: () => {
+      toast.success(
+        t("pages.messages.deleteSuccess", "Content page deleted successfully."),
+      );
+      refetchPages();
+      setSelectedPageForDelete(null);
+      closeDeleteContentPageDialog();
+    },
+    onError: (error: ServerErrorResponse) => {
+      toast.error(
+        error.response?.data?.message ||
+          t("pages.messages.deleteError", "Failed to delete page."),
+      );
+    },
+  });
+
+  const {
+    deleteContentPageDialog,
+    openDeleteContentPageDialog,
+    closeDeleteContentPageDialog,
+  } = useContentPageDeleteDialog({
+    representation: selectedPageForDelete?.title,
+    deleteContentPage: () => {
+      if (selectedPageForDelete?.id) {
+        deletePage(selectedPageForDelete.id);
+      }
+    },
+    isDeletionPending,
+    resetContentPage: () => setSelectedPageForDelete(null),
+  });
+
+  const context: DataTableConfig<ResponseContentPageDto> = {
+    singularName: t("pages.singularName", "Content Page"),
+    pluralName: t("pages.pluralName", "Content Pages"),
+    createCallback: () => router.push("/content-management/pages/create"),
+    updateCallback: (entity: ResponseContentPageDto) =>
+      router.push(`/content-management/pages/${entity.id}`),
+    deleteCallback: (entity: ResponseContentPageDto) => {
+      setSelectedPageForDelete(entity);
+      openDeleteContentPageDialog();
+    },
+    searchTerm,
+    setSearchTerm,
+    page,
+    totalPageCount: pagesResponse?.meta?.pageCount || 0,
+    setPage,
+    size,
+    setSize,
+    order: sortDetails.order,
+    sortKey: sortDetails.sortKey,
+    setSortDetails: (order: boolean, sortKey: string) =>
+      setSortDetails({ order, sortKey }),
+    targetEntity: (page: ResponseContentPageDto) => {
+      contentPageStore.set("response", page);
+    },
+  };
+
+  const columns = useContentPageColumns(context);
+
+  const isPending =
+    isPagesPending || paging || resizing || searching || sorting;
 
   return (
-    <div className={cn("mt-4 flex flex-col gap-6 w-full h-auto", className)}>
-      {/* Navigation select */}
-      <div className="w-full space-y-3">
-        <SideNav
-          items={sideNavItems}
-          activeHref={selectedPage?.slug}
-          onSelect={(item) => {
-            setSelectedSlug(item.href);
-            const page = contentPages.find((p) => p.slug === item.href);
-            if (page) hydrateFromPage(page);
-          }}
-        />
-      </div>
-
-      {/* Main Content Form area (no Card component) */}
-      <main className="flex-1 w-full space-y-6">
-        {selectedPage ? (
-          <div className="flex flex-col space-y-6">
-            <header className="flex items-center justify-between border-b pb-4">
-              <div>
-                <h2 className="text-xl font-bold text-foreground">
-                  {title || selectedPage.title}
-                </h2>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Editing page details for /{selectedPage.slug}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <ImportExportActions
-                  exportLabel={t("pages.actions.export")}
-                  importLabel={t("pages.actions.import")}
-                  disabled={isSaving || !selectedPage}
-                  onExport={handleExport}
-                  onImport={handleImport}
-                />
-              </div>
-            </header>
-
-            <section className="space-y-4">
-              <FormBuilder structure={contentPageFormStructure} />
-            </section>
-          </div>
-        ) : (
-          <div className="flex items-center justify-center py-12">
-            <p className="text-sm text-muted-foreground">{t("pages.empty")}</p>
-          </div>
-        )}
-      </main>
+    <div className={cn("flex flex-col flex-1 overflow-hidden", className)}>
+      <DataTable
+        className="flex flex-col flex-1 overflow-hidden p-1"
+        containerClassName="overflow-auto"
+        columns={columns}
+        data={contentPages}
+        context={context}
+        isPending={Boolean(isPending)}
+      />
+      {deleteContentPageDialog}
     </div>
   );
 }
