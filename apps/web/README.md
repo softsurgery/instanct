@@ -1,6 +1,6 @@
 # Instanct web
 
-Backoffice for Instanct (`instanct-ui`). Operators manage users, roles, content pages, configuration, reference data, logs, bug reports, and feedback, and they can open a user profile. It is a Next.js **pages router** app. Shared UI and data access come from `@instanct/*` packages. The abstractions themselves are described in the [root README](../../README.md).
+Backoffice for Instanct (`instanct-ui`). Operators manage users, roles, content pages, templates, configuration, reference data, logs, bug reports, and feedback, and they can open a user profile. It is a Next.js **pages router** app. Shared UI and data access come from `@instanct/*` and `@softsurgery/template`. The abstractions themselves are described in the [root README](../../README.md).
 
 ## Run
 
@@ -30,7 +30,7 @@ pnpm dev:web
 SessionProvider
   AuthTokenSync          # copies the NextAuth access token into useAuthPersistStore
   QueryClientProvider
-    ThemeProvider        # @instanct/contexts, class strategy, default dark
+    ThemeProvider        # @instanct/contexts, class strategy, default light
       AppProvider        # { appType: "admin", api }
         Application
 ```
@@ -56,7 +56,8 @@ Pages are thin. They render a feature component or a `*Portal`.
 | `/audit-monitoring/logger` | Request logs |
 | `/audit-monitoring/bug-report` | Bug reports |
 | `/audit-monitoring/feedback` | Feedback |
-| `/content-management/pages` | Content pages (landing legal HTML) |
+| `/content-management/pages` | Content pages (`terms`, `privacy`, `about`, `faqs`, `support`) |
+| `/content-management/templates` | Email and document templates. `create` and `[id]` edit one template |
 | `/content-management/configuration` | Configuration namespaces |
 | `/content-management/reference-types` | Reference type tree |
 | `/content-management/reference-parameters` | Reference parameters |
@@ -72,7 +73,7 @@ A management screen has four pieces. Users (`components/administrative-tools/use
 3. **Form structure.** Create and update sheets call a hook such as `useUpdateUserFormStructure` or `useCreateEducationFormStructure`. The hook returns a `FormStructure` whose fields bind `props.value` / `props.onChange` to a Zustand store. `FormBuilder` renders it. Zod schemas in `src/types/validations` check the DTO before the mutation runs.
 4. **Chrome.** `useBreadcrumb` and `useIntro` from `@instanct/contexts` set the header for the lifetime of the screen.
 
-Portals (`DashboardPortal`, `LoggerPortal`, `ContentPagesPortal`, `ConfigurationPortal`, `RefTypePortal`, `RefParamPortal`, `BugReportPortal`, `FeedbackPortal`) are the same pattern behind a single component the page renders.
+Portals (`DashboardPortal`, `LoggerPortal`, `ContentPagesPortal`, `TemplatesPortal`, `ConfigurationPortal`, `RefTypePortal`, `RefParamPortal`, `BugReportPortal`, `FeedbackPortal`) are the same pattern behind a single component the page renders. Template screens come from `@softsurgery/template`.
 
 Profile editors (experience, education, cover) reuse the form-structure hooks and the upload helpers in `hooks/content/useUploads.ts`. Uploads go through `api.upload`, which hits the API `StorageService`.
 
@@ -86,7 +87,7 @@ src/
 │   ├── auth/
 │   ├── administrative-tools/   # users, roles
 │   ├── audit-monitoring/       # logger, bugs, feedback
-│   ├── content-management/     # pages, configuration, reference data
+│   ├── content-management/     # pages, configuration, reference data (templates live in @softsurgery/template)
 │   ├── profile/
 │   └── dashboard/
 ├── hooks/

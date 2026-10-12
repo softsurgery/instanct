@@ -1,8 +1,8 @@
 # Instanct
 
-Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data.
+Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data. A separate `data-flow` app dumps MySQL and uploads the file to Google Drive.
 
-Clients talk to one NestJS API. Shared packages hold the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way the API describes persistence, users, files, and workflows.
+Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@instanct/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
 
 | App | Package | What it is | README |
 | --- | --- | --- | --- |
@@ -10,21 +10,25 @@ Clients talk to one NestJS API. Shared packages hold the UI and HTTP abstraction
 | `apps/landing` | `instanct-landing` | Next.js app-router marketing site | [apps/landing/README.md](apps/landing/README.md) |
 | `apps/mobile` | `instanct-mobile-app` | Expo Router client | [apps/mobile/README.md](apps/mobile/README.md) |
 | `apps/api` | `instanct-api` | NestJS + TypeORM + MySQL | [apps/api/README.md](apps/api/README.md) |
+| `apps/data-flow` | `instanct-data-flow` | MySQL dump to Google Drive | `apps/data-flow/.env.example` |
 
 ```text
 /
 ├── apps/
-│   ├── web/          # backoffice: pages, portals, form structures, data tables
-│   ├── landing/      # marketing pages and CMS-backed legal content
+│   ├── web/          # backoffice: pages and portals
+│   ├── landing/      # marketing pages and CMS-backed content
 │   ├── mobile/       # Expo Router screens, resource modules, React Query hooks
+│   ├── data-flow/    # one-shot mysqldump upload
 │   └── api/
 │       └── src/
 │           ├── modules/    # users, requests, geolocation, system reports
-│           ├── shared/     # auth, chat, sessions, storage, notifications, …
 │           ├── routers/    # /  /admin  /public  /callback  /test
 │           └── seeders/
-├── packages/         # @instanct/* UI, HTTP, form, and table abstractions
+├── packages/
+│   ├── nsa-*/        # Nest shared abstractions (database, auth, storage, …)
+│   └── @instanct/*   # UI, HTTP, form, and table abstractions
 ├── infra/nginx/      # reverse proxy in front of the apps
+├── scripts/
 ├── package.json
 └── pnpm-workspace.yaml
 ```
@@ -37,16 +41,19 @@ The workspace uses **pnpm** (`apps/*`, `packages/*`) with Turbo. Install from th
 pnpm install
 ```
 
-Do not use npm or Yarn. The root `packageManager` field pins `pnpm@11.25.0`. Node 18 or newer is required.
+Do not use npm or Yarn. The root `packageManager` field pins `pnpm@11.25.0`. Node 22 or newer is required (`engines.node` is `>=22`).
 
 ## Scripts
 
+`pnpm dev` runs the `dev` script of every app under `apps/`, including `data-flow`, which dumps the database and exits. Prefer a filtered script:
+
 ```sh
-pnpm dev          # web, landing, mobile, and API
-pnpm dev:web      # Next.js on :3007
-pnpm dev:landing  # Next.js on :3008
-pnpm dev:mobile   # Expo dev client
-pnpm dev:api      # Nest watch mode
+pnpm dev:web         # Next.js on :3007
+pnpm dev:landing     # Next.js on :3008
+pnpm dev:mobile      # Expo dev client
+pnpm dev:api         # Nest watch mode
+pnpm dev:data-flow   # watch the dump job
+pnpm data-flow       # build and run one dump
 pnpm build
 pnpm lint
 pnpm check-types
@@ -57,6 +64,17 @@ Copy each app's `.env.example` to `.env` before running it. Seed the API databas
 ```sh
 pnpm --filter instanct-api seed:all
 ```
+
+## Docker
+
+Images build from the repository root on Node 22. Compose runs the API, the web backoffice, and the landing site. The database and object storage are not part of these files; each service reads its own env file (`env/dev/` or `env/prod/`).
+
+```sh
+docker compose -f docker-compose.dev.yml up --build   # api :5005, web :3007, landing :3008
+docker compose up --build                              # api :5000, web :3000, landing :3001
+```
+
+`python3 scripts/compose.py` is a menu for those stacks, plus nginx and Bugsink.
 
 Start the reverse proxy on its own. It reaches the host apps through `host.docker.internal`:
 
@@ -131,7 +149,7 @@ New API features sit on these bases. Controllers stay thin: they validate a DTO,
 
 ### Repository and CRUD service
 
-`DatabaseAbstractRepository<T>` (`apps/api/src/shared/database/repositories/database.repository.ts`) is the persistence port. A concrete repository only supplies the TypeORM `Repository<T>` and the optional transaction host. The base class implements find, save, upsert, soft delete, restore, bulk delete, query-builder access, and relation discovery.
+`DatabaseAbstractRepository<T>` (`packages/nsa-database/src/repositories/database.repository.ts`) is the persistence port. A concrete repository only supplies the TypeORM `Repository<T>` and the optional transaction host. The base class implements find, save, upsert, soft delete, restore, bulk delete, query-builder access, and relation discovery.
 
 `AbstractCrudService<T>` sits on that repository. It turns an `IQueryObject` into TypeORM find options, then exposes `findOneById`, `findAll`, `findAllPaginated`, `save`, `update`, and `delete`. Pagination returns `PageDto` plus `PageMetaDto`. Education, experience, conversations, notifications, sessions, geolocation, and content pages extend this class and add behavior on top.
 
@@ -173,7 +191,7 @@ Accounts are one MySQL table with a discriminator column. `AbstractUserEntity` i
 
 ### File storage as a strategy
 
-`StorageService` is abstract. Callers inject that class. `storageProvider` reads `s3.driver` (`STORAGE_DRIVER`) and constructs either `LocalStorageService` or `S3StorageService`. Both implement `store`, `loadResource`, `duplicate`, and `delete`. Shared behavior lives on the base class: lookup by slug or systematic name, expose/hide, confirm a temporary upload, and a cron that deletes temporary files every two hours. Metadata for every file is a `StorageEntity` row, independent of where the bytes sit.
+`StorageService` (`nsa-storage`) is abstract. Callers inject that class. `storageProvider` reads `s3.driver` (`STORAGE_DRIVER`: `local` or `s3`) and constructs either `LocalStorageService` or `S3StorageService` (AWS SDK). Both implement `store`, `loadResource`, `duplicate`, and `delete`. Shared behavior lives on the base class: lookup by slug or systematic name, expose/hide, confirm a temporary upload, and a cron that deletes temporary files every two hours. Metadata for every file is a `StorageEntity` row, independent of where the bytes sit.
 
 ### Workflows
 
@@ -202,20 +220,28 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 
 ### Templates and content pages
 
-`ContentPageEntity` (via `ContentPageService extends AbstractCrudService`) stores legal and marketing HTML by slug and locale. The landing site loads `terms` and `privacy` with `findBySlug`. Email and document layouts live in the templates module (`TemplateEntity`, `TemplateStyleEntity`) and are seeded with `seed:templates`.
+`ContentPageEntity` in `nsa-content` (via `ContentPageService extends AbstractCrudService`) stores HTML by slug and locale: `terms`, `privacy`, `about`, `faqs`, and `support`. Landing loads `terms`, `privacy`, and `support`. Mobile settings load the same slugs, including `about` and `faqs`. Email and document layouts live in `nsa-templates` (`TemplateEntity`, `TemplateStyleEntity`) and are seeded with `seed:templates`. The backoffice edits them through `@softsurgery/template`.
 
 ## Frontend abstractions
 
-`packages/` is the shared layer. Web and landing import the React packages. Mobile imports the React Native twins plus `@instanct/hooks` and `@instanct/lib`. Feature code in an app should call these packages instead of reimplementing a table, a form, or an Axios instance.
+`packages/` is the shared layer. Nest code imports `nsa-*`. Web and landing import the React packages. Mobile imports the React Native twins plus `@instanct/hooks` and `@instanct/lib`. Feature code in an app should call these packages instead of reimplementing a table, a form, or an Axios instance.
 
 | Package | What it abstracts |
 | --- | --- |
+| `nsa-database` | Repository, CRUD service, query builder, migrations, triggers |
+| `nsa-um` | User table hierarchy, roles, permissions |
+| `nsa-auth` | JWT guard, sign-in, devices |
+| `nsa-storage` | Local and S3 file storage |
+| `nsa-chat`, `nsa-sessions`, `nsa-notifications` | Conversations, sessions, live alerts |
+| `nsa-content`, `nsa-templates`, `nsa-configurations`, `nsa-reference-types` | CMS pages, layouts, settings, lookup trees |
+| `nsa-workflows`, `nsa-mail`, `nsa-logger`, `nsa-sentry`, `nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers |
 | `@instanct/api-client` | Axios instance and one resource object per API area |
 | `@instanct/form-builder` | Declarative web forms |
 | `@instanct/mobile-form-builder` | The same form model for React Native |
 | `@instanct/datatable-builder` | Server-driven admin tables |
 | `@instanct/ui` / `@instanct/components` | Web primitives (Radix, editor, toasts) and composites |
 | `@instanct/mobile-ui` / `@instanct/mobile-components` | Native primitives and composites |
+| `@softsurgery/template` | Template list, editor, and preview for the backoffice |
 | `@instanct/hooks` | Persisted auth and preference stores, shared hooks |
 | `@instanct/contexts` | Breadcrumb, intro, footer, theme, and `AppProvider` |
 | `@instanct/lib` | `cn`, nested stores, legal HTML cleanup |
@@ -258,7 +284,7 @@ A backoffice screen follows one shape, visible in `Users` and the `*Portal` comp
 
 ### App shell context
 
-`AppProvider` (`@instanct/contexts`) receives `{ appType, api }`. The backoffice sets `appType: "admin"` so shared components know which resource tree to call. `ThemeProvider` is the same context on web and landing (`class` on `<html>`, default `dark`). Mobile reads the theme from `usePreferencePersistStore` in `@instanct/hooks` and applies it with NativeWind.
+`AppProvider` (`@instanct/contexts`) receives `{ appType, api }`. The backoffice sets `appType: "admin"` so shared components know which resource tree to call. `ThemeProvider` is the same context on web and landing (`class` on `<html>`, default `light`). Mobile reads the theme from `usePreferencePersistStore` in `@instanct/hooks` and applies it with NativeWind.
 
 ## Further reading
 

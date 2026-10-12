@@ -41,7 +41,7 @@ Routes are files under `app/`. `app/_layout.tsx` is the root: gesture handler, s
 | `app/main/request/` | New request, answer |
 | `app/main/explore/` | Session starter, user filters |
 | `app/main/profile/` | Profile, education, experience, industries, devices |
-| `app/main/settings/` | Language, theme, about, privacy, terms |
+| `app/main/settings/` | Language, theme, about, FAQs, support, privacy, terms |
 | `app/main/notifications.tsx` | Notification inbox |
 
 Tabs are declared in `app/main/(tabs)/_layout.tsx`. Stack screens push on top of that layout.

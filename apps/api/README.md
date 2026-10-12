@@ -2,7 +2,7 @@
 
 NestJS backend for the web backoffice, the landing site, and the mobile app. Package name: `instanct-api`. It exposes a versioned HTTP API under the `api` prefix and three Socket.IO namespaces.
 
-The shared abstractions (repository, CRUD service, query builder, user inheritance, storage, workflows, triggers, notifications) are described in the [root README](../../README.md). This file is how those pieces are wired inside this app.
+The shared abstractions (repository, CRUD service, query builder, user inheritance, storage, workflows, triggers, notifications) live in `packages/nsa-*` and are described in the [root README](../../README.md). This file is how the API app wires those packages.
 
 ## Run
 
@@ -23,7 +23,7 @@ The process reads `.env`, or `.env.${NODE_ENV}` when `NODE_ENV` is set. Defaults
 | `HTTP_ENABLE` | Must be `true` or `RouterModule` mounts no controllers |
 | `DATABASE_*` | MySQL connection. `DATABASE_SYNCHRONIZE=false` turns on SQL migrations after listen |
 | `JWT_SECRET`, `JWT_ACCESS_EXPIRATION`, `JWT_REFRESH_EXPIRATION` | Access and refresh tokens |
-| `STORAGE_DRIVER` | `local` or `minio`. MinIO also needs `S3_*`. Local uploads use `UPLOAD_PATH` |
+| `STORAGE_DRIVER` | `local` or `s3`. S3 also needs `S3_*` (bucket, region, endpoint, keys). Local uploads use `UPLOAD_PATH` |
 | `SMTP_*` | Mail transport. If SMTP cannot be resolved, the mailer falls back to `jsonTransport` so the process still boots |
 | `SENTRY_DSN` | BugSink / Sentry-compatible error reporting |
 
@@ -57,32 +57,17 @@ Individual commands (`seed:permissions`, `seed:roles`, `seed:configuration`, `se
 src/
 ├── app/            # AppModule, app-level enums (notification types, config namespaces)
 ├── config/         # app, database, s3, swagger
-├── modules/        # product domains that are not shared infrastructure
+├── modules/        # product domains that stay in this app
 │   ├── users/      # UserEntity, profile, education, experience, bookmarks, blocks
 │   ├── requests/   # request CRUD + XState workflow
 │   ├── geolocation/
 │   └── system-reports/   # bugs, feedback, device info
-├── shared/         # infrastructure reused across domains
-│   ├── abstract-user-management/
-│   ├── auth/
-│   ├── chat/
-│   ├── configurations/
-│   ├── content/
-│   ├── database/   # repository, CRUD, query builder, triggers, migrations
-│   ├── logger/
-│   ├── mail/
-│   ├── notifications/
-│   ├── reference-types/
-│   ├── sessions/
-│   ├── storage/
-│   ├── templates/
-│   └── workflows/
 ├── routers/
 │   └── routes/     # which controllers sit on which prefix
 └── seeders/
 ```
 
-`modules/` is product behavior. `shared/` is the kit those modules extend. A new CRUD resource is a repository extending `DatabaseAbstractRepository`, a service extending `AbstractCrudService`, a controller, and a registration on the right route module.
+`modules/` is product behavior. Persistence, auth, chat, sessions, storage, notifications, content, templates, configuration, reference data, mail, logging, and workflows come from `packages/nsa-*`. A new CRUD resource is a repository extending `DatabaseAbstractRepository`, a service extending `AbstractCrudService`, a controller, and a registration on the right route module.
 
 ## HTTP surface
 
@@ -90,7 +75,7 @@ src/
 
 | Route module | Prefix | Controllers |
 | --- | --- | --- |
-| `RoutesModule` | `/` | Auth, current user, follows, education, experience, bookmarks, blocks, storage, configuration, chat, sessions, requests and request workflow, notifications, reference types, content pages, bugs, feedback |
+| `RoutesModule` | `/` | Auth, current user, follows, education, experience, bookmarks, blocks, storage, configuration, chat, sessions, requests and request workflow, notifications, reference types, content pages, templates, bugs, feedback |
 | `RoutesAdminModule` | `/admin` | Users, roles, permissions, logger |
 | `RoutesPublicModule` | `/public` | Open reads (module is reserved for unauthenticated controllers) |
 | `RoutesCallbackModule` | `/callback` | External callbacks |
@@ -121,13 +106,13 @@ Chat counters that must stay correct under concurrent writes are MySQL triggers 
 
 ## Domain notes
 
-**Users.** `UserEntity` is a `@ChildEntity` of `AbstractUserEntity`. Profile relations (picture, cover, experiences, education, follows, bookmarks, geolocation) live on the child. Role assignment uses `RoleEntity` and `PermissionEntity` from `abstract-user-management`.
+**Users.** `UserEntity` is a `@ChildEntity` of `AbstractUserEntity` from `nsa-um`. Profile relations (picture, cover, experiences, education, follows, bookmarks, geolocation) live on the child. Role assignment uses `RoleEntity` and `PermissionEntity` from the same package.
 
 **Requests.** `RequestService` is a normal CRUD service. `RequestWorkflowService` extends `AbstractWorkflowService` with `requestMachine`. `next(id, event)` loads the row, asks the machine for the next status, and saves it. Illegal events become `400`.
 
-**Reference data.** `RefTypeEntity` / `RefParamEntity` are the catalogs (industries, objectives). **Configuration** namespaces hold runtime key/value params, including map behavior. **Content pages** are HTML documents keyed by slug and locale; the landing site reads them. **Templates** are seeded email and document layouts.
+**Reference data.** `RefTypeEntity` / `RefParamEntity` (`nsa-reference-types`) are the catalogs (industries, objectives). **Configuration** namespaces (`nsa-configurations`) hold runtime key/value params, including map behavior and application metadata. **Content pages** (`nsa-content`) are HTML documents keyed by slug and locale (`terms`, `privacy`, `about`, `faqs`, `support`). **Templates** (`nsa-templates`) are seeded email and document layouts.
 
-**Storage.** Inject `StorageService`. The provider in `storage.module.ts` chooses `LocalStorageService` or `S3StorageService` from `STORAGE_DRIVER`. Temporary uploads are deleted on a two-hour cron defined on the base class.
+**Storage.** Inject `StorageService` from `nsa-storage`. `storageProvider` chooses `LocalStorageService` or `S3StorageService` from `STORAGE_DRIVER` (`local` or `s3`). Temporary uploads are deleted on a two-hour cron defined on the base class.
 
 **Reports.** Bugs, feedback, and device info are `system-reports`. They use the same repository base as the rest of the API.
 
