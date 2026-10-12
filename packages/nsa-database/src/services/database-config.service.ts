@@ -32,7 +32,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         infer: true,
       }),
       autoLoadEntities: true,
-      entities: [process.cwd() + "/dist/**/*.entity{.ts,.js}"],
       extra: {
         ssl: this.configService.get("database.sslEnabled", { infer: true })
           ? {

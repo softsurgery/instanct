@@ -44,8 +44,14 @@ export class RequestService
   }
 
   async onModuleInit(): Promise<void> {
-    await this.expireStaleRequests();
-    await this.scheduleActiveSessionExpirations();
+    try {
+      await this.expireStaleRequests();
+      await this.scheduleActiveSessionExpirations();
+    } catch (error) {
+      this.logger.warn(
+        `Skipped request expiration during startup: ${error instanceof Error ? error.message : error}`,
+      );
+    }
   }
 
   async findOneById(id: number | string, join?: string) {
@@ -74,7 +80,7 @@ export class RequestService
     const count = await this.repository.getTotalCount({
       where: queryOptions.where,
       relations: queryOptions.relations,
-    } as FindManyOptions<RequestEntity>);
+    });
 
     const entities = await this.repository.findAll(
       queryOptions as FindManyOptions<RequestEntity>,
