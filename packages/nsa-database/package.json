@@ -3,6 +3,7 @@
   "description": "nest shared abstractions",
   "version": "0.1.0",
   "private": true,
+  "files": ["dist"],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

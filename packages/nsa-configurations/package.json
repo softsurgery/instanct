@@ -2,6 +2,7 @@
   "name": "nsa-configurations",
   "version": "0.1.0",
   "private": true,
+  "files": ["dist"],
   "description": "Instanct shared configurations module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -2,6 +2,7 @@
   "name": "nsa-logger",
   "version": "0.1.0",
   "private": true,
+  "files": ["dist"],
   "description": "Instanct shared logger module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
