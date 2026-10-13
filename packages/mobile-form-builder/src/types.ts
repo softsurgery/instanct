@@ -111,6 +111,10 @@ export interface DateFieldProps {
   value?: Date;
   onDateChange?: (date: Date) => void;
   editable?: boolean;
+  /** Inclusive lower year bound. Defaults to 1920. */
+  minYear?: number;
+  /** Inclusive upper year bound. Pass `"current"` for this year. Defaults to `"current"`. */
+  maxYear?: number | "current";
 }
 
 export interface TimeFieldProps {

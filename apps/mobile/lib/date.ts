@@ -7,6 +7,13 @@ import {
 } from "date-fns";
 import type { TFunction } from "i18next";
 
+/** Parse a value into a Date, or null when empty / invalid. */
+export function toDateOrNull(value: unknown): Date | null {
+  if (value == null || value === "") return null;
+  const date = value instanceof Date ? value : new Date(value as string);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
 export function toDateOnly(date: Date) {
   if (isNaN(date.getTime())) {
     throw new Error("Invalid date object");
@@ -23,6 +30,11 @@ export function toTimeOnly(date: Date) {
 
 export function toLongDateString(date: Date): string {
   return format(date, "d MMMM yyyy");
+}
+
+export function formatMonthYear(value?: string | Date | null): string | null {
+  const date = toDateOrNull(value);
+  return date ? format(date, "MMM yyyy") : null;
 }
 
 export function timeAgo(input: Date | string): string {
