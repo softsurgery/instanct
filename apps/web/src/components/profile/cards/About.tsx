@@ -49,7 +49,7 @@ export const About = ({ className }: AboutProps) => {
     });
 
   return (
-    <Card className={cn(className, "flex flex-col overflow-auto mb-5")}>
+    <Card className={cn(className, "flex flex-col mb-5")}>
       <CardHeader>
         <CardTitle>{t("userManagement.inspect.about.title")}</CardTitle>
         <CardDescription>

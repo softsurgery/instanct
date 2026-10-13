@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import {
   Card,
@@ -18,7 +19,7 @@ export const Settings = ({ className }: SettingsProps) => {
   const { t } = useTranslation("user-management"); 
 
   return (
-    <Card className={`${className} flex flex-col overflow-auto h-full`}>
+    <Card className={cn("flex flex-col", className)}>
       <CardHeader>
         <CardTitle>{t("userManagement.inspect.settings.title")}</CardTitle>
         <CardDescription>{t("userManagement.inspect.settings.manageAccount")}</CardDescription>
