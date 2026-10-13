@@ -56,6 +56,7 @@ export class EducationService extends AbstractCrudService<EducationEntity> {
     if (!education) {
       throw new EducationNotFoundException();
     }
-    return this.educationRepository.softDelete(id);
+    await this.educationRepository.softDelete(id);
+    return education;
   }
 }

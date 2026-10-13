@@ -74,12 +74,7 @@ export class AuthController {
       deviceId = userDevice.id;
     }
     req.logInfo = {
-      userId: result.user?.id,
       fullname: identifyUser(result?.user as AbstractUserEntity),
-      device: meta.device,
-      ip: meta.ip,
-      deviceId,
-      fingerprint: meta.fingerprint,
     };
     if (result.user?.id) {
       req.notificationInfo = {
@@ -134,12 +129,7 @@ export class AuthController {
         meta,
       );
       req.logInfo = {
-        userId: result.user.id,
         fullname: identifyUser(result.user as AbstractUserEntity),
-        device: meta.device,
-        ip: meta.ip,
-        deviceId: userDevice.id,
-        fingerprint: meta.fingerprint,
       };
       req.notificationInfo = {
         userId: result.user.id,

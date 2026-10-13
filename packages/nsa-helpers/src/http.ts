@@ -7,6 +7,7 @@ export interface AdvancedRequest extends ExpressRequest {
     sub: string;
     email: string;
   };
+  logEvent?: string;
   logInfo?: Record<string, unknown>;
   notificationInfo?: Record<string, unknown>;
   batchNotificationInfo?: BatchNotificationInfo[];

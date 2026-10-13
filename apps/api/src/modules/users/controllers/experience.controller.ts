@@ -54,7 +54,6 @@ export class ExperienceController {
       createExperienceDto,
     );
     request.logInfo = {
-      userId: id,
       experienceId: experience.id,
       title: experience.title,
     };
@@ -73,7 +72,6 @@ export class ExperienceController {
       updateExperienceDto,
     );
     request.logInfo = {
-      userId: experience.userId,
       experienceId: experience.id,
       title: experience.title,
     };
@@ -88,8 +86,8 @@ export class ExperienceController {
   ): Promise<ResponseExperienceDto | null> {
     const experience = await this.experienceService.deleteExperience(id);
     request.logInfo = {
-      userId: experience?.userId,
       experienceId: id,
+      title: experience?.title,
     };
     return toDto(ResponseExperienceDto, experience);
   }

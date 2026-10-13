@@ -66,7 +66,10 @@ export class BugController {
       createBugDto,
       req?.user?.sub,
     );
-    req.logInfo = { id: bug.id, variant: bug.variant };
+    req.logInfo = {
+      bugId: bug.id,
+      variant: bug.variant,
+    };
     return toDto(ResponseBugDto, bug);
   }
 
@@ -76,8 +79,12 @@ export class BugController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseBugDto | null> {
-    const bug = await this.bugService.softDelete(id);
-    req.logInfo = { id, variant: bug?.variant };
+    const bug = await this.bugService.findOneById(id);
+    await this.bugService.softDelete(id);
+    req.logInfo = {
+      bugId: id,
+      variant: bug?.variant,
+    };
     return toDto(ResponseBugDto, bug);
   }
 

@@ -29,6 +29,8 @@ import { UserConfigurationService } from '../services/user-configuration.service
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
 import { ResponseConfigurationNamespaceDto } from 'nsa-configurations/dtos/namespace/response-configuration-namespace.dto';
 import { Public } from 'nsa-auth/utils/public-strategy';
+import { identifyUser } from 'nsa-um/utils/identify-user';
+import { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
 
 @ApiTags('user')
 @ApiBearerAuth('access_token')
@@ -120,7 +122,10 @@ export class UserController {
       ResponseUserDto,
       await this.userService.save(createUserDto),
     );
-    req.logInfo = { id: user.id, firstName: user.firstName };
+    req.logInfo = {
+      targetUserId: user.id,
+      targetName: identifyUser(user as unknown as AbstractUserEntity),
+    };
     return user;
   }
 
@@ -135,7 +140,10 @@ export class UserController {
       id,
       updateUserIndustriesDto.industries,
     );
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: id,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 
@@ -148,10 +156,12 @@ export class UserController {
     if (!req?.user?.sub) {
       return null;
     }
-    return toDto(
-      ResponseUserDto,
-      await this.userService.update(req?.user?.sub, updateUserDto),
-    );
+    const user = await this.userService.update(req?.user?.sub, updateUserDto);
+    req.logInfo = {
+      targetUserId: user?.id,
+      targetName: identifyUser(user),
+    };
+    return toDto(ResponseUserDto, user);
   }
 
   @Put(':id')
@@ -162,7 +172,10 @@ export class UserController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
     const user = await this.userService.extendedUpdate(id, updateUserDto);
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: user?.id || id,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 
@@ -173,7 +186,10 @@ export class UserController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
     const user = await this.userService.activate(id);
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: user?.id || id,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 
@@ -183,8 +199,12 @@ export class UserController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
-    req.logInfo = { id };
-    return toDto(ResponseUserDto, await this.userService.deactivate(id));
+    const user = await this.userService.deactivate(id);
+    req.logInfo = {
+      targetUserId: user?.id || id,
+      targetName: identifyUser(user),
+    };
+    return toDto(ResponseUserDto, user);
   }
 
   @Put('/approve/:id')
@@ -194,7 +214,10 @@ export class UserController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
     const user = await this.userService.approve(id);
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: user?.id || id,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 
@@ -205,7 +228,10 @@ export class UserController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
     const user = await this.userService.disapprove(id);
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: user?.id || id,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 
@@ -221,7 +247,11 @@ export class UserController {
         id,
         updateUserMapConfigurationDto,
       );
-    req.logInfo = { id };
+    const user = await this.userService.findOneById(id);
+    req.logInfo = {
+      targetUserId: id,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseConfigurationNamespaceDto, config);
   }
 
@@ -232,7 +262,10 @@ export class UserController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseUserDto | null> {
     const user = await this.userService.softDelete(id);
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: user?.id || id,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 }

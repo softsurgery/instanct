@@ -74,7 +74,10 @@ export class FeedbackController {
       createFeedbackDto,
       req?.user?.sub,
     );
-    req.logInfo = { id: feedback.id, category: feedback.category };
+    req.logInfo = {
+      feedbackId: feedback.id,
+      category: feedback.category,
+    };
     return toDto(ResponseFeedbackDto, feedback);
   }
 
@@ -84,8 +87,12 @@ export class FeedbackController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseFeedbackDto | null> {
-    const feedback = await this.feedbackService.softDelete(id);
-    req.logInfo = { id, category: feedback?.category };
+    const feedback = await this.feedbackService.findOneById(id);
+    await this.feedbackService.softDelete(id);
+    req.logInfo = {
+      feedbackId: id,
+      category: feedback?.category,
+    };
     return toDto(ResponseFeedbackDto, feedback);
   }
 }

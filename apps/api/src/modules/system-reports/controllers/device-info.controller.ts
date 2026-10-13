@@ -71,7 +71,11 @@ export class DeviceInfoController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseDeviceInfoDto> {
     const deviceInfo = await this.deviceInfoService.save(createDeviceInfoDto);
-    req.logInfo = { id: deviceInfo.id };
+    req.logInfo = {
+      deviceId: deviceInfo.id,
+      platform: deviceInfo.platform,
+      model: deviceInfo.model,
+    };
     return toDto(ResponseDeviceInfoDto, deviceInfo);
   }
 
@@ -81,10 +85,13 @@ export class DeviceInfoController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseDeviceInfoDto | null> {
-    req.logInfo = { id };
-    return toDto(
-      ResponseDeviceInfoDto,
-      await this.deviceInfoService.softDelete(id),
-    );
+    const deviceInfo = await this.deviceInfoService.findOneById(id);
+    await this.deviceInfoService.softDelete(id);
+    req.logInfo = {
+      deviceId: id,
+      platform: deviceInfo?.platform,
+      model: deviceInfo?.model,
+    };
+    return toDto(ResponseDeviceInfoDto, deviceInfo);
   }
 }

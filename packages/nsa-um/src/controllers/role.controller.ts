@@ -62,7 +62,7 @@ export class RoleController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto> {
     const role = await this.roleService.saveWithPermissions(createRoleDto);
-    req.logInfo = { id: role.id, label: role.label };
+    req.logInfo = { roleId: role.id, label: role.label };
     return toDto(ResponseRoleDto, role);
   }
 
@@ -73,7 +73,10 @@ export class RoleController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto | null> {
     const role = await this.roleService.duplicateWithPermissions(id);
-    req.logInfo = { id: role?.id, fid: id, label: role?.label };
+    req.logInfo = {
+      roleId: role?.id,
+      label: role?.label,
+    };
     return toDto(ResponseRoleDto, role);
   }
 
@@ -88,7 +91,7 @@ export class RoleController {
       id,
       updateRoleDto,
     );
-    req.logInfo = { id, label: role?.label };
+    req.logInfo = { roleId: id, label: role?.label };
     return toDto(ResponseRoleDto, role);
   }
 
@@ -98,8 +101,9 @@ export class RoleController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto | null> {
-    const role = await this.roleService.softDelete(id);
-    req.logInfo = { id, label: role?.label };
+    const role = await this.roleService.findOneById(id);
+    await this.roleService.softDelete(id);
+    req.logInfo = { roleId: id, label: role?.label };
     return toDto(ResponseRoleDto, role);
   }
 }

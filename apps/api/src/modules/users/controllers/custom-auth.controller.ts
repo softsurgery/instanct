@@ -43,7 +43,6 @@ export class ClientCustomAuthController {
   ) {
     const response = await this.customAuthService.extendedSignup(registerDto);
     req.logInfo = {
-      userId: response?.id,
       clientName: identifyUser(response),
     };
     return response;

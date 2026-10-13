@@ -20,14 +20,13 @@ export class LogInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
     return next.handle().pipe(
       tap(() => {
-        const event = this.reflector.get<string>(
-          'event',
-          context.getHandler(),
-        );
+        const request: AdvancedRequest = context.switchToHttp().getRequest();
+        const event =
+          request.logEvent ||
+          this.reflector.get<string>('event', context.getHandler());
 
         if (!event) return;
 
-        const request: AdvancedRequest = context.switchToHttp().getRequest();
         const { method, url, logInfo } = request;
 
         if (event === this.eventType.SIGNIN) {

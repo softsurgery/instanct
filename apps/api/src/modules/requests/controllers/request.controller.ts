@@ -124,8 +124,7 @@ export class RequestController {
       req.user.sub,
     );
     req.logInfo = {
-      id: request.id,
-      receiverSessionIds: createRequestDto.receiverIds,
+      requestId: request.id,
     };
     req.batchNotificationInfo = [
       {

@@ -92,7 +92,10 @@ export class ContentPageController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto> {
     const page = await this.contentPageService.save(dto);
-    req.logInfo = { id: page.id, slug: page.slug };
+    req.logInfo = {
+      pageId: page.id,
+      title: page.title || page.slug,
+    };
     return toDto(ResponseContentPageDto, page);
   }
 
@@ -104,7 +107,10 @@ export class ContentPageController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto> {
     const page = await this.contentPageService.update(id, dto);
-    req.logInfo = { id: page.id, slug: page.slug };
+    req.logInfo = {
+      pageId: page.id,
+      title: page.title || page.slug,
+    };
     return toDto(ResponseContentPageDto, page);
   }
 
@@ -114,8 +120,12 @@ export class ContentPageController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto | null> {
-    const page = await this.contentPageService.softDelete(id);
-    req.logInfo = { id, slug: page?.slug };
+    const page = await this.contentPageService.findOneById(id);
+    await this.contentPageService.softDelete(id);
+    req.logInfo = {
+      pageId: id,
+      title: page?.title || page?.slug,
+    };
     return toDto(ResponseContentPageDto, page);
   }
 }

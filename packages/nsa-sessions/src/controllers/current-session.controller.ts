@@ -98,7 +98,10 @@ export class CurrentSessionController {
       createSessionDto,
       req.user?.sub,
     );
-    req.logInfo = { sessionId: session.id };
+    req.logInfo = {
+      sessionId: session.id,
+      sessionType: session.sessionType,
+    };
     return toDto(ResponseSessionDto, session);
   }
 
@@ -114,7 +117,10 @@ export class CurrentSessionController {
       updateSessionDto,
     );
     if (session) {
-      req.logInfo = { sessionId: session.id };
+      req.logInfo = {
+        sessionId: session.id,
+        sessionType: session.sessionType,
+      };
     }
     return toDto(ResponseSessionDto, session);
   }
@@ -127,7 +133,9 @@ export class CurrentSessionController {
   ): Promise<ResponseSessionDto | null> {
     const session = await this.sessionService.end(id);
     if (session) {
-      req.logInfo = { sessionId: session.id };
+      req.logInfo = {
+        sessionId: session.id,
+      };
     }
     return session ? toDto(ResponseSessionDto, session) : null;
   }

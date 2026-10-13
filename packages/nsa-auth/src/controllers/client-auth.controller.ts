@@ -77,12 +77,7 @@ export class ClientAuthController {
       meta,
     );
     req.logInfo = {
-      userId: result.user.id,
       clientName: identifyUser(result.user as AbstractUserEntity),
-      device: meta.device,
-      ip: meta.ip,
-      deviceId: userDevice.id,
-      fingerprint: meta.fingerprint,
     };
     req.notificationInfo = {
       userId: result.user.id,
@@ -137,12 +132,7 @@ export class ClientAuthController {
         meta,
       );
       req.logInfo = {
-        userId: result.user.id,
         clientName: identifyUser(result.user as AbstractUserEntity),
-        device: meta.device,
-        ip: meta.ip,
-        deviceId: userDevice.id,
-        fingerprint: meta.fingerprint,
       };
       req.notificationInfo = {
         userId: result.user.id,
@@ -208,7 +198,6 @@ export class ClientAuthController {
     try {
       const result = await this.clientAuthService.signup(registerDto);
       req.logInfo = {
-        userId: result.user?.id,
         clientName: identifyUser(result.user as AbstractUserEntity),
       };
       return result;

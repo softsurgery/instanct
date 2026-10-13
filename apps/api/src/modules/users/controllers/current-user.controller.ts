@@ -26,6 +26,7 @@ import { UserBookmarkService } from '../services/user-bookmark.service';
 import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
 import { IQueryObject } from 'nsa-database';
 import { PageDto } from 'nsa-database';
+import { identifyUser } from 'nsa-um/utils/identify-user';
 
 @ApiTags('current-user')
 @ApiBearerAuth('access_token')
@@ -94,10 +95,15 @@ export class CurrentUserController {
     if (!req?.user?.sub) {
       return null;
     }
-    return toDto(
-      ResponseUserDto,
-      await this.userService.extendedUpdate(req?.user?.sub, updateUserDto),
+    const user = await this.userService.extendedUpdate(
+      req?.user?.sub,
+      updateUserDto,
     );
+    req.logInfo = {
+      targetUserId: user?.id,
+      targetName: identifyUser(user),
+    };
+    return toDto(ResponseUserDto, user);
   }
 
   @Put('/configuration/maps/current')
@@ -114,7 +120,11 @@ export class CurrentUserController {
         req.user.sub,
         updateUserMapConfigurationDto,
       );
-    req.logInfo = { id: req.user.sub };
+    const user = await this.userService.findOneById(req.user.sub);
+    req.logInfo = {
+      targetUserId: req.user.sub,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseConfigurationNamespaceDto, config);
   }
 
@@ -131,7 +141,10 @@ export class CurrentUserController {
       req?.user?.sub,
       updateUserCoverDto.coverId,
     );
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: user?.id,
+      fullname: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 
@@ -144,7 +157,10 @@ export class CurrentUserController {
       return null;
     }
     const user = await this.userService.softDelete(req.user.sub);
-    req.logInfo = { id: user?.id, firstName: user?.firstName };
+    req.logInfo = {
+      targetUserId: user?.id || req.user.sub,
+      targetName: identifyUser(user),
+    };
     return toDto(ResponseUserDto, user);
   }
 }

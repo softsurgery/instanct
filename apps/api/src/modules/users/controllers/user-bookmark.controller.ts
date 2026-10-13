@@ -61,14 +61,10 @@ export class UserBookmarkController {
       ResponseUserBookmarkDto,
       await this.userBookmarkService.saveBookmark(req?.user?.sub, id),
     );
-    const user = await this.userService.findOneById(req?.user?.sub);
     const bookmarkedUser = await this.userService.findOneById(id);
 
     req.logInfo = {
-      id: bookmark.id,
-      userId: bookmark.userId,
-      userIdentity: identifyUser(user),
-      bookmarkId: bookmark.bookmarkId,
+      targetUserId: id,
       bookmarkIdentity: identifyUser(bookmarkedUser),
     };
     return bookmark;
@@ -88,14 +84,10 @@ export class UserBookmarkController {
       id,
     );
 
-    const user = await this.userService.findOneById(req?.user?.sub);
     const bookmarkedUser = await this.userService.findOneById(id);
 
     req.logInfo = {
-      id: bookmark?.id,
-      userId: bookmark?.userId,
-      userIdentity: identifyUser(user),
-      bookmarkId: bookmark?.bookmarkId,
+      targetUserId: id,
       bookmarkIdentity: identifyUser(bookmarkedUser),
     };
     return toDto(ResponseUserBookmarkDto, bookmark);

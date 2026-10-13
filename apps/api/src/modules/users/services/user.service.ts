@@ -209,6 +209,7 @@ export class UserService extends AbstractUserService {
     await this.configurationNamespaceService.deleteByUserId(id);
 
     // Finally, soft-delete the user itself
-    return await this.userRepository.softDelete(id);
+    await this.userRepository.softDelete(id);
+    return user;
   }
 }

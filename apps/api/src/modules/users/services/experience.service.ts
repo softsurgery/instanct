@@ -59,6 +59,7 @@ export class ExperienceService extends AbstractCrudService<ExperienceEntity> {
     if (!experience) {
       throw new ExperienceNotFoundException();
     }
-    return this.experienceRepository.softDelete(id);
+    await this.experienceRepository.softDelete(id);
+    return experience;
   }
 }

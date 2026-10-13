@@ -53,7 +53,8 @@ export class FollowService {
     });
 
     if (!follow) throw new FollowNotFoundException();
-    return this.followRepository.remove(follow);
+    await this.followRepository.remove(follow);
+    return { follower, following };
   }
 
   private sortByPriority(

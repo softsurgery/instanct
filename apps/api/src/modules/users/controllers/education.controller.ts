@@ -54,7 +54,6 @@ export class EducationController {
       createEducationDto,
     );
     request.logInfo = {
-      userId: id,
       educationId: education.id,
       title: education.title,
     };
@@ -73,7 +72,6 @@ export class EducationController {
       updateEducationDto,
     );
     request.logInfo = {
-      userId: education.userId,
       educationId: education.id,
       title: education.title,
     };
@@ -88,8 +86,8 @@ export class EducationController {
   ): Promise<ResponseEducationDto | null> {
     const education = await this.educationService.deleteEducation(id);
     request.logInfo = {
-      userId: education?.userId,
       educationId: id,
+      title: education?.title,
     };
     return toDto(ResponseEducationDto, education);
   }
