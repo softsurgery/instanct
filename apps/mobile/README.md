@@ -24,7 +24,6 @@ pnpm dev:mobile
 | `GOOGLE_MAPS_API_KEY` | Native maps |
 | `EXPO_PUBLIC_GOOGLE_CLIENT_ID`, `EXPO_PUBLIC_LINKEDIN_CLIENT_ID` | SSO |
 | `EXPO_PUBLIC_OAUTH_REDIRECT_URI` | Deep link the provider returns to (`app/oauth.tsx`) |
-| `EXPO_PUBLIC_SENTRY_DSN` | BugSink / Sentry-compatible reporting |
 
 ## Navigation
 
@@ -79,7 +78,7 @@ hooks/
   content/           # React Query hooks by domain
   useAuthPersistStore.ts
 i18n/locales/        # en, and further locales
-lib/                 # socket, query client, theme, sentry, logout
+lib/                 # socket, query client, theme, logout
 stores/              # feature Zustand stores
 types/               # DTOs and Zod schemas
 ```

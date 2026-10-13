@@ -22,7 +22,6 @@ import { version } from "../../package.json";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
 import type { ServerErrorResponse } from "~/types";
-import Sentry from "@/lib/sentry";
 import { Badge, Button, Icon, Separator, Text } from "@instanct/mobile-ui";
 
 interface SettingsPortalProps {
@@ -169,48 +168,6 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
           rightIcon: ChevronRight,
           className: "p-1 px-4",
           onPress: () => router.push("/main/settings/about"),
-        }),
-      ],
-      showOnDevelopment: false,
-    },
-    {
-      key: "bugsink-testing",
-      title: "Bugsink Testing",
-      description: "Test error reporting and tracking",
-      rows: [
-        createSettingRow({
-          title: "Send Test Error (Handled)",
-          description:
-            "Capture an error via Sentry.captureException and send to Bugsink",
-          rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => {
-            try {
-              const eventId = Sentry.captureException(
-                new Error("Test Bugsink error from Mobile settings"),
-              );
-              toast.success("Test error sent to Bugsink!", {
-                description: `Event ID: ${eventId || "sent"}`,
-              });
-            } catch (err) {
-              toast.error("Failed to send test error", {
-                description: String(err),
-              });
-            }
-          },
-        }),
-        createSettingRow({
-          title: "Trigger Uncaught Crash",
-          description:
-            "Throw an unhandled error to test global crash reporting",
-          rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => {
-            toast.info("Triggering uncaught crash...");
-            setTimeout(() => {
-              throw new Error("Test Bugsink Uncaught Crash from Mobile App");
-            }, 500);
-          },
         }),
       ],
       showOnDevelopment: false,

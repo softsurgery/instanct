@@ -1,11 +1,11 @@
 const path = require("path");
-const { getSentryExpoConfig } = require("@sentry/react-native/metro");
+const { getDefaultConfig } = require("expo/metro-config");
 const { withNativeWind } = require("nativewind/metro");
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, "../..");
 
-const config = getSentryExpoConfig(projectRoot);
+const config = getDefaultConfig(projectRoot);
 
 config.watchFolders = [
   path.resolve(workspaceRoot, "packages/mobile-components"),

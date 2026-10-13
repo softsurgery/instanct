@@ -1,4 +1,3 @@
-import Sentry from "@/lib/sentry";
 import { splashPrevented } from "@/lib/splash-screen";
 import { NAV_THEME, THEME } from "@/lib/theme";
 import { cn } from "@instanct/lib";
@@ -113,4 +112,4 @@ function RootLayout() {
   );
 }
 
-export default Sentry.wrap(RootLayout);
+export default RootLayout;

@@ -2,42 +2,69 @@ const { version } = require("./package.json");
 
 export default ({ config }) => ({
   ...config,
+
   name: "Instanct",
   slug: "instanct-mobile-app",
   version,
+
   orientation: "portrait",
   icon: "./assets/images/icon.png",
   scheme: "com.instanct.instanctma",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
+
   ios: {
+    ...config.ios,
+
     supportsTablet: true,
     bundleIdentifier: "com.instanct.instanctma",
+
+    // iOS App Store marketing version comes from package.json.
+    // This is the build number for TestFlight/App Store uploads.
+    buildNumber: "1",
+
     infoPlist: {
+      ...config.ios?.infoPlist,
+
       UIDesignRequiresCompatibility: true,
+
       NSAppTransportSecurity: {
-        NSAllowsArbitraryLoads: true
-      }
+        ...config.ios?.infoPlist?.NSAppTransportSecurity,
+        NSAllowsArbitraryLoads: true,
+      },
     },
   },
+
   android: {
+    ...config.android,
+
     adaptiveIcon: {
       backgroundColor: "#E6F4FE",
-      foregroundImage: "./assets/images/android-icon-foreground.png",
-      backgroundImage: "./assets/images/android-icon-background.png",
-      monochromeImage: "./assets/images/android-icon-monochrome.png",
+      foregroundImage:
+        "./assets/images/android-icon-foreground.png",
+      backgroundImage:
+        "./assets/images/android-icon-background.png",
+      monochromeImage:
+        "./assets/images/android-icon-monochrome.png",
     },
+
     config: {
+      ...config.android?.config,
       googleMaps: {
         apiKey: process.env.GOOGLE_MAPS_API_KEY,
       },
     },
+
     softwareKeyboardLayoutMode: "pan",
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
     package: "com.instanct.instanctma",
+
+    // Android build number.
+    versionCode: 1,
   },
+
   plugins: [
     "expo-font",
     "expo-localization",
@@ -50,6 +77,7 @@ export default ({ config }) => ({
     "expo-status-bar",
     "expo-sharing",
     "expo-secure-store",
+
     [
       "expo-splash-screen",
       {
@@ -62,29 +90,24 @@ export default ({ config }) => ({
         },
       },
     ],
+
     [
       "expo-audio",
       {
-        "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
-      }
-    ],
-    "expo-video",
-    [
-      "@sentry/react-native",
-      {
-        url: process.env.SENTRY_URL,
-        organization: process.env.SENTRY_ORG,
-        project: process.env.SENTRY_PROJECT,
+        microphonePermission:
+          "Allow $(PRODUCT_NAME) to access your microphone.",
       },
     ],
-    "./plugins/withSentryUploadGuard",
+
+    "expo-video",
   ],
+
   experiments: {
     typedRoutes: true,
     reactCompiler: true,
   },
+
   extra: {
     router: {},
-    sentryDsn: process.env.EXPO_PUBLIC_SENTCRY_DSN,
   },
 });
