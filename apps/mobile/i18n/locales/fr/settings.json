@@ -315,6 +315,7 @@
         "sign-out": "Se déconnecter",
         "remove-account": "Supprimer le compte"
       },
+      "version": "Version {{version}}",
       "deleteAlert": {
         "title": "Supprimer le compte",
         "message": "Êtes-vous sûr de vouloir supprimer votre compte ? Toutes vos données seront définitivement supprimées et cette action est irréversible.",

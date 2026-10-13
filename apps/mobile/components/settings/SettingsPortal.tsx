@@ -18,6 +18,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner-native";
 import { api } from "@/api";
+import { version } from "../../package.json";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
 import type { ServerErrorResponse } from "~/types";
@@ -368,6 +369,10 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
                     {tSettings("settings.session.actions.remove-account")}
                   </Text>
                 </Button>
+
+                <Text className="pt-1 text-center text-xs text-muted-foreground">
+                  {tSettings("settings.session.version", { version })}
+                </Text>
               </View>
             </View>
           </View>

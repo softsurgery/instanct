@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
-// import { Public } from 'nsa-auth/utils/public-strategy';
+import { Public } from 'nsa-auth/utils/public-strategy';
 
 @Controller('app')
 @ApiBearerAuth('access_token')
@@ -17,6 +17,12 @@ export class AppController {
   @Get('health')
   getHealth() {
     return this.appService.getHealth();
+  }
+
+  @Public()
+  @Get('version')
+  getVersion() {
+    return this.appService.getVersion();
   }
 
   @Get('storage')

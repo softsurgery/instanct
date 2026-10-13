@@ -283,6 +283,7 @@
                 "sign-out": "Sign Out",
                 "remove-account": "Remove Account"
             },
+            "version": "Version {{version}}",
             "deleteAlert": {
                 "title": "Delete account",
                 "message": "Are you sure you want to delete your account? All your data will be permanently removed and this cannot be undone.",

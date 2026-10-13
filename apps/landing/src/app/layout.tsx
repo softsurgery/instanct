@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 import { resolveSupportedLng } from "@/i18n/config";
 import "./globals.css";
 import { cn } from "@instanct/lib";
+import { version } from "../../package.json";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -120,6 +121,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <head>
+        <meta name="version" content={version} />
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <script
           type="application/ld+json"
