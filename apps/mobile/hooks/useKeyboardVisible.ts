@@ -7,16 +7,23 @@ export const useKeyboardVisible = () => {
   );
 
   React.useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardWillShow", () => {
-      setIsKeyboardVisible(true);
-    });
-    const hideSubscription = Keyboard.addListener("keyboardWillHide", () => {
-      setIsKeyboardVisible(false);
-    });
+    const subscriptions = [
+      Keyboard.addListener("keyboardWillShow", () => {
+        setIsKeyboardVisible(true);
+      }),
+      Keyboard.addListener("keyboardDidShow", () => {
+        setIsKeyboardVisible(true);
+      }),
+      Keyboard.addListener("keyboardWillHide", () => {
+        setIsKeyboardVisible(false);
+      }),
+      Keyboard.addListener("keyboardDidHide", () => {
+        setIsKeyboardVisible(false);
+      }),
+    ];
 
     return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
+      subscriptions.forEach((subscription) => subscription.remove());
     };
   }, []);
 
