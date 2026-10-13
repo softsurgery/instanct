@@ -14,17 +14,11 @@ import { Icon } from "@instanct/mobile-ui";
 import { SessionIncomingRequests } from "../../activities/SessionIncomingRequests";
 import { SessionOutgoingRequests } from "../../activities/SessionOutgoingRequests";
 import { useTranslation } from "react-i18next";
+import { toDateOrNull } from "@/lib/date";
 
 interface SessionDetailsContentProps {
   session: ResponseSessionDto<MapSessionPayload>;
 }
-
-const toValidDate = (value?: Date | string | null) => {
-  if (!value) return null;
-  const parsed = value instanceof Date ? value : new Date(value);
-  if (isNaN(parsed.getTime())) return null;
-  return parsed;
-};
 
 export const SessionDetailsContent = ({
   session,
@@ -59,8 +53,8 @@ export const SessionDetailsContent = ({
   const formatSessionWindow = (
     session: ResponseSessionDto<MapSessionPayload>,
   ) => {
-    const start = toValidDate(session.plannedStart);
-    const end = toValidDate(session.plannedEnd);
+    const start = toDateOrNull(session.plannedStart);
+    const end = toDateOrNull(session.plannedEnd);
 
     return (
       <View className="bg-card border border-border rounded-lg p-4">

@@ -7,15 +7,17 @@ import { StableSafeAreaView } from "@instanct/mobile-components";
 import { StableScrollView } from "@instanct/mobile-components";
 import { Icon } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
-import { getExperienceYears } from "@/lib/date";
+import { formatMonthYear, getExperienceYears } from "@/lib/date";
 import { cn } from "@instanct/lib";
+import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useExperiences } from "@/hooks/content/users/useExperiences";
 import { useUserStore } from "@/stores/useUserStore";
-import { ResponseExperienceDto, ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
 import { router } from "expo-router";
 import { Briefcase, Building2, Calendar, FileText } from "lucide-react-native";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import { toUpdateExperienceDto } from "./toUpdateExperienceDto";
 import { toast } from "sonner-native";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteExperienceActionSheet } from "./DeleteExperienceActionSheet";
@@ -29,25 +31,24 @@ interface UpdateExperiencesProps {
 export const UpdateExperiences = ({ className }: UpdateExperiencesProps) => {
   const { t } = useTranslation("menu");
   const userStore = useUserStore();
+  const { currentUser } = useCurrentUser();
+  const { experiences, isExperiencesPending } = useExperiences({
+    id: currentUser?.id ?? "",
+    enabled: !!currentUser?.id,
+  });
   const queryClient = useQueryClient();
   const deleteSheetRef = React.useRef<ActionSheetRef>(null);
   const [selectedExperienceId, setSelectedExperienceId] = React.useState<
     number | null
   >(null);
 
-  const onUpdateExperiencePress = (exp: ResponseExperienceDto) => {
+  const onUpdateExperiencePress = (
+    exp: NonNullable<typeof experiences>[number],
+  ) => {
     userStore.set("responseExperience", exp);
-    userStore.set("updateExperienceDto", {
-      title: exp.title,
-      company: exp.company,
-      location: exp.location,
-      workType: exp.workType,
-      locationType: exp.locationType,
-      startDate: new Date(exp.startDate!),
-      endDate: exp.endDate ? new Date(exp.endDate) : undefined,
-      description: exp.description,
-    });
-    userStore.set("present", exp.endDate === null);
+    userStore.set("updateExperienceDto", toUpdateExperienceDto(exp));
+    userStore.set("present", exp.endDate == null);
+    userStore.set("experienceErrors", {});
     router.push("/main/profile/update-experience");
   };
 
@@ -55,7 +56,7 @@ export const UpdateExperiences = ({ className }: UpdateExperiencesProps) => {
     mutationFn: (id: number) => api.experience.remove(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["experiences", userStore.response?.id],
+        queryKey: ["experiences"],
       });
       toast.success(t("experience.toasts.deleted"), {
         description: t("experience.toasts.deletedDescription"),
@@ -106,13 +107,17 @@ export const UpdateExperiences = ({ className }: UpdateExperiencesProps) => {
       />
       <StableScrollView className="flex-1 bg-background">
         <View className="flex flex-col flex-1 pb-10">
-          {userStore.experiences && userStore.experiences.length > 0 ? (
+          {isExperiencesPending && !experiences ? (
+            <View className="flex-1 items-center justify-center py-12">
+              <ActivityIndicator />
+            </View>
+          ) : experiences && experiences.length > 0 ? (
             <View className="gap-5">
-              {userStore.experiences.map((exp, index) => {
+              {experiences.map((exp) => {
                 return (
                   <View
                     key={exp.id}
-                    className="bg-card border border-border overflow-hidden shadow-sm"
+                    className="bg-card overflow-hidden shadow-sm"
                   >
                     {/* Content */}
                     <View className="px-4 py-4 gap-3.5">
@@ -127,7 +132,7 @@ export const UpdateExperiences = ({ className }: UpdateExperiencesProps) => {
                           </Text>
                         </View>
                         <View className="flex flex-row items-center justify-between px-4">
-                          {exp.endDate === null && (
+                          {exp.endDate == null && (
                             <View className="bg-green-500/20 px-2.5 py-1 rounded-full">
                               <Text className="text-xs font-medium">
                                 {t("experience.list.current")}
@@ -149,20 +154,30 @@ export const UpdateExperiences = ({ className }: UpdateExperiencesProps) => {
                       <View className="flex flex-row items-center gap-3">
                         <Icon as={Calendar} size={18} />
                         <View>
-                          <Text className="text-sm text-foreground font-medium">
-                            {format(new Date(exp.startDate!), "MMM yyyy")} -{" "}
-                            {exp.endDate
-                              ? format(new Date(exp.endDate), "MMM yyyy")
-                              : t("experience.instance.present")}
-                          </Text>
-                          <Text className="text-xs text-muted-foreground">
-                            {t("experience.list.yearsCount", {
-                              years: getExperienceYears(
-                                exp.startDate!,
-                                exp.endDate,
-                              ),
-                            })}
-                          </Text>
+                          {formatMonthYear(exp.startDate) ? (
+                            <>
+                              <Text className="text-sm text-foreground font-medium">
+                                {formatMonthYear(exp.startDate)} -{" "}
+                                {exp.endDate
+                                  ? formatMonthYear(exp.endDate)
+                                  : t("experience.instance.present")}
+                              </Text>
+                              <Text className="text-xs text-muted-foreground">
+                                {t("experience.list.yearsCount", {
+                                  years: getExperienceYears(
+                                    exp.startDate!,
+                                    exp.endDate,
+                                  ),
+                                })}
+                              </Text>
+                            </>
+                          ) : (
+                            <Text className="text-sm text-foreground font-medium">
+                              {exp.endDate
+                                ? formatMonthYear(exp.endDate)
+                                : t("experience.instance.present")}
+                            </Text>
+                          )}
                         </View>
                       </View>
 

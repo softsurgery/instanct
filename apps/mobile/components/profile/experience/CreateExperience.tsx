@@ -6,6 +6,7 @@ import { StableSafeAreaView } from "@instanct/mobile-components";
 import { Button } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
+import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
 import { CreateExperienceDto, ServerErrorResponse } from "@/types";
 import { createExperienceSchema } from "@/types/validations/experience.validation";
@@ -28,13 +29,14 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
   const { t } = useTranslation("menu");
   const isKeyboardVisible = useKeyboardVisible();
   const userStore = useUserStore();
+  const { currentUser } = useCurrentUser();
   const queryClient = useQueryClient();
 
   const { structure } = useCreateExperienceFormStructure({
     store: userStore,
   });
 
-  const { mutate: createExperience } = useMutation({
+  const { mutate: createExperience, isPending } = useMutation({
     mutationFn: (data: { id: string; experience: CreateExperienceDto }) =>
       api.experience.create(data.id, data.experience),
     onSuccess: () => {
@@ -55,23 +57,35 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
   });
 
   const handleCreateSubmit = () => {
-    const data = userStore.createExperienceDto;
+    const state = useUserStore.getState();
+    const data = state.present
+      ? { ...state.createExperienceDto, endDate: null }
+      : state.createExperienceDto;
     const result = createExperienceSchema.safeParse(data);
     if (!result.success) {
-      userStore.set("experienceErrors", result.error.flatten().fieldErrors);
-    } else {
-      if (userStore.response?.id) {
-        createExperience({
-          id: userStore.response?.id!,
-          experience: data,
-        });
-      }
+      const fieldErrors = result.error.flatten().fieldErrors;
+      state.set("experienceErrors", fieldErrors);
+      const firstError = Object.values(fieldErrors).find(
+        (messages) => messages?.[0],
+      )?.[0];
+      toast.error(firstError ? t(firstError) : t("experience.toasts.error"));
+      return;
     }
+
+    if (!currentUser?.id) {
+      toast.error(t("experience.toasts.error"));
+      return;
+    }
+
+    createExperience({
+      id: currentUser.id,
+      experience: result.data,
+    });
   };
 
   React.useEffect(() => {
     return () => {
-      userStore.reset();
+      useUserStore.getState().resetExperienceDraft();
     };
   }, []);
 
@@ -103,7 +117,12 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
       {/* Sticky bottom button */}
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
-          <Button size="lg" className="rounded-xl" onPress={handleCreateSubmit}>
+          <Button
+            size="lg"
+            className="rounded-xl"
+            disabled={isPending}
+            onPress={handleCreateSubmit}
+          >
             <Text className="text-md font-bold">
               {t("experience.form.actions.create")}
             </Text>

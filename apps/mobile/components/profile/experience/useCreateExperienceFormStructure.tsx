@@ -161,7 +161,9 @@ export const useCreateExperienceFormStructure = ({
       checked: store.present,
       onCheckedChange: (value) => {
         store.set("present", value);
-        store.setNested("createExperienceDto.endDate", null);
+        if (value) {
+          store.setNested("createExperienceDto.endDate", null);
+        }
         store.setNested("experienceErrors.endDate", []);
       },
     },

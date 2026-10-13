@@ -113,7 +113,7 @@ export interface CreateExperienceDto {
   title?: string;
   company?: string;
   startDate?: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   description?: string;
   location?: string;
   locationType?: LocationTypes;
@@ -138,7 +138,7 @@ export interface ResponseEducationDto extends DatabaseEntity {
 
 export interface CreateEducationDto {
   title: string;
-  startDate?: Date;
+  startDate?: Date | null;
   endDate?: Date | null;
   institution: string;
   description: string;

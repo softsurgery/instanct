@@ -8,12 +8,15 @@ import { StableScrollView } from "@instanct/mobile-components";
 import { Icon } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
+import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useEducations } from "@/hooks/content/users/useEducations";
 import { useUserStore } from "@/stores/useUserStore";
-import { ResponseEducationDto, ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { GraduationCap, Building2, FileText } from "lucide-react-native";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import { toUpdateEducationDto } from "./toUpdateEducationDto";
 import { toast } from "sonner-native";
 import { DeleteEducationActionSheet } from "./DeleteEducationActionSheet";
 import { ActionSheetRef } from "react-native-actions-sheet";
@@ -27,21 +30,23 @@ interface UpdateEducationsProps {
 export const UpdateEducations = ({ className }: UpdateEducationsProps) => {
   const { t } = useTranslation("menu");
   const userStore = useUserStore();
+  const { currentUser } = useCurrentUser();
+  const { educations, isEducationsPending } = useEducations({
+    id: currentUser?.id ?? "",
+    enabled: !!currentUser?.id,
+  });
   const queryClient = useQueryClient();
   const deleteSheetRef = React.useRef<ActionSheetRef>(null);
   const [selectedEducationId, setSelectedEducationId] = React.useState<
     number | null
   >(null);
 
-  const onUpdateEducationPress = (edu: ResponseEducationDto) => {
+  const onUpdateEducationPress = (
+    edu: NonNullable<typeof educations>[number],
+  ) => {
     userStore.set("responseEducation", edu);
-    userStore.set("updateEducationDto", {
-      title: edu.title,
-      institution: edu.institution,
-      startDate: new Date(edu.startDate!) || undefined,
-      endDate: edu.endDate ? new Date(edu.endDate) : null,
-      description: edu.description,
-    });
+    userStore.set("updateEducationDto", toUpdateEducationDto(edu));
+    userStore.set("educationErrors", {});
     router.push("/main/profile/update-education");
   };
 
@@ -52,7 +57,7 @@ export const UpdateEducations = ({ className }: UpdateEducationsProps) => {
         description: t("education.toasts.deletedDescription"),
       });
       queryClient.invalidateQueries({
-        queryKey: ["educations", userStore.response?.id],
+        queryKey: ["educations"],
       });
       deleteSheetRef.current?.hide();
       setSelectedEducationId(null);
@@ -101,13 +106,17 @@ export const UpdateEducations = ({ className }: UpdateEducationsProps) => {
       />
       <StableScrollView className="flex-1 bg-background">
         <View className="flex flex-col flex-1 pb-10">
-          {userStore.educations && userStore.educations.length > 0 ? (
+          {isEducationsPending && !educations ? (
+            <View className="flex-1 items-center justify-center py-12">
+              <ActivityIndicator />
+            </View>
+          ) : educations && educations.length > 0 ? (
             <View className="gap-5">
-              {userStore.educations.map((edu, index) => {
+              {educations.map((edu) => {
                 return (
                   <View
                     key={edu.id}
-                    className="bg-card border border-border overflow-hidden shadow-sm"
+                    className="bg-card overflow-hidden shadow-sm"
                   >
                     {/* Content */}
                     <View className="px-4 py-4 gap-3.5">

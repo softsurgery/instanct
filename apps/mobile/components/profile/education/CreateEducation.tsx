@@ -5,6 +5,7 @@ import { StableSafeAreaView } from "@instanct/mobile-components";
 import { Button } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
+import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -16,6 +17,7 @@ import { createEducationSchema } from "@/types/validations/education.validation"
 import { View } from "react-native";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
+import React from "react";
 
 import { AppHeaderBack } from "@instanct/mobile-components";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
@@ -27,6 +29,7 @@ export const CreateEducation = ({ className }: CreateEducationProps) => {
   const { t } = useTranslation("common");
   const { t: tMenu } = useTranslation("menu");
   const userStore = useUserStore();
+  const { currentUser } = useCurrentUser();
   const queryClient = useQueryClient();
   const isKeyboardVisible = useKeyboardVisible();
 
@@ -34,7 +37,7 @@ export const CreateEducation = ({ className }: CreateEducationProps) => {
     store: userStore,
   });
 
-  const { mutate: createEducation } = useMutation({
+  const { mutate: createEducation, isPending } = useMutation({
     mutationFn: (data: { id: string; education: CreateEducationDto }) =>
       api.education.create(data.id, data.education),
     onSuccess: () => {
@@ -42,7 +45,7 @@ export const CreateEducation = ({ className }: CreateEducationProps) => {
         description: tMenu("education.toasts.createdDescription"),
       });
       queryClient.invalidateQueries({
-        queryKey: ["educations", userStore.response?.id],
+        queryKey: ["educations"],
       });
       router.back();
     },
@@ -55,19 +58,36 @@ export const CreateEducation = ({ className }: CreateEducationProps) => {
   });
 
   const handleCreateSubmit = () => {
-    const data = userStore.createEducationDto;
-    const result = createEducationSchema.safeParse(data);
+    const state = useUserStore.getState();
+    const result = createEducationSchema.safeParse(state.createEducationDto);
     if (!result.success) {
-      userStore.set("educationErrors", result.error.flatten().fieldErrors);
-    } else {
-      if (userStore.response?.id) {
-        createEducation({
-          id: userStore.response?.id!,
-          education: data,
-        });
-      }
+      const fieldErrors = result.error.flatten().fieldErrors;
+      state.set("educationErrors", fieldErrors);
+      const firstError = Object.values(fieldErrors).find(
+        (messages) => messages?.[0],
+      )?.[0];
+      toast.error(
+        firstError ? tMenu(firstError) : tMenu("education.toasts.error"),
+      );
+      return;
     }
+
+    if (!currentUser?.id) {
+      toast.error(tMenu("education.toasts.error"));
+      return;
+    }
+
+    createEducation({
+      id: currentUser.id,
+      education: result.data,
+    });
   };
+
+  React.useEffect(() => {
+    return () => {
+      useUserStore.getState().resetEducationDraft();
+    };
+  }, []);
 
   return (
     <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
@@ -93,7 +113,12 @@ export const CreateEducation = ({ className }: CreateEducationProps) => {
       </StableKeyboardAwareScrollView>
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
-          <Button size="lg" className="rounded-xl" onPress={handleCreateSubmit}>
+          <Button
+            size="lg"
+            className="rounded-xl"
+            disabled={isPending}
+            onPress={handleCreateSubmit}
+          >
             <Text className="text-md font-bold">
               {tMenu("education.form.actions.create")}
             </Text>

@@ -137,7 +137,6 @@ export const InspectBaseProfile = ({
 
   React.useEffect(() => {
     return () => {
-      userStore?.reset();
       storeRef.current = null as any;
       setLoading(false);
     };

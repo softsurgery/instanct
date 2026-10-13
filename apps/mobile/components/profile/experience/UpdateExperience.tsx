@@ -20,6 +20,7 @@ import React from "react";
 
 import { AppHeaderBack } from "@instanct/mobile-components";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
+
 interface UpdateExperienceProps {
   className?: string;
 }
@@ -35,7 +36,7 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
     store: userStore,
   });
 
-  const { mutate: updateExperience } = useMutation({
+  const { mutate: updateExperience, isPending } = useMutation({
     mutationFn: (data: { id: number; experience: UpdateExperienceDto }) =>
       api.experience.update(data.id, data.experience),
     onSuccess: () => {
@@ -45,7 +46,6 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
       queryClient.invalidateQueries({
         queryKey: ["experiences"],
       });
-
       router.back();
     },
     onError: (error: ServerErrorResponse) => {
@@ -57,23 +57,39 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
   });
 
   const handleUpdateSubmit = () => {
-    const data = userStore.updateExperienceDto;
+    const state = useUserStore.getState();
+    const experienceId = state.responseExperience?.id;
+    const data = state.present
+      ? { ...state.updateExperienceDto, endDate: null }
+      : state.updateExperienceDto;
     const result = updateExperienceSchema.safeParse(data);
+
     if (!result.success) {
-      userStore.set("experienceErrors", result.error.flatten().fieldErrors);
-    } else {
-      if (userStore.responseExperience?.id) {
-        updateExperience({
-          id: userStore.responseExperience.id,
-          experience: data,
-        });
-      }
+      const fieldErrors = result.error.flatten().fieldErrors;
+      state.set("experienceErrors", fieldErrors);
+      const firstError = Object.values(fieldErrors).find(
+        (messages) => messages?.[0],
+      )?.[0];
+      toast.error(
+        firstError ? tMenu(firstError) : tMenu("experience.toasts.error"),
+      );
+      return;
     }
+
+    if (!experienceId) {
+      toast.error(tMenu("experience.toasts.noSelection"));
+      return;
+    }
+
+    updateExperience({
+      id: experienceId,
+      experience: result.data,
+    });
   };
 
   React.useEffect(() => {
     return () => {
-      userStore.reset();
+      useUserStore.getState().resetExperienceDraft();
     };
   }, []);
 
@@ -102,7 +118,12 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
 
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
-          <Button size="lg" className="rounded-xl" onPress={handleUpdateSubmit}>
+          <Button
+            size="lg"
+            className="rounded-xl"
+            disabled={isPending}
+            onPress={handleUpdateSubmit}
+          >
             <Text className="text-md font-bold">
               {tMenu("experience.form.actions.update")}
             </Text>

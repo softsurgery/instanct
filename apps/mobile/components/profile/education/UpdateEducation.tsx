@@ -16,9 +16,11 @@ import { updateEducationSchema } from "@/types/validations/education.validation"
 import { View } from "react-native";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
+import React from "react";
 
 import { AppHeaderBack } from "@instanct/mobile-components";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
+
 interface UpdateEducationProps {
   className?: string;
 }
@@ -34,7 +36,7 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
     store: userStore,
   });
 
-  const { mutate: updateEducation } = useMutation({
+  const { mutate: updateEducation, isPending } = useMutation({
     mutationFn: (data: { id: number; education: UpdateEducationDto }) =>
       api.education.update(data.id, data.education),
     onSuccess: () => {
@@ -42,7 +44,7 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
         description: tMenu("education.toasts.updatedDescription"),
       });
       queryClient.invalidateQueries({
-        queryKey: ["educations", userStore.response?.id],
+        queryKey: ["educations"],
       });
       router.back();
     },
@@ -55,19 +57,38 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
   });
 
   const handleUpdateSubmit = () => {
-    const data = userStore.updateEducationDto;
-    const result = updateEducationSchema.safeParse(data);
+    const state = useUserStore.getState();
+    const educationId = state.responseEducation?.id;
+    const result = updateEducationSchema.safeParse(state.updateEducationDto);
+
     if (!result.success) {
-      userStore.set("educationErrors", result.error.flatten().fieldErrors);
-    } else {
-      if (userStore.responseEducation?.id) {
-        updateEducation({
-          id: userStore.responseEducation.id,
-          education: data,
-        });
-      }
+      const fieldErrors = result.error.flatten().fieldErrors;
+      state.set("educationErrors", fieldErrors);
+      const firstError = Object.values(fieldErrors).find(
+        (messages) => messages?.[0],
+      )?.[0];
+      toast.error(
+        firstError ? tMenu(firstError) : tMenu("education.toasts.error"),
+      );
+      return;
     }
+
+    if (!educationId) {
+      toast.error(tMenu("education.toasts.noSelection"));
+      return;
+    }
+
+    updateEducation({
+      id: educationId,
+      education: result.data,
+    });
   };
+
+  React.useEffect(() => {
+    return () => {
+      useUserStore.getState().resetEducationDraft();
+    };
+  }, []);
 
   return (
     <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
@@ -93,7 +114,12 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
       </StableKeyboardAwareScrollView>
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
-          <Button size="lg" className="rounded-xl" onPress={handleUpdateSubmit}>
+          <Button
+            size="lg"
+            className="rounded-xl"
+            disabled={isPending}
+            onPress={handleUpdateSubmit}
+          >
             <Text className="text-md font-bold">
               {tMenu("education.form.actions.update")}
             </Text>
