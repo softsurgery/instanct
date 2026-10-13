@@ -1,5 +1,7 @@
 const { version } = require("./package.json");
 
+const APP_ICON = "./assets/images/icon.png";
+
 export default ({ config }) => ({
   ...config,
 
@@ -8,7 +10,7 @@ export default ({ config }) => ({
   version,
 
   orientation: "portrait",
-  icon: "./assets/images/icon.png",
+  icon: APP_ICON,
   scheme: "com.instanct.instanctma",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
@@ -19,14 +21,22 @@ export default ({ config }) => ({
 
     supportsTablet: true,
     bundleIdentifier: "com.instanct.instanctma",
-
-    // iOS App Store marketing version comes from package.json.
-    // This is the build number for TestFlight/App Store uploads.
+    // Home-screen icon. Expo turns this into the 1024pt AppIcon asset.
+    icon: APP_ICON,
+    // Marketing version shown in Xcode and on the App Store (CFBundleShortVersionString).
+    version,
+    // Build number for TestFlight / App Store uploads (CFBundleVersion).
     buildNumber: "1",
+
+    config: {
+      ...config.ios?.config,
+      usesNonExemptEncryption: false,
+    },
 
     infoPlist: {
       ...config.ios?.infoPlist,
 
+      LSApplicationCategoryType: "public.app-category.social-networking",
       UIDesignRequiresCompatibility: true,
 
       NSAppTransportSecurity: {
@@ -68,7 +78,6 @@ export default ({ config }) => ({
   plugins: [
     "expo-font",
     "expo-localization",
-    "expo-notifications",
     "expo-router",
     "expo-web-browser",
     "expo-asset",
@@ -77,6 +86,38 @@ export default ({ config }) => ({
     "expo-status-bar",
     "expo-sharing",
     "expo-secure-store",
+
+    [
+      "expo-notifications",
+      {
+        icon: "./assets/images/android-icon-monochrome.png",
+        color: "#0B3A75",
+      },
+    ],
+
+    [
+      "expo-image-picker",
+      {
+        photosPermission:
+          "Allow $(PRODUCT_NAME) to access your photos so you can update your profile and send images.",
+        cameraPermission:
+          "Allow $(PRODUCT_NAME) to use the camera so you can take a profile photo.",
+        microphonePermission:
+          "Allow $(PRODUCT_NAME) to access your microphone.",
+      },
+    ],
+
+    [
+      "expo-location",
+      {
+        locationWhenInUsePermission:
+          "Allow $(PRODUCT_NAME) to use your location to show people and places nearby.",
+        locationAlwaysAndWhenInUsePermission: false,
+        locationAlwaysPermission: false,
+        isIosBackgroundLocationEnabled: false,
+        motionUsagePermission: false,
+      },
+    ],
 
     [
       "expo-splash-screen",
@@ -100,6 +141,7 @@ export default ({ config }) => ({
     ],
 
     "expo-video",
+    "./plugins/withAppleGeneralSettings",
   ],
 
   experiments: {
