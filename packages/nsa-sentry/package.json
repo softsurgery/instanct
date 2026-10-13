@@ -2,7 +2,9 @@
   "name": "nsa-sentry",
   "version": "0.1.0",
   "private": true,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared sentry module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,7 +47,6 @@
     "@sentry/nestjs": "^11.0.0"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
     "@types/node": "^22.10.7"
   }
 }

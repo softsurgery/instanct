@@ -30,15 +30,9 @@
     "@rn-primitives/tabs": "*",
     "expo-image": "*",
     "lucide-react-native": "*",
-    "nativewind": "*",
-    "react": "^19.0.0",
-    "react-native": "*",
+    "nativewind": "4.2.7",
+    "react": "19.3.0",
+    "react-native": "0.88.0-rc.4",
     "react-native-reanimated": "*"
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.0",
-    "nativewind": "^4.2.7",
-    "react": "19.2.3",
-    "typescript": "^5.5.3"
   }
 }

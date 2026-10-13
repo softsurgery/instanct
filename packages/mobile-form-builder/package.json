@@ -23,18 +23,12 @@
     "expo-image-picker": "*",
     "expo-location": "*",
     "lucide-react-native": "*",
-    "react": "^19.0.0",
+    "react": "19.3.0",
     "react-i18next": "*",
-    "react-native": "*",
+    "react-native": "0.88.0-rc.4",
     "react-native-actions-sheet": "*",
     "react-native-maps": "*",
     "react-native-reanimated": "*",
     "react-native-star-rating-widget": "*"
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.0",
-    "nativewind": "^4.2.7",
-    "react": "19.2.3",
-    "typescript": "^5.5.3"
   }
 }

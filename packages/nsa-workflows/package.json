@@ -2,7 +2,9 @@
   "name": "nsa-workflows",
   "version": "0.1.0",
   "private": true,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared workflows module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -46,7 +48,6 @@
     "xstate": "^5.32.0"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
     "@types/node": "^22.10.7"
   }
 }

@@ -2,7 +2,9 @@
   "name": "nsa-auth",
   "version": "0.1.0",
   "private": true,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared auth module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -68,7 +70,6 @@
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.10.7",
-    "typescript": "5.9.3"
+    "@types/node": "^22.10.7"
   }
 }
