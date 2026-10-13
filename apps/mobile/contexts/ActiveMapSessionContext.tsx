@@ -1,4 +1,4 @@
-import { MapSessionPayload, ResponseSessionDto } from "@/types/session";
+import { MapSessionPayload, ResponseSessionDto } from "@instanct/api-client";
 import React from "react";
 
 interface ActiveMapSessionContextProps {

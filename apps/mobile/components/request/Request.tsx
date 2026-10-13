@@ -1,5 +1,5 @@
 import React from "react";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { Button } from "@instanct/mobile-ui";
@@ -22,7 +22,7 @@ import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { toDateOnly, toTimeOnly } from "@/lib/date";
-import { RequestEvent, RequestStatus } from "@/types";
+import { RequestEvent, RequestStatus } from "@instanct/api-client";
 import { toast } from "sonner-native";
 import { RequestDetailsCard } from "./RequestDetailsCard";
 import { RequestLocationSection } from "./RequestLocationSection";
@@ -44,6 +44,7 @@ export const Request = ({
   isIncoming,
   hasLocation,
 }: RequestProps) => {
+  const api = useApi();
   const { t } = useTranslation("activities");
   const queryClient = useQueryClient();
 

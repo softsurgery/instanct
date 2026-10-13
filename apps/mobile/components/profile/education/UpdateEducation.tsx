@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { FormBuilder } from "@instanct/mobile-form-builder";
 import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
@@ -7,7 +7,7 @@ import { Button } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
 import { useUserStore } from "@/stores/useUserStore";
-import { ServerErrorResponse, UpdateEducationDto } from "@/types";
+import { ServerErrorResponse, UpdateEducationDto } from "@instanct/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ interface UpdateEducationProps {
 }
 
 export const UpdateEducation = ({ className }: UpdateEducationProps) => {
+  const api = useApi();
   const { t } = useTranslation("common");
   const { t: tMenu } = useTranslation("menu");
   const userStore = useUserStore();

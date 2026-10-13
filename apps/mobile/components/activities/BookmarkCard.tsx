@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import * as Haptics from "expo-haptics";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { Icon,Text } from "@instanct/mobile-ui";
-import { ResponseUserDto } from "@/types";
+import { ResponseUserDto } from "@instanct/api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";

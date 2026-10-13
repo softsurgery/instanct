@@ -9,7 +9,7 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
 } from "@instanct/mobile-form-builder";
-import { FeedbackCategory } from "~/types";
+import { FeedbackCategory } from "@instanct/api-client";
 
 interface useSendFeedbackFormStructureProps {
   store: SendFeedbackStore;

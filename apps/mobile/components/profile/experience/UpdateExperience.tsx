@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { FormBuilder } from "@instanct/mobile-form-builder";
 import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
@@ -7,7 +7,7 @@ import { Button } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
 import { useUserStore } from "@/stores/useUserStore";
-import { ServerErrorResponse, UpdateExperienceDto } from "@/types";
+import { ServerErrorResponse, UpdateExperienceDto } from "@instanct/api-client";
 import { updateExperienceSchema } from "@/types/validations/experience.validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -26,6 +26,7 @@ interface UpdateExperienceProps {
 }
 
 export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
+  const api = useApi();
   const { t } = useTranslation("common");
   const { t: tMenu } = useTranslation("menu");
   const userStore = useUserStore();

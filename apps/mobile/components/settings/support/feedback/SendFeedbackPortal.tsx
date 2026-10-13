@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 import { View } from "react-native";
 import { Loader2 } from "lucide-react-native";
 import { Text } from "@instanct/mobile-ui";
@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { useSendFeedbackStore } from "@/stores/useFeedbackManager";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
-import { ServerErrorResponse } from "@/types/utils/server.interfaces";
+import { ServerErrorResponse } from "@instanct/api-client";
 import { toast } from "sonner-native";
 import { Icon } from "@instanct/mobile-ui";
 import * as Haptics from "expo-haptics";
@@ -28,6 +28,7 @@ interface SendFeedbackPortalProps {
 }
 
 export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
   const sendFeedbackStore = useSendFeedbackStore();
@@ -44,7 +45,7 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
 
   const { mutate: sendFeedback, isPending: isSendFeedbackPending } =
     useMutation({
-      mutationFn: async () => api.feedback.create(sendFeedbackStore.createDto),
+      mutationFn: async () => api.admin.feedback.create(sendFeedbackStore.createDto),
       onSuccess: () => {
         toast.success("Feedback submitted successfully", {
           description: "Your feedback has been successfully submitted.",

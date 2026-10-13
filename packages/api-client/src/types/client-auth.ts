@@ -1,4 +1,5 @@
-import { ResponseUserDto } from "./user-management";
+import type { OAuthProvider } from "./auth";
+import type { ResponseUserDto } from "./user-management";
 
 export interface ResponseClientSigninDto {
   access_token: string;
@@ -34,6 +35,7 @@ export interface RequestSpecializedClientSignUpDto extends RequestClientSignUpDt
 export interface RequestClientUpdateMailDto {
   email: string;
   password: string;
+  callbackUrl?: string;
 }
 
 export interface RequestClientUpdatePasswordDto {
@@ -41,10 +43,9 @@ export interface RequestClientUpdatePasswordDto {
   newPassword: string;
 }
 
-export enum OAuthProvider {
-  GOOGLE = "google",
-  LINKEDIN = "linkedin",
-  APPLE = "apple",
+export interface RequestClientVerifyEmailDto {
+  email?: string;
+  callbackUrl?: string;
 }
 
 export interface RequestClientOAuthDto {

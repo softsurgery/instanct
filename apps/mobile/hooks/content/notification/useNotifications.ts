@@ -10,11 +10,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Socket } from "socket.io-client";
-import { api } from "~/api";
-import {
-  NotificationType,
-  ResponseNotificationDto,
-} from "~/types/notifications";
+import { useApi } from "@/contexts/ApiContext";
+import { NotificationType, ResponseNotificationDto } from "@instanct/api-client";
 
 export const NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY = [
   "notifications-unread-count",
@@ -28,6 +25,7 @@ interface useNotificationsProps {
 export function useNotifications(
   { enabled = true, consequences }: useNotificationsProps = { enabled: true },
 ) {
+  const api = useApi();
   const queryClient = useQueryClient();
   const { t } = useTranslation("notifications");
   const [notifications, setNotifications] = React.useState<
@@ -38,12 +36,12 @@ export function useNotifications(
 
   const { data: count = 0 } = useQuery({
     queryKey: NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY,
-    queryFn: () => api.notifications.getUnreadCount(),
+    queryFn: () => api.notification.getUnreadCount(),
     enabled: enabled && isAuthenticated,
   });
 
   const { mutate: markAllAsRead } = useMutation({
-    mutationFn: () => api.notifications.markAllAsRead(),
+    mutationFn: () => api.notification.markAllAsRead(),
     onSuccess: () => {
       queryClient.setQueryData(NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY, 0);
       queryClient.invalidateQueries({ queryKey: ["notifications"] });

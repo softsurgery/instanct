@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { CreateFeedbackDto } from "@/types";
+import { CreateFeedbackDto } from "@instanct/api-client";
 import { generateDeviceInfo } from "@/types/utils/device-info";
 import { setDeepValue } from "@/lib/object";
 

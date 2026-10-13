@@ -12,10 +12,10 @@ import React from "react";
 import { useAuthValidation } from "@/hooks/useAuthValidation";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
-import { ServerErrorResponse, Upload } from "@/types";
+import { ServerErrorResponse, Upload } from "@instanct/api-client";
 import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { AppHeaderBack } from "@instanct/mobile-components";
 
@@ -24,6 +24,7 @@ interface SignupLayoutProps {
 }
 
 export const SignupLayout = ({ className }: SignupLayoutProps) => {
+  const api = useApi();
   const { t } = useTranslation("auth");
   const authStore = useAuthStore();
   const { industries } = useIndustries();
@@ -68,7 +69,7 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
   }, []);
 
   const { mutate: signUp, isPending: isSignUpPending } = useMutation({
-    mutationFn: async () => api.auth.signUp(authStore.signUpRequest),
+    mutationFn: async () => api.clientAuth.signUp(authStore.signUpRequest),
     onSuccess: () => {
       toast.success(t("auth.signUp.toasts.success"));
       router.push("/auth/sign-in");

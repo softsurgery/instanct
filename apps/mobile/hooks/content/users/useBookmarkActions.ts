@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface useBookmarkActionsProps {
@@ -16,6 +16,7 @@ export const useBookmarkActions = ({
   onDeleteBookmarkSuccess,
   onError,
 }: useBookmarkActionsProps) => {
+  const api = useApi();
   const queryClient = useQueryClient();
 
   const {

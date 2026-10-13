@@ -1,4 +1,4 @@
-import type { MapSessionPayload, ResponseSessionDto } from "@/types/session";
+import type { MapSessionPayload, ResponseSessionDto } from "@instanct/api-client";
 import React from "react";
 import { ScrollView, View, useWindowDimensions } from "react-native";
 import { Text } from "@instanct/mobile-ui";

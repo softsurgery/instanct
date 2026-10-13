@@ -2,7 +2,7 @@ import { SeeMoreText } from "@instanct/mobile-components";
 import { Icon } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import { ResponseEducationDto } from "@/types";
+import { ResponseEducationDto } from "@instanct/api-client";
 import { GraduationCap } from "lucide-react-native";
 import { View } from "react-native";
 

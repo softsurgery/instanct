@@ -1,5 +1,5 @@
 import { toDateOrNull } from "@/lib/date";
-import { ResponseExperienceDto, UpdateExperienceDto } from "@/types";
+import { ResponseExperienceDto, UpdateExperienceDto } from "@instanct/api-client";
 
 export const toUpdateExperienceDto = (
   exp: ResponseExperienceDto,

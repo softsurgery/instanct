@@ -25,6 +25,7 @@ import {
 } from "@instanct/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { ApiProvider } from "@/contexts/ApiContext";
 import { LoaderProvider } from "@/contexts/LoaderContext";
 import { usePreferencePersistStore } from "@instanct/hooks";
 
@@ -92,23 +93,25 @@ function RootLayout() {
   }, [isPreferenceReady]);
 
   return (
-    <PaletteProvider theme={THEME}>
-      <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{
-            persister: asyncStoragePersister,
-            maxAge: 1000 * 60 * 60 * 24,
-          }}
-        >
-          <SafeAreaProvider>
-            <LoaderProvider>
-              <RootLayoutContent />
-            </LoaderProvider>
-          </SafeAreaProvider>
-        </PersistQueryClientProvider>
-      </ThemeProvider>
-    </PaletteProvider>
+    <ApiProvider>
+      <PaletteProvider theme={THEME}>
+        <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+              persister: asyncStoragePersister,
+              maxAge: 1000 * 60 * 60 * 24,
+            }}
+          >
+            <SafeAreaProvider>
+              <LoaderProvider>
+                <RootLayoutContent />
+              </LoaderProvider>
+            </SafeAreaProvider>
+          </PersistQueryClientProvider>
+        </ThemeProvider>
+      </PaletteProvider>
+    </ApiProvider>
   );
 }
 

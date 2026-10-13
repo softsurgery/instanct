@@ -1,5 +1,5 @@
 import { cn } from "@instanct/lib";
-import { ResponseSessionDto } from "@/types/session";
+import { ResponseSessionDto } from "@instanct/api-client";
 import React from "react";
 import { StyleProp, Text, TextStyle, View, ViewStyle } from "react-native";
 

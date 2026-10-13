@@ -1,14 +1,9 @@
 import React from "react";
 import { Alert, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { api } from "@/api";
-import {
-  MediaKind,
-  MessageVariant,
-  PendingMediaUpload,
-  ResponseMessageDto,
-  StagedMedia,
-} from "@/types";
+import { useApi } from "@/contexts/ApiContext";
+import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { MediaKind, PendingMediaUpload, StagedMedia } from "@/types";
 import { waitForUiReady } from "@/lib/device";
 import { toast } from "sonner-native";
 import { useChatPendingStore } from "@/stores/useChatPendingStore";
@@ -34,6 +29,7 @@ export const useSendChatMedia = ({
   messages,
   onSend,
 }: useSendChatMediaProps) => {
+  const api = useApi();
   const [stagedMedia, setStagedMedia] = React.useState<StagedMedia[]>([]);
   const stagedMediaRef = React.useRef(stagedMedia);
 

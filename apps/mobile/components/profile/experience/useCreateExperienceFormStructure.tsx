@@ -9,7 +9,7 @@ import {
   TextFieldProps,
 } from "@instanct/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
-import { LocationTypes, WorkTypes } from "@/types";
+import { LocationTypes, WorkTypes } from "@instanct/api-client";
 import { useTranslation } from "react-i18next";
 
 interface UseCreateExperienceFormStructureProps {

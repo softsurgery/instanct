@@ -14,9 +14,9 @@ import { useChangePasswordFormStructure } from "./useChangePasswordFormStructure
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import * as Haptics from "expo-haptics";
 import { useLogout } from "@/hooks/useLogout";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
@@ -27,6 +27,7 @@ interface ChangePasswordProps {
 }
 
 export const ChangePassword = ({ className }: ChangePasswordProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const userStore = useUserStore();
   const isKeyboardVisible = useKeyboardVisible();
@@ -38,7 +39,7 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
 
   const { mutate: updatePassword, isPending } = useMutation({
     mutationFn: async () =>
-      api.auth.updatePassword({
+      api.clientAuth.updatePassword({
         currentPassword: userStore.updatePasswordDto.currentPassword!,
         newPassword: userStore.updatePasswordDto.newPassword!,
       }),

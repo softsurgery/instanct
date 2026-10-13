@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BugVariant, FeedbackCategory } from "@/types";
+import { BugVariant, FeedbackCategory } from "@instanct/api-client";
 
 // Messages are translation keys, resolved by the consumer in the "settings"
 // namespace (see useBugReportFormStructure / useSendFeedbackFormStructure).

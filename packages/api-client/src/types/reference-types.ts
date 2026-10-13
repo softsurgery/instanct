@@ -4,7 +4,8 @@ export interface ResponseRefTypeDto<T = object> extends DatabaseEntity {
   id: number;
   label: string;
   description: string;
-  refParams: ResponseRefParamDto[];
+  params?: ResponseRefParamDto[];
+  refParams?: ResponseRefParamDto[];
   parentId?: number;
   parent?: ResponseRefTypeDto;
   children: ResponseRefTypeDto[];

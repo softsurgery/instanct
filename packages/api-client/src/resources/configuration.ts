@@ -5,6 +5,15 @@ import type {
 } from "../types";
 
 export function createConfigurationResource(http: AxiosInstance) {
+  const findGlobalOneByName = async (
+    name: string,
+  ): Promise<ResponseConfigurationNamespaceDto> => {
+    const response = await http.get<ResponseConfigurationNamespaceDto>(
+      `/configuration/namespace/global/name/${name}`,
+    );
+    return response.data;
+  };
+
   const findOneById = async (
     id: string,
   ): Promise<ResponseConfigurationNamespaceDto> => {
@@ -45,6 +54,7 @@ export function createConfigurationResource(http: AxiosInstance) {
   };
 
   return {
+    findGlobalOneByName,
     findOneById,
     findAll,
     findAllGlobal,

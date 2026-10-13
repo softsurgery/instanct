@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react-native";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 import { Button } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { View } from "react-native";
@@ -17,7 +17,7 @@ import { createBugSchema } from "@/types/validations/system-reports.validation";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import { Icon } from "@instanct/mobile-ui";
 import * as Haptics from "expo-haptics";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
@@ -28,6 +28,7 @@ interface BugReportPortalProps {
 }
 
 export const BugReportPortal = ({ className }: BugReportPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
   const bugStore = useReportBugStore();
@@ -41,7 +42,7 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   const { bugFormStructure } = useBugReportFormStructure({ store: bugStore });
 
   const { mutate: reportBug, isPending: isReportBugPending } = useMutation({
-    mutationFn: async () => api.bug.create(bugStore.createDto),
+    mutationFn: async () => api.admin.bugReport.create(bugStore.createDto),
     onSuccess: () => {
       toast.success("Bug reported successfully", {
         description: "Your bug report has been successfully submitted.",

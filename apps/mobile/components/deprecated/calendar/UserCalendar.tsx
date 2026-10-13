@@ -3,7 +3,7 @@ import { Icon } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { StablePressable } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
-import { ResponseUserDto } from "@/types";
+import { ResponseUserDto } from "@instanct/api-client";
 import {
   format,
   eachDayOfInterval,

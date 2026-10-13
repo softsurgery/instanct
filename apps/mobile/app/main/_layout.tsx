@@ -13,7 +13,7 @@ import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
 import { useColorPalette } from "@instanct/mobile-components";
 import { useQueryClient } from "@tanstack/react-query";
-import { NotificationType } from "@/types";
+import { NotificationType } from "@instanct/api-client";
 
 if (Notifications) {
   Notifications.setNotificationHandler({
@@ -48,7 +48,9 @@ export default function MainLayout() {
   } = useNotifications({
     consequences: {
       [NotificationType.TEST]: () => {},
+      [NotificationType.NEW_SIGIN]: () => {},
       [NotificationType.NEW_SIGNIN]: () => {},
+      [NotificationType.NEW_MESSAGE]: () => {},
       [NotificationType.REQUEST_RECEIVED]: () => {
         queryClient.invalidateQueries({ queryKey: ["incoming-requests"] });
       },

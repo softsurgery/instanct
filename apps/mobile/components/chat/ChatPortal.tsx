@@ -7,7 +7,7 @@ import { Search } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, RefreshControl, View } from "react-native";
 import { cn } from "@instanct/lib";
-import { ResponseConversationDto } from "~/types";
+import { ResponseConversationDto } from "@instanct/api-client";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { UserEntry } from "./UserEntry";

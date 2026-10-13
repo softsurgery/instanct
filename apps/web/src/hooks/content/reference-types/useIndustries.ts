@@ -15,13 +15,13 @@ interface UseIndustriesProps {
 export const useIndustries = ({ enabled = true }: UseIndustriesProps = {}) => {
   const { data: types, isFetching: isTypesPending } = useQuery({
     queryKey: ["ref-types"],
-    queryFn: api.admin.refType.findAll,
+    queryFn: () => api.admin.refType.findAll(),
     enabled,
   });
 
   const { data: params, isFetching: isParamsPending } = useQuery({
     queryKey: ["ref-params"],
-    queryFn: api.admin.refParam.findAll,
+    queryFn: () => api.admin.refParam.findAll(),
     enabled,
   });
 

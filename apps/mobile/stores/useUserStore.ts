@@ -1,16 +1,6 @@
 import { setDeepValue } from "@/lib/object";
 import { create } from "zustand";
-import {
-  CreateEducationDto,
-  CreateExperienceDto,
-  ResponseEducationDto,
-  ResponseExperienceDto,
-  ResponseUserDto,
-  UpdateEducationDto,
-  UpdateExperienceDto,
-  UpdateUserCoverDto,
-  UpdateUserDto,
-} from "~/types";
+import { CreateEducationDto, CreateExperienceDto, ResponseEducationDto, ResponseExperienceDto, ResponseUserDto, UpdateEducationDto, UpdateExperienceDto, UpdateUserCoverDto, UpdateUserDto } from "@instanct/api-client";
 
 interface UserData {
   response?: ResponseUserDto;

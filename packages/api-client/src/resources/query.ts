@@ -23,3 +23,15 @@ export function listParams(
 
   return params;
 }
+
+export function filterParams(query: QueryParams = {}) {
+  const params: { [key: string]: string } = {};
+
+  if (query.sort) params.sort = query.sort;
+  if (query.search) params.search = query.search;
+  if (query.filter) params.filter = query.filter;
+  if (query.join) params.join = query.join;
+  if (query.select) params.select = query.select;
+
+  return params;
+}

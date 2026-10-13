@@ -6,7 +6,7 @@ import type {
   ResponseUserDto,
   UpdateUserDto,
 } from "../types";
-import { listParams } from "./query";
+import { filterParams, listParams } from "./query";
 
 export function createUserResource(http: AxiosInstance) {
   const findPaginated = async (
@@ -39,8 +39,23 @@ export function createUserResource(http: AxiosInstance) {
     return response.data;
   };
 
-  const findAll = async (): Promise<ResponseUserDto[]> => {
-    const response = await http.get<ResponseUserDto[]>(`/admin/user/all`);
+  const findAll = async (
+    query: Pick<QueryParams, "join"> = {},
+  ): Promise<ResponseUserDto[]> => {
+    const response = await http.get<ResponseUserDto[]>(`/admin/user/all`, {
+      params: filterParams(query),
+    });
+    return response.data;
+  };
+
+  const findByUsername = async (
+    username?: string,
+    join?: string,
+  ): Promise<ResponseUserDto> => {
+    const response = await http.get<ResponseUserDto>(
+      `/admin/user/username/${username}`,
+      { params: { join } },
+    );
     return response.data;
   };
 
@@ -136,6 +151,7 @@ export function createUserResource(http: AxiosInstance) {
     findPaginated,
     findAll,
     findById,
+    findByUsername,
     findByEmail,
     create,
     update,

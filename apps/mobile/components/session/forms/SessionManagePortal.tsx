@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import { router } from "expo-router";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useSessionManagementFormStructure } from "./useSessionManagementFormStructure";
@@ -18,7 +18,7 @@ import { StableSafeAreaView } from "@instanct/mobile-components";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { FormBuilder } from "@instanct/mobile-form-builder";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
 import { Loader } from "@instanct/mobile-components";
 import { ActionSheetRef } from "react-native-actions-sheet";
@@ -34,6 +34,7 @@ interface SessionManagePortalProps {
 export const SessionManagePortal = ({
   className,
 }: SessionManagePortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("explore");
   const { mapSession, refetchSessions, isSessionsPending } =
     useActiveSessions();

@@ -7,8 +7,7 @@ import {
   isSlugLikeFilename,
   openUploadFile,
 } from "@/lib/files";
-import { ResponseMessageDto, ResponseMessageUploadFileDto } from "@/types";
-import { Upload } from "@/types/upload";
+import { ResponseMessageDto, ResponseMessageUploadFileDto, Upload } from "@instanct/api-client";
 import { format } from "date-fns";
 import React from "react";
 import { Pressable, View } from "react-native";

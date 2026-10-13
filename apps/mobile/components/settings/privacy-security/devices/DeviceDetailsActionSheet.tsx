@@ -15,7 +15,7 @@ import { Badge } from "@instanct/mobile-ui";
 import { Switch } from "@instanct/mobile-ui";
 import { Button } from "@instanct/mobile-ui";
 import { Icon } from "@instanct/mobile-ui";
-import { UserDevice } from "@/types";
+import { UserDevice } from "@instanct/api-client";
 import { getDeviceIcon } from "@/lib/device-icon";
 
 interface DeviceDetailsActionSheetProps {

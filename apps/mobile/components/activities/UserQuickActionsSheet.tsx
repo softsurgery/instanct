@@ -5,7 +5,7 @@ import { Text } from "@instanct/mobile-ui";
 import { Button } from "@instanct/mobile-ui";
 import { Icon } from "@instanct/mobile-ui";
 import { identifyUser } from "@/lib/user";
-import { ResponseUserDto } from "@/types";
+import { ResponseUserDto } from "@instanct/api-client";
 import { LucideIcon } from "lucide-react-native";
 import { useColorPalette } from "@instanct/mobile-components";
 

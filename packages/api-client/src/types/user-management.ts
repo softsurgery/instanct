@@ -1,4 +1,5 @@
 import type { ResponseRefParamDto } from "./reference-types";
+import type { MapSessionPayload, ResponseSessionDto } from "./session";
 import type { Upload } from "./upload";
 import type { DatabaseEntity } from "./utils/database-entity";
 
@@ -35,10 +36,17 @@ export interface ResponseUserDto extends ResponseAbstractUserDto {
   cin?: string;
   bio?: string;
   gender?: Gender;
+  website?: string;
+  linkedin?: string;
   isPrivate?: boolean;
   pictureId?: number;
   coverId?: number;
   picture?: Upload;
+  cover?: Upload;
+  experiences?: ResponseExperienceDto[];
+  educations?: ResponseEducationDto[];
+  activeSession?: ResponseSessionDto<MapSessionPayload>;
+  sessions?: ResponseSessionDto[];
   officialDocumentId?: number;
   officialDocument?: Upload;
   driverLicenseDocumentId?: number;
@@ -53,6 +61,8 @@ export interface CreateUserDto extends CreateAbstractUserDto {
   cin?: string;
   bio?: string;
   gender?: Gender;
+  website?: string;
+  linkedin?: string;
   isPrivate?: boolean;
   pictureId?: number;
   coverId?: number;
@@ -63,6 +73,15 @@ export interface CreateUserDto extends CreateAbstractUserDto {
 
 export interface UpdateUserDto extends Partial<CreateUserDto> {
   uploads?: { id: number; uploadId: number }[];
+}
+
+export interface UpdateUserCoverDto {
+  coverId?: number;
+}
+
+export interface UpdateUserMapConfigurationDto {
+  radius: number;
+  showUsernames: boolean;
 }
 
 export interface ResponseUserUploadDto extends DatabaseEntity {
@@ -159,7 +178,7 @@ export interface ResponseExperienceDto extends DatabaseEntity {
   title?: string;
   company?: string;
   startDate?: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   description?: string;
   location?: string;
   locationType?: LocationTypes;
@@ -172,7 +191,7 @@ export interface CreateExperienceDto {
   title?: string;
   company?: string;
   startDate?: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   description?: string;
   location?: string;
   locationType?: LocationTypes;
@@ -182,10 +201,10 @@ export interface CreateExperienceDto {
 export type UpdateExperienceDto = Partial<CreateExperienceDto>;
 
 export interface ResponseEducationDto extends DatabaseEntity {
-  id: string;
+  id: number;
   title?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: Date | null;
+  endDate?: Date | null;
   institution?: string;
   description?: string;
   user?: ResponseUserDto;
@@ -194,8 +213,8 @@ export interface ResponseEducationDto extends DatabaseEntity {
 
 export interface CreateEducationDto {
   title?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: Date | null;
+  endDate?: Date | null;
   institution?: string;
   description?: string;
 }

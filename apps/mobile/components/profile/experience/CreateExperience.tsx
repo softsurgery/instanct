@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { FormBuilder } from "@instanct/mobile-form-builder";
 import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
@@ -8,7 +8,7 @@ import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
-import { CreateExperienceDto, ServerErrorResponse } from "@/types";
+import { CreateExperienceDto, ServerErrorResponse } from "@instanct/api-client";
 import { createExperienceSchema } from "@/types/validations/experience.validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -26,6 +26,7 @@ interface CreateExperienceProps {
 }
 
 export const CreateExperience = ({ className }: CreateExperienceProps) => {
+  const api = useApi();
   const { t } = useTranslation("menu");
   const isKeyboardVisible = useKeyboardVisible();
   const userStore = useUserStore();

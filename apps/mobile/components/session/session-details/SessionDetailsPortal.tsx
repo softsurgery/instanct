@@ -4,7 +4,7 @@ import { ApplicationHeader } from "@instanct/mobile-components";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import { MapSessionPayload, ResponseSessionDto } from "@/types/session";
+import { MapSessionPayload, ResponseSessionDto } from "@instanct/api-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { View } from "react-native";

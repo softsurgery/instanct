@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { toast } from "sonner-native";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 import { Button } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { Icon } from "@instanct/mobile-ui";
@@ -19,7 +19,7 @@ import { BottomButtonWrapper } from "@instanct/mobile-components";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useConversationReportStore } from "@/stores/useConversationReportStore";
 import { createConversationReportSchema } from "@/types/validations/chat.validation";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import { useConversationReportFormStructure } from "./useConversationReportFormStructure";
 import { useTranslation } from "react-i18next";
 
@@ -37,6 +37,7 @@ export const ConversationReportPortal = ({
   reportedUserName,
   className,
 }: ConversationReportPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("chat");
   const isKeyboardVisible = useKeyboardVisible();
   const reportStore = useConversationReportStore();

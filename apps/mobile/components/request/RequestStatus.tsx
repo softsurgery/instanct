@@ -1,4 +1,4 @@
-import { RequestStatus } from "@/types";
+import { RequestStatus } from "@instanct/api-client";
 import { View } from "react-native";
 import { Icon } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";

@@ -1,4 +1,4 @@
-import { ResponseMessageLinkDto, StaticMessageEnum } from "@/types";
+import { ResponseMessageLinkDto, StaticMessageEnum } from "@instanct/api-client";
 import { format } from "date-fns";
 import { Alert, Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";

@@ -17,7 +17,7 @@ import { Text } from "@instanct/mobile-ui";
 import { Button } from "@instanct/mobile-ui";
 import { RadiusSlider } from "./RadiusSlider";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
 import { AppHeaderBack } from "@instanct/mobile-components";
@@ -34,6 +34,7 @@ interface SettingsSection {
 }
 
 export const MapSettings = ({ className }: MapSettingsProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const mapStore = useMapStore();
 
@@ -147,7 +148,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
     isPending: isUpdateMapConfigurationPending,
   } = useMutation({
     mutationFn: async () => {
-      await api.user.updateMapConfiguration({
+      await api.currentUser.updateMapConfiguration({
         radius: mapStore.draftSettings.radius,
         showUsernames: mapStore.draftSettings.showUsernames,
       });

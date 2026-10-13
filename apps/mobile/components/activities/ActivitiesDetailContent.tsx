@@ -1,5 +1,5 @@
 import React from "react";
-import type { MapSessionPayload, ResponseSessionDto } from "@/types/session";
+import type { MapSessionPayload, ResponseSessionDto } from "@instanct/api-client";
 import { View, useWindowDimensions } from "react-native";
 import { SessionIncomingRequests } from "./SessionIncomingRequests";
 import { SessionOutgoingRequests } from "./SessionOutgoingRequests";
@@ -7,8 +7,7 @@ import { Text } from "@instanct/mobile-ui";
 import { useInfiniteUserBookmarks } from "@/hooks/content/users/useInfinteUserBookmarks";
 import { LegendList } from "@legendapp/list";
 import { BookmarkCard } from "./BookmarkCard";
-import { ResponseUserBookmarkDto } from "@/types/bookmark";
-import { ResponseUserDto } from "@/types";
+import { ResponseUserBookmarkDto, ResponseUserDto } from "@instanct/api-client";
 import { Loader, hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
 import { format, isToday, isYesterday, parseISO } from "date-fns";

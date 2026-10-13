@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -9,13 +9,14 @@ interface useCurrentMapConfigurationProps {
 export const useCurrentMapConfiguration = (
   { enabled = true }: useCurrentMapConfigurationProps = { enabled: true },
 ) => {
+  const api = useApi();
   const {
     data: mapConfigurationResp,
     isPending: isMapConfigurationPending,
     refetch: refetchMapConfiguration,
   } = useQuery({
     queryKey: ["current-map-configuration"],
-    queryFn: () => api.user.getCurrentMapConfiguration(),
+    queryFn: () => api.currentUser.getMapConfiguration(),
     enabled,
   });
 

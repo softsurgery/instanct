@@ -10,8 +10,8 @@ import { useUserStore } from "@/stores/useUserStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useCreateEducationFormStructure } from "./useCreateEducationFormStructure";
-import { CreateEducationDto, ServerErrorResponse } from "@/types";
-import { api } from "@/api";
+import { CreateEducationDto, ServerErrorResponse } from "@instanct/api-client";
+import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { createEducationSchema } from "@/types/validations/education.validation";
 import { View } from "react-native";
@@ -26,6 +26,7 @@ interface CreateEducationProps {
 }
 
 export const CreateEducation = ({ className }: CreateEducationProps) => {
+  const api = useApi();
   const { t } = useTranslation("common");
   const { t: tMenu } = useTranslation("menu");
   const userStore = useUserStore();

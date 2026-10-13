@@ -1,6 +1,6 @@
 import { setDeepValue } from "@/lib/object";
 import { create } from "zustand";
-import { CreateRequestDto } from "~/types";
+import { CreateRequestDto } from "@instanct/api-client";
 
 interface RequestData {
   createDto: CreateRequestDto;

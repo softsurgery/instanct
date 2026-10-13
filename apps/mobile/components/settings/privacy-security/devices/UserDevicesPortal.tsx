@@ -21,8 +21,8 @@ import { Badge } from "@instanct/mobile-ui";
 import { Switch } from "@instanct/mobile-ui";
 import { Separator } from "@instanct/mobile-ui";
 import { Icon } from "@instanct/mobile-ui";
-import { api } from "@/api";
-import { UserDevice } from "@/types";
+import { useApi } from "@/contexts/ApiContext";
+import { UserDevice } from "@instanct/api-client";
 import { getDeviceId } from "@/lib/device-id";
 import { DeviceDetailsActionSheet } from "./DeviceDetailsActionSheet";
 import { getDeviceIcon } from "@/lib/device-icon";
@@ -32,6 +32,7 @@ interface UserDevicesPortalProps {
 }
 
 export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const queryClient = useQueryClient();
   const [currentDeviceId, setCurrentDeviceId] = useState<string | null>(null);

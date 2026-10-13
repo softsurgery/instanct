@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Text } from "@instanct/mobile-ui";
-import { SessionStatus } from "@/types/session";
+import { SessionStatus } from "@instanct/api-client";
 import { cn } from "@instanct/lib";
 import { useTranslation } from "react-i18next";
 

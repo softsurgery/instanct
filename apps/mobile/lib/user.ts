@@ -1,4 +1,4 @@
-import { ResponseUserDto } from "~/types";
+import { ResponseUserDto } from "@instanct/api-client";
 
 export const identifyUser = (user?: ResponseUserDto | null) => {
   if (!user) return "unknown";

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { message as messageApi } from "~/api/chat/message";
+import { useApi } from "@/contexts/ApiContext";
 import { useDebounce } from "@/hooks/useDebounce";
 import { filterMessagesByContentQuery } from "@/lib/messageSearch";
 import { MESSAGE_SEARCH_JOIN } from "@/lib/chat";
@@ -17,6 +17,7 @@ export const useConversationMessageSearch = ({
   conversationId,
   enabled = true,
 }: UseConversationMessageSearchProps) => {
+  const api = useApi();
   const [searchQuery, setSearchQuery] = React.useState("");
   const { value: debouncedQuery, loading: isDebouncing } = useDebounce(
     searchQuery,
@@ -29,7 +30,7 @@ export const useConversationMessageSearch = ({
   const { data, isFetching, isPending } = useQuery({
     queryKey: ["conversation-message-search", conversationId, trimmedQuery],
     queryFn: () =>
-      messageApi.findPaginatedConversationMessages(conversationId, {
+      api.chat.message.findPaginatedConversationMessages(conversationId, {
         page: "1",
         limit: "50",
         sort: "createdAt,DESC",

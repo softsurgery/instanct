@@ -1,8 +1,13 @@
 import type { AxiosInstance } from "axios";
 import { createAuthResource } from "./auth";
+import { createBookmarkResource } from "./bookmark";
+import { createChatResource } from "./chat";
+import { createClientAuthResource } from "./client-auth";
 import { createLandingConfigurationResource } from "./landing-configuration";
 import { createConfigurationResource } from "./configuration";
 import { createContentPageResource } from "./content";
+import { createCurrentUserResource } from "./current-user";
+import { createDevicesResource } from "./devices";
 import { createEducationResource } from "./education";
 import { createExperienceResource } from "./experience";
 import { createFollowResource } from "./follow";
@@ -12,7 +17,9 @@ import { createPermissionResource } from "./permission";
 import { createRefImplResource } from "./ref-impl";
 import { createRefParamResource } from "./ref-param";
 import { createRefTypeResource } from "./ref-type";
+import { createRequestResource } from "./request";
 import { createRoleResource } from "./roles";
+import { createSessionResource } from "./session";
 import { createStoreResource } from "./store";
 import { createUploadResource } from "./storage";
 import { createUserResource } from "./users";
@@ -23,6 +30,13 @@ import { createTemplateResource } from "./template";
 export function createResources(http: AxiosInstance) {
   return {
     auth: createAuthResource(http),
+    clientAuth: createClientAuthResource(http),
+    currentUser: createCurrentUserResource(http),
+    session: createSessionResource(http),
+    request: createRequestResource(http),
+    chat: createChatResource(http),
+    bookmark: createBookmarkResource(http),
+    devices: createDevicesResource(http),
     admin: {
       logger: createLoggerResource(http),
       permission: createPermissionResource(http),

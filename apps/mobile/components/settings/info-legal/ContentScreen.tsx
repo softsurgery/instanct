@@ -10,7 +10,7 @@ import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
 import { useQuery } from "@tanstack/react-query";
 import { View } from "react-native";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
@@ -25,6 +25,7 @@ export function ContentScreen({
   fallbackTitle,
   className,
 }: ContentScreenProps) {
+  const api = useApi();
   const { i18n } = useTranslation();
   const { data, isPending, isError } = useQuery({
     queryKey: ["content-page", slug, i18n.language],

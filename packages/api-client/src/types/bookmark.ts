@@ -1,5 +1,5 @@
-import { ResponseUserDto } from "./user-management";
-import { DatabaseEntity } from "./utils";
+import type { ResponseUserDto } from "./user-management";
+import type { DatabaseEntity } from "./utils/database-entity";
 
 export interface ResponseUserBookmarkDto extends DatabaseEntity {
   id: number;

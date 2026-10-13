@@ -5,12 +5,8 @@ import { Image } from "expo-image";
 import { Text } from "@instanct/mobile-ui";
 import { Icon } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import {
-  MessageVariant,
-  PendingMediaItem,
-  ResponseMessageDto,
-  PendingMediaUpload,
-} from "@/types";
+import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { PendingMediaItem, PendingMediaUpload } from "@/types";
 import {
   PhotoPreview,
   VideoPreview,

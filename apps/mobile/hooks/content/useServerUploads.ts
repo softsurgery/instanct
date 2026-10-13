@@ -1,9 +1,10 @@
 import { useQueries } from "@tanstack/react-query";
 import React from "react";
-import { api } from "@/api";
-import { Upload } from "@/types/upload";
+import { useApi } from "@/contexts/ApiContext";
+import { Upload } from "@instanct/api-client";
 
 export const useServerUploads = (ids: (number | undefined)[]) => {
+  const api = useApi();
   const idsString = JSON.stringify(ids);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const memoizedIds = React.useMemo(() => ids, [idsString]);

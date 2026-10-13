@@ -16,9 +16,9 @@ import { useRequestStore } from "@/stores/useRequestStore";
 import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
 import { zodErrorsToNested } from "@/lib/object";
 import { useMapStore } from "@/stores/useMapStore";
@@ -32,6 +32,7 @@ interface NewRequestProps {
 }
 
 export const NewRequest = ({ className, id }: NewRequestProps) => {
+  const api = useApi();
   const { t } = useTranslation("explore");
   const queryClient = useQueryClient();
   const isKeyboardVisible = useKeyboardVisible();

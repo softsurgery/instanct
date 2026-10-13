@@ -1,9 +1,9 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { Button } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import { requestSignInDtoSchema } from "@/types/validations/auth.validation";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -25,11 +25,12 @@ interface SigninProps {
 }
 
 export const SigninLayout = ({ className }: SigninProps) => {
+  const api = useApi();
   const { t } = useTranslation("auth");
   const authStore = useAuthStore();
 
   const { mutate: SignIn, isPending: isSignInPending } = useMutation({
-    mutationFn: async () => api.auth.signIn(authStore.signInRequest),
+    mutationFn: async () => api.clientAuth.signIn(authStore.signInRequest),
     onSuccess: () => {
       router.replace("/");
     },

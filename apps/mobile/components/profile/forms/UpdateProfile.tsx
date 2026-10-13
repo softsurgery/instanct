@@ -6,8 +6,8 @@ import { FormBuilder } from "@instanct/mobile-form-builder";
 import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { useUpdateProfileFormStructure } from "./useUpdateProfileFormStructure";
-import { ServerErrorResponse, UpdateUserDto, Upload } from "@/types";
-import { api } from "@/api";
+import { ServerErrorResponse, UpdateUserDto, Upload } from "@instanct/api-client";
+import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserSchema } from "@/types/validations/user.validation";
 import { Button } from "@instanct/mobile-ui";
@@ -28,13 +28,14 @@ interface UpdateProfileProps {
 }
 
 export const UpdateProfile = ({ className }: UpdateProfileProps) => {
+  const api = useApi();
   const isKeyboardVisible = useKeyboardVisible();
   const userStore = useUserStore();
   const queryClient = useQueryClient();
   const { t } = useTranslation("settings");
 
   const { mutate: updateUser, isPending: isUpdatePending } = useMutation({
-    mutationFn: (user: UpdateUserDto) => api.user.updateCurrent(user),
+    mutationFn: (user: UpdateUserDto) => api.currentUser.update(user),
     onSuccess: () => {
       router.back();
       toast.success(t("settings.account.screens.profile.toasts.updated"), {

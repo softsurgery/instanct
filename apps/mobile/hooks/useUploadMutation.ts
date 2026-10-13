@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useMutation } from "@tanstack/react-query";
 
 interface useUploadMutationProps {
@@ -14,6 +14,7 @@ export const useUploadMutation = ({
   onSuccess,
   onError,
 }: useUploadMutationProps) => {
+  const api = useApi();
   const { mutate: uploadFiles, isPending: isUploadPending } = useMutation({
     mutationFn: async ({
       files,

@@ -5,7 +5,7 @@ import { ChevronLeft, Search } from "lucide-react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon, Text } from "@instanct/mobile-ui";
-import { ResponseMessageDto } from "~/types";
+import { ResponseMessageDto } from "@instanct/api-client";
 import {
   hslToHex,
   StableSafeAreaView,

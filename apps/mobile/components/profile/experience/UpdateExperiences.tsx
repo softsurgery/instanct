@@ -1,5 +1,5 @@
 import React from "react";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { Tappable } from "@instanct/mobile-components";
 import { StablePressable } from "@instanct/mobile-components";
@@ -12,7 +12,7 @@ import { cn } from "@instanct/lib";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useExperiences } from "@/hooks/content/users/useExperiences";
 import { useUserStore } from "@/stores/useUserStore";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Briefcase, Building2, Calendar, FileText } from "lucide-react-native";
@@ -29,6 +29,7 @@ interface UpdateExperiencesProps {
 }
 
 export const UpdateExperiences = ({ className }: UpdateExperiencesProps) => {
+  const api = useApi();
   const { t } = useTranslation("menu");
   const userStore = useUserStore();
   const { currentUser } = useCurrentUser();

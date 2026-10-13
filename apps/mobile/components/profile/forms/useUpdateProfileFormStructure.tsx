@@ -1,4 +1,4 @@
-import { Gender } from "@/types";
+import { Gender } from "@instanct/api-client";
 import {
   CustomFieldProps,
   DateFieldProps,

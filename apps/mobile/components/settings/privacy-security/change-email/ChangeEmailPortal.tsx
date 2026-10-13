@@ -12,9 +12,9 @@ import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import * as Haptics from "expo-haptics";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@instanct/api-client";
 import {
   AppHeaderBack,
   ApplicationHeader,
@@ -28,6 +28,7 @@ interface ChangeEmailPortalProps {
 }
 
 export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
+  const api = useApi();
   const isKeyboardVisible = useKeyboardVisible();
   const { t } = useTranslation("settings");
   const userStore = useUserStore();
@@ -45,7 +46,7 @@ export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
 
   const { mutate: updateEmail, isPending } = useMutation({
     mutationFn: async () =>
-      api.auth.updateEmail({
+      api.clientAuth.updateEmail({
         email: userStore.updateDto.email!,
         password: userStore.updateDto.password!,
       }),

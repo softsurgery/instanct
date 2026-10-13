@@ -1,6 +1,6 @@
-import { ResponseSessionDto } from "./session";
-import { ResponseUserDto } from "./user-management";
-import { DatabaseEntity } from "./utils";
+import type { ResponseSessionDto } from "./session";
+import type { ResponseUserDto } from "./user-management";
+import type { DatabaseEntity } from "./utils/database-entity";
 
 export enum RequestEvent {
   Accept = "Accept",
@@ -45,5 +45,4 @@ export interface UpdateRequestStatusDto {
   event: RequestEvent;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface UpdateRequestDto extends Partial<CreateRequestDto> {}
+export type UpdateRequestDto = Partial<CreateRequestDto>;

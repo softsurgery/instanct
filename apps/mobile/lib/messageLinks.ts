@@ -1,4 +1,4 @@
-import { ResponseMessageLinkDto } from "@/types";
+import { ResponseMessageLinkDto } from "@instanct/api-client";
 
 export type ExtractedMessageLink = Pick<
   ResponseMessageLinkDto,

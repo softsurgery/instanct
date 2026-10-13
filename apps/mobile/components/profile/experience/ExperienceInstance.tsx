@@ -4,7 +4,7 @@ import { Text } from "@instanct/mobile-ui";
 import { useColorPalette } from "@instanct/mobile-components";
 import { hslToHex } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
-import { ResponseExperienceDto } from "@/types";
+import { ResponseExperienceDto } from "@instanct/api-client";
 import { format } from "date-fns";
 import { Briefcase, CalendarDays, Laptop, MapPin } from "lucide-react-native";
 import { View } from "react-native";

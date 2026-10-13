@@ -1,13 +1,13 @@
 import { Icon } from "@instanct/mobile-ui";
 import { Image } from "@instanct/mobile-ui";
 import { Text } from "@instanct/mobile-ui";
-import { MessageVariant, ResponseMessageDto } from "@/types";
+import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
 import { ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
 import React from "react";
 import { Pressable, View } from "react-native";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 import {
   VideoPreview,
   VideoThumbnailPreview,
@@ -46,6 +46,7 @@ export const MediaThumbnail = React.memo(function MediaThumbnail({
   onPress?: () => void;
 }) {
   const { t } = useTranslation("chat");
+  const api = useApi();
   const isVideo = message.variant === MessageVariant.VIDEO;
   const accessToken = useAuthPersistStore((state) => state.accessToken);
 
@@ -55,7 +56,7 @@ export const MediaThumbnail = React.memo(function MediaThumbnail({
       return api.upload.getUploadById(uploadId);
     }
     return undefined;
-  }, [accessToken, mediaSourceOverride, uploadId]);
+  }, [accessToken, api, mediaSourceOverride, uploadId]);
 
   const content = (
     <View

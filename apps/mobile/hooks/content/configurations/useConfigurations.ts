@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -9,13 +9,14 @@ interface useConfigurationsProps {
 export const useConfigurations = (
   { enabled }: useConfigurationsProps = { enabled: true },
 ) => {
+  const api = useApi();
   const {
     data: configurationsResponse,
     isPending: isConfigurationsPending,
     refetch: refetchConfigurations,
   } = useQuery({
     queryKey: ["configurations"],
-    queryFn: () => api.configuration.findAll(),
+    queryFn: () => api.admin.configuration.findAll(),
     enabled,
   });
 

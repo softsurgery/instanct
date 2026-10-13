@@ -10,8 +10,8 @@ import {
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
-import { api } from "~/api";
-import { ResponseMessageDto, ServerErrorResponse } from "~/types";
+import { useApi } from "@/contexts/ApiContext";
+import { ResponseMessageDto, ServerErrorResponse } from "@instanct/api-client";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
@@ -41,6 +41,7 @@ interface ConversationDetailsProps {
  * Screen displaying settings, participant info, media/file galleries, and block/report/delete actions for a conversation.
  */
 export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
+  const api = useApi();
   const { t } = useTranslation("chat");
   const conversationId = Number(id);
   const queryClient = useQueryClient();

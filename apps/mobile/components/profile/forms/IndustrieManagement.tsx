@@ -2,7 +2,7 @@ import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
 import { cn } from "@instanct/lib";
@@ -33,6 +33,7 @@ interface IndustriesManagementProps {
 export const IndustriesManagement = ({
   className,
 }: IndustriesManagementProps) => {
+  const api = useApi();
   const { t } = useTranslation("menu");
   const isKeyboardVisible = useKeyboardVisible();
   const router = useRouter();
@@ -57,7 +58,7 @@ export const IndustriesManagement = ({
   const { mutate: updateIndustries, isPending: isMutationPending } =
     useMutation({
       mutationFn: async (industryIds: number[]) =>
-        api.user.updateIndustries(userId, industryIds),
+        api.admin.user.updateIndustries(userId, industryIds),
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ["user", userId],

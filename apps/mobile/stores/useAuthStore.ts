@@ -1,8 +1,5 @@
 import { setDeepValue } from "@/lib/object";
-import {
-  RequestClientSignInDto,
-  RequestSpecializedClientSignUpDto,
-} from "@/types";
+import { RequestClientSignInDto, RequestSpecializedClientSignUpDto } from "@instanct/api-client";
 import { create } from "zustand";
 
 interface AuthData {

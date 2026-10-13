@@ -4,14 +4,38 @@ import _axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 import { delay } from "@instanct/lib";
-import { useAuthPersistStore } from "@instanct/hooks/stores";
+import { useAuthPersistStore } from "@instanct/hooks";
+
+export interface AxiosAuthAdapter {
+  getAccessToken: () => string | undefined;
+  getRefreshToken: () => string | undefined;
+  setTokens: (accessToken: string, refreshToken?: string) => void;
+  logout: () => void;
+  isAuthenticated: () => boolean;
+}
 
 export interface CreateAxiosConfig {
   baseURL: string;
   delayMs?: number;
   refreshPath?: string;
   onUnauthorized?: () => void;
+  auth?: AxiosAuthAdapter;
+  includeLocale?: boolean;
+  logoutOnMissingRefresh?: boolean;
 }
+
+const defaultAuth: AxiosAuthAdapter = {
+  getAccessToken: () => useAuthPersistStore.getState().accessToken || undefined,
+  getRefreshToken: () =>
+    useAuthPersistStore.getState().refreshToken || undefined,
+  setTokens: (accessToken, refreshToken) =>
+    useAuthPersistStore.getState().setTokens(accessToken, refreshToken),
+  logout: () => useAuthPersistStore.getState().logout(),
+  isAuthenticated: () => {
+    const state = useAuthPersistStore.getState();
+    return state.isAuthenticated || !!state.accessToken;
+  },
+};
 
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -28,6 +52,9 @@ export function createAxios({
   delayMs = 0,
   refreshPath = "/auth/refresh-token",
   onUnauthorized,
+  auth = defaultAuth,
+  includeLocale = true,
+  logoutOnMissingRefresh = true,
 }: CreateAxiosConfig): AxiosInstance {
   const axios = _axios.create({
     baseURL,
@@ -43,7 +70,7 @@ export function createAxios({
         await delay(delayMs);
       }
 
-      const { accessToken } = useAuthPersistStore.getState();
+      const accessToken = auth.getAccessToken();
       if (accessToken) {
         config.headers.set("Authorization", `Bearer ${accessToken}`);
       }
@@ -53,7 +80,7 @@ export function createAxios({
         config.headers.set("x-timezone", timezone);
       }
 
-      if (typeof window !== "undefined") {
+      if (includeLocale && typeof window !== "undefined") {
         const locale = window.localStorage.getItem("locale") || "en";
         config.headers.set("x-custom-lang", locale);
       }
@@ -73,7 +100,8 @@ export function createAxios({
       const originalRequest = error.config as
         | RetryableRequestConfig
         | undefined;
-      const authStore = useAuthPersistStore.getState();
+      const refreshToken = auth.getRefreshToken();
+      const authenticated = auth.isAuthenticated();
 
       if (
         error.response?.status === 401 &&
@@ -82,10 +110,10 @@ export function createAxios({
       ) {
         originalRequest._retry = true;
 
-        if (authStore.refreshToken) {
+        if (refreshToken) {
           try {
             const response = await _axios.post(joinUrl(baseURL, refreshPath), {
-              refresh_token: authStore.refreshToken,
+              refresh_token: refreshToken,
             });
 
             const { access_token, refresh_token } = response.data as {
@@ -93,7 +121,7 @@ export function createAxios({
               refresh_token?: string;
             };
 
-            authStore.setTokens(access_token, refresh_token);
+            auth.setTokens(access_token, refresh_token);
             originalRequest.headers.set(
               "Authorization",
               `Bearer ${access_token}`,
@@ -101,14 +129,14 @@ export function createAxios({
 
             return axios(originalRequest);
           } catch (err) {
-            authStore.logout();
+            auth.logout();
             onUnauthorized?.();
             return Promise.reject(err);
           }
         }
 
-        if (authStore.isAuthenticated || authStore.accessToken) {
-          authStore.logout();
+        if (logoutOnMissingRefresh && authenticated) {
+          auth.logout();
           onUnauthorized?.();
         }
       }

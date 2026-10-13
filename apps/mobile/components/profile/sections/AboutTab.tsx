@@ -6,7 +6,7 @@ import {
 import { Text, Icon } from "@instanct/mobile-ui";
 import { THEME } from "@/lib/theme";
 import { cn } from "@instanct/lib";
-import { ResponseUserDto } from "@/types";
+import { ResponseUserDto } from "@instanct/api-client";
 import {
   ArrowUpRight,
   Globe,

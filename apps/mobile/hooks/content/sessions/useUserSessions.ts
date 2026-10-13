@@ -1,5 +1,5 @@
-import { api } from "@/api";
-import { SessionType } from "@/types/session";
+import { useApi } from "@/contexts/ApiContext";
+import { SessionType } from "@instanct/api-client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -19,6 +19,7 @@ export const useUserSessions = (
     enabled: true,
   },
 ) => {
+  const api = useApi();
   const {
     data: sessionsResp,
     isPending: isSessionsPending,

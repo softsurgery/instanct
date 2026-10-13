@@ -7,12 +7,7 @@ import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { identifyUser } from "@/lib/user";
 import { cn } from "@instanct/lib";
 import { createClientStore, useUserStore } from "@/stores/useUserStore";
-import {
-  ResponseEducationDto,
-  ResponseExperienceDto,
-  ResponseRefParamDto,
-  ServerErrorResponse,
-} from "@/types";
+import { ResponseEducationDto, ResponseExperienceDto, ResponseRefParamDto, ServerErrorResponse } from "@instanct/api-client";
 import { useFocusEffect, useNavigation } from "expo-router";
 import { View, Pressable, useWindowDimensions } from "react-native";
 import { ProfileStat } from "./ProfileStat";
@@ -25,7 +20,7 @@ import { RenderSection } from "./sections/RenderSection";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { ProfileCover } from "./ProfileCover";
 import { toast } from "sonner-native";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useMutation } from "@tanstack/react-query";
 import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
@@ -61,6 +56,7 @@ export const InspectBaseProfile = ({
   id,
   coverExtra,
 }: InspectBaseProfileProps) => {
+  const api = useApi();
   const { animatedHeaderStyle, handleScroll, onLayout, showHeader } =
     useScrollableElement({
       deltaThreshold: 0,
@@ -115,7 +111,7 @@ export const InspectBaseProfile = ({
 
   const { mutate: sendVerifyEmail, isPending: isSendVerifyEmailPending } =
     useMutation({
-      mutationFn: () => api.auth.sendVerifyEmail(user?.email),
+      mutationFn: () => api.clientAuth.sendVerifyEmail({ email: user?.email }),
       onMutate: () => {
         setLoading(true);
       },

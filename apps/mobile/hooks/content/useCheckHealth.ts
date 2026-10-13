@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "@/api/axios";
+import { useApi } from "@/contexts/ApiContext";
 
 interface useCheckHealthProps {
   enabled?: boolean;
@@ -12,11 +12,12 @@ export const useCheckHealth = (
     refetchInterval: 5000,
   },
 ) => {
+  const api = useApi();
   const { data } = useQuery({
     queryKey: ["checkHealth"],
     queryFn: async () => {
       try {
-        const response = await axios.get("/app/health");
+        const response = await api.http.get("/app/health");
         // console.log("Health check response:", response.data);
         return response.data;
       } catch (error) {

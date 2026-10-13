@@ -44,7 +44,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useGradualAnimation } from "@/hooks/useGradualAnimation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { MessageFlatListItem, ResponseMessageDto } from "@/types";
+import { ResponseMessageDto } from "@instanct/api-client";
+import { MessageFlatListItem } from "@/types";
 import { useColorPalette } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";

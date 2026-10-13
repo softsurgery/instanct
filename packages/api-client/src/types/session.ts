@@ -1,5 +1,5 @@
-import { ResponseUserDto } from "./user-management";
-import { DatabaseEntity } from "./utils";
+import type { ResponseUserDto } from "./user-management";
+import type { DatabaseEntity } from "./utils/database-entity";
 
 export enum SessionType {
   DEFAULT = "",
@@ -11,6 +11,10 @@ export enum SessionStatus {
   ACTIVE = "active",
   COMPLETED = "completed",
   CANCELLED = "cancelled",
+}
+
+export interface MapSessionPayload {
+  objectives: number[];
 }
 
 export interface ResponseSessionDto<T = any> extends DatabaseEntity {
@@ -36,8 +40,4 @@ export interface CreateSessionDto<T = any> {
 export interface UpdateSessionDto<T = any> {
   plannedEnd?: Date;
   payload?: T;
-}
-
-export interface MapSessionPayload {
-  objectives: number[];
 }

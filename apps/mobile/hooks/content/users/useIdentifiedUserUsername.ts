@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -14,13 +14,14 @@ export const useIdentifiedUserUsername = (
     enabled: true,
   },
 ) => {
+  const api = useApi();
   const {
     data: userResp,
     isPending: isUserPending,
     refetch: refetchUser,
   } = useQuery({
     queryKey: ["user-by-username", username],
-    queryFn: () => api.user.findByUsername(username!, { join }),
+    queryFn: () => api.admin.user.findByUsername(username!, join),
     enabled: enabled && !!username,
   });
 

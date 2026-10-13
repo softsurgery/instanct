@@ -6,7 +6,7 @@ import type {
   ResponseRefTypeDto,
   UpdateRefTypeDto,
 } from "../types";
-import { listParams } from "./query";
+import { filterParams, listParams } from "./query";
 
 export function createRefTypeResource(http: AxiosInstance) {
   const findPaginated = async (
@@ -19,8 +19,12 @@ export function createRefTypeResource(http: AxiosInstance) {
     return response.data;
   };
 
-  const findAll = async (): Promise<ResponseRefTypeDto[]> => {
-    const response = await http.get<ResponseRefTypeDto[]>(`/ref-type/all`);
+  const findAll = async (
+    query: QueryParams = {},
+  ): Promise<ResponseRefTypeDto[]> => {
+    const response = await http.get<ResponseRefTypeDto[]>(`/ref-type/all`, {
+      params: filterParams(query),
+    });
     return response.data;
   };
 

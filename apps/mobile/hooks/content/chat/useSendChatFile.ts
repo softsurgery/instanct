@@ -1,9 +1,10 @@
 import React from "react";
 import { Alert } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
-import { api } from "@/api";
-import { ReactNativeUploadFile } from "@/api/upload";
-import { MessageVariant, PendingFileUpload, ResponseMessageDto } from "@/types";
+import { useApi } from "@/contexts/ApiContext";
+import { type ReactNativeUploadFile } from "@/lib/upload";
+import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { PendingFileUpload } from "@/types";
 import { waitForUiReady } from "@/lib/device";
 import { toast } from "sonner-native";
 import { useChatPendingStore } from "@/stores/useChatPendingStore";
@@ -29,6 +30,7 @@ export const useSendChatFile = ({
   messages,
   onSend,
 }: UseSendChatFileProps) => {
+  const api = useApi();
   const pendingUploads = useChatPendingStore(
     useShallow((state) =>
       state.pendingFileUploads.filter(

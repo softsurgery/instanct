@@ -1,7 +1,7 @@
-import { SessionType } from "@/types/session";
+import { SessionType } from "@instanct/api-client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 
 interface useInfiniteUserSessionsProps {
   search?: string;
@@ -20,6 +20,7 @@ export const useInfiniteUserSessions = (
     enabled: true,
   },
 ) => {
+  const api = useApi();
   const {
     data,
     fetchNextPage,

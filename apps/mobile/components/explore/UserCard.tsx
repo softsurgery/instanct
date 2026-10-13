@@ -2,11 +2,7 @@ import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { hslToHex, useColorPalette } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
-import {
-  ResponseConversationDto,
-  ResponseRefParamDto,
-  ResponseUserDto,
-} from "@/types";
+import { ResponseConversationDto, ResponseRefParamDto, ResponseUserDto } from "@instanct/api-client";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import {

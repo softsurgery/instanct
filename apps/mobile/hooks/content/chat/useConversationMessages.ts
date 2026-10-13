@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { api } from "~/api";
-import { MessageVariant, QueryParams } from "~/types";
+import { useApi } from "@/contexts/ApiContext";
+import { MessageVariant, QueryParams } from "@instanct/api-client";
 
 interface useConversationMessagesProps {
   id: number;
@@ -18,6 +18,7 @@ export const useConversationMessages = ({
   query,
   variants = [],
 }: useConversationMessagesProps) => {
+  const api = useApi();
   const {
     data,
     fetchNextPage,

@@ -1,6 +1,6 @@
 import { setDeepValue } from "@/lib/object";
 import { create } from "zustand";
-import { CreateConversationReportDto } from "~/types";
+import { CreateConversationReportDto } from "@instanct/api-client";
 
 interface ConversationReportData {
   createDto: CreateConversationReportDto;

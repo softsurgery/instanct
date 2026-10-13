@@ -3,7 +3,7 @@ import { StableScrollView } from "@instanct/mobile-components";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { cn } from "@instanct/lib";
-import { MapSessionPayload, ResponseSessionDto } from "@/types/session";
+import { MapSessionPayload, ResponseSessionDto } from "@instanct/api-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { Bell } from "lucide-react-native";
 import Animated from "react-native-reanimated";

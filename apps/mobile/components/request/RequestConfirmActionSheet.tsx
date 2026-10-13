@@ -5,7 +5,7 @@ import { Text } from "@instanct/mobile-ui";
 import { Button } from "@instanct/mobile-ui";
 import { useColorPalette } from "@instanct/mobile-components";
 import { useTranslation } from "react-i18next";
-import { RequestEvent } from "@/types";
+import { RequestEvent } from "@instanct/api-client";
 
 interface RequestConfirmActionSheetProps {
   event: RequestEvent | null;

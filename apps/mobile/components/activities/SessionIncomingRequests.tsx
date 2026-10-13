@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@instanct/lib";
 import { LegendList } from "@legendapp/list";
 import { RefreshControl, View } from "react-native";
-import { ResponseRequestDto } from "@/types";
+import { ResponseRequestDto } from "@instanct/api-client";
 import { Loader } from "@instanct/mobile-components";
 import { useInfiniteIncomingSessionRequests } from "@/hooks/content/sessions/useInfiniteIncomingSessionRequests";
 import { SessionRequestCard } from "../session/session-details/SessionRequestCard";

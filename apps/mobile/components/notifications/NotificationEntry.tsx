@@ -3,10 +3,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Image } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import {
-  NotificationType,
-  ResponseNotificationDto,
-} from "~/types/notifications";
+import { NotificationType, ResponseNotificationDto } from "@instanct/api-client";
 import { HTMLText } from "@instanct/mobile-components";
 import { StablePressable } from "@instanct/mobile-components";
 import { Text } from "@instanct/mobile-ui";

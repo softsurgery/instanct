@@ -2,7 +2,7 @@ import React from "react";
 import { Linking } from "react-native";
 import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
-import { ResponseMessageLinkDto } from "@/types";
+import { ResponseMessageLinkDto } from "@instanct/api-client";
 import {
   ExtractedMessageLink,
   normalizeMessageLinkUrl,

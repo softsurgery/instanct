@@ -1,5 +1,5 @@
 import { ReportBugStore } from "@/stores/useReportBugStore";
-import { BugVariant } from "@/types";
+import { BugVariant } from "@instanct/api-client";
 import {
   Field,
   FieldVariant,

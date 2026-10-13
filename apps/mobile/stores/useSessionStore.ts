@@ -1,10 +1,5 @@
 import { setDeepValue } from "@/lib/object";
-import {
-  CreateSessionDto,
-  MapSessionPayload,
-  SessionType,
-  UpdateSessionDto,
-} from "@/types/session";
+import { CreateSessionDto, MapSessionPayload, SessionType, UpdateSessionDto } from "@instanct/api-client";
 import { create } from "zustand";
 
 interface SessionData {

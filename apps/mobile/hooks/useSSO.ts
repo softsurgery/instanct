@@ -4,8 +4,8 @@ import * as WebBrowser from "expo-web-browser";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
-import { api } from "@/api";
-import { OAuthProvider, ServerErrorResponse } from "@/types";
+import { useApi } from "@/contexts/ApiContext";
+import { OAuthProvider, ServerErrorResponse } from "@instanct/api-client";
 import { Platform } from "react-native";
 
 // Ensure web browser redirect is handled properly
@@ -42,6 +42,7 @@ const appleDiscovery: AuthSession.DiscoveryDocument = {
 };
 
 export function useSSO() {
+  const api = useApi();
   // We need two redirect URIs:
   // 1. backendRedirectUri: Sent to OAuth providers so they redirect to our backend server.
   // 2. deepLinkUri: The app's deep link, which WebBrowser waits for to close automatically.
@@ -96,7 +97,7 @@ export function useSSO() {
       codeVerifier?: string;
       redirectUri?: string;
     }) => {
-      return api.auth.ssoSignIn({
+      return api.clientAuth.ssoSignIn({
         provider,
         idToken,
         codeVerifier,

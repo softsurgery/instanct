@@ -426,6 +426,9 @@ importers:
       '@expo/vector-icons':
         specifier: ^15.0.2
         version: 15.1.1(expo-font@58.0.8)(react-native@0.88.0-rc.4(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
+      '@instanct/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
       '@instanct/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks

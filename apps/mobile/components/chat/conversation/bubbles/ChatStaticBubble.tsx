@@ -1,5 +1,5 @@
 import { cn } from "@instanct/lib";
-import { ResponseMessageDto, StaticMessageEnum } from "@/types";
+import { ResponseMessageDto, StaticMessageEnum } from "@instanct/api-client";
 import React from "react";
 import { Pressable } from "react-native";
 import { Text } from "@instanct/mobile-ui";

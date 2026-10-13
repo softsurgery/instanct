@@ -17,6 +17,34 @@ export function createUploadResource(http: AxiosInstance) {
     return response.data;
   };
 
+  const fetchUploadById = async (id: number): Promise<Upload> => {
+    const response = await http.get<Upload>(`/storage/${id}`);
+    return response.data;
+  };
+
+  const uploadFile = async (
+    file: File,
+    onProgress?: (percent: number) => void,
+    temporary: boolean = true,
+  ): Promise<Upload> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await http.post<Upload>(
+      temporary ? "/storage/upload/temporary" : "/storage/upload",
+      formData,
+      {
+        onUploadProgress: (event) => {
+          if (onProgress && event.total) {
+            const percent = Math.round((event.loaded * 100) / event.total);
+            onProgress(percent);
+          }
+        },
+      },
+    );
+    return response.data;
+  };
+
   const uploadFiles = async (
     files: File[],
     onProgress?: (percent: number) => void,
@@ -93,6 +121,8 @@ export function createUploadResource(http: AxiosInstance) {
 
   return {
     findPaginated,
+    fetchUploadById,
+    uploadFile,
     uploadFiles,
     downloadFile,
     deleteFile,

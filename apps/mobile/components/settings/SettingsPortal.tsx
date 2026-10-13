@@ -17,11 +17,11 @@ import type { SettingRowConfig } from "./SettingsRow";
 import { useLogout } from "@/hooks/useLogout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner-native";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { version } from "../../package.json";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
-import type { ServerErrorResponse } from "~/types";
+import type { ServerErrorResponse } from "@instanct/api-client";
 import { Badge, Button, Icon, Separator, Text } from "@instanct/mobile-ui";
 
 interface SettingsPortalProps {
@@ -37,6 +37,7 @@ interface SettingsSection {
 }
 
 export const SettingsPortal = ({ className }: SettingsPortalProps) => {
+  const api = useApi();
   const queryClient = useQueryClient();
   const { t: tSettings } = useTranslation("settings");
   const settingsRows: SettingsSection[] = [
@@ -209,7 +210,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
 
   const { mutate: deleteAccount, isPending: isDeleteAccountPending } =
     useMutation({
-      mutationFn: () => api.user.deleteCurrent(),
+      mutationFn: () => api.currentUser.remove(),
       onSuccess: () => {
         deleteAccountSheetRef.current?.hide();
         toast.success(tSettings("settings.session.deleteAlert.success"));

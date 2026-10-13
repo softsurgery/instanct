@@ -3,9 +3,9 @@ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, View } from "react-native";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 import { cn } from "@instanct/lib";
-import { ResponseNotificationDto } from "~/types/notifications";
+import { ResponseNotificationDto } from "@instanct/api-client";
 import { ApplicationHeader } from "@instanct/mobile-components";
 import { StableSafeAreaView } from "@instanct/mobile-components";
 import { Text } from "@instanct/mobile-ui";
@@ -19,6 +19,7 @@ interface NotificationPortalProps {
 }
 
 export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
+  const api = useApi();
   const queryClient = useQueryClient();
   const { t } = useTranslation("common");
   const { resetCount } = useNotificationContext();
@@ -40,7 +41,7 @@ export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
     queryKey: ["notifications"],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
-      api.notifications.findPaginatedUserConversations({
+      api.notification.findPaginated({
         page: String(pageParam),
         limit: "20",
         sort: "createdAt,desc",

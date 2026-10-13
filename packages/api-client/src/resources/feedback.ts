@@ -1,5 +1,6 @@
 import type { AxiosInstance } from "axios";
 import {
+  type CreateFeedbackDto,
   type QueryParams,
   type Paginated,
   type ResponseFeedbackDto,
@@ -7,6 +8,15 @@ import {
 
 export function createFeedbackResource(http: AxiosInstance) {
   return {
+    create: async (
+      createFeedbackDto: CreateFeedbackDto,
+    ): Promise<ResponseFeedbackDto> => {
+      const { data } = await http.post<ResponseFeedbackDto>(
+        `/feedback`,
+        createFeedbackDto,
+      );
+      return data;
+    },
     findPaginated: async (
       options?: QueryParams
     ): Promise<Paginated<ResponseFeedbackDto>> => {

@@ -1,5 +1,6 @@
 import { setDeepValue } from "@/lib/object";
-import { Cluster, NearbyUser, ResponseUserDto } from "@/types";
+import { ResponseUserDto } from "@instanct/api-client";
+import { Cluster, NearbyUser } from "@/types";
 import * as Location from "expo-location";
 import { create } from "zustand";
 import isEqual from "lodash/isEqual";

@@ -9,7 +9,7 @@ import {
   prependMessageToConversationLinksCache,
 } from "@/lib/chat";
 import { messageHasLinks } from "@/lib/messageLinks";
-import { MessageVariant, ResponseMessageDto } from "@/types";
+import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
 
 interface CachedConversationMessages {
   messages: ResponseMessageDto[];

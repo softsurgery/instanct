@@ -12,11 +12,10 @@ import { useSessionStarterFormStructure } from "./useSessionStarterFormStructure
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { createSessionSchema } from "@/types/validations/session.validation";
-import { ServerErrorResponse } from "@/types";
-import { SessionType } from "@/types/session";
+import { ServerErrorResponse, SessionType } from "@instanct/api-client";
 import { useUserSessions } from "@/hooks/content/sessions/useUserSessions";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { mapToSelectOptions } from "@instanct/mobile-form-builder";
@@ -32,6 +31,7 @@ interface SessionStarterPortalProps {
 export const SessionStarterPortal = ({
   className,
 }: SessionStarterPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("explore");
   const queryClient = useQueryClient();
   const isKeyboardVisible = useKeyboardVisible();

@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useQueries } from "@tanstack/react-query";
 import React from "react";
 
@@ -7,6 +7,7 @@ interface UseIdentifiedUsersProps {
 }
 
 export const useIdentifiedUsers = ({ ids }: UseIdentifiedUsersProps) => {
+  const api = useApi();
   const uniqueIds = React.useMemo(
     () => Array.from(new Set(ids.filter(Boolean))),
     [ids],
@@ -15,7 +16,7 @@ export const useIdentifiedUsers = ({ ids }: UseIdentifiedUsersProps) => {
   const userQueries = useQueries({
     queries: uniqueIds.map((id) => ({
       queryKey: ["user", id],
-      queryFn: () => api.user.findById(id!),
+      queryFn: () => api.admin.user.findById(id!),
       enabled: !!id,
     })),
   });

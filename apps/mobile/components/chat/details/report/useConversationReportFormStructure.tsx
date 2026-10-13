@@ -1,5 +1,5 @@
 import { ConversationReportStore } from "@/stores/useConversationReportStore";
-import { ConversationReportReason } from "@/types";
+import { ConversationReportReason } from "@instanct/api-client";
 import {
   Field,
   FieldVariant,

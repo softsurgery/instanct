@@ -7,11 +7,7 @@ import { ApplicationHeader } from "@instanct/mobile-components";
 import { Map as MapIcon, ChevronRight, Calendar } from "lucide-react-native";
 import { router } from "expo-router";
 import { Text } from "@instanct/mobile-ui";
-import {
-  SessionStatus,
-  SessionType,
-  type ResponseSessionDto,
-} from "@/types/session";
+import { SessionStatus, SessionType, type ResponseSessionDto } from "@instanct/api-client";
 import { toDateOnly, toTimeOnly } from "@/lib/date";
 import { Icon } from "@instanct/mobile-ui";
 import { useInfiniteUserSessions } from "@/hooks/content/sessions/useInfiniteUserSessions";

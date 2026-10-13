@@ -1,7 +1,7 @@
 import React from "react";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 import { cn } from "@instanct/lib";
-import { ResponseUserDto } from "@/types/user-management";
+import { ResponseUserDto } from "@instanct/api-client";
 import { LegendList } from "@legendapp/list";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import { router } from "expo-router";

@@ -1,4 +1,4 @@
-import { ResponseMessageDto } from "~/types";
+import { ResponseMessageDto } from "@instanct/api-client";
 
 export const messageContentMatchesQuery = (
   message: ResponseMessageDto,

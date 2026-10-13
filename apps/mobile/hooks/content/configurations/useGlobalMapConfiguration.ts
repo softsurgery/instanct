@@ -1,4 +1,4 @@
-import { ConfigurationNamespaces } from "@/types";
+import { ConfigurationNamespaces } from "@instanct/api-client";
 import { useConfiguration } from "./useConfiguration";
 
 interface useGlobalMapConfigurationProps {

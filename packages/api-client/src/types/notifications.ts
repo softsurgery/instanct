@@ -4,7 +4,11 @@ import type { DatabaseEntity } from "./utils/database-entity";
 export enum NotificationType {
   TEST = "TEST",
   NEW_SIGIN = "NEW_SIGIN",
+  NEW_SIGNIN = "NEW_SIGNIN",
   NEW_MESSAGE = "NEW_MESSAGE",
+  REQUEST_RECEIVED = "REQUEST_RECEIVED",
+  REQUEST_ACCEPTED = "REQUEST_ACCEPTED",
+  REQUEST_REJECTED = "REQUEST_REJECTED",
 }
 
 export interface ResponseNotificationDto extends DatabaseEntity {
@@ -14,4 +18,5 @@ export interface ResponseNotificationDto extends DatabaseEntity {
   user: ResponseUserDto;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
+  readAt?: Date | null;
 }
