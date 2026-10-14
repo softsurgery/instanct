@@ -23,6 +23,24 @@ const buttonVariants = cva(
             web: "hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
           }),
         ),
+        "destructive-outline": cn(
+          "border-destructive bg-transparent active:bg-destructive/10 dark:active:bg-destructive/20 border",
+          Platform.select({
+            web: "hover:bg-destructive/10 dark:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          }),
+        ),
+        destructiveOutline: cn(
+          "border-destructive bg-transparent active:bg-destructive/10 dark:active:bg-destructive/20 border",
+          Platform.select({
+            web: "hover:bg-destructive/10 dark:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          }),
+        ),
+        "destructive outline": cn(
+          "border-destructive bg-transparent active:bg-destructive/10 dark:active:bg-destructive/20 border",
+          Platform.select({
+            web: "hover:bg-destructive/10 dark:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          }),
+        ),
         outline: cn(
           "border-border bg-background active:bg-accent dark:bg-input/30 dark:border-input dark:active:bg-input/50 border shadow-sm shadow-black/5",
           Platform.select({
@@ -72,6 +90,18 @@ const buttonTextVariants = cva(
       variant: {
         default: "text-primary-foreground",
         destructive: "text-white",
+        "destructive-outline": cn(
+          "text-destructive group-active:text-destructive",
+          Platform.select({ web: "group-hover:text-destructive" }),
+        ),
+        destructiveOutline: cn(
+          "text-destructive group-active:text-destructive",
+          Platform.select({ web: "group-hover:text-destructive" }),
+        ),
+        "destructive outline": cn(
+          "text-destructive group-active:text-destructive",
+          Platform.select({ web: "group-hover:text-destructive" }),
+        ),
         outline: cn(
           "group-active:text-accent-foreground",
           Platform.select({ web: "group-hover:text-accent-foreground" }),
