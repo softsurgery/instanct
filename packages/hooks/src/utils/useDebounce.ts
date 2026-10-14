@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import React from "react";
 
 export function useDebounce<T>(value: T, delay = 500) {
-  const [debounced, setDebounced] = useState(value);
-  const [loading, setLoading] = useState(false);
+  const [debounced, setDebounced] = React.useState(value);
+  const [loading, setLoading] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setLoading(true);
     const timeout = window.setTimeout(() => {
       setDebounced(value);
