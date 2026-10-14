@@ -15,6 +15,7 @@ export async function seedConfigurationParams(
 
   if (!namespaceEntity) {
     namespaceEntity = await configurationNamespaceRepository.save({
+      id: namespace,
       name: namespace,
       description: `${namespace} configuration`,
     });
