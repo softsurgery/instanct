@@ -17,6 +17,8 @@ import { View } from "react-native";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
 import React from "react";
+import { ActionSheetRef } from "react-native-actions-sheet";
+import { DeleteEducationActionSheet } from "./DeleteEducationActionSheet";
 
 import { AppHeaderBack } from "@instanct/mobile-components";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
@@ -32,6 +34,7 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
   const userStore = useUserStore();
   const queryClient = useQueryClient();
   const isKeyboardVisible = useKeyboardVisible();
+  const deleteSheetRef = React.useRef<ActionSheetRef>(null);
 
   const { structure } = useUpdateEducationFormStructure({
     store: userStore,
@@ -56,6 +59,39 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
       );
     },
   });
+
+  const { mutate: deleteEducation, isPending: isDeletePending } = useMutation({
+    mutationFn: (id: number) => api.education.remove(id),
+    onSuccess: () => {
+      toast.success(tMenu("education.toasts.deleted"), {
+        description: tMenu("education.toasts.deletedDescription"),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["educations"],
+      });
+      deleteSheetRef.current?.hide();
+      router.back();
+    },
+    onError: (error: ServerErrorResponse) => {
+      toast.error(
+        error.response?.data?.message || tMenu("education.toasts.error"),
+        {},
+      );
+    },
+  });
+
+  const onDeleteEducationPress = () => {
+    deleteSheetRef.current?.show();
+  };
+
+  const onConfirmDeleteEducation = () => {
+    const educationId = useUserStore.getState().responseEducation?.id;
+    if (!educationId) {
+      toast.error(tMenu("education.toasts.noSelection"));
+      return;
+    }
+    deleteEducation(educationId);
+  };
 
   const handleUpdateSubmit = () => {
     const state = useUserStore.getState();
@@ -116,17 +152,35 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
-            disabled={isPending}
+            disabled={isPending || isDeletePending}
             onPress={handleUpdateSubmit}
           >
             <Text className="text-md font-bold">
               {tMenu("education.form.actions.update")}
             </Text>
           </Button>
+          <Button
+            size="sm"
+            variant="destructive-outline"
+            className="rounded-xl"
+            disabled={isPending || isDeletePending}
+            onPress={onDeleteEducationPress}
+          >
+            <Text className="text-md font-bold">
+              {tMenu("education.delete.title")}
+            </Text>
+          </Button>
         </BottomButtonWrapper>
       )}
+
+      <DeleteEducationActionSheet
+        ref={deleteSheetRef}
+        onConfirm={onConfirmDeleteEducation}
+        onClose={() => deleteSheetRef.current?.hide()}
+        isPending={isDeletePending}
+      />
     </StableSafeAreaView>
   );
 };

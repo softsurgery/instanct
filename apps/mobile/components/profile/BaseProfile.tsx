@@ -8,7 +8,9 @@ import { identifyUser } from "@/lib/user";
 import { cn } from "@instanct/lib";
 import { createClientStore, useUserStore } from "@/stores/useUserStore";
 import { ResponseEducationDto, ResponseExperienceDto, ResponseRefParamDto, ServerErrorResponse } from "@instanct/api-client";
-import { useFocusEffect, useNavigation } from "expo-router";
+import { router, useFocusEffect, useNavigation } from "expo-router";
+import { toUpdateExperienceDto } from "./experience/toUpdateExperienceDto";
+import { toUpdateEducationDto } from "./education/toUpdateEducationDto";
 import { View, Pressable, useWindowDimensions } from "react-native";
 import { ProfileStat } from "./ProfileStat";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
@@ -163,6 +165,27 @@ export const InspectBaseProfile = ({
     }, [onRefresh]),
   );
 
+  const handleEditExperience = React.useCallback(
+    (experience: ResponseExperienceDto) => {
+      userStore?.set("responseExperience", experience);
+      userStore?.set("updateExperienceDto", toUpdateExperienceDto(experience));
+      userStore?.set("present", experience.endDate == null);
+      userStore?.set("experienceErrors", {});
+      router.push("/main/profile/update-experience");
+    },
+    [userStore],
+  );
+
+  const handleEditEducation = React.useCallback(
+    (education: ResponseEducationDto) => {
+      userStore?.set("responseEducation", education);
+      userStore?.set("updateEducationDto", toUpdateEducationDto(education));
+      userStore?.set("educationErrors", {});
+      router.push("/main/profile/update-education");
+    },
+    [userStore],
+  );
+
   // ---------------------------------------------------------------
   //  PROFILE SECTIONS CONFIG
   // ---------------------------------------------------------------
@@ -174,7 +197,11 @@ export const InspectBaseProfile = ({
         data: experiences as unknown[],
         editable: currentUser?.id === user?.id,
         renderItem: (experience: ResponseExperienceDto) => (
-          <ExperienceInstance experience={experience} />
+          <ExperienceInstance
+            experience={experience}
+            editable={currentUser?.id === user?.id}
+            onEdit={() => handleEditExperience(experience)}
+          />
         ),
       },
       {
@@ -183,7 +210,11 @@ export const InspectBaseProfile = ({
         data: educations as unknown[],
         editable: currentUser?.id === user?.id,
         renderItem: (education: ResponseEducationDto) => (
-          <EducationInstance education={education} />
+          <EducationInstance
+            education={education}
+            editable={currentUser?.id === user?.id}
+            onEdit={() => handleEditEducation(education)}
+          />
         ),
       },
       {
@@ -207,6 +238,8 @@ export const InspectBaseProfile = ({
       userIndustries,
       currentUser?.id,
       user?.id,
+      handleEditExperience,
+      handleEditEducation,
       t,
     ],
   );

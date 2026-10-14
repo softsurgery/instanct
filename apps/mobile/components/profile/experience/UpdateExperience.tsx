@@ -17,6 +17,8 @@ import { View } from "react-native";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
 import React from "react";
+import { ActionSheetRef } from "react-native-actions-sheet";
+import { DeleteExperienceActionSheet } from "./DeleteExperienceActionSheet";
 
 import { AppHeaderBack } from "@instanct/mobile-components";
 import { BottomButtonWrapper } from "@instanct/mobile-components";
@@ -32,6 +34,7 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
   const userStore = useUserStore();
   const queryClient = useQueryClient();
   const isKeyboardVisible = useKeyboardVisible();
+  const deleteSheetRef = React.useRef<ActionSheetRef>(null);
 
   const { structure } = useUpdateExperienceFormStructure({
     store: userStore,
@@ -56,6 +59,39 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
       );
     },
   });
+
+  const { mutate: deleteExperience, isPending: isDeletePending } = useMutation({
+    mutationFn: (id: number) => api.experience.remove(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["experiences"],
+      });
+      toast.success(tMenu("experience.toasts.deleted"), {
+        description: tMenu("experience.toasts.deletedDescription"),
+      });
+      deleteSheetRef.current?.hide();
+      router.back();
+    },
+    onError: (error: ServerErrorResponse) => {
+      toast.error(
+        error.response?.data?.message || tMenu("experience.toasts.error"),
+        {},
+      );
+    },
+  });
+
+  const onDeleteExperiencePress = () => {
+    deleteSheetRef.current?.show();
+  };
+
+  const onConfirmDeleteExperience = () => {
+    const experienceId = useUserStore.getState().responseExperience?.id;
+    if (!experienceId) {
+      toast.error(tMenu("experience.toasts.noSelection"));
+      return;
+    }
+    deleteExperience(experienceId);
+  };
 
   const handleUpdateSubmit = () => {
     const state = useUserStore.getState();
@@ -120,17 +156,35 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
-            disabled={isPending}
+            disabled={isPending || isDeletePending}
             onPress={handleUpdateSubmit}
           >
             <Text className="text-md font-bold">
               {tMenu("experience.form.actions.update")}
             </Text>
           </Button>
+          <Button
+            size="sm"
+            variant="destructive-outline"
+            className="rounded-xl"
+            disabled={isPending || isDeletePending}
+            onPress={onDeleteExperiencePress}
+          >
+            <Text className="text-md font-bold">
+              {tMenu("experience.delete.title")}
+            </Text>
+          </Button>
         </BottomButtonWrapper>
       )}
+
+      <DeleteExperienceActionSheet
+        ref={deleteSheetRef}
+        onConfirm={onConfirmDeleteExperience}
+        onClose={() => deleteSheetRef.current?.hide()}
+        isPending={isDeletePending}
+      />
     </StableSafeAreaView>
   );
 };

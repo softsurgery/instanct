@@ -7,12 +7,14 @@ import { cn } from "@instanct/lib";
 import { ResponseExperienceDto } from "@instanct/api-client";
 import { format } from "date-fns";
 import { Briefcase, CalendarDays, Laptop, MapPin } from "lucide-react-native";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 interface ExperienceInstanceProps {
   className?: string;
   experience: ResponseExperienceDto;
+  editable?: boolean;
+  onEdit?: () => void;
 }
 
 const MetaChip = ({
@@ -35,6 +37,8 @@ const MetaChip = ({
 export const ExperienceInstance = ({
   className,
   experience,
+  editable,
+  onEdit,
 }: ExperienceInstanceProps) => {
   const { t } = useTranslation("menu");
   const { palette } = useColorPalette();
@@ -56,10 +60,12 @@ export const ExperienceInstance = ({
     .join(" · ");
 
   return (
-    <View
+    <Pressable
+      disabled={!editable || !onEdit}
+      onPress={onEdit}
       className={cn(
-        "flex-row gap-3",
-        experience.description ? "items-start" : "items-center",
+        "flex-row gap-3 items-start rounded-xl",
+        editable && "active:opacity-70",
         className,
       )}
     >
@@ -108,6 +114,6 @@ export const ExperienceInstance = ({
           </SeeMoreText>
         )}
       </View>
-    </View>
+    </Pressable>
   );
 };

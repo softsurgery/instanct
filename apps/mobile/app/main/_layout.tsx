@@ -195,13 +195,6 @@ export default function MainLayout() {
               }}
             />
             <Stack.Screen
-              name="profile/update-experiences"
-              options={{
-                title: "experience",
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
               name="profile/update-experience"
               options={{
                 title: "editExperience",
@@ -226,13 +219,6 @@ export default function MainLayout() {
               name="profile/update-education"
               options={{
                 title: "editEducation",
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="profile/update-educations"
-              options={{
-                title: "education",
                 headerShown: false,
               }}
             />

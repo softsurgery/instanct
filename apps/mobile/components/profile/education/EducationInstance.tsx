@@ -4,34 +4,28 @@ import { Text } from "@instanct/mobile-ui";
 import { cn } from "@instanct/lib";
 import { ResponseEducationDto } from "@instanct/api-client";
 import { GraduationCap } from "lucide-react-native";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 
 interface EducationInstanceProps {
   className?: string;
   education: ResponseEducationDto;
+  editable?: boolean;
+  onEdit?: () => void;
 }
 
 export const EducationInstance = ({
   className,
   education,
+  editable,
+  onEdit,
 }: EducationInstanceProps) => {
-  // const { t } = useTranslation("menu");
-  // const { palette } = useColorPalette();
-  // const primary = hslToHex(palette.primary);
-
-  // const range = education.startDate
-  //   ? `${format(new Date(education.startDate), "yyyy")} — ${
-  //       education.endDate
-  //         ? format(new Date(education.endDate), "yyyy")
-  //         : t("education.instance.present")
-  //     }`
-  //   : null;
-
   return (
-    <View
+    <Pressable
+      disabled={!editable || !onEdit}
+      onPress={onEdit}
       className={cn(
-        "flex-row gap-3",
-        education.description ? "items-start" : "items-center",
+        "flex-row gap-3 items-start rounded-xl",
+        editable && "active:opacity-70",
         className,
       )}
     >
@@ -50,17 +44,6 @@ export const EducationInstance = ({
           </Text>
         )}
 
-        {/* {range && (
-          <View className="mt-2 flex-row">
-            <View className="flex-row items-center gap-1 rounded-full bg-muted px-2.5 py-1">
-              <Icon as={CalendarDays} size={12} color={primary} />
-              <Text className="text-[11px] font-medium text-muted-foreground">
-                {range}
-              </Text>
-            </View>
-          </View>
-        )} */}
-
         {!!education.description && (
           <SeeMoreText
             className="mt-2.5"
@@ -71,6 +54,6 @@ export const EducationInstance = ({
           </SeeMoreText>
         )}
       </View>
-    </View>
+    </Pressable>
   );
 };
