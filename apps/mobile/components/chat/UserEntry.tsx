@@ -8,7 +8,7 @@ import { useServerImages } from "@/hooks/content/useServerImages";
 import { differenceInMilliseconds } from "date-fns";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { formatSmartDate } from "@/lib/date";
-import { useUserPresence } from "@/hooks/content/chat/useUserPresence";
+import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { useTranslation } from "react-i18next";
 
 interface UserCardProps {
@@ -34,7 +34,7 @@ export const UserEntry = ({
     [conversation.participants, currentUser?.id],
   );
 
-  const { isOnline } = useUserPresence({ userId: user?.id });
+  const { isConnected } = useUserPresence({ userId: user?.id });
 
   const lastMessage = conversation.lastMessage;
 
@@ -182,7 +182,7 @@ export const UserEntry = ({
         {/* Avatar */}
         <View className="relative">
           {profilePictures[0]}
-          {isOnline && (
+          {isConnected && (
             <View className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-card rounded-full" />
           )}
         </View>

@@ -24,7 +24,7 @@ import {
 } from "@/lib/chat";
 import { ScrollView } from "react-native-gesture-handler";
 import { ConversationDetailsRow } from "./ConversationDetailsRow";
-import { useUserPresence } from "@/hooks/content/chat/useUserPresence";
+import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { AppHeaderBack } from "@instanct/mobile-components";
 import { ConversationSearchOverlay } from "../conversation/search/ConversationSearchOverlay";
 import { useChatContext } from "@/contexts/ChatContext";
@@ -63,7 +63,7 @@ export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
   }, [conversation, currentUser]);
 
   const identification = identifyUser(user);
-  const { isOnline } = useUserPresence({ userId: user?.id });
+  const { isConnected } = useUserPresence({ userId: user?.id });
 
   const [isSearching, setIsSearching] = React.useState(false);
 
@@ -219,7 +219,7 @@ export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
         >
           <View className="relative">
             {profilePicture}
-            {isOnline && (
+            {isConnected && (
               <View className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-card rounded-full" />
             )}
           </View>

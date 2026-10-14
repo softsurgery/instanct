@@ -14,10 +14,13 @@ import {
   DataTableConfig,
 } from "@instanct/datatable-builder";
 import { identifyUserAvatar } from "@instanct/lib";
+import { UserConnectionStatus } from "@/hooks/content/user/useUserConnection";
 
 export const useUserColumns = (
   context: DataTableConfig<ResponseUserDto>,
   t: (key: string) => string,
+  isUserConnected?: (userId: string) => boolean,
+  statuses?: Record<string, UserConnectionStatus>,
 ): ColumnDef<ResponseUserDto>[] => {
   const { t: tCommon } = useTranslation("common");
 
@@ -157,6 +160,48 @@ export const useUserColumns = (
         </div>
       ),
       enableSorting: true,
+      enableHiding: true,
+    },
+    {
+      accessorKey: `${t("userManagement.columns.connected")}`,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("userManagement.columns.connected")}
+          attribute="connected"
+          context={context}
+        />
+      ),
+      cell: ({ row }) => {
+        const userId = row.original.id;
+        const isConnected = isUserConnected
+          ? isUserConnected(userId)
+          : !!statuses?.[userId]?.isConnected;
+
+        if (isConnected) {
+          return (
+            <div className="font-semibold text-emerald-600 dark:text-emerald-400">
+              {t("userManagement.columns.connected")}
+            </div>
+          );
+        }
+
+        const rawDate =
+          statuses?.[userId]?.lastSeen || (row.original as any)?.lastSeen;
+        const lastSeenDate = rawDate ? new Date(rawDate) : null;
+
+        return (
+          <DataTableCell
+            variant={DataTableCellVariant.DATE_TIME}
+            value={
+              lastSeenDate && !isNaN(lastSeenDate.getTime())
+                ? lastSeenDate
+                : undefined
+            }
+          />
+        );
+      },
+      enableSorting: false,
       enableHiding: true,
     },
     {

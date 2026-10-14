@@ -7,10 +7,11 @@ import {
 import { Server } from 'socket.io';
 import { getTokenPayloadForWebSocket } from 'nsa-auth/utils/token-payload';
 import { AdvancedSocket } from 'nsa-helpers/http';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Optional } from '@nestjs/common';
 import { NotificationService } from '../services/notification.service';
 import { NotificationEntity } from '../entities/notification.entity';
 import { NotificationType } from '../enums/notification-type.registry';
+import { UserPresenceService } from 'nsa-um/services/user-presence.service';
 
 @WebSocketGateway({
   namespace: '/notifications',
@@ -27,8 +28,16 @@ export class NotificationGateway
 
   private readonly userSockets = new Map<string, Set<string>>();
 
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(
+    private readonly notificationService: NotificationService,
+    @Optional()
+    private readonly userPresenceService?: UserPresenceService,
+  ) {}
 
+  /**
+   * Handles incoming notification WebSocket connection, verifies JWT token,
+   * extracts client source, and tracks user presence globally.
+   */
   handleConnection(client: AdvancedSocket) {
     const payload = getTokenPayloadForWebSocket(client);
     if (!payload) {
@@ -44,12 +53,33 @@ export class NotificationGateway
     }
     this.userSockets.get(userId)!.add(client.id);
 
+    const source =
+      (client.handshake?.auth?.source as string) ||
+      (client.handshake?.query?.source as string) ||
+      'web';
+
+    this.userPresenceService?.trackConnection(
+      userId,
+      client.id,
+      source,
+      'notifications',
+    );
+
     this.logger.log(`✅ User ${userId} connected (${client.id})`);
   }
 
+  /**
+   * Handles notification WebSocket disconnection and deregisters socket from presence service.
+   */
   handleDisconnect(client: AdvancedSocket) {
     const userId = client.data?.userId;
     if (!userId) return;
+
+    this.userPresenceService?.trackDisconnection(
+      userId,
+      client.id,
+      'notifications',
+    );
 
     const sockets = this.userSockets.get(userId);
     if (sockets) {
@@ -62,6 +92,9 @@ export class NotificationGateway
     this.logger.log(`❌ User ${userId} disconnected (${client.id})`);
   }
 
+  /**
+   * Persists a notification to the database and delivers it in real time to connected user sockets if online.
+   */
   async notifyUser(
     userId: string,
     type: NotificationType,
@@ -86,6 +119,9 @@ export class NotificationGateway
     return saved;
   }
 
+  /**
+   * Delivers a notification to multiple target users in batch.
+   */
   async notifyUsers(
     userIds: string[],
     type: NotificationType,

@@ -30,6 +30,7 @@ import { useRouter } from "next/router";
 import { DataTableConfig } from "@instanct/datatable-builder";
 import { useUploads } from "@/hooks/content/useUploads";
 import { useUpload } from "@/hooks/content/useUpload";
+import { useUserConnection } from "@/hooks/content/user/useUserConnection";
 
 interface UsersProps {
   className?: string;
@@ -414,7 +415,10 @@ export const Users = ({ className }: UsersProps) => {
     },
   };
 
-  const columns = useUserColumns(context, t);
+  const userIds = React.useMemo(() => users.map((u) => u.id), [users]);
+  const { isUserConnected, statuses } = useUserConnection(userIds);
+
+  const columns = useUserColumns(context, t, isUserConnected, statuses);
 
   const isPending =
     isUsersPending || paging || resizing || searching || sorting;
@@ -422,7 +426,7 @@ export const Users = ({ className }: UsersProps) => {
   return (
     <div className={cn("flex flex-col flex-1 overflow-hidden", className)}>
       <DataTable
-        className="flex flex-col flex-1 overflow-auto p-1"
+        className="flex flex-col flex-1 overflow-hidden p-1"
         containerClassName="overflow-auto"
         columns={columns}
         data={users}

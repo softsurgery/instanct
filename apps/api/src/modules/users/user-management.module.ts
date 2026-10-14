@@ -1,8 +1,5 @@
 import { Global, Module, forwardRef } from '@nestjs/common';
-import {
-  USER_REPOSITORY,
-  USER_SERVICE,
-} from 'nsa-um/tokens/user-access';
+import { USER_REPOSITORY, USER_SERVICE } from 'nsa-um/tokens/user-access';
 import { FollowService } from 'src/modules/users/services/follow.service';
 import { NotificationModule } from 'nsa-notifications/notifications.module';
 import { LoggerModule } from 'nsa-logger/logger.module';
@@ -44,12 +41,18 @@ import { UserBlockService } from './services/user-block.service';
 import { UserBlockEntity } from './entities/user-block.entity';
 import { MailModule } from 'nsa-mail/mail.module';
 import { CustomAuthService } from './services/custom-auth.service';
+import { UserPresenceService } from 'nsa-um/services/user-presence.service';
+import { UserPresenceGateway } from './gateways/user-presence.gateway';
+import { AdminPresenceGateway } from './gateways/admin-presence.gateway';
 
 @Global()
 @Module({
   controllers: [],
   providers: [
     CustomAuthService,
+    UserPresenceService,
+    UserPresenceGateway,
+    AdminPresenceGateway,
     //services
     UserService,
     UserUploadService,
@@ -85,6 +88,9 @@ import { CustomAuthService } from './services/custom-auth.service';
     { provide: USER_REPOSITORY, useExisting: UserRepository },
   ],
   exports: [
+    UserPresenceService,
+    UserPresenceGateway,
+    AdminPresenceGateway,
     //services
     CustomAuthService,
     UserService,

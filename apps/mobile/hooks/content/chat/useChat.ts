@@ -1,10 +1,17 @@
 import React from "react";
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
-import { MessageVariant, ResponseConversationDto, StaticMessageEnum } from "@instanct/api-client";
-import { Socket } from "socket.io-client";
+import {
+  MessageVariant,
+  ResponseConversationDto,
+  StaticMessageEnum,
+} from "@instanct/api-client";
+import { getSocket, type Socket } from "@instanct/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { getSocket } from "@/lib/socket";
 import {
   createAndroidChannel,
   requestNotificationPermissions,

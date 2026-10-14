@@ -10,7 +10,7 @@ interface ChatHeaderLeftProps {
   id: string;
   identifier?: string;
   profilePicture?: React.ReactNode;
-  isOnline?: boolean;
+  isConnected?: boolean;
   lastSeen?: string;
 }
 
@@ -22,7 +22,7 @@ export const ChatHeaderLeft = ({
   id,
   identifier,
   profilePicture,
-  isOnline,
+  isConnected,
   lastSeen,
 }: ChatHeaderLeftProps) => {
   return (
@@ -50,7 +50,7 @@ export const ChatHeaderLeft = ({
       >
         <View>
           {profilePicture}
-          {isOnline && (
+          {isConnected && (
             <View className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-card rounded-full" />
           )}
         </View>

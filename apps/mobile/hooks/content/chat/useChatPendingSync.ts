@@ -1,6 +1,6 @@
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getSocket } from "@/lib/socket";
+import { getSocket } from "@instanct/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { useCurrentUser } from "../users/useCurrentUser";
 import { useChatPendingStore } from "@/stores/useChatPendingStore";

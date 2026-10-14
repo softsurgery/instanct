@@ -30,6 +30,8 @@ overrides:
   # Optional peer on web packages otherwise auto-resolves to latest stable RN (0.87.x).
   "react-i18next>react-native": "0.88.0-rc.4"
   "next-i18next>react-native": "0.88.0-rc.4"
+  "socket.io": "4.8.1"
+  "socket.io-client": "4.8.1"
 
 peerDependencyRules:
   allowedVersions:

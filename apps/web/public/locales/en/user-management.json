@@ -13,7 +13,9 @@
       "createUser": "Create User",
       "deleteUser": "Delete User",
       "notify": "Notify",
-      "userDetails": "User Details"
+      "userDetails": "User Details",
+      "connected": "Connected",
+      "disconnected": "Disconnected"
     },
     "columns": {
       "id": "ID",
@@ -22,6 +24,7 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "dateOfBirth": "Date of Birth",
+      "connected": "Connected",
       "isActive": "Active",
       "isApproved": "Approved",
       "email": "Email",
@@ -29,7 +32,8 @@
       "role": "Role",
       "roleId": "Role ID",
       "createdAt": "Created At",
-      "updatedAt": "Updated At"
+      "updatedAt": "Updated At",
+      "lastSeen": "Last seen"
     },
     "forms": {
       "step1Title": "General Information",

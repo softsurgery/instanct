@@ -1,7 +1,6 @@
 import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { type Socket } from "socket.io-client";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { MessageVariant, ResponseConversationDto, ResponseMessageDto, StaticMessageEnum } from "@instanct/api-client";
 import { MessageFlatListItem } from "@/types";
@@ -12,7 +11,7 @@ import {
   isToday,
   isYesterday,
 } from "date-fns";
-import { getSocket } from "@/lib/socket";
+import { getSocket, type Socket } from "@instanct/lib";
 import {
   CONVERSATION_ACCESS_DENIED_ERROR,
   CONVERSATION_LIST_JOIN,

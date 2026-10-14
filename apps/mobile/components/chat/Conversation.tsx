@@ -33,7 +33,7 @@ import { useConversationFeatures } from "@/hooks/content/chat/useConversationFea
 import { useLastSeenMessageId } from "@/hooks/content/chat/useLastSeenMessageId";
 import { useSendChatMedia } from "@/hooks/content/chat/useSendChatMedia";
 import { useSendChatFile } from "@/hooks/content/chat/useSendChatFile";
-import { useUserPresence } from "@/hooks/content/chat/useUserPresence";
+import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { ImageBackground } from "expo-image";
 import { ChatStaticBubble } from "./conversation/bubbles/ChatStaticBubble";
 import { ConversationMessagesSkeleton } from "./conversation/ConversationMessagesSkeleton";
@@ -284,13 +284,13 @@ export const Conversation = ({
     size: { width: 40, height: 40 },
   });
 
-  const { isOnline, lastSeen } = useUserPresence({ userId: headerUserId });
+  const { isConnected, lastSeen } = useUserPresence({ userId: headerUserId });
 
   const presenceText = React.useMemo(() => {
-    if (isOnline) return t("chat.conversation.presence.online");
+    if (isConnected) return t("chat.conversation.presence.online");
     if (lastSeen) return formatLastSeen(lastSeen, t);
     return "";
-  }, [isOnline, lastSeen, t]);
+  }, [isConnected, lastSeen, t]);
 
   const listData = React.useMemo(() => {
     const pendingTextItems = pendingTextMessages.map(
@@ -372,7 +372,7 @@ export const Conversation = ({
           profilePicture={profilePictures[0]}
           identifier={headerIdentifier}
           lastSeen={presenceText}
-          isOnline={isOnline}
+          isConnected={isConnected}
         />
         <ChatHeaderRight
           conversationId={id}

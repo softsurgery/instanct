@@ -4,12 +4,11 @@ import {
   requestNotificationPermissions,
   Notifications,
 } from "@/lib/notification";
-import { disconnectSocket, getSocket } from "@/lib/socket";
+import { disconnectSocket, getSocket, type Socket } from "@instanct/lib";
 import { sanitizeText } from "@/lib/string";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Socket } from "socket.io-client";
 import { useApi } from "@/contexts/ApiContext";
 import { NotificationType, ResponseNotificationDto } from "@instanct/api-client";
 

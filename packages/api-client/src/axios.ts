@@ -4,7 +4,7 @@ import _axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 import { delay } from "@instanct/lib";
-import { useAuthPersistStore } from "@instanct/hooks";
+import { useAuthPersistStore } from "@instanct/hooks/stores";
 
 export interface AxiosAuthAdapter {
   getAccessToken: () => string | undefined;

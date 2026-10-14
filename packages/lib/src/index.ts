@@ -19,3 +19,19 @@ export {
 } from "./legal/legal-html";
 
 export { cn } from "./cn";
+
+export {
+  getSocket,
+  disconnectSocket,
+  disconnectAllSockets,
+  getSocketBaseUrl,
+  setSocketBaseUrl,
+  getDefaultSocketSource,
+} from "./socket";
+export type {
+  Socket,
+  SocketConfig,
+  SocketNamespace,
+  ManagerOptions,
+  SocketOptions,
+} from "./socket";
