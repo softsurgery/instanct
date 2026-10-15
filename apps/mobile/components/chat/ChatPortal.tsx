@@ -6,20 +6,20 @@ import { router, useFocusEffect } from "expo-router";
 import { Search } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, RefreshControl, View } from "react-native";
-import { cn } from "@instanct/lib";
-import { ResponseConversationDto } from "@instanct/api-client";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
+import { cn } from "@softsurgery/lib";
+import { ResponseConversationDto } from "@softsurgery/api-client";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { UserEntry } from "./UserEntry";
-import { MarkedInput } from "@instanct/mobile-components";
-import { Separator } from "@instanct/mobile-ui";
-import { NotFound } from "@instanct/mobile-components";
+import { MarkedInput } from "@softsurgery/mobile-components";
+import { Separator } from "@softsurgery/mobile-ui";
+import { NotFound } from "@softsurgery/mobile-components";
 import { useChat } from "@/hooks/content/chat/useChat";
 import { CONVERSATION_LIST_JOIN } from "@/lib/chat";
 import { UserEntrySkeleton } from "./UserEntrySkeleton";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface ChatPortalProps {
   className?: string;
 }

@@ -1,5 +1,5 @@
 import { useApi } from "@/contexts/ApiContext";
-import { SessionType } from "@instanct/api-client";
+import { SessionType } from "@softsurgery/api-client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 

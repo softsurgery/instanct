@@ -1,21 +1,21 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@instanct/ui";
-import { Input } from "@instanct/ui";
-import { Label } from "@instanct/ui";
+} from "@softsurgery/ui";
+import { Input } from "@softsurgery/ui";
+import { Label } from "@softsurgery/ui";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ServerErrorResponse } from "@/types";
 import { signIn } from "next-auth/react";
-import { PasswordField } from "@instanct/form-builder";
+import { PasswordField } from "@softsurgery/form-builder";
 import Image from "next/image";
 
 export const Authentication = () => {

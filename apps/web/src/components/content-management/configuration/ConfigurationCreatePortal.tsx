@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { api } from "@/lib/api";
-import { useBreadcrumb, useFooter, useIntro, useUI } from "@instanct/contexts";
-import { Button, Input, Label, Textarea, cn } from "@instanct/ui";
+import { useBreadcrumb, useFooter, useIntro, useUI } from "@softsurgery/contexts";
+import { Button, Input, Label, Textarea, cn } from "@softsurgery/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save } from "lucide-react";
 import { useTranslation } from "react-i18next";

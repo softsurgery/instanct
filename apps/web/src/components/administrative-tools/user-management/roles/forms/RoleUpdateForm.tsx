@@ -2,8 +2,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { useRoleStore } from "@/hooks/stores/useRoleStore";
 import { useUpdateRoleFormStructure } from "./useUpdateRoleFormStructure";
-import { FormBuilder } from "@instanct/form-builder";
-import { Button } from "@instanct/ui";
+import { FormBuilder } from "@softsurgery/form-builder";
+import { Button } from "@softsurgery/ui";
 import { Save } from "lucide-react";
 import { usePermissions } from "@/hooks/content/usePermissions";
 

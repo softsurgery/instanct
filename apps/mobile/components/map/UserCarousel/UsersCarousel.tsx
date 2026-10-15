@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { NearbyUser } from "@/types";
 import React from "react";
 import { ScrollView } from "react-native";

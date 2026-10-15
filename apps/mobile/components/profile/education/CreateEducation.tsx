@@ -1,16 +1,16 @@
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useCreateEducationFormStructure } from "./useCreateEducationFormStructure";
-import { CreateEducationDto, ServerErrorResponse } from "@instanct/api-client";
+import { CreateEducationDto, ServerErrorResponse } from "@softsurgery/api-client";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { createEducationSchema } from "@/types/validations/education.validation";
@@ -19,8 +19,8 @@ import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
 import React from "react";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 interface CreateEducationProps {
   className?: string;
 }

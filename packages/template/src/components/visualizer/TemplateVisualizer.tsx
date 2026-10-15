@@ -7,8 +7,8 @@ import {
   TabsList,
   TabsTrigger,
   Badge,
-} from "@instanct/ui";
-import { cn, formatFileSize } from "@instanct/lib";
+} from "@softsurgery/ui";
+import { cn, formatFileSize } from "@softsurgery/lib";
 import {
   Code2,
   Copy,

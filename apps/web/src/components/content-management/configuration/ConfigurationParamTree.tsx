@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponseConfigurationParamDto } from "@/types";
-import { Badge, cn } from "@instanct/ui";
+import { Badge, cn } from "@softsurgery/ui";
 import {
   Folder,
   FolderOpen,

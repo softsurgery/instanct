@@ -7,8 +7,8 @@ import {
   PictureFieldProps,
   SelectOption,
   TextFieldProps,
-} from "@instanct/mobile-form-builder";
-import { cn } from "@instanct/lib";
+} from "@softsurgery/mobile-form-builder";
+import { cn } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
 
 interface useSignUpFormStructureProps {

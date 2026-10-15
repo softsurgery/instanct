@@ -1,17 +1,17 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useUserStore } from "@/stores/useUserStore";
 import { router } from "expo-router";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { useUpdateProfileFormStructure } from "./useUpdateProfileFormStructure";
-import { ServerErrorResponse, UpdateUserDto, Upload } from "@instanct/api-client";
+import { ServerErrorResponse, UpdateUserDto, Upload } from "@softsurgery/api-client";
 import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserSchema } from "@/types/validations/user.validation";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import React from "react";
 import { useServerImages } from "@/hooks/content/useServerImages";
@@ -19,9 +19,9 @@ import { identifyUserAvatar } from "@/lib/user";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 
 interface UpdateProfileProps {
   className?: string;

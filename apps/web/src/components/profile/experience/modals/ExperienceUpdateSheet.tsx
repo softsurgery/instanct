@@ -1,5 +1,5 @@
 import { Briefcase } from "lucide-react";
-import { useSheet } from "@instanct/components";
+import { useSheet } from "@softsurgery/components";
 import { ExperienceUpdateForm } from "../forms/ExperienceUpdateFrom";
 import { useTranslation } from "react-i18next";
 

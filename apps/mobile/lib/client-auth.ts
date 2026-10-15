@@ -1,5 +1,5 @@
 import * as AuthSession from "expo-auth-session";
-import type { ClientAuthResource, RequestClientOAuthDto, RequestClientSignInDto, RequestClientUpdateMailDto, RequestClientVerifyEmailDto } from "@instanct/api-client";
+import type { ClientAuthResource, RequestClientOAuthDto, RequestClientSignInDto, RequestClientUpdateMailDto, RequestClientVerifyEmailDto } from "@softsurgery/api-client";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { getClientDeviceInfo } from "@/lib/device-info";
 import { getDeviceId } from "@/lib/device-id";

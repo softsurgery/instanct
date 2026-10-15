@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { ResponseRoleDto } from '../role/response-role.dto';
-import { OAuthProvider } from 'nsa-auth/enums/oauth.enum';
+import { OAuthProvider } from '@softsurgery/nsa-auth/enums/oauth.enum';
 
 export class ResponseAbstractUserDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })

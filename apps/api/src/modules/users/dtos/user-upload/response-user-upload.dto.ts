@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { Expose, Type } from 'class-transformer';
-import { ResponseStorageDto } from 'nsa-storage/dtos/response-storage.dto';
+import { ResponseStorageDto } from '@softsurgery/nsa-storage/dtos/response-storage.dto';
 import { ResponseUserDto } from '../user/response-user.dto';
 
 export class ResponseUserUploadDto extends ResponseDtoHelper {

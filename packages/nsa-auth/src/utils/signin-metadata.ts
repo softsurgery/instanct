@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
 export interface SigninMetadata {
   device: string;

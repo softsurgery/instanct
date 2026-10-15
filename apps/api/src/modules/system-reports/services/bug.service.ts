@@ -1,10 +1,10 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { PageMetaDto } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
 import { BugRepository } from '../repositories/bug.repository';
 import { DeviceInfoService } from './device-info.service';
 import { BugNotFoundException } from '../errors/bug/bug.notfound.error';

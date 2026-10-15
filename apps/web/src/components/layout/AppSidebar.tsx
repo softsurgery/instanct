@@ -30,7 +30,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { NavMain } from "./NavMain";
 import Link from "next/link";
 import { version } from "../../../package.json";

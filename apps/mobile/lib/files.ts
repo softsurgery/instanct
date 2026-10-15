@@ -2,7 +2,7 @@ import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { cacheDirectory, downloadAsync } from "expo-file-system/legacy";
 import * as Sharing from "expo-sharing";
 import { Alert, Linking, Platform } from "react-native";
-import { ResponseMessageUploadFileDto, Upload } from "@instanct/api-client";
+import { ResponseMessageUploadFileDto, Upload } from "@softsurgery/api-client";
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
 

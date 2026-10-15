@@ -3,8 +3,8 @@ import _axios, {
   type AxiosInstance,
   type InternalAxiosRequestConfig,
 } from "axios";
-import { delay } from "@instanct/lib";
-import { useAuthPersistStore } from "@instanct/hooks/stores";
+import { delay } from "@softsurgery/lib";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 
 export interface AxiosAuthAdapter {
   getAccessToken: () => string | undefined;

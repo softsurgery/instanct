@@ -1,4 +1,4 @@
-import { createApiClient, type AxiosAuthAdapter } from "@instanct/api-client";
+import { createApiClient, type AxiosAuthAdapter } from "@softsurgery/api-client";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { bindMobileClientAuth } from "@/lib/client-auth";
 import { performLogout } from "@/lib/logout";

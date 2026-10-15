@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
-import { TreeSelectBox } from "@instanct/form-builder";
+import { TreeSelectBox } from "@softsurgery/form-builder";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { api } from "@/lib/api";
 import { toast } from "sonner";

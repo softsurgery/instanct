@@ -1,5 +1,5 @@
 import React from "react";
-import { IdentifiableUser, identifyUser, identifyUserAvatar } from "@instanct/lib";
+import { IdentifiableUser, identifyUser, identifyUserAvatar } from "@softsurgery/lib";
 import DataTableCell from "./data-table-cell";
 import { DataTableCellVariant } from "../types";
 

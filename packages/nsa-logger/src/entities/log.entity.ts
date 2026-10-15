@@ -5,9 +5,9 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import { EventType } from '../enums/event-type.registry';
-import type { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
+import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
 
 @Entity('log')
 export class LogEntity extends EntityHelper {

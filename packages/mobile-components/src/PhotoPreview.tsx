@@ -16,7 +16,7 @@ import {
   ViewInstance,
 } from "react-native";
 import { Image, ImageSource } from "expo-image";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { X } from "lucide-react-native";
 import {

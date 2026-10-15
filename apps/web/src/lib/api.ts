@@ -1,4 +1,4 @@
-import { createApiClient } from "@instanct/api-client";
+import { createApiClient } from "@softsurgery/api-client";
 import { signOut } from "next-auth/react";
 
 const baseURL =

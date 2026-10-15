@@ -2,7 +2,7 @@
 
 Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data. A separate `data-flow` app dumps MySQL and uploads the file to Google Drive.
 
-Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@instanct/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
+Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
 
 | App | Package | What it is | README |
 | --- | --- | --- | --- |
@@ -26,7 +26,7 @@ Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (pe
 │           └── seeders/
 ├── packages/
 │   ├── nsa-*/        # Nest shared abstractions (database, auth, storage, …)
-│   └── @instanct/*   # UI, HTTP, form, and table abstractions
+│   └── @softsurgery/*   # UI, HTTP, form, and table abstractions
 ├── infra/nginx/      # reverse proxy in front of the apps
 ├── scripts/
 ├── package.json
@@ -175,7 +175,7 @@ List endpoints accept one query shape (`page`, `limit`, `sort`, `filter`, `selec
 | `$or` | disjunction |
 | `!` | negation |
 
-`join` becomes relations (`relation.nested`), `sort` becomes `order`, and `search` scans string columns on the entity metadata. The web data table and the mobile list hooks send this same language. A column filter in `@instanct/datatable-builder` is already a `filter` fragment the API can compile.
+`join` becomes relations (`relation.nested`), `sort` becomes `order`, and `search` scans string columns on the entity metadata. The web data table and the mobile list hooks send this same language. A column filter in `@softsurgery/datatable-builder` is already a `filter` fragment the API can compile.
 
 ### Versioned rows
 
@@ -220,32 +220,32 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 
 ### Templates and content pages
 
-`ContentPageEntity` in `nsa-content` (via `ContentPageService extends AbstractCrudService`) stores HTML by slug and locale: `terms`, `privacy`, `about`, `faqs`, and `support`. Landing loads `terms`, `privacy`, and `support`. Mobile settings load the same slugs, including `about` and `faqs`. Email and document layouts live in `nsa-templates` (`TemplateEntity`, `TemplateStyleEntity`) and are seeded with `seed:templates`. The backoffice edits them through `@softsurgery/template`.
+`ContentPageEntity` in `@softsurgery/nsa-content` (via `ContentPageService extends AbstractCrudService`) stores HTML by slug and locale: `terms`, `privacy`, `about`, `faqs`, and `support`. Landing loads `terms`, `privacy`, and `support`. Mobile settings load the same slugs, including `about` and `faqs`. Email and document layouts live in `@softsurgery/nsa-templates` (`TemplateEntity`, `TemplateStyleEntity`) and are seeded with `seed:templates`. The backoffice edits them through `@softsurgery/template`.
 
 ## Frontend abstractions
 
-`packages/` is the shared layer. Nest code imports `nsa-*`. Web and landing import the React packages. Mobile imports the React Native twins plus `@instanct/hooks` and `@instanct/lib`. Feature code in an app should call these packages instead of reimplementing a table, a form, or an Axios instance.
+`packages/` is the shared layer. Nest code imports `@softsurgery/nsa-*`. Web and landing import the React packages. Mobile imports the React Native twins plus `@softsurgery/hooks` and `@softsurgery/lib`. Feature code in an app should call these packages instead of reimplementing a table, a form, or an Axios instance.
 
 | Package | What it abstracts |
 | --- | --- |
-| `nsa-database` | Repository, CRUD service, query builder, migrations, triggers |
-| `nsa-um` | User table hierarchy, roles, permissions |
-| `nsa-auth` | JWT guard, sign-in, devices |
-| `nsa-storage` | Local and S3 file storage |
-| `nsa-chat`, `nsa-sessions`, `nsa-notifications` | Conversations, sessions, live alerts |
-| `nsa-content`, `nsa-templates`, `nsa-configurations`, `nsa-reference-types` | CMS pages, layouts, settings, lookup trees |
-| `nsa-workflows`, `nsa-mail`, `nsa-logger`, `nsa-sentry`, `nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers |
-| `@instanct/api-client` | Axios instance and one resource object per API area |
-| `@instanct/form-builder` | Declarative web forms |
-| `@instanct/mobile-form-builder` | The same form model for React Native |
-| `@instanct/datatable-builder` | Server-driven admin tables |
-| `@instanct/ui` / `@instanct/components` | Web primitives (Radix, editor, toasts) and composites |
-| `@instanct/mobile-ui` / `@instanct/mobile-components` | Native primitives and composites |
+| `@softsurgery/nsa-database` | Repository, CRUD service, query builder, migrations, triggers |
+| `@softsurgery/nsa-um` | User table hierarchy, roles, permissions |
+| `@softsurgery/nsa-auth` | JWT guard, sign-in, devices |
+| `@softsurgery/nsa-storage` | Local and S3 file storage |
+| `@softsurgery/nsa-chat`, `@softsurgery/nsa-sessions`, `@softsurgery/nsa-notifications` | Conversations, sessions, live alerts |
+| `@softsurgery/nsa-content`, `@softsurgery/nsa-templates`, `@softsurgery/nsa-configurations`, `@softsurgery/nsa-reference-types` | CMS pages, layouts, settings, lookup trees |
+| `@softsurgery/nsa-workflows`, `@softsurgery/nsa-mail`, `@softsurgery/nsa-logger`, `@softsurgery/nsa-sentry`, `@softsurgery/nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers |
+| `@softsurgery/api-client` | Axios instance and one resource object per API area |
+| `@softsurgery/form-builder` | Declarative web forms |
+| `@softsurgery/mobile-form-builder` | The same form model for React Native |
+| `@softsurgery/datatable-builder` | Server-driven admin tables |
+| `@softsurgery/ui` / `@softsurgery/components` | Web primitives (Radix, editor, toasts) and composites |
+| `@softsurgery/mobile-ui` / `@softsurgery/mobile-components` | Native primitives and composites |
 | `@softsurgery/template` | Template list, editor, and preview for the backoffice |
-| `@instanct/hooks` | Persisted auth and preference stores, shared hooks |
-| `@instanct/contexts` | Breadcrumb, intro, footer, theme, and `AppProvider` |
-| `@instanct/lib` | `cn`, nested stores, legal HTML cleanup |
-| `@instanct/i18n` | Shared `en` / `fr` config. Landing copies live here |
+| `@softsurgery/hooks` | Persisted auth and preference stores, shared hooks |
+| `@softsurgery/contexts` | Breadcrumb, intro, footer, theme, and `AppProvider` |
+| `@softsurgery/lib` | `cn`, nested stores, legal HTML cleanup |
+| `@softsurgery/i18n` | Shared `en` / `fr` config. Landing copies live here |
 | `@repo/eslint-config`, `@repo/typescript-config` | Tooling |
 
 ### API client
@@ -267,24 +267,24 @@ FormStructure
               └── fields[]   { id, variant, label, error, props }
 ```
 
-`FieldVariant` selects the control (`text`, `select`, `combo_box`, `editor`, `avatar`, `image_gallery`, `custom`, and others). `FormBuilder` walks that tree and renders headers, optional accordion fieldsets, and `FieldBuilder` for each field. The screen owns validation and submit. The structure only describes layout and bindings: `props.value` and `props.onChange` point at a Zustand store (`setNested` from `@instanct/lib`).
+`FieldVariant` selects the control (`text`, `select`, `combo_box`, `editor`, `avatar`, `image_gallery`, `custom`, and others). `FormBuilder` walks that tree and renders headers, optional accordion fieldsets, and `FieldBuilder` for each field. The screen owns validation and submit. The structure only describes layout and bindings: `props.value` and `props.onChange` point at a Zustand store (`setNested` from `@softsurgery/lib`).
 
-Web hooks live next to the feature, for example `useCreateEducationFormStructure`. Mobile uses `@instanct/mobile-form-builder` with the same tree and native controls (map pin, picture upload, date and time). Zod schemas in each app validate the DTO before the resource function runs.
+Web hooks live next to the feature, for example `useCreateEducationFormStructure`. Mobile uses `@softsurgery/mobile-form-builder` with the same tree and native controls (map pin, picture upload, date and time). Zod schemas in each app validate the DTO before the resource function runs.
 
 ### Data table
 
-Admin lists pass a `DataTableConfig` into `@instanct/datatable-builder`: page, page size, sort, search, column filters, and row callbacks (`create`, `inspect`, `update`, `delete`). Column meta declares how a column filters (`string`, `select`, `date-range`) and how it exports. `useDataTableState(tableId)` persists page, sort, search, and filters in local storage and produces the query string `QueryBuilder` understands.
+Admin lists pass a `DataTableConfig` into `@softsurgery/datatable-builder`: page, page size, sort, search, column filters, and row callbacks (`create`, `inspect`, `update`, `delete`). Column meta declares how a column filters (`string`, `select`, `date-range`) and how it exports. `useDataTableState(tableId)` persists page, sort, search, and filters in local storage and produces the query string `QueryBuilder` understands.
 
 A backoffice screen follows one shape, visible in `Users` and the `*Portal` components:
 
 1. A page under `apps/web/src/pages` renders a portal or feature component.
-2. The component sets breadcrumb and intro through `@instanct/contexts`.
+2. The component sets breadcrumb and intro through `@softsurgery/contexts`.
 3. `useQuery` calls `api.admin.*` with the table's query string.
 4. `DataTable` renders the rows. Sheets and dialogs own create, update, and delete, each backed by a form structure or a confirm action.
 
 ### App shell context
 
-`AppProvider` (`@instanct/contexts`) receives `{ appType, api }`. The backoffice sets `appType: "admin"` so shared components know which resource tree to call. `ThemeProvider` is the same context on web and landing (`class` on `<html>`, default `light`). Mobile reads the theme from `usePreferencePersistStore` in `@instanct/hooks` and applies it with NativeWind.
+`AppProvider` (`@softsurgery/contexts`) receives `{ appType, api }`. The backoffice sets `appType: "admin"` so shared components know which resource tree to call. `ThemeProvider` is the same context on web and landing (`class` on `<html>`, default `light`). Mobile reads the theme from `usePreferencePersistStore` in `@softsurgery/hooks` and applies it with NativeWind.
 
 ## Further reading
 

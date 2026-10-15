@@ -11,10 +11,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { ResponseConfigurationNamespaceDto } from '../dtos/namespace/response-configuration-namespace.dto';
-import { toDto, toDtoArray } from 'nsa-database';
-import { IQueryObject } from 'nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 import { ConfigurationNamespaceService } from '../services/configuration-namespace.service';
 import { ConfigurationParamService } from '../services/configuration-param.service';
 import { UpdateConfigurationParamaterDto } from '../dtos/paramater/update-configuration-paramater.dto';

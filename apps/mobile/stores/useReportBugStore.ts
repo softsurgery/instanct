@@ -1,7 +1,7 @@
 import { setDeepValue } from "@/lib/object";
 import { generateDeviceInfo } from "@/types/utils/device-info";
 import { create } from "zustand";
-import { CreateBugDto } from "@instanct/api-client";
+import { CreateBugDto } from "@softsurgery/api-client";
 
 interface ReportBugData {
   createDto: CreateBugDto;

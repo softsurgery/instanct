@@ -4,10 +4,10 @@ import {
   DataTableColumnHeader,
   DataTableRowActions,
   DataTableConfig,
-} from "@instanct/datatable-builder";
+} from "@softsurgery/datatable-builder";
 import { ResponseConfigurationParamDto } from "@/types";
 import { useTranslation } from "react-i18next";
-import { Badge } from "@instanct/ui";
+import { Badge } from "@softsurgery/ui";
 import { parseArrayValue, formatArrayItem } from "./formatConfigParam";
 import _ from "lodash";
 

@@ -1,5 +1,5 @@
 {
-  "name": "nsa-database",
+  "name": "@softsurgery/nsa-database",
   "description": "nest shared abstractions",
   "version": "0.1.0",
   "private": true,

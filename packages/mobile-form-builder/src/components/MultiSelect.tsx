@@ -1,6 +1,6 @@
-import { Icon } from "@instanct/mobile-ui";
-import { Input } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Input } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
 import { Check, ChevronDown, Search, VectorSquare } from "lucide-react-native";
 import React from "react";
@@ -12,11 +12,11 @@ import {
   View,
 } from "react-native";
 import type { SelectOption } from "../types";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { toast } from "sonner-native";
-import { useColorPalette } from "@instanct/mobile-components";
-import { Button } from "@instanct/mobile-ui";
+import { useColorPalette } from "@softsurgery/mobile-components";
+import { Button } from "@softsurgery/mobile-ui";
 
 interface MultiSelectProps {
   classNames?: {

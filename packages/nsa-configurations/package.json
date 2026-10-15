@@ -1,5 +1,5 @@
 {
-  "name": "nsa-configurations",
+  "name": "@softsurgery/nsa-configurations",
   "version": "0.1.0",
   "private": true,
   "files": [
@@ -48,10 +48,10 @@
     "@nestjs/swagger": "^11.2.1",
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
-    "nsa-um": "workspace:*",
-    "nsa-auth": "workspace:*",
-    "nsa-database": "workspace:*",
-    "nsa-logger": "workspace:*",
+    "@softsurgery/nsa-um": "workspace:*",
+    "@softsurgery/nsa-auth": "workspace:*",
+    "@softsurgery/nsa-database": "workspace:*",
+    "@softsurgery/nsa-logger": "workspace:*",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

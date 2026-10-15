@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { SessionEntity } from '../entities/session.entity';
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { SessionRepository } from '../repositories/session.repository';
-import { QueryBuilder } from 'nsa-database';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
 import {
   FindManyOptions,
   IsNull,
   LessThanOrEqual,
   MoreThanOrEqual,
 } from 'typeorm';
-import { PageMetaDto } from 'nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
 import {
   USER_SERVICE,
   AppUserService,
-} from 'nsa-um/tokens/user-access';
-import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
+} from '@softsurgery/nsa-um/tokens/user-access';
+import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
 import { getNowInTimezone, mergeTodayWithTime } from '../utils/date';
 
 @Injectable()

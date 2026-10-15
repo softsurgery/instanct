@@ -1,5 +1,5 @@
 import React from "react";
-import { getSocket } from "@instanct/lib";
+import { getSocket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 
 export interface UserPresenceData {

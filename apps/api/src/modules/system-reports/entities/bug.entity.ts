@@ -1,5 +1,5 @@
 import { BugStatus } from '../enums/bug-status.enum';
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import {
   Column,
   Entity,

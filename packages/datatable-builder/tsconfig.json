@@ -12,14 +12,14 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@instanct/lib": ["../lib/src/index.ts"],
-      "@instanct/lib/*": ["../lib/src/*"],
-      "@instanct/ui": ["../ui/src/index.ts"],
-      "@instanct/ui/*": ["../ui/src/*"],
-      "@instanct/hooks": ["../hooks/src/index.ts"],
-      "@instanct/hooks/*": ["../hooks/src/*"],
-      "@instanct/contexts": ["../contexts/src/index.ts"],
-      "@instanct/components": ["../components/src/index.ts"]
+      "@softsurgery/lib": ["../lib/src/index.ts"],
+      "@softsurgery/lib/*": ["../lib/src/*"],
+      "@softsurgery/ui": ["../ui/src/index.ts"],
+      "@softsurgery/ui/*": ["../ui/src/*"],
+      "@softsurgery/hooks": ["../hooks/src/index.ts"],
+      "@softsurgery/hooks/*": ["../hooks/src/*"],
+      "@softsurgery/contexts": ["../contexts/src/index.ts"],
+      "@softsurgery/components": ["../components/src/index.ts"]
     }
   },
   "include": ["src/**/*"],

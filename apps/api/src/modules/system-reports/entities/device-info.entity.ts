@@ -1,4 +1,4 @@
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BugEntity } from './bug.entity';
 import { FeedbackEntity } from './feedback.entity';

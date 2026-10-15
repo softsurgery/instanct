@@ -1,6 +1,6 @@
 "use client";
 
-import { useMediaQuery } from "@instanct/ui";
+import { useMediaQuery } from "@softsurgery/ui";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import {
@@ -9,15 +9,15 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@instanct/ui/components/dialog";
-import { cn } from "@instanct/lib";
+} from "@softsurgery/ui/components/dialog";
+import { cn } from "@softsurgery/lib";
 import {
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from "@instanct/ui/components/drawer";
+} from "@softsurgery/ui/components/drawer";
 
 interface UseDialogOptions {
   children: React.ReactNode;

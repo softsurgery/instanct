@@ -10,13 +10,13 @@ import {
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { GeolocationService } from '../services/geolocation.service';
-import { AdvancedSocket } from 'nsa-helpers/http';
-import { getTokenPayloadForWebSocket } from 'nsa-auth/utils/token-payload';
-import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
+import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
+import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
+import { ConfigurationNamespaceService } from '@softsurgery/nsa-configurations/services/configuration-namespace.service';
 import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.enum';
 import { MapConfigurationParam } from 'src/app/configurations/map-configuration.enum';
-import { IQueryObject } from 'nsa-database';
-import { SessionService } from 'nsa-sessions/services/session.service';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { SessionService } from '@softsurgery/nsa-sessions/services/session.service';
 
 @WebSocketGateway({
   namespace: '/geolocation',

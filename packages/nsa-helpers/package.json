@@ -1,5 +1,5 @@
 {
-  "name": "nsa-helpers",
+  "name": "@softsurgery/nsa-helpers",
   "version": "0.1.0",
   "private": true,
   "files": [
@@ -44,7 +44,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "express": "^5.0.0",
-    "nsa-notifications": "workspace:*",
+    "@softsurgery/nsa-notifications": "workspace:*",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {

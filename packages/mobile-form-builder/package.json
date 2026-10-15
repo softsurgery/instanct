@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/mobile-form-builder",
+  "name": "@softsurgery/mobile-form-builder",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,9 +14,9 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
-    "@instanct/lib": "workspace:*",
-    "@instanct/mobile-components": "workspace:*",
-    "@instanct/mobile-ui": "workspace:*"
+    "@softsurgery/lib": "workspace:*",
+    "@softsurgery/mobile-components": "workspace:*",
+    "@softsurgery/mobile-ui": "workspace:*"
   },
   "peerDependencies": {
     "expo-haptics": "*",

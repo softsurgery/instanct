@@ -5,12 +5,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@instanct/mobile-ui";
-import { Checkbox } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { Button } from "@instanct/mobile-ui";
-import { Badge } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+} from "@softsurgery/mobile-ui";
+import { Checkbox } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Badge } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { Search, X } from "lucide-react-native";
 
 interface MultiSelectItem {

@@ -1,4 +1,4 @@
-import { DataTableConfig } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
 
 export interface ResponseTemplateDto {
   id: string;

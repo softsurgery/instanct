@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
 import { useApi } from "@/contexts/ApiContext";
-import { MessageVariant, QueryParams } from "@instanct/api-client";
+import { MessageVariant, QueryParams } from "@softsurgery/api-client";
 
 interface useConversationMessagesProps {
   id: number;

@@ -5,9 +5,9 @@ import {
   AccordionItem,
   AccordionTrigger,
   cn,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { FieldsetBuilder } from "./FieldsetBuilder";
-import { Separator } from "@instanct/ui";
+import { Separator } from "@softsurgery/ui";
 import { formHeaderClassName, formHeaderValue } from "./utils/formHeader";
 
 interface FormBuilderProps {

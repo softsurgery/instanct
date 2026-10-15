@@ -2,7 +2,7 @@ import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { MessageVariant, ResponseConversationDto, ResponseMessageDto, StaticMessageEnum } from "@instanct/api-client";
+import { MessageVariant, ResponseConversationDto, ResponseMessageDto, StaticMessageEnum } from "@softsurgery/api-client";
 import { MessageFlatListItem } from "@/types";
 import { useAudioPlayer } from "expo-audio";
 import {
@@ -11,7 +11,7 @@ import {
   isToday,
   isYesterday,
 } from "date-fns";
-import { getSocket, type Socket } from "@instanct/lib";
+import { getSocket, type Socket } from "@softsurgery/lib";
 import {
   CONVERSATION_ACCESS_DENIED_ERROR,
   CONVERSATION_LIST_JOIN,

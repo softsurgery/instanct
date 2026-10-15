@@ -8,7 +8,7 @@ import { useRequestStore } from "@/stores/useRequestStore";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useSendFeedbackStore } from "@/stores/useFeedbackManager";
-import { disconnectAllSockets } from "@instanct/lib";
+import { disconnectAllSockets } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 
 export const performLogout = () => {

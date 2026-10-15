@@ -1,5 +1,5 @@
 import React from "react";
-import { useSheet } from "@instanct/components";
+import { useSheet } from "@softsurgery/components";
 import { useTranslation } from "react-i18next";
 import { FileEdit } from "lucide-react";
 import { TemplateUpdateForm } from "../forms/TemplateUpdateForm";

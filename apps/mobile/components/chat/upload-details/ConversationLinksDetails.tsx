@@ -1,9 +1,9 @@
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { CONVERSATION_LINKS_MESSAGES_QUERY } from "@/lib/chat";
 import { getMessageLinksForDisplay } from "@/lib/messageLinks";
-import { ResponseMessageDto, ResponseMessageLinkDto } from "@instanct/api-client";
+import { ResponseMessageDto, ResponseMessageLinkDto } from "@softsurgery/api-client";
 import { LegendList } from "@legendapp/list";
 import { useFocusEffect } from "expo-router";
 import React from "react";

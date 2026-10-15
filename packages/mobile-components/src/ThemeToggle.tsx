@@ -1,10 +1,10 @@
 import { setAndroidNavigationBar } from "./lib/android-navigation-bar";
-import { cn } from "@instanct/lib";
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { cn } from "@softsurgery/lib";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { MoonStar, Sun, SunMoon } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import { Appearance, Platform, View } from "react-native";
-import { Icon } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
 import { Select } from "./Select";
 import { useTranslation } from "react-i18next";
 

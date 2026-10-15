@@ -4,16 +4,16 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { ResponseSigninDto } from '../dtos/web/response-signin.dto';
 import { RequestResetTokenDto } from '../dtos/web/request-reset-token.dto';
-import { MailService } from 'nsa-mail/services/mail.service';
-import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
+import { MailService } from '@softsurgery/nsa-mail/services/mail.service';
+import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
 import { ResponseResetTokenDto } from '../dtos/web/response-reset-token.dto';
 import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-token.dto';
 import { RequestCheckResetTokenDto } from '../dtos/web/request-check-reset-token.dto';
 import { ForgetPasswordTemplateProps } from '../types/forget-password.type';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 import { AuthNotActiveException } from '../errors/auth.notactive.error';
 import { OAuthProvider } from '../enums/oauth.enum';
-import { ResponseAbstractUserDto } from 'nsa-um/dtos/abstract-user/response-abstract-user.dto';
+import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
 import { OAuth2Client } from 'google-auth-library';
 import {
   GithubEmail,
@@ -24,9 +24,9 @@ import {
   USER_SERVICE,
   AppUserRepository,
   AppUserService,
-} from 'nsa-um/tokens/user-access';
-import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
-import { CONFIGURATION_NAMESPACES } from 'nsa-configurations/enums/configuration-namespaces.registry';
+} from '@softsurgery/nsa-um/tokens/user-access';
+import { ConfigurationNamespaceService } from '@softsurgery/nsa-configurations/services/configuration-namespace.service';
+import { CONFIGURATION_NAMESPACES } from '@softsurgery/nsa-configurations/enums/configuration-namespaces.registry';
 
 @Injectable()
 export class AuthService {

@@ -1,7 +1,7 @@
-import { Label } from "@instanct/mobile-ui";
-import { Separator } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Label } from "@softsurgery/mobile-ui";
+import { Separator } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import React from "react";
 import { View } from "react-native";
 import { FieldBuilder } from "./FieldBuilder";

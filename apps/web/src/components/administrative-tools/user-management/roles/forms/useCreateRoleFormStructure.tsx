@@ -4,7 +4,7 @@ import {
   FieldVariant,
   FormStructure,
   TextFieldProps,
-} from "@instanct/form-builder";
+} from "@softsurgery/form-builder";
 import { RoleStore } from "@/hooks/stores/useRoleStore";
 import { PermissionAccordions } from "../PermissionAccordions";
 import { ResponsePermissionDto } from "@/types";

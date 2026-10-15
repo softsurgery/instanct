@@ -1,4 +1,4 @@
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import type { AbstractUserEntity } from './abstract-user.entity';
 import { RolePermissionEntity } from './role-permission.entity';

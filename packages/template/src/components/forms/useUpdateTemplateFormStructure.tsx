@@ -3,7 +3,7 @@ import {
   FieldVariant,
   FormStructure,
   TextFieldProps,
-} from "@instanct/form-builder";
+} from "@softsurgery/form-builder";
 import { TemplateStore } from "../../store/useTemplateStore";
 import { useTranslation } from "react-i18next";
 

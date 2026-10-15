@@ -5,27 +5,27 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
-import { cn } from "@instanct/lib";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
 import { Loader2 } from "lucide-react-native";
-import { Icon } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { Button } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { FormBuilder } from "@instanct/mobile-form-builder";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import {
   FieldVariant,
   FormStructure,
   MultiSelectFieldProps,
-} from "@instanct/mobile-form-builder";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+} from "@softsurgery/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface IndustriesManagementProps {
   className?: string;
 }

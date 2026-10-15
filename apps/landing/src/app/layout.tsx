@@ -4,11 +4,11 @@ import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SkipToContent } from "@/components/skip-to-content";
-import { ScrollToTop } from "@instanct/components";
+import { ScrollToTop } from "@softsurgery/components";
 import { headers } from "next/headers";
 import { resolveSupportedLng } from "@/i18n/config";
 import "./globals.css";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { version } from "../../package.json";
 
 const inter = Inter({

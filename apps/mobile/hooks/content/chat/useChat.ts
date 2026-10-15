@@ -9,8 +9,8 @@ import {
   MessageVariant,
   ResponseConversationDto,
   StaticMessageEnum,
-} from "@instanct/api-client";
-import { getSocket, type Socket } from "@instanct/lib";
+} from "@softsurgery/api-client";
+import { getSocket, type Socket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import {
   createAndroidChannel,

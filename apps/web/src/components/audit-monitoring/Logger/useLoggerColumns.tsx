@@ -3,14 +3,14 @@ import {
   DataTableColumnHeader,
   DataTableCellVariant,
   DataTableConfig,
-} from "@instanct/datatable-builder";
+} from "@softsurgery/datatable-builder";
 
-import { JsonToggler, Trans } from "@instanct/components";
+import { JsonToggler, Trans } from "@softsurgery/components";
 import { ResponseLogDto } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { identifyUser } from "@instanct/lib";
+import { identifyUser } from "@softsurgery/lib";
 
 const renderLink = (href?: string | null) => {
   if (!href) return <span className="font-medium" />;

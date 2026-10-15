@@ -1,4 +1,4 @@
-/*import { Card } from "@instanct/ui";
+/*import { Card } from "@softsurgery/ui";
 import React from "react";
 import { ConversationList } from "@/components/chat/conversation/ConversationList";
 

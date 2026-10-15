@@ -6,7 +6,7 @@ import {
   AppHeaderBack,
   hslToHex,
   useColorPalette,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { TabView, TabBar } from "react-native-tab-view";
 import { ConversationMediaDetails } from "./ConversationMediaDetails";
 import { ConversationFilesDetails } from "./ConversationFilesDetails";

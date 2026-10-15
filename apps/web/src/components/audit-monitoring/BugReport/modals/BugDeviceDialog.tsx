@@ -1,5 +1,5 @@
-import { useDialog } from "@instanct/components";
-import { ResponseDeviceInfoDto } from "@instanct/api-client";
+import { useDialog } from "@softsurgery/components";
+import { ResponseDeviceInfoDto } from "@softsurgery/api-client";
 
 interface BugDeviceDialogProps {
   device?: ResponseDeviceInfoDto;

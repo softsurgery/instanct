@@ -1,4 +1,4 @@
-import type { ResponseUserDto } from "@instanct/api-client";
+import type { ResponseUserDto } from "@softsurgery/api-client";
 
 export interface NearbyUser {
   latitude: number;

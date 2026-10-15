@@ -2,11 +2,11 @@ import {
   hslToHex,
   SeeMoreText,
   useColorPalette,
-} from "@instanct/mobile-components";
-import { Text, Icon } from "@instanct/mobile-ui";
+} from "@softsurgery/mobile-components";
+import { Text, Icon } from "@softsurgery/mobile-ui";
 import { THEME } from "@/lib/theme";
-import { cn } from "@instanct/lib";
-import { ResponseUserDto } from "@instanct/api-client";
+import { cn } from "@softsurgery/lib";
+import { ResponseUserDto } from "@softsurgery/api-client";
 import {
   ArrowUpRight,
   Globe,

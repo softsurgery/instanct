@@ -1,13 +1,13 @@
 import { useApi } from "@/contexts/ApiContext";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { useUserStore } from "@/stores/useUserStore";
-import { ServerErrorResponse, UpdateExperienceDto } from "@instanct/api-client";
+import { ServerErrorResponse, UpdateExperienceDto } from "@softsurgery/api-client";
 import { updateExperienceSchema } from "@/types/validations/experience.validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -20,8 +20,8 @@ import React from "react";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteExperienceActionSheet } from "./DeleteExperienceActionSheet";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
 interface UpdateExperienceProps {
   className?: string;

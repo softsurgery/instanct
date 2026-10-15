@@ -1,15 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@instanct/datatable-builder";
-import { DataTableRowActions } from "@instanct/datatable-builder";
+import { DataTableColumnHeader } from "@softsurgery/datatable-builder";
+import { DataTableRowActions } from "@softsurgery/datatable-builder";
 import { ResponseRefTypeDto } from "@/types";
 import { useTranslation } from "react-i18next";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@instanct/datatable-builder";
-import { DataTableCell } from "@instanct/datatable-builder";
-import { JsonToggler } from "@instanct/components";
-import { Badge } from "@instanct/ui";
+} from "@softsurgery/datatable-builder";
+import { DataTableCell } from "@softsurgery/datatable-builder";
+import { JsonToggler } from "@softsurgery/components";
+import { Badge } from "@softsurgery/ui";
 
 export const useRefTypeColumns = (
   context: DataTableConfig<ResponseRefTypeDto>

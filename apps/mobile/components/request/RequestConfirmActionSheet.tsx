@@ -1,11 +1,11 @@
 import React from "react";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
-import { Text } from "@instanct/mobile-ui";
-import { Button } from "@instanct/mobile-ui";
-import { useColorPalette } from "@instanct/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { useColorPalette } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { RequestEvent } from "@instanct/api-client";
+import { RequestEvent } from "@softsurgery/api-client";
 
 interface RequestConfirmActionSheetProps {
   event: RequestEvent | null;

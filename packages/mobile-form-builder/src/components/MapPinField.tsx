@@ -1,6 +1,6 @@
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import * as Haptics from "expo-haptics";
 import * as Location from "expo-location";
 import { ChevronDown, MapPin, Navigation, Pin } from "lucide-react-native";
@@ -18,9 +18,9 @@ import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import MapView, { MapPressEvent, Marker, Region } from "react-native-maps";
 import { AndroidDarkMapStyle } from "../utils/AndroidDarkMapStyle";
 import type { MapPinFieldProps } from "../types";
-import { Button } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
 import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
-import { useColorPalette } from "@instanct/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-components";
 
 interface MapPinInputProps extends MapPinFieldProps {
   className?: string;

@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
 import { useApi } from "@/contexts/ApiContext";
-import { OAuthProvider, ServerErrorResponse } from "@instanct/api-client";
+import { OAuthProvider, ServerErrorResponse } from "@softsurgery/api-client";
 import { Platform } from "react-native";
 
 // Ensure web browser redirect is handled properly

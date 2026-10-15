@@ -1,15 +1,15 @@
 import React from "react";
 import { Pressable, View } from "react-native";
 import { router } from "expo-router";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar, identifyUser } from "@/lib/user";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { timeAgo } from "@/lib/date";
-import { RequestStatus, ResponseRequestDto } from "@instanct/api-client";
-import { Icon } from "@instanct/mobile-ui";
+import { RequestStatus, ResponseRequestDto } from "@softsurgery/api-client";
+import { Icon } from "@softsurgery/mobile-ui";
 import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react-native";
-import { useColorPalette } from "@instanct/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-components";
 
 interface SessionRequestCardProps {
   className?: string;

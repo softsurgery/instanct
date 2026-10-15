@@ -2,13 +2,13 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { UserNotFoundException } from '../errors/user/user.notfound.error';
-import { IQueryObject } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { PageMetaDto } from 'nsa-database';
-import { hashPassword } from 'nsa-helpers/hash.utils';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
+import { hashPassword } from '@softsurgery/nsa-helpers/hash.utils';
 import { AbstractUserEntity } from '../entities/abstract-user.entity';
-import { DatabaseAbstractRepository } from 'nsa-database';
+import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
 
 @Injectable()
 export abstract class AbstractUserService {

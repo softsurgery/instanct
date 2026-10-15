@@ -1,7 +1,7 @@
 import type {
   MessageVariant,
   ResponseMessageDto,
-} from "@instanct/api-client";
+} from "@softsurgery/api-client";
 
 export type MediaKind = "image" | "video";
 

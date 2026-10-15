@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 
 export class ResponseClientDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })

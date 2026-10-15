@@ -4,11 +4,11 @@ import {
   BreadcrumbCommon,
   ThemeSwitcher,
   LanguageSwitcher,
-} from "@instanct/components";
-import { useBreadcrumb } from "@instanct/contexts";
+} from "@softsurgery/components";
+import { useBreadcrumb } from "@softsurgery/contexts";
 import { useTheme } from "next-themes";
 import { UserNav } from "./UserNav";
-import { Separator, SidebarTrigger } from "@instanct/ui";
+import { Separator, SidebarTrigger } from "@softsurgery/ui";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 

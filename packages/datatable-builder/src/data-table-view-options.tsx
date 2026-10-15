@@ -1,4 +1,4 @@
-import { Button } from "@instanct/ui/components/button";
+import { Button } from "@softsurgery/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@instanct/ui/components/dropdown-menu";
+} from "@softsurgery/ui/components/dropdown-menu";
 import { Table } from "@tanstack/react-table";
 import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";

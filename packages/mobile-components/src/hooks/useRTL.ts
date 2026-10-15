@@ -1,4 +1,4 @@
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useEffect, useState } from "react";
 import { I18nManager } from "react-native";
 

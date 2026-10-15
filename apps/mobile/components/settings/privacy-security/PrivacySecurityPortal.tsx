@@ -3,16 +3,16 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { ChevronRight, Lock, Mail, Smartphone } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { SettingRow, createSettingRow } from "../SettingsRow";
 import type { SettingRowConfig } from "../SettingsRow";
-import { Text, Separator } from "@instanct/mobile-ui";
+import { Text, Separator } from "@softsurgery/mobile-ui";
 import {
   AppHeaderBack,
   ApplicationHeader,
   StableScrollView,
   StableSafeAreaView,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 
 interface PrivacySecurityPortalProps {
   className?: string;

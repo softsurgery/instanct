@@ -18,12 +18,12 @@ import {
   MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";

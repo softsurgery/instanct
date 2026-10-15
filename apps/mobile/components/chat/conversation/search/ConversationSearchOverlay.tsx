@@ -4,14 +4,14 @@ import { LegendList } from "@legendapp/list";
 import { ChevronLeft, Search } from "lucide-react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Icon, Text } from "@instanct/mobile-ui";
-import { ResponseMessageDto } from "@instanct/api-client";
+import { Icon, Text } from "@softsurgery/mobile-ui";
+import { ResponseMessageDto } from "@softsurgery/api-client";
 import {
   hslToHex,
   StableSafeAreaView,
   MarkedInput,
   useColorPalette,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { useGradualAnimation } from "@/hooks/useGradualAnimation";
 import { useConversationMessageSearch } from "@/hooks/content/chat/useConversationMessageSearch";
 import { ConversationSearchResultItem } from "./ConversationSearchResultItem";

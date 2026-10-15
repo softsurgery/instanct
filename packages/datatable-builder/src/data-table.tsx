@@ -21,13 +21,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@instanct/ui/components/table";
+} from "@softsurgery/ui/components/table";
 import { PackageOpen } from "lucide-react";
 import { DataTablePagination } from "./data-table-pagination";
-import { Spinner } from "@instanct/components";
-import { cn } from "@instanct/lib";
+import { Spinner } from "@softsurgery/components";
+import { cn } from "@softsurgery/lib";
 import { DataTableConfig } from "./types";
-import { useFooter } from "@instanct/contexts";
+import { useFooter } from "@softsurgery/contexts";
 import { useTranslation } from "react-i18next";
 
 export interface DataTableProps<TData, TValue> {

@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -9,18 +9,18 @@ import {
   SettingRow,
   SettingRowConfig,
 } from "../../settings/SettingsRow";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { Separator } from "@instanct/mobile-ui";
-import { Switch } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { Button } from "@instanct/mobile-ui";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { Separator } from "@softsurgery/mobile-ui";
+import { Switch } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
 import { RadiusSlider } from "./RadiusSlider";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 
 interface MapSettingsProps {
   className?: string;

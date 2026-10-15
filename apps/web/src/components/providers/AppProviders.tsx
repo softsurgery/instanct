@@ -5,7 +5,7 @@ import {
   IntroContext,
   UIProvider,
   type BreadcrumbRoute,
-} from "@instanct/contexts";
+} from "@softsurgery/contexts";
 
 interface AppProvidersProps {
   children: React.ReactNode;

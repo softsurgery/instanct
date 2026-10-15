@@ -1,9 +1,9 @@
-import { Text } from "@instanct/mobile-ui";
-import { FileTypeIcon } from "@instanct/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
+import { FileTypeIcon } from "@softsurgery/mobile-components";
 import { useServerUploads } from "@/hooks/content/useServerUploads";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { openUploadFile } from "@/lib/files";
-import { ResponseMessageDto } from "@instanct/api-client";
+import { ResponseMessageDto } from "@softsurgery/api-client";
 import { PendingFileUpload } from "@/types";
 import { format } from "date-fns";
 import React from "react";

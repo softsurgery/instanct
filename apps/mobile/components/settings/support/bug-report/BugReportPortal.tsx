@@ -2,27 +2,27 @@ import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react-native";
 import { useApi } from "@/contexts/ApiContext";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { View } from "react-native";
 import { useBugReportFormStructure } from "./useBugReportFormStructure";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { cn } from "@instanct/lib";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { cn } from "@softsurgery/lib";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
 import { router } from "expo-router";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 import { createBugSchema } from "@/types/validations/system-reports.validation";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@instanct/api-client";
-import { Icon } from "@instanct/mobile-ui";
+import { ServerErrorResponse } from "@softsurgery/api-client";
+import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface BugReportPortalProps {
   className?: string;
 }

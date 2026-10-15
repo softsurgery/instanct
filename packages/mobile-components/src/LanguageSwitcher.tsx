@@ -1,4 +1,4 @@
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useTranslation } from "react-i18next";
 import * as Localization from "expo-localization";
 import type { ReactNode } from "react";

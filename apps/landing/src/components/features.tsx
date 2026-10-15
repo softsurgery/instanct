@@ -14,7 +14,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@instanct/ui/components/card";
+} from "@softsurgery/ui/components/card";
 import { featureItems } from "@/lib/site";
 
 const icons = {

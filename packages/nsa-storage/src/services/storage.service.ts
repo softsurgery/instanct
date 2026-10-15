@@ -1,12 +1,12 @@
 // storage.interface.ts
 import { ReadStream } from 'fs';
 import { StorageEntity } from '../entities/storage.entity';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
 import { StorageRepository } from '../repositories/storage.repository';
 import { FindManyOptions } from 'typeorm';
-import { PageMetaDto } from 'nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
 import { StorageNotFoundException } from '../errors/storage.not-found.error';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Logger } from '@nestjs/common';

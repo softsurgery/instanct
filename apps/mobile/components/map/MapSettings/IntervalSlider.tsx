@@ -1,5 +1,5 @@
-import { Badge } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Badge } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { View } from "react-native";
 import { Slider } from "react-native-awesome-slider";
 import { useSharedValue } from "react-native-reanimated";

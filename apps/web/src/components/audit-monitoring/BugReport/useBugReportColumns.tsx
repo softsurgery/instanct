@@ -1,17 +1,17 @@
-import { DataTableCell } from "@instanct/datatable-builder";
-import { DataTableColumnHeader } from "@instanct/datatable-builder";
+import { DataTableCell } from "@softsurgery/datatable-builder";
+import { DataTableColumnHeader } from "@softsurgery/datatable-builder";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@instanct/datatable-builder";
+} from "@softsurgery/datatable-builder";
 
-import { ResponseBugDto, ResponseDeviceInfoDto } from "@instanct/api-client";
+import { ResponseBugDto, ResponseDeviceInfoDto } from "@softsurgery/api-client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { identifyUser } from "@instanct/lib";
-import { Badge, Button } from "@instanct/ui";
-import { DataTableRowActions } from "@instanct/datatable-builder";
+import { identifyUser } from "@softsurgery/lib";
+import { Badge, Button } from "@softsurgery/ui";
+import { DataTableRowActions } from "@softsurgery/datatable-builder";
 
 export const useBugReportColumns = (
   context: DataTableConfig<ResponseBugDto>,

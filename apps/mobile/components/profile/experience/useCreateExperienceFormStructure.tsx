@@ -7,9 +7,9 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
   TextFieldProps,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
-import { LocationTypes, WorkTypes } from "@instanct/api-client";
+import { LocationTypes, WorkTypes } from "@softsurgery/api-client";
 import { useTranslation } from "react-i18next";
 
 interface UseCreateExperienceFormStructureProps {

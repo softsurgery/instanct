@@ -7,14 +7,14 @@ import {
   BellIcon,
   BookUser,
 } from "lucide-react";
-import { SideNav, Spinner } from "@instanct/components";
-import { useUI } from "@instanct/contexts";
+import { SideNav, Spinner } from "@softsurgery/components";
+import { useUI } from "@softsurgery/contexts";
 import { About } from "./cards/About";
 import { Settings } from "./cards/Settings";
 import { Activity } from "./cards/Activity";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/stores/useUserStore";
-import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useFollowerDialog } from "./modals/FollowersDialog";
 import { useFollowingDialog } from "./modals/FollowingDialog";
@@ -27,9 +27,9 @@ import { Book } from "./cards/Book";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { Edit } from "lucide-react";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import { useCoverPhoto } from "./cover/useCoverPhoto";
-import { identifyUserAvatar } from "@instanct/lib";
+import { identifyUserAvatar } from "@softsurgery/lib";
 
 interface BaseProfileProps {
   className?: string;

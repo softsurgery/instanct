@@ -1,5 +1,5 @@
 {
-  "name": "nsa-storage",
+  "name": "@softsurgery/nsa-storage",
   "version": "0.1.0",
   "private": true,
   "files": [
@@ -54,8 +54,8 @@
     "class-transformer": "^0.5.1",
     "express": "^5.0.0",
     "mime-types": "^2.1.35",
-    "nsa-auth": "workspace:*",
-    "nsa-database": "workspace:*",
+    "@softsurgery/nsa-auth": "workspace:*",
+    "@softsurgery/nsa-database": "workspace:*",
     "typeorm": "^0.3.20",
     "uuid": "^11.1.1"
   },

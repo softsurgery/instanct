@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { useApi } from "@/contexts/ApiContext";
 import { type ReactNativeUploadFile } from "@/lib/upload";
-import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { PendingFileUpload } from "@/types";
 import { waitForUiReady } from "@/lib/device";
 import { toast } from "sonner-native";

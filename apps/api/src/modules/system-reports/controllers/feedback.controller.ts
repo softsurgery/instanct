@@ -11,16 +11,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { FeedbackService } from '../services/feedback.service';
-import { IQueryObject } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 import { ResponseFeedbackDto } from '../dtos/feedback/response-feedback.dto';
-import { PageDto } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { PageDto } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { CreateFeedbackDto } from '../dtos/feedback/create-feedback.dto';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
 @ApiTags('feedback')
 @ApiBearerAuth('access_token')

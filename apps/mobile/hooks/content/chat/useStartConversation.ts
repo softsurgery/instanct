@@ -1,6 +1,6 @@
 import { useApi } from "@/contexts/ApiContext";
 import { prependConversationToPages } from "@/lib/chat";
-import { CreateConversationDto, ResponseConversationDto } from "@instanct/api-client";
+import { CreateConversationDto, ResponseConversationDto } from "@softsurgery/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface useStartConversationProps {

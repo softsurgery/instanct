@@ -1,13 +1,13 @@
 import { Column } from "@tanstack/react-table";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@instanct/ui/components/dropdown-menu";
-import { Button } from "@instanct/ui/components/button";
+} from "@softsurgery/ui/components/dropdown-menu";
+import { Button } from "@softsurgery/ui/components/button";
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import { CaretSortIcon, EyeNoneIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";

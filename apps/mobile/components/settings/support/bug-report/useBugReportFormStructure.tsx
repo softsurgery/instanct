@@ -1,5 +1,5 @@
 import { ReportBugStore } from "@/stores/useReportBugStore";
-import { BugVariant } from "@instanct/api-client";
+import { BugVariant } from "@softsurgery/api-client";
 import {
   Field,
   FieldVariant,
@@ -7,7 +7,7 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
   TextFieldProps,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 import { useTranslation } from "react-i18next";
 
 interface useBugReportFormStructureProps {

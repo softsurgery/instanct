@@ -1,5 +1,5 @@
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { disconnectSocket, getSocket, type Socket } from "@instanct/lib";
+import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
 import * as Location from "expo-location";

@@ -1,6 +1,6 @@
-import { Icon } from "@instanct/mobile-ui";
-import { Input } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Input } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
 import { Check, ChevronDown, Search } from "lucide-react-native";
 import React from "react";
@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { useColorPalette } from "./hooks/useColorPalette";
 import { useRTL } from "./hooks/useRTL";

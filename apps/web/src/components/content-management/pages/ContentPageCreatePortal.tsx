@@ -1,9 +1,9 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { api } from "@/lib/api";
-import { useBreadcrumb, useFooter, useIntro, useUI } from "@instanct/contexts";
-import { FormBuilder } from "@instanct/form-builder";
-import { Button, cn } from "@instanct/ui";
+import { useBreadcrumb, useFooter, useIntro, useUI } from "@softsurgery/contexts";
+import { FormBuilder } from "@softsurgery/form-builder";
+import { Button, cn } from "@softsurgery/ui";
 import { useMutation } from "@tanstack/react-query";
 import { RotateCcw, Save } from "lucide-react";
 import { useTranslation } from "react-i18next";

@@ -6,8 +6,8 @@ import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
-import { Text, Icon } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Text, Icon } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { SSOButtons } from "./SSOButtons";
 import { AcceptTerms } from "./AcceptTerms";
 import { Rocket, Zap, ShieldCheck, Languages } from "lucide-react-native";
@@ -16,7 +16,7 @@ import {
   LanguageSwitcher,
   useColorPalette,
   StableSafeAreaView,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
 const width = Dimensions.get("window").width;

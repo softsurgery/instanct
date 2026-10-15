@@ -13,16 +13,16 @@ import {
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 import { getDeviceIcon } from "@/lib/device-icon";
-import { cn } from "@instanct/lib";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { AppHeaderBack } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { StableScrollView } from "@instanct/mobile-components";
-import { Badge } from "@instanct/mobile-ui";
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Separator } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { StableScrollView } from "@softsurgery/mobile-components";
+import { Badge } from "@softsurgery/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Separator } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 
 const TRANSLATION_PREFIX = "screens.new-signin";
 

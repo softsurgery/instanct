@@ -13,12 +13,12 @@ import {
   SwitchFieldProps,
   TextareaFieldProps,
   TextFieldProps,
-} from "@instanct/form-builder";
+} from "@softsurgery/form-builder";
 import { UserStore } from "@/hooks/stores/useUserStore";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { Gender } from "@/types";
 import { useTranslation } from "react-i18next";
-import { identifyUserAvatar } from "@instanct/lib";
+import { identifyUserAvatar } from "@softsurgery/lib";
 
 interface useCreateUserFormStructureProps {
   userStore: UserStore;

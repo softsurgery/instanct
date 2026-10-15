@@ -1,9 +1,9 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import React from "react";
 import { View } from "react-native";
 import { StablePressable } from "./StablePressable";
-import { Text } from "@instanct/mobile-ui";
-import { Checkbox } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { Checkbox } from "@softsurgery/mobile-ui";
 
 export interface ChoicePickerOption {
   label: string;

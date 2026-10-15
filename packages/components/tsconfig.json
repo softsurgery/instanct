@@ -16,25 +16,25 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@instanct/lib": [
+      "@softsurgery/lib": [
         "../lib/src/index.ts"
       ],
-      "@instanct/lib/*": [
+      "@softsurgery/lib/*": [
         "../lib/src/*"
       ],
-      "@instanct/ui": [
+      "@softsurgery/ui": [
         "../ui/src/index.ts"
       ],
-      "@instanct/ui/*": [
+      "@softsurgery/ui/*": [
         "../ui/src/*"
       ],
-      "@instanct/hooks": [
+      "@softsurgery/hooks": [
         "../hooks/src/index.ts"
       ],
-      "@instanct/hooks/*": [
+      "@softsurgery/hooks/*": [
         "../hooks/src/*"
       ],
-      "@instanct/form-builder": [
+      "@softsurgery/form-builder": [
         "../form-builder/src/index.ts"
       ]
     }

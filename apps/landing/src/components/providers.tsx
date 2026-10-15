@@ -2,7 +2,7 @@
 
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@instanct/contexts";
+import { ThemeProvider } from "@softsurgery/contexts";
 import i18n from "@/i18n";
 import { DocumentMetaSync } from "@/components/document-meta-sync";
 import { DataProvider } from "@/contexts/data-context";

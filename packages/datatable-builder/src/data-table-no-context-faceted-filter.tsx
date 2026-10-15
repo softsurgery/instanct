@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useDialog } from "@instanct/ui";
+import { useDialog } from "@softsurgery/ui";
 import {
   Button,
   Checkbox,
@@ -13,7 +13,7 @@ import {
   CommandItem,
   CommandList,
   Label,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 
 type Option = {
   label: string;

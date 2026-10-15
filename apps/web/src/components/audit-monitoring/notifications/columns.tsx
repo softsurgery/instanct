@@ -1,10 +1,10 @@
-import { DataTableCell } from "@instanct/datatable-builder";
-import { DataTableColumnHeader } from "@instanct/datatable-builder";
+import { DataTableCell } from "@softsurgery/datatable-builder";
+import { DataTableColumnHeader } from "@softsurgery/datatable-builder";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@instanct/datatable-builder";
-import { Trans } from "@instanct/components";
+} from "@softsurgery/datatable-builder";
+import { Trans } from "@softsurgery/components";
 import { ResponseNotificationDto } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";

@@ -67,7 +67,7 @@ src/
 └── seeders/
 ```
 
-`modules/` is product behavior. Persistence, auth, chat, sessions, storage, notifications, content, templates, configuration, reference data, mail, logging, and workflows come from `packages/nsa-*`. A new CRUD resource is a repository extending `DatabaseAbstractRepository`, a service extending `AbstractCrudService`, a controller, and a registration on the right route module.
+`modules/` is product behavior. Persistence, auth, chat, sessions, storage, notifications, content, templates, configuration, reference data, mail, logging, and workflows come from `packages/nsa-*` (`@softsurgery/nsa-*`). A new CRUD resource is a repository extending `DatabaseAbstractRepository`, a service extending `AbstractCrudService`, a controller, and a registration on the right route module.
 
 ## HTTP surface
 
@@ -106,13 +106,13 @@ Chat counters that must stay correct under concurrent writes are MySQL triggers 
 
 ## Domain notes
 
-**Users.** `UserEntity` is a `@ChildEntity` of `AbstractUserEntity` from `nsa-um`. Profile relations (picture, cover, experiences, education, follows, bookmarks, geolocation) live on the child. Role assignment uses `RoleEntity` and `PermissionEntity` from the same package.
+**Users.** `UserEntity` is a `@ChildEntity` of `AbstractUserEntity` from `@softsurgery/nsa-um`. Profile relations (picture, cover, experiences, education, follows, bookmarks, geolocation) live on the child. Role assignment uses `RoleEntity` and `PermissionEntity` from the same package.
 
 **Requests.** `RequestService` is a normal CRUD service. `RequestWorkflowService` extends `AbstractWorkflowService` with `requestMachine`. `next(id, event)` loads the row, asks the machine for the next status, and saves it. Illegal events become `400`.
 
-**Reference data.** `RefTypeEntity` / `RefParamEntity` (`nsa-reference-types`) are the catalogs (industries, objectives). **Configuration** namespaces (`nsa-configurations`) hold runtime key/value params, including map behavior and application metadata. **Content pages** (`nsa-content`) are HTML documents keyed by slug and locale (`terms`, `privacy`, `about`, `faqs`, `support`). **Templates** (`nsa-templates`) are seeded email and document layouts.
+**Reference data.** `RefTypeEntity` / `RefParamEntity` (`@softsurgery/nsa-reference-types`) are the catalogs (industries, objectives). **Configuration** namespaces (`@softsurgery/nsa-configurations`) hold runtime key/value params, including map behavior and application metadata. **Content pages** (`@softsurgery/nsa-content`) are HTML documents keyed by slug and locale (`terms`, `privacy`, `about`, `faqs`, `support`). **Templates** (`@softsurgery/nsa-templates`) are seeded email and document layouts.
 
-**Storage.** Inject `StorageService` from `nsa-storage`. `storageProvider` chooses `LocalStorageService` or `S3StorageService` from `STORAGE_DRIVER` (`local` or `s3`). Temporary uploads are deleted on a two-hour cron defined on the base class.
+**Storage.** Inject `StorageService` from `@softsurgery/nsa-storage`. `storageProvider` chooses `LocalStorageService` or `S3StorageService` from `STORAGE_DRIVER` (`local` or `s3`). Temporary uploads are deleted on a two-hour cron defined on the base class.
 
 **Reports.** Bugs, feedback, and device info are `system-reports`. They use the same repository base as the rest of the API.
 

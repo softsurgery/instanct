@@ -1,7 +1,7 @@
 import React from "react";
 import { toast } from "sonner";
-import { Button, Label, cn } from "@instanct/ui";
-import { PasswordField } from "@instanct/form-builder";
+import { Button, Label, cn } from "@softsurgery/ui";
+import { PasswordField } from "@softsurgery/form-builder";
 import { AuthFormHeader } from "./AuthFormHeader";
 
 export interface ResetPasswordFormLabels {

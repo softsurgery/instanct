@@ -5,8 +5,8 @@ import { ContentPageEntity } from '../entities/content-page.entity';
 import { CreateContentPageDto } from '../dtos/create-content-page.dto';
 import { UpdateContentPageDto } from '../dtos/update-content-page.dto';
 import { ContentInterpolationService } from './content-interpolation.service';
-import { AbstractCrudService } from 'nsa-database';
-import { IQueryObject } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 
 @Injectable()
 export class ContentPageService extends AbstractCrudService<ContentPageEntity> {

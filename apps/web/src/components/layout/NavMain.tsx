@@ -8,7 +8,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -17,7 +17,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 
 export function NavMain({
   items,

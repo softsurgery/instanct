@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { SocketPayload } from "nsa-helpers/http";
+import { SocketPayload } from "@softsurgery/nsa-helpers/http";
 
 /**
  * Decode a JWT payload without verifying its signature.

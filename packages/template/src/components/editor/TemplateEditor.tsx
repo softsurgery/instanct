@@ -6,8 +6,8 @@ import {
   Label,
   Textarea,
   Badge,
-} from "@instanct/ui";
-import { cn } from "@instanct/lib";
+} from "@softsurgery/ui";
+import { cn } from "@softsurgery/lib";
 import {
   ArrowLeft,
   Eye,

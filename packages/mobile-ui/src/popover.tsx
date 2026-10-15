@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import * as PopoverPrimitive from "@rn-primitives/popover";
 import * as React from "react";
 import { Platform, StyleSheet } from "react-native";

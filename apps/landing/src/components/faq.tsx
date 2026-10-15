@@ -6,7 +6,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@instanct/ui/components/accordion";
+} from "@softsurgery/ui/components/accordion";
 import { faqKeys } from "@/lib/site";
 
 export function Faq() {

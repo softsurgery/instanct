@@ -1,5 +1,5 @@
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import * as Clipboard from "expo-clipboard";
 import * as Linking from "expo-linking";
 import { useLocalSearchParams } from "expo-router";

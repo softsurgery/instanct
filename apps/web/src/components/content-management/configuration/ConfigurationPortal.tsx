@@ -1,9 +1,9 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useBreadcrumb, useIntro } from "@instanct/contexts";
+import { useBreadcrumb, useIntro } from "@softsurgery/contexts";
 import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
 import { cn } from "@/lib/utils";
-import { DataTable, DataTableConfig } from "@instanct/datatable-builder";
+import { DataTable, DataTableConfig } from "@softsurgery/datatable-builder";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Public } from 'nsa-auth/utils/public-strategy';
+import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
 
 @Controller('app')
 @ApiBearerAuth('access_token')

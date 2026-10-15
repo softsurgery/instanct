@@ -4,13 +4,13 @@ import {
   requestNotificationPermissions,
   Notifications,
 } from "@/lib/notification";
-import { disconnectSocket, getSocket, type Socket } from "@instanct/lib";
+import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import { sanitizeText } from "@/lib/string";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/contexts/ApiContext";
-import { NotificationType, ResponseNotificationDto } from "@instanct/api-client";
+import { NotificationType, ResponseNotificationDto } from "@softsurgery/api-client";
 
 export const NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY = [
   "notifications-unread-count",

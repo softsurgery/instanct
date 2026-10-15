@@ -1,5 +1,5 @@
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";

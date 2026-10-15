@@ -1,7 +1,7 @@
 import React from "react";
-import { useAuthPersistStore } from "@instanct/hooks/stores";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { useSession } from "next-auth/react";
-import { getSocket } from "@instanct/lib";
+import { getSocket } from "@softsurgery/lib";
 
 export interface UserConnectionStatus {
   userId: string;

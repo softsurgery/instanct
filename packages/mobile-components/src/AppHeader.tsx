@@ -1,9 +1,9 @@
 import { LucideIcon } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { useRTL } from "./hooks/useRTL";
-import { cn } from "@instanct/lib";
-import { Icon, IconBadge } from "@instanct/mobile-ui";
-import { Text, TextVariantDefaults } from "@instanct/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { Icon, IconBadge } from "@softsurgery/mobile-ui";
+import { Text, TextVariantDefaults } from "@softsurgery/mobile-ui";
 import React from "react";
 import { hslToHex, useColorPalette } from "./hooks/useColorPalette";
 type Shortcut =

@@ -1,8 +1,8 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { RoleRepository } from 'nsa-um/repositories/role.repository';
-import { RolePermissionRepository } from 'nsa-um/repositories/role-permission.repository';
-import { PermissionRepository } from 'nsa-um/repositories/permission.repository';
+import { RoleRepository } from '@softsurgery/nsa-um/repositories/role.repository';
+import { RolePermissionRepository } from '@softsurgery/nsa-um/repositories/role-permission.repository';
+import { PermissionRepository } from '@softsurgery/nsa-um/repositories/permission.repository';
 
 @Injectable()
 export class RolesSeedCommand {

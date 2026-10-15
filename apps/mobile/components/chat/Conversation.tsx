@@ -14,7 +14,7 @@ import { ChevronDown } from "lucide-react-native";
 import { useFocusEffect } from "expo-router";
 import { setConversationMessageParam } from "@/lib/chat";
 
-import { StableSafeAreaView } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { ChatBubble } from "./conversation/bubbles/ChatBubble";
 import { ChatMediaBubble } from "./conversation/bubbles/ChatMediaBubble";
 import { ChatFileBubble } from "./conversation/bubbles/ChatFileBubble";
@@ -27,7 +27,7 @@ import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { ConversationInput } from "./conversation/input/ConversationInput";
 import { ConversationMediaStaging } from "./conversation/staging/ConversationMediaStaging";
 import { useServerImages } from "@/hooks/content/useServerImages";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 
 import { useConversationFeatures } from "@/hooks/content/chat/useConversationFeatures";
 import { useLastSeenMessageId } from "@/hooks/content/chat/useLastSeenMessageId";
@@ -44,10 +44,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { useGradualAnimation } from "@/hooks/useGradualAnimation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ResponseMessageDto } from "@instanct/api-client";
+import { ResponseMessageDto } from "@softsurgery/api-client";
 import { MessageFlatListItem } from "@/types";
-import { useColorPalette } from "@instanct/mobile-components";
-import { cn } from "@instanct/lib";
+import { useColorPalette } from "@softsurgery/mobile-components";
+import { cn } from "@softsurgery/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";
 import { useTranslation } from "react-i18next";
 import { formatLastSeen } from "@/lib/date";

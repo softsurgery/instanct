@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 
 function Skeleton({
   className,

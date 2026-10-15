@@ -1,17 +1,17 @@
 import React from "react";
-import { StableScrollView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
-import { MapSessionPayload, ResponseSessionDto } from "@instanct/api-client";
+import { StableScrollView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { MapSessionPayload, ResponseSessionDto } from "@softsurgery/api-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { View } from "react-native";
 import { SessionDetailsContent } from "./SessionDetailsContent";
 import { useTranslation } from "react-i18next";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface SessionDetailsPortalProps {
   className?: string;
 }

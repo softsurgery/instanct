@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/api-client",
+  "name": "@softsurgery/api-client",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -21,8 +21,8 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
-    "@instanct/hooks": "workspace:*",
-    "@instanct/lib": "workspace:*",
+    "@softsurgery/hooks": "workspace:*",
+    "@softsurgery/lib": "workspace:*",
     "axios": "^1.12.2"
   }
 }

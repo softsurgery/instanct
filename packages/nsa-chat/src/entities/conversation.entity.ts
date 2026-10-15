@@ -1,4 +1,4 @@
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MessageEntity } from './message.entity';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 import { ConversationUserEntity } from './conversation-user.entity';
 
 @Entity('conversations')

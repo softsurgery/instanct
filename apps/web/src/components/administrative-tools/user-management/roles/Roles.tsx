@@ -1,9 +1,9 @@
 import React from "react";
 import { api } from "@/lib/api";
-import { useDebounce } from "@instanct/hooks/utils";
+import { useDebounce } from "@softsurgery/hooks/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRoleColumns } from "./columns";
-import { useBreadcrumb } from "@instanct/contexts";
+import { useBreadcrumb } from "@softsurgery/contexts";
 import { useRoleUpdateSheet } from "./modals/RoleUpdateSheet";
 import { useRoleDeleteDialog } from "./modals/RoleDeleteDialog";
 import { useRoleDuplicateDialog } from "./modals/RoleDuplicateDialog";
@@ -11,8 +11,8 @@ import { toast } from "sonner";
 import { useRoleStore } from "@/hooks/stores/useRoleStore";
 import { useRoleCreateSheet } from "./modals/RoleCreateSheet";
 import { cn } from "@/lib/utils";
-import { useIntro } from "@instanct/contexts";
-import { DataTable } from "@instanct/datatable-builder";
+import { useIntro } from "@softsurgery/contexts";
+import { DataTable } from "@softsurgery/datatable-builder";
 import { Copy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -21,7 +21,7 @@ import {
   ServerErrorResponse,
   UpdateRoleDto,
 } from "@/types";
-import { DataTableConfig } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
 
 interface RolesProps {
   className?: string;

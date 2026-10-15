@@ -5,9 +5,9 @@ import {
   StableSafeAreaView,
   useColorPalette,
   Loader,
-} from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+} from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { useQuery } from "@tanstack/react-query";
 import { View } from "react-native";
 import { useApi } from "@/contexts/ApiContext";

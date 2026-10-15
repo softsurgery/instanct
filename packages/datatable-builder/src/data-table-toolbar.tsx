@@ -1,6 +1,6 @@
 import { Table } from "@tanstack/react-table";
-import { Input } from "@instanct/ui/components/input";
-import { Button } from "@instanct/ui/components/button";
+import { Input } from "@softsurgery/ui/components/input";
+import { Button } from "@softsurgery/ui/components/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { Plus } from "lucide-react";

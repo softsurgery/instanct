@@ -1,1 +1,1 @@
-export * from "@instanct/api-client";
+export * from "@softsurgery/api-client";

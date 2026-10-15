@@ -1,4 +1,4 @@
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import {
   Column,
   Entity,
@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { NotificationType } from '../enums/notification-type.registry';
-import type { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
+import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
 
 @Entity('notification')
 export class NotificationEntity extends EntityHelper {

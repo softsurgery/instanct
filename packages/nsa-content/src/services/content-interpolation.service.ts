@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
-import { ParamVariant } from 'nsa-configurations/enums/param-variant.enum';
+import { ConfigurationNamespaceService } from '@softsurgery/nsa-configurations/services/configuration-namespace.service';
+import { ParamVariant } from '@softsurgery/nsa-configurations/enums/param-variant.enum';
 import {
   ConfigurationListFieldSchema,
   parseConfigurationListValue,
-} from 'nsa-configurations/utils/configuration-list-schema';
-import { ConfigurationParamEntity } from 'nsa-configurations/entities/configuration-param.entity';
+} from '@softsurgery/nsa-configurations/utils/configuration-list-schema';
+import { ConfigurationParamEntity } from '@softsurgery/nsa-configurations/entities/configuration-param.entity';
 
 const PLACEHOLDER_RE =
   /(?:<mark(?:\s[^>]*)?>)?\{\{([a-zA-Z0-9._-]+)\}\}(?:<\/mark>)?/g;

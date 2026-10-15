@@ -1,5 +1,5 @@
-import { ParamVariant } from 'nsa-configurations/enums/param-variant.enum';
-import { ConfigurationTimeObject } from 'nsa-configurations/utils/configuration-time.object';
+import { ParamVariant } from '@softsurgery/nsa-configurations/enums/param-variant.enum';
+import { ConfigurationTimeObject } from '@softsurgery/nsa-configurations/utils/configuration-time.object';
 
 export const mapConfiguration = [
   // Range

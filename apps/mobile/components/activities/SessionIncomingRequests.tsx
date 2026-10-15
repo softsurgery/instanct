@@ -1,13 +1,13 @@
 import React from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { LegendList } from "@legendapp/list";
 import { RefreshControl, View } from "react-native";
-import { ResponseRequestDto } from "@instanct/api-client";
-import { Loader } from "@instanct/mobile-components";
+import { ResponseRequestDto } from "@softsurgery/api-client";
+import { Loader } from "@softsurgery/mobile-components";
 import { SessionRequestCard } from "../session/session-details/SessionRequestCard";
 import { useInfiniteIncomingSessionRequests } from "@/hooks/content/sessions/useInfiniteIncomingSessionRequests";
-import { NotFound } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
+import { NotFound } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { SessionRequestCardSkeleton } from "./skeletons/SessionRequestCardSkeleton";
 import { useTranslation } from "react-i18next";

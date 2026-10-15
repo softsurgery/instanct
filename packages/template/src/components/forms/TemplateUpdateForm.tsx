@@ -1,8 +1,8 @@
 import React from "react";
-import { cn } from "@instanct/lib";
-import { Button } from "@instanct/ui";
+import { cn } from "@softsurgery/lib";
+import { Button } from "@softsurgery/ui";
 import { Save } from "lucide-react";
-import { FormBuilder } from "@instanct/form-builder";
+import { FormBuilder } from "@softsurgery/form-builder";
 import { useTemplateStore } from "../../store/useTemplateStore";
 import { useUpdateTemplateFormStructure } from "./useUpdateTemplateFormStructure";
 import { useTranslation } from "react-i18next";

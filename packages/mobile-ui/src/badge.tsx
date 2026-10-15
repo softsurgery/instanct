@@ -1,5 +1,5 @@
 import { TextClassContext } from "./text";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import * as Slot from "@rn-primitives/slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import {

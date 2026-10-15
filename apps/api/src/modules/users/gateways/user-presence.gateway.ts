@@ -15,15 +15,15 @@ import {
   Optional,
 } from '@nestjs/common';
 import { Server } from 'socket.io';
-import { getTokenPayloadForWebSocket } from 'nsa-auth/utils/token-payload';
-import { AdvancedSocket } from 'nsa-helpers/http';
-import { USER_REPOSITORY, AppUserRepository } from 'nsa-um/tokens/user-access';
+import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
+import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
+import { USER_REPOSITORY, AppUserRepository } from '@softsurgery/nsa-um/tokens/user-access';
 import {
   ClientPresenceSource,
   UserPresenceEvent,
   UserPresenceService,
   UserPresenceStatus,
-} from 'nsa-um/services/user-presence.service';
+} from '@softsurgery/nsa-um/services/user-presence.service';
 
 export interface GetStatusPayload {
   ids: string[];

@@ -1,13 +1,13 @@
 import React from "react";
-import { Text, Icon } from "@instanct/mobile-ui";
+import { Text, Icon } from "@softsurgery/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useEducations } from "@/hooks/content/users/useEducations";
 import { useExperiences } from "@/hooks/content/users/useExperiences";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { identifyUser } from "@/lib/user";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { createClientStore, useUserStore } from "@/stores/useUserStore";
-import { ResponseEducationDto, ResponseExperienceDto, ResponseRefParamDto, ServerErrorResponse } from "@instanct/api-client";
+import { ResponseEducationDto, ResponseExperienceDto, ResponseRefParamDto, ServerErrorResponse } from "@softsurgery/api-client";
 import { router, useFocusEffect, useNavigation } from "expo-router";
 import { toUpdateExperienceDto } from "./experience/toUpdateExperienceDto";
 import { toUpdateEducationDto } from "./education/toUpdateEducationDto";
@@ -28,7 +28,7 @@ import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
 import { ExperienceInstance } from "./experience/ExperienceInstance";
 import { EducationInstance } from "./education/EducationInstance";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { useScrollableElement } from "@/hooks/useScrollableElement";
 import Animated, {
   useAnimatedStyle,

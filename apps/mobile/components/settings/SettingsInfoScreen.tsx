@@ -1,22 +1,22 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { StableScrollView } from "@instanct/mobile-components";
-import { Badge } from "@instanct/mobile-ui";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { StableScrollView } from "@softsurgery/mobile-components";
+import { Badge } from "@softsurgery/mobile-ui";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+} from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface InfoSection {
   title: string;
   description?: string;

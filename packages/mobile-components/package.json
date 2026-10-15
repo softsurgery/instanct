@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/mobile-components",
+  "name": "@softsurgery/mobile-components",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -17,9 +17,9 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
-    "@instanct/hooks": "workspace:*",
-    "@instanct/lib": "workspace:*",
-    "@instanct/mobile-ui": "workspace:*",
+    "@softsurgery/hooks": "workspace:*",
+    "@softsurgery/lib": "workspace:*",
+    "@softsurgery/mobile-ui": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.1.0"
   },

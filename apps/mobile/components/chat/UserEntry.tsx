@@ -1,9 +1,9 @@
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import React from "react";
 import { View } from "react-native";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
-import { MessageVariant, ResponseConversationDto, StaticMessageEnum } from "@instanct/api-client";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { MessageVariant, ResponseConversationDto, StaticMessageEnum } from "@softsurgery/api-client";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { differenceInMilliseconds } from "date-fns";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";

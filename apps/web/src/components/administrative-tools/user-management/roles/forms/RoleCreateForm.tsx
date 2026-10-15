@@ -3,9 +3,9 @@ import { cn } from "@/lib/utils";
 import { useRoleStore } from "@/hooks/stores/useRoleStore";
 import { usePermissions } from "@/hooks/content/usePermissions";
 import { useCreateRoleFormStructure } from "./useCreateRoleFormStructure";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import { Save } from "lucide-react";
-import { FormBuilder } from "@instanct/form-builder";
+import { FormBuilder } from "@softsurgery/form-builder";
 
 interface RoleFormProps {
   className?: string;

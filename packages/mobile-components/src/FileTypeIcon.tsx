@@ -1,5 +1,5 @@
-import { Icon } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Icon } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { DocumentFileType, getFileTypeStyle } from "./lib/fileType";
 import {
   File,

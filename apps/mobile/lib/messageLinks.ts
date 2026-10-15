@@ -1,4 +1,4 @@
-import { ResponseMessageLinkDto } from "@instanct/api-client";
+import { ResponseMessageLinkDto } from "@softsurgery/api-client";
 
 export type ExtractedMessageLink = Pick<
   ResponseMessageLinkDto,

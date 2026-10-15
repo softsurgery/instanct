@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FollowService } from '../services/follow.service';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 
 @ApiTags('follow')
 @ApiBearerAuth('access_token')

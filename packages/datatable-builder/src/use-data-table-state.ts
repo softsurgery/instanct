@@ -1,4 +1,4 @@
-import { useLocalStorage } from "@instanct/hooks/utils";
+import { useLocalStorage } from "@softsurgery/hooks/utils";
 import React from "react";
 
 interface UseDataTableStateOptions {

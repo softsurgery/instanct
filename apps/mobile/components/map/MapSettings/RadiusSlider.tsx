@@ -1,5 +1,5 @@
-import { Badge, Text } from "@instanct/mobile-ui";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
+import { Badge, Text } from "@softsurgery/mobile-ui";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
 import { View } from "react-native";

@@ -27,64 +27,64 @@
       "cache": false,
       "persistent": true
     },
-    "nsa-abstract-user-management#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-um#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-auth#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-auth#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-chat#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-chat#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-configurations#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-configurations#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-content#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-content#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-helpers#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-helpers#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-logger#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-logger#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-mail#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-mail#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-notifications#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-notifications#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-reference-types#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-reference-types#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-sentry#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-sentry#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-sessions#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-sessions#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-storage#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-storage#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-templates#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-templates#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     },
-    "nsa-workflows#build": {
-      "dependsOn": ["nsa-database#build"],
+    "@softsurgery/nsa-workflows#build": {
+      "dependsOn": ["@softsurgery/nsa-database#build"],
       "cache": false
     }
   }

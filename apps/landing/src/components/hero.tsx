@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Button } from "@instanct/ui/components/button";
+import { Button } from "@softsurgery/ui/components/button";
 import { ProductPreview } from "@/components/product-preview";
 import { StoreBadges } from "@/components/store-badges";
 

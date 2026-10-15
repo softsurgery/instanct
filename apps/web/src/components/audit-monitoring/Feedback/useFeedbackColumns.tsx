@@ -1,15 +1,15 @@
-import { DataTableCell } from "@instanct/datatable-builder";
-import { DataTableColumnHeader } from "@instanct/datatable-builder";
+import { DataTableCell } from "@softsurgery/datatable-builder";
+import { DataTableColumnHeader } from "@softsurgery/datatable-builder";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@instanct/datatable-builder";
+} from "@softsurgery/datatable-builder";
 
-import { ResponseFeedbackDto } from "@instanct/api-client";
+import { ResponseFeedbackDto } from "@softsurgery/api-client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { identifyUser } from "@instanct/lib";
+import { identifyUser } from "@softsurgery/lib";
 
 export const useFeedbackColumns = (
   context: DataTableConfig<ResponseFeedbackDto>,

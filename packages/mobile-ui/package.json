@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/mobile-ui",
+  "name": "@softsurgery/mobile-ui",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,7 +15,7 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
-    "@instanct/lib": "workspace:*",
+    "@softsurgery/lib": "workspace:*",
     "class-variance-authority": "^0.7.1"
   },
   "peerDependencies": {

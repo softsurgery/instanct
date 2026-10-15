@@ -1,4 +1,4 @@
-import { Image } from "@instanct/mobile-ui";
+import { Image } from "@softsurgery/mobile-ui";
 import {
   requestVideoThumbnail,
   getDiskCachedThumbnailUri,

@@ -1,10 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useDebounce } from "@instanct/hooks/utils";
+import { useDebounce } from "@softsurgery/hooks/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useBreadcrumb, useIntro } from "@instanct/contexts";
+import { useBreadcrumb, useIntro } from "@softsurgery/contexts";
 import { toast } from "sonner";
-import { cn } from "@instanct/ui";
+import { cn } from "@softsurgery/ui";
 import { useTranslation } from "react-i18next";
 import { Eye } from "lucide-react";
 import {

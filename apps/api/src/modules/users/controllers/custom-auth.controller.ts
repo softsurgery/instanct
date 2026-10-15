@@ -6,14 +6,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'nsa-helpers/http';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
-import { NotificationInterceptor } from 'nsa-notifications/decorators/notification.interceptor';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { NotificationInterceptor } from '@softsurgery/nsa-notifications/decorators/notification.interceptor';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 import { RequestClientSpecializedSignUpDto } from '../dtos/custom-auth/request-client-specialized-signup.dto';
-import { Public } from 'nsa-auth/utils/public-strategy';
+import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
 import { CustomAuthService } from '../services/custom-auth.service';
 
 @ApiTags('client-custom-auth')

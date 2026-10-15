@@ -13,94 +13,94 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "nsa-um/*": [
+      "@softsurgery/nsa-um/*": [
         "nsa-um/src/*"
       ],
-      "nsa-auth/*": [
+      "@softsurgery/nsa-auth/*": [
         "nsa-auth/src/*"
       ],
-      "nsa-chat/*": [
+      "@softsurgery/nsa-chat/*": [
         "nsa-chat/src/*"
       ],
-      "nsa-configurations/*": [
+      "@softsurgery/nsa-configurations/*": [
         "nsa-configurations/src/*"
       ],
-      "nsa-content/*": [
+      "@softsurgery/nsa-content/*": [
         "nsa-content/src/*"
       ],
-      "nsa-helpers/*": [
+      "@softsurgery/nsa-helpers/*": [
         "nsa-helpers/src/*"
       ],
-      "nsa-logger/*": [
+      "@softsurgery/nsa-logger/*": [
         "nsa-logger/src/*"
       ],
-      "nsa-mail/*": [
+      "@softsurgery/nsa-mail/*": [
         "nsa-mail/src/*"
       ],
-      "nsa-notifications/*": [
+      "@softsurgery/nsa-notifications/*": [
         "nsa-notifications/src/*"
       ],
-      "nsa-reference-types/*": [
+      "@softsurgery/nsa-reference-types/*": [
         "nsa-reference-types/src/*"
       ],
-      "nsa-sentry/*": [
+      "@softsurgery/nsa-sentry/*": [
         "nsa-sentry/src/*"
       ],
-      "nsa-sessions/*": [
+      "@softsurgery/nsa-sessions/*": [
         "nsa-sessions/src/*"
       ],
-      "nsa-storage/*": [
+      "@softsurgery/nsa-storage/*": [
         "nsa-storage/src/*"
       ],
-      "nsa-templates/*": [
+      "@softsurgery/nsa-templates/*": [
         "nsa-templates/src/*"
       ],
-      "nsa-workflows/*": [
+      "@softsurgery/nsa-workflows/*": [
         "nsa-workflows/src/*"
       ],
-      "nsa-um": [
+      "@softsurgery/nsa-um": [
         "nsa-um/src/index.ts"
       ],
-      "nsa-auth": [
+      "@softsurgery/nsa-auth": [
         "nsa-auth/src/index.ts"
       ],
-      "nsa-chat": [
+      "@softsurgery/nsa-chat": [
         "nsa-chat/src/index.ts"
       ],
-      "nsa-configurations": [
+      "@softsurgery/nsa-configurations": [
         "nsa-configurations/src/index.ts"
       ],
-      "nsa-content": [
+      "@softsurgery/nsa-content": [
         "nsa-content/src/index.ts"
       ],
-      "nsa-helpers": [
+      "@softsurgery/nsa-helpers": [
         "nsa-helpers/src/index.ts"
       ],
-      "nsa-logger": [
+      "@softsurgery/nsa-logger": [
         "nsa-logger/src/index.ts"
       ],
-      "nsa-mail": [
+      "@softsurgery/nsa-mail": [
         "nsa-mail/src/index.ts"
       ],
-      "nsa-notifications": [
+      "@softsurgery/nsa-notifications": [
         "nsa-notifications/src/index.ts"
       ],
-      "nsa-reference-types": [
+      "@softsurgery/nsa-reference-types": [
         "nsa-reference-types/src/index.ts"
       ],
-      "nsa-sentry": [
+      "@softsurgery/nsa-sentry": [
         "nsa-sentry/src/index.ts"
       ],
-      "nsa-sessions": [
+      "@softsurgery/nsa-sessions": [
         "nsa-sessions/src/index.ts"
       ],
-      "nsa-storage": [
+      "@softsurgery/nsa-storage": [
         "nsa-storage/src/index.ts"
       ],
-      "nsa-templates": [
+      "@softsurgery/nsa-templates": [
         "nsa-templates/src/index.ts"
       ],
-      "nsa-workflows": [
+      "@softsurgery/nsa-workflows": [
         "nsa-workflows/src/index.ts"
       ],
       "src/*": [
@@ -116,7 +116,10 @@
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
-    "types": ["node", "multer"]
+    "types": [
+      "node",
+      "multer"
+    ]
   },
   "include": [
     "nsa-um/src/**/*.ts",

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
-import { cn } from "@instanct/lib";
-import { ResponseUserDto } from "@instanct/api-client";
+import { cn } from "@softsurgery/lib";
+import { ResponseUserDto } from "@softsurgery/api-client";
 import { LegendList } from "@legendapp/list";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import { router } from "expo-router";
@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Animated from "react-native-reanimated";
 import { UserCard } from "./UserCard";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { SessionCountdown } from "../session/SessionCountdown";
 import { SessionStarter } from "../session/SessionStarter";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
@@ -28,7 +28,7 @@ import {
   NotFound,
   StableSafeAreaView,
   Loader,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";

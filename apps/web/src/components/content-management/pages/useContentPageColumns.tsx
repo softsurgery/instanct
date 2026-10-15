@@ -6,10 +6,10 @@ import {
   DataTableCell,
   DataTableCellVariant,
   DataTableConfig,
-} from "@instanct/datatable-builder";
+} from "@softsurgery/datatable-builder";
 import { ResponseContentPageDto } from "@/types";
 import { useTranslation } from "react-i18next";
-import { Badge } from "@instanct/ui";
+import { Badge } from "@softsurgery/ui";
 
 export const useContentPageColumns = (
   context: DataTableConfig<ResponseContentPageDto>,

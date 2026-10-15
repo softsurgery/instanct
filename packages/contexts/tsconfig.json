@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@instanct/api-client": ["../api-client/src/index.ts"]
+      "@softsurgery/api-client": ["../api-client/src/index.ts"]
     }
   },
   "include": ["src/**/*"],

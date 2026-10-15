@@ -1,7 +1,7 @@
-import { Icon } from "@instanct/mobile-ui";
-import { Image } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Image } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
 import React from "react";
@@ -11,7 +11,7 @@ import { useApi } from "@/contexts/ApiContext";
 import {
   VideoPreview,
   VideoThumbnailPreview,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
 /**

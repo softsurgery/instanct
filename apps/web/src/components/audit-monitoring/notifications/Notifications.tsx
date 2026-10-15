@@ -2,10 +2,10 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDebounce } from "@instanct/hooks/utils";
+import { useDebounce } from "@softsurgery/hooks/utils";
 import { useNotificationColumns } from "./columns";
-import { DataTable } from "@instanct/datatable-builder";
-import { DataTableConfig } from "@instanct/datatable-builder";
+import { DataTable } from "@softsurgery/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
 import { useTranslation } from "react-i18next";
 import { ResponseNotificationDto } from "@/types";
 

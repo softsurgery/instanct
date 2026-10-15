@@ -1,23 +1,23 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { router } from "expo-router";
 import { View } from "react-native";
-import { FormBuilder } from "@instanct/mobile-form-builder";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useSignUpFormStructure } from "./useSignupFormStructure";
 import { AcceptTerms } from "./AcceptTerms";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { Stepper } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { Stepper } from "@softsurgery/mobile-components";
 import React from "react";
 import { useAuthValidation } from "@/hooks/useAuthValidation";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
-import { ServerErrorResponse, Upload } from "@instanct/api-client";
+import { ServerErrorResponse, Upload } from "@softsurgery/api-client";
 import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 
 interface SignupLayoutProps {
   className?: string;

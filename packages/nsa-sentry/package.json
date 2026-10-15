@@ -1,5 +1,5 @@
 {
-  "name": "nsa-sentry",
+  "name": "@softsurgery/nsa-sentry",
   "version": "0.1.0",
   "private": true,
   "files": [

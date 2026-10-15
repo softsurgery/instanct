@@ -1,9 +1,9 @@
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import * as ImagePicker from "expo-image-picker";
 import { Pressable } from "react-native";
-import { cn } from "@instanct/lib";
-import { Avatar, AvatarFallback, AvatarImage } from "@instanct/mobile-components";
+import { cn } from "@softsurgery/lib";
+import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/mobile-components";
 
 interface PictureUploaderProps {
   wrapperClassName?: string;

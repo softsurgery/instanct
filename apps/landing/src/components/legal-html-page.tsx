@@ -1,10 +1,10 @@
 "use client";
 
-import { prepareLegalHtml } from "@instanct/lib";
-import "@instanct/lib/legal/legal-html.css";
+import { prepareLegalHtml } from "@softsurgery/lib";
+import "@softsurgery/lib/legal/legal-html.css";
 import { useTranslation } from "react-i18next";
 import { resolveSupportedLng } from "@/i18n/config";
-import { ResponseContentPageDto } from "@instanct/api-client";
+import { ResponseContentPageDto } from "@softsurgery/api-client";
 
 type LegalHtmlPageProps = {
   page: ResponseContentPageDto;

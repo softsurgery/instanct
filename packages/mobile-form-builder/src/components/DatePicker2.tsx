@@ -1,9 +1,9 @@
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { toLongDateString } from "@instanct/mobile-components";
-import { ScrollViewContext } from "@instanct/mobile-components";
-import { cn } from "@instanct/lib";
+import { Button } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { toLongDateString } from "@softsurgery/mobile-components";
+import { ScrollViewContext } from "@softsurgery/mobile-components";
+import { cn } from "@softsurgery/lib";
 import { Calendar, ChevronDown } from "lucide-react-native";
 import React from "react";
 import {
@@ -23,9 +23,9 @@ import Animated, {
   FadeOut,
   LinearTransition,
 } from "react-native-reanimated";
-import { StableScrollable } from "@instanct/mobile-components";
-import { Separator } from "@instanct/mobile-ui";
-import { triggerHaptic } from "@instanct/mobile-components";
+import { StableScrollable } from "@softsurgery/mobile-components";
+import { Separator } from "@softsurgery/mobile-ui";
+import { triggerHaptic } from "@softsurgery/mobile-components";
 
 const MONTHS = [
   { label: "January", value: "jan" },

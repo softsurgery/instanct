@@ -2,8 +2,8 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import * as Haptics from "expo-haptics";
 import { type ActionSheetRef } from "react-native-actions-sheet";
-import { Icon,Text } from "@instanct/mobile-ui";
-import { ResponseUserDto } from "@instanct/api-client";
+import { Icon,Text } from "@softsurgery/mobile-ui";
+import { ResponseUserDto } from "@softsurgery/api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";
@@ -19,7 +19,7 @@ import {
   UserQuickActionsSheet,
   type QuickAction,
 } from "./UserQuickActionsSheet";
-import { useColorPalette } from "@instanct/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
 interface BookmarkCardProps {

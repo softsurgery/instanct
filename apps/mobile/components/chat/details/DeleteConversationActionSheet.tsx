@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
-import { Text, Button, Icon } from "@instanct/mobile-ui";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
+import { Text, Button, Icon } from "@softsurgery/mobile-ui";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { Ban } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 

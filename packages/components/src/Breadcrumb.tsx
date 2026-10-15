@@ -1,4 +1,4 @@
-import { useBreadcrumb, type BreadcrumbRoute } from "@instanct/contexts";
+import { useBreadcrumb, type BreadcrumbRoute } from "@softsurgery/contexts";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -7,13 +7,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import Link from "next/link";
 import React from "react";
 

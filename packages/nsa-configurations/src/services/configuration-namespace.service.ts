@@ -1,11 +1,11 @@
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { ConfigurationNamespaceEntity } from '../entities/configuration-namespace.entity';
 import { Injectable } from '@nestjs/common';
 import { ConfigurationNamespaceRepository } from '../repositories/configuration-namespace.repository';
 import { ParamVariant } from '../enums/param-variant.enum';
 import { parseConfigurationListValue } from '../utils/configuration-list-schema';
-import { IQueryObject } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
 import { FindManyOptions, FindOneOptions, IsNull } from 'typeorm';
 
 @Injectable()

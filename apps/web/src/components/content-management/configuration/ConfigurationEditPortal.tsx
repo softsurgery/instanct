@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { Button, Input, Label, cn } from "@instanct/ui";
-import { useBreadcrumb, useFooter, useIntro, useUI } from "@instanct/contexts";
+import { Button, Input, Label, cn } from "@softsurgery/ui";
+import { useBreadcrumb, useFooter, useIntro, useUI } from "@softsurgery/contexts";
 import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
 import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import _ from "lodash";

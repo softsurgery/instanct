@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import * as LabelPrimitive from "@rn-primitives/label";
 import { Platform } from "react-native";
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { StorageService } from 'nsa-storage/services/storage.service';
+import { StorageService } from '@softsurgery/nsa-storage/services/storage.service';
 
 @Injectable()
 export class AppService {

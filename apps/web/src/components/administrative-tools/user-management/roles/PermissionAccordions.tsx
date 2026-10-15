@@ -5,9 +5,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@instanct/ui";
-import { Label } from "@instanct/ui";
-import { Toggle } from "@instanct/ui";
+} from "@softsurgery/ui";
+import { Label } from "@softsurgery/ui";
+import { Toggle } from "@softsurgery/ui";
 import { useRoleStore } from "@/hooks/stores/useRoleStore";
 
 interface PermissionAccordionsProps {

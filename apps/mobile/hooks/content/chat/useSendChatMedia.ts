@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useApi } from "@/contexts/ApiContext";
-import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { MediaKind, PendingMediaUpload, StagedMedia } from "@/types";
 import { waitForUiReady } from "@/lib/device";
 import { toast } from "sonner-native";

@@ -1,7 +1,7 @@
 import { WebSocketGateway } from '@nestjs/websockets';
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { USER_REPOSITORY, AppUserRepository } from 'nsa-um/tokens/user-access';
-import { UserPresenceService } from 'nsa-um/services/user-presence.service';
+import { USER_REPOSITORY, AppUserRepository } from '@softsurgery/nsa-um/tokens/user-access';
+import { UserPresenceService } from '@softsurgery/nsa-um/services/user-presence.service';
 import { UserPresenceGateway } from './user-presence.gateway';
 
 /**

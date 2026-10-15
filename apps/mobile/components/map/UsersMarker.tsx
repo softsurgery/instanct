@@ -7,7 +7,7 @@ import { NearbyUser } from "@/types";
 import { Platform, View } from "react-native";
 import { Marker } from "react-native-maps";
 import ViewShot, { ViewShotRef } from "react-native-view-shot";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 
 interface UsersMarkerProps {
   nearbyUsers: NearbyUser[];

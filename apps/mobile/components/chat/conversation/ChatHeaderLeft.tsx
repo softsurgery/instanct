@@ -1,9 +1,9 @@
 import { Pressable, View } from "react-native";
-import { cn } from "@instanct/lib";
-import { Text } from "@instanct/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { Text } from "@softsurgery/mobile-ui";
 import { router } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
-import { Icon } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
 
 interface ChatHeaderLeftProps {
   className?: string;

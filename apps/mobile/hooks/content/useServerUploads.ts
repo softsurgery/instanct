@@ -1,7 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
 import React from "react";
 import { useApi } from "@/contexts/ApiContext";
-import { Upload } from "@instanct/api-client";
+import { Upload } from "@softsurgery/api-client";
 
 export const useServerUploads = (ids: (number | undefined)[]) => {
   const api = useApi();

@@ -1,5 +1,5 @@
 import { ScrollViewContext } from "./contexts/ScrollViewContext";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 
 import React, { forwardRef, type ReactNode, useCallback, useRef } from "react";
 

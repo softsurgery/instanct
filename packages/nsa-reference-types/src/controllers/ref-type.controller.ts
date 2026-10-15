@@ -1,12 +1,12 @@
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { IQueryObject } from "nsa-database";
-import { PageDto } from "nsa-database";
-import { ApiPaginatedResponse } from "nsa-database";
-import { toDto, toDtoArray } from "nsa-database";
-import { LogInterceptor } from "nsa-logger/decorators/logger.interceptor";
-import { LogEvent } from "nsa-logger/decorators/log-event.decorator";
-import { EventType } from "nsa-logger/enums/event-type.registry";
-import { AdvancedRequest } from "nsa-helpers/http";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { ApiPaginatedResponse } from "@softsurgery/nsa-database";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
+import { LogEvent } from "@softsurgery/nsa-logger/decorators/log-event.decorator";
+import { EventType } from "@softsurgery/nsa-logger/enums/event-type.registry";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
 import {
   Body,
   ClassSerializerInterceptor,
@@ -24,7 +24,7 @@ import { RefTypeService } from "../services/ref-type.service";
 import { ResponseRefTypeDto } from "../dtos/ref-type/response-ref-type.dto";
 import { CreateRefTypeDto } from "../dtos/ref-type/create-ref-type.dto";
 import { UpdateRefTypeDto } from "../dtos/ref-type/update-ref-type.dto";
-import { Public } from "nsa-auth/utils/public-strategy";
+import { Public } from "@softsurgery/nsa-auth/utils/public-strategy";
 
 @ApiTags("ref-type")
 @ApiBearerAuth("access_token")

@@ -4,24 +4,24 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { config } from 'src/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from 'nsa-database';
+import { TypeOrmConfigService } from '@softsurgery/nsa-database';
 import { ClsModule } from 'nestjs-cls';
 import { ClsPluginTransactional } from '@nestjs-cls/transactional';
 import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
 import { DataSource } from 'typeorm';
-import { DatabaseModule } from 'nsa-database';
+import { DatabaseModule } from '@softsurgery/nsa-database';
 import { JwtModule } from '@nestjs/jwt';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailModule } from 'nsa-mail/mail.module';
-import { resolveMX } from 'nsa-mail/utils/mx-resolve.util';
+import { MailModule } from '@softsurgery/nsa-mail/mail.module';
+import { resolveMX } from '@softsurgery/nsa-mail/utils/mx-resolve.util';
 import { RouterModule } from 'src/routers/router.module';
 import { SeedersModule } from 'src/seeders/seeders.module';
-import { StorageModule } from 'nsa-storage/storage.module';
+import { StorageModule } from '@softsurgery/nsa-storage/storage.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { SentryModule } from '@sentry/nestjs/setup';
-import { SentryCatchAllFilter } from 'nsa-sentry/sentry-catch-all.filter';
+import { SentryCatchAllFilter } from '@softsurgery/nsa-sentry/sentry-catch-all.filter';
 
 @Module({
   imports: [

@@ -1,4 +1,4 @@
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useColorScheme } from "nativewind";
 import { Platform, Appearance } from "react-native";
 import { useTranslation } from "react-i18next";

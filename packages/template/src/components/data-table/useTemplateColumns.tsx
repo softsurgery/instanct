@@ -6,7 +6,7 @@ import {
   DataTableCellVariant,
   DataTableConfig,
   DataTableRowActions,
-} from "@instanct/datatable-builder";
+} from "@softsurgery/datatable-builder";
 import { useTranslation } from "react-i18next";
 import { ResponseTemplateDto } from "../../types";
 

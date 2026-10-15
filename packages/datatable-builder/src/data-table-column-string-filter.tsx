@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import {
   buildColumnFilter,
   DATA_TABLE_STRING_FILTER_OPERATORS,

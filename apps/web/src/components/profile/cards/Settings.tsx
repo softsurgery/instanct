@@ -6,10 +6,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { Edit, Settings as SettingsIcon } from "lucide-react";
-import { Button } from "@instanct/ui";
-import { Separator } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
+import { Separator } from "@softsurgery/ui";
 
 interface SettingsProps {
   className?: string;

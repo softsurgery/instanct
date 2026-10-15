@@ -13,8 +13,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@instanct/lib": ["../lib/src/index.ts"],
-      "@instanct/lib/*": ["../lib/src/*"]
+      "@softsurgery/lib": ["../lib/src/index.ts"],
+      "@softsurgery/lib/*": ["../lib/src/*"]
     }
   },
   "include": ["src/**/*", "nativewind-env.d.ts"],

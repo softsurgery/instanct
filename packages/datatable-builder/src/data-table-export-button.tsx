@@ -3,8 +3,8 @@ import { Table } from "@tanstack/react-table";
 import { FileSpreadsheet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Spinner } from "@instanct/components";
-import { useMediaQuery } from "@instanct/ui";
+import { Spinner } from "@softsurgery/components";
+import { useMediaQuery } from "@softsurgery/ui";
 import {
   Button,
   Dialog,
@@ -17,7 +17,7 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { DataTableConfig } from "./types";
 import { buildExportRows, downloadExcel } from "./export-to-excel";
 

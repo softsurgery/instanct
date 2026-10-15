@@ -5,7 +5,7 @@ import {
   FormStructure,
   TextFieldProps,
   TextareaFieldProps,
-} from "@instanct/form-builder";
+} from "@softsurgery/form-builder";
 import { useTranslation } from "react-i18next";
 import { ContentPageStore } from "@/hooks/stores/useContentPageStore";
 

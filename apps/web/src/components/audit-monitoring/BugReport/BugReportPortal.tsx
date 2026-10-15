@@ -2,16 +2,16 @@ import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDebounce } from "@instanct/hooks/utils";
-import { useBreadcrumb } from "@instanct/contexts";
-import { useIntro } from "@instanct/contexts";
-import { ResponseBugDto } from "@instanct/api-client";
+import { useDebounce } from "@softsurgery/hooks/utils";
+import { useBreadcrumb } from "@softsurgery/contexts";
+import { useIntro } from "@softsurgery/contexts";
+import { ResponseBugDto } from "@softsurgery/api-client";
 import { useTranslation } from "react-i18next";
 import { useBugReportColumns } from "./useBugReportColumns";
 import { useBugDeviceDialog } from "./modals/BugDeviceDialog";
-import { DataTableConfig } from "@instanct/datatable-builder";
-import { ResponseDeviceInfoDto } from "@instanct/api-client";
-import { DataTable } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
+import { ResponseDeviceInfoDto } from "@softsurgery/api-client";
+import { DataTable } from "@softsurgery/datatable-builder";
 import { Check, Clock, X } from "lucide-react";
 
 interface BugReportPortalProps {

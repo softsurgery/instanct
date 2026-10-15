@@ -2,26 +2,26 @@ import React from "react";
 import { View } from "react-native";
 import { Lock, Loader2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@instanct/lib";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { FormBuilder } from "@instanct/mobile-form-builder";
+import { cn } from "@softsurgery/lib";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { Button } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useChangePasswordFormStructure } from "./useChangePasswordFormStructure";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@instanct/api-client";
+import { ServerErrorResponse } from "@softsurgery/api-client";
 import * as Haptics from "expo-haptics";
 import { useLogout } from "@/hooks/useLogout";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface ChangePasswordProps {
   className?: string;
 }

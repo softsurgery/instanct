@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { SessionType } from '../enums/session-type.registry';
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import {
   AfterLoad,
   Column,
@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { SessionStatus } from '../enums/session-status.enum';
-import type { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
+import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
 
 @Entity('sessions')
 export class SessionEntity extends EntityHelper {

@@ -1,7 +1,7 @@
 import JSONForm, { JSONValue } from "./JsonEditor";
-import { Button } from "@instanct/ui/components/button";
-import { Textarea } from "@instanct/ui/components/textarea";
-import { cn } from "@instanct/lib";
+import { Button } from "@softsurgery/ui/components/button";
+import { Textarea } from "@softsurgery/ui/components/textarea";
+import { cn } from "@softsurgery/lib";
 import { Check, TextInitial } from "lucide-react";
 import React from "react";
 

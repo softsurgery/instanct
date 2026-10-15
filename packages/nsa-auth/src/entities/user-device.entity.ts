@@ -5,8 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { EntityHelper } from 'nsa-database';
-import type { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
+import { EntityHelper } from '@softsurgery/nsa-database';
+import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
 
 @Entity('user_devices')
 export class UserDeviceEntity extends EntityHelper {

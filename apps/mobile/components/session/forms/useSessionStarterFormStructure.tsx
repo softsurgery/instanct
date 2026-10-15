@@ -7,8 +7,8 @@ import {
   MultiSelectFieldProps,
   SelectOption,
   TimeFieldProps,
-} from "@instanct/mobile-form-builder";
-import { SegmentedToggle } from "@instanct/mobile-components";
+} from "@softsurgery/mobile-form-builder";
+import { SegmentedToggle } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
 interface useSessionStarterFormStructureProps {

@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageVariant, ResponseConversationDto, ResponseMessageDto } from "@instanct/api-client";
+import { MessageVariant, ResponseConversationDto, ResponseMessageDto } from "@softsurgery/api-client";
 
 interface UseLastSeenMessageIdProps {
   conversation?: ResponseConversationDto | null;

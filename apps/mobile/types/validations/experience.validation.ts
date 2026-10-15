@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { toDateOrNull } from "@/lib/date";
-import { LocationTypes, WorkTypes } from "@instanct/api-client";
+import { LocationTypes, WorkTypes } from "@softsurgery/api-client";
 
 // Messages are translation keys, resolved by the consumer in the "menu"
 // namespace (see useCreateExperienceFormStructure / useUpdateExperienceFormStructure).

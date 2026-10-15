@@ -1,6 +1,6 @@
 import { setDeepValue } from "@/lib/object";
 import { create } from "zustand";
-import { CreateRequestDto } from "@instanct/api-client";
+import { CreateRequestDto } from "@softsurgery/api-client";
 
 interface RequestData {
   createDto: CreateRequestDto;

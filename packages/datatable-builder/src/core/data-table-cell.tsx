@@ -2,8 +2,8 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@instanct/ui/components/avatar";
-import { cn, formatFileSize } from "@instanct/lib";
+} from "@softsurgery/ui/components/avatar";
+import { cn, formatFileSize } from "@softsurgery/lib";
 import { DataTableCellVariant } from "../types";
 import { Star } from "lucide-react";
 

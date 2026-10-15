@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { useBreadcrumb, useIntro } from "@instanct/contexts";
+import { useBreadcrumb, useIntro } from "@softsurgery/contexts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {

@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@instanct/ui';
+} from '@softsurgery/ui';
 import { DataTableColumnFilterOption } from './types';
 import { DataTableColumnComboboxFilter } from './data-table-column-combobox-filter';
 

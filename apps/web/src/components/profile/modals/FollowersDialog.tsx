@@ -1,5 +1,5 @@
 import React from "react";
-import { useDialog } from "@instanct/components";
+import { useDialog } from "@softsurgery/components";
 import { UserStore } from "@/hooks/stores/useUserStore";
 import { UserEntry } from "../UserEntry";
 import { useTranslation } from "react-i18next";

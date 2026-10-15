@@ -1,5 +1,5 @@
 import { Text, TextClassContext } from "./text";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { View, type ViewProps, type TextProps } from "react-native";
 
 type CardProps = ViewProps & { className?: string };

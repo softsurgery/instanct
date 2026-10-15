@@ -11,8 +11,8 @@
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@instanct/lib",
-    "ui": "@instanct/mobile-ui",
+    "utils": "@softsurgery/lib",
+    "ui": "@softsurgery/mobile-ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   }

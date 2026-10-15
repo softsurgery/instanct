@@ -1,6 +1,6 @@
 import React from "react";
-import { useDialog, Spinner } from "@instanct/components";
-import { Button } from "@instanct/ui";
+import { useDialog, Spinner } from "@softsurgery/components";
+import { Button } from "@softsurgery/ui";
 import { useTranslation } from "react-i18next";
 
 interface ConfigurationDeleteDialogProps {

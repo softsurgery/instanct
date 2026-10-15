@@ -9,16 +9,16 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { getTokenPayloadForWebSocket } from 'nsa-auth/utils/token-payload';
-import { AdvancedSocket } from 'nsa-helpers/http';
+import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
+import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
 import { MessageService } from '../services/message.service';
 import { CreateMessageDto } from '../dtos/message/create-message.dto';
 import { ConversationService } from '../services/conversation.service';
-import { USER_REPOSITORY, AppUserRepository } from 'nsa-um/tokens/user-access';
+import { USER_REPOSITORY, AppUserRepository } from '@softsurgery/nsa-um/tokens/user-access';
 import {
   UserPresenceEvent,
   UserPresenceService,
-} from 'nsa-um/services/user-presence.service';
+} from '@softsurgery/nsa-um/services/user-presence.service';
 import { ConversationEntity } from '../entities/conversation.entity';
 import { DeepPartial } from 'typeorm';
 

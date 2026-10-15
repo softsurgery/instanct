@@ -1,8 +1,8 @@
 import { LucideIcon } from "lucide-react-native";
 import { View } from "react-native";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 
 interface RequestDetailsCardProps {
   icon: LucideIcon;

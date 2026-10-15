@@ -1,8 +1,8 @@
 import React from "react";
 import { Linking } from "react-native";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
-import { ResponseMessageLinkDto } from "@instanct/api-client";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { ResponseMessageLinkDto } from "@softsurgery/api-client";
 import {
   ExtractedMessageLink,
   normalizeMessageLinkUrl,

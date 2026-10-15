@@ -2,14 +2,14 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDebounce } from "@instanct/hooks/utils";
-import { useBreadcrumb } from "@instanct/contexts";
-import { useIntro } from "@instanct/contexts";
-import { ResponseFeedbackDto } from "@instanct/api-client";
+import { useDebounce } from "@softsurgery/hooks/utils";
+import { useBreadcrumb } from "@softsurgery/contexts";
+import { useIntro } from "@softsurgery/contexts";
+import { ResponseFeedbackDto } from "@softsurgery/api-client";
 import { useTranslation } from "react-i18next";
 import { useFeedbackColumns } from "./useFeedbackColumns";
-import { DataTableConfig } from "@instanct/datatable-builder";
-import { DataTable } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
+import { DataTable } from "@softsurgery/datatable-builder";
 
 interface FeedbackPortalProps {
   className?: string;

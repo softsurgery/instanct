@@ -1,5 +1,5 @@
-import { Text } from "@instanct/mobile-ui";
-import { FileTypeIcon } from "@instanct/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
+import { FileTypeIcon } from "@softsurgery/mobile-components";
 import { formatFileSize } from "@/lib/files";
 import React from "react";
 import { Pressable, View } from "react-native";

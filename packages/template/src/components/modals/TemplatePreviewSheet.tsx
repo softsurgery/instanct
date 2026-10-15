@@ -1,9 +1,9 @@
 import React from "react";
-import { useSheet } from "@instanct/components";
-import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@instanct/ui";
+import { useSheet } from "@softsurgery/components";
+import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@softsurgery/ui";
 import { useTranslation } from "react-i18next";
 import { Code2, Eye, HardDrive } from "lucide-react";
-import { DataTableCell, DataTableCellVariant } from "@instanct/datatable-builder";
+import { DataTableCell, DataTableCellVariant } from "@softsurgery/datatable-builder";
 import { ResponseTemplateDto } from "../../types";
 
 export interface TemplatePreviewSheetProps {

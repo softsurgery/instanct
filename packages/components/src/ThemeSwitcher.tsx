@@ -3,7 +3,7 @@ import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { motion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 const themes = [
   {
     key: "system",

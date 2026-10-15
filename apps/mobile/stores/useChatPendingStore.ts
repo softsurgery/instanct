@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { PendingFileUpload, PendingMediaUpload, PendingTextMessage } from "@/types";
 
 interface ChatPendingStore {

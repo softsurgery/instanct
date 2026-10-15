@@ -1,5 +1,5 @@
 import { Table2 } from "lucide-react";
-import { useSheet } from "@instanct/components";
+import { useSheet } from "@softsurgery/components";
 import { useTranslation } from "react-i18next";
 import { RefTypeUpdateForm } from "../forms/RefTypeUpdateForm";
 

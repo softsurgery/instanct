@@ -1,10 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { useBreadcrumb, useIntro } from "@instanct/contexts";
+import { useBreadcrumb, useIntro } from "@softsurgery/contexts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Button, Skeleton } from "@instanct/ui";
+import { Button, Skeleton } from "@softsurgery/ui";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 import {
   TemplateEditor,

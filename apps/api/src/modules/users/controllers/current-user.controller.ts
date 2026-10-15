@@ -10,23 +10,23 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { toDto, toDtoArray } from 'nsa-database';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { UserService } from '../services/user.service';
 import { ResponseUserDto } from '../dtos/user/response-user.dto';
 import { UpdateUserDto } from '../dtos/user/update-user.dto';
 import { UserConfigurationService } from '../services/user-configuration.service';
 import { UpdateUserMapConfigurationDto } from '../dtos/configurations/update-map-configuration.dto';
-import { ResponseConfigurationNamespaceDto } from 'nsa-configurations/dtos/namespace/response-configuration-namespace.dto';
+import { ResponseConfigurationNamespaceDto } from '@softsurgery/nsa-configurations/dtos/namespace/response-configuration-namespace.dto';
 import { UpdateUserCoverDto } from '../dtos/user/update-user-cover.dto';
 import { UserBookmarkService } from '../services/user-bookmark.service';
 import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 
 @ApiTags('current-user')
 @ApiBearerAuth('access_token')

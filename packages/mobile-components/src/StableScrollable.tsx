@@ -16,7 +16,7 @@ import Animated, {
 import * as Haptics from "expo-haptics";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import type { ComponentType, ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import type { ComponentProps } from "react";

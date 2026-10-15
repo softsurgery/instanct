@@ -11,9 +11,9 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { IQueryObject } from "nsa-database";
-import { PageDto } from "nsa-database";
-import { toDto, toDtoArray } from "nsa-database";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
 import { TemplateService } from "../services/template.service";
 import { ResponseTemplateDto } from "../dtos/response-template.dto";
 import { CreateTemplateDto } from "../dtos/create-template.dto";

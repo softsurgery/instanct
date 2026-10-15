@@ -1,5 +1,5 @@
 {
-  "name": "nsa-mail",
+  "name": "@softsurgery/nsa-mail",
   "version": "0.1.0",
   "private": true,
   "files": [
@@ -47,7 +47,7 @@
     "@nestjs/config": "^4.0.2",
     "ejs": "^5.0.2",
     "juice": "^11.1.1",
-    "nsa-templates": "workspace:*"
+    "@softsurgery/nsa-templates": "workspace:*"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, DatePicker, Label } from '@instanct/ui';
+import { Button, DatePicker, Label } from '@softsurgery/ui';
 import { format } from 'date-fns';
 import { buildDateRangeFilter, parseDateRangeFilter } from './column-filter';
 

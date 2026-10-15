@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
-import { SidebarInset, SidebarProvider } from "@instanct/ui";
-import { useFooter, useIntro, useUI } from "@instanct/contexts";
+import { SidebarInset, SidebarProvider } from "@softsurgery/ui";
+import { useFooter, useIntro, useUI } from "@softsurgery/contexts";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";

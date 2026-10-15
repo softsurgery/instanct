@@ -1,8 +1,8 @@
 "use dom";
 
 import React from "react";
-import { cn } from "@instanct/lib";
-import "@instanct/lib/legal/legal-html.css";
+import { cn } from "@softsurgery/lib";
+import "@softsurgery/lib/legal/legal-html.css";
 
 export type HtmlDocumentDomProps = {
   html?: string;

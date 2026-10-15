@@ -1,8 +1,8 @@
 import { router } from "expo-router";
 import { EllipsisVertical, Search } from "lucide-react-native";
 import { Pressable, View } from "react-native";
-import { Icon } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Icon } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 
 interface ChatHeaderRightProps {
   className?: string;

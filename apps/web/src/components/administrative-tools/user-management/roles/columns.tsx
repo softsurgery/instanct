@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@instanct/datatable-builder";
-import { DataTableRowActions } from "@instanct/datatable-builder";
+import { DataTableColumnHeader } from "@softsurgery/datatable-builder";
+import { DataTableRowActions } from "@softsurgery/datatable-builder";
 import { ResponseRoleDto } from "@/types";
 import { useTranslation } from "react-i18next";
-import { DataTableConfig } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
 
 export const useRoleColumns = (
   context: DataTableConfig<ResponseRoleDto>

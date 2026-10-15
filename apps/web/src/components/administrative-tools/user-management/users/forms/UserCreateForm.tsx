@@ -2,17 +2,17 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 import { useRoles } from "@/hooks/content/useRoles";
-import { FormBuilder } from "@instanct/form-builder";
-import { mapToSelectOptions } from "@instanct/form-builder";
-import { Button } from "@instanct/ui";
-import { defineStepper } from "@instanct/ui";
+import { FormBuilder } from "@softsurgery/form-builder";
+import { mapToSelectOptions } from "@softsurgery/form-builder";
+import { Button } from "@softsurgery/ui";
+import { defineStepper } from "@softsurgery/ui";
 import { useCreateUserFormStructure } from "./useCreateUserFormStructure";
 import { ArrowLeft, ArrowRight, Save } from "lucide-react";
 import {
   createUserSchema,
   profileSchema,
 } from "@/types/validations/user.validation";
-import { Spinner } from "@instanct/components";
+import { Spinner } from "@softsurgery/components";
 import { CreateUserDto, ServerErrorResponse, Upload } from "@/types";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { useTranslation } from "react-i18next";

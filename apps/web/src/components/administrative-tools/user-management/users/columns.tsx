@@ -1,19 +1,19 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
-import { Badge } from "@instanct/ui";
+import { Badge } from "@softsurgery/ui";
 import { format } from "date-fns";
-import { DataTableColumnHeader } from "@instanct/datatable-builder";
-import { DataTableRowActions } from "@instanct/datatable-builder";
+import { DataTableColumnHeader } from "@softsurgery/datatable-builder";
+import { DataTableRowActions } from "@softsurgery/datatable-builder";
 import { ResponseUserDto } from "@/types";
-import { DataTableCell } from "@instanct/datatable-builder";
+import { DataTableCell } from "@softsurgery/datatable-builder";
 import { useTranslation } from "react-i18next";
 import UserAvatarCell from "./UserAvatarCell";
 import {
   DataTableCellVariant,
   DataTableConfig,
-} from "@instanct/datatable-builder";
-import { identifyUserAvatar } from "@instanct/lib";
+} from "@softsurgery/datatable-builder";
+import { identifyUserAvatar } from "@softsurgery/lib";
 import { UserConnectionStatus } from "@/hooks/content/user/useUserConnection";
 
 export const useUserColumns = (

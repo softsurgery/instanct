@@ -9,13 +9,13 @@ import {
   SmartphoneNfc,
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { useColorPalette } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
-import { Badge } from "@instanct/mobile-ui";
-import { Switch } from "@instanct/mobile-ui";
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { UserDevice } from "@instanct/api-client";
+import { useColorPalette } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
+import { Badge } from "@softsurgery/mobile-ui";
+import { Switch } from "@softsurgery/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { UserDevice } from "@softsurgery/api-client";
 import { getDeviceIcon } from "@/lib/device-icon";
 
 interface DeviceDetailsActionSheetProps {

@@ -1,7 +1,7 @@
 import React from "react";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { View } from "react-native";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 
 export interface NotFoundProps {
   className?: string;

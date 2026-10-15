@@ -1,6 +1,6 @@
 import { splashPrevented } from "@/lib/splash-screen";
 import { NAV_THEME, THEME } from "@/lib/theme";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { useColorScheme } from "nativewind";
 import { PortalHost } from "@rn-primitives/portal";
@@ -22,12 +22,12 @@ import {
   useColorPalette,
   PaletteProvider,
   VideoThumbnailGeneratorHost,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ApiProvider } from "@/contexts/ApiContext";
 import { LoaderProvider } from "@/contexts/LoaderContext";
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
 
 export { ErrorBoundary } from "expo-router";
 

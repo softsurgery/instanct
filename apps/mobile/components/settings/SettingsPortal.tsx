@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { identifyUser } from "@/lib/user";
 import { router } from "expo-router";
@@ -11,7 +11,7 @@ import {
   ApplicationHeader,
   StableSafeAreaView,
   StableScrollView,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { createSettingRow, SettingRow } from "./SettingsRow";
 import type { SettingRowConfig } from "./SettingsRow";
 import { useLogout } from "@/hooks/useLogout";
@@ -21,8 +21,8 @@ import { useApi } from "@/contexts/ApiContext";
 import { version } from "../../package.json";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
-import type { ServerErrorResponse } from "@instanct/api-client";
-import { Badge, Button, Icon, Separator, Text } from "@instanct/mobile-ui";
+import type { ServerErrorResponse } from "@softsurgery/api-client";
+import { Badge, Button, Icon, Separator, Text } from "@softsurgery/mobile-ui";
 
 interface SettingsPortalProps {
   className?: string;

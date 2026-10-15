@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { resolveSupportedLng, supportedLngs } from "@/i18n/config";
 
 type LanguageSwitcherProps = {

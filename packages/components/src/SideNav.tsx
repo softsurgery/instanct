@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { useRouter, usePathname } from "next/navigation";
 
 export type SideNavItem = {

@@ -4,34 +4,34 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { OAuthProvider } from '../enums/oauth.enum';
 import { RequestResetTokenDto } from '../dtos/web/request-reset-token.dto';
-import { MailService } from 'nsa-mail/services/mail.service';
-import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
+import { MailService } from '@softsurgery/nsa-mail/services/mail.service';
+import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
 import { ResponseResetTokenDto } from '../dtos/web/response-reset-token.dto';
 import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-token.dto';
 import { RequestCheckResetTokenDto } from '../dtos/web/request-check-reset-token.dto';
 import { ForgetPasswordTemplateProps } from '../types/forget-password.type';
 import { VerifyEmailTemplateProps } from '../types/verify-email.type';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
 import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
-import { BasicRoles } from 'nsa-um/enums/basic-roles.enum';
+import { BasicRoles } from '@softsurgery/nsa-um/enums/basic-roles.enum';
 import { AuthNotActiveException } from '../errors/auth.notactive.error';
-import { CreateAbstractUserDto } from 'nsa-um/dtos/abstract-user/create-abstract-user.dto';
-import { ResponseAbstractUserDto } from 'nsa-um/dtos/abstract-user/response-abstract-user.dto';
+import { CreateAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/create-abstract-user.dto';
+import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
 import {
   USER_REPOSITORY,
   USER_SERVICE,
   AppUserRecord,
   AppUserRepository,
   AppUserService,
-} from 'nsa-um/tokens/user-access';
+} from '@softsurgery/nsa-um/tokens/user-access';
 import { RequestClientUpdateMailDto } from '../dtos/client/request-client-update-mail.dto';
 import { RequestClientUpdatePasswordDto } from '../dtos/client/request-client-update-password.dto';
-import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
-import { CONFIGURATION_NAMESPACES } from 'nsa-configurations/enums/configuration-namespaces.registry';
-import { StorageService } from 'nsa-storage/services/storage.service';
-import { STORAGE_SYSTEMATICS_TOKEN } from 'nsa-storage/constants/storage-systematics.registry';
-import { buildStaticUrl } from 'nsa-helpers/url.utils';
+import { ConfigurationNamespaceService } from '@softsurgery/nsa-configurations/services/configuration-namespace.service';
+import { CONFIGURATION_NAMESPACES } from '@softsurgery/nsa-configurations/enums/configuration-namespaces.registry';
+import { StorageService } from '@softsurgery/nsa-storage/services/storage.service';
+import { STORAGE_SYSTEMATICS_TOKEN } from '@softsurgery/nsa-storage/constants/storage-systematics.registry';
+import { buildStaticUrl } from '@softsurgery/nsa-helpers/url.utils';
 import { AuthProvidersService } from './auth-provider.service';
 import { DeepPartial } from 'typeorm';
 

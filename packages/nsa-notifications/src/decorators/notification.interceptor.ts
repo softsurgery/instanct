@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { tap } from 'rxjs';
-import { AdvancedRequest } from 'nsa-helpers/http';
-import { AccessTokenPayload } from 'nsa-auth/interfaces/access-token-payload.interface';
-import { getTokenPayload } from 'nsa-auth/utils/token-payload';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
+import { AccessTokenPayload } from '@softsurgery/nsa-auth/interfaces/access-token-payload.interface';
+import { getTokenPayload } from '@softsurgery/nsa-auth/utils/token-payload';
 import { NotificationGateway } from '../gateways/notification.gateway';
 import {
   NOTIFICATION_TYPE,

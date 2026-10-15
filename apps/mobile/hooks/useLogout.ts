@@ -9,7 +9,7 @@ import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useSendFeedbackStore } from "@/stores/useFeedbackManager";
 import { useChatPendingStore } from "@/stores/useChatPendingStore";
-import { disconnectAllSockets } from "@instanct/lib";
+import { disconnectAllSockets } from "@softsurgery/lib";
 import { router } from "expo-router";
 
 export const useLogout = () => {

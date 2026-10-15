@@ -1,5 +1,5 @@
-import { Text } from "@instanct/mobile-ui";
-import { FileTypeIcon } from "@instanct/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
+import { FileTypeIcon } from "@softsurgery/mobile-components";
 import { useServerUploads } from "@/hooks/content/useServerUploads";
 import {
   formatFileSize,
@@ -7,7 +7,7 @@ import {
   isSlugLikeFilename,
   openUploadFile,
 } from "@/lib/files";
-import { ResponseMessageDto, ResponseMessageUploadFileDto, Upload } from "@instanct/api-client";
+import { ResponseMessageDto, ResponseMessageUploadFileDto, Upload } from "@softsurgery/api-client";
 import { format } from "date-fns";
 import React from "react";
 import { Pressable, View } from "react-native";

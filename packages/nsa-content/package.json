@@ -1,5 +1,5 @@
 {
-  "name": "nsa-content",
+  "name": "@softsurgery/nsa-content",
   "version": "0.1.0",
   "private": true,
   "files": [
@@ -49,11 +49,11 @@
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
-    "nsa-auth": "workspace:*",
-    "nsa-configurations": "workspace:*",
-    "nsa-database": "workspace:*",
-    "nsa-helpers": "workspace:*",
-    "nsa-logger": "workspace:*",
+    "@softsurgery/nsa-auth": "workspace:*",
+    "@softsurgery/nsa-configurations": "workspace:*",
+    "@softsurgery/nsa-database": "workspace:*",
+    "@softsurgery/nsa-helpers": "workspace:*",
+    "@softsurgery/nsa-logger": "workspace:*",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

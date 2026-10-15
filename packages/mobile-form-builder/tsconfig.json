@@ -16,22 +16,22 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@instanct/lib": [
+      "@softsurgery/lib": [
         "../lib/src/index.ts"
       ],
-      "@instanct/lib/*": [
+      "@softsurgery/lib/*": [
         "../lib/src/*"
       ],
-      "@instanct/mobile-ui": [
+      "@softsurgery/mobile-ui": [
         "../mobile-ui/src/index.ts"
       ],
-      "@instanct/mobile-ui/*": [
+      "@softsurgery/mobile-ui/*": [
         "../mobile-ui/src/*"
       ],
-      "@instanct/mobile-components": [
+      "@softsurgery/mobile-components": [
         "../mobile-components/src/index.ts"
       ],
-      "@instanct/mobile-components/*": [
+      "@softsurgery/mobile-components/*": [
         "../mobile-components/src/*"
       ]
     }

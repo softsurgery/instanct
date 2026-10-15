@@ -1,12 +1,12 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { Badge } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Input } from "@instanct/mobile-ui";
+import { Badge } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Input } from "@softsurgery/mobile-ui";
 import { StablePressable } from "./StablePressable";
-import { Separator } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Separator } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { X, Search, ChevronRight } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 import { Loader } from "./Loader";

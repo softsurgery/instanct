@@ -1,6 +1,6 @@
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getSocket } from "@instanct/lib";
+import { getSocket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { useCurrentUser } from "../users/useCurrentUser";
 import { useChatPendingStore } from "@/stores/useChatPendingStore";
@@ -9,7 +9,7 @@ import {
   prependMessageToConversationLinksCache,
 } from "@/lib/chat";
 import { messageHasLinks } from "@/lib/messageLinks";
-import { MessageVariant, ResponseMessageDto } from "@instanct/api-client";
+import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 
 interface CachedConversationMessages {
   messages: ResponseMessageDto[];

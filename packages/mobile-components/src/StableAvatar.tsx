@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import React, { createContext, useContext, useState } from "react";
 import { StyleSheet, View, ViewInstance } from "react-native";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 
 const AvatarContext = createContext<{
   showFallback: boolean;

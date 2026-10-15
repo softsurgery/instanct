@@ -1,10 +1,10 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { View } from "react-native";
 import { InspectBaseProfile } from "../profile/BaseProfile";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 
 interface InspectProfileProps {
   className?: string;

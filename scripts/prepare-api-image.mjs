@@ -8,13 +8,17 @@ const runtime = "/runtime";
 const modulesRoot = path.join(pruned, "node_modules");
 
 const sources = new Map();
+const dirByPkg = new Map();
 for (const name of fs.readdirSync(path.join(repo, "packages"))) {
   if (!name.startsWith("nsa-")) continue;
   const dist = path.join(repo, "packages", name, "dist");
   if (!fs.existsSync(path.join(dist, "index.js"))) {
     throw new Error(`missing build output for ${name}`);
   }
-  sources.set(name, dist);
+  const pkgPath = path.join(repo, "packages", name, "package.json");
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+  sources.set(pkg.name, dist);
+  dirByPkg.set(pkg.name, name);
 }
 
 function copyDist(dir) {
@@ -80,16 +84,20 @@ walk(modulesRoot, (full, entry, stat) => {
 const nested = [];
 walk(modulesRoot, (full, entry, stat) => {
   if (stat.isSymbolicLink() || !stat.isDirectory()) return;
-  const parent = path.dirname(full);
-  if (sources.has(entry.name) && parent.endsWith(`${path.sep}node_modules`)) {
-    nested.push(full);
+  const pkgPath = path.join(full, "package.json");
+  if (fs.existsSync(pkgPath)) {
+    try {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+      if (sources.has(pkg.name)) {
+        nested.push({ dir: full, name: pkg.name });
+      }
+    } catch {}
   }
 });
-nested.sort((left, right) => right.length - left.length);
+nested.sort((left, right) => right.dir.length - left.dir.length);
 
 let linked = 0;
-for (const dir of nested) {
-  const name = path.basename(dir);
+for (const { dir, name } of nested) {
   const canonical = path.join(modulesRoot, name);
   if (dir === canonical || !fs.existsSync(dir)) continue;
   if (!fs.existsSync(canonical)) {
@@ -103,13 +111,13 @@ console.log(`deduped ${linked} nested workspace copies`);
 
 const requireFromPruned = createRequire(path.join(pruned, "package.json"));
 const requireFromConfigurations = createRequire(
-  path.join(modulesRoot, "nsa-configurations/package.json"),
+  path.join(modulesRoot, "@softsurgery/nsa-configurations/package.json"),
 );
 const loggerFromConfigurations = requireFromConfigurations(
-  "nsa-logger/services/logger.service",
+  "@softsurgery/nsa-logger/services/logger.service",
 ).LoggerService;
 const loggerFromRoot = requireFromPruned(
-  "nsa-logger/services/logger.service",
+  "@softsurgery/nsa-logger/services/logger.service",
 ).LoggerService;
 if (loggerFromConfigurations !== loggerFromRoot) {
   throw new Error("LoggerService is still loaded from more than one copy");
@@ -155,7 +163,8 @@ fs.copyFileSync(
   path.join(runtime, "apps/api/package.json"),
 );
 for (const [name, dist] of sources) {
-  fs.cpSync(dist, path.join(runtime, "packages", name, "dist"), {
+  const dirName = dirByPkg.get(name) || name;
+  fs.cpSync(dist, path.join(runtime, "packages", dirName, "dist"), {
     recursive: true,
   });
 }

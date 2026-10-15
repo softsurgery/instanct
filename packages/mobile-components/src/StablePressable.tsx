@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import React from "react";
 import { Pressable } from "react-native";
 

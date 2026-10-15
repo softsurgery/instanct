@@ -1,4 +1,4 @@
-import { ResponseUserDto } from "@instanct/api-client";
+import { ResponseUserDto } from "@softsurgery/api-client";
 
 export const identifyUser = (user?: ResponseUserDto | null) => {
   if (!user) return "unknown";

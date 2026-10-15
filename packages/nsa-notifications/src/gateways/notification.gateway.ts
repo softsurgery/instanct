@@ -5,13 +5,13 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { getTokenPayloadForWebSocket } from 'nsa-auth/utils/token-payload';
-import { AdvancedSocket } from 'nsa-helpers/http';
+import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
+import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
 import { Injectable, Logger, Optional } from '@nestjs/common';
 import { NotificationService } from '../services/notification.service';
 import { NotificationEntity } from '../entities/notification.entity';
 import { NotificationType } from '../enums/notification-type.registry';
-import { UserPresenceService } from 'nsa-um/services/user-presence.service';
+import { UserPresenceService } from '@softsurgery/nsa-um/services/user-presence.service';
 
 @WebSocketGateway({
   namespace: '/notifications',

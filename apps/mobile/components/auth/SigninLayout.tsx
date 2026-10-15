@@ -1,24 +1,24 @@
 import { useApi } from "@/contexts/ApiContext";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { ServerErrorResponse } from "@instanct/api-client";
+import { ServerErrorResponse } from "@softsurgery/api-client";
 import { requestSignInDtoSchema } from "@/types/validations/auth.validation";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
-import { DividedText } from "@instanct/mobile-components";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { FormBuilder } from "@instanct/mobile-form-builder";
+import { DividedText } from "@softsurgery/mobile-components";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useSignInFormStructure } from "./useSigninFormStructure";
 import { SSOButtons } from "./SSOButtons";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 
 interface SigninProps {
   className?: string;

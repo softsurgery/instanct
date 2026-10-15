@@ -11,12 +11,12 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
-    "@instanct/api-client": "workspace:*",
-    "@instanct/components": "workspace:*",
-    "@instanct/contexts": "workspace:*",
-    "@instanct/i18n": "workspace:*",
-    "@instanct/lib": "workspace:*",
-    "@instanct/ui": "workspace:*",
+    "@softsurgery/api-client": "workspace:*",
+    "@softsurgery/components": "workspace:*",
+    "@softsurgery/contexts": "workspace:*",
+    "@softsurgery/i18n": "workspace:*",
+    "@softsurgery/lib": "workspace:*",
+    "@softsurgery/ui": "workspace:*",
     "@sentry/nextjs": "^11.0.0",
     "@tanstack/react-query": "^5.90.5",
     "i18next": "^24.2.3",

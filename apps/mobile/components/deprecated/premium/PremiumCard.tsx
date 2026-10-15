@@ -1,8 +1,8 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { LinearGradient } from "expo-linear-gradient";
 import { Check, Lock } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 
 interface FeatureItem {
   label: string;

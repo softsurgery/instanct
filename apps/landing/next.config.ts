@@ -11,11 +11,11 @@ const monorepoRoot = path.resolve(dir, "../..");
 const nextConfig: NextConfig = {
   allowedDevOrigins: getAllowedDevOrigins(),
   transpilePackages: [
-    "@instanct/ui",
-    "@instanct/lib",
-    "@instanct/components",
-    "@instanct/contexts",
-    "@instanct/i18n",
+    "@softsurgery/ui",
+    "@softsurgery/lib",
+    "@softsurgery/components",
+    "@softsurgery/contexts",
+    "@softsurgery/i18n",
   ],
   reactStrictMode: true,
   agentRules: false,

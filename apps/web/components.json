@@ -13,8 +13,8 @@
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@/components",
-    "utils": "@instanct/lib",
-    "ui": "@instanct/ui",
+    "utils": "@softsurgery/lib",
+    "ui": "@softsurgery/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },

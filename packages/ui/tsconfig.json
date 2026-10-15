@@ -24,13 +24,13 @@
       "#hooks/*": [
         "./src/hooks/*"
       ],
-      "@instanct/ui/*": [
+      "@softsurgery/ui/*": [
         "./src/*"
       ],
-      "@instanct/lib": [
+      "@softsurgery/lib": [
         "../lib/src/index.ts"
       ],
-      "@instanct/lib/*": [
+      "@softsurgery/lib/*": [
         "../lib/src/*"
       ]
     },

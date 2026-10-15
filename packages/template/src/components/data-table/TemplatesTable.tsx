@@ -1,6 +1,6 @@
 import React from "react";
-import { DataTable, DataTableConfig } from "@instanct/datatable-builder";
-import { cn } from "@instanct/lib";
+import { DataTable, DataTableConfig } from "@softsurgery/datatable-builder";
+import { cn } from "@softsurgery/lib";
 import { ResponseTemplateDto } from "../../types";
 import { useTemplateColumns } from "./useTemplateColumns";
 

@@ -1,7 +1,7 @@
 import React from "react";
-import { Icon, Text, Switch } from "@instanct/mobile-ui";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
-import { cn } from "@instanct/lib";
+import { Icon, Text, Switch } from "@softsurgery/mobile-ui";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import { cn } from "@softsurgery/lib";
 import { ChevronRight, LucideIcon } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
 

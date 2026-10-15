@@ -4,7 +4,7 @@ import {
   DataTableColumnHeader,
   DataTableRowActions,
   DataTableConfig,
-} from "@instanct/datatable-builder";
+} from "@softsurgery/datatable-builder";
 import { ResponseConfigurationNamespaceDto } from "@/types";
 import { useTranslation } from "react-i18next";
 import { ConfigurationParamTree } from "./ConfigurationParamTree";

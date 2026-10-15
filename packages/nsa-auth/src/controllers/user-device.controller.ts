@@ -8,7 +8,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { UserDeviceService } from '../services/user-device.service';
 import { UserDeviceEntity } from '../entities/user-device.entity';
 
