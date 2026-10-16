@@ -190,11 +190,29 @@ export async function getSigninMetadata(
     }
   }
 
+function normalizeOsForFingerprint(rawOs: string): string {
+  if (!rawOs) return '';
+  if (/^ios/i.test(rawOs)) return 'iOS';
+  if (/^ipados/i.test(rawOs)) return 'iPadOS';
+  return rawOs;
+}
+
+function normalizeUserAgentForFingerprint(rawUa: string): string {
+  if (!rawUa) return '';
+  return rawUa
+    .replace(/(iPhone\s+OS|CPU\s+OS|iPad\s+OS|OS)\s+[\d_]+/gi, '$1')
+    .replace(/Version\/[\d.]+/gi, 'Version')
+    .replace(/Mobile\/[A-Za-z0-9]+/gi, 'Mobile');
+}
+
+  const normalizedOs = normalizeOsForFingerprint(os);
+  const normalizedUa = normalizeUserAgentForFingerprint(userAgent);
+
   const rawFingerprint =
     bodyParams?.fingerprint ||
     (headers['x-device-fingerprint'] as string) ||
     createHash('sha256')
-      .update(`${device}|${os}|${userAgent}|${ip}`)
+      .update(`${device}|${normalizedOs}|${normalizedUa}`)
       .digest('hex');
 
   const fingerprint = rawFingerprint;

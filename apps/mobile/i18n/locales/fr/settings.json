@@ -127,7 +127,7 @@
                 "title": "Appareils et accès autorisés",
                 "description": "Gérez les appareils autorisés à accéder à votre compte",
                 "sectionTitle": "Appareils enregistrés",
-                "sectionDescription": "Gérez les appareils connectés à votre compte. Contrôlez si chaque appareil est autorisé ou révoquez son accès.",
+                "sectionDescription": "Gérez les appareils connectés à votre compte. Appuyez sur un appareil pour voir les détails ou le supprimer et déconnecter.",
                 "loading": "Chargement des appareils...",
                 "emptyTitle": "Aucun appareil enregistré",
                 "emptyDescription": "Les appareils depuis lesquels vous vous connectez apparaîtront ici.",
@@ -137,22 +137,45 @@
                 "accessAllowed": "Accès autorisé",
                 "accessRestricted": "Accès restreint",
                 "lastSignIn": "Dernière activité",
+                "details": {
+                  "title": "Détails de l'appareil",
+                  "os": "Système d'exploitation",
+                  "ipAddress": "Adresse IP",
+                  "location": "Localisation",
+                  "lastSignIn": "Dernière activité",
+                  "signIns": "Connexions",
+                  "deviceMap": "Localisation de l'appareil",
+                  "deviceInfo": "Informations sur l'appareil",
+                  "noLocation": "Détails de localisation indisponibles pour cet appareil",
+                  "approximate": "Localisation approximative basée sur l'IP de connexion",
+                  "notFound": "Appareil introuvable"
+                },
                 "actions": {
-                  "revoke": "Révoquer"
+                  "revoke": "Supprimer et déconnecter",
+                  "logoutAll": "Déconnecter tous les appareils",
+                  "logoutAllDescription": "Vous serez déconnecté de toutes les sessions actives, y compris celle-ci."
                 },
                 "revokeAlert": {
-                  "title": "Révoquer l'accès de l'appareil",
-                  "message": "Êtes-vous sûr de vouloir révoquer l'accès de cet appareil ? Vous devrez vous reconnecter depuis cet appareil.",
+                  "title": "Supprimer et déconnecter l'appareil",
+                  "message": "Êtes-vous sûr de vouloir supprimer et déconnecter cet appareil ? Vous devrez vous reconnecter depuis cet appareil.",
                   "cancel": "Annuler",
-                  "confirm": "Révoquer"
+                  "confirm": "Supprimer et déconnecter"
+                },
+                "logoutAllAlert": {
+                  "title": "Déconnecter tous les appareils",
+                  "message": "Êtes-vous sûr de vouloir déconnecter tous les appareils ? Vous serez déconnecté de cet appareil et de tous les autres appareils.",
+                  "cancel": "Annuler",
+                  "confirm": "Tout déconnecter"
                 },
                 "toasts": {
                   "allowedSuccess": "Accès de l'appareil autorisé",
                   "allowedError": "Échec de la mise à jour des autorisations de l'appareil",
                   "disallowedSuccess": "Accès de l'appareil restreint",
                   "disallowedError": "Échec de la mise à jour des autorisations de l'appareil",
-                  "revokeSuccess": "Accès de l'appareil révoqué avec succès",
-                  "revokeError": "Échec de la révocation de l'appareil"
+                  "revokeSuccess": "Appareil supprimé et déconnecté avec succès",
+                  "revokeError": "Échec de la suppression et déconnexion de l'appareil",
+                  "logoutAllSuccess": "Tous les appareils ont été déconnectés",
+                  "logoutAllError": "Échec de la déconnexion de tous les appareils"
                 }
               },
               "two-factor-authentication": {

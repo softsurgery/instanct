@@ -66,17 +66,20 @@ export class AuthController {
     );
     const meta = await getSigninMetadata(req, signInDto);
     let deviceId: string | undefined;
+    let isNewDevice = false;
     if (result.user?.id) {
-      const userDevice = await this.userDeviceService.registerOrUpdateDevice(
-        result.user.id,
-        meta,
-      );
+      const { device: userDevice, isNew } =
+        await this.userDeviceService.registerOrUpdateDevice(
+          result.user.id,
+          meta,
+        );
       deviceId = userDevice.id;
+      isNewDevice = isNew;
     }
     req.logInfo = {
       fullname: identifyUser(result?.user as AbstractUserEntity),
     };
-    if (result.user?.id) {
+    if (result.user?.id && isNewDevice) {
       req.notificationInfo = {
         userId: result.user.id,
         clientName: identifyUser(result.user as AbstractUserEntity),
@@ -124,25 +127,28 @@ export class AuthController {
     const result = await this.authService.handleOAuth(provider, idToken);
     if (result?.user?.id) {
       const meta = await getSigninMetadata(req, oauthDto);
-      const userDevice = await this.userDeviceService.registerOrUpdateDevice(
-        result.user.id,
-        meta,
-      );
+      const { device: userDevice, isNew } =
+        await this.userDeviceService.registerOrUpdateDevice(
+          result.user.id,
+          meta,
+        );
       req.logInfo = {
         fullname: identifyUser(result.user as AbstractUserEntity),
       };
-      req.notificationInfo = {
-        userId: result.user.id,
-        clientName: identifyUser(result.user as AbstractUserEntity),
-        device: meta.device,
-        os: meta.os,
-        ip: meta.ip,
-        location: meta.location,
-        time: meta.time,
-        when: meta.when,
-        deviceId: userDevice.id,
-        fingerprint: meta.fingerprint,
-      };
+      if (isNew) {
+        req.notificationInfo = {
+          userId: result.user.id,
+          clientName: identifyUser(result.user as AbstractUserEntity),
+          device: meta.device,
+          os: meta.os,
+          ip: meta.ip,
+          location: meta.location,
+          time: meta.time,
+          when: meta.when,
+          deviceId: userDevice.id,
+          fingerprint: meta.fingerprint,
+        };
+      }
     }
     return result;
   }

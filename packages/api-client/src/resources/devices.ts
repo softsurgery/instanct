@@ -26,11 +26,17 @@ export function createDevicesResource(http: AxiosInstance) {
     return response.data;
   };
 
+  const revokeAllDevices = async (): Promise<{ success: boolean }> => {
+    const response = await http.delete<{ success: boolean }>('/auth/devices');
+    return response.data;
+  };
+
   return {
     getDevices,
     trustDevice,
     untrustDevice,
     revokeDevice,
+    revokeAllDevices,
   };
 }
 

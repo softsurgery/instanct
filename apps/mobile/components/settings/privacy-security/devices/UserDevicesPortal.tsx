@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, TouchableOpacity, Alert, RefreshControl } from "react-native";
-import { type ActionSheetRef } from "react-native-actions-sheet";
-import {
-  Monitor,
-  Loader2,
-  ChevronRight,
-} from "lucide-react-native";
+import React from "react";
+import { View, Alert, RefreshControl, Pressable } from "react-native";
+import { router } from "expo-router";
+import { Monitor, Loader2, ChevronRight, LogOut } from "lucide-react-native";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import * as Haptics from "expo-haptics";
 import { toast } from "sonner-native";
-
 import { cn } from "@softsurgery/lib";
 import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { StableSafeAreaView } from "@softsurgery/mobile-components";
@@ -18,14 +13,19 @@ import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { StableScrollView } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { Badge } from "@softsurgery/mobile-ui";
-import { Switch } from "@softsurgery/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
 import { Separator } from "@softsurgery/mobile-ui";
 import { Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
 import { UserDevice } from "@softsurgery/api-client";
-import { getDeviceId } from "@/lib/device-id";
-import { DeviceDetailsActionSheet } from "./DeviceDetailsActionSheet";
+import { useLogout } from "@/hooks/useLogout";
 import { getDeviceIcon } from "@/lib/device-icon";
+import { useCurrentDeviceId } from "@/hooks/useCurrentDeviceId";
+import {
+  isCurrentDevice,
+  getDeviceDisplayName,
+  getDeviceSubtitle,
+} from "@/lib/device";
 
 interface UserDevicesPortalProps {
   className?: string;
@@ -35,15 +35,8 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
   const api = useApi();
   const { t } = useTranslation("settings");
   const queryClient = useQueryClient();
-  const [currentDeviceId, setCurrentDeviceId] = useState<string | null>(null);
-  const [selectedDevice, setSelectedDevice] = useState<UserDevice | null>(null);
-  const actionSheetRef = useRef<ActionSheetRef>(null);
-
-  useEffect(() => {
-    getDeviceId()
-      .then((id) => setCurrentDeviceId(id))
-      .catch(() => setCurrentDeviceId(null));
-  }, []);
+  const logout = useLogout();
+  const currentDeviceId = useCurrentDeviceId();
 
   const {
     data: devices = [],
@@ -55,129 +48,71 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
     queryFn: async () => api.devices.getDevices(),
   });
 
-  const trustMutation = useMutation({
-    mutationFn: (id: string) => api.devices.trustDevice(id),
-    onSuccess: (updatedDevice) => {
-      queryClient.invalidateQueries({ queryKey: ["user-devices"] });
-      if (selectedDevice && selectedDevice.id === updatedDevice.id) {
-        setSelectedDevice(updatedDevice);
-      }
-      toast.success(
-        t(
-          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.allowedSuccess",
-          "Device allowed access",
-        ),
-      );
-    },
-    onError: () => {
-      toast.error(
-        t(
-          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.allowedError",
-          "Failed to update device permission",
-        ),
-      );
-    },
-  });
-
-  const untrustMutation = useMutation({
-    mutationFn: (id: string) => api.devices.untrustDevice(id),
-    onSuccess: (updatedDevice) => {
-      queryClient.invalidateQueries({ queryKey: ["user-devices"] });
-      if (selectedDevice && selectedDevice.id === updatedDevice.id) {
-        setSelectedDevice(updatedDevice);
-      }
-      toast.success(
-        t(
-          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.disallowedSuccess",
-          "Device access restricted",
-        ),
-      );
-    },
-    onError: () => {
-      toast.error(
-        t(
-          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.disallowedError",
-          "Failed to update device permission",
-        ),
-      );
-    },
-  });
-
-  const revokeMutation = useMutation({
-    mutationFn: (id: string) => api.devices.revokeDevice(id),
+  const logoutAllMutation = useMutation({
+    mutationFn: () => api.devices.revokeAllDevices(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-devices"] });
-      actionSheetRef.current?.hide();
-      setSelectedDevice(null);
       toast.success(
         t(
-          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.revokeSuccess",
-          "Device access revoked successfully",
+          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.logoutAllSuccess",
+          "Logged out of all devices",
         ),
       );
+      logout();
     },
     onError: () => {
       toast.error(
         t(
-          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.revokeError",
-          "Failed to revoke device",
+          "settings.account.screens.privacy-security.screens.account-security.devices.toasts.logoutAllError",
+          "Failed to log out of all devices",
         ),
       );
     },
   });
 
-  const handleToggleTrust = (device: UserDevice) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (device.isTrusted) {
-      untrustMutation.mutate(device.id);
-    } else {
-      trustMutation.mutate(device.id);
-    }
-  };
-
-  const handleRevoke = (device: UserDevice) => {
+  const handleLogoutAllDevices = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     Alert.alert(
       t(
-        "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.title",
-        "Revoke Device Access",
+        "settings.account.screens.privacy-security.screens.account-security.devices.logoutAllAlert.title",
+        "Log Out of All Devices",
       ),
       t(
-        "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.message",
-        "Are you sure you want to revoke access for this device? You will need to sign in again from that device.",
+        "settings.account.screens.privacy-security.screens.account-security.devices.logoutAllAlert.message",
+        "Are you sure you want to log out of all devices? This will sign you out of this device and log out all other devices.",
       ),
       [
         {
           text: t(
-            "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.cancel",
+            "settings.account.screens.privacy-security.screens.account-security.devices.logoutAllAlert.cancel",
             "Cancel",
           ),
           style: "cancel",
         },
         {
           text: t(
-            "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.confirm",
-            "Revoke",
+            "settings.account.screens.privacy-security.screens.account-security.devices.logoutAllAlert.confirm",
+            "Log Out All",
           ),
           style: "destructive",
-          onPress: () => revokeMutation.mutate(device.id),
+          onPress: () => logoutAllMutation.mutate(),
         },
       ],
     );
   };
 
-
-
   const handleDevicePress = (device: UserDevice) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelectedDevice(device);
-    actionSheetRef.current?.show();
+    router.push({
+      pathname: "/main/profile/device-details",
+      params: {
+        id: device.id,
+        deviceData: JSON.stringify(device),
+      },
+    });
   };
 
-  const isMutating =
-    trustMutation.isPending ||
-    untrustMutation.isPending ||
-    revokeMutation.isPending;
+  const isMutating = logoutAllMutation.isPending;
 
   return (
     <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
@@ -200,21 +135,30 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
       <StableScrollView
         className="bg-background"
         refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              refetch();
+            }}
+          />
         }
       >
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(
               "settings.account.screens.privacy-security.screens.account-security.devices.sectionDescription",
-              "Manage devices that have signed into your account. Toggle access or tap a device to view full details.",
+              "Manage devices that have signed into your account. Tap a device to view full details or remove and log out.",
             )}
           </Text>
         </View>
 
         {isLoading ? (
           <View className="p-10 flex-row justify-center items-center gap-3">
-            <Icon as={Loader2} className="animate-spin text-primary" size={24} />
+            <Icon
+              as={Loader2}
+              className="animate-spin text-primary"
+              size={24}
+            />
             <Text className="text-muted-foreground font-medium">
               {t(
                 "settings.account.screens.privacy-security.screens.account-security.devices.loading",
@@ -241,20 +185,18 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
             </Text>
           </View>
         ) : (
-          <View className="bg-card border-t border-b border-border flex-col">
+          <View className="flex-col">
             {devices.map((device, index) => {
-              const isThisDevice =
-                currentDeviceId && device.fingerprint === currentDeviceId;
+              const isThisDevice = isCurrentDevice(device, currentDeviceId);
               const DeviceIcon = getDeviceIcon(device.os, device.deviceName);
               const isLast = index === devices.length - 1;
 
               return (
                 <View key={device.id}>
                   {/* Single Line Device Item */}
-                  <TouchableOpacity
-                    activeOpacity={0.7}
+                  <Pressable
                     onPress={() => handleDevicePress(device)}
-                    className="px-4 py-3.5 flex-row items-center justify-between bg-card"
+                    className="px-4 py-3.5 flex-row items-center justify-between active:opacity-70"
                   >
                     {/* Left: Device Icon & Name */}
                     <View className="flex-row items-center gap-3 flex-1 pr-3">
@@ -272,7 +214,7 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
                             className="font-semibold text-base text-foreground"
                             numberOfLines={1}
                           >
-                            {device.deviceName || device.os || "Device"}
+                            {getDeviceDisplayName(device)}
                           </Text>
 
                           {isThisDevice && (
@@ -280,7 +222,7 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
                               variant="secondary"
                               className="bg-primary/15 border-primary/20 px-1.5 py-0"
                             >
-                              <Text className="text-[10px] font-semibold text-primary">
+                              <Text className="text-sm font-semibold text-primary">
                                 {t(
                                   "settings.account.screens.privacy-security.screens.account-security.devices.thisDevice",
                                   "This Device",
@@ -295,26 +237,19 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
                             className="text-xs text-muted-foreground mt-0.5"
                             numberOfLines={1}
                           >
-                            {device.os}
+                            {getDeviceSubtitle(device)}
                           </Text>
                         )}
                       </View>
                     </View>
 
-                    {/* Right: Allowed Access Switch & Chevron */}
-                    <View className="flex-row items-center gap-3">
-                      <Switch
-                        checked={device.isTrusted}
-                        onCheckedChange={() => handleToggleTrust(device)}
-                        disabled={isMutating}
-                      />
-                      <Icon
-                        as={ChevronRight}
-                        size={18}
-                        className="text-muted-foreground"
-                      />
-                    </View>
-                  </TouchableOpacity>
+                    {/* Right: Chevron */}
+                    <Icon
+                      as={ChevronRight}
+                      size={18}
+                      className="text-muted-foreground"
+                    />
+                  </Pressable>
 
                   {!isLast && <Separator className="ml-16" />}
                 </View>
@@ -322,23 +257,42 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
             })}
           </View>
         )}
-      </StableScrollView>
 
-      {/* ActionSheet for Device Details */}
-      <DeviceDetailsActionSheet
-        ref={actionSheetRef}
-        device={selectedDevice}
-        isThisDevice={
-          !!(
-            selectedDevice &&
-            currentDeviceId &&
-            selectedDevice.fingerprint === currentDeviceId
-          )
-        }
-        onToggleTrust={handleToggleTrust}
-        onRevoke={handleRevoke}
-        isMutating={isMutating}
-      />
+        {/* Option to Log Out All Devices */}
+        {!isLoading && devices.length > 0 && (
+          <View className="p-4 mt-2 mb-8">
+            <Button
+              variant="destructive-outline"
+              size="lg"
+              className="rounded-xl flex-row items-center justify-center gap-2"
+              onPress={handleLogoutAllDevices}
+              disabled={isMutating}
+            >
+              {logoutAllMutation.isPending ? (
+                <Icon
+                  as={Loader2}
+                  size={18}
+                  className="animate-spin text-destructive"
+                />
+              ) : (
+                <Icon as={LogOut} size={18} className="text-destructive" />
+              )}
+              <Text className="text-destructive text-md font-bold">
+                {t(
+                  "settings.account.screens.privacy-security.screens.account-security.devices.actions.logoutAll",
+                  "Log Out of All Devices",
+                )}
+              </Text>
+            </Button>
+            <Text className="text-xs text-muted-foreground text-center mt-2 px-4 leading-normal">
+              {t(
+                "settings.account.screens.privacy-security.screens.account-security.devices.actions.logoutAllDescription",
+                "You will be signed out from all active sessions and devices, including this one.",
+              )}
+            </Text>
+          </View>
+        )}
+      </StableScrollView>
     </StableSafeAreaView>
   );
 };

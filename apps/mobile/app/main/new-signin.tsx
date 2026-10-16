@@ -15,6 +15,8 @@ export default function Screen() {
     ip?: string;
     time?: string;
     when?: string;
+    deviceId?: string;
+    fingerprint?: string;
   }>();
 
   return <NewSignInPortal {...params} />;

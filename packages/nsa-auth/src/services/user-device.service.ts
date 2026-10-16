@@ -14,19 +14,73 @@ export class UserDeviceService {
   async registerOrUpdateDevice(
     userId: string,
     metadata: SigninMetadata & { fingerprint?: string },
-  ): Promise<UserDeviceEntity> {
+  ): Promise<{ device: UserDeviceEntity; isNew: boolean }> {
     if (!userId) {
       throw new Error('UserId is required for device registration');
     }
 
     const fingerprint = metadata.fingerprint || 'unknown-device';
 
-    const device = await this.userDeviceRepository.findOne({
+    let device = await this.userDeviceRepository.findOne({
       where: {
         userId,
         fingerprint,
       },
     });
+
+    // If not matched by exact fingerprint, check if this is an existing device that was updated
+    if (!device && metadata.os && metadata.device) {
+      const isCurrentIos =
+        metadata.os.toLowerCase().includes('ios') ||
+        metadata.device.toLowerCase().includes('iphone') ||
+        metadata.device.toLowerCase().includes('ipad');
+
+      const isCurrentAndroid =
+        metadata.os.toLowerCase().includes('android');
+
+      if (isCurrentIos || isCurrentAndroid) {
+        const existingDevices = await this.userDeviceRepository.findAll({
+          where: { userId },
+          order: { lastSignInAt: 'DESC' },
+        });
+
+        const matchingDevice = existingDevices.find((d) => {
+          if (isCurrentIos) {
+            const isTargetIos =
+              d.os?.toLowerCase().includes('ios') ||
+              d.deviceName?.toLowerCase().includes('iphone') ||
+              d.deviceName?.toLowerCase().includes('ipad');
+            if (
+              isTargetIos &&
+              (d.deviceName === metadata.device ||
+                (d.deviceName?.toLowerCase().includes('iphone') &&
+                  metadata.device?.toLowerCase().includes('iphone')) ||
+                (d.deviceName?.toLowerCase().includes('ipad') &&
+                  metadata.device?.toLowerCase().includes('ipad')))
+            ) {
+              return true;
+            }
+          }
+
+          if (isCurrentAndroid) {
+            const isTargetAndroid = d.os?.toLowerCase().includes('android');
+            if (isTargetAndroid && d.deviceName === metadata.device) {
+              return true;
+            }
+          }
+
+          return false;
+        });
+
+        if (matchingDevice) {
+          device = matchingDevice;
+          this.logger.log(
+            `Matched existing device ${device.id} (${device.deviceName}) across update for user ${userId}. Preserving device identity and updating fingerprint to ${fingerprint}`,
+          );
+          device.fingerprint = fingerprint;
+        }
+      }
+    }
 
     const now = new Date();
 
@@ -45,7 +99,7 @@ export class UserDeviceService {
       this.logger.log(
         `Updated existing device ${updated.id} for user ${userId} (Sign-in #${updated.signInCount})`,
       );
-      return updated;
+      return { device: updated, isNew: false };
     }
 
     const newDevice = await this.userDeviceRepository.save({
@@ -66,7 +120,7 @@ export class UserDeviceService {
       `Registered new device ${newDevice.id} (fingerprint: ${fingerprint}) for user ${userId}`,
     );
 
-    return newDevice;
+    return { device: newDevice, isNew: true };
   }
 
   async getUserDevices(userId: string): Promise<UserDeviceEntity[]> {
@@ -115,6 +169,21 @@ export class UserDeviceService {
     }
 
     await this.userDeviceRepository.remove(device);
-    this.logger.log(`Revoked device ${id} for user ${userId}`);
+    this.logger.log(`Removed and logged out device ${id} for user ${userId}`);
+  }
+
+  @Transactional()
+  async revokeAllDevices(userId: string): Promise<void> {
+    const devices = await this.userDeviceRepository.findAll({
+      where: { userId },
+    });
+
+    if (devices.length > 0) {
+      const ids = devices.map((d) => d.id);
+      await this.userDeviceRepository.deleteMany(ids);
+      this.logger.log(
+        `Removed and logged out all (${devices.length}) devices for user ${userId}`,
+      );
+    }
   }
 }

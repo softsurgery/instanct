@@ -123,6 +123,52 @@
                                     }
                                 }
                             },
+                            "devices": {
+                                "title": "Devices",
+                                "description": "Manage devices that have signed into your account",
+                                "sectionDescription": "Manage devices that have signed into your account. Tap a device to view full details or remove and log out.",
+                                "loading": "Loading devices...",
+                                "emptyTitle": "No registered devices",
+                                "emptyDescription": "Devices you sign in from will appear here.",
+                                "thisDevice": "This Device",
+                                "lastSignIn": "Last active",
+                                "details": {
+                                    "title": "Device Details",
+                                    "os": "Operating System",
+                                    "ipAddress": "IP Address",
+                                    "location": "Location",
+                                    "lastSignIn": "Last active",
+                                    "signIns": "Sign-ins",
+                                    "deviceMap": "Device Location",
+                                    "deviceInfo": "Device Information",
+                                    "noLocation": "Location details unavailable for this device",
+                                    "approximate": "Approximate location based on sign-in IP",
+                                    "notFound": "Device not found"
+                                },
+                                "actions": {
+                                    "revoke": "Remove and Log Out",
+                                    "logoutAll": "Log Out of All Devices",
+                                    "logoutAllDescription": "You will be signed out from all active sessions and devices, including this one."
+                                },
+                                "revokeAlert": {
+                                    "title": "Remove and Log Out Device",
+                                    "message": "Are you sure you want to remove and log out this device? You will need to sign in again from that device.",
+                                    "cancel": "Cancel",
+                                    "confirm": "Remove and Log Out"
+                                },
+                                "logoutAllAlert": {
+                                    "title": "Log Out of All Devices",
+                                    "message": "Are you sure you want to log out of all devices? This will sign you out of this device and log out all other devices.",
+                                    "cancel": "Cancel",
+                                    "confirm": "Log Out All"
+                                },
+                                "toasts": {
+                                    "revokeSuccess": "Device removed and logged out successfully",
+                                    "revokeError": "Failed to remove and log out device",
+                                    "logoutAllSuccess": "Logged out of all devices",
+                                    "logoutAllError": "Failed to log out of all devices"
+                                }
+                            },
                             "two-factor-authentication": {
                                 "title": "Two-Factor Authentication",
                                 "description": "Add an extra layer of protection for sign in"

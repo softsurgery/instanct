@@ -67,15 +67,33 @@ export class UserDeviceController {
     return this.userDeviceService.untrustDevice(id, req.user!.sub);
   }
 
-  @Delete(':id')
+  @Delete()
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Revoke a device',
-    description: 'Revoke access for a registered device.',
+    summary: 'Remove and log out all devices',
+    description:
+      'Remove and log out all registered devices of the authenticated user.',
   })
   @ApiResponse({
     status: 200,
-    description: 'Device successfully revoked.',
+    description: 'All devices successfully removed and logged out.',
+  })
+  async revokeAllDevices(
+    @Request() req: AdvancedRequest,
+  ): Promise<{ success: boolean }> {
+    await this.userDeviceService.revokeAllDevices(req.user!.sub);
+    return { success: true };
+  }
+
+  @Delete(':id')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Remove and log out a device',
+    description: 'Remove and log out a registered device.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Device successfully removed and logged out.',
   })
   async revokeDevice(
     @Param('id') id: string,

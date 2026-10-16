@@ -100,3 +100,4 @@ export const formatLastSeen = (date: Date, t: TFunction) => {
     count: duration[unit],
   });
 };
+
