@@ -78,8 +78,7 @@ export const LocationMap = ({
   const insets = useSafeAreaInsets();
   const [isFullscreen, setIsFullscreen] = React.useState(false);
 
-  const numLat =
-    typeof latitude === "string" ? parseFloat(latitude) : latitude;
+  const numLat = typeof latitude === "string" ? parseFloat(latitude) : latitude;
   const numLng =
     typeof longitude === "string" ? parseFloat(longitude) : longitude;
 
@@ -98,7 +97,13 @@ export const LocationMap = ({
       latitudeDelta: initialDelta.latitudeDelta,
       longitudeDelta: initialDelta.longitudeDelta,
     };
-  }, [hasCoordinates, numLat, numLng, initialDelta.latitudeDelta, initialDelta.longitudeDelta]);
+  }, [
+    hasCoordinates,
+    numLat,
+    numLng,
+    initialDelta.latitudeDelta,
+    initialDelta.longitudeDelta,
+  ]);
 
   const resolvedMapStyle =
     customMapStyle !== undefined
@@ -142,6 +147,43 @@ export const LocationMap = ({
     return null;
   }
 
+  const renderLocationPill = (extraClassName?: string) => {
+    if (!location) return null;
+    return (
+      <View
+        className={cn(
+          "bg-card/95 backdrop-blur-md p-4 rounded-2xl border border-border",
+          extraClassName,
+        )}
+        style={{
+          shadowColor: "#000",
+          shadowOpacity: 0.2,
+          shadowRadius: 6,
+          elevation: 5,
+        }}
+      >
+        <View className="flex-row items-center gap-3">
+          <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center flex-shrink-0">
+            <Icon as={MapPin} size={20} className="text-primary" />
+          </View>
+          <View className="flex-1">
+            <Text
+              className="text-base font-bold text-foreground"
+              numberOfLines={2}
+            >
+              {location}
+            </Text>
+            {subFallbackText && (
+              <Text className="text-xs text-muted-foreground mt-0.5">
+                {subFallbackText}
+              </Text>
+            )}
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View
       style={style}
@@ -162,7 +204,10 @@ export const LocationMap = ({
         pitchEnabled={pitchEnabled}
       >
         {renderMarker ? (
-          renderMarker({ latitude: region.latitude, longitude: region.longitude })
+          renderMarker({
+            latitude: region.latitude,
+            longitude: region.longitude,
+          })
         ) : (
           <Marker
             coordinate={region}
@@ -173,44 +218,34 @@ export const LocationMap = ({
         )}
       </MapView>
 
-      {/* Location floating pill */}
-      {showLocationPill && location && (
+      {/* Floating controls (location pill & fullscreen toggle) */}
+      {(Boolean(showLocationPill && location) || showFullscreenToggle) && (
         <View
+          pointerEvents="box-none"
           className={cn(
-            "absolute left-3 bg-card/90 backdrop-blur-md px-3 py-2 rounded-xl border border-border flex-row items-center gap-2",
-            showFullscreenToggle ? "right-14" : "right-3",
+            "absolute left-3 right-3 flex-row items-center gap-4",
             pillPosition === "top" ? "top-3" : "bottom-3",
+            !(showLocationPill && location) && "justify-end",
           )}
         >
-          <Icon as={MapPin} size={15} className="text-primary flex-shrink-0" />
-          <Text
-            className="text-xs font-medium text-foreground flex-1"
-            numberOfLines={1}
-          >
-            {location}
-          </Text>
-        </View>
-      )}
+          {showLocationPill && location && renderLocationPill("flex-1")}
 
-      {/* Fullscreen toggle button */}
-      {showFullscreenToggle && (
-        <Pressable
-          onPress={() => setIsFullscreen(true)}
-          hitSlop={6}
-          className={cn(
-            "absolute right-3 h-9 w-9 items-center justify-center rounded-xl bg-card/90 backdrop-blur-md border border-border active:opacity-80",
-            pillPosition === "top" ? "top-3" : "bottom-3",
+          {showFullscreenToggle && (
+            <Pressable
+              onPress={() => setIsFullscreen(true)}
+              hitSlop={6}
+              className="h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-card/95 backdrop-blur-md border border-border active:opacity-80"
+              style={{
+                shadowColor: "#000",
+                shadowOpacity: 0.2,
+                shadowRadius: 6,
+                elevation: 5,
+              }}
+            >
+              <Icon as={Maximize2} size={20} className="text-foreground" />
+            </Pressable>
           )}
-          style={{
-            shadowColor: "#000",
-            shadowOpacity: 0.15,
-            shadowRadius: 4,
-            shadowOffset: { width: 0, height: 2 },
-            elevation: 3,
-          }}
-        >
-          <Icon as={Maximize2} size={16} className="text-foreground" />
-        </Pressable>
+        </View>
       )}
 
       {/* Fullscreen Modal */}
@@ -262,36 +297,16 @@ export const LocationMap = ({
             <Icon as={X} size={18} className="text-foreground" />
           </Pressable>
 
-          {/* Bottom location pill in fullscreen */}
+          {/* Location pill in fullscreen */}
           {location && (
             <View
-              className="absolute left-4 right-4 bg-card/95 backdrop-blur-md p-4 rounded-2xl border border-border"
+              pointerEvents="box-none"
+              className="absolute left-4 right-4 flex-row items-center"
               style={{
                 bottom: insets.bottom + 16,
-                shadowColor: "#000",
-                shadowOpacity: 0.2,
-                shadowRadius: 6,
-                elevation: 5,
               }}
             >
-              <View className="flex-row items-center gap-3">
-                <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center">
-                  <Icon as={MapPin} size={20} className="text-primary" />
-                </View>
-                <View className="flex-1">
-                  <Text
-                    className="text-base font-bold text-foreground"
-                    numberOfLines={2}
-                  >
-                    {location}
-                  </Text>
-                  {subFallbackText && (
-                    <Text className="text-xs text-muted-foreground mt-0.5">
-                      {subFallbackText}
-                    </Text>
-                  )}
-                </View>
-              </View>
+              {renderLocationPill("flex-1")}
             </View>
           )}
         </View>
