@@ -18,11 +18,11 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
     && test -x node_modules/typescript/bin/tsc \
     && node -e "require('bcrypt')"
 
-COPY scripts/build-shared-packages.mjs scripts/prepare-api-image.mjs ./scripts/
+COPY scripts/mjs/build-shared-packages.mjs scripts/mjs/prepare-api-image.mjs ./scripts/mjs/
 COPY packages/tsconfig.nsa.json ./packages/tsconfig.nsa.json
 COPY --parents packages/nsa-* ./
 
-RUN node scripts/build-shared-packages.mjs \
+RUN node scripts/mjs/build-shared-packages.mjs \
     && test -f packages/nsa-database/dist/index.js \
     && test -f packages/nsa-auth/dist/index.js
 
@@ -36,7 +36,7 @@ RUN rm -f apps/api/*.tsbuildinfo \
 
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
     pnpm --filter instanct-api --prod --store-dir /pnpm/store deploy --legacy --ignore-scripts /pruned \
-    && node scripts/prepare-api-image.mjs
+    && node scripts/mjs/prepare-api-image.mjs
 
 FROM node:22-alpine AS runner
 

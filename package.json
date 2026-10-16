@@ -12,7 +12,7 @@
     "data-flow": "pnpm --filter instanct-data-flow build && pnpm --filter instanct-data-flow start:prod",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check:expo": "node ./scripts/check-expo.mjs",
+    "check:expo": "node ./scripts/mjs/check-expo.mjs",
     "check-types": "pnpm run check:shared-deps && turbo run check-types",
     "clean": "turbo run clean && rm -rf node_modules .turbo"
   },

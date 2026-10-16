@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const packagesDir = path.join(root, 'packages');
 const outDir = path.join(packagesDir, '.nsa-out');
 const lockFile = path.join(packagesDir, '.nsa-build.lock');
