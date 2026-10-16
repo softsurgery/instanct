@@ -338,6 +338,15 @@ export default function MainLayout() {
               }}
             />
             <Stack.Screen
+              name="settings/faqs"
+              options={{
+                title: "faq",
+                headerShown: false,
+                animation: "fade_from_bottom",
+                animationDuration: 200,
+              }}
+            />
+            <Stack.Screen
               name="settings/terms"
               options={{
                 title: "settings.termsOfService",
