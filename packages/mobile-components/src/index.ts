@@ -10,6 +10,7 @@ export type { HtmlDocumentProps } from "./html/HtmlDocument";
 export * from "./LanguageSwitcher";
 export * from "./Loader";
 export * from "./MarkedInput";
+export * from "./MaterialTopTabs";
 export * from "./MultiSelectDialog";
 export * from "./NotFound";
 export * from "./PhotoPreview";

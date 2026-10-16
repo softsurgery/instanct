@@ -16,4 +16,3 @@ export const MaterialTopTabs = withLayoutContext<
 
 export type { MaterialTopTabNavigationOptions };
 export { createMaterialTopTabNavigator };
-
