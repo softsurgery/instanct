@@ -21,11 +21,8 @@ export default ({ config }) => ({
 
     supportsTablet: true,
     bundleIdentifier: "com.instanct.instanctma",
-    // Home-screen icon. Expo turns this into the 1024pt AppIcon asset.
     icon: APP_ICON,
-    // Marketing version shown in Xcode and on the App Store (CFBundleShortVersionString).
     version,
-    // Build number for TestFlight / App Store uploads (CFBundleVersion).
     buildNumber: "1",
 
     config: {
@@ -49,14 +46,12 @@ export default ({ config }) => ({
   android: {
     ...config.android,
 
+    icon: APP_ICON,
     adaptiveIcon: {
       backgroundColor: "#E6F4FE",
-      foregroundImage:
-        "./assets/images/android-icon-foreground.png",
-      backgroundImage:
-        "./assets/images/android-icon-background.png",
-      monochromeImage:
-        "./assets/images/android-icon-monochrome.png",
+      foregroundImage: "./assets/images/android-icon-foreground.png",
+      backgroundImage: "./assets/images/android-icon-background.png",
+      monochromeImage: "./assets/images/android-icon-monochrome.png",
     },
 
     config: {
@@ -70,12 +65,11 @@ export default ({ config }) => ({
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
     package: "com.instanct.instanctma",
-
-    // Android build number.
     versionCode: 1,
   },
 
   plugins: [
+    "expo-dev-client",
     "expo-font",
     "expo-localization",
     "expo-router",

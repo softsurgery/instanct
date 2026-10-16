@@ -536,6 +536,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.4.0
+      expo:
+        specifier: 58.0.7
+        version: 58.0.7(318a18dc5da9b2b192b8107e49bd6391)
       expo-application:
         specifier: ~58.1.1
         version: 58.1.1(expo@58.0.7)
@@ -638,9 +641,15 @@ importers:
       lucide-react-native:
         specifier: ^0.546.0
         version: 0.546.0(react-native-svg@15.15.5(react-native@0.88.0-rc.4(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0))(react-native@0.88.0-rc.4(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
+      react:
+        specifier: 19.3.0
+        version: 19.3.0
       react-i18next:
         specifier: ^16.2.3
         version: 16.6.6(i18next@25.10.10(typescript@5.9.3))(react-dom@19.3.0(react@19.3.0))(react-native@0.88.0-rc.4(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)(typescript@5.9.3)
+      react-native:
+        specifier: 0.88.0-rc.4
+        version: 0.88.0-rc.4(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       react-native-actions-sheet:
         specifier: ^10.1.2
         version: 10.1.2(dc2216ecd2dafbac62871f838d144ae4)
