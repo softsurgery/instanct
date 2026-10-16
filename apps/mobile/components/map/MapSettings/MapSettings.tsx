@@ -4,11 +4,7 @@ import { useMapStore } from "@/stores/useMapStore";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
-import {
-  createSettingRow,
-  SettingRow,
-  SettingRowConfig,
-} from "../../settings/SettingsRow";
+import { SettingRow, SettingRowProps } from "../../settings/SettingsRow";
 import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { Separator } from "@softsurgery/mobile-ui";
@@ -30,7 +26,7 @@ interface SettingsSection {
   key: string;
   title: string;
   description: string;
-  rows: SettingRowConfig[];
+  rows: SettingRowProps[];
 }
 
 export const MapSettings = ({ className }: MapSettingsProps) => {
@@ -82,9 +78,9 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
       title: t("map-settings.discovery-range.title"),
       description: t("map-settings.discovery-range.description"),
       rows: [
-        createSettingRow({
+        {
           Component: StableRadiusRow,
-        }),
+        },
       ],
     },
     {
@@ -92,7 +88,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
       title: t("map-settings.display-preferences.title"),
       description: t("map-settings.display-preferences.description"),
       rows: [
-        createSettingRow({
+        {
           title: t("map-settings.display-preferences.show-usernames.title"),
           description: t(
             "map-settings.display-preferences.show-usernames.description",
@@ -105,7 +101,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
               }
             />
           ),
-        }),
+        },
       ],
     },
 
@@ -114,14 +110,14 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
     //   title: "Location Updates",
     //   description: "Manage how often your location is shared.",
     //   rows: [
-    //     createSettingRow({
+    //     {
     //       title: "Auto Refresh",
     //       description: "Automatically update nearby users",
     //       leftIcon: RefreshCw,
     //       rightComponent: (
     //         <Switch checked={autoRefresh} onCheckedChange={setAutoRefresh} />
     //       ),
-    //     }),
+    //     },
     //   ],
     // },
     // {
@@ -129,7 +125,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
     //   title: "Privacy & Visibility",
     //   description: "Control who can see you on the map.",
     //   rows: [
-    //     createSettingRow({
+    //     {
     //       title: "Location Sharing",
     //       description: "Currently visible to everyone",
     //       leftIcon: MapPin,
@@ -138,7 +134,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
     //           <Text className="text-xs font-medium">Active</Text>
     //         </Badge>
     //       ),
-    //     }),
+    //     },
     //   ],
     // },
   ];
@@ -205,7 +201,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
               <View className="px-4 pb-4 flex flex-col">
                 {section.rows.map((row, index) => (
                   <View key={index} className="flex flex-col gap-2">
-                    <SettingRow className="mt-1" {...createSettingRow(row)} />
+                    <SettingRow className="mt-1" {...row} />
                     {index < section.rows.length - 1 && (
                       <Separator className="mb-2" />
                     )}

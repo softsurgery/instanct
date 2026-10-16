@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Lock, Loader2 } from "lucide-react-native";
+import { Loader2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { cn } from "@softsurgery/lib";
 import { ApplicationHeader } from "@softsurgery/mobile-components";
@@ -87,21 +87,14 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
         ]}
       />
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
-        <View className="border border-primary/20 bg-primary/5 p-4">
-          <View className="flex-row justify-center items-center gap-3">
-            <Icon
-              as={Lock}
-              size={28}
-              className="mt-0.5 flex-shrink-0 text-primary"
-            />
-            <Text className="flex-1 text-sm leading-5 text-muted-foreground">
-              {t(
-                "settings.account.screens.privacy-security.screens.account-security.change-password.forms.description",
-              )}
-            </Text>
-          </View>
+        <View className="p-4">
+          <Text className="text-sm text-muted-foreground leading-relaxed">
+            {t(
+              "settings.account.screens.privacy-security.screens.account-security.change-password.forms.description",
+            )}
+          </Text>
         </View>
-        <FormBuilder structure={structure} className="mt-4 px-2" />
+        <FormBuilder structure={structure} className="px-2" />
       </StableKeyboardAwareScrollView>
 
       {!isKeyboardVisible && (

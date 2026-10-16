@@ -2,11 +2,10 @@ import { cn } from "@softsurgery/lib";
 import { LucideIcon } from "lucide-react-native";
 import React, { useMemo } from "react";
 import { Pressable, View } from "react-native";
-import { StablePressable } from "@softsurgery/mobile-components";
 import { Icon } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
 
-export interface SettingRowConfig {
+export interface SettingRowProps {
   title?: string;
   description?: string;
   leftIcon?: LucideIcon;
@@ -16,10 +15,6 @@ export interface SettingRowConfig {
   Component?: React.ComponentType;
   className?: string;
   onPress?: () => void;
-}
-
-interface SettingRowProps extends SettingRowConfig {
-  className?: string;
 }
 
 export const SettingRow = ({
@@ -42,12 +37,12 @@ export const SettingRow = ({
 
   if (Component) {
     return isPressable ? (
-      <StablePressable
+      <Pressable
         onPress={onPress}
-        className={cn("w-full", disabled && "opacity-50")}
+        className={cn("w-full active:opacity-50", disabled && "opacity-50")}
       >
         <View className={cn(className)}>{renderedComponent}</View>
-      </StablePressable>
+      </Pressable>
     ) : (
       <View className={cn(disabled && "opacity-50")}>
         <View className={cn(className)}>{renderedComponent}</View>
@@ -103,7 +98,3 @@ export const SettingRow = ({
     <View className={cn(disabled && "opacity-50", className)}>{content}</View>
   );
 };
-
-// Builder function for creating typed row configurations
-export const createSettingRow = (config: SettingRowConfig): SettingRowConfig =>
-  config;

@@ -203,14 +203,8 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
         }
       >
-        <View className="p-5 bg-card border-b border-border mb-4">
-          <Text className="text-lg font-semibold">
-            {t(
-              "settings.account.screens.privacy-security.screens.account-security.devices.sectionTitle",
-              "Registered Devices",
-            )}
-          </Text>
-          <Text className="text-sm text-muted-foreground mt-1 leading-relaxed">
+        <View className="p-4">
+          <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(
               "settings.account.screens.privacy-security.screens.account-security.devices.sectionDescription",
               "Manage devices that have signed into your account. Toggle access or tap a device to view full details.",

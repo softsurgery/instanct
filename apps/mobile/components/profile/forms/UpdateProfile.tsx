@@ -21,6 +21,7 @@ import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
 import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 import { AppHeaderBack } from "@softsurgery/mobile-components";
 
 interface UpdateProfileProps {
@@ -153,6 +154,11 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
         ]}
       />
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
+        <View className="p-4">
+          <Text className="text-sm text-muted-foreground leading-relaxed">
+            {t("settings.account.screens.profile.description")}
+          </Text>
+        </View>
         <FormBuilder structure={structure} className="px-2" />
       </StableKeyboardAwareScrollView>
       {!isKeyboardVisible && (

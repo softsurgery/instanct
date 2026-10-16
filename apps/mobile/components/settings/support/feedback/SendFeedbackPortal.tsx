@@ -86,7 +86,7 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
         ]}
       />
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
-        <View className="px-5 pt-4 pb-2">
+        <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("settings.support.screens.send-feedback.description")}
           </Text>
