@@ -45,6 +45,7 @@
     "react-native": "0.88.0-rc.4",
     "react-native-actions-sheet": "*",
     "react-native-gesture-handler": "*",
+    "react-native-maps": "*",
     "react-native-reanimated": "4.7.0",
     "react-native-render-html": "*",
     "react-native-safe-area-context": "*"

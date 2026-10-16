@@ -9,6 +9,8 @@ export { default as HtmlDocument } from "./html/HtmlDocument";
 export type { HtmlDocumentProps } from "./html/HtmlDocument";
 export * from "./LanguageSwitcher";
 export * from "./Loader";
+export * from "./LocationMap";
+export * from "./lib/mapStyles";
 export * from "./MarkedInput";
 export * from "./MaterialTopTabs";
 export * from "./MultiSelectDialog";
