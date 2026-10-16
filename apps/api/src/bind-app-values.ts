@@ -10,6 +10,12 @@ import { bindEventType } from '@softsurgery/nsa-logger/enums/event-type.registry
 import { bindNotificationType } from '@softsurgery/nsa-notifications/enums/notification-type.registry';
 import { bindSessionType } from '@softsurgery/nsa-sessions/enums/session-type.registry';
 import { bindStorageSystematics } from '@softsurgery/nsa-storage/constants/storage-systematics.registry';
+import {
+  bindUserDto,
+  bindUserEntity,
+} from '@softsurgery/nsa-um/registries/user-binding.registry';
+import { ResponseUserDto } from './modules/users/dtos/user/response-user.dto';
+import { UserEntity } from './modules/users/entities/user.entity';
 
 bindEventType(EventType);
 bindNotificationType(NotificationType);
@@ -17,3 +23,5 @@ bindStaticMessage(StaticMessageEnum);
 bindSessionType(SessionType);
 bindConfigurationNamespaces(ConfigurationNamespaces);
 bindStorageSystematics(STORAGE_SYSTEMATICS);
+bindUserDto(ResponseUserDto);
+bindUserEntity(UserEntity);

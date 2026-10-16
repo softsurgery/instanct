@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { NotificationType } from '../enums/notification-type.registry';
 import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
+import { getUserDto } from '@softsurgery/nsa-um/registries/user-binding.registry';
 
 export class ResponseNotificationDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -21,9 +22,9 @@ export class ResponseNotificationDto extends ResponseDtoHelper {
   @Expose()
   userId?: string;
 
-  @ApiProperty({ type: ResponseAbstractUserDto })
+  @ApiProperty({ type: () => getUserDto() })
   @Expose()
-  @Type(() => ResponseAbstractUserDto)
+  @Type(() => getUserDto())
   user: ResponseAbstractUserDto;
 
   @ApiProperty({ type: Object })

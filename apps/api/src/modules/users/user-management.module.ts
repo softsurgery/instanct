@@ -1,5 +1,15 @@
-import { Global, Module, forwardRef } from '@nestjs/common';
-import { USER_REPOSITORY, USER_SERVICE } from '@softsurgery/nsa-um/tokens/user-access';
+import { Global, Module, OnModuleInit, forwardRef } from '@nestjs/common';
+import {
+  USER_REPOSITORY,
+  USER_SERVICE,
+} from '@softsurgery/nsa-um/tokens/user-access';
+import {
+  USER_DTO,
+  USER_ENTITY,
+  bindUserDto,
+  bindUserEntity,
+} from '@softsurgery/nsa-um/registries/user-binding.registry';
+import { ResponseUserDto } from './dtos/user/response-user.dto';
 import { FollowService } from 'src/modules/users/services/follow.service';
 import { NotificationModule } from '@softsurgery/nsa-notifications/notifications.module';
 import { LoggerModule } from '@softsurgery/nsa-logger/logger.module';
@@ -86,6 +96,8 @@ import { AdminPresenceGateway } from './gateways/admin-presence.gateway';
     UserBlockRepository,
     { provide: USER_SERVICE, useExisting: UserService },
     { provide: USER_REPOSITORY, useExisting: UserRepository },
+    { provide: USER_DTO, useValue: ResponseUserDto },
+    { provide: USER_ENTITY, useValue: UserEntity },
   ],
   exports: [
     UserPresenceService,
@@ -124,6 +136,8 @@ import { AdminPresenceGateway } from './gateways/admin-presence.gateway';
     UserBlockRepository,
     USER_SERVICE,
     USER_REPOSITORY,
+    USER_DTO,
+    USER_ENTITY,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -148,4 +162,9 @@ import { AdminPresenceGateway } from './gateways/admin-presence.gateway';
     forwardRef(() => SessionModule),
   ],
 })
-export class UserManagementModule {}
+export class UserManagementModule implements OnModuleInit {
+  onModuleInit() {
+    bindUserDto(ResponseUserDto);
+    bindUserEntity(UserEntity);
+  }
+}
