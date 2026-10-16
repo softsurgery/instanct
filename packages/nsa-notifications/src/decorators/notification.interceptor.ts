@@ -55,11 +55,16 @@ export class NotificationInterceptor implements NestInterceptor {
     const { notificationInfo } = request;
 
     for (const type of types) {
-      if (type === this.notificationType.NEW_SIGNIN) {
+      const isNewSignin =
+        type === this.notificationType.NEW_SIGNIN ||
+        type === 'NEW_SIGNIN';
+
+      if (isNewSignin) {
+        if (!notificationInfo?.userId) continue;
         void this.notificationGateway.notifyUser(
-          notificationInfo?.userId as string,
+          notificationInfo.userId as string,
           type,
-          notificationInfo ?? {},
+          notificationInfo,
         );
         continue;
       }

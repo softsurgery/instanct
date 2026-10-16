@@ -48,7 +48,6 @@ export default function MainLayout() {
   } = useNotifications({
     consequences: {
       [NotificationType.TEST]: () => {},
-      [NotificationType.NEW_SIGIN]: () => {},
       [NotificationType.NEW_SIGNIN]: () => {},
       [NotificationType.NEW_MESSAGE]: () => {},
       [NotificationType.REQUEST_RECEIVED]: () => {
@@ -254,6 +253,13 @@ export default function MainLayout() {
               name="profile/devices"
               options={{
                 title: "devices",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="profile/device-details"
+              options={{
+                title: "deviceDetails",
                 headerShown: false,
               }}
             />

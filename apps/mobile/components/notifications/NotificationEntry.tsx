@@ -1,11 +1,13 @@
 import { timeAgo } from "@/lib/date";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { View, Pressable } from "react-native";
 import { Image } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { NotificationType, ResponseNotificationDto } from "@softsurgery/api-client";
+import {
+  NotificationType,
+  ResponseNotificationDto,
+} from "@softsurgery/api-client";
 import { HTMLText } from "@softsurgery/mobile-components";
-import { StablePressable } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { router } from "expo-router";
@@ -61,9 +63,11 @@ export const NotificationEntry = ({
     }
   };
 
+  const isNewSignin = notification.type === NotificationType.NEW_SIGNIN;
+
   //profile picture side-effect
   const { uploads: profileUploads } = useServerImages({
-    ids: [notification.payload.pictureId],
+    ids: isNewSignin ? [] : [notification.payload?.pictureId],
     fallbacks: ["?", ""],
     wrapperClassName:
       "border border-border bg-background rounded-full shadow-md",
@@ -72,8 +76,14 @@ export const NotificationEntry = ({
   const profilePictureSource = profileUploads?.[0];
   const isUnread = isUnreadProp ?? !notification.readAt;
 
+  const imageSource = isNewSignin
+    ? require("@/assets/images/new-signin.png")
+    : profilePictureSource
+      ? profilePictureSource
+      : require("@/assets/images/icon.png");
+
   return (
-    <StablePressable
+    <Pressable
       className={cn(
         "flex flex-row items-center gap-2 px-2 py-1 rounded-xl",
         isUnread ? "bg-primary/10" : "bg-transparent",
@@ -81,14 +91,7 @@ export const NotificationEntry = ({
       )}
       onPress={onPress}
     >
-      <Image
-        className="w-16 h-16 rounded-full"
-        source={
-          profilePictureSource
-            ? profilePictureSource
-            : require("@/assets/images/icon.png")
-        }
-      />
+      <Image className="w-16 h-16 rounded-full" source={imageSource} />
       <View className="relative flex flex-col gap-2 px-2 py-1 flex-1">
         <HTMLText
           variant="large"
@@ -113,6 +116,6 @@ export const NotificationEntry = ({
         )}
         {/* <Text className="text-xs">{JSON.stringify(notification.payload)}</Text> */}
       </View>
-    </StablePressable>
+    </Pressable>
   );
 };

@@ -126,7 +126,12 @@ export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
           }}
           onEndReachedThreshold={0.5}
           refreshControl={
-            <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={() => {
+                refetch();
+              }}
+            />
           }
           ListEmptyComponent={
             !isPending ? (

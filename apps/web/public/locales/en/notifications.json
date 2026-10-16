@@ -5,7 +5,7 @@
   },
   "descriptions": {
     "TEST": "This is a test notification description designed to verify that the notification system is working properly.",
-    "NEW_SIGNIN": "We noticed a new sigin from a new device"
+    "NEW_SIGNIN": "We noticed a new sign-in from a new device"
   },
   "notifications": {
     "name": "Notifications",

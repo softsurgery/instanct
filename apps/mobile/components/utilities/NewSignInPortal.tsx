@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Clock,
   MapPin,
-  ShieldAlert,
   ShieldCheck,
   ShieldX,
   Wifi,
@@ -21,6 +20,7 @@ import { StableScrollView } from "@softsurgery/mobile-components";
 import { Badge } from "@softsurgery/mobile-ui";
 import { Button } from "@softsurgery/mobile-ui";
 import { Icon } from "@softsurgery/mobile-ui";
+import { Image } from "@softsurgery/mobile-ui";
 import { Separator } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
 
@@ -65,7 +65,12 @@ const RESOLUTIONS: Record<
 /**
  * Row displaying a single piece of information about the reported sign-in.
  */
-const SignInDetailRow = ({ icon, label, value, hint }: Omit<SignInDetail, 'key'>) => (
+const SignInDetailRow = ({
+  icon,
+  label,
+  value,
+  hint,
+}: Omit<SignInDetail, "key">) => (
   <View className="flex-row items-center gap-3 px-4 py-3">
     <View className="h-9 w-9 items-center justify-center rounded-xl bg-background">
       <Icon as={icon} size={18} className="text-muted-foreground" />
@@ -172,9 +177,10 @@ export const NewSignInPortal = ({
 
       <StableScrollView className="bg-background">
         <View className="items-center px-6 pt-8 pb-8">
-          <View className="h-16 w-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
-            <Icon as={ShieldAlert} size={30} className="text-primary" />
-          </View>
+          <Image
+            source={require("@/assets/images/new-signin.png")}
+            className="w-20 h-20 rounded-2xl shadow-md border border-border"
+          />
 
           <Text variant="h4" className="text-center mt-4">
             {t(`${TRANSLATION_PREFIX}.title`)}
