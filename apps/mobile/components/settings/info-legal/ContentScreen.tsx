@@ -18,12 +18,17 @@ type ContentScreenProps = {
   slug: "terms" | "privacy" | "about" | "faqs" | "support";
   fallbackTitle: string;
   className?: string;
+  /**
+   * Open links in the device browser instead of navigating inside this screen's WebView.
+   */
+  openLinksExternally?: boolean;
 };
 
 export function ContentScreen({
   slug,
   fallbackTitle,
   className,
+  openLinksExternally = true,
 }: ContentScreenProps) {
   const api = useApi();
   const { i18n } = useTranslation();
@@ -135,6 +140,7 @@ export function ContentScreen({
             onReady={handleReady}
             scrollEnabled
             bounces={true}
+            openLinksExternally={openLinksExternally}
           />
         </View>
       </View>

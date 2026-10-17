@@ -1,6 +1,36 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Linking, Platform } from "react-native";
 import HtmlDocumentDom from "./HtmlDocumentDom";
+
+const EXTERNAL_URL = /^(https?:|mailto:|tel:|sms:)/i;
+const SPECIAL_SCHEME = /^(mailto:|tel:|sms:)/i;
+
+function isSameOrigin(url: string, documentUrl: string) {
+  try {
+    return new URL(url).origin === new URL(documentUrl).origin;
+  } catch {
+    return url === documentUrl;
+  }
+}
+
+function shouldOpenOutsideWebView(
+  url: string,
+  documentUrl: string | null,
+  navigationType?: string,
+) {
+  if (!url || !EXTERNAL_URL.test(url)) return false;
+  if (SPECIAL_SCHEME.test(url)) return true;
+  if (
+    navigationType === "reload" ||
+    navigationType === "backforward" ||
+    navigationType === "formsubmit" ||
+    navigationType === "formresubmit"
+  ) {
+    return false;
+  }
+  if (!documentUrl) return false;
+  return !isSameOrigin(url, documentUrl);
+}
 
 export type HtmlDocumentProps = {
   html?: string;
@@ -24,6 +54,11 @@ export type HtmlDocumentProps = {
   bouncing?: boolean;
   /** Native container ViewStyle */
   style?: import("react-native").StyleProp<import("react-native").ViewStyle>;
+  /**
+   * Open http(s), mailto, tel, and sms links in the device browser
+   * instead of navigating this WebView.
+   */
+  openLinksExternally?: boolean;
 };
 
 export const DEFAULT_DOM_BRIDGE_INJECTION_SCRIPT = `
@@ -53,7 +88,20 @@ export default function HtmlDocument({
   bounces,
   bouncing,
   style,
+  openLinksExternally = false,
 }: HtmlDocumentProps) {
+  const documentUrlRef = React.useRef<string | null>(null);
+  const recentlyOpenedUrl = React.useRef<{ url: string; at: number } | null>(
+    null,
+  );
+
+  const openExternalUrl = React.useCallback((url: string) => {
+    const now = Date.now();
+    const recent = recentlyOpenedUrl.current;
+    if (recent && recent.url === url && now - recent.at < 800) return;
+    recentlyOpenedUrl.current = { url, at: now };
+    Linking.openURL(url).catch(() => {});
+  }, []);
   const resolvedWidth = React.useMemo(() => {
     if (width !== undefined) return width;
     if (style && typeof style === "object" && "width" in style) {
@@ -97,9 +145,58 @@ export default function HtmlDocument({
             : event?.nativeEvent?.data;
         if (payload?.type === "HTML_READY") {
           onReady?.();
+        } else if (
+          openLinksExternally &&
+          payload?.type === "OPEN_EXTERNAL_LINK" &&
+          typeof payload.url === "string"
+        ) {
+          openExternalUrl(payload.url);
         }
       } catch {}
       dom?.onMessage?.(event);
+    };
+
+    const handleShouldStartLoadWithRequest: NonNullable<
+      import("expo/dom").DOMProps["onShouldStartLoadWithRequest"]
+    > = (request) => {
+      const allow = dom?.onShouldStartLoadWithRequest?.(request) ?? true;
+      if (!allow) return false;
+      if (!openLinksExternally || request.isTopFrame === false) return true;
+      if (
+        shouldOpenOutsideWebView(
+          request.url,
+          documentUrlRef.current,
+          request.navigationType,
+        )
+      ) {
+        openExternalUrl(request.url);
+        return false;
+      }
+      return true;
+    };
+
+    const handleLoadEnd: NonNullable<
+      import("expo/dom").DOMProps["onLoadEnd"]
+    > = (event) => {
+      const url = event.nativeEvent?.url;
+      if (openLinksExternally && typeof url === "string" && url.length > 0) {
+        documentUrlRef.current = url;
+      }
+      dom?.onLoadEnd?.(event);
+    };
+
+    const handleOpenWindow: NonNullable<
+      import("expo/dom").DOMProps["onOpenWindow"]
+    > = (event) => {
+      const url = event.nativeEvent?.targetUrl;
+      if (
+        openLinksExternally &&
+        typeof url === "string" &&
+        shouldOpenOutsideWebView(url, documentUrlRef.current, "click")
+      ) {
+        openExternalUrl(url);
+      }
+      dom?.onOpenWindow?.(event);
     };
 
     const baseStyle = {
@@ -121,6 +218,14 @@ export default function HtmlDocument({
         dom?.showsHorizontalScrollIndicator ?? false,
       style: [baseStyle, dom?.style, style].filter(Boolean),
       onMessage: handleMessage,
+      onLoadEnd: handleLoadEnd,
+      ...(openLinksExternally
+        ? {
+            setSupportMultipleWindows: false,
+            onShouldStartLoadWithRequest: handleShouldStartLoadWithRequest,
+            onOpenWindow: handleOpenWindow,
+          }
+        : {}),
       ...(mergedInjectedScript
         ? { injectedJavaScriptBeforeContentLoaded: mergedInjectedScript }
         : {}),
@@ -129,6 +234,8 @@ export default function HtmlDocument({
     dom,
     enableBridgeInjection,
     onReady,
+    openExternalUrl,
+    openLinksExternally,
     finalScrollEnabled,
     finalBounces,
     resolvedWidth,
@@ -145,6 +252,7 @@ export default function HtmlDocument({
       width={resolvedWidth}
       scrollEnabled={finalScrollEnabled}
       bounces={finalBounces}
+      openLinksExternally={openLinksExternally}
     />
   );
 }

@@ -16,7 +16,36 @@ export type HtmlDocumentDomProps = {
   scrollEnabled?: boolean;
   /** Whether bouncing/overscroll is enabled in the DOM document. Defaults to false. */
   bounces?: boolean;
+  /** Ask the native host to open external links outside this WebView. */
+  openLinksExternally?: boolean;
 };
+
+const EXTERNAL_HREF = /^(https?:|mailto:|tel:|sms:|\/\/)/i;
+
+function postWebViewMessage(payload: { type: string; url?: string }) {
+  const message = JSON.stringify(payload);
+  const win = window as Window & {
+    ReactNativeWebView?: { postMessage?: (data: string) => void };
+    webkit?: {
+      messageHandlers?: {
+        ReactNativeWebView?: { postMessage?: (data: string) => void };
+      };
+    };
+  };
+
+  if (typeof win.ReactNativeWebView?.postMessage === "function") {
+    win.ReactNativeWebView.postMessage(message);
+    return true;
+  }
+
+  const webkitPost = win.webkit?.messageHandlers?.ReactNativeWebView?.postMessage;
+  if (typeof webkitPost === "function") {
+    webkitPost(message);
+    return true;
+  }
+
+  return false;
+}
 
 export default function HtmlDocumentDom({
   html,
@@ -26,6 +55,7 @@ export default function HtmlDocumentDom({
   width,
   scrollEnabled = false,
   bounces = false,
+  openLinksExternally = false,
 }: HtmlDocumentDomProps) {
   const formattedWidth = React.useMemo(() => {
     if (width === undefined || width === null) {
@@ -147,17 +177,7 @@ export default function HtmlDocumentDom({
     const notifyReady = () => {
       if (cancelled) return;
       try {
-        if ((window as any).ReactNativeWebView?.postMessage) {
-          (window as any).ReactNativeWebView.postMessage(
-            JSON.stringify({ type: "HTML_READY" }),
-          );
-        } else if (
-          (window as any).webkit?.messageHandlers?.ReactNativeWebView?.postMessage
-        ) {
-          (window as any).webkit.messageHandlers.ReactNativeWebView.postMessage(
-            JSON.stringify({ type: "HTML_READY" }),
-          );
-        } else {
+        if (!postWebViewMessage({ type: "HTML_READY" })) {
           setTimeout(notifyReady, 40);
         }
       } catch {
@@ -172,6 +192,30 @@ export default function HtmlDocumentDom({
       cancelAnimationFrame(rafId);
     };
   }, [html]);
+
+  React.useEffect(() => {
+    if (!openLinksExternally) return;
+
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const anchor = target.closest("a");
+      if (!anchor) return;
+
+      const rawHref = anchor.getAttribute("href")?.trim() ?? "";
+      if (!rawHref || !EXTERNAL_HREF.test(rawHref)) return;
+
+      const url = anchor.href;
+      if (!url) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      postWebViewMessage({ type: "OPEN_EXTERNAL_LINK", url });
+    };
+
+    document.addEventListener("click", handleClick, true);
+    return () => document.removeEventListener("click", handleClick, true);
+  }, [openLinksExternally]);
 
   return (
     <>
