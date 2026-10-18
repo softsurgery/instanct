@@ -17,7 +17,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner-native";
 import { useApi } from "@/contexts/ApiContext";
-import { version } from "../../package.json";
+import { getAppVersionInfo } from "@/lib/app-version";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
 import type { ServerErrorResponse } from "@softsurgery/api-client";
@@ -39,6 +39,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
   const api = useApi();
   const queryClient = useQueryClient();
   const { t: tSettings } = useTranslation("settings");
+  const { installedVersion } = React.useMemo(() => getAppVersionInfo(), []);
 
   const settingsSections: SettingsSection[] = [
     {
@@ -320,7 +321,9 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
                 </Button>
 
                 <Text className="pt-1 text-center text-xs text-muted-foreground">
-                  {tSettings("settings.session.version", { version })}
+                  {tSettings("settings.session.version", {
+                    version: installedVersion,
+                  })}
                 </Text>
               </View>
             </View>

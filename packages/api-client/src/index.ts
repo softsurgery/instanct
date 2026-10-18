@@ -26,4 +26,5 @@ export type { RoleResource } from "./resources/roles";
 export type { PermissionResource } from "./resources/permission";
 export type { UploadResource } from "./resources/storage";
 export type { LandingConfigurationResource } from "./resources/landing-configuration";
+export type { AppVersionResource } from "./resources/app-version";
 export * from "./types";

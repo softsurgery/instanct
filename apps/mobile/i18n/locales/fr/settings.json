@@ -347,6 +347,17 @@
         "success": "Compte supprimé avec succès.",
         "error": "Échec de la suppression du compte. Veuillez réessayer."
       }
+    },
+    "updateGate": {
+      "title": "Mise à jour requise",
+      "description": "Une version plus récente d'Instanct est nécessaire pour continuer. Veuillez mettre à jour l'application pour y accéder.",
+      "updateButton": "Mettre à jour",
+      "installedVersion": "Installée : v{{version}}",
+      "requiredVersion": "Requise : v{{version}}",
+      "urlNotConfigured": "Le lien de mise à jour pour votre plateforme n'est pas encore disponible. Veuillez réessayer ultérieurement ou contacter le support.",
+      "retryButton": "Vérifier à nouveau",
+      "checking": "Vérification de la version...",
+      "linkUnavailable": "Lien de mise à jour indisponible"
     }
   },
   "map-settings": {

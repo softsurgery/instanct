@@ -28,6 +28,8 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ApiProvider } from "@/contexts/ApiContext";
 import { LoaderProvider } from "@/contexts/LoaderContext";
 import { usePreferencePersistStore } from "@softsurgery/hooks";
+import { useVersionPersistStore } from "@/stores/useVersionPersistStore";
+import { ForceUpdateGate } from "@/components/version/ForceUpdateGate";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -69,6 +71,7 @@ function RootLayoutContent() {
           />
           <PortalHost />
           <VideoThumbnailGeneratorHost />
+          <ForceUpdateGate />
         </View>
       </GestureHandlerRootView>
     </KeyboardProvider>
@@ -78,9 +81,10 @@ function RootLayoutContent() {
 function RootLayout() {
   const { colorScheme } = useColorScheme();
   const isPreferenceReady = usePreferencePersistStore((state) => state.isReady);
+  const isVersionReady = useVersionPersistStore((state) => state.isReady);
 
   React.useEffect(() => {
-    if (!isPreferenceReady) return;
+    if (!isPreferenceReady || !isVersionReady) return;
 
     void (async () => {
       try {
@@ -90,7 +94,7 @@ function RootLayout() {
         // Splash may already be hidden (e.g. dev fast refresh).
       }
     })();
-  }, [isPreferenceReady]);
+  }, [isPreferenceReady, isVersionReady]);
 
   return (
     <ApiProvider>

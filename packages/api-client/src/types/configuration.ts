@@ -54,5 +54,19 @@ export enum ApplicationConfigurationParam {
   LANGUAGES = "languages",
   APP_METADATA_NAME = "appMetaData.name",
   APP_METADATA_DESCRIPTION = "appMetaData.description",
+  VERSION_IOS_MIN_VERSION = "version.ios.minVersion",
+  VERSION_ANDROID_MIN_VERSION = "version.android.minVersion",
+  VERSION_IOS_STORE_URL = "version.ios.storeUrl",
+  VERSION_ANDROID_STORE_URL = "version.android.storeUrl",
+}
+
+export interface PlatformVersionPolicyDto {
+  minVersion: string;
+  storeUrl: string;
+}
+
+export interface AppVersionPolicyDto {
+  ios: PlatformVersionPolicyDto;
+  android: PlatformVersionPolicyDto;
 }
 

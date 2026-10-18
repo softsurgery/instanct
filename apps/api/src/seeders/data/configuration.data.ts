@@ -195,4 +195,30 @@ export const applicationConfiguration = [
     variant: ParamVariant.STRING,
     value: '',
   },
+  {
+    name: 'version.ios.minVersion',
+    description: 'Minimum supported iOS app version (semver X.Y.Z)',
+    variant: ParamVariant.STRING,
+    value: '1.0.0',
+  },
+  {
+    name: 'version.android.minVersion',
+    description: 'Minimum supported Android app version (semver X.Y.Z)',
+    variant: ParamVariant.STRING,
+    value: '1.0.0',
+  },
+  {
+    name: 'version.ios.storeUrl',
+    description:
+      'Apple App Store URL for Instanct iOS app (e.g. https://apps.apple.com/app/id...)',
+    variant: ParamVariant.STRING,
+    value: '',
+  },
+  {
+    name: 'version.android.storeUrl',
+    description: 'Google Play Store URL for Instanct Android app',
+    variant: ParamVariant.STRING,
+    value:
+      'https://play.google.com/store/apps/details?id=com.instanct.instanctma',
+  },
 ];

@@ -26,6 +26,7 @@ import { createUserResource } from "./users";
 import { createBugResource } from "./bug";
 import { createFeedbackResource } from "./feedback";
 import { createTemplateResource } from "./template";
+import { createAppVersionResource } from "./app-version";
 
 export function createResources(http: AxiosInstance) {
   return {
@@ -60,6 +61,7 @@ export function createResources(http: AxiosInstance) {
     education: createEducationResource(http),
     refImpl: createRefImplResource(http),
     landingConfiguration: createLandingConfigurationResource(http),
+    appVersion: createAppVersionResource(http),
   };
 }
 
