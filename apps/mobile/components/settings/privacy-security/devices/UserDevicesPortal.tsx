@@ -17,7 +17,7 @@ import { Button } from "@softsurgery/mobile-ui";
 import { Separator } from "@softsurgery/mobile-ui";
 import { Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
-import { UserDevice } from "@softsurgery/api-client";
+import { ResponseUserDeviceDto } from "@softsurgery/api-client";
 import { useLogout } from "@/hooks/useLogout";
 import { getDeviceIcon } from "@/lib/device-icon";
 import { useCurrentDeviceId } from "@/hooks/useCurrentDeviceId";
@@ -43,13 +43,13 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery<UserDevice[]>({
+  } = useQuery<ResponseUserDeviceDto[]>({
     queryKey: ["user-devices"],
-    queryFn: async () => api.devices.getDevices(),
+    queryFn: async () => api.userDevices.getAll(),
   });
 
   const logoutAllMutation = useMutation({
-    mutationFn: () => api.devices.revokeAllDevices(),
+    mutationFn: () => api.userDevices.revokeAll(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-devices"] });
       toast.success(
@@ -101,7 +101,7 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
     );
   };
 
-  const handleDevicePress = (device: UserDevice) => {
+  const handleDevicePress = (device: ResponseUserDeviceDto) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     router.push({
       pathname: "/main/profile/device-details",

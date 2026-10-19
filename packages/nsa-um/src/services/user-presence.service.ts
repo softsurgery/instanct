@@ -49,7 +49,7 @@ export class UserPresenceService {
     socketId: string,
     source: ClientPresenceSource = 'web',
     namespace?: string,
-  ): { isConnected: boolean } {
+  ): { isConnected: boolean; meta?: SocketConnectionMeta } {
     if (!userId || !socketId) {
       return { isConnected: false };
     }
@@ -64,12 +64,14 @@ export class UserPresenceService {
 
     const previousSources = this.getUserSources(userId);
 
-    socketMap.set(socketId, {
+    const connectionMeta: SocketConnectionMeta = {
       socketId,
       source,
       namespace,
       connectedAt: new Date(),
-    });
+    };
+
+    socketMap.set(socketId, connectionMeta);
 
     const currentSources = this.getUserSources(userId);
     const sourcesChanged =
@@ -91,7 +93,7 @@ export class UserPresenceService {
       });
     }
 
-    return { isConnected: true };
+    return { isConnected: true, meta: connectionMeta };
   }
 
   /**
@@ -102,7 +104,7 @@ export class UserPresenceService {
     userId: string,
     socketId: string,
     namespace?: string,
-  ): { isConnected: boolean } {
+  ): { isConnected: boolean; disconnectedMeta?: SocketConnectionMeta } {
     if (!userId) {
       return { isConnected: false };
     }
@@ -112,6 +114,7 @@ export class UserPresenceService {
       return { isConnected: false };
     }
 
+    const disconnectedMeta = socketMap.get(socketId);
     socketMap.delete(socketId);
     const isConnected = socketMap.size > 0;
 
@@ -134,7 +137,7 @@ export class UserPresenceService {
         lastSeen: now,
       });
 
-      return { isConnected: false };
+      return { isConnected: false, disconnectedMeta };
     }
 
     const currentSources = this.getUserSources(userId);
@@ -145,7 +148,7 @@ export class UserPresenceService {
       lastSeen: null,
     });
 
-    return { isConnected: true };
+    return { isConnected: true, disconnectedMeta };
   }
 
   /**

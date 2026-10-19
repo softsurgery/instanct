@@ -1,4 +1,4 @@
-import type { UserDevice } from "@softsurgery/api-client";
+import type { ResponseUserDeviceDto } from "@softsurgery/api-client";
 
 export const waitForUiReady = () =>
   // It returns a Promise that resolves only after:
@@ -14,9 +14,12 @@ export const waitForUiReady = () =>
 /**
  * Common shape for device data across screens and components.
  */
-export type DeviceLike = Partial<UserDevice> & {
-  lastSignInAt?: string | Date | null;
+export type DeviceLike = Partial<ResponseUserDeviceDto> & {
   time?: string | null;
+  ipAddress?: string;
+  location?: string;
+  latitude?: number;
+  longitude?: number;
 };
 
 /**
@@ -81,7 +84,9 @@ export function parseDeviceCoordinates(
   }
 
   if (device.location) {
-    const parts = device.location.split(",").map((p) => parseFloat(p.trim()));
+    const parts = device.location
+      .split(",")
+      .map((p: string) => parseFloat(p.trim()));
     if (
       parts.length === 2 &&
       !isNaN(parts[0]) &&

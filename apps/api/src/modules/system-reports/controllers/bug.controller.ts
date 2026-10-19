@@ -62,10 +62,12 @@ export class BugController {
     @Body() createBugDto: CreateBugDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseBugDto> {
-    const bug = await this.bugService.saveWithDeviceInfo(
-      createBugDto,
-      req?.user?.sub,
-    );
+    const fingerprint =
+      (req.headers['x-device-fingerprint'] as string) || undefined;
+    const bug = await this.bugService.create(createBugDto, {
+      userId: req?.user?.sub,
+      fingerprint,
+    });
     req.logInfo = {
       bugId: bug.id,
       variant: bug.variant,

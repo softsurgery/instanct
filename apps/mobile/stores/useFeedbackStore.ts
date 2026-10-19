@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { CreateFeedbackDto } from "@softsurgery/api-client";
-import { generateDeviceInfo } from "@/types/utils/device-info";
 import { setDeepValue } from "@/lib/object";
 
 interface SendFeedbackData {
@@ -22,7 +21,7 @@ const initialState: SendFeedbackData = {
     category: undefined,
     message: "",
     rating: 0,
-    device: generateDeviceInfo(),
+    deviceId: undefined,
   },
   errors: {},
 };

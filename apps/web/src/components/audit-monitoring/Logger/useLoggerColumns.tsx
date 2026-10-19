@@ -211,9 +211,7 @@ export const useLoggerColumns = (
               requestLink: renderLink(
                 requestId ? `/requests/${requestId}` : undefined
               ),
-              deviceLink: renderLink(
-                deviceId ? `/device-info/${deviceId}` : undefined
-              ),
+              deviceLink: renderLink(undefined),
               educationLink: renderLink(
                 educationId ? `/education/${educationId}` : undefined
               ),

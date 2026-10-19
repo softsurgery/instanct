@@ -47,16 +47,6 @@ export class RequestClientOAuthDto {
   os?: string;
 
   @IsOptional()
-  latitude?: number;
-
-  @IsOptional()
-  longitude?: number;
-
-  @IsOptional()
-  @IsString()
-  location?: string;
-
-  @IsOptional()
   @IsString()
   fingerprint?: string;
 }

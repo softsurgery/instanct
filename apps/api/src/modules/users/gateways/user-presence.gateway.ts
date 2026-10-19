@@ -16,8 +16,13 @@ import {
 } from '@nestjs/common';
 import { Server } from 'socket.io';
 import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
+import { UserDeviceService } from '@softsurgery/nsa-auth/services/user-device.service';
+import { detectPresenceMetadata } from '@softsurgery/nsa-auth/utils/presence-metadata';
 import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
-import { USER_REPOSITORY, AppUserRepository } from '@softsurgery/nsa-um/tokens/user-access';
+import {
+  USER_REPOSITORY,
+  AppUserRepository,
+} from '@softsurgery/nsa-um/tokens/user-access';
 import {
   ClientPresenceSource,
   UserPresenceEvent,
@@ -49,6 +54,8 @@ export class UserPresenceGateway
     @Optional()
     @Inject(USER_REPOSITORY)
     protected readonly userRepository?: AppUserRepository,
+    @Optional()
+    protected readonly userDeviceService?: UserDeviceService,
   ) {}
 
   /**
@@ -62,8 +69,8 @@ export class UserPresenceGateway
   }
 
   /**
-   * Handles incoming WebSocket connection, validates JWT token, extracts client source ('web' | 'mobile'),
-   * registers the socket with UserPresenceService, and joins the user presence rooms.
+   * Handles incoming WebSocket connection, validates JWT token, detects device, IP address,
+   * and geolocation, registers connection in history for mobile devices, and joins user rooms.
    */
   async handleConnection(client: AdvancedSocket) {
     const payload = getTokenPayloadForWebSocket(client);
@@ -85,6 +92,34 @@ export class UserPresenceGateway
     await client.join('presence_subscribers');
     await client.join(`user_${userId}`);
 
+    // Detect device, IP address, and IP-based geolocation
+    const metadata = await detectPresenceMetadata(client);
+
+    let connectionHistoryId: string | undefined;
+
+    // Record presence connection & device history (especially for mobile clients)
+    if (
+      this.userDeviceService &&
+      (source === 'mobile' || client.handshake?.auth?.device)
+    ) {
+      try {
+        const result = await this.userDeviceService.recordPresenceConnection({
+          userId,
+          socketId: client.id,
+          source,
+          metadata,
+        });
+        connectionHistoryId = result.connection?.id;
+        (client.data as Record<string, unknown>).connectionHistoryId =
+          connectionHistoryId;
+      } catch (err) {
+        this.logger.error(
+          `Failed to record connection history for user ${userId}`,
+          err,
+        );
+      }
+    }
+
     // Register connection and source with the centralized presence service
     this.userPresenceService.trackConnection(
       userId,
@@ -94,15 +129,33 @@ export class UserPresenceGateway
     );
 
     this.logger.log(
-      `User ${userId} connected on socket ${client.id} (source: ${source})`,
+      `User ${userId} connected on socket ${client.id} (source: ${source}, device: ${metadata.device}, IP: ${metadata.ipAddress}, location: ${metadata.location})`,
     );
   }
 
   /**
-   * Handles socket disconnection and deregisters the socket from UserPresenceService.
+   * Handles socket disconnection and deregisters the socket from UserPresenceService,
+   * marking the disconnection time in connection history.
    */
-  handleDisconnect(client: AdvancedSocket) {
+  async handleDisconnect(client: AdvancedSocket) {
     const userId = client.data?.userId;
+    const connectionHistoryId = (client.data as Record<string, unknown>)
+      ?.connectionHistoryId as string;
+
+    if (this.userDeviceService) {
+      try {
+        await this.userDeviceService.recordDisconnection(
+          client.id,
+          connectionHistoryId,
+        );
+      } catch (err) {
+        this.logger.error(
+          `Failed to record disconnection history for socket ${client.id}`,
+          err,
+        );
+      }
+    }
+
     if (userId) {
       this.userPresenceService.trackDisconnection(
         userId,

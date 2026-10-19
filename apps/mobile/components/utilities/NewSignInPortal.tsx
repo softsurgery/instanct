@@ -58,7 +58,7 @@ export const NewSignInPortal = ({
       os: os || "iOS 18.5",
       ipAddress: ip || "82.65.14.203",
       location: location || "Paris, France",
-      lastSignInAt: time || "12 August 2026 at 14:32",
+      time: time || "12 August 2026 at 14:32",
       fingerprint,
     }),
     [deviceId, device, os, ip, location, time, fingerprint],

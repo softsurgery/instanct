@@ -1,19 +1,27 @@
 import {
+  Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
   Request,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
 import { UserDeviceService } from '../services/user-device.service';
-import { UserDeviceEntity } from '../entities/user-device.entity';
+import { ResponseUserDeviceDto } from '../dtos/user-device/response-user-device.dto';
+import { CreateUserDeviceDto } from '../dtos/user-device/create-user-device.dto';
+import { UpdateUserDeviceDto } from '../dtos/user-device/update-user-device.dto';
 
 @ApiTags('user-devices')
 @Controller({ version: '1', path: '/auth/devices' })
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserDeviceController {
   constructor(private readonly userDeviceService: UserDeviceService) {}
 
@@ -26,11 +34,78 @@ export class UserDeviceController {
   @ApiResponse({
     status: 200,
     description: 'List of registered user devices.',
+    type: [ResponseUserDeviceDto],
   })
   async getUserDevices(
     @Request() req: AdvancedRequest,
-  ): Promise<UserDeviceEntity[]> {
-    return this.userDeviceService.getUserDevices(req.user!.sub);
+  ): Promise<ResponseUserDeviceDto[]> {
+    const devices = await this.userDeviceService.getUserDevices(req.user!.sub);
+    return toDtoArray(ResponseUserDeviceDto, devices);
+  }
+
+  @Get(':id')
+  @ApiOperation({
+    summary: 'Get user device by id',
+    description: 'Retrieve a single device by ID for the authenticated user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User device details.',
+    type: ResponseUserDeviceDto,
+  })
+  async getDeviceById(
+    @Param('id') id: string,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDeviceDto> {
+    const device = await this.userDeviceService.getDeviceById(
+      id,
+      req.user!.sub,
+    );
+    return toDto(ResponseUserDeviceDto, device);
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Create or register a user device',
+    description: 'Register a new device for the authenticated user.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Registered user device.',
+    type: ResponseUserDeviceDto,
+  })
+  async createDevice(
+    @Body() createDto: CreateUserDeviceDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDeviceDto> {
+    const device = await this.userDeviceService.createDevice(
+      req.user!.sub,
+      createDto,
+    );
+    return toDto(ResponseUserDeviceDto, device);
+  }
+
+  @Patch(':id')
+  @ApiOperation({
+    summary: 'Update a user device',
+    description: 'Update metadata for a registered user device.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Updated user device.',
+    type: ResponseUserDeviceDto,
+  })
+  async updateDevice(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateUserDeviceDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseUserDeviceDto> {
+    const device = await this.userDeviceService.updateDevice(
+      id,
+      req.user!.sub,
+      updateDto,
+    );
+    return toDto(ResponseUserDeviceDto, device);
   }
 
   @Post(':id/trust')
@@ -42,12 +117,14 @@ export class UserDeviceController {
   @ApiResponse({
     status: 200,
     description: 'Device successfully marked as trusted.',
+    type: ResponseUserDeviceDto,
   })
   async trustDevice(
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
-  ): Promise<UserDeviceEntity> {
-    return this.userDeviceService.trustDevice(id, req.user!.sub);
+  ): Promise<ResponseUserDeviceDto> {
+    const device = await this.userDeviceService.trustDevice(id, req.user!.sub);
+    return toDto(ResponseUserDeviceDto, device);
   }
 
   @Post(':id/untrust')
@@ -59,12 +136,17 @@ export class UserDeviceController {
   @ApiResponse({
     status: 200,
     description: 'Device successfully marked as untrusted.',
+    type: ResponseUserDeviceDto,
   })
   async untrustDevice(
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
-  ): Promise<UserDeviceEntity> {
-    return this.userDeviceService.untrustDevice(id, req.user!.sub);
+  ): Promise<ResponseUserDeviceDto> {
+    const device = await this.userDeviceService.untrustDevice(
+      id,
+      req.user!.sub,
+    );
+    return toDto(ResponseUserDeviceDto, device);
   }
 
   @Delete()

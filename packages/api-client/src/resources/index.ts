@@ -7,7 +7,8 @@ import { createLandingConfigurationResource } from "./landing-configuration";
 import { createConfigurationResource } from "./configuration";
 import { createContentPageResource } from "./content";
 import { createCurrentUserResource } from "./current-user";
-import { createDevicesResource } from "./devices";
+import { createUserDevicesResource } from "./user-devices";
+import { createUserDeviceHistoryResource } from "./user-device-history";
 import { createEducationResource } from "./education";
 import { createExperienceResource } from "./experience";
 import { createFollowResource } from "./follow";
@@ -37,7 +38,8 @@ export function createResources(http: AxiosInstance) {
     request: createRequestResource(http),
     chat: createChatResource(http),
     bookmark: createBookmarkResource(http),
-    devices: createDevicesResource(http),
+    userDevices: createUserDevicesResource(http),
+    userDeviceHistory: createUserDeviceHistoryResource(http),
     admin: {
       logger: createLoggerResource(http),
       permission: createPermissionResource(http),

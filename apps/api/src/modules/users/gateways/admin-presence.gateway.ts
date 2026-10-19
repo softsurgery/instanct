@@ -1,7 +1,11 @@
 import { WebSocketGateway } from '@nestjs/websockets';
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { USER_REPOSITORY, AppUserRepository } from '@softsurgery/nsa-um/tokens/user-access';
+import {
+  USER_REPOSITORY,
+  AppUserRepository,
+} from '@softsurgery/nsa-um/tokens/user-access';
 import { UserPresenceService } from '@softsurgery/nsa-um/services/user-presence.service';
+import { UserDeviceService } from '@softsurgery/nsa-auth/services/user-device.service';
 import { UserPresenceGateway } from './user-presence.gateway';
 
 /**
@@ -21,7 +25,9 @@ export class AdminPresenceGateway extends UserPresenceGateway {
     @Optional()
     @Inject(USER_REPOSITORY)
     userRepository?: AppUserRepository,
+    @Optional()
+    userDeviceService?: UserDeviceService,
   ) {
-    super(userPresenceService, userRepository);
+    super(userPresenceService, userRepository, userDeviceService);
   }
 }

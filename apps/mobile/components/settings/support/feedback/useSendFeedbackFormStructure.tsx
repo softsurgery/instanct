@@ -1,5 +1,5 @@
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
-import { SendFeedbackStore } from "@/stores/useFeedbackManager";
+import { SendFeedbackStore } from "@/stores/useFeedbackStore";
 import { useTranslation } from "react-i18next";
 import {
   Field,

@@ -70,10 +70,12 @@ export class FeedbackController {
     @Body() createFeedbackDto: CreateFeedbackDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseFeedbackDto> {
-    const feedback = await this.feedbackService.saveWithDeviceInfo(
-      createFeedbackDto,
-      req?.user?.sub,
-    );
+    const fingerprint = req.headers['x-device-fingerprint'] as
+      string | undefined;
+    const feedback = await this.feedbackService.create(createFeedbackDto, {
+      userId: req?.user?.sub,
+      fingerprint,
+    });
     req.logInfo = {
       feedbackId: feedback.id,
       category: feedback.category,

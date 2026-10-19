@@ -3,10 +3,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EntityHelper } from '@softsurgery/nsa-database';
 import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
+import type { UserConnectionHistoryEntity } from './user-connection-history.entity';
 
 @Entity('user_devices')
 export class UserDeviceEntity extends EntityHelper {
@@ -35,24 +37,9 @@ export class UserDeviceEntity extends EntityHelper {
   @Column({ nullable: true })
   os?: string;
 
-  @Column({ nullable: true })
-  ipAddress?: string;
-
-  @Column({ type: 'double', nullable: true })
-  latitude?: number;
-
-  @Column({ type: 'double', nullable: true })
-  longitude?: number;
-
-  @Column({ nullable: true })
-  location?: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  lastSignInAt: Date;
-
-  @Column({ default: 1 })
-  signInCount: number;
-
   @Column({ default: true })
   isTrusted: boolean;
+
+  @OneToMany('UserConnectionHistoryEntity', (conn: any) => conn.device)
+  connections?: UserConnectionHistoryEntity[];
 }

@@ -14,7 +14,7 @@ import { router } from "expo-router";
 import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { useSendFeedbackStore } from "@/stores/useFeedbackManager";
+import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { ServerErrorResponse } from "@softsurgery/api-client";
 import { toast } from "sonner-native";
@@ -22,7 +22,14 @@ import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
 import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
+import { useQuery } from "@tanstack/react-query";
+import { useCurrentDeviceId } from "@/hooks/useCurrentDeviceId";
+import {
+  ResponseUserDeviceDto,
+  CreateFeedbackDto,
+} from "@softsurgery/api-client";
 import { AppHeaderBack } from "@softsurgery/mobile-components";
+
 interface SendFeedbackPortalProps {
   className?: string;
 }
@@ -32,6 +39,17 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
   const sendFeedbackStore = useSendFeedbackStore();
+  const currentDeviceId = useCurrentDeviceId();
+
+  const { data: devices = [] } = useQuery<ResponseUserDeviceDto[]>({
+    queryKey: ["user-devices"],
+    queryFn: async () => api.userDevices.getAll(),
+  });
+
+  const currentDevice = React.useMemo(() => {
+    if (!currentDeviceId || devices.length === 0) return devices[0];
+    return devices.find((d) => d.fingerprint === currentDeviceId) || devices[0];
+  }, [devices, currentDeviceId]);
 
   React.useEffect(() => {
     return () => {
@@ -45,7 +63,8 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
 
   const { mutate: sendFeedback, isPending: isSendFeedbackPending } =
     useMutation({
-      mutationFn: async () => api.admin.feedback.create(sendFeedbackStore.createDto),
+      mutationFn: async (payload: CreateFeedbackDto) =>
+        api.admin.feedback.create(payload),
       onSuccess: () => {
         toast.success("Feedback submitted successfully", {
           description: "Your feedback has been successfully submitted.",
@@ -63,11 +82,15 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
     });
 
   const handleSubmit = () => {
-    const result = createFeedbackSchema.safeParse(sendFeedbackStore.createDto);
+    const payload: CreateFeedbackDto = {
+      ...sendFeedbackStore.createDto,
+      deviceId: currentDevice?.id,
+    };
+    const result = createFeedbackSchema.safeParse(payload);
     if (!result.success) {
       sendFeedbackStore.set("errors", result.error.flatten().fieldErrors);
     } else {
-      sendFeedback();
+      sendFeedback(payload);
     }
   };
 

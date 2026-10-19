@@ -139,7 +139,7 @@ export const ChatMediaBubble = ({
     <Image
       className="rounded-xl"
       style={mediaFrameStyle}
-      source={singleMediaSource as ImageSourcePropType}
+      source={singleMediaSource as any}
       contentFit="cover"
     />
   );

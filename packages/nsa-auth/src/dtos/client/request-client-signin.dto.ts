@@ -1,7 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsNumber,
   IsOptional,
   IsString,
   MinLength,
@@ -30,21 +29,6 @@ export class RequestClientSignInDto {
   @IsOptional()
   @IsString()
   os?: string;
-
-  @ApiPropertyOptional({ type: Number, example: 48.8566 })
-  @IsOptional()
-  @IsNumber()
-  latitude?: number;
-
-  @ApiPropertyOptional({ type: Number, example: 2.3522 })
-  @IsOptional()
-  @IsNumber()
-  longitude?: number;
-
-  @ApiPropertyOptional({ type: String, example: 'Paris, France' })
-  @IsOptional()
-  @IsString()
-  location?: string;
 
   @ApiPropertyOptional({ type: String, example: 'a1b2c3d4e5f6...' })
   @IsOptional()

@@ -11,7 +11,6 @@ export interface RequestClientSignInDto {
   password: string;
   device?: string;
   os?: string;
-  location?: string;
   fingerprint?: string;
 }
 
@@ -55,22 +54,5 @@ export interface RequestClientOAuthDto {
   codeVerifier?: string;
   device?: string;
   os?: string;
-  location?: string;
   fingerprint?: string;
-}
-
-export interface UserDevice {
-  id: string;
-  userId: string;
-  fingerprint: string;
-  deviceName?: string;
-  deviceModel?: string;
-  os?: string;
-  ipAddress?: string;
-  latitude?: number;
-  longitude?: number;
-  location?: string;
-  lastSignInAt: string;
-  signInCount: number;
-  isTrusted: boolean;
 }

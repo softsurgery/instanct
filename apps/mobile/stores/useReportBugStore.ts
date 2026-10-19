@@ -1,5 +1,4 @@
 import { setDeepValue } from "@/lib/object";
-import { generateDeviceInfo } from "@/types/utils/device-info";
 import { create } from "zustand";
 import { CreateBugDto } from "@softsurgery/api-client";
 
@@ -22,7 +21,7 @@ const initialState: ReportBugData = {
     title: "",
     description: "",
     variant: undefined,
-    device: generateDeviceInfo(),
+    deviceId: undefined,
   },
   errors: {},
 };
