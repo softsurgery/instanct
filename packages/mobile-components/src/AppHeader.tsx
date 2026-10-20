@@ -25,7 +25,7 @@ interface ApplicationHeaderProps {
 }
 export const ApplicationHeader = ({
   classNames,
-  title,
+  title = "",
   titleVariant = "h1",
   shortcuts,
   reverse = false,

@@ -100,6 +100,7 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
       <ApplicationHeader
         classNames={{ wrapper: "border-b border-border pb-2" }}
         titleVariant="large"
+        reverse
         shortcuts={[
           {
             key: "back",
