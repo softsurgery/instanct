@@ -18,18 +18,18 @@ overrides:
   react-native-worklets: "0.13.0"
   react: "19.3.0"
   react-dom: "19.3.0"
-  react-native: "0.88.0-rc.4"
-  "@react-native/virtualized-lists": "0.88.0-rc.4"
-  expo: "58.0.7"
+  react-native: "0.88.0"
+  "@react-native/virtualized-lists": "0.88.0"
+  expo: "58.0.16"
   typescript: "5.9.3"
   nativewind: "4.2.7"
-  react-native-reanimated: "4.7.0"
+  react-native-reanimated: "4.7.1"
   react-native-css-interop: "0.2.7"
   "@types/react": "19.3.0"
   "@types/react-dom": "19.2.5"
   # Optional peer on web packages otherwise auto-resolves to latest stable RN (0.87.x).
-  "react-i18next>react-native": "0.88.0-rc.4"
-  "next-i18next>react-native": "0.88.0-rc.4"
+  "react-i18next>react-native": "0.88.0"
+  "next-i18next>react-native": "0.88.0"
   "socket.io": "4.8.1"
   "socket.io-client": "4.8.1"
 
@@ -44,7 +44,7 @@ peerDependencyRules:
 packageExtensions:
   react-i18next:
     peerDependencies:
-      react-native: "0.88.0-rc.4"
+      react-native: "0.88.0"
     peerDependenciesMeta:
       react-native:
         optional: true

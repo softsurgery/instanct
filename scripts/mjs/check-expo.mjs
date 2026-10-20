@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 /**
- * Discovers Expo apps in the monorepo and runs `expo install --check` in each.
- * Validation only — never runs `--fix` or mutates dependency versions.
+ * Discovers Expo apps in the monorepo, ensures shared mobile packages across
+ * `packages/mobile-*` and root `package.json` are included, runs
+ * `expo install --check` (or `--fix`), and synchronizes all updated versions
+ * across the workspace.
  */
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { syncSharedDeps } from './sync-shared-deps.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -150,10 +153,14 @@ function resolveExpoInvocation(packageManager) {
   }
 }
 
-function runCheck(app, invocation) {
-  const args = [...invocation.argsPrefix, 'install', '--check'];
+function runCheck(app, invocation, extraArgs = []) {
+  const flag = extraArgs.includes('--fix') ? '--fix' : '--check';
+  const args = [...invocation.argsPrefix, 'install', flag];
   console.log(`\n▶ ${app.name} (${app.relative})`);
-  console.log(`  $ ${invocation.label} install --check`);
+  console.log(`  $ ${invocation.label} install ${flag}`);
+
+  const pkgPath = path.join(app.dir, 'package.json');
+  const beforePkg = fs.existsSync(pkgPath) ? fs.readFileSync(pkgPath, 'utf8') : '';
 
   const result = spawnSync(invocation.command, args, {
     cwd: app.dir,
@@ -162,34 +169,42 @@ function runCheck(app, invocation) {
     shell: process.platform === 'win32',
   });
 
+  const afterPkg = fs.existsSync(pkgPath) ? fs.readFileSync(pkgPath, 'utf8') : '';
+  const pkgUpdatedByExpo = beforePkg !== afterPkg;
+
   if (result.error) {
     console.log(`  ✖ Failed to start command: ${result.error.message}`);
-    return false;
+    return { ok: false, pkgUpdatedByExpo };
   }
 
   if (result.signal) {
     console.log(`  ✖ Terminated by signal ${result.signal}`);
     interrupted = true;
-    return false;
+    return { ok: false, pkgUpdatedByExpo };
   }
 
   const status = result.status ?? 1;
   if (status === 0) {
     console.log('  ✔ Passed');
-    return true;
+    return { ok: true, pkgUpdatedByExpo };
   }
 
   console.log(`  ✖ Failed (exit ${status})`);
-  return false;
+  return { ok: false, pkgUpdatedByExpo };
 }
 
 function main() {
+  const extraArgs = process.argv.slice(2);
   const packageManager = detectPackageManager();
   const apps = discoverExpoApps().sort((a, b) => a.relative.localeCompare(b.relative));
   const invocation = resolveExpoInvocation(packageManager);
 
   console.log(`Package manager: ${packageManager}`);
   console.log(`Expo CLI: ${invocation.label}`);
+
+  // 1. Pre-sync shared mobile packages from packages/mobile-* & root package.json into apps/mobile
+  // and align workspace overrides with Expo's bundledNativeModules.json so `expo install` is never blocked.
+  syncSharedDeps({ preferBundled: false, preSyncOverridesWithBundled: true });
 
   if (apps.length === 0) {
     console.error('\nNo Expo apps discovered.');
@@ -205,10 +220,25 @@ function main() {
   }
 
   const failures = [];
+  let anyUpdatedByExpo = false;
   for (const app of apps) {
     if (interrupted) break;
-    const ok = runCheck(app, invocation);
+    const { ok, pkgUpdatedByExpo } = runCheck(app, invocation, extraArgs);
+    if (pkgUpdatedByExpo) anyUpdatedByExpo = true;
     if (!ok) failures.push(app);
+  }
+
+  // 2. Post-sync: if Expo updated apps/mobile/package.json (or if `--fix` was used),
+  // propagate all updated versions to root package.json, pnpm-workspace.yaml, and packages/mobile-*
+  const postSync = syncSharedDeps({ preferBundled: anyUpdatedByExpo || extraArgs.includes('--fix') });
+  if (anyUpdatedByExpo || postSync.overridesChanged) {
+    console.log('\n↻ Syncing updated shared mobile dependencies across workspace with pnpm install…');
+    spawnSync(packageManager, ['install'], {
+      cwd: root,
+      stdio: 'inherit',
+      env: process.env,
+      shell: process.platform === 'win32',
+    });
   }
 
   console.log('\n── Summary ──');

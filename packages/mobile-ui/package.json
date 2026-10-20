@@ -30,9 +30,9 @@
     "@rn-primitives/tabs": "*",
     "expo-image": "*",
     "lucide-react-native": "*",
-    "nativewind": "4.2.7",
-    "react": "19.3.0",
-    "react-native": "0.88.0-rc.4",
+    "nativewind": "*",
+    "react": "*",
+    "react-native": "*",
     "react-native-reanimated": "*"
   }
 }
