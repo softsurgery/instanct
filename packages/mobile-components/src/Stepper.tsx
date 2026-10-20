@@ -20,6 +20,8 @@ interface StepperProps {
     description?: string;
     component: React.ReactNode;
     validation: boolean | (() => boolean);
+    onNext?: () => boolean | void | Promise<boolean | void>;
+    onNextAttempt?: () => void;
   }[];
   initialStep?: number;
   forwaredAdditionalActions?: Record<number, () => void>;
@@ -62,7 +64,16 @@ export const Stepper = ({
     [steps],
   );
 
-  const nextStep = () => {
+  const nextStep = async () => {
+    const currentStepConfig = steps[currentStep];
+
+    currentStepConfig?.onNextAttempt?.();
+
+    if (currentStepConfig?.onNext) {
+      const allowed = await currentStepConfig.onNext();
+      if (allowed === false) return;
+    }
+
     const isValid = runValidation(currentStep);
 
     // 🚫 block navigation if invalid

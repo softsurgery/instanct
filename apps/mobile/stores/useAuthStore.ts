@@ -90,7 +90,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   resetErrors: () => {
     set((state) => ({
       ...state,
-      errors: {},
+      signUpRequestErrors: {},
+      signInRequestErrors: {},
     }));
   },
 }));

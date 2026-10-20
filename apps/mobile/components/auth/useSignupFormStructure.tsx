@@ -10,6 +10,14 @@ import {
 } from "@softsurgery/mobile-form-builder";
 import { cn } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
+import {
+  validateFirstName,
+  validateLastName,
+  validateEmail,
+  validateUsername,
+  validatePassword,
+  validateConfirmPassword,
+} from "@/hooks/useAuthValidation";
 
 interface useSignUpFormStructureProps {
   store: AuthStore;
@@ -43,51 +51,59 @@ export const useSignUpFormStructure = ({
 }: useSignUpFormStructureProps) => {
   const { t } = useTranslation("auth");
 
-  // firstName
+  // firstName (optional)
   const firstnameField: Field = {
     id: "firstName",
     label: t("auth.signUp.labels.firstName"),
     description: t("auth.signUp.descriptions.firstName"),
     placeholder: t("auth.signUp.placeholders.firstName"),
     variant: FieldVariant.TEXT,
+    required: false,
     className:
       store.signUpRequest.firstName && !store.signUpRequestErrors.firstName?.[0]
         ? "border border-green-500"
         : "",
-    error: t(store.signUpRequestErrors?.firstName?.[0]),
+    error: store.signUpRequestErrors?.firstName?.[0]
+      ? t(store.signUpRequestErrors.firstName[0])
+      : undefined,
     props: {
       value: store.signUpRequest.firstName,
       onChangeText: (text: string) => {
         store.setNested("signUpRequest.firstName", text);
-        store.setNested("signUpRequestErrors.firstName", []);
+        const err = validateFirstName(text);
+        store.setNested("signUpRequestErrors.firstName", err ? [err] : []);
       },
       editable: !isPending,
     },
   };
 
-  // lastName
+  // lastName (optional)
   const lastnameField: Field = {
     id: "lastName",
     label: t("auth.signUp.labels.lastName"),
     description: t("auth.signUp.descriptions.lastName"),
     placeholder: t("auth.signUp.placeholders.lastName"),
     variant: FieldVariant.TEXT,
+    required: false,
     className:
       store.signUpRequest.lastName && !store.signUpRequestErrors.lastName?.[0]
         ? "border border-green-500"
         : "",
-    error: t(store.signUpRequestErrors?.lastName?.[0]),
+    error: store.signUpRequestErrors?.lastName?.[0]
+      ? t(store.signUpRequestErrors.lastName[0])
+      : undefined,
     props: {
       value: store.signUpRequest.lastName,
       onChangeText: (text: string) => {
         store.setNested("signUpRequest.lastName", text);
-        store.setNested("signUpRequestErrors.lastName", []);
+        const err = validateLastName(text);
+        store.setNested("signUpRequestErrors.lastName", err ? [err] : []);
       },
       editable: !isPending,
     },
   };
 
-  // email
+  // email (required)
   const emailFieldDescription = !store.signUpRequest.email
     ? t("auth.signUp.descriptions.email.default")
     : isCheckingEmail
@@ -100,17 +116,20 @@ export const useSignUpFormStructure = ({
     !emailError &&
       !isCheckingEmail &&
       !isEmailTaken &&
-      store.signUpRequest.email
+      store.signUpRequest.email &&
+      !store.signUpRequestErrors?.email?.[0]
       ? "border border-green-500"
       : "",
     !isCheckingEmail && isEmailTaken ? "border border-red-500" : "",
   );
 
-  const emailFieldError =
-    store.signUpRequest.email.length > 0
-      ? t(emailError!) ||
-        (isEmailTaken ? t("auth.signUp.errors.emailTaken") : "")
-      : "";
+  const emailFieldError = store.signUpRequestErrors?.email?.[0]
+    ? t(store.signUpRequestErrors.email[0])
+    : isEmailTaken
+      ? t("auth.signUp.errors.emailTaken")
+      : store.signUpRequest.email.length > 0 && emailError
+        ? t(emailError)
+        : "";
 
   const emailField: Field = {
     id: "email",
@@ -118,19 +137,23 @@ export const useSignUpFormStructure = ({
     description: emailFieldDescription,
     placeholder: t("auth.signUp.placeholders.email"),
     variant: FieldVariant.EMAIL,
+    required: true,
     className: emailFieldClassName,
     error: emailFieldError,
     props: {
       value: store.signUpRequest.email,
       onChangeText: (text: string) => {
         store.setNested("signUpRequest.email", text);
-        store.setNested("signUpRequestErrors.email", []);
+        if (store.signUpRequestErrors?.email?.length) {
+          const err = validateEmail(text);
+          store.setNested("signUpRequestErrors.email", err ? [err] : []);
+        }
       },
       editable: !isPending,
     },
   };
 
-  // username
+  // username (required)
   const usernameFieldDescription = !store.signUpRequest.username
     ? t("auth.signUp.descriptions.username.default")
     : isCheckingUsername
@@ -141,17 +164,23 @@ export const useSignUpFormStructure = ({
 
   const usernameFieldClassName = cn(
     "w-full",
-    !isCheckingUsername && !isUsernameTaken && store.signUpRequest.username
+    !usernameError &&
+      !isCheckingUsername &&
+      !isUsernameTaken &&
+      store.signUpRequest.username &&
+      !store.signUpRequestErrors?.username?.[0]
       ? "border border-green-500"
       : "",
     !isCheckingUsername && isUsernameTaken ? "border border-red-500" : "",
   );
 
-  const usernameFieldError =
-    store.signUpRequest.username.length > 0
-      ? t(usernameError!) ||
-        (isUsernameTaken ? t("auth.signUp.errors.usernameTaken") : "")
-      : "";
+  const usernameFieldError = store.signUpRequestErrors?.username?.[0]
+    ? t(store.signUpRequestErrors.username[0])
+    : isUsernameTaken
+      ? t("auth.signUp.errors.usernameTaken")
+      : store.signUpRequest.username.length > 0 && usernameError
+        ? t(usernameError)
+        : "";
 
   const usernameField: Field<TextFieldProps> = {
     id: "username",
@@ -159,58 +188,90 @@ export const useSignUpFormStructure = ({
     description: usernameFieldDescription,
     placeholder: t("auth.signUp.placeholders.username"),
     variant: FieldVariant.TEXT,
+    required: true,
     className: usernameFieldClassName,
     error: usernameFieldError,
     props: {
       value: store.signUpRequest.username,
       onChangeText: (text: string) => {
         store.setNested("signUpRequest.username", text);
-        store.setNested("signUpRequestErrors.username", []);
+        if (store.signUpRequestErrors?.username?.length) {
+          const err = validateUsername(text);
+          store.setNested("signUpRequestErrors.username", err ? [err] : []);
+        }
       },
       editable: !isPending,
     },
   };
 
-  // password
+  // password (required)
   const passwordField: Field = {
     id: "password",
     label: t("auth.signUp.labels.password"),
     description: t("auth.signUp.descriptions.password"),
     placeholder: t("auth.signUp.placeholders.password"),
     variant: FieldVariant.PASSWORD,
+    required: true,
     className:
       store.signUpRequest.password && !store.signUpRequestErrors.password?.[0]
         ? "border border-green-500"
         : "",
-    error: t(store.signUpRequestErrors?.password?.[0]),
+    error: store.signUpRequestErrors?.password?.[0]
+      ? t(store.signUpRequestErrors.password[0])
+      : undefined,
     props: {
       value: store.signUpRequest.password,
       onChangeText: (text: string) => {
         store.setNested("signUpRequest.password", text);
-        store.setNested("signUpRequestErrors.password", []);
+        if (store.signUpRequestErrors?.password?.length) {
+          const err = validatePassword(text);
+          store.setNested("signUpRequestErrors.password", err ? [err] : []);
+        }
+        if (store.signUpRequestErrors?.confirmPassword?.length) {
+          const cpErr = validateConfirmPassword(
+            text,
+            store.utilities.confirmPassword,
+          );
+          store.setNested(
+            "signUpRequestErrors.confirmPassword",
+            cpErr ? [cpErr] : [],
+          );
+        }
       },
       editable: !isPending,
     },
   };
 
-  // confirmPassword
+  // confirmPassword (required)
   const confirmPasswordField: Field = {
     id: "confirmPassword",
     label: t("auth.signUp.labels.confirmPassword"),
     description: t("auth.signUp.descriptions.confirmPassword"),
     placeholder: t("auth.signUp.placeholders.confirmPassword"),
     variant: FieldVariant.PASSWORD,
+    required: true,
     className:
       store.utilities.confirmPassword &&
       !store.signUpRequestErrors.confirmPassword?.[0]
         ? "border border-green-500"
         : "",
-    error: t(store.signUpRequestErrors?.confirmPassword?.[0]),
+    error: store.signUpRequestErrors?.confirmPassword?.[0]
+      ? t(store.signUpRequestErrors.confirmPassword[0])
+      : undefined,
     props: {
       value: store.utilities.confirmPassword,
       onChangeText: (text: string) => {
         store.setNested("utilities.confirmPassword", text);
-        store.setNested("signUpRequestErrors.confirmPassword", []);
+        if (store.signUpRequestErrors?.confirmPassword?.length) {
+          const err = validateConfirmPassword(
+            store.signUpRequest.password,
+            text,
+          );
+          store.setNested(
+            "signUpRequestErrors.confirmPassword",
+            err ? [err] : [],
+          );
+        }
       },
       editable: !isPending,
     },

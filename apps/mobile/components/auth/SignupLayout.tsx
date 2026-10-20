@@ -9,7 +9,15 @@ import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { Stepper } from "@softsurgery/mobile-components";
 import React from "react";
-import { useAuthValidation } from "@/hooks/useAuthValidation";
+import {
+  useAuthValidation,
+  validateFirstName,
+  validateLastName,
+  validateEmail,
+  validateUsername,
+  validatePassword,
+  validateConfirmPassword,
+} from "@/hooks/useAuthValidation";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { ServerErrorResponse, Upload } from "@softsurgery/api-client";
@@ -69,7 +77,14 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
   }, []);
 
   const { mutate: signUp, isPending: isSignUpPending } = useMutation({
-    mutationFn: async () => api.clientAuth.signUp(authStore.signUpRequest),
+    mutationFn: async () => {
+      const payload = {
+        ...authStore.signUpRequest,
+        firstName: authStore.signUpRequest.firstName?.trim() || undefined,
+        lastName: authStore.signUpRequest.lastName?.trim() || undefined,
+      };
+      return api.clientAuth.signUp(payload);
+    },
     onSuccess: () => {
       toast.success(t("auth.signUp.toasts.success"));
       router.push("/auth/sign-in");
@@ -81,17 +96,68 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
     },
   });
 
+  const validateStep1 = () => {
+    const fnError = validateFirstName(authStore.signUpRequest.firstName);
+    const lnError = validateLastName(authStore.signUpRequest.lastName);
+    const emError = validateEmail(authStore.signUpRequest.email);
+    const unError = validateUsername(authStore.signUpRequest.username);
+    const pwError = validatePassword(authStore.signUpRequest.password);
+    const cpError = validateConfirmPassword(
+      authStore.signUpRequest.password,
+      authStore.utilities.confirmPassword,
+    );
+    const termsError = !authStore.utilities.acceptedTerms
+      ? "auth.validation.signUp.termsRequired"
+      : null;
+
+    const errors: Record<string, string[]> = {};
+    if (fnError) errors.firstName = [fnError];
+    if (lnError) errors.lastName = [lnError];
+    if (emError) {
+      errors.email = [emError];
+    } else if (emailValidation.isEmailTaken) {
+      errors.email = ["auth.signUp.errors.emailTaken"];
+    }
+    if (unError) {
+      errors.username = [unError];
+    } else if (usernameValidation.isUsernameTaken) {
+      errors.username = ["auth.signUp.errors.usernameTaken"];
+    }
+    if (pwError) errors.password = [pwError];
+    if (cpError) errors.confirmPassword = [cpError];
+    if (termsError) errors.terms = [termsError];
+
+    authStore.set("signUpRequestErrors", errors);
+
+    const isValid =
+      !fnError &&
+      !lnError &&
+      !emError &&
+      !unError &&
+      !pwError &&
+      !cpError &&
+      !termsError &&
+      !usernameValidation.isCheckingUsername &&
+      !emailValidation.isCheckingEmail &&
+      !usernameValidation.isUsernameTaken &&
+      !emailValidation.isEmailTaken;
+
+    return isValid;
+  };
+
   const step1Validation =
     !usernameValidation.isCheckingUsername &&
     !emailValidation.isCheckingEmail &&
     !usernameValidation.isUsernameTaken &&
     !emailValidation.isEmailTaken &&
-    !!authStore.signUpRequest.username &&
+    !validateFirstName(authStore.signUpRequest.firstName) &&
+    !validateLastName(authStore.signUpRequest.lastName) &&
     !!authStore.signUpRequest.email &&
-    !!authStore.signUpRequest.firstName &&
-    !!authStore.signUpRequest.lastName &&
+    !validateEmail(authStore.signUpRequest.email) &&
+    !!authStore.signUpRequest.username &&
+    !validateUsername(authStore.signUpRequest.username) &&
     !!authStore.signUpRequest.password &&
-    authStore.signUpRequest.password.length >= 8 &&
+    !validatePassword(authStore.signUpRequest.password) &&
     authStore.signUpRequest.password === authStore.utilities.confirmPassword &&
     authStore.utilities.acceptedTerms;
 
@@ -124,13 +190,23 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
                     <AcceptTerms
                       className="px-2 pt-2 pb-4"
                       checked={authStore.utilities.acceptedTerms}
-                      onCheckedChange={(checked) =>
-                        authStore.setNested("utilities.acceptedTerms", checked)
+                      onCheckedChange={(checked) => {
+                        authStore.setNested("utilities.acceptedTerms", checked);
+                        if (checked) {
+                          authStore.setNested("signUpRequestErrors.terms", []);
+                        }
+                      }}
+                      error={
+                        authStore.signUpRequestErrors?.terms?.[0]
+                          ? t(authStore.signUpRequestErrors.terms[0])
+                          : undefined
                       }
+                      required
                     />
                   </View>
                 ),
                 validation: step1Validation,
+                onNext: () => validateStep1(),
               },
               {
                 title: t("auth.signUp.steps.industries.title"),

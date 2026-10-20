@@ -135,6 +135,7 @@ export default ({ config }) => ({
     ],
 
     "expo-video",
+    "expo-apple-authentication",
     "./plugins/withAppleGeneralSettings",
   ],
 

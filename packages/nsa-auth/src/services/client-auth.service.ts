@@ -244,8 +244,26 @@ export class ClientAuthService {
     } else if (provider == OAuthProvider.APPLE) {
       const decoded: { email?: string; sub?: string } | null =
         this.jwtService.decode(idToken);
-      newUser.email = decoded?.email;
-      newUser.username = decoded?.email?.split('@')[0] || decoded?.sub;
+      const appleSub = decoded?.sub;
+      const appleEmail = decoded?.email;
+      newUser.email = appleEmail;
+      newUser.username = appleEmail?.split('@')[0] || appleSub;
+
+      // Returning Apple users may not have email in subsequent ID tokens
+      if (!newUser.email && newUser.username) {
+        const existing = await this.userService.findOneByUsername(
+          newUser.username,
+          true,
+        );
+        if (existing?.email) {
+          newUser.email = existing.email;
+        }
+      }
+
+      // Fallback email to ensure authentication completes
+      if (!newUser.email && appleSub) {
+        newUser.email = `${appleSub}@appleid.apple.com`;
+      }
     } else {
       throw new UnauthorizedException('Unsupported OAuth provider');
     }

@@ -30,17 +30,17 @@ export const requestSignInDtoSchema = z.object({
 export const requestSignUpDtoSchema = z
   .object({
     firstName: z
-      .string({
-        error: "auth.validation.required.firstName",
-      })
+      .string()
       .min(3, { error: "auth.validation.min.firstName" })
-      .max(50, { error: "auth.validation.max.firstName" }),
+      .max(50, { error: "auth.validation.max.firstName" })
+      .optional()
+      .or(z.literal("")),
     lastName: z
-      .string({
-        error: "auth.validation.required.lastName",
-      })
+      .string()
       .min(3, { error: "auth.validation.min.lastName" })
-      .max(50, { error: "auth.validation.max.lastName" }),
+      .max(50, { error: "auth.validation.max.lastName" })
+      .optional()
+      .or(z.literal("")),
     email: z
       .string({
         error: "auth.validation.required.email",
