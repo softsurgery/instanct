@@ -25,6 +25,7 @@ export const createBugSchema = z.object({
     .max(1024, {
       error: `${BUG}.descriptionTooLong`,
     }),
+  deviceId: z.string().optional(),
 });
 
 export const FeedbackCategoryEnum = z.enum(
@@ -43,4 +44,5 @@ export const createFeedbackSchema = z.object({
       error: `${FEEDBACK}.messageTooLong`,
     }),
   rating: z.number().min(1, { error: `${FEEDBACK}.ratingRequired` }),
+  deviceId: z.string().optional(),
 });

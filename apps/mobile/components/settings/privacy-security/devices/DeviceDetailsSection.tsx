@@ -18,12 +18,15 @@ import {
   type DeviceLike,
 } from "@/lib/device";
 import { formatSmartDate, toDateOrNull } from "@/lib/date";
+import type { ResponseUserConnectionHistoryDto } from "@softsurgery/api-client";
 
 export type DeviceDetailsData = DeviceLike;
 
 export interface DeviceDetailsSectionProps {
   className?: string;
   device?: DeviceDetailsData | null;
+  connection?: ResponseUserConnectionHistoryDto | null;
+  connections?: ResponseUserConnectionHistoryDto[];
   isThisDevice?: boolean;
   timeLabel?: string;
 }
@@ -52,6 +55,8 @@ const DeviceInfoRow = ({ icon, label, value }: DeviceInfoRowProps) => (
 
 export const DeviceDetailsSection = ({
   device,
+  connection,
+  connections,
   isThisDevice = false,
   timeLabel,
   className,
@@ -61,6 +66,14 @@ export const DeviceDetailsSection = ({
   const DeviceIcon = device
     ? getDeviceIcon(device.os || "", device.deviceName || "")
     : SmartphoneNfc;
+
+  const allConnections = connections;
+  const activeConnection = connection ?? allConnections?.[0];
+
+  const resolvedIp = activeConnection?.ipAddress || device?.ipAddress;
+  const resolvedLocation = activeConnection?.location || device?.location;
+  const lastActiveTime = activeConnection?.createdAt || device?.time;
+  const connectionCount = allConnections?.length;
 
   const rows = [
     device?.os && {
@@ -72,25 +85,25 @@ export const DeviceDetailsSection = ({
       ),
       value: device.os,
     },
-    device?.ipAddress && {
+    resolvedIp && {
       key: "ip",
       icon: Globe,
       label: t(
         "settings.account.screens.privacy-security.screens.account-security.devices.details.ipAddress",
         "IP Address",
       ),
-      value: device.ipAddress,
+      value: resolvedIp,
     },
-    device?.location && {
+    resolvedLocation && {
       key: "location",
       icon: MapPin,
       label: t(
         "settings.account.screens.privacy-security.screens.account-security.devices.details.location",
         "Location",
       ),
-      value: device.location,
+      value: resolvedLocation,
     },
-    (device?.lastSignInAt || device?.time) && {
+    lastActiveTime && {
       key: "lastSignIn",
       icon: Clock,
       label:
@@ -100,19 +113,18 @@ export const DeviceDetailsSection = ({
           "Last active",
         ),
       value: (() => {
-        const rawDate = device.lastSignInAt || device.time;
-        const parsed = toDateOrNull(rawDate);
-        return parsed ? formatSmartDate(parsed) : String(rawDate || "");
+        const parsed = toDateOrNull(lastActiveTime);
+        return parsed ? formatSmartDate(parsed) : String(lastActiveTime || "");
       })(),
     },
-    device?.signInCount != null && device.signInCount > 0 && {
+    connectionCount != null && connectionCount > 0 && {
       key: "signIns",
       icon: LogIn,
       label: t(
         "settings.account.screens.privacy-security.screens.account-security.devices.details.signIns",
         "Sign-ins",
       ),
-      value: device.signInCount,
+      value: connectionCount,
     },
   ].filter(Boolean) as Array<{
     key: string;

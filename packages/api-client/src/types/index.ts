@@ -18,3 +18,5 @@ export * from "./utils/pagination";
 export * from "./utils/errors";
 export * from "./system-reports";
 export * from "./template";
+export * from "./user-device";
+export * from "./user-device-history";

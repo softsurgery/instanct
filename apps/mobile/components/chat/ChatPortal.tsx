@@ -132,7 +132,9 @@ export const ChatPortal = ({ className }: ChatPortalProps) => {
             refreshControl={
               <RefreshControl
                 refreshing={isRefetching}
-                onRefresh={refetch}
+                onRefresh={() => {
+                  void refetch();
+                }}
                 progressViewOffset={0}
                 enabled={true}
               />

@@ -78,7 +78,7 @@ export const FeedbackPortal = ({ className, userId }: FeedbackPortalProps) => {
         sort: `${debouncedSortDetails.sortKey},${
           debouncedSortDetails.order ? "ASC" : "DESC"
         }`,
-        join: "user",
+        join: "user,device",
         search: debouncedSearchTerm,
         filter: userId ? `userId||$eq||${userId}` : "",
       }),

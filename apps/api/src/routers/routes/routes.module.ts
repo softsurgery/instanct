@@ -35,6 +35,7 @@ import { UserBookmarkController } from 'src/modules/users/controllers/user-bookm
 import { UserBlockController } from 'src/modules/users/controllers/user-block.controller';
 import { ClientCustomAuthController } from 'src/modules/users/controllers/custom-auth.controller';
 import { UserDeviceController } from '@softsurgery/nsa-auth/controllers/user-device.controller';
+import { UserDeviceHistoryController } from '@softsurgery/nsa-auth/controllers/user-device-history.controller';
 import { ContentModule } from '@softsurgery/nsa-content/content.module';
 import { ContentPageController } from '@softsurgery/nsa-content/controllers/content-page.controller';
 import { TemplateModule } from '@softsurgery/nsa-templates/template.module';
@@ -46,6 +47,7 @@ import { TemplateController } from '@softsurgery/nsa-templates/controllers/templ
     AuthController,
     ClientAuthController,
     ClientCustomAuthController,
+    UserDeviceHistoryController,
     UserDeviceController,
     //common
     StorageController,

@@ -6,12 +6,16 @@ import {
   MessageSquare,
   BellIcon,
   BookUser,
+  Smartphone,
+  Wifi,
 } from "lucide-react";
 import { SideNav, Spinner } from "@softsurgery/components";
 import { useUI } from "@softsurgery/contexts";
 import { About } from "./cards/About";
 import { Settings } from "./cards/Settings";
 import { Activity } from "./cards/Activity";
+import { Devices } from "./cards/devices/Devices";
+import { Connections } from "./cards/connections/Connections";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/ui";
@@ -139,6 +143,18 @@ export const BaseProfile = ({
       label: t("userManagement.inspect.tabs.notifications"),
       icon: BellIcon,
       content: <Notifications userId={user?.id as string} />,
+    },
+    {
+      value: "devices",
+      label: t("userManagement.inspect.tabs.devices"),
+      icon: Smartphone,
+      content: <Devices userId={user?.id} />,
+    },
+    {
+      value: "connections",
+      label: t("userManagement.inspect.tabs.connections"),
+      icon: Wifi,
+      content: <Connections userId={user?.id} />,
     },
     {
       value: "settings",

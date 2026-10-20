@@ -66,6 +66,7 @@ export const SigninLayout = ({ className }: SigninProps) => {
       <ApplicationHeader
         classNames={{ wrapper: "border-b border-border pb-2" }}
         titleVariant="large"
+        reverse
         shortcuts={[
           {
             key: "back",

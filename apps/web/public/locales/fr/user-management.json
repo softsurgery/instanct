@@ -171,6 +171,8 @@
         "activity": "Activité",
         "conversations": "Conversations",
         "notifications": "Notifications",
+        "devices": "Appareils",
+        "connections": "Connexions",
         "settings": "Paramètres"
       },
       "stats": {
@@ -342,6 +344,40 @@
         "configureNotifications": "Configurer les notifications",
         "notificationSettings": "Paramètres de notification",
         "testNotification": "Tester la notification"
+      },
+      "devices": {
+        "title": "Appareils de l'utilisateur",
+        "singular": "Appareil",
+        "plural": "Appareils",
+        "columns": {
+          "deviceName": "Nom de l'appareil",
+          "deviceModel": "Modèle",
+          "os": "Système d'exploitation",
+          "macAddress": "Adresse MAC",
+          "status": "Statut",
+          "trusted": "De confiance",
+          "untrusted": "Non approuvé",
+          "lastActive": "Dernière activité",
+          "createdAt": "Enregistré le"
+        },
+        "empty": "Aucun appareil enregistré pour cet utilisateur."
+      },
+      "connections": {
+        "title": "Connexions de l'utilisateur",
+        "singular": "Connexion",
+        "plural": "Connexions",
+        "columns": {
+          "device": "Appareil",
+          "source": "Source",
+          "ipAddress": "Adresse IP",
+          "location": "Localisation",
+          "status": "Statut",
+          "active": "Actif",
+          "disconnected": "Déconnecté",
+          "connectedAt": "Connecté le",
+          "disconnectedAt": "Déconnecté le"
+        },
+        "empty": "Aucun historique de connexion pour cet utilisateur."
       },
       "noPhoneNumber": "Aucun numéro de téléphone"
     }

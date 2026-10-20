@@ -1,5 +1,5 @@
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react-native";
 import { useApi } from "@/contexts/ApiContext";
 import { Button } from "@softsurgery/mobile-ui";
@@ -16,13 +16,19 @@ import { useTranslation } from "react-i18next";
 import { createBugSchema } from "@/types/validations/system-reports.validation";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@softsurgery/api-client";
+import {
+  CreateBugDto,
+  ServerErrorResponse,
+  ResponseUserDeviceDto,
+} from "@softsurgery/api-client";
 import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
 import { BottomButtonWrapper } from "@softsurgery/mobile-components";
-
 import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { getCurrentDevice } from "@/lib/device";
+
 interface BugReportPortalProps {
   className?: string;
 }
@@ -32,6 +38,17 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
   const bugStore = useReportBugStore();
+  const currentMacAddress = useCurrentDeviceMac();
+
+  const { data: devices = [] } = useQuery<ResponseUserDeviceDto[]>({
+    queryKey: ["user-devices"],
+    queryFn: async () => api.userDevices.getAll(),
+  });
+
+  const currentDevice = React.useMemo(
+    () => getCurrentDevice(devices, currentMacAddress),
+    [devices, currentMacAddress],
+  );
 
   React.useEffect(() => {
     return () => {
@@ -42,7 +59,8 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   const { bugFormStructure } = useBugReportFormStructure({ store: bugStore });
 
   const { mutate: reportBug, isPending: isReportBugPending } = useMutation({
-    mutationFn: async () => api.admin.bugReport.create(bugStore.createDto),
+    mutationFn: async (payload: CreateBugDto) =>
+      api.admin.bugReport.create(payload),
     onSuccess: () => {
       toast.success("Bug reported successfully", {
         description: "Your bug report has been successfully submitted.",
@@ -60,11 +78,15 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   });
 
   const handleSubmit = () => {
-    const result = createBugSchema.safeParse(bugStore.createDto);
+    const payload: CreateBugDto = {
+      ...bugStore.createDto,
+      deviceId: currentDevice?.id,
+    };
+    const result = createBugSchema.safeParse(payload);
     if (!result.success) {
       bugStore.set("errors", result.error.flatten().fieldErrors);
     } else {
-      reportBug();
+      reportBug(payload);
     }
   };
 

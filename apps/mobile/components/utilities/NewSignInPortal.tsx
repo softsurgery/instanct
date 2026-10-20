@@ -13,6 +13,8 @@ import {
   StableScrollView,
 } from "@softsurgery/mobile-components";
 import { Icon, Image, Text } from "@softsurgery/mobile-ui";
+import { useApi } from "@/contexts/ApiContext";
+import { useQuery } from "@tanstack/react-query";
 import {
   DeviceDetailsSection,
   type DeviceDetailsData,
@@ -29,7 +31,8 @@ interface NewSignInPortalProps {
   time?: string;
   when?: string;
   deviceId?: string;
-  fingerprint?: string;
+  macAddress?: string;
+  connectionId?: string;
 }
 
 /**
@@ -46,22 +49,67 @@ export const NewSignInPortal = ({
   time,
   when,
   deviceId,
-  fingerprint,
+  macAddress,
+  connectionId,
 }: NewSignInPortalProps) => {
   const { t } = useTranslation("notifications");
   const insets = useSafeAreaInsets();
+  const api = useApi();
+
+  const { data: fetchedDevice } = useQuery({
+    queryKey: ["user-device", deviceId],
+    queryFn: () => (deviceId ? api.userDevices.getById(deviceId) : null),
+    enabled: !!deviceId,
+  });
+
+  const { data: fetchedHistory = [] } = useQuery({
+    queryKey: ["device-history", deviceId],
+    queryFn: () =>
+      deviceId ? api.userDeviceHistory.getByDeviceId(deviceId) : [],
+    enabled: !!deviceId,
+  });
+
+  const targetConnection = React.useMemo(() => {
+    if (!fetchedHistory.length) return null;
+    if (connectionId) {
+      return (
+        fetchedHistory.find((c) => c.id === connectionId) || fetchedHistory[0]
+      );
+    }
+    return fetchedHistory[0];
+  }, [fetchedHistory, connectionId]);
 
   const deviceData = React.useMemo<DeviceDetailsData>(
     () => ({
       id: deviceId,
-      deviceName: device || "iPhone 15 Pro",
-      os: os || "iOS 18.5",
-      ipAddress: ip || "82.65.14.203",
-      location: location || "Paris, France",
-      lastSignInAt: time || "12 August 2026 at 14:32",
-      fingerprint,
+      deviceName: device || fetchedDevice?.deviceName || "Mobile Device",
+      os: os || fetchedDevice?.os || "Mobile OS",
+      ipAddress: ip || targetConnection?.ipAddress || "",
+      location: location || targetConnection?.location || "",
+      time:
+        time ||
+        (targetConnection?.createdAt
+          ? new Date(targetConnection.createdAt).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : ""),
+      macAddress: macAddress || fetchedDevice?.macAddress,
     }),
-    [deviceId, device, os, ip, location, time, fingerprint],
+    [
+      deviceId,
+      device,
+      os,
+      ip,
+      location,
+      time,
+      macAddress,
+      fetchedDevice,
+      targetConnection,
+    ],
   );
 
   const handleSecurePress = () => {

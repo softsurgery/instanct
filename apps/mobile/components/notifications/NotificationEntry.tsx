@@ -49,14 +49,8 @@ export const NotificationEntry = ({
         router.push({
           pathname: "/main/new-signin",
           params: {
-            device: notification.payload?.device as string,
-            os: notification.payload?.os as string,
-            location: notification.payload?.location as string,
-            ip: notification.payload?.ip as string,
-            time: notification.payload?.time as string,
-            when: notification.payload?.when as string,
             deviceId: notification.payload?.deviceId as string,
-            fingerprint: notification.payload?.fingerprint as string,
+            connectionId: notification.payload?.connectionId as string,
           },
         });
         break;

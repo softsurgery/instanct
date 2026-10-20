@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BugVariant } from '../enums/bug-variant.enum';
-import { DeviceInfoEntity } from './device-info.entity';
+import { UserDeviceEntity } from '@softsurgery/nsa-auth/entities/user-device.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 @Entity('bugs')
@@ -28,16 +28,16 @@ export class BugEntity extends EntityHelper {
   @Column({ type: 'text', nullable: false })
   description: string;
 
-  @ManyToOne(() => DeviceInfoEntity, (device) => device.bugs, {
-    onDelete: 'CASCADE',
+  @ManyToOne(() => UserDeviceEntity, {
+    onDelete: 'SET NULL',
     eager: true,
     nullable: true,
   })
   @JoinColumn({ name: 'deviceId' })
-  device: DeviceInfoEntity;
+  device?: UserDeviceEntity;
 
   @Column({ nullable: true })
-  deviceId: number;
+  deviceId?: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',

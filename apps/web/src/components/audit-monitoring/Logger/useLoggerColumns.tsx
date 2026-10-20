@@ -26,7 +26,7 @@ const UNNECESSARY_KEYS = new Set([
   "device",
   "deviceId",
   "ip",
-  "fingerprint",
+  "macAddress",
   "receiverSessionIds",
   "plannedStart",
   "plannedEnd",
@@ -211,9 +211,7 @@ export const useLoggerColumns = (
               requestLink: renderLink(
                 requestId ? `/requests/${requestId}` : undefined
               ),
-              deviceLink: renderLink(
-                deviceId ? `/device-info/${deviceId}` : undefined
-              ),
+              deviceLink: renderLink(undefined),
               educationLink: renderLink(
                 educationId ? `/education/${educationId}` : undefined
               ),

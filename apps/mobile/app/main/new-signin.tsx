@@ -16,7 +16,8 @@ export default function Screen() {
     time?: string;
     when?: string;
     deviceId?: string;
-    fingerprint?: string;
+    macAddress?: string;
+    connectionId?: string;
   }>();
 
   return <NewSignInPortal {...params} />;

@@ -70,10 +70,14 @@ export class FeedbackController {
     @Body() createFeedbackDto: CreateFeedbackDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseFeedbackDto> {
-    const feedback = await this.feedbackService.saveWithDeviceInfo(
-      createFeedbackDto,
-      req?.user?.sub,
-    );
+    const macAddress =
+      (req.headers['x-mac-address'] as string) ||
+      (req.headers['x-device-mac'] as string) ||
+      undefined;
+    const feedback = await this.feedbackService.create(createFeedbackDto, {
+      userId: req?.user?.sub,
+      macAddress,
+    });
     req.logInfo = {
       feedbackId: feedback.id,
       category: feedback.category,

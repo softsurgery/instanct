@@ -148,7 +148,24 @@
                                 "actions": {
                                     "revoke": "Remove and Log Out",
                                     "logoutAll": "Log Out of All Devices",
-                                    "logoutAllDescription": "You will be signed out from all active sessions and devices, including this one."
+                                    "logoutAllDescription": "You will be signed out from all active sessions and devices, including this one.",
+                                    "viewConnections": "View Connection History",
+                                    "showMore": "Show more",
+                                    "showLess": "Show less"
+                                },
+                                "connections": {
+                                    "title": "Connection History",
+                                    "description": "History of all active and past connections from this device with detected IP address and geolocation.",
+                                    "date": "Date",
+                                    "time": "Time",
+                                    "loading": "Loading connections...",
+                                    "emptyTitle": "No connection history yet",
+                                    "emptyDescription": "Each time this device connects with presence, a history log is created.",
+                                    "connectedNow": "Connected Now",
+                                    "disconnected": "Disconnected",
+                                    "ended": "Ended",
+                                    "recently": "Recently",
+                                    "mobileDevice": "Mobile Device"
                                 },
                                 "revokeAlert": {
                                     "title": "Remove and Log Out Device",

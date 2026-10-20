@@ -153,7 +153,24 @@
                 "actions": {
                   "revoke": "Supprimer et déconnecter",
                   "logoutAll": "Déconnecter tous les appareils",
-                  "logoutAllDescription": "Vous serez déconnecté de toutes les sessions actives, y compris celle-ci."
+                  "logoutAllDescription": "Vous serez déconnecté de toutes les sessions actives, y compris celle-ci.",
+                  "viewConnections": "Voir l'historique des connexions",
+                  "showMore": "Voir plus",
+                  "showLess": "Voir moins"
+                },
+                "connections": {
+                  "title": "Historique des connexions",
+                  "description": "Historique de toutes les connexions actives et passées depuis cet appareil avec l'adresse IP et la géolocalisation détectées.",
+                  "date": "Date",
+                  "time": "Heure",
+                  "loading": "Chargement des connexions...",
+                  "emptyTitle": "Aucun historique de connexion",
+                  "emptyDescription": "Chaque fois que cet appareil se connecte, un journal d'historique est créé.",
+                  "connectedNow": "Connecté",
+                  "disconnected": "Déconnecté",
+                  "ended": "Terminé",
+                  "recently": "Récemment",
+                  "mobileDevice": "Appareil mobile"
                 },
                 "revokeAlert": {
                   "title": "Supprimer et déconnecter l'appareil",

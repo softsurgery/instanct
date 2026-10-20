@@ -2,7 +2,7 @@ import * as AuthSession from "expo-auth-session";
 import type { ClientAuthResource, RequestClientOAuthDto, RequestClientSignInDto, RequestClientUpdateMailDto, RequestClientVerifyEmailDto } from "@softsurgery/api-client";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { getClientDeviceInfo } from "@/lib/device-info";
-import { getDeviceId } from "@/lib/device-id";
+import { getDeviceMacAddress } from "@/lib/device-mac";
 
 const saveClientTokens = (accessToken: string, refreshToken: string) => {
   const authPersistStore = useAuthPersistStore.getState();
@@ -21,24 +21,24 @@ export function bindMobileClientAuth(clientAuth: ClientAuthResource) {
     ...clientAuth,
     signIn: async (payload: RequestClientSignInDto) => {
       const deviceInfo = getClientDeviceInfo();
-      const fingerprint = await getDeviceId();
+      const macAddress = await getDeviceMacAddress();
       const response = await clientAuth.signIn({
         device: deviceInfo.device,
         os: deviceInfo.os,
         ...payload,
-        fingerprint: payload.fingerprint || fingerprint,
+        macAddress: payload.macAddress || macAddress,
       });
       saveClientTokens(response.access_token, response.refresh_token);
       return response;
     },
     ssoSignIn: async (payload: RequestClientOAuthDto) => {
       const deviceInfo = getClientDeviceInfo();
-      const fingerprint = await getDeviceId();
+      const macAddress = await getDeviceMacAddress();
       const response = await clientAuth.ssoSignIn({
         device: deviceInfo.device,
         os: deviceInfo.os,
         ...payload,
-        fingerprint: payload.fingerprint || fingerprint,
+        macAddress: payload.macAddress || macAddress,
       });
       saveClientTokens(response.access_token, response.refresh_token);
       return response;

@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import {
   ActivityIndicator,
@@ -534,7 +533,7 @@ export const Conversation = ({
                     <View className="py-4 items-center">
                       <ActivityIndicator size="small" />
                     </View>
-                  ) : null
+                  ) : undefined
                 }
                 ListEmptyComponent={
                   <View className="flex-1 justify-center items-center py-20">

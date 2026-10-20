@@ -1,5 +1,5 @@
 import { createAxios, type CreateAxiosConfig } from "./axios";
-import { createResources } from "./resources";
+import { createResources, type ApiResources } from "./resources";
 
 export type CreateApiClientConfig = CreateAxiosConfig;
 
@@ -17,7 +17,8 @@ export type { BookmarkResource } from "./resources/bookmark";
 export type { ChatResource } from "./resources/chat";
 export type { ClientAuthResource } from "./resources/client-auth";
 export type { CurrentUserResource } from "./resources/current-user";
-export type { DevicesResource } from "./resources/devices";
+export type UserDevicesResource = ApiResources["userDevices"];
+export type UserDeviceHistoryResource = ApiResources["userDeviceHistory"];
 export type { RequestResource } from "./resources/request";
 export type { SessionResource } from "./resources/session";
 export type { ContentPageResource } from "./resources/content";

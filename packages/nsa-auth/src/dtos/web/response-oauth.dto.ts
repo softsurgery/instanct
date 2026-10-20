@@ -20,5 +20,5 @@ export class OAuthRequestDto {
   latitude?: number;
   longitude?: number;
   location?: string;
-  fingerprint?: string;
+  macAddress?: string;
 }

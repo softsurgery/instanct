@@ -5,6 +5,7 @@ import { useChatPendingSync } from "@/hooks/content/chat/useChatPendingSync";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
 import { useNotifications } from "@/hooks/content/notification/useNotifications";
 import { useCheckHealth } from "@/hooks/content/useCheckHealth";
+import { useMobilePresence } from "@/hooks/content/users/useMobilePresence";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { Stack } from "expo-router";
 import { Notifications } from "@/lib/notification";
@@ -36,6 +37,9 @@ export default function MainLayout() {
     join: ["user", "user.industries"],
   });
   useCheckHealth({
+    enabled: authPersistStore.isAuthenticated,
+  });
+  useMobilePresence({
     enabled: authPersistStore.isAuthenticated,
   });
 
@@ -260,6 +264,13 @@ export default function MainLayout() {
               name="profile/device-details"
               options={{
                 title: "deviceDetails",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="profile/device-connections"
+              options={{
+                title: "deviceConnections",
                 headerShown: false,
               }}
             />

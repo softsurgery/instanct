@@ -62,10 +62,14 @@ export class BugController {
     @Body() createBugDto: CreateBugDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseBugDto> {
-    const bug = await this.bugService.saveWithDeviceInfo(
-      createBugDto,
-      req?.user?.sub,
-    );
+    const macAddress =
+      (req.headers['x-mac-address'] as string) ||
+      (req.headers['x-device-mac'] as string) ||
+      undefined;
+    const bug = await this.bugService.create(createBugDto, {
+      userId: req?.user?.sub,
+      macAddress,
+    });
     req.logInfo = {
       bugId: bug.id,
       variant: bug.variant,

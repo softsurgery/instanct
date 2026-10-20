@@ -6,17 +6,16 @@ import { QueryBuilder } from '@softsurgery/nsa-database';
 import { PageDto } from '@softsurgery/nsa-database';
 import { PageMetaDto } from '@softsurgery/nsa-database';
 import { FeedbackRepository } from '../repositories/feedback.repository';
-import { DeviceInfoService } from './device-info.service';
+import { UserDeviceService } from '@softsurgery/nsa-auth/services/user-device.service';
 import { FeedbackNotFoundException } from '../errors/feedback/feedback.notfound.error';
 import { FeedbackEntity } from '../entities/feedback.entity';
 import { CreateFeedbackDto } from '../dtos/feedback/create-feedback.dto';
-import { DeviceInfoEntity } from '../entities/device-info.entity';
 
 @Injectable()
 export class FeedbackService {
   constructor(
     private readonly feedbackRepository: FeedbackRepository,
-    private readonly deviceInfoService: DeviceInfoService,
+    private readonly userDeviceService: UserDeviceService,
   ) {}
 
   async findOneById(id: string): Promise<FeedbackEntity> {
@@ -104,19 +103,22 @@ export class FeedbackService {
   //Extended Methods ===========================================================================
 
   @Transactional()
-  async saveWithDeviceInfo(
+  async create(
     createFeedbackDto: CreateFeedbackDto,
-    userId?: string,
+    context?: { userId?: string; macAddress?: string },
   ): Promise<FeedbackEntity> {
-    const { device, ...rest } = createFeedbackDto;
-    let existingDevice: DeviceInfoEntity | undefined = undefined;
-    if (device) {
-      existingDevice = await this.deviceInfoService.upsert(device);
-    }
+    const deviceId = await this.userDeviceService.resolveDeviceId(
+      context?.userId,
+      {
+        deviceId: createFeedbackDto.deviceId,
+        macAddress: context?.macAddress,
+      },
+    );
+
     return this.feedbackRepository.save({
-      ...rest,
-      deviceId: existingDevice?.id,
-      userId,
+      ...createFeedbackDto,
+      deviceId,
+      userId: context?.userId,
     });
   }
 }

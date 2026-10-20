@@ -1,4 +1,12 @@
-import type { UserDevice } from "@softsurgery/api-client";
+import type { ResponseUserDeviceDto } from "@softsurgery/api-client";
+
+export type DeviceLike = Partial<ResponseUserDeviceDto> & {
+  latitude?: number | string | null;
+  longitude?: number | string | null;
+  location?: string | null;
+  ipAddress?: string | null;
+  time?: string | Date | null;
+};
 
 export const waitForUiReady = () =>
   // It returns a Promise that resolves only after:
@@ -10,14 +18,6 @@ export const waitForUiReady = () =>
       requestAnimationFrame(() => resolve());
     }, 10);
   });
-
-/**
- * Common shape for device data across screens and components.
- */
-export type DeviceLike = Partial<UserDevice> & {
-  lastSignInAt?: string | Date | null;
-  time?: string | null;
-};
 
 /**
  * Returns a human-readable device display name with a sensible fallback.
@@ -40,18 +40,37 @@ export function getDeviceSubtitle(
 }
 
 /**
- * Checks whether the given device is the current device by comparing fingerprints.
+ * Checks whether the given device is the current device by comparing MAC addresses.
  */
 export function isCurrentDevice(
-  device?: DeviceLike | null,
-  currentDeviceId?: string | null,
+  device?: { macAddress?: string | null } | null,
+  currentMacAddress?: string | null,
 ): boolean {
-  return !!(
-    device?.fingerprint &&
-    currentDeviceId &&
-    device.fingerprint === currentDeviceId
+  if (!device?.macAddress || !currentMacAddress) return false;
+  return (
+    device.macAddress.trim().toLowerCase() ===
+    currentMacAddress.trim().toLowerCase()
   );
 }
+
+/**
+ * Resolves the current device from a list of devices based on MAC address.
+ * Falls back to the first device in the list if no match is found or if the MAC address is not available.
+ * Returns undefined if the devices list is empty or not provided.
+ */
+export function getCurrentDevice<T extends { macAddress?: string | null }>(
+  devices?: T[] | null,
+  currentMacAddress?: string | null,
+): T | undefined {
+  if (!devices || devices.length === 0) return undefined;
+  if (!currentMacAddress) return devices[0];
+
+  return (
+    devices.find((d) => isCurrentDevice(d, currentMacAddress)) || devices[0]
+  );
+}
+
+export const findCurrentDevice = getCurrentDevice;
 
 /**
  * Parses numeric latitude/longitude coordinates from a device object or its location string.
@@ -81,7 +100,9 @@ export function parseDeviceCoordinates(
   }
 
   if (device.location) {
-    const parts = device.location.split(",").map((p) => parseFloat(p.trim()));
+    const parts = device.location
+      .split(",")
+      .map((p: string) => parseFloat(p.trim()));
     if (
       parts.length === 2 &&
       !isNaN(parts[0]) &&

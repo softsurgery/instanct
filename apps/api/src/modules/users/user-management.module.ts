@@ -1,4 +1,5 @@
 import { Global, Module, OnModuleInit, forwardRef } from '@nestjs/common';
+import { AuthModule } from '@softsurgery/nsa-auth/auth.module';
 import {
   USER_REPOSITORY,
   USER_SERVICE,
@@ -160,6 +161,7 @@ import { AdminPresenceGateway } from './gateways/admin-presence.gateway';
     NotificationModule,
     LoggerModule,
     forwardRef(() => SessionModule),
+    forwardRef(() => AuthModule),
   ],
 })
 export class UserManagementModule implements OnModuleInit {

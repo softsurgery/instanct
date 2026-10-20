@@ -19,6 +19,9 @@ let customBaseUrl: string | null = null;
 export interface SocketConfig extends Partial<ManagerOptions & SocketOptions> {
   token?: string;
   source?: string;
+  device?: string;
+  os?: string;
+  macAddress?: string;
 }
 
 /**
@@ -131,32 +134,76 @@ export function getSocket(
   }
 
   const defaultSource = getDefaultSocketSource();
-  const { token, source = defaultSource, ...options } = config;
+  const {
+    token,
+    source = defaultSource,
+    device,
+    os,
+    macAddress,
+    ...options
+  } = config;
   const globalDelay = getGlobalDelay();
 
-  const socket = io(`${baseUrl}/${cleanNamespace}`, {
+  const isPresence =
+    cleanNamespace === "presence" || cleanNamespace === "admin/presence";
+
+  const auth: Record<string, unknown> = { source };
+  const query: Record<string, unknown> = { source };
+  const extraHeaders: Record<string, string> = {
+    "x-client-source": source,
+  };
+
+  if (token) {
+    auth.token = token;
+    extraHeaders.Authorization = `Bearer ${token}`;
+  }
+
+  if (isPresence) {
+    if (device) {
+      auth.device = device;
+      query.device = device;
+      extraHeaders["x-device-name"] = device;
+    }
+    if (os) {
+      auth.os = os;
+      query.os = os;
+      extraHeaders["x-os-name"] = os;
+    }
+    if (macAddress) {
+      auth.macAddress = macAddress;
+      query.macAddress = macAddress;
+      extraHeaders["x-mac-address"] = macAddress;
+    }
+  }
+
+  if (options.auth && typeof options.auth === "object") {
+    Object.assign(auth, options.auth);
+  }
+  if (options.query && typeof options.query === "object") {
+    Object.assign(query, options.query);
+  }
+  if (options.extraHeaders && typeof options.extraHeaders === "object") {
+    Object.assign(extraHeaders, options.extraHeaders);
+  }
+
+  const socketOptions: Partial<ManagerOptions & SocketOptions> = {
     transports: ["websocket"],
-    auth: {
-      ...(token ? { token } : {}),
-      source,
-      ...(options.auth as Record<string, unknown> | undefined),
-    },
-    query: {
-      source,
-      ...(options.query as Record<string, unknown> | undefined),
-    },
-    extraHeaders: {
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      "x-client-source": source,
-      ...(options.extraHeaders as Record<string, string> | undefined),
-    },
     reconnection: true,
     reconnectionAttempts: Infinity,
     reconnectionDelay: 2000,
     reconnectionDelayMax: 10000,
-    ...options,
-    ...(globalDelay > 0 ? { autoConnect: false } : {}),
-  });
+  };
+
+  Object.assign(socketOptions, options);
+  socketOptions.auth = auth;
+  socketOptions.query = query;
+  socketOptions.extraHeaders = extraHeaders;
+
+  if (globalDelay > 0) {
+    socketOptions.autoConnect = false;
+  }
+
+  const socket = io(`${baseUrl}/${cleanNamespace}`, socketOptions);
 
   applyDelayIfNeeded(socket);
 
