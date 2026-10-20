@@ -33,6 +33,7 @@ export interface LocationMapProps {
   zoomEnabled?: boolean;
   rotateEnabled?: boolean;
   pitchEnabled?: boolean;
+  disableGesturesUnlessOpened?: boolean;
   showFullscreenToggle?: boolean;
   showLocationPill?: boolean;
   pillPosition?: "top" | "bottom";
@@ -63,6 +64,7 @@ export const LocationMap = ({
   zoomEnabled = false,
   rotateEnabled = false,
   pitchEnabled = false,
+  disableGesturesUnlessOpened = false,
   showFullscreenToggle = true,
   showLocationPill = true,
   pillPosition = "bottom",
@@ -198,10 +200,10 @@ export const LocationMap = ({
         initialRegion={region}
         customMapStyle={resolvedMapStyle}
         userInterfaceStyle={resolvedUiStyle}
-        scrollEnabled={scrollEnabled}
-        zoomEnabled={zoomEnabled}
-        rotateEnabled={rotateEnabled}
-        pitchEnabled={pitchEnabled}
+        scrollEnabled={disableGesturesUnlessOpened ? false : scrollEnabled}
+        zoomEnabled={disableGesturesUnlessOpened ? false : zoomEnabled}
+        rotateEnabled={disableGesturesUnlessOpened ? false : rotateEnabled}
+        pitchEnabled={disableGesturesUnlessOpened ? false : pitchEnabled}
       >
         {renderMarker ? (
           renderMarker({
@@ -263,6 +265,18 @@ export const LocationMap = ({
             userInterfaceStyle={resolvedUiStyle}
             showsCompass
             showsScale
+            scrollEnabled={
+              disableGesturesUnlessOpened ? true : (scrollEnabled ?? true)
+            }
+            zoomEnabled={
+              disableGesturesUnlessOpened ? true : (zoomEnabled ?? true)
+            }
+            rotateEnabled={
+              disableGesturesUnlessOpened ? true : (rotateEnabled ?? true)
+            }
+            pitchEnabled={
+              disableGesturesUnlessOpened ? true : (pitchEnabled ?? true)
+            }
           >
             {renderMarker ? (
               renderMarker({

@@ -308,9 +308,8 @@ export const DeviceDetailsPortal = ({
           }
           title={device?.deviceName || device?.os || "Device"}
           description={displayLocation || undefined}
-          className="h-56 mx-4 my-2"
-          scrollEnabled={true}
-          zoomEnabled={true}
+          className="h-80 mx-4 my-2"
+          disableGesturesUnlessOpened={true}
           showLocationPill={true}
           showFullscreenToggle={true}
           fallbackText={
