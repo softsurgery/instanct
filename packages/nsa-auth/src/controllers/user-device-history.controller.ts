@@ -3,26 +3,29 @@ import {
   Controller,
   Get,
   Param,
+  Query,
   Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { toDtoArray } from '@softsurgery/nsa-database';
-import { UserDeviceService } from '../services/user-device.service';
+import { UserConnectionHistoryService } from '../services/user-connection-history.service';
 import { ResponseUserConnectionHistoryDto } from '../dtos/user-connection-history/response-user-connection-history.dto';
 
 @ApiTags('user-device-history')
 @Controller({ version: '1', path: '/auth/devices/history' })
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserDeviceHistoryController {
-  constructor(private readonly userDeviceService: UserDeviceService) {}
+  constructor(
+    private readonly userConnectionHistoryService: UserConnectionHistoryService,
+  ) {}
 
   @Get()
   @ApiOperation({
     summary: 'Get all user connection history',
     description:
-      'Retrieve recent connection and presence history for the authenticated user.',
+      'Retrieve recent connection and presence history for the authenticated user or specified user.',
   })
   @ApiResponse({
     status: 200,
@@ -31,10 +34,10 @@ export class UserDeviceHistoryController {
   })
   async getAllConnectionHistory(
     @Request() req: AdvancedRequest,
+    @Query('userId') queryUserId?: string,
   ): Promise<ResponseUserConnectionHistoryDto[]> {
-    const history = await this.userDeviceService.getUserConnectionHistory(
-      req.user!.sub,
-    );
+    const targetUserId = queryUserId || req.user!.sub;
+    const history = await this.userConnectionHistoryService.findHistory(targetUserId);
     return toDtoArray(ResponseUserConnectionHistoryDto, history);
   }
 
@@ -52,9 +55,11 @@ export class UserDeviceHistoryController {
   async getDeviceConnectionHistory(
     @Param('deviceId') deviceId: string,
     @Request() req: AdvancedRequest,
+    @Query('userId') queryUserId?: string,
   ): Promise<ResponseUserConnectionHistoryDto[]> {
-    const history = await this.userDeviceService.getDeviceConnectionHistory(
-      req.user!.sub,
+    const targetUserId = queryUserId || req.user!.sub;
+    const history = await this.userConnectionHistoryService.findHistory(
+      targetUserId,
       deviceId,
     );
     return toDtoArray(ResponseUserConnectionHistoryDto, history);

@@ -6,13 +6,25 @@ import type {
 } from "../types/user-device";
 
 export function createUserDevicesResource(http: AxiosInstance) {
-  const getAll = async (): Promise<ResponseUserDeviceDto[]> => {
-    const { data } = await http.get<ResponseUserDeviceDto[]>("/auth/devices");
+  const getAll = async (params?: {
+    userId?: string;
+  }): Promise<ResponseUserDeviceDto[]> => {
+    const { data } = await http.get<ResponseUserDeviceDto[]>("/auth/devices", {
+      params,
+    });
     return data;
   };
 
+  const getByUserId = async (
+    userId: string,
+  ): Promise<ResponseUserDeviceDto[]> => {
+    return getAll({ userId });
+  };
+
   const getById = async (id: string): Promise<ResponseUserDeviceDto> => {
-    const { data } = await http.get<ResponseUserDeviceDto>(`/auth/devices/${id}`);
+    const { data } = await http.get<ResponseUserDeviceDto>(
+      `/auth/devices/${id}`,
+    );
     return data;
   };
 
@@ -65,6 +77,7 @@ export function createUserDevicesResource(http: AxiosInstance) {
 
   return {
     getAll,
+    getByUserId,
     getById,
     create,
     update,

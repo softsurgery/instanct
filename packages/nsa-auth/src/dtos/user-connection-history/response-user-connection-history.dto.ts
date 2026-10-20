@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { ResponseUserDeviceDto } from '../user-device/response-user-device.dto';
 
 export class ResponseUserConnectionHistoryDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })
@@ -14,6 +15,11 @@ export class ResponseUserConnectionHistoryDto extends ResponseDtoHelper {
   @ApiProperty({ type: String, nullable: true })
   @Expose()
   deviceId?: string;
+
+  @ApiProperty({ type: () => ResponseUserDeviceDto, nullable: true })
+  @Expose()
+  @Type(() => ResponseUserDeviceDto)
+  device?: ResponseUserDeviceDto;
 
   @ApiProperty({ type: String, default: 'mobile' })
   @Expose()

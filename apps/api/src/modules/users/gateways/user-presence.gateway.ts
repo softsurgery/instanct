@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { Server } from 'socket.io';
 import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
-import { UserDeviceService } from '@softsurgery/nsa-auth/services/user-device.service';
+import { UserConnectionHistoryService } from '@softsurgery/nsa-auth/services/user-connection-history.service';
 import { detectPresenceMetadata } from '@softsurgery/nsa-auth/utils/presence-metadata';
 import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
 import {
@@ -55,7 +55,7 @@ export class UserPresenceGateway
     @Inject(USER_REPOSITORY)
     protected readonly userRepository?: AppUserRepository,
     @Optional()
-    protected readonly userDeviceService?: UserDeviceService,
+    protected readonly userConnectionHistoryService?: UserConnectionHistoryService,
   ) {}
 
   /**
@@ -99,16 +99,17 @@ export class UserPresenceGateway
 
     // Record presence connection & device history (especially for mobile clients)
     if (
-      this.userDeviceService &&
+      this.userConnectionHistoryService &&
       (source === 'mobile' || client.handshake?.auth?.device)
     ) {
       try {
-        const result = await this.userDeviceService.recordPresenceConnection({
-          userId,
-          socketId: client.id,
-          source,
-          metadata,
-        });
+        const result =
+          await this.userConnectionHistoryService.recordPresenceConnection({
+            userId,
+            socketId: client.id,
+            source,
+            metadata,
+          });
         connectionHistoryId = result.connection?.id;
         (client.data as Record<string, unknown>).connectionHistoryId =
           connectionHistoryId;
@@ -142,9 +143,9 @@ export class UserPresenceGateway
     const connectionHistoryId = (client.data as Record<string, unknown>)
       ?.connectionHistoryId as string;
 
-    if (this.userDeviceService) {
+    if (this.userConnectionHistoryService) {
       try {
-        await this.userDeviceService.recordDisconnection(
+        await this.userConnectionHistoryService.recordDisconnection(
           client.id,
           connectionHistoryId,
         );

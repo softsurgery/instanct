@@ -1,5 +1,13 @@
 import type { ResponseUserDeviceDto } from "@softsurgery/api-client";
 
+export type DeviceLike = Partial<ResponseUserDeviceDto> & {
+  latitude?: number | string | null;
+  longitude?: number | string | null;
+  location?: string | null;
+  ipAddress?: string | null;
+  time?: string | Date | null;
+};
+
 export const waitForUiReady = () =>
   // It returns a Promise that resolves only after:
   // All ongoing user interactions/animations are finished
@@ -15,7 +23,7 @@ export const waitForUiReady = () =>
  * Returns a human-readable device display name with a sensible fallback.
  */
 export function getDeviceDisplayName(
-  device?: ResponseUserDeviceDto | null,
+  device?: DeviceLike | null,
   fallback = "Device",
 ): string {
   return device?.deviceName?.trim() || device?.os?.trim() || fallback;
@@ -25,7 +33,7 @@ export function getDeviceDisplayName(
  * Returns a secondary descriptor / subtitle for a device.
  */
 export function getDeviceSubtitle(
-  device?: ResponseUserDeviceDto | null,
+  device?: DeviceLike | null,
   fallback = "Device",
 ): string {
   return device?.os?.trim() || fallback;

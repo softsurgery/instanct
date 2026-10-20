@@ -35,7 +35,8 @@ import { RequestClientOAuthDto } from "../dtos/client/request-client-oauth.dto";
 import { ConfigService } from "@nestjs/config";
 
 import { getSigninMetadata } from "../utils/signin-metadata";
-import { UserDeviceService } from "../services/user-device.service";
+
+import { UserConnectionHistoryService } from "../services/user-connection-history.service";
 
 @ApiTags("client-auth")
 @Controller({ version: "1", path: "/client-auth" })
@@ -45,7 +46,7 @@ export class ClientAuthController {
   constructor(
     private clientAuthService: ClientAuthService,
     private configService: ConfigService,
-    private userDeviceService: UserDeviceService,
+    private userConnectionHistoryService: UserConnectionHistoryService,
   ) {}
 
   @Public()
@@ -76,10 +77,17 @@ export class ClientAuthController {
       device: userDevice,
       connection,
       isNew,
-    } = await this.userDeviceService.registerOrUpdateDevice(
-      result.user.id,
-      meta,
-    );
+    } = await this.userConnectionHistoryService.registerConnection({
+      userId: result.user.id,
+      macAddress: meta.macAddress,
+      deviceName: meta.device,
+      os: meta.os,
+      source: "signin",
+      ipAddress: meta.ip,
+      latitude: meta.latitude,
+      longitude: meta.longitude,
+      location: meta.location,
+    });
     req.logInfo = {
       clientName: identifyUser(result.user as AbstractUserEntity),
     };
@@ -128,10 +136,17 @@ export class ClientAuthController {
         device: userDevice,
         connection,
         isNew,
-      } = await this.userDeviceService.registerOrUpdateDevice(
-        result.user.id,
-        meta,
-      );
+      } = await this.userConnectionHistoryService.registerConnection({
+        userId: result.user.id,
+        macAddress: meta.macAddress,
+        deviceName: meta.device,
+        os: meta.os,
+        source: "signin",
+        ipAddress: meta.ip,
+        latitude: meta.latitude,
+        longitude: meta.longitude,
+        location: meta.location,
+      });
       req.logInfo = {
         clientName: identifyUser(result.user as AbstractUserEntity),
       };

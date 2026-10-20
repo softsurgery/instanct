@@ -1,7 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserConnectionHistoryDto {
+  @ApiProperty({ type: String, required: false })
+  @IsString()
+  @IsOptional()
+  userId?: string;
+
   @ApiProperty({ type: String, required: false })
   @IsString()
   @IsOptional()
@@ -21,4 +26,19 @@ export class CreateUserConnectionHistoryDto {
   @IsString()
   @IsOptional()
   ipAddress?: string;
+
+  @ApiProperty({ type: Number, required: false })
+  @IsNumber()
+  @IsOptional()
+  latitude?: number;
+
+  @ApiProperty({ type: Number, required: false })
+  @IsNumber()
+  @IsOptional()
+  longitude?: number;
+
+  @ApiProperty({ type: String, required: false })
+  @IsString()
+  @IsOptional()
+  location?: string;
 }

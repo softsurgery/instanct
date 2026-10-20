@@ -15,6 +15,7 @@ import { UserConnectionHistoryEntity } from './entities/user-connection-history.
 import { UserDeviceRepository } from './repositories/user-device.repository';
 import { UserConnectionHistoryRepository } from './repositories/user-connection-history.repository';
 import { UserDeviceService } from './services/user-device.service';
+import { UserConnectionHistoryService } from './services/user-connection-history.service';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UserDeviceService } from './services/user-device.service';
     UserDeviceRepository,
     UserConnectionHistoryRepository,
     UserDeviceService,
+    UserConnectionHistoryService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
@@ -45,6 +47,7 @@ import { UserDeviceService } from './services/user-device.service';
     AuthService,
     ClientAuthService,
     UserDeviceService,
+    UserConnectionHistoryService,
     UserDeviceRepository,
     UserConnectionHistoryRepository,
   ],

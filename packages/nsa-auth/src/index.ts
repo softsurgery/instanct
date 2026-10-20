@@ -1,5 +1,6 @@
 export { AuthModule } from "./auth.module";
 export { UserDeviceService } from "./services/user-device.service";
+export { UserConnectionHistoryService } from "./services/user-connection-history.service";
 export { UserDeviceController } from "./controllers/user-device.controller";
 export { UserDeviceHistoryController } from "./controllers/user-device-history.controller";
 export { UserDeviceRepository } from "./repositories/user-device.repository";
@@ -10,6 +11,8 @@ export {
   ResponseUserDeviceDto,
   CreateUserDeviceDto,
   UpdateUserDeviceDto,
+  RegisterUserDeviceDto,
+  ResponseUserDeviceRegistrationDto,
 } from "./dtos/user-device";
 export {
   ResponseUserConnectionHistoryDto,

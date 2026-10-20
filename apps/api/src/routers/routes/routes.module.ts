@@ -47,8 +47,8 @@ import { TemplateController } from '@softsurgery/nsa-templates/controllers/templ
     AuthController,
     ClientAuthController,
     ClientCustomAuthController,
-    UserDeviceController,
     UserDeviceHistoryController,
+    UserDeviceController,
     //common
     StorageController,
     ConfigurationController,

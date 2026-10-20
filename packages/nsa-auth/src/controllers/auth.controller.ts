@@ -29,7 +29,7 @@ import { Notify } from "@softsurgery/nsa-notifications/decorators/notify.decorat
 import { NotificationType } from "@softsurgery/nsa-notifications/enums/notification-type.registry";
 import { NotificationInterceptor } from "@softsurgery/nsa-notifications/decorators/notification.interceptor";
 import { getSigninMetadata } from "../utils/signin-metadata";
-import { UserDeviceService } from "../services/user-device.service";
+import { UserConnectionHistoryService } from "../services/user-connection-history.service";
 
 @ApiTags("auth")
 @Controller({ version: "1", path: "/auth" })
@@ -38,7 +38,7 @@ import { UserDeviceService } from "../services/user-device.service";
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userDeviceService: UserDeviceService,
+    private userConnectionHistoryService: UserConnectionHistoryService,
   ) {}
 
   @Public()
@@ -73,10 +73,17 @@ export class AuthController {
         device: userDevice,
         connection,
         isNew,
-      } = await this.userDeviceService.registerOrUpdateDevice(
-        result.user.id,
-        meta,
-      );
+      } = await this.userConnectionHistoryService.registerConnection({
+        userId: result.user.id,
+        macAddress: meta.macAddress,
+        deviceName: meta.device,
+        os: meta.os,
+        source: "signin",
+        ipAddress: meta.ip,
+        latitude: meta.latitude,
+        longitude: meta.longitude,
+        location: meta.location,
+      });
       deviceId = userDevice.id;
       connectionId = connection.id;
       isNewDevice = isNew;
@@ -127,10 +134,17 @@ export class AuthController {
         device: userDevice,
         connection,
         isNew,
-      } = await this.userDeviceService.registerOrUpdateDevice(
-        result.user.id,
-        meta,
-      );
+      } = await this.userConnectionHistoryService.registerConnection({
+        userId: result.user.id,
+        macAddress: meta.macAddress,
+        deviceName: meta.device,
+        os: meta.os,
+        source: "signin",
+        ipAddress: meta.ip,
+        latitude: meta.latitude,
+        longitude: meta.longitude,
+        location: meta.location,
+      });
       req.logInfo = {
         fullname: identifyUser(result.user as AbstractUserEntity),
       };

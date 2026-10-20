@@ -5,7 +5,7 @@ import {
   AppUserRepository,
 } from '@softsurgery/nsa-um/tokens/user-access';
 import { UserPresenceService } from '@softsurgery/nsa-um/services/user-presence.service';
-import { UserDeviceService } from '@softsurgery/nsa-auth/services/user-device.service';
+import { UserConnectionHistoryService } from '@softsurgery/nsa-auth/services/user-connection-history.service';
 import { UserPresenceGateway } from './user-presence.gateway';
 
 /**
@@ -26,8 +26,8 @@ export class AdminPresenceGateway extends UserPresenceGateway {
     @Inject(USER_REPOSITORY)
     userRepository?: AppUserRepository,
     @Optional()
-    userDeviceService?: UserDeviceService,
+    userConnectionHistoryService?: UserConnectionHistoryService,
   ) {
-    super(userPresenceService, userRepository, userDeviceService);
+    super(userPresenceService, userRepository, userConnectionHistoryService);
   }
 }
