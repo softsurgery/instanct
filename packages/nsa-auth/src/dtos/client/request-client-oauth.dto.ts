@@ -48,5 +48,5 @@ export class RequestClientOAuthDto {
 
   @IsOptional()
   @IsString()
-  fingerprint?: string;
+  macAddress?: string;
 }

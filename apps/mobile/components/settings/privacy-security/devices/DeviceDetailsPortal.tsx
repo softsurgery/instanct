@@ -28,7 +28,7 @@ import {
   ResponseUserDeviceDto,
   ResponseUserConnectionHistoryDto,
 } from "@softsurgery/api-client";
-import { useCurrentDeviceId } from "@/hooks/useCurrentDeviceId";
+import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import {
   isCurrentDevice,
   parseDeviceCoordinates,
@@ -56,7 +56,7 @@ export const DeviceDetailsPortal = ({
   const params = useLocalSearchParams<{ id?: string; deviceData?: string }>();
   const id = params.id;
 
-  const currentDeviceId = useCurrentDeviceId();
+  const currentMacAddress = useCurrentDeviceMac();
 
   const initialDevice = React.useMemo<ResponseUserDeviceDto | null>(() => {
     if (params.deviceData) {
@@ -101,7 +101,7 @@ export const DeviceDetailsPortal = ({
 
   const displayLocation = latestConnection?.location;
 
-  const isThisDevice = isCurrentDevice(device, currentDeviceId);
+  const isThisDevice = isCurrentDevice(device, currentMacAddress);
 
   const visibleConnections = React.useMemo(
     () => history.slice(0, INITIAL_VISIBLE_CONNECTIONS),

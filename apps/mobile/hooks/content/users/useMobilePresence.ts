@@ -3,7 +3,7 @@ import { AppState, type AppStateStatus } from "react-native";
 import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { getClientDeviceInfo } from "@/lib/device-info";
-import { getDeviceId } from "@/lib/device-id";
+import { getDeviceMacAddress } from "@/lib/device-mac";
 
 export interface UseMobilePresenceOptions {
   enabled?: boolean;
@@ -11,7 +11,7 @@ export interface UseMobilePresenceOptions {
 
 /**
  * App-level hook that maintains the mobile user's presence connection.
- * Automatically detects device, OS, and fingerprint, registers connection
+ * Automatically detects device, OS, and macAddress, registers connection
  * history on the backend (with IP-based location), and handles app state changes.
  */
 export function useMobilePresence({
@@ -34,11 +34,11 @@ export function useMobilePresence({
     const establishPresence = async () => {
       try {
         const deviceInfo = getClientDeviceInfo();
-        let fingerprint = "unknown-mobile";
+        let macAddress = "02:00:00:00:00:00";
         try {
-          fingerprint = await getDeviceId();
+          macAddress = await getDeviceMacAddress();
         } catch (e) {
-          console.warn("Failed to get device ID for presence:", e);
+          console.warn("Failed to get device MAC for presence:", e);
         }
 
         if (!isMounted) return;
@@ -48,7 +48,7 @@ export function useMobilePresence({
           source: "mobile",
           device: deviceInfo.device,
           os: deviceInfo.os,
-          fingerprint,
+          macAddress,
         });
 
         socketRef.current = socket;

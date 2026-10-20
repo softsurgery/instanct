@@ -30,8 +30,8 @@ export class RequestClientSignInDto {
   @IsString()
   os?: string;
 
-  @ApiPropertyOptional({ type: String, example: 'a1b2c3d4e5f6...' })
+  @ApiPropertyOptional({ type: String, example: 'aa:bb:cc:dd:ee:ff' })
   @IsOptional()
   @IsString()
-  fingerprint?: string;
+  macAddress?: string;
 }

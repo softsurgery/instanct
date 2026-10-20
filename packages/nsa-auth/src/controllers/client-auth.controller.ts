@@ -9,36 +9,36 @@ import {
   Request,
   Res,
   UseInterceptors,
-} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from '../utils/public-strategy';
-import { ResponseSigninDto } from '../dtos/web/response-signin.dto';
-import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
-import { EventType } from '@softsurgery/nsa-logger/enums/event-type.registry';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
-import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
-import { ClientAuthService } from '../services/client-auth.service';
-import { RequestClientSignUpDto } from '../dtos/client/request-client-signup.dto';
-import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
-import { RequestClientSignInDto } from '../dtos/client/request-client-signin.dto';
-import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
-import { RequestClientUpdateMailDto } from '../dtos/client/request-client-update-mail.dto';
-import { RequestClientUpdatePasswordDto } from '../dtos/client/request-client-update-password.dto';
-import { RefreshTokenDto } from '../dtos/web/response-refresh-token';
-import { Notify } from '@softsurgery/nsa-notifications/decorators/notify.decorator';
-import { NotificationType } from '@softsurgery/nsa-notifications/enums/notification-type.registry';
-import { NotificationInterceptor } from '@softsurgery/nsa-notifications/decorators/notification.interceptor';
-import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
-import { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
-import { Response } from 'express';
-import { RequestClientOAuthDto } from '../dtos/client/request-client-oauth.dto';
-import { ConfigService } from '@nestjs/config';
+} from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Public } from "../utils/public-strategy";
+import { ResponseSigninDto } from "../dtos/web/response-signin.dto";
+import { LogEvent } from "@softsurgery/nsa-logger/decorators/log-event.decorator";
+import { EventType } from "@softsurgery/nsa-logger/enums/event-type.registry";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
+import { ClientAuthService } from "../services/client-auth.service";
+import { RequestClientSignUpDto } from "../dtos/client/request-client-signup.dto";
+import { ResponseClientSignupDto } from "../dtos/client/response-client-signup.dto";
+import { RequestClientSignInDto } from "../dtos/client/request-client-signin.dto";
+import { ResponseClientSigninDto } from "../dtos/client/response-client-signin.dto";
+import { RequestClientUpdateMailDto } from "../dtos/client/request-client-update-mail.dto";
+import { RequestClientUpdatePasswordDto } from "../dtos/client/request-client-update-password.dto";
+import { RefreshTokenDto } from "../dtos/web/response-refresh-token";
+import { Notify } from "@softsurgery/nsa-notifications/decorators/notify.decorator";
+import { NotificationType } from "@softsurgery/nsa-notifications/enums/notification-type.registry";
+import { NotificationInterceptor } from "@softsurgery/nsa-notifications/decorators/notification.interceptor";
+import { identifyUser } from "@softsurgery/nsa-um/utils/identify-user";
+import { AbstractUserEntity } from "@softsurgery/nsa-um/entities/abstract-user.entity";
+import { Response } from "express";
+import { RequestClientOAuthDto } from "../dtos/client/request-client-oauth.dto";
+import { ConfigService } from "@nestjs/config";
 
-import { getSigninMetadata } from '../utils/signin-metadata';
-import { UserDeviceService } from '../services/user-device.service';
+import { getSigninMetadata } from "../utils/signin-metadata";
+import { UserDeviceService } from "../services/user-device.service";
 
-@ApiTags('client-auth')
-@Controller({ version: '1', path: '/client-auth' })
+@ApiTags("client-auth")
+@Controller({ version: "1", path: "/client-auth" })
 @UseInterceptors(LogInterceptor)
 @UseInterceptors(NotificationInterceptor)
 export class ClientAuthController {
@@ -49,18 +49,18 @@ export class ClientAuthController {
   ) {}
 
   @Public()
-  @Post('sign-in')
+  @Post("sign-in")
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Sign in a client user',
-    description: 'Authenticate a client user with email and password.',
+    summary: "Sign in a client user",
+    description: "Authenticate a client user with email and password.",
   })
   @ApiResponse({
     status: 200,
-    description: 'Successful sign in.',
+    description: "Successful sign in.",
     type: ResponseSigninDto,
   })
-  @ApiResponse({ status: 401, description: 'Invalid credentials.' })
+  @ApiResponse({ status: 401, description: "Invalid credentials." })
   @LogEvent(EventType.CLIENT_SIGNIN)
   @Notify(NotificationType.NEW_SIGNIN)
   async signIn(
@@ -72,49 +72,43 @@ export class ClientAuthController {
       signInDto.password,
     );
     const meta = await getSigninMetadata(req, signInDto);
-    const { device: userDevice, isNew } =
-      await this.userDeviceService.registerOrUpdateDevice(
-        result.user.id,
-        meta,
-      );
+    const {
+      device: userDevice,
+      connection,
+      isNew,
+    } = await this.userDeviceService.registerOrUpdateDevice(
+      result.user.id,
+      meta,
+    );
     req.logInfo = {
       clientName: identifyUser(result.user as AbstractUserEntity),
     };
     if (isNew) {
       req.notificationInfo = {
         userId: result.user.id,
-        clientName: identifyUser(result.user as AbstractUserEntity),
-        device: meta.device,
-        os: meta.os,
-        ip: meta.ip,
-        latitude: meta.latitude,
-        longitude: meta.longitude,
-        location: meta.location,
-        time: meta.time,
-        when: meta.when,
         deviceId: userDevice.id,
-        fingerprint: meta.fingerprint,
+        connectionId: connection.id,
       };
     }
     return result;
   }
 
   @Public()
-  @Post('oauth')
+  @Post("oauth")
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Handle OAuth SSO sign-in/signup',
+    summary: "Handle OAuth SSO sign-in/signup",
     description:
-      'Accepts an ID token or access token from a supported OAuth provider (Google, LinkedIn, Apple) and signs in or registers the user.',
+      "Accepts an ID token or access token from a supported OAuth provider (Google, LinkedIn, Apple) and signs in or registers the user.",
   })
   @ApiResponse({
     status: 200,
-    description: 'Successful OAuth sign in or registration.',
+    description: "Successful OAuth sign in or registration.",
     type: ResponseClientSigninDto,
   })
   @ApiResponse({
     status: 400,
-    description: 'Missing or invalid OAuth data.',
+    description: "Missing or invalid OAuth data.",
   })
   @LogEvent(EventType.CLIENT_SIGNIN)
   @Notify(NotificationType.NEW_SIGNIN)
@@ -130,26 +124,22 @@ export class ClientAuthController {
     );
     if (result.user) {
       const meta = await getSigninMetadata(req, oauthDto);
-      const { device: userDevice, isNew } =
-        await this.userDeviceService.registerOrUpdateDevice(
-          result.user.id,
-          meta,
-        );
+      const {
+        device: userDevice,
+        connection,
+        isNew,
+      } = await this.userDeviceService.registerOrUpdateDevice(
+        result.user.id,
+        meta,
+      );
       req.logInfo = {
         clientName: identifyUser(result.user as AbstractUserEntity),
       };
       if (isNew) {
         req.notificationInfo = {
           userId: result.user.id,
-          clientName: identifyUser(result.user as AbstractUserEntity),
-          device: meta.device,
-          os: meta.os,
-          ip: meta.ip,
-          location: meta.location,
-          time: meta.time,
-          when: meta.when,
           deviceId: userDevice.id,
-          fingerprint: meta.fingerprint,
+          connectionId: connection.id,
         };
       }
     }
@@ -157,26 +147,26 @@ export class ClientAuthController {
   }
 
   @Public()
-  @Get('oauth/redirect')
+  @Get("oauth/redirect")
   @ApiOperation({
-    summary: 'OAuth redirect handler',
-    description: 'Redirects OAuth response back to the mobile app.',
+    summary: "OAuth redirect handler",
+    description: "Redirects OAuth response back to the mobile app.",
   })
   redirect(@Query() query: Record<string, string>, @Res() res: Response) {
-    if (!query.state || !query.state.includes('|')) {
+    if (!query.state || !query.state.includes("|")) {
       throw new BadRequestException(
-        'Invalid state parameter: missing callback URL',
+        "Invalid state parameter: missing callback URL",
       );
     }
 
-    const parts = query.state.split('|');
+    const parts = query.state.split("|");
     const originalState = parts[0];
-    const callbackUrl = parts.slice(1).join('|');
+    const callbackUrl = parts.slice(1).join("|");
 
     query.state = originalState; // Restore state so client AuthSession can validate it
     const queryString = new URLSearchParams(query).toString();
 
-    const finalUrl = callbackUrl.includes('?')
+    const finalUrl = callbackUrl.includes("?")
       ? `${callbackUrl}&${queryString}`
       : `${callbackUrl}?${queryString}`;
 
@@ -184,18 +174,18 @@ export class ClientAuthController {
   }
 
   @Public()
-  @Post('sign-up')
+  @Post("sign-up")
   @ApiOperation({
-    summary: 'Register a new client user',
+    summary: "Register a new client user",
     description:
-      'Create a new client user account with username, email, and password.',
+      "Create a new client user account with username, email, and password.",
   })
   @ApiResponse({
     status: 201,
-    description: 'User successfully registered.',
+    description: "User successfully registered.",
     type: ResponseClientSignupDto,
   })
-  @ApiResponse({ status: 400, description: 'Validation failed.' })
+  @ApiResponse({ status: 400, description: "Validation failed." })
   @LogEvent(EventType.CLIENT_SIGNUP)
   async register(
     @Body() registerDto: RequestClientSignUpDto,
@@ -213,20 +203,20 @@ export class ClientAuthController {
   }
 
   @Public()
-  @Post('refresh-token')
+  @Post("refresh-token")
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Refresh access token',
-    description: 'Obtain a new access token using a valid refresh token.',
+    summary: "Refresh access token",
+    description: "Obtain a new access token using a valid refresh token.",
   })
   @ApiResponse({
     status: 200,
-    description: 'Token successfully refreshed.',
+    description: "Token successfully refreshed.",
     type: ResponseClientSigninDto,
   })
   @ApiResponse({
     status: 401,
-    description: 'Invalid or expired refresh token.',
+    description: "Invalid or expired refresh token.",
   })
   async refreshToken(
     @Body() body: RefreshTokenDto,
@@ -235,15 +225,15 @@ export class ClientAuthController {
   }
 
   @Public()
-  @Post('send-verify-email')
+  @Post("send-verify-email")
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Send verification email',
-    description: 'Send an email with a verification link.',
+    summary: "Send verification email",
+    description: "Send an email with a verification link.",
   })
   @ApiResponse({
     status: 200,
-    description: 'Email sent successfully.',
+    description: "Email sent successfully.",
   })
   async sendVerifyEmail(@Body() body: { email: string; callbackUrl?: string }) {
     return this.clientAuthService.sendEmailVerification(
@@ -252,15 +242,15 @@ export class ClientAuthController {
     );
   }
 
-  @Post('update-email')
+  @Post("update-email")
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Update user email',
-    description: 'Update user email and send verification to the new email.',
+    summary: "Update user email",
+    description: "Update user email and send verification to the new email.",
   })
   @ApiResponse({
     status: 200,
-    description: 'Email updated successfully.',
+    description: "Email updated successfully.",
   })
   async updateEmail(
     @Body() body: RequestClientUpdateMailDto & { callbackUrl?: string },
@@ -273,15 +263,15 @@ export class ClientAuthController {
     );
   }
 
-  @Post('update-password')
+  @Post("update-password")
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Update user password',
-    description: 'Update user password using current and new password.',
+    summary: "Update user password",
+    description: "Update user password using current and new password.",
   })
   @ApiResponse({
     status: 200,
-    description: 'Password updated successfully.',
+    description: "Password updated successfully.",
   })
   async updatePassword(
     @Body() body: RequestClientUpdatePasswordDto,
@@ -291,17 +281,17 @@ export class ClientAuthController {
   }
 
   @Public()
-  @Get('verify-email')
+  @Get("verify-email")
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Verify email',
-    description: 'Verify user email with the provided token.',
+    summary: "Verify email",
+    description: "Verify user email with the provided token.",
   })
   @ApiResponse({
     status: 200,
-    description: 'Email verified successfully.',
+    description: "Email verified successfully.",
   })
-  async verifyEmail(@Query('token') token: string, @Res() res: Response) {
+  async verifyEmail(@Query("token") token: string, @Res() res: Response) {
     return res.redirect(await this.clientAuthService.verifyEmail(token));
   }
 }

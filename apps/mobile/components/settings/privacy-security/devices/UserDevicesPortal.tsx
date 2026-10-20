@@ -20,7 +20,7 @@ import { useApi } from "@/contexts/ApiContext";
 import { ResponseUserDeviceDto } from "@softsurgery/api-client";
 import { useLogout } from "@/hooks/useLogout";
 import { getDeviceIcon } from "@/lib/device-icon";
-import { useCurrentDeviceId } from "@/hooks/useCurrentDeviceId";
+import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import {
   isCurrentDevice,
   getDeviceDisplayName,
@@ -36,7 +36,7 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
   const { t } = useTranslation("settings");
   const queryClient = useQueryClient();
   const logout = useLogout();
-  const currentDeviceId = useCurrentDeviceId();
+  const currentMacAddress = useCurrentDeviceMac();
 
   const {
     data: devices = [],
@@ -187,7 +187,7 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
         ) : (
           <View className="flex-col">
             {devices.map((device, index) => {
-              const isThisDevice = isCurrentDevice(device, currentDeviceId);
+              const isThisDevice = isCurrentDevice(device, currentMacAddress);
               const DeviceIcon = getDeviceIcon(device.os, device.deviceName);
               const isLast = index === devices.length - 1;
 

@@ -96,13 +96,13 @@ export class BugService {
   @Transactional()
   async create(
     createBugDto: CreateBugDto,
-    context?: { userId?: string; fingerprint?: string },
+    context?: { userId?: string; macAddress?: string },
   ): Promise<BugEntity> {
     const deviceId = await this.userDeviceService.resolveDeviceId(
       context?.userId,
       {
         deviceId: createBugDto.deviceId,
-        fingerprint: context?.fingerprint,
+        macAddress: context?.macAddress,
       },
     );
 

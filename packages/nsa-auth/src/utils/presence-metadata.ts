@@ -1,10 +1,13 @@
-import { createHash } from 'crypto';
+import {
+  formatAsMacAddress,
+  generateRandomMacAddress,
+} from "./signin-metadata";
 
 export interface PresenceMetadata {
   device: string;
   deviceModel?: string;
   os: string;
-  fingerprint: string;
+  macAddress: string;
   ipAddress: string;
   latitude?: number;
   longitude?: number;
@@ -16,7 +19,7 @@ export interface ClientConnectionPayload {
   device?: string;
   deviceModel?: string;
   os?: string;
-  fingerprint?: string;
+  macAddress?: string;
 }
 
 export function parseDeviceUserAgent(userAgent?: string): {
@@ -24,43 +27,43 @@ export function parseDeviceUserAgent(userAgent?: string): {
   os: string;
 } {
   if (!userAgent) {
-    return { device: 'Mobile Device', os: 'iOS / Android' };
+    return { device: "Mobile Device", os: "iOS / Android" };
   }
 
   const ua = userAgent.toLowerCase();
-  let device = 'Mobile Device';
-  let os = 'iOS / Android';
+  let device = "Mobile Device";
+  let os = "iOS / Android";
 
   if (
-    ua.includes('iphone') ||
-    ua.includes('cfnetwork') ||
-    ua.includes('darwin')
+    ua.includes("iphone") ||
+    ua.includes("cfnetwork") ||
+    ua.includes("darwin")
   ) {
-    device = 'iPhone';
-    os = 'iOS';
+    device = "iPhone";
+    os = "iOS";
     const match = userAgent.match(/iPhone\s?([^;)]+)/i);
     if (match && match[0]) {
       device = match[0].trim();
     }
-  } else if (ua.includes('ipad')) {
-    device = 'iPad';
-    os = 'iPadOS';
+  } else if (ua.includes("ipad")) {
+    device = "iPad";
+    os = "iPadOS";
   } else if (
-    ua.includes('android') ||
-    ua.includes('okhttp') ||
-    ua.includes('dalvik')
+    ua.includes("android") ||
+    ua.includes("okhttp") ||
+    ua.includes("dalvik")
   ) {
-    device = 'Android Device';
-    os = 'Android';
-  } else if (ua.includes('macintosh') || ua.includes('mac os')) {
-    device = 'MacBook';
-    os = 'macOS';
-  } else if (ua.includes('windows')) {
-    device = 'Windows PC';
-    os = 'Windows';
-  } else if (ua.includes('linux')) {
-    device = 'Linux PC';
-    os = 'Linux';
+    device = "Android Device";
+    os = "Android";
+  } else if (ua.includes("macintosh") || ua.includes("mac os")) {
+    device = "MacBook";
+    os = "macOS";
+  } else if (ua.includes("windows")) {
+    device = "Windows PC";
+    os = "Windows";
+  } else if (ua.includes("linux")) {
+    device = "Linux PC";
+    os = "Linux";
   }
 
   return { device, os };
@@ -75,17 +78,17 @@ export async function resolveIpGeolocation(ip: string): Promise<{
 } | null> {
   if (
     !ip ||
-    ip === '127.0.0.1' ||
-    ip === 'localhost' ||
-    ip.startsWith('192.168.') ||
-    ip.startsWith('10.') ||
-    ip.startsWith('172.16.') ||
-    ip.startsWith('172.17.') ||
-    ip.startsWith('172.18.') ||
-    ip.startsWith('172.19.') ||
-    ip.startsWith('172.2') ||
-    ip.startsWith('172.30.') ||
-    ip.startsWith('172.31.')
+    ip === "127.0.0.1" ||
+    ip === "localhost" ||
+    ip.startsWith("192.168.") ||
+    ip.startsWith("10.") ||
+    ip.startsWith("172.16.") ||
+    ip.startsWith("172.17.") ||
+    ip.startsWith("172.18.") ||
+    ip.startsWith("172.19.") ||
+    ip.startsWith("172.2") ||
+    ip.startsWith("172.30.") ||
+    ip.startsWith("172.31.")
   ) {
     return null;
   }
@@ -109,7 +112,7 @@ export async function resolveIpGeolocation(ip: string): Promise<{
         lon?: number;
       };
 
-      if (data && data.status === 'success') {
+      if (data && data.status === "success") {
         const city = data.city;
         const country = data.country;
         const location =
@@ -135,24 +138,24 @@ export async function resolveIpGeolocation(ip: string): Promise<{
 export function extractClientIp(socket: any): string {
   const headers = socket?.handshake?.headers || socket?.headers || {};
   const forwarded =
-    (headers['x-forwarded-for'] as string) ||
-    (headers['x-real-ip'] as string) ||
-    '';
+    (headers["x-forwarded-for"] as string) ||
+    (headers["x-real-ip"] as string) ||
+    "";
 
   const rawIp =
-    forwarded.split(',')[0]?.trim() ||
+    forwarded.split(",")[0]?.trim() ||
     socket?.handshake?.address ||
     socket?.conn?.remoteAddress ||
     socket?.request?.socket?.remoteAddress ||
     socket?.ip ||
-    '127.0.0.1';
+    "127.0.0.1";
 
   let ip = rawIp;
-  if (ip.startsWith('::ffff:')) {
-    ip = ip.replace('::ffff:', '');
+  if (ip.startsWith("::ffff:")) {
+    ip = ip.replace("::ffff:", "");
   }
-  if (ip === '::1') {
-    ip = '127.0.0.1';
+  if (ip === "::1") {
+    ip = "127.0.0.1";
   }
   return ip;
 }
@@ -167,28 +170,28 @@ export async function detectPresenceMetadata(
   const headers = socket?.handshake?.headers || socket?.headers || {};
   const auth = socket?.handshake?.auth || {};
   const query = socket?.handshake?.query || {};
-  const userAgent = (headers['user-agent'] as string) || '';
+  const userAgent = (headers["user-agent"] as string) || "";
 
   const parsedUa = parseDeviceUserAgent(userAgent);
 
   const device =
     explicitPayload?.device ||
     (auth.device as string) ||
-    (headers['x-device-name'] as string) ||
+    (headers["x-device-name"] as string) ||
     (query.device as string) ||
     parsedUa.device;
 
   const deviceModel =
     explicitPayload?.deviceModel ||
     (auth.deviceModel as string) ||
-    (headers['x-device-model'] as string) ||
+    (headers["x-device-model"] as string) ||
     (query.deviceModel as string) ||
     undefined;
 
   const os =
     explicitPayload?.os ||
     (auth.os as string) ||
-    (headers['x-os-name'] as string) ||
+    (headers["x-os-name"] as string) ||
     (query.os as string) ||
     parsedUa.os;
 
@@ -202,22 +205,29 @@ export async function detectPresenceMetadata(
     geo?.location ||
     (latitude !== undefined && longitude !== undefined
       ? `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
-      : 'Unknown Location');
+      : "Unknown Location");
 
-  const rawFingerprint =
-    explicitPayload?.fingerprint ||
-    (auth.fingerprint as string) ||
-    (headers['x-device-fingerprint'] as string) ||
-    (query.fingerprint as string) ||
-    createHash('sha256')
-      .update(`${device}|${os}|${userAgent || ipAddress}`)
-      .digest('hex');
+  const rawMac =
+    explicitPayload?.macAddress ||
+    (auth.macAddress as string) ||
+    (headers["x-mac-address"] as string) ||
+    (headers["x-device-mac"] as string) ||
+    (query.macAddress as string) ||
+    (query.mac as string);
+
+  let macAddress: string;
+
+  if (rawMac && rawMac.trim().length > 0) {
+    macAddress = formatAsMacAddress(rawMac.trim());
+  } else {
+    macAddress = generateRandomMacAddress();
+  }
 
   return {
     device,
     deviceModel,
     os,
-    fingerprint: rawFingerprint,
+    macAddress,
     ipAddress,
     latitude,
     longitude,

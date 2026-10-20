@@ -11,9 +11,9 @@ export class ResponseUserDeviceDto extends ResponseDtoHelper {
   @Expose()
   userId: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, example: 'aa:bb:cc:dd:ee:ff' })
   @Expose()
-  fingerprint: string;
+  macAddress: string;
 
   @ApiProperty({ type: String, nullable: true })
   @Expose()

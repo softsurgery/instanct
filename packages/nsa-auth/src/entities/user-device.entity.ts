@@ -26,7 +26,7 @@ export class UserDeviceEntity extends EntityHelper {
   user?: AbstractUserEntity;
 
   @Column()
-  fingerprint: string;
+  macAddress: string;
 
   @Column({ nullable: true })
   deviceName?: string;

@@ -1,15 +1,15 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { Transactional } from '@nestjs-cls/transactional';
-import { IsNull, LessThan } from 'typeorm';
-import { UserDeviceRepository } from '../repositories/user-device.repository';
-import { UserConnectionHistoryRepository } from '../repositories/user-connection-history.repository';
-import { UserDeviceEntity } from '../entities/user-device.entity';
-import { UserConnectionHistoryEntity } from '../entities/user-connection-history.entity';
-import { SigninMetadata } from '../utils/signin-metadata';
-import { PresenceMetadata } from '../utils/presence-metadata';
-import { CreateUserDeviceDto } from '../dtos/user-device/create-user-device.dto';
-import { UpdateUserDeviceDto } from '../dtos/user-device/update-user-device.dto';
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { Cron, CronExpression } from "@nestjs/schedule";
+import { Transactional } from "@nestjs-cls/transactional";
+import { IsNull, LessThan } from "typeorm";
+import { UserDeviceRepository } from "../repositories/user-device.repository";
+import { UserConnectionHistoryRepository } from "../repositories/user-connection-history.repository";
+import { UserDeviceEntity } from "../entities/user-device.entity";
+import { UserConnectionHistoryEntity } from "../entities/user-connection-history.entity";
+import { SigninMetadata } from "../utils/signin-metadata";
+import { PresenceMetadata } from "../utils/presence-metadata";
+import { CreateUserDeviceDto } from "../dtos/user-device/create-user-device.dto";
+import { UpdateUserDeviceDto } from "../dtos/user-device/update-user-device.dto";
 
 @Injectable()
 export class UserDeviceService {
@@ -23,105 +23,82 @@ export class UserDeviceService {
   @Transactional()
   async registerOrUpdateDevice(
     userId: string,
-    metadata: SigninMetadata & { fingerprint?: string },
-  ): Promise<{ device: UserDeviceEntity; isNew: boolean }> {
+    metadata: SigninMetadata & { macAddress?: string },
+  ): Promise<{
+    device: UserDeviceEntity;
+    connection: UserConnectionHistoryEntity;
+    isNew: boolean;
+  }> {
     if (!userId) {
-      throw new Error('UserId is required for device registration');
+      throw new Error("UserId is required for device registration");
     }
 
-    const fingerprint = metadata.fingerprint || 'unknown-device';
+    const macAddress = metadata.macAddress || "02:00:00:00:00:00";
 
     let device = await this.userDeviceRepository.findOne({
       where: {
         userId,
-        fingerprint,
+        macAddress,
       },
     });
 
-    // If not matched by exact fingerprint, check if this is an existing device that was updated
-    if (!device && metadata.os && metadata.device) {
-      const isCurrentIos =
-        metadata.os.toLowerCase().includes('ios') ||
-        metadata.device.toLowerCase().includes('iphone') ||
-        metadata.device.toLowerCase().includes('ipad');
-
-      const isCurrentAndroid =
-        metadata.os.toLowerCase().includes('android');
-
-      if (isCurrentIos || isCurrentAndroid) {
-        const existingDevices = await this.userDeviceRepository.findAll({
-          where: { userId },
-          order: { updatedAt: 'DESC' },
-        });
-
-        const matchingDevice = existingDevices.find((d) => {
-          if (isCurrentIos) {
-            const isTargetIos =
-              d.os?.toLowerCase().includes('ios') ||
-              d.deviceName?.toLowerCase().includes('iphone') ||
-              d.deviceName?.toLowerCase().includes('ipad');
-            if (
-              isTargetIos &&
-              (d.deviceName === metadata.device ||
-                (d.deviceName?.toLowerCase().includes('iphone') &&
-                  metadata.device?.toLowerCase().includes('iphone')) ||
-                (d.deviceName?.toLowerCase().includes('ipad') &&
-                  metadata.device?.toLowerCase().includes('ipad')))
-            ) {
-              return true;
-            }
-          }
-
-          if (isCurrentAndroid) {
-            const isTargetAndroid = d.os?.toLowerCase().includes('android');
-            if (isTargetAndroid && d.deviceName === metadata.device) {
-              return true;
-            }
-          }
-
-          return false;
-        });
-
-        if (matchingDevice) {
-          device = matchingDevice;
-          this.logger.log(
-            `Matched existing device ${device.id} (${device.deviceName}) across update for user ${userId}. Preserving device identity and updating fingerprint to ${fingerprint}`,
-          );
-          device.fingerprint = fingerprint;
-        }
-      }
-    }
-
+    let isNew = false;
     if (device) {
       if (metadata.device) device.deviceName = metadata.device;
       if (metadata.os) device.os = metadata.os;
 
-      const updated = await this.userDeviceRepository.save(device);
+      device = await this.userDeviceRepository.save(device);
       this.logger.log(
-        `Updated existing device ${updated.id} for user ${userId}`,
+        `Updated existing device ${device.id} for user ${userId}`,
       );
-      return { device: updated, isNew: false };
+    } else {
+      device = await this.userDeviceRepository.save({
+        userId,
+        macAddress,
+        deviceName: metadata.device || "Unknown Device",
+        os: metadata.os || "Unknown OS",
+        isTrusted: true,
+      });
+      isNew = true;
+      this.logger.log(
+        `Registered new device ${device.id} (macAddress: ${macAddress}) for user ${userId}`,
+      );
     }
 
-    const newDevice = await this.userDeviceRepository.save({
+    // Close previous open connections for this device
+    const openConnections = await this.userConnectionHistoryRepository.findAll({
+      where: { userId, deviceId: device.id, disconnectedAt: IsNull() },
+    });
+    if (openConnections.length > 0) {
+      const closedAt = new Date();
+      for (const openConn of openConnections) {
+        openConn.disconnectedAt = closedAt;
+      }
+      await this.userConnectionHistoryRepository.saveMany(openConnections);
+    }
+
+    // Insert new history record in user_connection_history
+    const connection = await this.userConnectionHistoryRepository.save({
       userId,
-      fingerprint,
-      deviceName: metadata.device || 'Unknown Device',
-      os: metadata.os || 'Unknown OS',
-      isTrusted: true,
+      deviceId: device.id,
+      source: "signin",
+      ipAddress: metadata.ip,
+      latitude: metadata.latitude,
+      longitude: metadata.longitude,
+      location: metadata.location,
     });
 
     this.logger.log(
-      `Registered new device ${newDevice.id} (fingerprint: ${fingerprint}) for user ${userId}`,
+      `Recorded signin connection [${connection.id}] for user ${userId} on device "${device.deviceName}"`,
     );
 
-    return { device: newDevice, isNew: true };
+    return { device, connection, isNew };
   }
 
   async getUserDevices(userId: string): Promise<UserDeviceEntity[]> {
     return this.userDeviceRepository.findAll({
       where: { userId },
-      order: { updatedAt: 'DESC' },
+      order: { updatedAt: "DESC" },
     });
   }
 
@@ -131,7 +108,7 @@ export class UserDeviceService {
     });
 
     if (!device) {
-      throw new NotFoundException('Device record not found');
+      throw new NotFoundException("Device record not found");
     }
 
     return device;
@@ -144,7 +121,7 @@ export class UserDeviceService {
   ): Promise<UserDeviceEntity> {
     return this.userDeviceRepository.save({
       userId,
-      fingerprint: createDto.fingerprint,
+      macAddress: createDto.macAddress,
       deviceName: createDto.deviceName,
       deviceModel: createDto.deviceModel,
       os: createDto.os,
@@ -183,7 +160,7 @@ export class UserDeviceService {
     });
 
     if (!device) {
-      throw new NotFoundException('Device record not found');
+      throw new NotFoundException("Device record not found");
     }
 
     device.isTrusted = true;
@@ -197,7 +174,7 @@ export class UserDeviceService {
     });
 
     if (!device) {
-      throw new NotFoundException('Device record not found');
+      throw new NotFoundException("Device record not found");
     }
 
     device.isTrusted = false;
@@ -211,7 +188,7 @@ export class UserDeviceService {
     });
 
     if (!device) {
-      throw new NotFoundException('Device record not found');
+      throw new NotFoundException("Device record not found");
     }
 
     await this.userDeviceRepository.remove(device);
@@ -247,65 +224,20 @@ export class UserDeviceService {
     connection: UserConnectionHistoryEntity;
     device: UserDeviceEntity;
   }> {
-    const { userId, socketId, source = 'mobile', metadata } = params;
+    const { userId, socketId, source = "mobile", metadata } = params;
     if (!userId) {
-      throw new Error('UserId is required to record connection history');
+      throw new Error("UserId is required to record connection history");
     }
 
-    const fingerprint = metadata.fingerprint || 'unknown-device';
+    const macAddress = metadata.macAddress || "02:00:00:00:00:00";
 
     // 1. Find or create/update the device in user_devices
     let device = await this.userDeviceRepository.findOne({
       where: {
         userId,
-        fingerprint,
+        macAddress,
       },
     });
-
-    if (!device && metadata.os && metadata.device) {
-      const isCurrentIos =
-        metadata.os.toLowerCase().includes('ios') ||
-        metadata.device.toLowerCase().includes('iphone') ||
-        metadata.device.toLowerCase().includes('ipad');
-
-      const isCurrentAndroid = metadata.os.toLowerCase().includes('android');
-
-      if (isCurrentIos || isCurrentAndroid) {
-        const existingDevices = await this.userDeviceRepository.findAll({
-          where: { userId },
-          order: { updatedAt: 'DESC' },
-        });
-
-        const matching = existingDevices.find((d) => {
-          if (isCurrentIos) {
-            const isTargetIos =
-              d.os?.toLowerCase().includes('ios') ||
-              d.deviceName?.toLowerCase().includes('iphone') ||
-              d.deviceName?.toLowerCase().includes('ipad');
-            if (
-              isTargetIos &&
-              (d.deviceName === metadata.device ||
-                (d.deviceName?.toLowerCase().includes('iphone') &&
-                  metadata.device?.toLowerCase().includes('iphone')))
-            ) {
-              return true;
-            }
-          }
-          if (isCurrentAndroid) {
-            const isTargetAndroid = d.os?.toLowerCase().includes('android');
-            if (isTargetAndroid && d.deviceName === metadata.device) {
-              return true;
-            }
-          }
-          return false;
-        });
-
-        if (matching) {
-          device = matching;
-          device.fingerprint = fingerprint;
-        }
-      }
-    }
 
     if (device) {
       if (metadata.device) device.deviceName = metadata.device;
@@ -315,10 +247,10 @@ export class UserDeviceService {
     } else {
       device = await this.userDeviceRepository.save({
         userId,
-        fingerprint,
-        deviceName: metadata.device || 'Mobile Device',
+        macAddress,
+        deviceName: metadata.device || "Mobile Device",
         deviceModel: metadata.deviceModel,
-        os: metadata.os || 'Mobile OS',
+        os: metadata.os || "Mobile OS",
         isTrusted: true,
       });
     }
@@ -348,7 +280,7 @@ export class UserDeviceService {
     });
 
     this.logger.log(
-      `Recorded presence connection [${connection.id}] for user ${userId} on device "${metadata.device}" (IP: ${metadata.ipAddress}, Location: ${metadata.location || 'N/A'})`,
+      `Recorded presence connection [${connection.id}] for user ${userId} on device "${metadata.device}" (IP: ${metadata.ipAddress}, Location: ${metadata.location || "N/A"})`,
     );
 
     return { connection, device };
@@ -376,7 +308,7 @@ export class UserDeviceService {
       if (!record && socketId) {
         record = await this.userConnectionHistoryRepository.findOne({
           where: { socketId, disconnectedAt: IsNull() },
-          order: { createdAt: 'DESC' },
+          order: { createdAt: "DESC" },
         });
       }
 
@@ -404,7 +336,7 @@ export class UserDeviceService {
   ): Promise<UserConnectionHistoryEntity[]> {
     const history = await this.userConnectionHistoryRepository.findAll({
       where: { userId, deviceId },
-      order: { createdAt: 'DESC' },
+      order: { createdAt: "DESC" },
     });
 
     const staleToClose: UserConnectionHistoryEntity[] = [];
@@ -412,7 +344,10 @@ export class UserDeviceService {
       const item = history[i];
       if (!item.disconnectedAt) {
         item.disconnectedAt =
-          history[i - 1]?.createdAt || item.updatedAt || item.createdAt || new Date();
+          history[i - 1]?.createdAt ||
+          item.updatedAt ||
+          item.createdAt ||
+          new Date();
         staleToClose.push(item);
       }
     }
@@ -432,14 +367,14 @@ export class UserDeviceService {
   ): Promise<UserConnectionHistoryEntity[]> {
     const history = await this.userConnectionHistoryRepository.findAll({
       where: { userId },
-      order: { createdAt: 'DESC' },
+      order: { createdAt: "DESC" },
     });
 
     const seenLatestByDevice = new Map<string, Date>();
     const staleToClose: UserConnectionHistoryEntity[] = [];
 
     for (const item of history) {
-      const key = item.deviceId || 'unknown';
+      const key = item.deviceId || "unknown";
       const newerCreatedAt = seenLatestByDevice.get(key);
       if (newerCreatedAt !== undefined && !item.disconnectedAt) {
         item.disconnectedAt =
@@ -459,12 +394,12 @@ export class UserDeviceService {
   /**
    * Resolves a target device ID for a user.
    * If explicit deviceId is provided, returns it.
-   * Otherwise falls back to matching by user + fingerprint,
+   * Otherwise falls back to matching by user + macAddress,
    * or user's most recently active device.
    */
   async resolveDeviceId(
     userId?: string,
-    options?: { deviceId?: string; fingerprint?: string },
+    options?: { deviceId?: string; macAddress?: string },
   ): Promise<string | undefined> {
     if (options?.deviceId) {
       return options.deviceId;
@@ -474,9 +409,9 @@ export class UserDeviceService {
       return undefined;
     }
 
-    if (options?.fingerprint) {
+    if (options?.macAddress) {
       const matchingDevice = await this.userDeviceRepository.findOne({
-        where: { userId, fingerprint: options.fingerprint },
+        where: { userId, macAddress: options.macAddress },
       });
       if (matchingDevice) {
         return matchingDevice.id;
@@ -485,7 +420,7 @@ export class UserDeviceService {
 
     const latestDevice = await this.userDeviceRepository.findOne({
       where: { userId },
-      order: { updatedAt: 'DESC' },
+      order: { updatedAt: "DESC" },
     });
     return latestDevice?.id;
   }
@@ -513,7 +448,7 @@ export class UserDeviceService {
       }
     } catch (err) {
       this.logger.error(
-        'Failed to permanently delete connection history records older than 1 month',
+        "Failed to permanently delete connection history records older than 1 month",
         err,
       );
     }

@@ -105,13 +105,13 @@ export class FeedbackService {
   @Transactional()
   async create(
     createFeedbackDto: CreateFeedbackDto,
-    context?: { userId?: string; fingerprint?: string },
+    context?: { userId?: string; macAddress?: string },
   ): Promise<FeedbackEntity> {
     const deviceId = await this.userDeviceService.resolveDeviceId(
       context?.userId,
       {
         deviceId: createFeedbackDto.deviceId,
-        fingerprint: context?.fingerprint,
+        macAddress: context?.macAddress,
       },
     );
 

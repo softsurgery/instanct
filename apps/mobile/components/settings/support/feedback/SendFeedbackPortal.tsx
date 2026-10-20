@@ -23,12 +23,13 @@ import * as Haptics from "expo-haptics";
 import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
 import { useQuery } from "@tanstack/react-query";
-import { useCurrentDeviceId } from "@/hooks/useCurrentDeviceId";
+import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import {
   ResponseUserDeviceDto,
   CreateFeedbackDto,
 } from "@softsurgery/api-client";
 import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { getCurrentDevice } from "@/lib/device";
 
 interface SendFeedbackPortalProps {
   className?: string;
@@ -39,17 +40,17 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
   const sendFeedbackStore = useSendFeedbackStore();
-  const currentDeviceId = useCurrentDeviceId();
+  const currentMacAddress = useCurrentDeviceMac();
 
   const { data: devices = [] } = useQuery<ResponseUserDeviceDto[]>({
     queryKey: ["user-devices"],
     queryFn: async () => api.userDevices.getAll(),
   });
 
-  const currentDevice = React.useMemo(() => {
-    if (!currentDeviceId || devices.length === 0) return devices[0];
-    return devices.find((d) => d.fingerprint === currentDeviceId) || devices[0];
-  }, [devices, currentDeviceId]);
+  const currentDevice = React.useMemo(
+    () => getCurrentDevice(devices, currentMacAddress),
+    [devices, currentMacAddress],
+  );
 
   React.useEffect(() => {
     return () => {

@@ -1,4 +1,4 @@
-import { createHash } from 'crypto';
+import { randomBytes } from 'crypto';
 import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
 export interface SigninMetadata {
@@ -10,7 +10,26 @@ export interface SigninMetadata {
   location: string;
   time: string;
   when: string;
-  fingerprint: string;
+  macAddress: string;
+}
+
+export function formatAsMacAddress(seed: string): string {
+  const macRegex = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
+  if (macRegex.test(seed)) {
+    return seed.replace(/-/g, ':').toLowerCase();
+  }
+  const clean = seed.replace(/[^0-9a-fA-F]/g, '');
+  const padded = clean.padEnd(12, '0').slice(0, 12);
+  const octets = padded.match(/.{1,2}/g);
+  return (octets || ['00', '00', '00', '00', '00', '00']).join(':').toLowerCase();
+}
+
+export function generateRandomMacAddress(): string {
+  const bytes = randomBytes(6);
+  bytes[0] = (bytes[0] & 0xfe) | 0x02;
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join(':');
 }
 
 function parseUserAgent(userAgent?: string): { device: string; os: string } {
@@ -119,7 +138,8 @@ export async function getSigninMetadata(
   bodyParams?: {
     device?: string;
     os?: string;
-    fingerprint?: string;
+    macAddress?: string;
+    mac?: string;
   },
 ): Promise<SigninMetadata> {
   const headers = req.headers || {};
@@ -156,32 +176,19 @@ export async function getSigninMetadata(
       ? `${latitude}, ${longitude}`
       : 'Unknown Location');
 
-function normalizeOsForFingerprint(rawOs: string): string {
-  if (!rawOs) return '';
-  if (/^ios/i.test(rawOs)) return 'iOS';
-  if (/^ipados/i.test(rawOs)) return 'iPadOS';
-  return rawOs;
-}
+  const rawMac =
+    bodyParams?.macAddress ||
+    bodyParams?.mac ||
+    (headers['x-mac-address'] as string) ||
+    (headers['x-device-mac'] as string);
 
-function normalizeUserAgentForFingerprint(rawUa: string): string {
-  if (!rawUa) return '';
-  return rawUa
-    .replace(/(iPhone\s+OS|CPU\s+OS|iPad\s+OS|OS)\s+[\d_]+/gi, '$1')
-    .replace(/Version\/[\d.]+/gi, 'Version')
-    .replace(/Mobile\/[A-Za-z0-9]+/gi, 'Mobile');
-}
+  let macAddress: string;
 
-  const normalizedOs = normalizeOsForFingerprint(os);
-  const normalizedUa = normalizeUserAgentForFingerprint(userAgent);
-
-  const rawFingerprint =
-    bodyParams?.fingerprint ||
-    (headers['x-device-fingerprint'] as string) ||
-    createHash('sha256')
-      .update(`${device}|${normalizedOs}|${normalizedUa}`)
-      .digest('hex');
-
-  const fingerprint = rawFingerprint;
+  if (rawMac && rawMac.trim().length > 0) {
+    macAddress = formatAsMacAddress(rawMac.trim());
+  } else {
+    macAddress = generateRandomMacAddress();
+  }
 
   const now = new Date();
   const time = now.toLocaleDateString('en-GB', {
@@ -203,6 +210,6 @@ function normalizeUserAgentForFingerprint(rawUa: string): string {
     location,
     time,
     when,
-    fingerprint,
+    macAddress,
   };
 }

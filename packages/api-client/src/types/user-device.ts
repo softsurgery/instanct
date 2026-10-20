@@ -3,7 +3,7 @@ import { DatabaseEntity } from "./utils/database-entity";
 export interface ResponseUserDeviceDto extends DatabaseEntity {
   id: string;
   userId: string;
-  fingerprint: string;
+  macAddress: string;
   deviceName?: string;
   deviceModel?: string;
   os?: string;
@@ -11,7 +11,7 @@ export interface ResponseUserDeviceDto extends DatabaseEntity {
 }
 
 export interface CreateUserDeviceDto {
-  fingerprint: string;
+  macAddress: string;
   deviceName?: string;
   deviceModel?: string;
   os?: string;

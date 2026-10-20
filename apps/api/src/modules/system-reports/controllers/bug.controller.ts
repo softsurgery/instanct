@@ -62,11 +62,13 @@ export class BugController {
     @Body() createBugDto: CreateBugDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseBugDto> {
-    const fingerprint =
-      (req.headers['x-device-fingerprint'] as string) || undefined;
+    const macAddress =
+      (req.headers['x-mac-address'] as string) ||
+      (req.headers['x-device-mac'] as string) ||
+      undefined;
     const bug = await this.bugService.create(createBugDto, {
       userId: req?.user?.sub,
-      fingerprint,
+      macAddress,
     });
     req.logInfo = {
       bugId: bug.id,

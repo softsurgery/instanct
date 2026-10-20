@@ -70,11 +70,13 @@ export class FeedbackController {
     @Body() createFeedbackDto: CreateFeedbackDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseFeedbackDto> {
-    const fingerprint = req.headers['x-device-fingerprint'] as
-      string | undefined;
+    const macAddress =
+      (req.headers['x-mac-address'] as string) ||
+      (req.headers['x-device-mac'] as string) ||
+      undefined;
     const feedback = await this.feedbackService.create(createFeedbackDto, {
       userId: req?.user?.sub,
-      fingerprint,
+      macAddress,
     });
     req.logInfo = {
       feedbackId: feedback.id,

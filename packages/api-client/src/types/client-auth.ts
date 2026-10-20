@@ -11,7 +11,7 @@ export interface RequestClientSignInDto {
   password: string;
   device?: string;
   os?: string;
-  fingerprint?: string;
+  macAddress?: string;
 }
 
 export interface RequestClientSignUpDto {
@@ -54,5 +54,5 @@ export interface RequestClientOAuthDto {
   codeVerifier?: string;
   device?: string;
   os?: string;
-  fingerprint?: string;
+  macAddress?: string;
 }

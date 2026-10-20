@@ -21,7 +21,7 @@ export interface SocketConfig extends Partial<ManagerOptions & SocketOptions> {
   source?: string;
   device?: string;
   os?: string;
-  fingerprint?: string;
+  macAddress?: string;
 }
 
 /**
@@ -139,7 +139,7 @@ export function getSocket(
     source = defaultSource,
     device,
     os,
-    fingerprint,
+    macAddress,
     ...options
   } = config;
   const globalDelay = getGlobalDelay();
@@ -169,10 +169,10 @@ export function getSocket(
       query.os = os;
       extraHeaders["x-os-name"] = os;
     }
-    if (fingerprint) {
-      auth.fingerprint = fingerprint;
-      query.fingerprint = fingerprint;
-      extraHeaders["x-device-fingerprint"] = fingerprint;
+    if (macAddress) {
+      auth.macAddress = macAddress;
+      query.macAddress = macAddress;
+      extraHeaders["x-mac-address"] = macAddress;
     }
   }
 

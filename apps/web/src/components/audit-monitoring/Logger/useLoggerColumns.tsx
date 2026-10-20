@@ -26,7 +26,7 @@ const UNNECESSARY_KEYS = new Set([
   "device",
   "deviceId",
   "ip",
-  "fingerprint",
+  "macAddress",
   "receiverSessionIds",
   "plannedStart",
   "plannedEnd",
