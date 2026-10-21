@@ -8,6 +8,7 @@ import { AcceptTerms } from "./AcceptTerms";
 import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { Stepper } from "@softsurgery/mobile-components";
+import { useSignupDebugButton } from "./useSignupDebugButton";
 import React from "react";
 import {
   useAuthValidation,
@@ -36,6 +37,7 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
   const { t } = useTranslation("auth");
   const authStore = useAuthStore();
   const { industries } = useIndustries();
+  const { DebugButton } = useSignupDebugButton({ store: authStore });
 
   const {
     uploadFiles: uploadProfilePicture,
@@ -203,6 +205,7 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
                       }
                       required
                     />
+                    <DebugButton />
                   </View>
                 ),
                 validation: step1Validation,
