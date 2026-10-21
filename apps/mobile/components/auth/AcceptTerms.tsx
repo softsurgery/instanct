@@ -32,17 +32,17 @@ export const AcceptTerms = ({
           disabled={disabled}
           className={cn(error && "border-destructive")}
         />
-        <Text className="flex-1 text-base text-muted-foreground">
+        <Text className="flex-1 text-sm text-muted-foreground">
           {t("onBoarding.terms.iAccept")}{" "}
           <Text
-            className="text-base text-foreground underline"
+            className="text-sm text-foreground underline"
             onPress={() => router.push("/auth/legal?type=terms")}
           >
             {t("onBoarding.terms.termsOfUse")}
           </Text>{" "}
           {t("onBoarding.terms.and")}{" "}
           <Text
-            className="text-base text-foreground underline"
+            className="text-sm text-foreground underline"
             onPress={() => router.push("/auth/legal?type=privacy")}
           >
             {t("onBoarding.terms.privacyPolicy")}

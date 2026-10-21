@@ -12,6 +12,8 @@ export type ReactNativeUploadFile = {
 
 export type UploadFileInput = File | ReactNativeUploadFile;
 
+export type UploadProgressCallback = (percent: number) => void;
+
 const isReactNativeUploadFile = (
   file: UploadFileInput,
 ): file is ReactNativeUploadFile =>
@@ -20,21 +22,87 @@ const isReactNativeUploadFile = (
   "uri" in file &&
   typeof file.uri === "string";
 
-const reportUploadProgress = (
-  onProgress: ((percent: number) => void) | undefined,
-  loaded: number,
-  total?: number,
-): void => {
-  if (!onProgress) return;
+const toSafeByteCount = (value?: number | bigint | null): number => {
+  if (typeof value === "bigint") {
+    const converted = Number(value);
+    return Number.isFinite(converted) && converted > 0 ? converted : 0;
+  }
+  if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+    return value;
+  }
+  return 0;
+};
 
-  if (total && total > 0) {
-    onProgress(Math.min(99, Math.round((loaded * 100) / total)));
-    return;
+export const clampUploadProgress = (percent: number): number => {
+  if (!Number.isFinite(percent)) return 0;
+  return Math.max(0, Math.min(100, Math.round(percent)));
+};
+
+export const calculateUploadProgress = (
+  loaded: number | bigint,
+  total?: number | bigint | null,
+): number => {
+  const loadedBytes = toSafeByteCount(loaded);
+  const totalBytes = toSafeByteCount(total);
+
+  if (totalBytes > 0) {
+    return Math.min(99, clampUploadProgress((loadedBytes * 100) / totalBytes));
   }
 
-  if (loaded > 0) {
-    onProgress(Math.min(95, Math.max(1, Math.round(loaded / 2048))));
+  if (loadedBytes > 0) {
+    return Math.min(95, Math.max(1, Math.round(loadedBytes / 2048)));
   }
+
+  return 0;
+};
+
+export const calculateBatchUploadProgress = (
+  fileIndex: number,
+  fileCount: number,
+  filePercent: number,
+  capAt99 = true,
+): number => {
+  if (fileCount <= 0) return 0;
+  const normalizedFilePercent = clampUploadProgress(filePercent);
+  const overall = clampUploadProgress(
+    (fileIndex * 100 + normalizedFilePercent) / fileCount,
+  );
+  return capAt99 ? Math.min(99, overall) : overall;
+};
+
+export const createUploadProgressTracker = (
+  onProgress?: UploadProgressCallback,
+) => {
+  let currentProgress = 0;
+
+  const emit = (nextPercent: number, allowDecrease = false): void => {
+    if (!onProgress) return;
+    const clamped = clampUploadProgress(nextPercent);
+    const nextValue = allowDecrease
+      ? clamped
+      : Math.max(currentProgress, clamped);
+    currentProgress = nextValue;
+    onProgress(nextValue);
+  };
+
+  return {
+    start: () => emit(0, true),
+    reportBytes: (
+      loaded: number | bigint,
+      total?: number | bigint | null,
+    ): void => {
+      const percent = calculateUploadProgress(loaded, total);
+      if (percent > 0) {
+        emit(percent);
+      }
+    },
+    reportPercent: (percent: number, capAt99 = true): void => {
+      const capped = capAt99 ? Math.min(99, percent) : percent;
+      emit(capped);
+    },
+    complete: () => emit(100),
+    reset: () => emit(0, true),
+  };
 };
 
 export function createMobileUpload(http: AxiosInstance) {
@@ -60,14 +128,19 @@ export function createMobileUpload(http: AxiosInstance) {
 
   const uploadNativeFile = async (
     file: ReactNativeUploadFile,
-    onProgress: ((percent: number) => void) | undefined,
+    onProgress: UploadProgressCallback | undefined,
     temporary: boolean,
-    finalizeProgress = true,
+    trackLifecycle = true,
   ): Promise<Upload> => {
     const expoFile = new ExpoFile(file.uri);
     const endpoint = temporary
       ? "/storage/upload/temporary"
       : "/storage/upload";
+    const tracker = createUploadProgressTracker(onProgress);
+
+    if (trackLifecycle) {
+      tracker.start();
+    }
 
     const result = await expoFile.upload(`${baseURL}${endpoint}`, {
       uploadType: UploadType.MULTIPART,
@@ -78,7 +151,7 @@ export function createMobileUpload(http: AxiosInstance) {
       },
       headers: getUploadHeaders(),
       onProgress: ({ bytesSent, totalBytes }) => {
-        reportUploadProgress(onProgress, bytesSent, totalBytes);
+        tracker.reportBytes(bytesSent, totalBytes);
       },
     });
 
@@ -86,8 +159,8 @@ export function createMobileUpload(http: AxiosInstance) {
       throw new Error(`Upload failed with status ${result.status}`);
     }
 
-    if (finalizeProgress) {
-      onProgress?.(100);
+    if (trackLifecycle) {
+      tracker.complete();
     }
 
     return JSON.parse(result.body) as Upload;
@@ -95,45 +168,61 @@ export function createMobileUpload(http: AxiosInstance) {
 
   const uploadNativeFiles = async (
     files: ReactNativeUploadFile[],
-    onProgress: ((percent: number) => void) | undefined,
+    onProgress: UploadProgressCallback | undefined,
     temporary: boolean,
   ): Promise<Upload[]> => {
     const uploads: Upload[] = [];
-    onProgress?.(0);
+    const tracker = createUploadProgressTracker(onProgress);
+    tracker.start();
 
     for (let i = 0; i < files.length; i++) {
       const upload = await uploadNativeFile(
         files[i],
-        (filePercent) => {
-          const overall = Math.round((i * 100 + filePercent) / files.length);
-          onProgress?.(Math.min(99, overall));
+        (filePercent: number) => {
+          tracker.reportPercent(
+            calculateBatchUploadProgress(i, files.length, filePercent),
+          );
         },
         temporary,
         false,
       );
       uploads.push(upload);
+      tracker.reportPercent(calculateBatchUploadProgress(i, files.length, 100));
     }
 
-    onProgress?.(100);
+    tracker.complete();
     return uploads;
   };
 
   const uploadFile = async (
     file: UploadFileInput,
-    onProgress?: (percent: number) => void,
+    onProgress?: UploadProgressCallback,
     temporary: boolean = true,
   ): Promise<Upload> => {
     if (Platform.OS !== "web" && isReactNativeUploadFile(file)) {
-      return uploadNativeFile(file, onProgress, temporary);
+      return uploadNativeFile(file, onProgress, temporary, true);
     }
 
     const formData = new FormData();
-    formData.append("file", file as File);
     if (isReactNativeUploadFile(file)) {
-      formData.append("filename", file.name);
+      if (Platform.OS === "web") {
+        try {
+          const res = await fetch(file.uri);
+          const blob = await res.blob();
+          formData.append("file", blob, file.name);
+        } catch {
+          formData.append("file", file as unknown as Blob);
+        }
+      } else {
+        formData.append("file", file as unknown as Blob);
+        formData.append("filename", file.name);
+      }
+    } else {
+      formData.append("file", file);
     }
 
-    onProgress?.(0);
+    const tracker = createUploadProgressTracker(onProgress);
+    tracker.start();
 
     const response = await http.post<Upload>(
       temporary ? "/storage/upload/temporary" : "/storage/upload",
@@ -143,18 +232,18 @@ export function createMobileUpload(http: AxiosInstance) {
           Accept: "application/json",
         },
         onUploadProgress: (event) => {
-          reportUploadProgress(onProgress, event.loaded, event.total);
+          tracker.reportBytes(event.loaded, event.total);
         },
       },
     );
 
-    onProgress?.(100);
+    tracker.complete();
     return response.data;
   };
 
   const uploadFiles = async (
     files: UploadFileInput[],
-    onProgress?: (percent: number) => void,
+    onProgress?: UploadProgressCallback,
     temporary: boolean = true,
     totalBytes?: number,
   ): Promise<Upload[]> => {
@@ -167,11 +256,26 @@ export function createMobileUpload(http: AxiosInstance) {
     }
 
     const formData = new FormData();
-    files.forEach((file) => {
-      formData.append("files", file as File);
-    });
+    for (const file of files) {
+      if (isReactNativeUploadFile(file)) {
+        if (Platform.OS === "web") {
+          try {
+            const res = await fetch(file.uri);
+            const blob = await res.blob();
+            formData.append("files", blob, file.name);
+          } catch {
+            formData.append("files", file as unknown as Blob);
+          }
+        } else {
+          formData.append("files", file as unknown as Blob);
+        }
+      } else {
+        formData.append("files", file);
+      }
+    }
 
-    onProgress?.(0);
+    const tracker = createUploadProgressTracker(onProgress);
+    tracker.start();
 
     const response = await http.post<Upload[]>(
       temporary ? "/storage/multiple/temporary" : "/storage/multiple",
@@ -181,16 +285,12 @@ export function createMobileUpload(http: AxiosInstance) {
           Accept: "application/json",
         },
         onUploadProgress: (event) => {
-          reportUploadProgress(
-            onProgress,
-            event.loaded,
-            event.total || totalBytes,
-          );
+          tracker.reportBytes(event.loaded, event.total || totalBytes);
         },
       },
     );
 
-    onProgress?.(100);
+    tracker.complete();
     return response.data;
   };
 

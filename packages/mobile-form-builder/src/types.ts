@@ -152,13 +152,28 @@ export interface RatingFieldProps {
   starSize?: number;
 }
 
+export interface MobileUploadFile {
+  uri: string;
+  name: string;
+  type: string;
+}
+
+export type UploadFileInput = File | MobileUploadFile;
+
+export type UploadProgressCallback = (percent: number) => void;
+
 export interface PictureFieldProps {
-  image?: string | null;
+  image?: string | UploadFileInput | null;
   progress?: number;
   alt?: string;
   editable?: boolean;
-  onFileChange?: (e: string) => void;
-  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
+  onPickStart?: () => void;
+  onPickEnd?: () => void;
+  onFileChange?: (file: UploadFileInput) => void;
+  onUpload?: (
+    file: UploadFileInput,
+    onProgress?: UploadProgressCallback,
+  ) => void;
 }
 
 export interface RadioFieldProps {

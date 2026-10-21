@@ -18,6 +18,7 @@ import {
   validateUsername,
   validatePassword,
   validateConfirmPassword,
+  validateIndustries,
 } from "@/hooks/useAuthValidation";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
@@ -27,6 +28,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { useLoader } from "@/contexts/LoaderContext";
 
 interface SignupLayoutProps {
   className?: string;
@@ -38,11 +40,16 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
   const authStore = useAuthStore();
   const { industries } = useIndustries();
   const { DebugButton } = useSignupDebugButton({ store: authStore });
+  const { setLoading } = useLoader();
+  const [isPickingPicture, setIsPickingPicture] = React.useState(false);
 
   const {
     uploadFiles: uploadProfilePicture,
     isUploadPending: isProfilePictureUploadPending,
   } = useUploadMutation({
+    onProgress: (progress: number) => {
+      authStore.setNested("utilities.progress", progress);
+    },
     onSuccess: (response: Upload[]) => {
       authStore.setNested("signUpRequest.pictureId", response?.[0]?.id);
     },
@@ -70,13 +77,20 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
     })),
     uploadPicture: uploadProfilePicture,
     isProfilePictureUploadPending,
+    onPickStart: () => setIsPickingPicture(true),
+    onPickEnd: () => setIsPickingPicture(false),
   });
 
   React.useEffect(() => {
+    setLoading(isProfilePictureUploadPending || isPickingPicture);
+  }, [isProfilePictureUploadPending, isPickingPicture, setLoading]);
+
+  React.useEffect(() => {
     return () => {
+      setLoading(false);
       authStore.reset();
     };
-  }, []);
+  }, [setLoading]);
 
   const { mutate: signUp, isPending: isSignUpPending } = useMutation({
     mutationFn: async () => {
@@ -89,7 +103,11 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
     },
     onSuccess: () => {
       toast.success(t("auth.signUp.toasts.success"));
-      router.push("/auth/sign-in");
+      if (router.canDismiss()) {
+        router.dismissTo("/auth/sign-in");
+      } else {
+        router.replace("/auth/sign-in");
+      }
     },
     onError: (error: ServerErrorResponse) => {
       const message =
@@ -145,6 +163,16 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
       !emailValidation.isEmailTaken;
 
     return isValid;
+  };
+
+  const validateStep2 = () => {
+    const error = validateIndustries(authStore.signUpRequest.industries);
+    if (error) {
+      authStore.setNested("signUpRequestErrors.industries", [error]);
+      return false;
+    }
+    authStore.setNested("signUpRequestErrors.industries", []);
+    return true;
   };
 
   const step1Validation =
@@ -221,6 +249,7 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
                   />
                 ),
                 validation: !!authStore.signUpRequest.industries.length,
+                onNext: () => validateStep2(),
               },
               {
                 title: t("auth.signUp.steps.picture.title"),

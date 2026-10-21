@@ -77,6 +77,9 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
     uploadFiles: uploadProfilePicture,
     isUploadPending: isProfilePictureUploadPending,
   } = useUploadMutation({
+    onProgress: (progress: number) => {
+      userStore.set("progress", progress);
+    },
     onSuccess: (response: Upload[]) => {
       userStore.setNested("updateDto.pictureId", response?.[0]?.id);
     },

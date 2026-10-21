@@ -221,3 +221,10 @@ export const validateConfirmPassword = (
 
   return null;
 };
+
+export const validateIndustries = (industries?: number[]) => {
+  if (!industries || industries.length === 0) {
+    return "auth.validation.signUp.industriesRequired";
+  }
+  return null;
+};

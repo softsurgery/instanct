@@ -1,4 +1,5 @@
 import { AuthStore } from "@/stores/useAuthStore";
+import { type UploadFilesMutate } from "@/hooks/useUploadMutation";
 import {
   Field,
   FieldVariant,
@@ -7,8 +8,10 @@ import {
   PictureFieldProps,
   SelectOption,
   TextFieldProps,
+  UploadFileInput,
+  UploadProgressCallback,
 } from "@softsurgery/mobile-form-builder";
-import { cn } from "@softsurgery/lib";
+import { cn, identifyUserAvatar } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
 import {
   validateFirstName,
@@ -33,11 +36,10 @@ interface useSignUpFormStructureProps {
     isCheckingEmail: boolean;
   };
   industriesOptions: SelectOption[];
-  uploadPicture: (options: {
-    files: File[];
-    onProgress: (progress: number) => void;
-  }) => void;
+  uploadPicture: UploadFilesMutate;
   isProfilePictureUploadPending: boolean;
+  onPickStart?: () => void;
+  onPickEnd?: () => void;
 }
 
 export const useSignUpFormStructure = ({
@@ -48,6 +50,8 @@ export const useSignUpFormStructure = ({
   industriesOptions,
   uploadPicture,
   isProfilePictureUploadPending,
+  onPickStart,
+  onPickEnd,
 }: useSignUpFormStructureProps) => {
   const { t } = useTranslation("auth");
 
@@ -59,10 +63,6 @@ export const useSignUpFormStructure = ({
     placeholder: t("auth.signUp.placeholders.firstName"),
     variant: FieldVariant.TEXT,
     required: false,
-    className:
-      store.signUpRequest.firstName && !store.signUpRequestErrors.firstName?.[0]
-        ? "border border-green-500"
-        : "",
     error: store.signUpRequestErrors?.firstName?.[0]
       ? t(store.signUpRequestErrors.firstName[0])
       : undefined,
@@ -85,10 +85,6 @@ export const useSignUpFormStructure = ({
     placeholder: t("auth.signUp.placeholders.lastName"),
     variant: FieldVariant.TEXT,
     required: false,
-    className:
-      store.signUpRequest.lastName && !store.signUpRequestErrors.lastName?.[0]
-        ? "border border-green-500"
-        : "",
     error: store.signUpRequestErrors?.lastName?.[0]
       ? t(store.signUpRequestErrors.lastName[0])
       : undefined,
@@ -113,13 +109,6 @@ export const useSignUpFormStructure = ({
         : t("auth.signUp.descriptions.email.available");
 
   const emailFieldClassName = cn(
-    !emailError &&
-      !isCheckingEmail &&
-      !isEmailTaken &&
-      store.signUpRequest.email &&
-      !store.signUpRequestErrors?.email?.[0]
-      ? "border border-green-500"
-      : "",
     !isCheckingEmail && isEmailTaken ? "border border-red-500" : "",
   );
 
@@ -164,13 +153,6 @@ export const useSignUpFormStructure = ({
 
   const usernameFieldClassName = cn(
     "w-full",
-    !usernameError &&
-      !isCheckingUsername &&
-      !isUsernameTaken &&
-      store.signUpRequest.username &&
-      !store.signUpRequestErrors?.username?.[0]
-      ? "border border-green-500"
-      : "",
     !isCheckingUsername && isUsernameTaken ? "border border-red-500" : "",
   );
 
@@ -212,10 +194,6 @@ export const useSignUpFormStructure = ({
     placeholder: t("auth.signUp.placeholders.password"),
     variant: FieldVariant.PASSWORD,
     required: true,
-    className:
-      store.signUpRequest.password && !store.signUpRequestErrors.password?.[0]
-        ? "border border-green-500"
-        : "",
     error: store.signUpRequestErrors?.password?.[0]
       ? t(store.signUpRequestErrors.password[0])
       : undefined,
@@ -250,11 +228,6 @@ export const useSignUpFormStructure = ({
     placeholder: t("auth.signUp.placeholders.confirmPassword"),
     variant: FieldVariant.PASSWORD,
     required: true,
-    className:
-      store.utilities.confirmPassword &&
-      !store.signUpRequestErrors.confirmPassword?.[0]
-        ? "border border-green-500"
-        : "",
     error: store.signUpRequestErrors?.confirmPassword?.[0]
       ? t(store.signUpRequestErrors.confirmPassword[0])
       : undefined,
@@ -315,13 +288,20 @@ export const useSignUpFormStructure = ({
                 variant: FieldVariant.MULTISELECT,
                 label: "",
                 description: t("auth.signUp.descriptions.industries"),
+                error: store.signUpRequestErrors?.industries?.[0]
+                  ? t(store.signUpRequestErrors.industries[0])
+                  : undefined,
                 props: {
                   value: store.signUpRequest.industries.map(String),
-                  onSelect: (ids) =>
+                  onSelect: (ids) => {
                     store.setNested(
                       "signUpRequest.industries",
                       ids.map(Number),
-                    ),
+                    );
+                    if (ids.length > 0) {
+                      store.setNested("signUpRequestErrors.industries", []);
+                    }
+                  },
                   options: industriesOptions,
                   max: 5,
                 } satisfies MultiSelectFieldProps,
@@ -343,18 +323,28 @@ export const useSignUpFormStructure = ({
     fieldClassName: "flex flex-col items-center justify-center",
     props: {
       image: store?.utilities.picture,
-      alt: "?",
+      progress: store?.utilities.progress,
+      alt: identifyUserAvatar({
+        username: store.signUpRequest.username,
+        firstName: store.signUpRequest.firstName,
+        lastName: store.signUpRequest.lastName,
+      }),
       editable: !isProfilePictureUploadPending && !isPending,
-      onFileChange: (value) => {
+      onPickStart,
+      onPickEnd,
+      onFileChange: (value: UploadFileInput) => {
         store.setNested("utilities.picture", value);
       },
-      onUpload: (file, onProgress) => {
+      onUpload: (
+        file: UploadFileInput,
+        onProgress?: UploadProgressCallback,
+      ) => {
         store.setNested("utilities.progress", 0);
         uploadPicture({
           files: [file],
           onProgress: (progress: number) => {
             store.setNested("utilities.progress", progress);
-            onProgress(progress);
+            onProgress?.(progress);
           },
         });
       },

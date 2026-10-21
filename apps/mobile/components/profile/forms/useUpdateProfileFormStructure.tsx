@@ -1,4 +1,5 @@
 import { Gender } from "@softsurgery/api-client";
+import { type UploadFilesMutate } from "@/hooks/useUploadMutation";
 import {
   CustomFieldProps,
   DateFieldProps,
@@ -9,6 +10,8 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
   TextFieldProps,
+  UploadFileInput,
+  UploadProgressCallback,
 } from "@softsurgery/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
 import { Pressable, View } from "react-native";
@@ -18,10 +21,7 @@ import { useTranslation } from "react-i18next";
 interface useUpdateProfileFormStructureProps {
   store: UserStore;
   fallback?: string;
-  uploadPicture: (options: {
-    files: File[];
-    onProgress: (progress: number) => void;
-  }) => void;
+  uploadPicture: UploadFilesMutate;
   isProfilePictureUploadPending: boolean;
   isPending?: boolean;
 }
@@ -46,18 +46,22 @@ export const useUpdateProfileFormStructure = ({
     wrapperClassName: "flex flex-row items-center justify-center",
     props: {
       image: store?.picture,
+      progress: store?.progress,
       alt: fallback,
       editable: !isProfilePictureUploadPending && !isPending,
-      onFileChange: (value) => {
+      onFileChange: (value: UploadFileInput) => {
         store.set("picture", value);
       },
-      onUpload: (file, onProgress) => {
+      onUpload: (
+        file: UploadFileInput,
+        onProgress?: UploadProgressCallback,
+      ) => {
         store.set("progress", 0);
         uploadPicture({
           files: [file],
           onProgress: (progress: number) => {
             store.set("progress", progress);
-            onProgress(progress);
+            onProgress?.(progress);
           },
         });
       },

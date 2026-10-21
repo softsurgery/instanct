@@ -2,6 +2,7 @@ import type {
   MessageVariant,
   ResponseMessageDto,
 } from "@softsurgery/api-client";
+import type { UploadFileInput } from "@/lib/upload";
 
 export type MediaKind = "image" | "video";
 
@@ -59,7 +60,7 @@ export type MessageFlatListItem =
 
 export interface StagedMedia {
   id: string;
-  file: File;
+  file: UploadFileInput;
   kind: MediaKind;
   uri: string;
   fileSize?: number;

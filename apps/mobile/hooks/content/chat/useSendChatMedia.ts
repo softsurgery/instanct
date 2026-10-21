@@ -2,6 +2,10 @@ import React from "react";
 import { Alert, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useApi } from "@/contexts/ApiContext";
+import {
+  clampUploadProgress,
+  type ReactNativeUploadFile,
+} from "@/lib/upload";
 import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { MediaKind, PendingMediaUpload, StagedMedia } from "@/types";
 import { waitForUiReady } from "@/lib/device";
@@ -147,7 +151,8 @@ export const useSendChatMedia = ({
 
         const uploads = await api.upload.uploadFiles(
           items.map((item) => item.file),
-          (percent) => updatePending(clientId, { progress: percent }),
+          (percent: number) =>
+            updatePending(clientId, { progress: clampUploadProgress(percent) }),
           true,
           totalBytes > 0 ? totalBytes : undefined,
         );
@@ -308,13 +313,14 @@ const assetKind = (asset: ImagePicker.ImagePickerAsset): MediaKind =>
 /**
  * Converts a React Native ImagePickerAsset into a File-like structure for uploading.
  */
-const toUploadFile = (asset: ImagePicker.ImagePickerAsset) =>
-  ({
-    uri: asset.uri,
-    name: asset.fileName || asset.uri.split("/").pop() || "media",
-    type:
-      asset.mimeType || (asset.type === "video" ? "video/mp4" : "image/jpeg"),
-  }) as unknown as File;
+const toUploadFile = (
+  asset: ImagePicker.ImagePickerAsset,
+): ReactNativeUploadFile => ({
+  uri: asset.uri,
+  name: asset.fileName || asset.uri.split("/").pop() || "media",
+  type:
+    asset.mimeType || (asset.type === "video" ? "video/mp4" : "image/jpeg"),
+});
 
 /**
  * Converts a raw ImagePickerAsset into a StagedMedia domain model.

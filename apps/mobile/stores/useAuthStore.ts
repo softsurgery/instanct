@@ -1,4 +1,5 @@
 import { setDeepValue } from "@/lib/object";
+import { type UploadFileInput } from "@/lib/upload";
 import { RequestClientSignInDto, RequestSpecializedClientSignUpDto } from "@softsurgery/api-client";
 import { create } from "zustand";
 
@@ -7,7 +8,7 @@ interface AuthData {
   signUpRequest: RequestSpecializedClientSignUpDto;
   utilities: {
     confirmPassword: string;
-    picture?: string;
+    picture?: string | UploadFileInput;
     progress: number;
     acceptedTerms: boolean;
   };

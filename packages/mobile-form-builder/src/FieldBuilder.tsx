@@ -110,7 +110,10 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
         <MultiSelect
           {...field?.props}
           classNames={{
-            trigger: cn(field.className, field?.error && "border-red-500"),
+            trigger: cn(
+              field.className,
+              field?.error && "border-red-500 dark:border-red-500",
+            ),
           }}
           title={field.label}
           description={field.description}
@@ -198,8 +201,11 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           className={cn(field.className, field?.error && "border-red-500")}
           image={field?.props?.image}
           fallback={field?.props?.alt}
+          onPickStart={field?.props?.onPickStart}
+          onPickEnd={field?.props?.onPickEnd}
           onFileChange={field?.props?.onFileChange}
           onUpload={field?.props?.onUpload}
+          progress={field?.props?.progress}
           editable={editable}
         />
       );

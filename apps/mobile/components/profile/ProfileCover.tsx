@@ -7,6 +7,7 @@ import { cn } from "@softsurgery/lib";
 import { Eye, Camera } from "lucide-react-native";
 import { PhotoPreview, PhotoPreviewRef } from "@softsurgery/mobile-components";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
+import { type ReactNativeUploadFile } from "@/lib/upload";
 import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
@@ -112,11 +113,11 @@ export const ProfileCover = ({
       if (result.canceled) return;
 
       const asset = result.assets[0];
-      const fileLike = {
+      const fileLike: ReactNativeUploadFile = {
         uri: asset.uri,
-        name: asset.uri.split("/").pop() || "cover.jpg",
+        name: asset.fileName || asset.uri.split("/").pop() || "cover.jpg",
         type: asset.mimeType || "image/jpeg",
-      } as unknown as File;
+      };
 
       uploadCover({
         files: [fileLike],

@@ -85,7 +85,7 @@ export const FormBuilder = React.forwardRef(
                           )}
                         >
                           {/* Label */}
-                          {field.variant !== "check" && (
+                          {field.variant !== "check" && field.label && (
                             <Label className="text-sm font-semibold mb-1 w-full">
                               {field.label}{" "}
                               {field.required && (
