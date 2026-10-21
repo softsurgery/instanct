@@ -1,9 +1,9 @@
+import React from "react";
 import { format } from "date-fns";
 import { Play } from "lucide-react-native";
-import { Dimensions, ImageSourcePropType, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { Image } from "expo-image";
-import { Text } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
+import { Icon, Skeleton, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { PendingMediaItem, PendingMediaUpload } from "@/types";
@@ -16,6 +16,7 @@ import { useServerImages } from "~/hooks/content/useServerImages";
 import { MessageTextContent } from "./MessageTextContent";
 import { MediaImageGrid } from "./ChatMediaImageGrid";
 import { MediaUploadProgress } from "../staging/MediaUploadProgress";
+import { ChatMediaSkeleton } from "./ChatMediaSkeleton";
 
 interface ChatMediaBubbleProps {
   className?: string;
@@ -73,6 +74,29 @@ export const ChatMediaBubble = ({
   };
 
   const singleMediaSource = uploads[0];
+  const [isImageLoaded, setIsImageLoaded] = React.useState(false);
+
+  const sourceUri =
+    typeof singleMediaSource === "object" &&
+    singleMediaSource &&
+    "uri" in singleMediaSource
+      ? singleMediaSource.uri
+      : undefined;
+
+  React.useEffect(() => {
+    setIsImageLoaded(false);
+  }, [sourceUri]);
+
+  if (!pending && mediaCount === 0) {
+    return (
+      <ChatMediaSkeleton
+        className={className}
+        right={right}
+        isGrouped={false}
+        hasCaption={!!message?.content}
+      />
+    );
+  }
 
   const mediaContent = pending ? (
     isGroupedMedia ? (
@@ -128,20 +152,41 @@ export const ChatMediaBubble = ({
     >
       {singleMediaSource ? (
         <VideoThumbnailPreview source={singleMediaSource} />
-      ) : null}
-      <View className="absolute inset-0 items-center justify-center">
+      ) : (
+        <Skeleton
+          className="rounded-xl border border-border"
+          style={{ width: "100%", height: "100%" }}
+        />
+      )}
+      <View className="absolute inset-0 items-center justify-center pointer-events-none">
         <View className="w-10 h-10 rounded-full items-center justify-center bg-black/50">
           <Icon as={Play} size={14} color="white" fill="white" />
         </View>
       </View>
     </View>
   ) : (
-    <Image
-      className="rounded-xl"
+    <View
+      className="relative overflow-hidden rounded-xl bg-muted"
       style={mediaFrameStyle}
-      source={singleMediaSource as any}
-      contentFit="cover"
-    />
+    >
+      {(!singleMediaSource || !isImageLoaded) && (
+        <Skeleton
+          className="absolute inset-0 rounded-xl"
+          style={{ width: "100%", height: "100%" }}
+        />
+      )}
+      {singleMediaSource ? (
+        <Image
+          className="rounded-xl"
+          style={{ width: "100%", height: "100%" }}
+          source={singleMediaSource as any}
+          contentFit="cover"
+          cachePolicy="memory-disk"
+          onLoad={() => setIsImageLoaded(true)}
+          onError={() => setIsImageLoaded(true)}
+        />
+      ) : null}
+    </View>
   );
 
   const bubble = (

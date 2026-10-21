@@ -1,6 +1,4 @@
-import { Icon } from "@softsurgery/mobile-ui";
-import { Image } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Icon, Image, Skeleton, Text } from "@softsurgery/mobile-ui";
 import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
@@ -13,6 +11,46 @@ import {
   VideoThumbnailPreview,
 } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
+
+const MediaThumbnailImage = ({
+  mediaSource,
+  uploadId,
+}: {
+  mediaSource: ImageSource;
+  uploadId?: number;
+}) => {
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const uri =
+    typeof mediaSource === "object" && mediaSource && "uri" in mediaSource
+      ? mediaSource.uri
+      : undefined;
+
+  React.useEffect(() => {
+    setIsLoaded(false);
+  }, [uri]);
+
+  return (
+    <View className="w-full h-full relative">
+      {!isLoaded && (
+        <Skeleton
+          className="absolute inset-0"
+          style={{ width: "100%", height: "100%" }}
+        />
+      )}
+      <Image
+        className="w-full h-full"
+        source={mediaSource}
+        recyclingKey={
+          typeof uploadId === "number" ? `upload-${uploadId}` : undefined
+        }
+        contentFit="cover"
+        cachePolicy="memory-disk"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
+      />
+    </View>
+  );
+};
 
 /**
  * Extracts all server upload IDs from a message's attachments sorted by order.
@@ -65,20 +103,24 @@ export const MediaThumbnail = React.memo(function MediaThumbnail({
     >
       {isVideo ? (
         <View className="flex-1 bg-muted items-center justify-center relative">
-          <View className="w-10 h-10 rounded-full items-center justify-center bg-black/50 absolute z-10">
+          <View className="w-10 h-10 rounded-full items-center justify-center bg-black/50 absolute z-10 pointer-events-none">
             <Icon as={Play} size={16} color="white" fill="white" />
           </View>
-          {mediaSource ? <VideoThumbnailPreview source={mediaSource} /> : null}
+          {mediaSource ? (
+            <VideoThumbnailPreview source={mediaSource} />
+          ) : (
+            <Skeleton
+              className="w-full h-full absolute inset-0"
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
         </View>
       ) : mediaSource ? (
-        <Image
+        <MediaThumbnailImage mediaSource={mediaSource} uploadId={uploadId} />
+      ) : typeof uploadId === "number" ? (
+        <Skeleton
           className="w-full h-full"
-          source={mediaSource}
-          recyclingKey={
-            typeof uploadId === "number" ? `upload-${uploadId}` : undefined
-          }
-          contentFit="cover"
-          cachePolicy="memory-disk"
+          style={{ width: "100%", height: "100%" }}
         />
       ) : (
         <View className="flex-1 bg-muted items-center justify-center">
