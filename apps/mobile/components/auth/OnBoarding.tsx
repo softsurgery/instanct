@@ -9,8 +9,7 @@ import Carousel, {
 import { Text, Icon } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { SSOButtons } from "./SSOButtons";
-import { AcceptTerms } from "./AcceptTerms";
-import { Rocket, Zap, ShieldCheck, Languages } from "lucide-react-native";
+import { Languages } from "lucide-react-native";
 import {
   ThemeToggle,
   LanguageSwitcher,
@@ -22,9 +21,18 @@ import { useTranslation } from "react-i18next";
 const width = Dimensions.get("window").width;
 
 const ONBOARDING_DATA = [
-  { key: "welcome", icon: Rocket },
-  { key: "integration", icon: Zap },
-  { key: "security", icon: ShieldCheck },
+  {
+    key: "welcome",
+    image: require("~/assets/images/onboarding-welcome.png"),
+  },
+  {
+    key: "integration",
+    image: require("~/assets/images/onboarding-integration.png"),
+  },
+  {
+    key: "security",
+    image: require("~/assets/images/onboarding-security.png"),
+  },
 ];
 
 interface OnBoardingProps {
@@ -34,7 +42,6 @@ interface OnBoardingProps {
 export default function OnBoarding({ className }: OnBoardingProps) {
   const { t } = useTranslation("explore");
   const { palette, colorScheme } = useColorPalette();
-  const [acceptedTerms, setAcceptedTerms] = React.useState(false);
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
@@ -78,18 +85,17 @@ export default function OnBoarding({ className }: OnBoardingProps) {
             key={`carousel-${colorScheme}`}
             width={width}
             ref={ref}
-            style={{ width: width, height: 250 }}
+            style={{ width: width, height: 280 }}
             data={ONBOARDING_DATA}
             onProgressChange={progress}
-            renderItem={({ item, index }) => {
-              const IconComponent = item.icon;
+            renderItem={({ item }) => {
               return (
                 <View className="flex-1 justify-center items-center px-8">
-                  <View className="bg-primary/10 p-6 rounded-full mb-2">
-                    <IconComponent
-                      size={80}
-                      color={palette.primary}
-                      strokeWidth={1.5}
+                  <View className="mb-4 items-center justify-center">
+                    <Image
+                      source={item.image}
+                      style={{ width: 136, height: 136 }}
+                      contentFit="contain"
                     />
                   </View>
                   <Text className="text-3xl font-bold text-center mb-2 text-foreground">
@@ -127,16 +133,7 @@ export default function OnBoarding({ className }: OnBoardingProps) {
         </View>
 
         <View className="mx-6 mt-8 mb-4">
-          <AcceptTerms
-            className="mt-4"
-            checked={acceptedTerms}
-            onCheckedChange={setAcceptedTerms}
-          />
-          <SSOButtons
-            isSignInPending={false}
-            acceptedTerms={acceptedTerms}
-            classic
-          />
+          <SSOButtons isSignInPending={false} classic acceptTermsRequired />
         </View>
       </View>
     </StableSafeAreaView>

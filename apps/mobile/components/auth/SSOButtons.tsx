@@ -8,12 +8,13 @@ import { Text } from "@softsurgery/mobile-ui";
 import { useSSO } from "@/hooks/useSSO";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { AcceptTerms } from "./AcceptTerms";
 
 export interface SSOButtonsProps {
   className?: string;
   classic?: boolean;
   isSignInPending?: boolean;
-  acceptedTerms?: boolean;
+  acceptTermsRequired?: boolean;
 }
 
 const IconSlot = ({ children }: { children: React.ReactNode }) => (
@@ -26,10 +27,12 @@ export const SSOButtons = ({
   className,
   classic = false,
   isSignInPending = false,
-  acceptedTerms = true,
+  acceptTermsRequired = false,
 }: SSOButtonsProps) => {
   const { t } = useTranslation("explore");
   const { colorScheme } = useColorScheme();
+  const [acceptedTerms, setAcceptedTerms] = React.useState(false);
+
   const {
     isPending: isSSOPending,
     signInWithGoogle,
@@ -40,7 +43,8 @@ export const SSOButtons = ({
     isAppleReady,
   } = useSSO();
 
-  const isDisabled = isSignInPending || isSSOPending || !acceptedTerms;
+  const isDisabled =
+    isSignInPending || isSSOPending || !(acceptedTerms || !acceptTermsRequired);
 
   return (
     <View
@@ -108,6 +112,14 @@ export const SSOButtons = ({
           {t("onBoarding.actions.linkedIn")}
         </Text>
       </Button>
+
+      {acceptTermsRequired && (
+        <AcceptTerms
+          className="mt-4"
+          checked={acceptedTerms}
+          onCheckedChange={setAcceptedTerms}
+        />
+      )}
 
       {classic && (
         <React.Fragment>
