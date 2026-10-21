@@ -13,9 +13,13 @@ import { bindStorageSystematics } from '@softsurgery/nsa-storage/constants/stora
 import {
   bindUserDto,
   bindUserEntity,
+  bindUserService,
+  bindUserRepository,
 } from '@softsurgery/nsa-um/registries/user-binding.registry';
 import { ResponseUserDto } from './modules/users/dtos/user/response-user.dto';
 import { UserEntity } from './modules/users/entities/user.entity';
+import { UserService } from './modules/users/services/user.service';
+import { UserRepository } from './modules/users/repositories/user.repository';
 
 bindEventType(EventType);
 bindNotificationType(NotificationType);
@@ -25,3 +29,5 @@ bindConfigurationNamespaces(ConfigurationNamespaces);
 bindStorageSystematics(STORAGE_SYSTEMATICS);
 bindUserDto(ResponseUserDto);
 bindUserEntity(UserEntity);
+bindUserService(UserService);
+bindUserRepository(UserRepository);

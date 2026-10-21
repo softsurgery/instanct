@@ -9,6 +9,8 @@ import {
   USER_ENTITY,
   bindUserDto,
   bindUserEntity,
+  bindUserService,
+  bindUserRepository,
 } from '@softsurgery/nsa-um/registries/user-binding.registry';
 import { ResponseUserDto } from './dtos/user/response-user.dto';
 import { FollowService } from 'src/modules/users/services/follow.service';
@@ -168,5 +170,7 @@ export class UserManagementModule implements OnModuleInit {
   onModuleInit() {
     bindUserDto(ResponseUserDto);
     bindUserEntity(UserEntity);
+    bindUserService(UserService);
+    bindUserRepository(UserRepository);
   }
 }

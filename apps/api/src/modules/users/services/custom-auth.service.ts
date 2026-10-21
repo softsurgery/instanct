@@ -15,11 +15,11 @@ import { STORAGE_SYSTEMATICS_TOKEN } from '@softsurgery/nsa-storage/constants/st
 @Injectable()
 export class CustomAuthService extends ClientAuthService {
   constructor(
-    protected readonly userService: UserService,
-    protected readonly mailService: MailService,
     protected readonly userRepository: UserRepository,
+    protected readonly userService: UserService,
     protected readonly jwtService: JwtService,
     protected readonly configService: ConfigService,
+    protected readonly mailService: MailService,
     protected readonly storageService: StorageService,
     @Inject(CONFIGURATION_NAMESPACES)
     configurationNamespaces: Record<string, string>,

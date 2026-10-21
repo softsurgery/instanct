@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, ModuleRef } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth.service';
@@ -16,6 +16,12 @@ import { UserDeviceRepository } from './repositories/user-device.repository';
 import { UserConnectionHistoryRepository } from './repositories/user-connection-history.repository';
 import { UserDeviceService } from './services/user-device.service';
 import { UserConnectionHistoryService } from './services/user-connection-history.service';
+import {
+  USER_REPOSITORY,
+  USER_SERVICE,
+  getUserRepository,
+  getUserService,
+} from '@softsurgery/nsa-um/registries/user-binding.registry';
 
 @Module({
   imports: [
@@ -39,6 +45,44 @@ import { UserConnectionHistoryService } from './services/user-connection-history
     UserDeviceService,
     UserConnectionHistoryService,
     {
+      provide: USER_SERVICE,
+      useFactory: (moduleRef: ModuleRef) => {
+        const serviceClass = getUserService();
+        if (serviceClass) {
+          try {
+            return moduleRef.get(serviceClass, { strict: false });
+          } catch {
+            // fallback
+          }
+        }
+        try {
+          return moduleRef.get(USER_SERVICE, { strict: false });
+        } catch {
+          return null;
+        }
+      },
+      inject: [ModuleRef],
+    },
+    {
+      provide: USER_REPOSITORY,
+      useFactory: (moduleRef: ModuleRef) => {
+        const repoClass = getUserRepository();
+        if (repoClass) {
+          try {
+            return moduleRef.get(repoClass, { strict: false });
+          } catch {
+            // fallback
+          }
+        }
+        try {
+          return moduleRef.get(USER_REPOSITORY, { strict: false });
+        } catch {
+          return null;
+        }
+      },
+      inject: [ModuleRef],
+    },
+    {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
@@ -50,6 +94,8 @@ import { UserConnectionHistoryService } from './services/user-connection-history
     UserConnectionHistoryService,
     UserDeviceRepository,
     UserConnectionHistoryRepository,
+    USER_SERVICE,
+    USER_REPOSITORY,
   ],
 })
 export class AuthModule {}
