@@ -66,20 +66,22 @@ export const useSignupDebugButton = ({
   }, [authStore]);
 
   const DebugButton = React.useCallback(
-    ({ className }: { className?: string } = {}) => (
-      <View className={cn("flex-row justify-end px-2 pb-3", className)}>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 px-3 border-dashed border-primary/50 bg-primary/5 active:bg-primary/10 flex-row items-center gap-1.5 rounded-lg"
-          onPress={fillRandomValues}
-        >
-          <Text className="text-xs font-semibold text-primary">
-            Fill Random (Debug)
-          </Text>
-        </Button>
-      </View>
-    ),
+    ({ className }: { className?: string } = {}) => {
+      if (!__DEV__) return null;
+
+      return (
+        <View className={cn("flex-row justify-end px-2 pb-3", className)}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 px-3 border-dashed border-primary/50 bg-primary/5 active:bg-primary/10 flex-row items-center gap-1.5 rounded-lg"
+            onPress={fillRandomValues}
+          >
+            <Text className="text-xs font-semibold text-primary">Debug</Text>
+          </Button>
+        </View>
+      );
+    },
     [fillRandomValues],
   );
 
