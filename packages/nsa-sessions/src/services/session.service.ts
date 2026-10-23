@@ -1,24 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
-import { SessionEntity } from '../entities/session.entity';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { SessionRepository } from '../repositories/session.repository';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
+import { Injectable } from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
+import { SessionEntity } from "../entities/session.entity";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { SessionRepository } from "../repositories/session.repository";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
 import {
   FindManyOptions,
   IsNull,
   LessThanOrEqual,
   MoreThanOrEqual,
-} from 'typeorm';
-import { PageMetaDto } from '@softsurgery/nsa-database';
+} from "typeorm";
+import { PageMetaDto } from "@softsurgery/nsa-database";
 import {
   USER_SERVICE,
   AppUserService,
-} from '@softsurgery/nsa-um/tokens/user-access';
-import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
-import { getNowInTimezone, mergeTodayWithTime } from '../utils/date';
+} from "@softsurgery/nsa-um/tokens/user-access";
+import { UserNotFoundException } from "@softsurgery/nsa-um/errors/user/user.notfound.error";
+import { getNowInTimezone, mergeTodayWithTime } from "../utils/date";
 
 @Injectable()
 export class SessionService extends AbstractCrudService<SessionEntity> {
@@ -138,7 +138,7 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     dto: Partial<SessionEntity>,
     userId?: string,
   ): Promise<SessionEntity> {
-    if (!userId) throw new Error('User id is required');
+    if (!userId) throw new Error("User id is required");
     dto.plannedStart = mergeTodayWithTime(dto.plannedStart || new Date());
     dto.plannedEnd = mergeTodayWithTime(dto.plannedEnd || new Date());
 
@@ -160,7 +160,7 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     dto: Partial<SessionEntity>,
   ): Promise<SessionEntity | null> {
     const session = await this.sessionRepository.findOneById(id);
-    if (!session) throw new Error('Session not found');
+    if (!session) throw new Error("Session not found");
 
     return this.sessionRepository.update(id, {
       plannedEnd: dto.plannedEnd,
@@ -170,7 +170,7 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
 
   async end(id: number): Promise<SessionEntity | null> {
     const session = await this.sessionRepository.findOneById(id);
-    if (!session) throw new Error('Session not found');
+    if (!session) throw new Error("Session not found");
     return this.sessionRepository.update(id, { ended: new Date() });
   }
 
@@ -178,7 +178,7 @@ export class SessionService extends AbstractCrudService<SessionEntity> {
     await this.sessionRepository
       .createQueryBuilder()
       .softDelete()
-      .where('userId = :userId', { userId })
+      .where("userId = :userId", { userId })
       .execute();
   }
 }

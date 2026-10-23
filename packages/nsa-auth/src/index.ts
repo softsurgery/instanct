@@ -26,3 +26,13 @@ export {
   type PresenceMetadata,
   type ClientConnectionPayload,
 } from "./utils/presence-metadata";
+export { AppleAuthUtils } from "./utils/apple-auth.utils";
+export {
+  type AppleTokenResponse,
+  type AppleIdTokenPayload,
+  type AppleUserIdentity,
+  type AppleClientSecretConfig,
+  type AppleJWK,
+  type AppleJWKSResponse,
+} from "./interfaces/apple.interface";
+export { AuthProvidersService } from "./services/auth-provider.service";

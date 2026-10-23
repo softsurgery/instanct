@@ -1,1 +1,1 @@
-export { SessionModule } from './sessions.module';
+export { SessionModule } from "./sessions.module";

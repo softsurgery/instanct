@@ -247,10 +247,31 @@ export class ClientAuthService {
       newUser.username = data?.username;
       pictureUrl = data?.picture;
     } else if (provider == OAuthProvider.APPLE) {
-      const decoded: { email?: string; sub?: string } | null =
-        this.jwtService.decode(idToken);
-      const appleSub = decoded?.sub;
-      const appleEmail = decoded?.email;
+      let appleData: { sub: string; email?: string } | undefined;
+      if (this.authProvidersService?.appleOAuth) {
+        try {
+          appleData = await this.authProvidersService.appleOAuth(
+            idToken,
+            redirectUri,
+          );
+        } catch (error) {
+          this.logger.warn(
+            `Apple OAuth service error: ${error}. Falling back to token decode.`,
+          );
+        }
+      }
+
+      if (!appleData) {
+        const decoded: { email?: string; sub?: string } | null =
+          this.jwtService.decode(idToken);
+        appleData = {
+          sub: decoded?.sub || "",
+          email: decoded?.email,
+        };
+      }
+
+      const appleSub = appleData.sub;
+      const appleEmail = appleData.email;
       newUser.email = appleEmail;
       newUser.username = appleEmail?.split("@")[0] || appleSub;
 

@@ -29,7 +29,7 @@ export const Authentication = () => {
 
   const { mutate: signInMutator, isPending: isSignInPending } = useMutation({
     mutationFn: async (data: {
-      method: "credentials" | "github" | "google";
+      method: "credentials" | "github" | "google" | "apple";
       usernameOrEmail?: string;
       password?: string;
     }) => {
@@ -154,9 +154,26 @@ export const Authentication = () => {
             <Button type="submit" className="w-full" disabled={isSignInPending}>
               Login
             </Button>
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                disabled={isSignInPending}
+                onClick={() => signInMutator({ method: "google" })}
+              >
+                Google
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                disabled={isSignInPending}
+                onClick={() => signInMutator({ method: "apple" })}
+              >
+                Apple
+              </Button>
+            </div>
           </form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
