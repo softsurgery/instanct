@@ -49,6 +49,9 @@
       "labels": {
         "industries": "Industries"
       },
+      "placeholders": {
+        "industries": "Select industries"
+      },
       "actions": {
         "update": "Update Industries",
         "updatePending": "Saving..."
@@ -189,7 +192,11 @@
         "company": "Enter the company name",
         "description": "Describe your role and responsibilities",
         "location": "Enter the location of your job",
-        "locationUpdate": "Enter the location of your job (e.g., New York, NY)"
+        "locationUpdate": "Enter the location of your job (e.g., New York, NY)",
+        "workType": "Select work type",
+        "locationType": "Select location type",
+        "startDate": "Select start date",
+        "endDate": "Select end date"
       },
       "descriptions": {
         "title": "The title of your position (e.g., Software Engineer).",

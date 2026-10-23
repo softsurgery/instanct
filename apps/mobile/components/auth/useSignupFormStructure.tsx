@@ -287,6 +287,7 @@ export const useSignUpFormStructure = ({
                 id: "industries",
                 variant: FieldVariant.MULTISELECT,
                 label: "",
+                placeholder: t("auth.signUp.placeholders.industries"),
                 description: t("auth.signUp.descriptions.industries"),
                 error: store.signUpRequestErrors?.industries?.[0]
                   ? t(store.signUpRequestErrors.industries[0])

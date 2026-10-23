@@ -110,6 +110,7 @@ export const IndustriesManagement = ({
                 id: "industries",
                 variant: FieldVariant.MULTISELECT,
                 label: t("menu.industries.labels.industries"),
+                placeholder: t("menu.industries.placeholders.industries"),
                 props: {
                   value: selectedIndustries.map(String),
                   onSelect: (ids) => setSelectedIndustries(ids.map(Number)),

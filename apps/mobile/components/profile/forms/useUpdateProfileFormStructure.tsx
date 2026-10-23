@@ -74,7 +74,7 @@ export const useUpdateProfileFormStructure = ({
     variant: FieldVariant.CUSTOM,
     props: {
       children: (
-        <View className="flex-row items-center justify-center -mt-6">
+        <View className="flex-row items-center justify-center">
           <Pressable
             onPress={() => {
               store.set("picture", undefined);
@@ -142,6 +142,9 @@ export const useUpdateProfileFormStructure = ({
     id: "dateOfBirth",
     label: t("settings.account.screens.profile.form.date-of-birth"),
     variant: FieldVariant.DATE,
+    placeholder: t(
+      "settings.account.screens.profile.form.placeholders.date-of-birth",
+    ),
     description: t(
       "settings.account.screens.profile.form.descriptions.date-of-birth",
     ),
@@ -153,7 +156,7 @@ export const useUpdateProfileFormStructure = ({
         store.setNested("updateDto.dateOfBirth", value);
         store.setNested("errors.dateOfBirth", []);
       },
-  },
+    },
   };
 
   //bio
@@ -179,6 +182,7 @@ export const useUpdateProfileFormStructure = ({
     id: "gender",
     label: t("settings.account.screens.profile.form.gender"),
     variant: FieldVariant.SELECT,
+    placeholder: t("settings.account.screens.profile.form.placeholders.gender"),
     description: t("settings.account.screens.profile.form.descriptions.gender"),
     error: t(store?.errors?.gender?.[0]),
     props: {

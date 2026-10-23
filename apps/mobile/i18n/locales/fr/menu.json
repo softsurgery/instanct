@@ -49,6 +49,9 @@
       "labels": {
         "industries": "Secteurs d'activité"
       },
+      "placeholders": {
+        "industries": "Sélectionnez vos secteurs d'activité"
+      },
       "actions": {
         "update": "Mettre à jour les secteurs",
         "updatePending": "Enregistrement..."
@@ -189,7 +192,11 @@
         "company": "Saisissez le nom de l'entreprise",
         "description": "Décrivez votre rôle et vos responsabilités",
         "location": "Saisissez le lieu de travail",
-        "locationUpdate": "Saisissez le lieu de travail (ex. : Paris, France)"
+        "locationUpdate": "Saisissez le lieu de travail (ex. : Paris, France)",
+        "workType": "Sélectionnez le type de travail",
+        "locationType": "Sélectionnez le type de lieu",
+        "startDate": "Sélectionnez la date de début",
+        "endDate": "Sélectionnez la date de fin"
       },
       "descriptions": {
         "title": "L'intitulé de votre poste (ex. : Ingénieur logiciel).",

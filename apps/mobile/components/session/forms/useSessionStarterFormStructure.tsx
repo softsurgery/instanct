@@ -56,6 +56,7 @@ export const useSessionStarterFormStructure = ({
     label: t("session.start.startTime"),
     variant: FieldVariant.TIME,
     hidden: store.flags.startNow,
+    placeholder: t("session.start.placeholders.startTime"),
     error: t(store.errors.plannedStart?.[0]),
     description: t("session.start.descriptions.startTime"),
     props: {
@@ -72,6 +73,7 @@ export const useSessionStarterFormStructure = ({
     id: "end-date",
     label: t("session.start.endTime"),
     variant: FieldVariant.TIME,
+    placeholder: t("session.start.placeholders.endTime"),
     error: t(store.errors.plannedEnd?.[0]),
     description: t("session.start.descriptions.endTime"),
     props: {
