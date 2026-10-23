@@ -15,10 +15,9 @@ import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import {
   createAndroidChannel,
   requestNotificationPermissions,
-  Notifications,
 } from "@/lib/notification";
+import { presentChatMessageNotification } from "@/lib/notification-chat";
 import { useCurrentUser } from "../users/useCurrentUser";
-import { identifyUser } from "@/lib/user";
 import {
   CONVERSATION_LIST_JOIN,
   InfiniteConversationData,
@@ -158,13 +157,10 @@ export const useChat = (
         !isCurrentConversation &&
         !isOnChatPortal
       ) {
-        await Notifications?.scheduleNotificationAsync({
-          content: {
-            title: identifyUser(sender),
-            body: "is trying to contact you for the first time",
-            sound: true,
-          },
-          trigger: null,
+        await presentChatMessageNotification({
+          conversationId: conversation.id,
+          user: sender,
+          message: conversation.lastMessage ?? conversation.messages?.[0],
         });
       }
 
@@ -207,51 +203,21 @@ export const useChat = (
         !isCurrentConversation &&
         !isOnChatPortal
       ) {
-        if (
-          updated.messages?.[0]?.variant === MessageVariant.STATIC &&
-          updated.messages?.[0]?.static === StaticMessageEnum.POKE
-        ) {
-          await Notifications?.scheduleNotificationAsync({
-            content: {
-              title: "Poked!!!",
-              body: `You've been poked by ${identifyUser(user)}`,
-              sound: true,
-            },
-            trigger: null,
-          });
-        } else if (
-          updated.lastMessage?.static === StaticMessageEnum.FIRST_MESSAGE
-        ) {
-          await Notifications?.scheduleNotificationAsync({
-            content: {
-              title: identifyUser(user),
-              body: "is trying to contact you for the first time",
-              sound: true,
-            },
-            trigger: null,
-          });
-        } else if (
+        const incomingMessage =
+          updated.messages?.[0] ?? updated.lastMessage ?? null;
+
+        const shouldNotify =
+          (incomingMessage?.variant === MessageVariant.STATIC &&
+            incomingMessage?.static === StaticMessageEnum.POKE) ||
+          updated.lastMessage?.static === StaticMessageEnum.FIRST_MESSAGE ||
           updated.messages?.[0]?.id === updated?.lastMessage?.id ||
-          (!updated.messages?.length && updated.lastMessage)
-        ) {
-          await Notifications?.scheduleNotificationAsync({
-            content: {
-              title: identifyUser(user),
-              body:
-                updated.lastMessage.variant === MessageVariant.TEXT
-                  ? updated.lastMessage.content
-                  : updated.lastMessage.variant === MessageVariant.IMAGE
-                    ? "📷 Image"
-                    : updated.lastMessage.variant === MessageVariant.VIDEO
-                      ? "🎥 Video"
-                      : updated.lastMessage.variant === MessageVariant.FILE
-                        ? "📎 File"
-                        : updated.lastMessage.variant === MessageVariant.EMOJI
-                          ? updated.lastMessage.content
-                          : "",
-              sound: true,
-            },
-            trigger: null,
+          (!updated.messages?.length && !!updated.lastMessage);
+
+        if (shouldNotify) {
+          await presentChatMessageNotification({
+            conversationId: updated.id,
+            user,
+            message: incomingMessage,
           });
         }
       }

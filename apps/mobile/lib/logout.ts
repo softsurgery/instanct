@@ -10,6 +10,7 @@ import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
 import { disconnectAllSockets } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { unregisterBackgroundActivities } from "@/lib/app-background";
 
 export const performLogout = () => {
   // Clear persisted auth
@@ -27,6 +28,9 @@ export const performLogout = () => {
 
   // Disconnect sockets
   disconnectAllSockets();
+
+  // Stop background presence / notification sync
+  void unregisterBackgroundActivities();
 
   // Navigate to login/splash
   router.replace("/");

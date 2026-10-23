@@ -10,7 +10,10 @@ import {
 import { HTMLText } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
-import { router } from "expo-router";
+import {
+  getNotificationDestination,
+  navigateToNotificationDestination,
+} from "@/lib/notification-destination";
 
 interface NotificationEntryProps {
   className?: string;
@@ -25,38 +28,9 @@ export const NotificationEntry = ({
 }: NotificationEntryProps) => {
   const { t } = useTranslation("notifications");
   const onPress = () => {
-    switch (notification.type) {
-      case NotificationType.REQUEST_RECEIVED:
-        router.push({
-          pathname: `/main/request/answer`,
-          params: {
-            id: notification.payload.requestId,
-            isIncoming: "1",
-          },
-        });
-        break;
-      case NotificationType.REQUEST_ACCEPTED:
-      case NotificationType.REQUEST_REJECTED:
-        router.push({
-          pathname: `/main/request/answer`,
-          params: {
-            id: notification.payload.requestId,
-            isIncoming: "0",
-          },
-        });
-        break;
-      case NotificationType.NEW_SIGNIN:
-        router.push({
-          pathname: "/main/new-signin",
-          params: {
-            deviceId: notification.payload?.deviceId as string,
-            connectionId: notification.payload?.connectionId as string,
-          },
-        });
-        break;
-      default:
-        break;
-    }
+    navigateToNotificationDestination(
+      getNotificationDestination(notification),
+    );
   };
 
   const isNewSignin = notification.type === NotificationType.NEW_SIGNIN;
@@ -110,7 +84,6 @@ export const NotificationEntry = ({
         {isUnread && (
           <View className="absolute right-0 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-primary" />
         )}
-        {/* <Text className="text-xs">{JSON.stringify(notification.payload)}</Text> */}
       </View>
     </Pressable>
   );

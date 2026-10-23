@@ -3,6 +3,7 @@ import { NotificationContext } from "@/contexts/NotificationsContext";
 import { useChat } from "@/hooks/content/chat/useChat";
 import { useChatPendingSync } from "@/hooks/content/chat/useChatPendingSync";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
+import { useNotificationResponseNavigation } from "@/hooks/content/notification/useNotificationResponseNavigation";
 import { useNotifications } from "@/hooks/content/notification/useNotifications";
 import { useCheckHealth } from "@/hooks/content/useCheckHealth";
 import { useMobilePresence } from "@/hooks/content/users/useMobilePresence";
@@ -42,6 +43,7 @@ export default function MainLayout() {
   useMobilePresence({
     enabled: authPersistStore.isAuthenticated,
   });
+  useNotificationResponseNavigation(authPersistStore.isAuthenticated);
 
   const { count: chatCount, resetCount: resetChatCount } = useChat({});
   useChatPendingSync();
