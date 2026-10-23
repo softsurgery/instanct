@@ -48,8 +48,14 @@ function newestSource(dir) {
   return max;
 }
 
+function distsExist() {
+  return modules.every((mod) =>
+    fs.existsSync(path.join(packagesDir, `nsa-${mod}`, 'dist', 'index.js')),
+  );
+}
+
 function sourcesAreFresh() {
-  if (!fs.existsSync(stampFile)) return false;
+  if (!fs.existsSync(stampFile) || !distsExist()) return false;
   const stamp = fs.statSync(stampFile).mtimeMs;
   const configTime = fs.statSync(path.join(packagesDir, 'tsconfig.nsa.json')).mtimeMs;
   if (configTime > stamp) return false;
@@ -62,8 +68,19 @@ function copyOutputs() {
   for (const mod of modules) {
     const from = path.join(outDir, `nsa-${mod}`, 'src');
     const to = path.join(packagesDir, `nsa-${mod}`, 'dist');
-    fs.rmSync(to, { recursive: true, force: true });
-    fs.cpSync(from, to, { recursive: true });
+    const next = path.join(packagesDir, `nsa-${mod}`, 'dist.next');
+    const prev = path.join(packagesDir, `nsa-${mod}`, 'dist.prev');
+
+    fs.rmSync(next, { recursive: true, force: true });
+    fs.rmSync(prev, { recursive: true, force: true });
+    fs.cpSync(from, next, { recursive: true });
+
+    // Swap without leaving a missing-dist window for parallel consumers.
+    if (fs.existsSync(to)) {
+      fs.renameSync(to, prev);
+    }
+    fs.renameSync(next, to);
+    fs.rmSync(prev, { recursive: true, force: true });
   }
 }
 
