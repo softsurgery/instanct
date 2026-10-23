@@ -19,6 +19,7 @@
     "@softsurgery/mobile-ui": "workspace:*"
   },
   "peerDependencies": {
+    "@miblanchard/react-native-slider": "*",
     "expo-haptics": "*",
     "expo-image-picker": "*",
     "expo-location": "*",

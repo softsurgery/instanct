@@ -1407,6 +1407,9 @@ importers:
 
   packages/mobile-form-builder:
     dependencies:
+      '@miblanchard/react-native-slider':
+        specifier: '*'
+        version: 2.6.0(react-native@0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
       '@softsurgery/lib':
         specifier: workspace:*
         version: link:../lib
@@ -17955,6 +17958,11 @@ snapshots:
     dependencies:
       react: 19.3.0
       react-native: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+
+  '@miblanchard/react-native-slider@2.6.0(react-native@0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)':
+    dependencies:
+      react: 19.3.0
+      react-native: 0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
 
   '@microsoft/tsdoc@0.16.0': {}
 

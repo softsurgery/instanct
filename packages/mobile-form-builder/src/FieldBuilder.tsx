@@ -15,6 +15,7 @@ import { ChoicePicker, Select } from "@softsurgery/mobile-components";
 import MultiSelect from "./components/MultiSelect";
 import MapPinField from "./components/MapPinField";
 import { PasswordField } from "./components/PasswordField";
+import { SliderField } from "./components/SliderField";
 
 interface FieldBuilderProps {
   field?: Field<any>;
@@ -260,6 +261,13 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           onLocationChange={field?.props?.onLocationChange}
           editable={editable}
           changedOnFocus={field?.props?.changedOnFocus}
+        />
+      );
+    case "slider":
+      return (
+        <SliderField
+          {...field?.props}
+          className={cn(field?.className, field?.error && "border-red-500")}
         />
       );
     case "custom":

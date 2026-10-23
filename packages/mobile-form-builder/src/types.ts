@@ -52,6 +52,7 @@ export enum FieldVariant {
   RATING = "rating",
   PICTURE = "picture",
   CHOICEPICKER = "choice-picker",
+  SLIDER = "slider",
   CUSTOM = "custom",
 }
 
@@ -206,6 +207,20 @@ export interface ChoicePickerFieldProps {
   onSelectChange?: (value: string) => void;
   options?: SelectOption[];
   editable?: boolean;
+}
+
+export interface SliderFieldProps {
+  value?: number;
+  minimumValue?: number;
+  maximumValue?: number;
+  step?: number;
+  onValueChange?: (value: number) => void;
+  onSlidingComplete?: (value: number) => void;
+  editable?: boolean;
+  unit?: string;
+  formatValue?: (value: number) => string;
+  showMinMaxLabels?: boolean;
+  hapticsEnabled?: boolean;
 }
 
 export interface CustomFieldProps {

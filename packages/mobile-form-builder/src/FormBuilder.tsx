@@ -55,10 +55,15 @@ export const FormBuilder = React.forwardRef(
               )}
             >
               {fieldset.isHeaderVisible && (
-                <View className="flex flex-col gap-2 mb-2">
+                <View className="flex flex-col gap-1 mb-2">
                   <Text className="text-xl font-semibold">
                     {fieldset.title}
                   </Text>
+                  {fieldset.description && (
+                    <Text className="text-sm text-muted-foreground">
+                      {fieldset.description}
+                    </Text>
+                  )}
                   <Separator className="my-1" />
                 </View>
               )}
@@ -85,32 +90,56 @@ export const FormBuilder = React.forwardRef(
                           )}
                         >
                           {/* Label */}
-                          {field.variant !== "check" && field.label && (
-                            <Label className="text-sm font-semibold mb-1 w-full">
-                              {field.label}{" "}
-                              {field.required && (
-                                <Text className="text-red-500">*</Text>
-                              )}
-                            </Label>
-                          )}
+                          {field.variant !== "check" &&
+                            field.variant !== "switch" &&
+                            field.label && (
+                              <Label className="text-sm font-semibold mb-1 w-full">
+                                {field.label}{" "}
+                                {field.required && (
+                                  <Text className="text-red-500">*</Text>
+                                )}
+                              </Label>
+                            )}
 
                           {/* Field */}
-                          <FieldBuilder field={field} />
+                          {field.variant === "switch" ? (
+                            <View className="flex flex-row items-center justify-between w-full py-1">
+                              <View className="flex-1 pr-4">
+                                {field.label && (
+                                  <Label className="text-base font-semibold">
+                                    {field.label}{" "}
+                                    {field.required && (
+                                      <Text className="text-red-500">*</Text>
+                                    )}
+                                  </Label>
+                                )}
+                                {field.description && (
+                                  <Text className="text-xs text-muted-foreground mt-0.5">
+                                    {field.description}
+                                  </Text>
+                                )}
+                              </View>
+                              <FieldBuilder field={field} />
+                            </View>
+                          ) : (
+                            <FieldBuilder field={field} />
+                          )}
 
                           {/* Description & Error */}
                           <View className="pt-1">
-                            {field.description && (
-                              <View className="flex flex-col justify-between">
-                                {!field?.error &&
-                                  (![FieldVariant.CHECKBOX].includes(
-                                    field.variant,
-                                  ) ? (
-                                    <Text className={cn("text-sm opacity-70")}>
-                                      {field.description}
-                                    </Text>
-                                  ) : null)}
-                              </View>
-                            )}
+                            {field.description &&
+                              field.variant !== "switch" && (
+                                <View className="flex flex-col justify-between">
+                                  {!field?.error &&
+                                    (![FieldVariant.CHECKBOX].includes(
+                                      field.variant,
+                                    ) ? (
+                                      <Text className={cn("text-sm opacity-70")}>
+                                        {field.description}
+                                      </Text>
+                                    ) : null)}
+                                </View>
+                              )}
                             {field?.error ? (
                               <Text className="text-sm font-medium text-destructive">
                                 {field?.error}

@@ -8,5 +8,6 @@ export { TimePicker } from "./components/TimePicker";
 export { Select, RotatingChevron } from "@softsurgery/mobile-components";
 export { default as MultiSelect } from "./components/MultiSelect";
 export { default as MapPinField } from "./components/MapPinField";
+export { SliderField } from "./components/SliderField";
 export { mapToSelectOptions } from "./utils/map-select-options";
 export { getItemWidth } from "./utils/item-width";
