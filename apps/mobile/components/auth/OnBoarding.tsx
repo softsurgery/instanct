@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
 import * as React from "react";
-import { Dimensions, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
@@ -17,8 +17,6 @@ import {
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-
-const width = Dimensions.get("window").width;
 
 const ONBOARDING_DATA = [
   {
@@ -42,6 +40,7 @@ interface OnBoardingProps {
 export default function OnBoarding({ className }: OnBoardingProps) {
   const { t } = useTranslation("explore");
   const { palette, colorScheme } = useColorPalette();
+  const { width, height } = useWindowDimensions();
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
@@ -94,7 +93,7 @@ export default function OnBoarding({ className }: OnBoardingProps) {
                   <View className="mb-4 items-center justify-center">
                     <Image
                       source={item.image}
-                      style={{ width: 136, height: 136 }}
+                      style={{ height: height * 0.1, aspectRatio: 1 }}
                       contentFit="contain"
                     />
                   </View>
