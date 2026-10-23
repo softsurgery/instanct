@@ -30,7 +30,7 @@
     "pnpm": ">=11.25.0"
   },
   "dependencies": {
-    "expo": "58.0.16",
+    "expo": "58.0.17",
     "nativewind": "4.2.7",
     "react": "19.3.0",
     "react-dom": "19.3.0",
