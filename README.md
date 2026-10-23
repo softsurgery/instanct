@@ -4,13 +4,13 @@ Monorepo for the Instanct web app, landing site, mobile app, and API. The produc
 
 Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
 
-| App | Package | What it is | README |
-| --- | --- | --- | --- |
-| `apps/web` | `instanct-ui` | Next.js pages-router backoffice | [apps/web/README.md](apps/web/README.md) |
-| `apps/landing` | `instanct-landing` | Next.js app-router marketing site | [apps/landing/README.md](apps/landing/README.md) |
-| `apps/mobile` | `instanct-mobile-app` | Expo Router client | [apps/mobile/README.md](apps/mobile/README.md) |
-| `apps/api` | `instanct-api` | NestJS + TypeORM + MySQL | [apps/api/README.md](apps/api/README.md) |
-| `apps/data-flow` | `instanct-data-flow` | MySQL dump to Google Drive | `apps/data-flow/.env.example` |
+| App              | Package               | What it is                        | README                                           |
+| ---------------- | --------------------- | --------------------------------- | ------------------------------------------------ |
+| `apps/web`       | `instanct-ui`         | Next.js pages-router backoffice   | [apps/web/README.md](apps/web/README.md)         |
+| `apps/landing`   | `instanct-landing`    | Next.js app-router marketing site | [apps/landing/README.md](apps/landing/README.md) |
+| `apps/mobile`    | `instanct-mobile-app` | Expo Router client                | [apps/mobile/README.md](apps/mobile/README.md)   |
+| `apps/api`       | `instanct-api`        | NestJS + TypeORM + MySQL          | [apps/api/README.md](apps/api/README.md)         |
+| `apps/data-flow` | `instanct-data-flow`  | MySQL dump to Google Drive        | `apps/data-flow/.env.example`                    |
 
 ```text
 /
@@ -56,7 +56,9 @@ pnpm dev:data-flow   # watch the dump job
 pnpm data-flow       # build and run one dump
 pnpm build
 pnpm lint
-pnpm check-types
+pnpm check-types        # syncs shared dependencies, then checks types
+pnpm check:shared-deps  # validates and syncs shared workspace dependency ranges
+pnpm check:expo         # validates Expo SDK and peer dependency alignment
 ```
 
 Copy each app's `.env.example` to `.env` before running it. Seed the API database only when you need it:
@@ -95,9 +97,9 @@ Production upstreams in the same nginx config are web `:3000`, landing `:3001`, 
 ## How a request moves
 
 ```text
-Web (NextAuth session)  ── createApiClient ──┐
-Landing (server fetch)  ── createApiClient ──┼──► nginx :80/:443
-Mobile (Expo axios)     ── api/*.ts       ──┘         │
+Web (NextAuth session)   ── createApiClient ──┐
+Landing (server fetch)   ── createApiClient ──┼──► nginx :80/:443
+Mobile (Expo React Query)── createApiClient ──┘         │
                                                       ▼
                                             NestJS  prefix /api
                                                       │
@@ -115,25 +117,27 @@ Mobile (Expo axios)     ── api/*.ts       ──┘         │
 
 HTTP controllers are mounted by `RouterModule.forRoot()` when `HTTP_ENABLE=true`. The global prefix comes from `API_PREFIX` (default `api`), so a list call looks like `GET /api/admin/...` or `GET /api/requests/list`.
 
-| Prefix | Role |
-| --- | --- |
-| `/` | Authenticated product API: profile, chat, sessions, requests, uploads |
-| `/admin` | Users, roles, permissions, logs |
-| `/public` | Unauthenticated reads |
-| `/callback` | External callbacks |
-| `/test` | Test routes |
+| Prefix      | Role                                                                  |
+| ----------- | --------------------------------------------------------------------- |
+| `/`         | Authenticated product API: profile, chat, sessions, requests, uploads |
+| `/admin`    | Users, roles, permissions, logs                                       |
+| `/public`   | Unauthenticated reads                                                 |
+| `/callback` | External callbacks                                                    |
+| `/test`     | Test routes                                                           |
 
-`AuthGuard` is registered as `APP_GUARD` from `AuthModule`. It verifies the bearer JWT and attaches the payload to the request. Handlers marked `@Public()` skip that check. A failed call returns 401; the web and mobile clients retry once against `/auth/refresh-token`.
+`AuthGuard` is registered as `APP_GUARD` from `AuthModule`. It verifies the bearer JWT and attaches the payload to the request. Handlers marked `@Public()` skip that check. A failed call returns 401; the web and mobile clients retry once against `/auth/refresh-token` or `/client-auth/refresh-token`.
 
 Validation is global: `ValidationPipe` whitelists and transforms DTO bodies. `ClassSerializerInterceptor` applies `@Expose()` on the way out, which is how `ResponseDtoHelper` renames audit fields.
 
-Socket.IO is a second entry, not a REST prefix. Mobile opens one connection per namespace through `getSocket` in `apps/mobile/lib/socket.ts`, authenticated with the same access token:
+Socket.IO is a second entry, not a REST prefix. Socket connections are managed through `@softsurgery/lib` (`getSocket`, `disconnectSocket`), authenticated with the same access token across web and mobile:
 
-| Namespace | Gateway | Used for |
-| --- | --- | --- |
-| `/chat` | `ChatGateway` | messages, presence, conversation updates |
-| `/notifications` | `NotificationGateway` | live alerts after `@Notify` |
-| `/geolocation` | `GeolocationGateway` | nearby users on the map |
+| Namespace         | Gateway                | Used for                                                                 |
+| ----------------- | ---------------------- | ------------------------------------------------------------------------ |
+| `/chat`           | `ChatGateway`          | messages, typing indicators, conversation updates                        |
+| `/notifications`  | `NotificationGateway`  | live alerts after `@Notify` and `@BatchNotify`                           |
+| `/geolocation`    | `GeolocationGateway`   | nearby users on the map                                                  |
+| `/presence`       | `UserPresenceGateway`  | real-time client presence tracking, heartbeats, and device active status |
+| `/admin/presence` | `AdminPresenceGateway` | administrative real-time presence monitoring across connected users      |
 
 ## Persistence conventions
 
@@ -164,16 +168,16 @@ Controller
 
 List endpoints accept one query shape (`page`, `limit`, `sort`, `filter`, `select`, `join`, `search`). `QueryBuilder` compiles that string into TypeORM `FindManyOptions`. Filters use lookup tokens separated by `||`, conditions by `;`, and values by `,`:
 
-| Token | Meaning |
-| --- | --- |
-| `$eq` | equality |
-| `$cont` | contains |
-| `$starts` / `$ends` | prefix / suffix |
-| `$gt` `$gte` `$lt` `$lte` | comparisons |
-| `$in` / `$between` | lists and ranges |
-| `$isnull` | null check |
-| `$or` | disjunction |
-| `!` | negation |
+| Token                     | Meaning          |
+| ------------------------- | ---------------- |
+| `$eq`                     | equality         |
+| `$cont`                   | contains         |
+| `$starts` / `$ends`       | prefix / suffix  |
+| `$gt` `$gte` `$lt` `$lte` | comparisons      |
+| `$in` / `$between`        | lists and ranges |
+| `$isnull`                 | null check       |
+| `$or`                     | disjunction      |
+| `!`                       | negation         |
 
 `join` becomes relations (`relation.nested`), `sort` becomes `order`, and `search` scans string columns on the entity metadata. The web data table and the mobile list hooks send this same language. A column filter in `@softsurgery/datatable-builder` is already a `filter` fragment the API can compile.
 
@@ -187,7 +191,19 @@ Accounts are one MySQL table with a discriminator column. `AbstractUserEntity` i
 
 `UserEntity` is the concrete child (`@ChildEntity`). It adds the profile: phone, bio, gender, picture, cover, experiences, education, follows, bookmarks, and geolocation. Another account kind is a new `@ChildEntity` on the same table, not a second users table.
 
-`AbstractUserService` is the matching service base. `UserService` extends it. The base hashes passwords on save and resolves users by id, email, or username. Role and permission rows (`RoleEntity`, `PermissionEntity`, `RolePermissionEntity`) hang off the same user model. Seeded roles are `Admin` and `User`.
+`AbstractUserService` is the matching service base. `UserService` extends it. The base hashes passwords on save and resolves users by id, email, or username. Role and permission rows (`RoleEntity`, `PermissionEntity`, `RolePermissionEntity`) hang off the same user model. Seeded roles are `Admin` and `User`. Devices and multi-device connection sessions are tracked via `UserDeviceEntity` (keyed by MAC address) and `UserConnectionHistoryEntity`.
+
+### Dynamic runtime bindings and lazy module resolution
+
+Shared Nest packages (`@softsurgery/nsa-um`, `@softsurgery/nsa-auth`, `@softsurgery/nsa-chat`, `@softsurgery/nsa-sessions`, etc.) define generic interfaces, abstract services, and injection tokens (`USER_SERVICE`, `USER_REPOSITORY`, `USER_ENTITY`, `USER_DTO`) without statically importing concrete implementations from `apps/api`.
+
+At bootstrap (`apps/api/src/bind-app-values.ts`), concrete classes, DTOs, and enums are registered synchronously:
+
+- `createBindingSlot<T>(initial)` (`@softsurgery/nsa-helpers`) provides typed, encapsulated getter/setter slots for registry state.
+- `createLazyModuleRefProxy<T>(resolve)` wraps dependencies in a lazy ES6 Proxy. It resolves on first property access and rebinds functions to the underlying concrete instance (`method.bind(instance)`). This solves the NestJS circular proxy trap (`ModuleRef.get()` during factory init returning proxies that lose `this` context and instance fields when modules reference each other via `forwardRef`).
+- `resolveBoundProvider(moduleRef, getter)` wires these utilities directly into Nest provider factories (e.g. `resolveBoundUserService` and `resolveBoundUserRepository` in `AuthModule`).
+
+See [apps/api/docs/runtime-bindings.md](apps/api/docs/runtime-bindings.md).
 
 ### File storage as a strategy
 
@@ -226,35 +242,33 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 
 `packages/` is the shared layer. Nest code imports `@softsurgery/nsa-*`. Web and landing import the React packages. Mobile imports the React Native twins plus `@softsurgery/hooks` and `@softsurgery/lib`. Feature code in an app should call these packages instead of reimplementing a table, a form, or an Axios instance.
 
-| Package | What it abstracts |
-| --- | --- |
-| `@softsurgery/nsa-database` | Repository, CRUD service, query builder, migrations, triggers |
-| `@softsurgery/nsa-um` | User table hierarchy, roles, permissions |
-| `@softsurgery/nsa-auth` | JWT guard, sign-in, devices |
-| `@softsurgery/nsa-storage` | Local and S3 file storage |
-| `@softsurgery/nsa-chat`, `@softsurgery/nsa-sessions`, `@softsurgery/nsa-notifications` | Conversations, sessions, live alerts |
-| `@softsurgery/nsa-content`, `@softsurgery/nsa-templates`, `@softsurgery/nsa-configurations`, `@softsurgery/nsa-reference-types` | CMS pages, layouts, settings, lookup trees |
-| `@softsurgery/nsa-workflows`, `@softsurgery/nsa-mail`, `@softsurgery/nsa-logger`, `@softsurgery/nsa-sentry`, `@softsurgery/nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers |
-| `@softsurgery/api-client` | Axios instance and one resource object per API area |
-| `@softsurgery/form-builder` | Declarative web forms |
-| `@softsurgery/mobile-form-builder` | The same form model for React Native |
-| `@softsurgery/datatable-builder` | Server-driven admin tables |
-| `@softsurgery/ui` / `@softsurgery/components` | Web primitives (Radix, editor, toasts) and composites |
-| `@softsurgery/mobile-ui` / `@softsurgery/mobile-components` | Native primitives and composites |
-| `@softsurgery/template` | Template list, editor, and preview for the backoffice |
-| `@softsurgery/hooks` | Persisted auth and preference stores, shared hooks |
-| `@softsurgery/contexts` | Breadcrumb, intro, footer, theme, and `AppProvider` |
-| `@softsurgery/lib` | `cn`, nested stores, legal HTML cleanup |
-| `@softsurgery/i18n` | Shared `en` / `fr` config. Landing copies live here |
-| `@repo/eslint-config`, `@repo/typescript-config` | Tooling |
+| Package                                                                                                                                 | What it abstracts                                                                              |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `@softsurgery/nsa-database`                                                                                                             | Repository, CRUD service, query builder, migrations, triggers                                  |
+| `@softsurgery/nsa-um`                                                                                                                   | User table hierarchy, roles, permissions                                                       |
+| `@softsurgery/nsa-auth`                                                                                                                 | JWT guard, sign-in, devices                                                                    |
+| `@softsurgery/nsa-storage`                                                                                                              | Local and S3 file storage                                                                      |
+| `@softsurgery/nsa-chat`, `@softsurgery/nsa-sessions`, `@softsurgery/nsa-notifications`                                                  | Conversations, sessions, live alerts                                                           |
+| `@softsurgery/nsa-content`, `@softsurgery/nsa-templates`, `@softsurgery/nsa-configurations`, `@softsurgery/nsa-reference-types`         | CMS pages, layouts, settings, lookup trees                                                     |
+| `@softsurgery/nsa-workflows`, `@softsurgery/nsa-mail`, `@softsurgery/nsa-logger`, `@softsurgery/nsa-sentry`, `@softsurgery/nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers and runtime binding slots |
+| `@softsurgery/api-client`                                                                                                               | Axios instance and one resource object per API area                                            |
+| `@softsurgery/form-builder`                                                                                                             | Declarative web forms                                                                          |
+| `@softsurgery/mobile-form-builder`                                                                                                      | The same form model for React Native                                                           |
+| `@softsurgery/datatable-builder`                                                                                                        | Server-driven admin tables                                                                     |
+| `@softsurgery/ui` / `@softsurgery/components`                                                                                           | Web primitives (Radix, editor, toasts) and composites                                          |
+| `@softsurgery/mobile-ui` / `@softsurgery/mobile-components`                                                                             | Native primitives and composites                                                               |
+| `@softsurgery/template`                                                                                                                 | Template list, editor, and preview for the backoffice                                          |
+| `@softsurgery/hooks`                                                                                                                    | Persisted auth and preference stores, shared hooks                                             |
+| `@softsurgery/contexts`                                                                                                                 | Breadcrumb, intro, footer, theme, and `AppProvider`                                            |
+| `@softsurgery/lib`                                                                                                                      | `cn`, centralized socket management, nested stores, legal HTML cleanup                         |
+| `@softsurgery/i18n`                                                                                                                     | Shared `en` / `fr` config. Landing copies live here                                            |
+| `@repo/eslint-config`, `@repo/typescript-config`                                                                                        | Tooling                                                                                        |
 
 ### API client
 
-`createApiClient({ baseURL })` builds one Axios instance and a tree of resources (`auth`, `admin.user`, `admin.role`, `upload`, `notification`, `experience`, `contentPage`, and so on). The request interceptor attaches the bearer token from `useAuthPersistStore`, the `x-timezone` header, and `x-custom-lang` from `localStorage`. A 401 retries once against `/auth/refresh-token`, then calls `onUnauthorized`.
+`createApiClient({ baseURL, authAdapter })` builds one Axios instance and a tree of resources (`auth`, `admin.user`, `admin.role`, `upload`, `notification`, `experience`, `contentPage`, `chat`, `session`, and so on). The request interceptor attaches the bearer token from `useAuthPersistStore`, the `x-timezone` header, and `x-custom-lang` from `localStorage`. A 401 retries once against `/auth/refresh-token` or `/client-auth/refresh-token`, then calls `onUnauthorized`.
 
-Web (`apps/web/src/lib/api.ts`) and landing (`apps/landing/src/lib/api.ts`) each call this factory. Web passes `onUnauthorized` so a dead session signs out through NextAuth. Landing only needs public content-page reads.
-
-Mobile keeps its own Axios module (`apps/mobile/api/axios.ts`) and one file per resource (`api/auth.ts`, `api/session.ts`, …). The interceptor contract matches the shared client: bearer token, timezone, one refresh retry, then logout. Screens do not call Axios; they call a resource function from a React Query hook under `hooks/content/`.
+Web (`apps/web/src/lib/api.ts`), landing (`apps/landing/src/lib/api.ts`), and mobile (`apps/mobile/lib/api.ts`) all use `@softsurgery/api-client`. Web hooks into NextAuth session handling, landing reads public content pages, and mobile wires its persisted Zustand store (`useAuthPersistStore`). React Query hooks under `apps/mobile/hooks/content/` invoke these unified resource functions directly.
 
 ### Form builder
 
@@ -288,7 +302,7 @@ A backoffice screen follows one shape, visible in `Users` and the `*Portal` comp
 
 ## Further reading
 
-- [API](apps/api/README.md), [triggers](apps/api/docs/database-triggers.md), [notifications](apps/api/docs/notifications.md)
+- [API](apps/api/README.md), [runtime bindings](apps/api/docs/runtime-bindings.md), [triggers](apps/api/docs/database-triggers.md), [notifications](apps/api/docs/notifications.md)
 - [Web backoffice](apps/web/README.md)
 - [Mobile app](apps/mobile/README.md)
 - [Landing site](apps/landing/README.md)
