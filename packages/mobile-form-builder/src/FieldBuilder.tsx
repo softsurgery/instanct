@@ -33,7 +33,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             keyboardType={
               field.variant === FieldVariant.TEL ? "phone-pad" : "default"
             }
-            placeholder={field.placeholder}
+            placeholder={field?.placeholder}
             value={field?.props?.value?.toString() || ""}
             onChangeText={(text) => field?.props?.onChangeText?.(text)}
             onBlur={() => field?.props?.onBlur?.()}
@@ -48,7 +48,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             {...field?.props}
             editable={editable}
             keyboardType="number-pad"
-            placeholder={field.placeholder}
+            placeholder={field?.placeholder}
             value={field?.props?.value}
             onChangeText={(text) => {
               const cleaned = text.replace(/[^0-9]/g, "");
@@ -66,7 +66,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           {...field?.props}
           editable={editable}
           keyboardType="email-address"
-          placeholder={field.placeholder}
+          placeholder={field?.placeholder}
           value={field?.props?.value?.toString() || ""}
           onChangeText={(text) =>
             field?.props?.onChangeText?.(text.trim().toLowerCase())
@@ -99,6 +99,8 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           title={field.label}
           description={field.description}
           placeholder={field?.placeholder}
+          searchPlaceholder={field?.props?.searchPlaceholder}
+          searchable={field?.props?.searchable}
           value={field?.props?.value?.toString()}
           onSelect={(value) => field?.props?.onSelect?.(value)}
           disabled={!editable}
@@ -118,6 +120,8 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           title={field.label}
           description={field.description}
           placeholder={field?.placeholder}
+          searchPlaceholder={field?.props?.searchPlaceholder}
+          searchable={field?.props?.searchable}
           value={field?.props?.value || []}
           onSelect={(value) => field?.props?.onSelect?.(value)}
           disabled={!editable}
@@ -133,6 +137,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             field.className,
             field?.error && "border border-red-500 rounded-md",
           )}
+          placeholder={field?.placeholder}
           value={field?.props?.value}
           onDateChange={(date) => field?.props?.onDateChange?.(date)}
           disabled={!editable}
@@ -146,6 +151,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             field.className,
             field?.error && "border border-red-500 rounded-md",
           )}
+          placeholder={field?.placeholder}
           value={field?.props?.value}
           onTimeChange={(time) => field?.props?.onTimeChange?.(time)}
           disabled={!editable}
@@ -174,7 +180,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             {...field?.props}
             className={cn(field.className, field?.error && "border-red-500")}
             editable={editable}
-            placeholder={field.placeholder}
+            placeholder={field?.placeholder}
             value={field?.props?.value?.toString() || ""}
             onChangeText={field?.props?.onChangeText}
           />

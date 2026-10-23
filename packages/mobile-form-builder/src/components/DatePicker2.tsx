@@ -1,10 +1,13 @@
 import { Button } from "@softsurgery/mobile-ui";
 import { Icon } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
-import { toLongDateString } from "@softsurgery/mobile-components";
+import {
+  toLongDateString,
+  RotatingChevron,
+} from "@softsurgery/mobile-components";
 import { ScrollViewContext } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
-import { Calendar, ChevronDown } from "lucide-react-native";
+import { Calendar } from "lucide-react-native";
 import React from "react";
 import {
   Keyboard,
@@ -15,10 +18,6 @@ import {
   ViewInstance,
 } from "react-native";
 import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  Easing,
   FadeIn,
   FadeOut,
   LinearTransition,
@@ -50,6 +49,7 @@ interface DatePickerProps {
     trigger: string;
     content: string;
   };
+  placeholder?: string;
   value?: Date | null;
   onDateChange: (date: Date | null) => void;
   disabled?: boolean;
@@ -67,6 +67,7 @@ export const DatePicker = ({
   className,
   classNames,
   disabled,
+  placeholder,
   value: date = null,
   onDateChange,
   nullable = true,
@@ -74,7 +75,6 @@ export const DatePicker = ({
   maxYear = "current",
 }: DatePickerProps) => {
   const [expanded, setExpanded] = React.useState(false);
-  const rotation = useSharedValue(0);
   const { scrollToView } = React.useContext(ScrollViewContext);
   const contentRef = React.useRef<ViewInstance>(null);
 
@@ -99,10 +99,6 @@ export const DatePicker = ({
     Keyboard.dismiss();
     const next = !expanded;
     setExpanded(next);
-    rotation.value = withTiming(next ? 180 : 0, {
-      duration: 250,
-      easing: Easing.out(Easing.ease),
-    });
     if (!date) onDateChange(clampToRange(new Date()));
     if (next) {
       setTimeout(() => {
@@ -111,15 +107,12 @@ export const DatePicker = ({
     }
   };
 
-  const chevronStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value}deg` }],
-  }));
-
   const validDate = date && !Number.isNaN(date.getTime()) ? date : null;
 
   const displayText = React.useMemo(
-    () => (validDate ? toLongDateString(validDate) : "Select a date"),
-    [validDate],
+    () =>
+      validDate ? toLongDateString(validDate) : placeholder || "Select a date",
+    [validDate, placeholder],
   );
 
   const [year, setYear] = React.useState(
@@ -221,9 +214,7 @@ export const DatePicker = ({
               {displayText}
             </Text>
           </View>
-          <Animated.View style={chevronStyle}>
-            <Icon as={ChevronDown} size={16} color={"gray"} />
-          </Animated.View>
+          <RotatingChevron isOpen={expanded} size={16} color={"gray"} />
         </View>
       </Button>
 

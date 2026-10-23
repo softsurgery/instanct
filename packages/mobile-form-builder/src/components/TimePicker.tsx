@@ -1,9 +1,12 @@
 import { Button } from "@softsurgery/mobile-ui";
 import { Icon } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
-import { ScrollViewContext } from "@softsurgery/mobile-components";
+import {
+  ScrollViewContext,
+  RotatingChevron,
+} from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
-import { Clock, ChevronDown } from "lucide-react-native";
+import { Clock } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,10 +18,6 @@ import {
   ViewInstance,
 } from "react-native";
 import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  Easing,
   FadeIn,
   FadeOut,
   LinearTransition,
@@ -33,6 +32,7 @@ interface TimePickerProps {
     trigger: string;
     content: string;
   };
+  placeholder?: string;
   value?: Date | null;
   onTimeChange: (date: Date | null) => void;
   disabled?: boolean;
@@ -66,13 +66,13 @@ export const TimePicker = ({
   className,
   classNames,
   disabled,
+  placeholder,
   value: time = null,
   onTimeChange,
   nullable = true,
 }: TimePickerProps) => {
   const { t } = useTranslation("common");
   const [expanded, setExpanded] = React.useState(false);
-  const rotation = useSharedValue(0);
   const { scrollToView } = React.useContext(ScrollViewContext);
   const contentRef = React.useRef<ViewInstance>(null);
 
@@ -81,10 +81,6 @@ export const TimePicker = ({
     Keyboard.dismiss();
     const next = !expanded;
     setExpanded(next);
-    rotation.value = withTiming(next ? 180 : 0, {
-      duration: 250,
-      easing: Easing.out(Easing.ease),
-    });
     if (!time) onTimeChange(new Date());
     if (next) {
       setTimeout(() => {
@@ -93,13 +89,9 @@ export const TimePicker = ({
     }
   };
 
-  const chevronStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value}deg` }],
-  }));
-
   const displayText = React.useMemo(
-    () => (time ? formatTime(time) : t("formBuilder.timePicker.placeholder")),
-    [time, t],
+    () => (time ? formatTime(time) : placeholder || "Select a time"),
+    [time, placeholder],
   );
 
   const getInitialHour = () => {
@@ -191,9 +183,7 @@ export const TimePicker = ({
               {displayText}
             </Text>
           </View>
-          <Animated.View style={chevronStyle}>
-            <Icon as={ChevronDown} size={16} color={"gray"} />
-          </Animated.View>
+          <RotatingChevron isOpen={expanded} size={16} color={"gray"} />
         </View>
       </Button>
 

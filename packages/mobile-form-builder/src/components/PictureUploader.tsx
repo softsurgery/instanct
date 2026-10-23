@@ -4,7 +4,11 @@ import { Text } from "@softsurgery/mobile-ui";
 import * as ImagePicker from "expo-image-picker";
 import { Pressable, View } from "react-native";
 import { cn } from "@softsurgery/lib";
-import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/mobile-components";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@softsurgery/mobile-components";
 import type {
   MobileUploadFile,
   UploadFileInput,

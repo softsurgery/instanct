@@ -28,6 +28,7 @@ interface SelectBoxProps {
   };
   params: (SelectOption & { color?: string })[];
   selected: (string | number)[];
+  searchPlaceholder?: string;
   isPending?: boolean;
   onSelectParam: (id: string | number) => void;
   onRemoveParam: (id: string | number) => void;
@@ -38,6 +39,7 @@ export function SelectBox({
   classNames,
   params,
   selected,
+  searchPlaceholder,
   isPending = false,
   onSelectParam,
   onRemoveParam,
@@ -73,7 +75,7 @@ export function SelectBox({
             <Icon as={Search} size={18} className="text-muted-foreground/60" />
           </View>
           <Input
-            placeholder="Search options..."
+            placeholder={searchPlaceholder || "Search options..."}
             value={searchQuery}
             onChangeText={setSearchQuery}
             editable={!isPending}

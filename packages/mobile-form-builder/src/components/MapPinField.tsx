@@ -3,7 +3,7 @@ import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import * as Haptics from "expo-haptics";
 import * as Location from "expo-location";
-import { ChevronDown, MapPin, Navigation, Pin } from "lucide-react-native";
+import { MapPin, Navigation, Pin } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,8 +19,10 @@ import MapView, { MapPressEvent, Marker, Region } from "react-native-maps";
 import { AndroidDarkMapStyle } from "../utils/AndroidDarkMapStyle";
 import type { MapPinFieldProps } from "../types";
 import { Button } from "@softsurgery/mobile-ui";
-import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import {
+  useColorPalette,
+  RotatingChevron,
+} from "@softsurgery/mobile-components";
 
 interface MapPinInputProps extends MapPinFieldProps {
   className?: string;
@@ -52,7 +54,7 @@ export default function MapPinField({
   );
   const [name, setName] = React.useState(locationName || "");
   const [loading, setLoading] = React.useState(false);
-  const rotation = useSharedValue(0);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   // Sync external prop changes
   React.useEffect(() => {
@@ -105,12 +107,17 @@ export default function MapPinField({
   const handleConfirm = async () => {
     if (!pin) return;
     await Haptics.selectionAsync();
+    setIsOpen(false);
     onLocationChange?.({
       latitude: pin.latitude,
       longitude: pin.longitude,
       name,
     });
     sheetRef.current?.hide();
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   const handleGoToCurrentLocation = async () => {
@@ -148,10 +155,7 @@ export default function MapPinField({
     if (!editable) return;
     Keyboard.dismiss();
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    rotation.value = withTiming(180, {
-      duration: 250,
-      easing: Easing.out(Easing.ease),
-    });
+    setIsOpen(true);
     sheetRef.current?.show();
     if (changedOnFocus) {
       console.log("changedOnFocus", initialRegion);
@@ -179,9 +183,11 @@ export default function MapPinField({
         <View className="flex flex-row items-center justify-between w-full">
           <View className="flex flex-row items-center gap-2">
             <Icon as={Pin} size={16} color={"gray"} />
-            <Text className="text-sm">{name || placeholder}</Text>
+            <Text className="text-sm">
+              {name || placeholder || "Select a location"}
+            </Text>
           </View>
-          <Icon as={ChevronDown} size={16} color={"gray"} />
+          <RotatingChevron isOpen={isOpen} size={16} color={"gray"} />
         </View>
       </Button>
 
@@ -191,6 +197,8 @@ export default function MapPinField({
         gestureEnabled
         statusBarTranslucent
         defaultOverlayOpacity={0.45}
+        onOpen={() => setIsOpen(true)}
+        onClose={handleClose}
         containerStyle={{
           backgroundColor: palette.background,
           borderTopLeftRadius: 24,

@@ -2,7 +2,7 @@ import { Icon } from "@softsurgery/mobile-ui";
 import { Input } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { Check, ChevronDown, Search } from "lucide-react-native";
+import { Check, Search } from "lucide-react-native";
 import React from "react";
 import {
   Keyboard,
@@ -15,6 +15,7 @@ import { cn } from "@softsurgery/lib";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { useColorPalette } from "./hooks/useColorPalette";
 import { useRTL } from "./hooks/useRTL";
+import { RotatingChevron } from "./RotatingChevron";
 
 interface SelectOption {
   label: string;
@@ -37,6 +38,7 @@ interface SelectProps {
 
   options?: SelectOption[];
   searchable?: boolean;
+  searchPlaceholder?: string;
   customTrigger?: React.ReactNode;
 }
 
@@ -46,6 +48,7 @@ export function Select({
   title,
   description,
   placeholder,
+  searchPlaceholder,
 
   value,
   onSelect,
@@ -59,6 +62,7 @@ export function Select({
   const { palette } = useColorPalette();
   const sheetRef = React.useRef<ActionSheetRef>(null);
   const [search, setSearch] = React.useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const filtered = options.filter((o) =>
     o.label.toLowerCase().includes(search.toLowerCase()),
@@ -67,12 +71,14 @@ export function Select({
 
   const handleSelect = async (v: string) => {
     await Haptics.selectionAsync();
+    setIsOpen(false);
     sheetRef.current?.hide();
     setSearch("");
     onSelect?.(v);
   };
 
   const handleClose = () => {
+    setIsOpen(false);
     Keyboard.dismiss();
     setSearch("");
   };
@@ -86,7 +92,10 @@ export function Select({
           classNames?.trigger,
         )}
         onPress={() => {
-          if (!disabled) sheetRef.current?.show();
+          if (!disabled) {
+            setIsOpen(true);
+            sheetRef.current?.show();
+          }
         }}
       >
         {customTrigger ? (
@@ -102,12 +111,13 @@ export function Select({
               className={cn("block opacity-100", classNames?.input)}
             />
             <View
+              pointerEvents="none"
               className={cn(
                 "absolute text-muted-foreground",
                 isRTL ? "left-3" : "right-3",
               )}
             >
-              <Icon as={ChevronDown} size={16} color={"gray"} />
+              <RotatingChevron isOpen={isOpen} size={16} color={"gray"} />
             </View>
           </>
         )}
@@ -117,6 +127,7 @@ export function Select({
         gestureEnabled
         statusBarTranslucent
         defaultOverlayOpacity={0.45}
+        onOpen={() => setIsOpen(true)}
         onClose={handleClose}
         containerStyle={{
           backgroundColor: palette.background,
@@ -163,7 +174,7 @@ export function Select({
               <Input
                 value={search}
                 onChangeText={setSearch}
-                placeholder="Search..."
+                placeholder={searchPlaceholder || "Search..."}
                 className={cn(isRTL ? "pr-10" : "pl-10")}
                 autoFocus
               />

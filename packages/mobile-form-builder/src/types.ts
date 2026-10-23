@@ -108,6 +108,7 @@ export interface MapPinFieldProps {
 }
 
 export interface DateFieldProps {
+  placeholder?: string;
   value?: Date;
   onDateChange?: (date: Date) => void;
   editable?: boolean;
@@ -118,6 +119,7 @@ export interface DateFieldProps {
 }
 
 export interface TimeFieldProps {
+  placeholder?: string;
   value?: Date;
   onTimeChange?: (time: Date) => void;
   editable?: boolean;
@@ -133,6 +135,8 @@ export interface SelectFieldProps {
   onSelect?: (value: string) => void;
   options?: SelectOption[];
   editable?: boolean;
+  searchable?: boolean;
+  searchPlaceholder?: string;
 }
 
 export interface MultiSelectFieldProps {
@@ -141,6 +145,8 @@ export interface MultiSelectFieldProps {
   options?: SelectOption[];
   editable?: boolean;
   max?: number;
+  searchable?: boolean;
+  searchPlaceholder?: string;
 }
 
 export interface RatingFieldProps {

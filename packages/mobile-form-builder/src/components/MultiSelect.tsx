@@ -2,7 +2,7 @@ import { Icon } from "@softsurgery/mobile-ui";
 import { Input } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { Check, ChevronDown, Search, VectorSquare } from "lucide-react-native";
+import { Check, Search, VectorSquare } from "lucide-react-native";
 import React from "react";
 import {
   Keyboard,
@@ -15,7 +15,10 @@ import type { SelectOption } from "../types";
 import { cn } from "@softsurgery/lib";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { toast } from "sonner-native";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import {
+  useColorPalette,
+  RotatingChevron,
+} from "@softsurgery/mobile-components";
 import { Button } from "@softsurgery/mobile-ui";
 
 interface MultiSelectProps {
@@ -33,6 +36,7 @@ interface MultiSelectProps {
 
   options?: SelectOption[];
   searchable?: boolean;
+  searchPlaceholder?: string;
   max?: number;
 }
 
@@ -42,6 +46,7 @@ export default function MultiSelect({
   title,
   description,
   placeholder,
+  searchPlaceholder,
 
   value = [],
   onSelect,
@@ -54,6 +59,7 @@ export default function MultiSelect({
   const { palette } = useColorPalette();
   const sheetRef = React.useRef<ActionSheetRef>(null);
   const [search, setSearch] = React.useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const filtered = options.filter((o) =>
     o.label.toLowerCase().includes(search.toLowerCase()),
@@ -91,6 +97,7 @@ export default function MultiSelect({
   };
 
   const handleClose = () => {
+    setIsOpen(false);
     Keyboard.dismiss();
     setSearch("");
   };
@@ -102,7 +109,10 @@ export default function MultiSelect({
           disabled={disabled}
           variant="outline"
           className={cn("w-full h-11 rounded-xl p-0 px-2", classNames?.trigger)}
-          onPress={() => sheetRef.current?.show()}
+          onPress={() => {
+            setIsOpen(true);
+            sheetRef.current?.show();
+          }}
         >
           <View className="flex flex-row items-center justify-between w-full">
             <View className="flex flex-row items-center gap-2">
@@ -111,7 +121,7 @@ export default function MultiSelect({
                 {placeholder || "Select options"}
               </Text>
             </View>
-            <Icon as={ChevronDown} size={16} color={"gray"} />
+            <RotatingChevron isOpen={isOpen} size={16} color={"gray"} />
           </View>
         </Button>
       ) : (
@@ -122,7 +132,10 @@ export default function MultiSelect({
             classNames?.trigger,
           )}
           onPress={() => {
-            if (!disabled) sheetRef.current?.show();
+            if (!disabled) {
+              setIsOpen(true);
+              sheetRef.current?.show();
+            }
           }}
         >
           <View className="flex-1 flex-row flex-wrap gap-1 pr-8">
@@ -135,8 +148,11 @@ export default function MultiSelect({
               </View>
             ))}
           </View>
-          <View className="absolute right-2 text-muted-foreground">
-            <Icon as={ChevronDown} size={16} color={"gray"} />
+          <View
+            pointerEvents="none"
+            className="absolute right-2 text-muted-foreground"
+          >
+            <RotatingChevron isOpen={isOpen} size={16} color={"gray"} />
           </View>
         </Pressable>
       )}
@@ -146,6 +162,7 @@ export default function MultiSelect({
         gestureEnabled
         statusBarTranslucent
         defaultOverlayOpacity={0.45}
+        onOpen={() => setIsOpen(true)}
         onClose={handleClose}
         containerStyle={{
           backgroundColor: palette.background,
@@ -185,7 +202,7 @@ export default function MultiSelect({
               <Input
                 value={search}
                 onChangeText={setSearch}
-                placeholder="Search..."
+                placeholder={searchPlaceholder || "Search..."}
                 className="pl-10"
                 autoFocus
               />

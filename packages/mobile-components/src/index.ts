@@ -16,6 +16,7 @@ export * from "./MaterialTopTabs";
 export * from "./MultiSelectDialog";
 export * from "./NotFound";
 export * from "./PhotoPreview";
+export * from "./RotatingChevron";
 export * from "./SeeMoreText";
 export * from "./SegmentedToggle";
 export * from "./Select";
@@ -35,7 +36,11 @@ export * from "./ThreedotActionSheet";
 export * from "./VideoPreview";
 export * from "./VideoThumbnailGeneratorHost";
 export * from "./VideoThumbnailPreview";
-export { PaletteProvider, useColorPalette, hslToHex } from "./hooks/useColorPalette";
+export {
+  PaletteProvider,
+  useColorPalette,
+  hslToHex,
+} from "./hooks/useColorPalette";
 export type { Palette, ThemeType } from "./hooks/useColorPalette";
 export { triggerHaptic, triggerSelectionHaptic } from "./lib/haptics";
 export * from "./lib/date";
