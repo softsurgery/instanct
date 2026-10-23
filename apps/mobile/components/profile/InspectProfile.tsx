@@ -1,10 +1,11 @@
 import { cn } from "@softsurgery/lib";
-import { router } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
 import { View } from "react-native";
 import { InspectBaseProfile } from "../profile/BaseProfile";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  AppHeaderBack,
+  ApplicationHeader,
+  StableSafeAreaView,
+} from "@softsurgery/mobile-components";
 
 interface InspectProfileProps {
   className?: string;
@@ -23,11 +24,11 @@ export const InspectProfile = ({ className, id }: InspectProfileProps) => {
           >
             <ApplicationHeader
               title=""
+              reverse
               shortcuts={[
                 {
-                  key: "settings",
-                  icon: ArrowLeft,
-                  onPress: () => router.back(),
+                  key: "back",
+                  render: <AppHeaderBack />,
                 },
               ]}
             />

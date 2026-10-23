@@ -153,8 +153,6 @@ export const ProfileCover = ({
         onHoverOut={() => setIsHovered(false)}
         onPress={handlePress}
       >
-        {coverExtra}
-        
         {/* Cover Image */}
         {coverSource ? (
           <Image
@@ -183,6 +181,8 @@ export const ProfileCover = ({
             bottom: 0,
           }}
         />
+
+        {coverExtra}
       </Pressable>
 
       <PhotoPreview

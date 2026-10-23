@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronLeft } from "lucide-react-native";
-import { TouchableOpacity, Dimensions, Pressable } from "react-native";
+import { Dimensions, Pressable } from "react-native";
 import { Icon } from "@softsurgery/mobile-ui";
 import { router, useNavigation } from "expo-router";
 import { Text } from "@softsurgery/mobile-ui";

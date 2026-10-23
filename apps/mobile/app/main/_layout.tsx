@@ -179,7 +179,7 @@ export default function MainLayout() {
             <Stack.Screen
               name="profile/inspect-profile"
               options={{
-                title: "",
+                title: "inspectProfile",
                 headerShown: false,
               }}
             />
