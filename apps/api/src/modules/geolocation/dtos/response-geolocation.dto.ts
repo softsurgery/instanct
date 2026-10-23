@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 
 export class ResponseGeolocationDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })

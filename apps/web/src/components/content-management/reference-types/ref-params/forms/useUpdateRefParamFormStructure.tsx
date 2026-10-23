@@ -6,10 +6,10 @@ import {
   SelectFieldProps,
   SelectOption,
   TextFieldProps,
-} from "@instanct/form-builder";
+} from "@softsurgery/form-builder";
 import { ReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
-import { JSONExtras } from "@instanct/components";
-import { JSONValue } from "@instanct/components";
+import { JSONExtras } from "@softsurgery/components";
+import { JSONValue } from "@softsurgery/components";
 
 interface RefParamUpdateFormStructureProps {
   referenceTypesStore?: ReferenceTypesStore;

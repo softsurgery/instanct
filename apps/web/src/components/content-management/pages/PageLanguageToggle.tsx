@@ -5,8 +5,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@instanct/ui";
-import { SelectOption } from "@instanct/form-builder";
+} from "@softsurgery/ui";
+import { SelectOption } from "@softsurgery/form-builder";
 
 interface PageLanguageToggleProps {
   value: string;

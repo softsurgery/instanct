@@ -1,20 +1,21 @@
 import React from "react";
-import { Checkbox } from "@instanct/mobile-ui";
-import { Input } from "@instanct/mobile-ui";
-import { Switch } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { Textarea } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Checkbox } from "@softsurgery/mobile-ui";
+import { Input } from "@softsurgery/mobile-ui";
+import { Switch } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { Textarea } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { View } from "react-native";
 import StarRating from "react-native-star-rating-widget";
 import { PictureUploader } from "./components/PictureUploader";
 import { Field, FieldVariant } from "./types";
 import { DatePicker } from "./components/DatePicker2";
 import { TimePicker } from "./components/TimePicker";
-import { ChoicePicker, Select } from "@instanct/mobile-components";
+import { ChoicePicker, Select } from "@softsurgery/mobile-components";
 import MultiSelect from "./components/MultiSelect";
 import MapPinField from "./components/MapPinField";
 import { PasswordField } from "./components/PasswordField";
+import { SliderField } from "./components/SliderField";
 
 interface FieldBuilderProps {
   field?: Field<any>;
@@ -33,7 +34,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             keyboardType={
               field.variant === FieldVariant.TEL ? "phone-pad" : "default"
             }
-            placeholder={field.placeholder}
+            placeholder={field?.placeholder}
             value={field?.props?.value?.toString() || ""}
             onChangeText={(text) => field?.props?.onChangeText?.(text)}
             onBlur={() => field?.props?.onBlur?.()}
@@ -48,7 +49,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             {...field?.props}
             editable={editable}
             keyboardType="number-pad"
-            placeholder={field.placeholder}
+            placeholder={field?.placeholder}
             value={field?.props?.value}
             onChangeText={(text) => {
               const cleaned = text.replace(/[^0-9]/g, "");
@@ -66,7 +67,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           {...field?.props}
           editable={editable}
           keyboardType="email-address"
-          placeholder={field.placeholder}
+          placeholder={field?.placeholder}
           value={field?.props?.value?.toString() || ""}
           onChangeText={(text) =>
             field?.props?.onChangeText?.(text.trim().toLowerCase())
@@ -99,6 +100,8 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           title={field.label}
           description={field.description}
           placeholder={field?.placeholder}
+          searchPlaceholder={field?.props?.searchPlaceholder}
+          searchable={field?.props?.searchable}
           value={field?.props?.value?.toString()}
           onSelect={(value) => field?.props?.onSelect?.(value)}
           disabled={!editable}
@@ -110,11 +113,16 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
         <MultiSelect
           {...field?.props}
           classNames={{
-            trigger: cn(field.className, field?.error && "border-red-500"),
+            trigger: cn(
+              field.className,
+              field?.error && "border-red-500 dark:border-red-500",
+            ),
           }}
           title={field.label}
           description={field.description}
           placeholder={field?.placeholder}
+          searchPlaceholder={field?.props?.searchPlaceholder}
+          searchable={field?.props?.searchable}
           value={field?.props?.value || []}
           onSelect={(value) => field?.props?.onSelect?.(value)}
           disabled={!editable}
@@ -130,6 +138,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             field.className,
             field?.error && "border border-red-500 rounded-md",
           )}
+          placeholder={field?.placeholder}
           value={field?.props?.value}
           onDateChange={(date) => field?.props?.onDateChange?.(date)}
           disabled={!editable}
@@ -143,6 +152,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             field.className,
             field?.error && "border border-red-500 rounded-md",
           )}
+          placeholder={field?.placeholder}
           value={field?.props?.value}
           onTimeChange={(time) => field?.props?.onTimeChange?.(time)}
           disabled={!editable}
@@ -171,7 +181,7 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
             {...field?.props}
             className={cn(field.className, field?.error && "border-red-500")}
             editable={editable}
-            placeholder={field.placeholder}
+            placeholder={field?.placeholder}
             value={field?.props?.value?.toString() || ""}
             onChangeText={field?.props?.onChangeText}
           />
@@ -198,8 +208,11 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           className={cn(field.className, field?.error && "border-red-500")}
           image={field?.props?.image}
           fallback={field?.props?.alt}
+          onPickStart={field?.props?.onPickStart}
+          onPickEnd={field?.props?.onPickEnd}
           onFileChange={field?.props?.onFileChange}
           onUpload={field?.props?.onUpload}
+          progress={field?.props?.progress}
           editable={editable}
         />
       );
@@ -248,6 +261,13 @@ export const FieldBuilder = ({ field }: FieldBuilderProps) => {
           onLocationChange={field?.props?.onLocationChange}
           editable={editable}
           changedOnFocus={field?.props?.changedOnFocus}
+        />
+      );
+    case "slider":
+      return (
+        <SliderField
+          {...field?.props}
+          className={cn(field?.className, field?.error && "border-red-500")}
         />
       );
     case "custom":

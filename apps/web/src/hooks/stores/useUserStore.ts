@@ -7,7 +7,7 @@ import {
   UpdateUserDto,
 } from "@/types";
 import { setDeepValue } from "@/lib/object";
-import { ImageFile } from "@instanct/form-builder";
+import { ImageFile } from "@softsurgery/form-builder";
 
 interface UserStoreData {
   response?: ResponseUserDto;

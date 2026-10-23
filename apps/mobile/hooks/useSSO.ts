@@ -1,11 +1,12 @@
-import { useCallback } from "react";
+import React from "react";
 import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
+import * as AppleAuthentication from "expo-apple-authentication";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
-import { api } from "@/api";
-import { OAuthProvider, ServerErrorResponse } from "@/types";
+import { useApi } from "@/contexts/ApiContext";
+import { OAuthProvider, ServerErrorResponse } from "@softsurgery/api-client";
 import { Platform } from "react-native";
 
 // Ensure web browser redirect is handled properly
@@ -36,12 +37,26 @@ const linkedInDiscovery: AuthSession.DiscoveryDocument = {
 };
 
 // ─── Apple OAuth Configuration ─────────────────────────────────────────
+const APPLE_CLIENT_ID =
+  process.env.EXPO_PUBLIC_APPLE_CLIENT_ID || "com.instanct.instanctma";
+
 const appleDiscovery: AuthSession.DiscoveryDocument = {
   authorizationEndpoint: "https://appleid.apple.com/auth/authorize",
   tokenEndpoint: "https://appleid.apple.com/auth/token",
 };
 
 export function useSSO() {
+  const api = useApi();
+  const [isAppleAvailable, setIsAppleAvailable] = React.useState(false);
+
+  React.useEffect(() => {
+    if (Platform.OS === "ios") {
+      AppleAuthentication.isAvailableAsync()
+        .then(setIsAppleAvailable)
+        .catch(() => setIsAppleAvailable(false));
+    }
+  }, []);
+
   // We need two redirect URIs:
   // 1. backendRedirectUri: Sent to OAuth providers so they redirect to our backend server.
   // 2. deepLinkUri: The app's deep link, which WebBrowser waits for to close automatically.
@@ -72,10 +87,10 @@ export function useSSO() {
     linkedInDiscovery,
   );
 
-  // ── Apple Auth Request (iOS only) ──────────────────────────────────
+  // ── Apple Auth Request (iOS fallback) ──────────────────────────────
   const [appleRequest, , applePromptAsync] = AuthSession.useAuthRequest(
     {
-      clientId: "com.softsurgery.instanctmobileapp",
+      clientId: APPLE_CLIENT_ID,
       redirectUri: deepLinkUri,
       scopes: ["name", "email"],
       responseType: AuthSession.ResponseType.IdToken,
@@ -96,7 +111,7 @@ export function useSSO() {
       codeVerifier?: string;
       redirectUri?: string;
     }) => {
-      return api.auth.ssoSignIn({
+      return api.clientAuth.ssoSignIn({
         provider,
         idToken,
         codeVerifier,
@@ -115,7 +130,7 @@ export function useSSO() {
   });
 
   // Helper to modify the auth URL to point to the backend
-  const getModifiedUrl = useCallback(
+  const getModifiedUrl = React.useCallback(
     async (
       request: AuthSession.AuthRequest | null,
       discovery: AuthSession.DiscoveryDocument,
@@ -128,7 +143,10 @@ export function useSSO() {
       if (stateMatch) {
         const originalState = decodeURIComponent(stateMatch[1]);
         const newState = encodeURIComponent(`${originalState}|${deepLinkUri}`);
-        authUrl = authUrl.replace(`state=${stateMatch[1]}`, `state=${newState}`);
+        authUrl = authUrl.replace(
+          `state=${stateMatch[1]}`,
+          `state=${newState}`,
+        );
       }
 
       // We pass the backend URL to the provider so it redirects to our backend,
@@ -142,7 +160,7 @@ export function useSSO() {
   );
 
   // ── Google Sign-In ─────────────────────────────────────────────────
-  const signInWithGoogle = useCallback(async () => {
+  const signInWithGoogle = React.useCallback(async () => {
     try {
       if (!googleRequest) return;
       const modifiedAuthUrl = await getModifiedUrl(
@@ -180,7 +198,7 @@ export function useSSO() {
   ]);
 
   // ── LinkedIn Sign-In ───────────────────────────────────────────────
-  const signInWithLinkedIn = useCallback(async () => {
+  const signInWithLinkedIn = React.useCallback(async () => {
     try {
       if (!linkedInRequest) return;
       const modifiedAuthUrl = await getModifiedUrl(
@@ -213,10 +231,32 @@ export function useSSO() {
   ]);
 
   // ── Apple Sign-In (iOS only) ───────────────────────────────────────
-  const signInWithApple = useCallback(async () => {
+  const signInWithApple = React.useCallback(async () => {
     if (Platform.OS !== "ios") return;
 
     try {
+      const isAvailable = await AppleAuthentication.isAvailableAsync();
+      if (isAvailable) {
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          ],
+        });
+
+        if (credential.identityToken) {
+          performSSOSignIn({
+            provider: OAuthProvider.APPLE,
+            idToken: credential.identityToken,
+            redirectUri: backendRedirectUri,
+          });
+        } else {
+          toast.error("Failed to obtain Apple credentials.");
+        }
+        return;
+      }
+
+      // Fallback for environments where native Apple auth isn't available
       if (!appleRequest) return;
       const modifiedAuthUrl = await getModifiedUrl(
         appleRequest,
@@ -239,7 +279,11 @@ export function useSSO() {
       } else if (result.type === "error") {
         toast.error(result.error?.message || "Apple sign-in was cancelled.");
       }
-    } catch {
+    } catch (error: any) {
+      if (error?.code === "ERR_REQUEST_CANCELED") {
+        // User cancelled the native Apple sign-in sheet
+        return;
+      }
       toast.error("An unexpected error occurred with Apple sign-in.");
     }
   }, [
@@ -258,6 +302,6 @@ export function useSSO() {
     // Expose request readiness for disabling buttons
     isGoogleReady: !!googleRequest,
     isLinkedInReady: !!linkedInRequest,
-    isAppleReady: !!appleRequest && Platform.OS === "ios",
+    isAppleReady: Platform.OS === "ios" && (isAppleAvailable || !!appleRequest),
   };
 }

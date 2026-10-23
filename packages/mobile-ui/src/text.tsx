@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { Platform, Text as RNText, type Role } from "react-native";

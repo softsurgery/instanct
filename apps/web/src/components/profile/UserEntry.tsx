@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ResponseUserDto } from "@/types";
-import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/ui";
 import { api } from "@/lib/api";
-import { identifyUser, identifyUserAvatar } from "@instanct/lib";
+import { identifyUser, identifyUserAvatar } from "@softsurgery/lib";
 
 interface UserEntryProps {
   className?: string;

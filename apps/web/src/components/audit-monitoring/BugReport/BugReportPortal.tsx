@@ -2,17 +2,22 @@ import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDebounce } from "@instanct/hooks/utils";
-import { useBreadcrumb } from "@instanct/contexts";
-import { useIntro } from "@instanct/contexts";
-import { ResponseBugDto } from "@instanct/api-client";
+import { useDebounce } from "@softsurgery/hooks/utils";
+import { useBreadcrumb } from "@softsurgery/contexts";
+import { useIntro } from "@softsurgery/contexts";
+import {
+  ResponseBugDto,
+  ResponseUserDeviceDto,
+  ServerErrorResponse,
+} from "@softsurgery/api-client";
 import { useTranslation } from "react-i18next";
 import { useBugReportColumns } from "./useBugReportColumns";
 import { useBugDeviceDialog } from "./modals/BugDeviceDialog";
-import { DataTableConfig } from "@instanct/datatable-builder";
-import { ResponseDeviceInfoDto } from "@instanct/api-client";
-import { DataTable } from "@instanct/datatable-builder";
+import { useBugDeleteDialog } from "./modals/BugDeleteDialog";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
+import { DataTable } from "@softsurgery/datatable-builder";
 import { Check, Clock, X } from "lucide-react";
+import { toast } from "sonner";
 
 interface BugReportPortalProps {
   className?: string;
@@ -87,7 +92,7 @@ export const BugReportPortal = ({
         sort: `${debouncedSortDetails.sortKey},${
           debouncedSortDetails.order ? "ASC" : "DESC"
         }`,
-        join: "user",
+        join: "user,device",
         search: debouncedSearchTerm,
         filter: userId ? `userId||$eq||${userId}` : "",
       }),
@@ -100,6 +105,10 @@ export const BugReportPortal = ({
 
   const queryClient = useQueryClient();
 
+  const [selectedBugForDelete, setSelectedBugForDelete] = React.useState<
+    ResponseBugDto | undefined
+  >(undefined);
+
   const { mutate: updateStatus } = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) =>
       api.admin.bugReport.updateStatus(id, status),
@@ -108,12 +117,35 @@ export const BugReportPortal = ({
     },
   });
 
-  const { mutate: deleteBug } = useMutation({
+  const { mutate: deleteBug, isPending: isDeletionPending } = useMutation({
     mutationFn: (id: string) => api.admin.bugReport.delete(id),
     onSuccess: () => {
+      toast.success(
+        t("bugReport.messages.deleteSuccess", "Bug report deleted successfully."),
+      );
       queryClient.invalidateQueries({ queryKey: ["bugs"] });
+      setSelectedBugForDelete(undefined);
+      closeDeleteBugDialog();
+    },
+    onError: (error: ServerErrorResponse) => {
+      toast.error(
+        error.response?.data?.message ||
+          t("bugReport.messages.deleteError", "Failed to delete bug report."),
+      );
     },
   });
+
+  const { deleteBugDialog, openDeleteBugDialog, closeDeleteBugDialog } =
+    useBugDeleteDialog({
+      representation: selectedBugForDelete?.title,
+      deleteBug: () => {
+        if (selectedBugForDelete?.id) {
+          deleteBug(String(selectedBugForDelete.id));
+        }
+      },
+      isDeletionPending,
+      resetBug: () => setSelectedBugForDelete(undefined),
+    });
 
   const context: DataTableConfig<ResponseBugDto> = {
     singularName: "Bug Report",
@@ -129,7 +161,10 @@ export const BugReportPortal = ({
       setSortDetails({ order, sortKey }),
     searchTerm,
     setSearchTerm,
-    deleteCallback: (entity) => deleteBug(String(entity.id)),
+    deleteCallback: (entity) => {
+      setSelectedBugForDelete(entity);
+      openDeleteBugDialog();
+    },
     additionalActions: {
       1: [
         {
@@ -161,7 +196,7 @@ export const BugReportPortal = ({
   };
 
   const [selectedDevice, setSelectedDevice] = React.useState<
-    ResponseDeviceInfoDto | undefined
+    ResponseUserDeviceDto | undefined
   >(undefined);
   const { BugDeviceDialog, openBugDeviceDialog } = useBugDeviceDialog({
     device: selectedDevice,
@@ -186,6 +221,8 @@ export const BugReportPortal = ({
         isPending={isPending}
       />
       {BugDeviceDialog}
+      {deleteBugDialog}
     </div>
   );
 };
+

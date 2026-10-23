@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/hooks",
+  "name": "@softsurgery/hooks",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -19,15 +19,15 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@instanct/lib": "workspace:*",
+    "@softsurgery/lib": "workspace:*",
     "sonner": "^2.0.7",
     "zustand": "^5.0.8"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "*",
     "@tanstack/react-query": "^5.56.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "react-i18next": "^15.0.2"
   },
   "peerDependenciesMeta": {
@@ -36,11 +36,6 @@
     }
   },
   "devDependencies": {
-    "@tanstack/react-query": "^5.56.2",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "typescript": "^5.5.3"
+    "@tanstack/react-query": "^5.56.2"
   }
 }

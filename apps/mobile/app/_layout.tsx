@@ -1,7 +1,6 @@
-import Sentry from "@/lib/sentry";
 import { splashPrevented } from "@/lib/splash-screen";
 import { NAV_THEME, THEME } from "@/lib/theme";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { useColorScheme } from "nativewind";
 import { PortalHost } from "@rn-primitives/portal";
@@ -23,11 +22,14 @@ import {
   useColorPalette,
   PaletteProvider,
   VideoThumbnailGeneratorHost,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { ApiProvider } from "@/contexts/ApiContext";
 import { LoaderProvider } from "@/contexts/LoaderContext";
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
+import { useVersionPersistStore } from "@/stores/useVersionPersistStore";
+import { ForceUpdateGate } from "@/components/version/ForceUpdateGate";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -69,6 +71,7 @@ function RootLayoutContent() {
           />
           <PortalHost />
           <VideoThumbnailGeneratorHost />
+          <ForceUpdateGate />
         </View>
       </GestureHandlerRootView>
     </KeyboardProvider>
@@ -78,9 +81,10 @@ function RootLayoutContent() {
 function RootLayout() {
   const { colorScheme } = useColorScheme();
   const isPreferenceReady = usePreferencePersistStore((state) => state.isReady);
+  const isVersionReady = useVersionPersistStore((state) => state.isReady);
 
   React.useEffect(() => {
-    if (!isPreferenceReady) return;
+    if (!isPreferenceReady || !isVersionReady) return;
 
     void (async () => {
       try {
@@ -90,27 +94,29 @@ function RootLayout() {
         // Splash may already be hidden (e.g. dev fast refresh).
       }
     })();
-  }, [isPreferenceReady]);
+  }, [isPreferenceReady, isVersionReady]);
 
   return (
-    <PaletteProvider theme={THEME}>
-      <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{
-            persister: asyncStoragePersister,
-            maxAge: 1000 * 60 * 60 * 24,
-          }}
-        >
-          <SafeAreaProvider>
-            <LoaderProvider>
-              <RootLayoutContent />
-            </LoaderProvider>
-          </SafeAreaProvider>
-        </PersistQueryClientProvider>
-      </ThemeProvider>
-    </PaletteProvider>
+    <ApiProvider>
+      <PaletteProvider theme={THEME}>
+        <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+              persister: asyncStoragePersister,
+              maxAge: 1000 * 60 * 60 * 24,
+            }}
+          >
+            <SafeAreaProvider>
+              <LoaderProvider>
+                <RootLayoutContent />
+              </LoaderProvider>
+            </SafeAreaProvider>
+          </PersistQueryClientProvider>
+        </ThemeProvider>
+      </PaletteProvider>
+    </ApiProvider>
   );
 }
 
-export default Sentry.wrap(RootLayout);
+export default RootLayout;

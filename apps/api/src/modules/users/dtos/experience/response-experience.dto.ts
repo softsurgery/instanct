@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { ResponseUserDto } from '../user/response-user.dto';
 import { WorkTypes } from '../../enums/experience.work-type.enum';
 import { LocationTypes } from '../../enums/experience.location-type.enum';

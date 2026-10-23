@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/mobile-components",
+  "name": "@softsurgery/mobile-components",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -17,15 +17,17 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
-    "@instanct/hooks": "workspace:*",
-    "@instanct/lib": "workspace:*",
-    "@instanct/mobile-ui": "workspace:*",
+    "@softsurgery/hooks": "workspace:*",
+    "@softsurgery/lib": "workspace:*",
+    "@softsurgery/mobile-ui": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.1.0"
   },
   "peerDependencies": {
     "@react-native-masked-view/masked-view": "*",
     "@react-native-ohos/react-native-keyboard-aware-scroll-view": "*",
+    "@react-navigation/material-top-tabs": "*",
+    "@react-navigation/native": "*",
     "expo": "*",
     "expo-haptics": "*",
     "expo-image": "*",
@@ -34,22 +36,18 @@
     "expo-navigation-bar": "*",
     "expo-router": "*",
     "expo-video": "*",
+    "i18next": "*",
     "lottie-react-native": "*",
     "lucide-react-native": "*",
     "nativewind": "*",
-    "i18next": "*",
-    "react": "^19.0.0",
+    "react": "*",
     "react-i18next": "*",
     "react-native": "*",
     "react-native-actions-sheet": "*",
     "react-native-gesture-handler": "*",
+    "react-native-maps": "*",
     "react-native-reanimated": "*",
     "react-native-render-html": "*",
     "react-native-safe-area-context": "*"
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.0",
-    "react": "19.2.3",
-    "typescript": "^5.5.3"
   }
 }

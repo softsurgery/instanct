@@ -3,16 +3,16 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { ChevronRight, Lock, Mail, Smartphone } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@instanct/lib";
-import { SettingRow, createSettingRow } from "../SettingsRow";
-import type { SettingRowConfig } from "../SettingsRow";
-import { Text, Separator } from "@instanct/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { SettingRow } from "../SettingsRow";
+import type { SettingRowProps } from "../SettingsRow";
+import { Text, Separator } from "@softsurgery/mobile-ui";
 import {
   AppHeaderBack,
   ApplicationHeader,
   StableScrollView,
   StableSafeAreaView,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 
 interface PrivacySecurityPortalProps {
   className?: string;
@@ -22,7 +22,7 @@ interface SettingsSection {
   key: string;
   title: string;
   description: string;
-  rows: SettingRowConfig[];
+  rows: SettingRowProps[];
 }
 
 export const PrivacySecurityPortal = ({
@@ -43,7 +43,7 @@ export const PrivacySecurityPortal = ({
         "Manage the most important account security actions.",
       ),
       rows: [
-        createSettingRow({
+        {
           title: t(
             "settings.account.screens.privacy-security.screens.account-security.change-email.title",
             "Change Email",
@@ -56,8 +56,8 @@ export const PrivacySecurityPortal = ({
           rightIcon: ChevronRight,
           className: "p-1 px-4",
           onPress: () => router.push("/main/profile/change-email"),
-        }),
-        createSettingRow({
+        },
+        {
           title: t(
             "settings.account.screens.privacy-security.screens.account-security.change-password.title",
             "Change Password",
@@ -70,8 +70,8 @@ export const PrivacySecurityPortal = ({
           rightIcon: ChevronRight,
           className: "p-1 px-4",
           onPress: () => router.push("/main/profile/change-password"),
-        }),
-        createSettingRow({
+        },
+        {
           title: t(
             "settings.account.screens.privacy-security.screens.account-security.devices.title",
             "Devices & Allowed Access",
@@ -84,8 +84,8 @@ export const PrivacySecurityPortal = ({
           rightIcon: ChevronRight,
           className: "p-1 px-4",
           onPress: () => router.push("/main/profile/devices"),
-        }),
-        // createSettingRow({
+        },
+        // {
         //   title: t(
         //     "settings.account.screens.privacy-security.screens.account-security.two-factor-authentication.title",
         //   ),
@@ -101,7 +101,7 @@ export const PrivacySecurityPortal = ({
         //       </Text>
         //     </Badge>
         //   ),
-        // }),
+        // },
       ],
     },
     // {
@@ -113,7 +113,7 @@ export const PrivacySecurityPortal = ({
     //     "settings.account.screens.privacy-security.screens.privacy.description",
     //   ),
     //   rows: [
-    //     createSettingRow({
+    //     {
     //       title: t(
     //         "settings.account.screens.privacy-security.screens.privacy.data-visibility.title",
     //       ),
@@ -129,8 +129,8 @@ export const PrivacySecurityPortal = ({
     //           </Text>
     //         </Badge>
     //       ),
-    //     }),
-    //     createSettingRow({
+    //     },
+    //     {
     //       title: t(
     //         "settings.account.screens.privacy-security.screens.privacy.download-data.title",
     //       ),
@@ -146,7 +146,7 @@ export const PrivacySecurityPortal = ({
     //           </Text>
     //         </Badge>
     //       ),
-    //     }),
+    //     },
     //   ],
     // },
   ];
@@ -166,7 +166,15 @@ export const PrivacySecurityPortal = ({
         ]}
       />
 
-      <StableScrollView className="bg-background ">
+      <StableScrollView className="bg-background">
+        <View className="p-4">
+          <Text className="text-sm text-muted-foreground leading-relaxed">
+            {t(
+              "settings.account.screens.privacy-security.description",
+              "Manage your privacy and security settings.",
+            )}
+          </Text>
+        </View>
         <View className="flex flex-col">
           {sections.map((section) => (
             <View key={section.key} className={cardClass}>

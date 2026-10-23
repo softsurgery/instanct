@@ -3,8 +3,8 @@ import { AppProps } from "next/app";
 import { useSession } from "next-auth/react";
 import { Layout } from "./layout/Layout";
 import { cn } from "@/lib/utils";
-import { Toaster } from "@instanct/ui";
-import { Spinner } from "@instanct/components";
+import { Toaster } from "@softsurgery/ui";
+import { Spinner } from "@softsurgery/components";
 import { NextRouter } from "next/router";
 
 interface ApplicationProps {

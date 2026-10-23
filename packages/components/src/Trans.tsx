@@ -1,5 +1,5 @@
 import { Trans as NativeTrans } from "react-i18next";
-import { Skeleton } from "@instanct/ui/components/skeleton";
+import { Skeleton } from "@softsurgery/ui/components/skeleton";
 
 interface TransProps {
   ns?: string;

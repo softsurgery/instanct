@@ -1,10 +1,9 @@
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { disconnectSocket, getSocket } from "@/lib/socket";
+import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
 import * as Location from "expo-location";
 import React from "react";
-import { Socket } from "socket.io-client";
 import { useShallow } from "zustand/react/shallow";
 import { useLiveGeolocationParameters } from "./useLiveGeolocationParamters";
 

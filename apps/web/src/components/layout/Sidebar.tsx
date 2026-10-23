@@ -13,16 +13,17 @@ import {
   Table2,
   Cog,
   FileText,
+  FileCode2,
   Bug,
   MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -108,6 +109,11 @@ const navItems: NavItem[] = [
         title: "Pages",
         href: "/content-management/pages",
         icon: FileText,
+      },
+      {
+        title: "Templates",
+        href: "/content-management/templates",
+        icon: FileCode2,
       },
       {
         title: "Configuration",

@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/datatable-builder",
+  "name": "@softsurgery/datatable-builder",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,26 +14,19 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@instanct/components": "workspace:*",
-    "@instanct/contexts": "workspace:*",
-    "@instanct/hooks": "workspace:*",
-    "@instanct/lib": "workspace:*",
-    "@instanct/ui": "workspace:*",
+    "@softsurgery/components": "workspace:*",
+    "@softsurgery/contexts": "workspace:*",
+    "@softsurgery/hooks": "workspace:*",
+    "@softsurgery/lib": "workspace:*",
+    "@softsurgery/ui": "workspace:*",
     "@radix-ui/react-icons": "^1.3.2",
     "@tanstack/react-table": "^8.21.3",
     "lucide-react": "^0.563.0",
     "xlsx": "^0.18.5"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "react-i18next": "^15.0.2"
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "typescript": "^5.5.3"
   }
 }

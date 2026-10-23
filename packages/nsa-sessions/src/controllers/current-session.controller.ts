@@ -11,17 +11,17 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from 'nsa-database';
-import { ApiPaginatedResponse } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
 import { SessionService } from '../services/session.service';
 import { ResponseSessionDto } from '../dtos/response-session.dto';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { CreateSessionDto } from '../dtos/create-session.dto';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
-import { EventType } from 'nsa-logger/enums/event-type.registry';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
+import { EventType } from '@softsurgery/nsa-logger/enums/event-type.registry';
 
 @ApiTags('current-session')
 @ApiBearerAuth('access_token')
@@ -98,7 +98,10 @@ export class CurrentSessionController {
       createSessionDto,
       req.user?.sub,
     );
-    req.logInfo = { sessionId: session.id };
+    req.logInfo = {
+      sessionId: session.id,
+      sessionType: session.sessionType,
+    };
     return toDto(ResponseSessionDto, session);
   }
 
@@ -114,7 +117,10 @@ export class CurrentSessionController {
       updateSessionDto,
     );
     if (session) {
-      req.logInfo = { sessionId: session.id };
+      req.logInfo = {
+        sessionId: session.id,
+        sessionType: session.sessionType,
+      };
     }
     return toDto(ResponseSessionDto, session);
   }
@@ -127,7 +133,9 @@ export class CurrentSessionController {
   ): Promise<ResponseSessionDto | null> {
     const session = await this.sessionService.end(id);
     if (session) {
-      req.logInfo = { sessionId: session.id };
+      req.logInfo = {
+        sessionId: session.id,
+      };
     }
     return session ? toDto(ResponseSessionDto, session) : null;
   }

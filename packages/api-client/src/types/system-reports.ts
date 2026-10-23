@@ -1,13 +1,6 @@
 import { DatabaseEntity } from "./utils/database-entity";
 import { ResponseUserDto } from "./user-management";
-
-export interface ResponseDeviceInfoDto extends DatabaseEntity {
-  id: number;
-  model?: string;
-  platform?: string;
-  version?: string;
-  manufacturer?: string;
-}
+import { ResponseUserDeviceDto } from "./user-device";
 
 export interface ResponseBugDto extends DatabaseEntity {
   id: number;
@@ -15,10 +8,38 @@ export interface ResponseBugDto extends DatabaseEntity {
   status: string;
   title: string;
   description: string;
-  device: ResponseDeviceInfoDto;
-  deviceId: number;
+  device?: ResponseUserDeviceDto;
+  deviceId?: string;
   userId: string;
   user?: ResponseUserDto;
+}
+
+export enum BugVariant {
+  CRASH = "Crash",
+  UI_ISSUE = "UI Issue",
+  PERFORMANCE_ISSUE = "Performance Issue",
+  FEATURE_NOT_WORKING = "Feature Not Working",
+  OTHER = "Other",
+}
+
+export interface CreateBugDto {
+  variant?: BugVariant;
+  title: string;
+  description: string;
+  deviceId?: string;
+}
+
+export enum FeedbackCategory {
+  GENERAL_FEEDBACK = "General Feedback",
+  FEATURE_REQUEST = "Feature Request",
+  OTHER = "Other",
+}
+
+export interface CreateFeedbackDto {
+  category?: FeedbackCategory;
+  message: string;
+  rating: number;
+  deviceId?: string;
 }
 
 export interface ResponseFeedbackDto extends DatabaseEntity {
@@ -26,8 +47,8 @@ export interface ResponseFeedbackDto extends DatabaseEntity {
   category: string;
   message: string;
   rating?: number;
-  device: ResponseDeviceInfoDto;
-  deviceId: number;
+  device?: ResponseUserDeviceDto;
+  deviceId?: string;
   userId: string;
   user?: ResponseUserDto;
 }

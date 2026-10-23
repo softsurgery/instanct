@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { IQueryObject } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 import { GeolocationRepository } from '../repositories/geolocation.repository';
 import { GeolocationEntity } from '../entities/geolocation.entity';
 import { CreateGeolocationDto } from '../dtos/create-geolocation.dto';
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { RequestService } from '@/modules/requests/services/request.service';
 import { RequestStatus } from '@/modules/requests/enums/request-status.enum';
-import { SessionStatus } from 'nsa-sessions/enums/session-status.enum';
-import { SessionService } from 'nsa-sessions/services/session.service';
+import { SessionStatus } from '@softsurgery/nsa-sessions/enums/session-status.enum';
+import { SessionService } from '@softsurgery/nsa-sessions/services/session.service';
 
 @Injectable()
 export class GeolocationService extends AbstractCrudService<GeolocationEntity> {

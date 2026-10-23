@@ -2,17 +2,19 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
   Param,
+  Post,
   Put,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { ResponseConfigurationNamespaceDto } from '../dtos/namespace/response-configuration-namespace.dto';
-import { toDto, toDtoArray } from 'nsa-database';
-import { IQueryObject } from 'nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 import { ConfigurationNamespaceService } from '../services/configuration-namespace.service';
 import { ConfigurationParamService } from '../services/configuration-param.service';
 import { UpdateConfigurationParamaterDto } from '../dtos/paramater/update-configuration-paramater.dto';
@@ -79,5 +81,32 @@ export class ConfigurationController {
       ResponseConfigurationNamespaceDto,
       await this.configurationParamService.updateBatchParams(dtos),
     );
+  }
+
+  @Post('/namespace')
+  async createNamespace(
+    @Body() dto: { name: string; description?: string },
+  ): Promise<ResponseConfigurationNamespaceDto> {
+    const created = await this.configurationNamespaceService.save({
+      name: dto.name,
+      description: dto.description,
+    });
+    return toDto(ResponseConfigurationNamespaceDto, created);
+  }
+
+  @Delete('/namespace/:id')
+  async deleteNamespace(
+    @Param('id') id: string,
+  ): Promise<ResponseConfigurationNamespaceDto | null> {
+    const entity = await this.configurationNamespaceService.findOneById(id);
+    if (entity) {
+      if (entity.params?.length) {
+        for (const p of entity.params) {
+          await this.configurationParamService.delete(p.id);
+        }
+      }
+      await this.configurationNamespaceService.delete(id);
+    }
+    return toDto(ResponseConfigurationNamespaceDto, entity);
   }
 }

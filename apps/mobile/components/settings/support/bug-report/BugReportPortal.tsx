@@ -1,36 +1,54 @@
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react-native";
-import { api } from "~/api";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { useApi } from "@/contexts/ApiContext";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { View } from "react-native";
 import { useBugReportFormStructure } from "./useBugReportFormStructure";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { cn } from "@instanct/lib";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { cn } from "@softsurgery/lib";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
 import { router } from "expo-router";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 import { createBugSchema } from "@/types/validations/system-reports.validation";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
-import { Icon } from "@instanct/mobile-ui";
+import {
+  CreateBugDto,
+  ServerErrorResponse,
+  ResponseUserDeviceDto,
+} from "@softsurgery/api-client";
+import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { getCurrentDevice } from "@/lib/device";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
 interface BugReportPortalProps {
   className?: string;
 }
 
 export const BugReportPortal = ({ className }: BugReportPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
   const bugStore = useReportBugStore();
+  const currentMacAddress = useCurrentDeviceMac();
+
+  const { data: devices = [] } = useQuery<ResponseUserDeviceDto[]>({
+    queryKey: ["user-devices"],
+    queryFn: async () => api.userDevices.getAll(),
+  });
+
+  const currentDevice = React.useMemo(
+    () => getCurrentDevice(devices, currentMacAddress),
+    [devices, currentMacAddress],
+  );
 
   React.useEffect(() => {
     return () => {
@@ -41,7 +59,8 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   const { bugFormStructure } = useBugReportFormStructure({ store: bugStore });
 
   const { mutate: reportBug, isPending: isReportBugPending } = useMutation({
-    mutationFn: async () => api.bug.create(bugStore.createDto),
+    mutationFn: async (payload: CreateBugDto) =>
+      api.admin.bugReport.create(payload),
     onSuccess: () => {
       toast.success("Bug reported successfully", {
         description: "Your bug report has been successfully submitted.",
@@ -59,11 +78,15 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   });
 
   const handleSubmit = () => {
-    const result = createBugSchema.safeParse(bugStore.createDto);
+    const payload: CreateBugDto = {
+      ...bugStore.createDto,
+      deviceId: currentDevice?.id,
+    };
+    const result = createBugSchema.safeParse(payload);
     if (!result.success) {
       bugStore.set("errors", result.error.flatten().fieldErrors);
     } else {
-      reportBug();
+      reportBug(payload);
     }
   };
 
@@ -82,7 +105,7 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
         ]}
       />
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
-        <View className="px-5 pt-4 pb-2">
+        <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("settings.support.screens.report-bug.forms.description")}
           </Text>

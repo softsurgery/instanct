@@ -5,15 +5,16 @@ import { useChatPendingSync } from "@/hooks/content/chat/useChatPendingSync";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
 import { useNotifications } from "@/hooks/content/notification/useNotifications";
 import { useCheckHealth } from "@/hooks/content/useCheckHealth";
+import { useMobilePresence } from "@/hooks/content/users/useMobilePresence";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { Stack } from "expo-router";
 import { Notifications } from "@/lib/notification";
 import React from "react";
 import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
-import { useColorPalette } from "@instanct/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-components";
 import { useQueryClient } from "@tanstack/react-query";
-import { NotificationType } from "@/types";
+import { NotificationType } from "@softsurgery/api-client";
 
 if (Notifications) {
   Notifications.setNotificationHandler({
@@ -38,6 +39,9 @@ export default function MainLayout() {
   useCheckHealth({
     enabled: authPersistStore.isAuthenticated,
   });
+  useMobilePresence({
+    enabled: authPersistStore.isAuthenticated,
+  });
 
   const { count: chatCount, resetCount: resetChatCount } = useChat({});
   useChatPendingSync();
@@ -49,6 +53,7 @@ export default function MainLayout() {
     consequences: {
       [NotificationType.TEST]: () => {},
       [NotificationType.NEW_SIGNIN]: () => {},
+      [NotificationType.NEW_MESSAGE]: () => {},
       [NotificationType.REQUEST_RECEIVED]: () => {
         queryClient.invalidateQueries({ queryKey: ["incoming-requests"] });
       },
@@ -193,13 +198,6 @@ export default function MainLayout() {
               }}
             />
             <Stack.Screen
-              name="profile/update-experiences"
-              options={{
-                title: "experience",
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
               name="profile/update-experience"
               options={{
                 title: "editExperience",
@@ -224,13 +222,6 @@ export default function MainLayout() {
               name="profile/update-education"
               options={{
                 title: "editEducation",
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="profile/update-educations"
-              options={{
-                title: "education",
                 headerShown: false,
               }}
             />
@@ -266,6 +257,20 @@ export default function MainLayout() {
               name="profile/devices"
               options={{
                 title: "devices",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="profile/device-details"
+              options={{
+                title: "deviceDetails",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="profile/device-connections"
+              options={{
+                title: "deviceConnections",
                 headerShown: false,
               }}
             />
@@ -319,23 +324,24 @@ export default function MainLayout() {
             />
 
             <Stack.Screen
-              name="profile/support/report-bug"
+              name="settings/report-bug"
               options={{
                 title: "settings.reportBug",
                 headerShown: false,
               }}
             />
             <Stack.Screen
-              name="profile/support/send-feedback"
+              name="settings/send-feedback"
               options={{
                 title: "settings.sendFeedback",
                 headerShown: false,
               }}
             />
+
             <Stack.Screen
-              name="profile/support/faqs"
+              name="settings/support"
               options={{
-                title: "settings.faqs",
+                title: "settings.support",
                 headerShown: false,
               }}
             />
@@ -343,6 +349,15 @@ export default function MainLayout() {
               name="settings/index"
               options={{
                 title: "settings.title",
+                headerShown: false,
+                animation: "fade_from_bottom",
+                animationDuration: 200,
+              }}
+            />
+            <Stack.Screen
+              name="settings/faqs"
+              options={{
+                title: "faq",
                 headerShown: false,
                 animation: "fade_from_bottom",
                 animationDuration: 200,
@@ -439,6 +454,7 @@ export default function MainLayout() {
                 headerShown: false,
                 animation: "fade_from_bottom",
                 animationDuration: 200,
+                gestureEnabled: false,
               }}
             />
             {/* Request  ********************************************************************************************* */}

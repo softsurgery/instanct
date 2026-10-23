@@ -16,46 +16,46 @@
     "strictPropertyInitialization": false,
     "noEmit": true,
     "paths": {
-      "nsa-auth/*": [
+      "@softsurgery/nsa-auth/*": [
         "../nsa-auth/src/*"
       ],
-      "nsa-chat/*": [
+      "@softsurgery/nsa-chat/*": [
         "../nsa-chat/src/*"
       ],
-      "nsa-configurations/*": [
+      "@softsurgery/nsa-configurations/*": [
         "../nsa-configurations/src/*"
       ],
-      "nsa-content/*": [
+      "@softsurgery/nsa-content/*": [
         "../nsa-content/src/*"
       ],
-      "nsa-helpers/*": [
+      "@softsurgery/nsa-helpers/*": [
         "../nsa-helpers/src/*"
       ],
-      "nsa-logger/*": [
+      "@softsurgery/nsa-logger/*": [
         "../nsa-logger/src/*"
       ],
-      "nsa-mail/*": [
+      "@softsurgery/nsa-mail/*": [
         "../nsa-mail/src/*"
       ],
-      "nsa-notifications/*": [
+      "@softsurgery/nsa-notifications/*": [
         "../nsa-notifications/src/*"
       ],
-      "nsa-reference-types/*": [
+      "@softsurgery/nsa-reference-types/*": [
         "../nsa-reference-types/src/*"
       ],
-      "nsa-sentry/*": [
+      "@softsurgery/nsa-sentry/*": [
         "../nsa-sentry/src/*"
       ],
-      "nsa-sessions/*": [
+      "@softsurgery/nsa-sessions/*": [
         "../nsa-sessions/src/*"
       ],
-      "nsa-storage/*": [
+      "@softsurgery/nsa-storage/*": [
         "../nsa-storage/src/*"
       ],
-      "nsa-templates/*": [
+      "@softsurgery/nsa-templates/*": [
         "../nsa-templates/src/*"
       ],
-      "nsa-um/*": [
+      "@softsurgery/nsa-um/*": [
         "../nsa-um/src/*"
       ],
       "src/*": [

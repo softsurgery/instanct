@@ -1,5 +1,5 @@
 import { TextClassContext } from "./text";
-import { cn } from '@instanct/lib';
+import { cn } from '@softsurgery/lib';
 import type { LucideIcon, LucideProps } from 'lucide-react-native';
 import { cssInterop } from 'nativewind';
 import * as React from 'react';

@@ -3,31 +3,32 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { Loader2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@instanct/lib";
-import { FormBuilder } from "@instanct/mobile-form-builder";
+import { cn } from "@softsurgery/lib";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useChangeEmailFormStructure } from "./useChangeEmailFormStructure";
 import { useUserStore } from "@/stores/useUserStore";
-import { Text, Button, Icon } from "@instanct/mobile-ui";
+import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import * as Haptics from "expo-haptics";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@softsurgery/api-client";
 import {
   AppHeaderBack,
   ApplicationHeader,
   BottomButtonWrapper,
   StableKeyboardAwareScrollView,
   StableSafeAreaView,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 
 interface ChangeEmailPortalProps {
   className?: string;
 }
 
 export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
+  const api = useApi();
   const isKeyboardVisible = useKeyboardVisible();
   const { t } = useTranslation("settings");
   const userStore = useUserStore();
@@ -45,7 +46,7 @@ export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
 
   const { mutate: updateEmail, isPending } = useMutation({
     mutationFn: async () =>
-      api.auth.updateEmail({
+      api.clientAuth.updateEmail({
         email: userStore.updateDto.email!,
         password: userStore.updateDto.password!,
       }),
@@ -88,7 +89,7 @@ export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
       />
 
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
-        <View className="px-5 pt-4 pb-2">
+        <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(
               "settings.account.screens.privacy-security.screens.account-security.change-email.forms.description",

@@ -1,16 +1,7 @@
 import { setDeepValue } from "@/lib/object";
+import { type UploadFileInput } from "@/lib/upload";
 import { create } from "zustand";
-import {
-  CreateEducationDto,
-  CreateExperienceDto,
-  ResponseEducationDto,
-  ResponseExperienceDto,
-  ResponseUserDto,
-  UpdateEducationDto,
-  UpdateExperienceDto,
-  UpdateUserCoverDto,
-  UpdateUserDto,
-} from "~/types";
+import { CreateEducationDto, CreateExperienceDto, ResponseEducationDto, ResponseExperienceDto, ResponseUserDto, UpdateEducationDto, UpdateExperienceDto, UpdateUserCoverDto, UpdateUserDto } from "@softsurgery/api-client";
 
 interface UserData {
   response?: ResponseUserDto;
@@ -37,7 +28,7 @@ interface UserData {
   updateEducationDto: UpdateEducationDto;
 
   //utils
-  picture?: string;
+  picture?: string | UploadFileInput;
   hasInitializedPicture?: boolean;
   progress: number;
 
@@ -51,6 +42,8 @@ export interface UserStore extends UserData {
   set: <K extends keyof UserData>(name: K, value: UserData[K]) => void;
   setNested: <T>(path: string, value: T) => void;
   reset: () => void;
+  resetExperienceDraft: () => void;
+  resetEducationDraft: () => void;
 }
 
 const initialState: UserData = {
@@ -158,6 +151,31 @@ export const useUserStore = create<UserStore>((set, get) => ({
   reset: () => {
     set({ ...initialState });
   },
+  resetExperienceDraft: () => {
+    set({
+      createExperienceDto: {
+        ...initialState.createExperienceDto,
+        startDate: new Date(),
+        endDate: new Date(),
+      },
+      updateExperienceDto: {
+        ...initialState.updateExperienceDto,
+        startDate: new Date(),
+        endDate: new Date(),
+      },
+      responseExperience: undefined,
+      present: false,
+      experienceErrors: {},
+    });
+  },
+  resetEducationDraft: () => {
+    set({
+      createEducationDto: { ...initialState.createEducationDto },
+      updateEducationDto: { ...initialState.updateEducationDto },
+      responseEducation: undefined,
+      educationErrors: {},
+    });
+  },
 }));
 
 export const createClientStore = () =>
@@ -200,5 +218,30 @@ export const createClientStore = () =>
     },
     reset: () => {
       set({ ...initialState });
+    },
+    resetExperienceDraft: () => {
+      set({
+        createExperienceDto: {
+          ...initialState.createExperienceDto,
+          startDate: new Date(),
+          endDate: new Date(),
+        },
+        updateExperienceDto: {
+          ...initialState.updateExperienceDto,
+          startDate: new Date(),
+          endDate: new Date(),
+        },
+        responseExperience: undefined,
+        present: false,
+        experienceErrors: {},
+      });
+    },
+    resetEducationDraft: () => {
+      set({
+        createEducationDto: { ...initialState.createEducationDto },
+        updateEducationDto: { ...initialState.updateEducationDto },
+        responseEducation: undefined,
+        educationErrors: {},
+      });
     },
   }));

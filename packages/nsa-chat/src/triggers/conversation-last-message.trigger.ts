@@ -1,7 +1,7 @@
 import {
   AbstractTrigger,
   TriggerApply,
-} from 'nsa-database';
+} from '@softsurgery/nsa-database';
 
 export class ConversationLastMessageTrigger extends AbstractTrigger {
   name = 'conv_last_message_sync';

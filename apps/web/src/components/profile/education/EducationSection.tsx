@@ -1,13 +1,13 @@
 import React from "react";
 import { Plus, Edit, Trash2, ChevronDown, GraduationCap } from "lucide-react";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import { ResponseEducationDto } from "@/types";
 
 interface EducationSectionProps {
   educations: ResponseEducationDto[];
   onOpenAddSheet: () => void;
   onOpenEditSheet: (education: ResponseEducationDto) => void;
-  onOpenDeleteDialog: (id: string) => void;
+  onOpenDeleteDialog: (id: number) => void;
 }
 
 const MAX_DESCRIPTION_LENGTH = 150;
@@ -19,10 +19,10 @@ export function EducationSection({
   onOpenDeleteDialog,
 }: EducationSectionProps) {
   const [expandedDescriptions, setExpandedDescriptions] = React.useState<
-    Set<string>
+    Set<number>
   >(new Set());
 
-  const formatDate = (date?: Date) => {
+  const formatDate = (date?: Date | null) => {
     if (!date) return "";
     return new Date(date).toLocaleDateString("en-US", {
       month: "short",
@@ -41,7 +41,7 @@ export function EducationSection({
     return `${start} - ${end}`;
   };
 
-  const toggleDescription = (id: string) => {
+  const toggleDescription = (id: number) => {
     setExpandedDescriptions((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(id)) {
@@ -61,7 +61,7 @@ export function EducationSection({
     onOpenEditSheet(education);
   };
 
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = (id: number) => {
     if (id) {
       onOpenDeleteDialog(id);
     }

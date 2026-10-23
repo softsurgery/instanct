@@ -1,11 +1,11 @@
 import React from "react";
-import { api } from "@/api";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { useApi } from "@/contexts/ApiContext";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { Button } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Calendar,
@@ -17,18 +17,18 @@ import {
 import { View } from "react-native";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { useTranslation } from "react-i18next";
-import { Loader } from "@instanct/mobile-components";
+import { Loader } from "@softsurgery/mobile-components";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { toDateOnly, toTimeOnly } from "@/lib/date";
-import { RequestEvent, RequestStatus } from "@/types";
+import { RequestEvent, RequestStatus } from "@softsurgery/api-client";
 import { toast } from "sonner-native";
 import { RequestDetailsCard } from "./RequestDetailsCard";
 import { RequestLocationSection } from "./RequestLocationSection";
 import { RequestSkeleton } from "./RequestSkeleton";
 import { StatusBadge } from "./RequestStatus";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { RequestConfirmActionSheet } from "./RequestConfirmActionSheet";
 
 interface RequestProps {
@@ -44,6 +44,7 @@ export const Request = ({
   isIncoming,
   hasLocation,
 }: RequestProps) => {
+  const api = useApi();
   const { t } = useTranslation("activities");
   const queryClient = useQueryClient();
 

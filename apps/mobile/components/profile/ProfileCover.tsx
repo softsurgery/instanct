@@ -1,18 +1,19 @@
 import React, { useRef } from "react";
 import { ActionSheetRef } from "react-native-actions-sheet";
-import { ThreeDotsActionSheet } from "@instanct/mobile-components";
+import { ThreeDotsActionSheet } from "@softsurgery/mobile-components";
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable, View } from "react-native";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { Eye, Camera } from "lucide-react-native";
-import { PhotoPreview, PhotoPreviewRef } from "@instanct/mobile-components";
+import { PhotoPreview, PhotoPreviewRef } from "@softsurgery/mobile-components";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
-import { api } from "@/api";
+import { type ReactNativeUploadFile } from "@/lib/upload";
+import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
-import { ResponseUserDto, Upload, UpdateUserCoverDto, ServerErrorResponse } from "@/types";
+import { ResponseUserDto, Upload, UpdateUserCoverDto, ServerErrorResponse } from "@softsurgery/api-client";
 import { useLoader } from "@/contexts/LoaderContext";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { Image, ImageSource } from "expo-image";
@@ -32,6 +33,7 @@ export const ProfileCover = ({
   onRefresh,
   coverExtra,
 }: ProfileCoverProps) => {
+  const api = useApi();
   const { t } = useTranslation("menu");
   const queryClient = useQueryClient();
   const [isPickingCover, setIsPickingCover] = React.useState(false);
@@ -66,7 +68,7 @@ export const ProfileCover = ({
   });
 
   const { mutate: updateUserCover, isPending: isUpdateCoverPending } = useMutation({
-    mutationFn: (coverDto: UpdateUserCoverDto) => api.user.updateCover(coverDto),
+    mutationFn: (coverDto: UpdateUserCoverDto) => api.currentUser.updateCover(coverDto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", currentUser?.id] });
       queryClient.invalidateQueries({ queryKey: ["current-user"] });
@@ -111,11 +113,11 @@ export const ProfileCover = ({
       if (result.canceled) return;
 
       const asset = result.assets[0];
-      const fileLike = {
+      const fileLike: ReactNativeUploadFile = {
         uri: asset.uri,
-        name: asset.uri.split("/").pop() || "cover.jpg",
+        name: asset.fileName || asset.uri.split("/").pop() || "cover.jpg",
         type: asset.mimeType || "image/jpeg",
-      } as unknown as File;
+      };
 
       uploadCover({
         files: [fileLike],

@@ -1,19 +1,20 @@
 import React from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { LegendList } from "@legendapp/list";
 import { RefreshControl, View } from "react-native";
-import { ResponseRequestDto } from "@/types";
-import { Loader } from "@instanct/mobile-components";
-import { useInfiniteIncomingSessionRequests } from "@/hooks/content/sessions/useInfiniteIncomingSessionRequests";
+import { ResponseRequestDto } from "@softsurgery/api-client";
+import { Loader } from "@softsurgery/mobile-components";
 import { SessionRequestCard } from "../session/session-details/SessionRequestCard";
-import { NotFound } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
+import { useInfiniteIncomingSessionRequests } from "@/hooks/content/sessions/useInfiniteIncomingSessionRequests";
+import { NotFound } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { SessionRequestCardSkeleton } from "./skeletons/SessionRequestCardSkeleton";
 import { useTranslation } from "react-i18next";
 
 interface SessionIncomingRequestsProps {
   className?: string;
+  hasLocation?: boolean;
   handleScroll?: (event: any) => void;
 }
 
@@ -23,6 +24,7 @@ type FlattenedItem =
 
 export const SessionIncomingRequests = ({
   className,
+  hasLocation,
   handleScroll,
 }: SessionIncomingRequestsProps) => {
   const { t } = useTranslation("activities");
@@ -92,60 +94,60 @@ export const SessionIncomingRequests = ({
     return flattened;
   }, [requests, t]);
 
+  if (isRequestsPending) {
+    return <SessionRequestCardSkeleton count={3} />;
+  }
+
   return (
     <View className={cn("flex-1 bg-background", className)}>
-      <View className="flex-1">
-        {isRequestsPending ? (
-          <SessionRequestCardSkeleton count={3} />
-        ) : (
-          <View className="flex-1">
-            <LegendList
-              style={{ flex: 1, paddingBlock: 12 }}
-              data={flattenedData}
-              onScroll={handleScroll}
-              renderItem={renderItem}
-              recycleItems={true}
-              keyExtractor={(item) => item.id}
-              showsVerticalScrollIndicator={false}
-              onEndReached={() => {
-                if (hasNextPage && !isFetchingNextPage) {
-                  fetchNextPage();
-                }
-              }}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRequestsPending}
-                  onRefresh={refetchRequests}
-                />
-              }
-              onEndReachedThreshold={0.5}
-              contentContainerStyle={{
-                paddingHorizontal: 0,
-                paddingBottom: 24,
-                flexGrow: 1,
-              }}
-              ListEmptyComponent={() => (
-                <View className="flex flex-col flex-1 justify-center items-center">
-                  <NotFound message={t("activities.incomming.empty")} />
-                </View>
-              )}
-              ListFooterComponent={
-                <View className="items-center mb-8">
-                  {isFetchingNextPage ? (
-                    <Loader size="small" className="flex items-center h-fit" />
-                  ) : !hasNextPage && flattenedData.length > 0 ? (
-                    <View className="flex flex-row items-center justify-center gap-2 p-6">
-                      <Text variant="p" className="text-muted-foreground">
-                        {t("activities.incomming.caughtUp")}
-                      </Text>
-                    </View>
-                  ) : null}
-                </View>
-              }
-            />
+      <LegendList
+        style={{ flex: 1, paddingBlock: 12 }}
+        data={flattenedData}
+        onScroll={handleScroll}
+        renderItem={renderItem}
+        recycleItems={true}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => {
+              refetchRequests();
+            }}
+          />
+        }
+        onEndReachedThreshold={0.5}
+        contentContainerStyle={{
+          paddingHorizontal: 0,
+          paddingBottom: 24,
+          flexGrow: 1,
+        }}
+        ListEmptyComponent={() => (
+          <View className="flex flex-col flex-1 justify-center items-center">
+            <NotFound message={t("activities.incomming.empty")} />
           </View>
         )}
-      </View>
+        ListFooterComponent={
+          flattenedData.length === 0 ? null : (
+            <View className="items-center mb-8">
+              {isFetchingNextPage ? (
+                <Loader size="small" className="flex items-center h-fit" />
+              ) : !hasNextPage ? (
+                <View className="flex flex-row items-center justify-center p-4">
+                  <Text variant={"p"} className="text-muted-foreground">
+                    {t("activities.incomming.caughtUp")}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          )
+        }
+      />
     </View>
   );
 };

@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { RolePermissionEntity } from './role-permission.entity';
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 
 @Entity('permissions')
 export class PermissionEntity extends EntityHelper {

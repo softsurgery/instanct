@@ -1,14 +1,13 @@
 import React from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { LegendList } from "@legendapp/list";
-import { View } from "react-native";
-import { ResponseRequestDto } from "@/types";
-import { Loader } from "@instanct/mobile-components";
-import { RefreshControl } from "react-native-gesture-handler";
+import { RefreshControl, View } from "react-native";
+import { ResponseRequestDto } from "@softsurgery/api-client";
+import { Loader } from "@softsurgery/mobile-components";
 import { SessionRequestCard } from "../session/session-details/SessionRequestCard";
 import { useInfiniteOutgoingSessionRequests } from "@/hooks/content/sessions/useInfiniteOutgoingSessionRequests";
-import { NotFound } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
+import { NotFound } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { SessionRequestCardSkeleton } from "./skeletons/SessionRequestCardSkeleton";
 import { useTranslation } from "react-i18next";
@@ -115,7 +114,12 @@ export const SessionOutgoingRequests = ({
           }
         }}
         refreshControl={
-          <RefreshControl refreshing={false} onRefresh={refetchRequests} />
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => {
+              refetchRequests();
+            }}
+          />
         }
         onEndReachedThreshold={0.5}
         contentContainerStyle={{

@@ -11,6 +11,7 @@ export class DataFlowService {
   ) {}
 
   async run(): Promise<string> {
+    await this.driveService.verifyAccess();
     const outfile = await this.dumpService.dump();
     const fileId = await this.driveService.upload(outfile);
     await this.driveService.prune(fileId);

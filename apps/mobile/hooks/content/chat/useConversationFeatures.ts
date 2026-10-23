@@ -1,15 +1,9 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { type Socket } from "socket.io-client";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import {
-  MessageFlatListItem,
-  MessageVariant,
-  ResponseConversationDto,
-  ResponseMessageDto,
-  StaticMessageEnum,
-} from "@/types";
+import { MessageVariant, ResponseConversationDto, ResponseMessageDto, StaticMessageEnum } from "@softsurgery/api-client";
+import { MessageFlatListItem } from "@/types";
 import { useAudioPlayer } from "expo-audio";
 import {
   differenceInCalendarDays,
@@ -17,7 +11,7 @@ import {
   isToday,
   isYesterday,
 } from "date-fns";
-import { getSocket } from "@/lib/socket";
+import { getSocket, type Socket } from "@softsurgery/lib";
 import {
   CONVERSATION_ACCESS_DENIED_ERROR,
   CONVERSATION_LIST_JOIN,
@@ -56,6 +50,7 @@ export const useConversationFeatures = ({
   limit = 20,
   enabled = true,
 }: useConversationFeaturesProps) => {
+  const api = useApi();
   const soundPlayer = useAudioPlayer(
     require("~/assets/sounds/receive-message.wav"),
   );

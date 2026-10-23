@@ -16,6 +16,7 @@ import {
   Table2,
   Cog,
   FileText,
+  FileCode2,
   Bug,
   MessageSquare,
 } from "lucide-react";
@@ -29,9 +30,10 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { NavMain } from "./NavMain";
 import Link from "next/link";
+import { version } from "../../../package.json";
 
 // This is sample data.
 const data = {
@@ -94,6 +96,11 @@ const data = {
           title: "Pages",
           url: "/content-management/pages",
           icon: FileText,
+        },
+        {
+          title: "Templates",
+          url: "/content-management/templates",
+          icon: FileCode2,
         },
         {
           title: "Configuration",
@@ -200,7 +207,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={transformedNavMain} />
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter>
+        {open ? (
+          <p className="px-2 text-xs text-muted-foreground">v{version}</p>
+        ) : null}
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

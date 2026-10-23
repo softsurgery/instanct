@@ -28,6 +28,7 @@ COPY packages/lib/package.json ./packages/lib/package.json
 
 COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
 COPY packages/ui/package.json ./packages/ui/package.json
+COPY packages/template/package.json ./packages/template/package.json
 
 RUN pnpm install --frozen-lockfile --filter instanct-ui... --ignore-scripts
 
@@ -44,6 +45,7 @@ COPY packages/hooks ./packages/hooks
 COPY packages/i18n ./packages/i18n
 COPY packages/lib ./packages/lib
 COPY packages/ui ./packages/ui
+COPY packages/template ./packages/template
 
 ENV npm_config_ignore_scripts=true
 

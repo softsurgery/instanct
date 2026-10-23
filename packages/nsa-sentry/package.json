@@ -1,7 +1,10 @@
 {
-  "name": "nsa-sentry",
+  "name": "@softsurgery/nsa-sentry",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared sentry module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +38,7 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/build-shared-packages.mjs",
+    "build": "node ../../scripts/mjs/build-shared-packages.mjs",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
@@ -44,7 +47,6 @@
     "@sentry/nestjs": "^11.0.0"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
     "@types/node": "^22.10.7"
   }
 }

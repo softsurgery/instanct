@@ -1,17 +1,17 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useUserStore } from "@/stores/useUserStore";
 import { router } from "expo-router";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { useUpdateProfileFormStructure } from "./useUpdateProfileFormStructure";
-import { ServerErrorResponse, UpdateUserDto, Upload } from "@/types";
-import { api } from "@/api";
+import { ServerErrorResponse, UpdateUserDto, Upload } from "@softsurgery/api-client";
+import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserSchema } from "@/types/validations/user.validation";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import React from "react";
 import { useServerImages } from "@/hooks/content/useServerImages";
@@ -19,22 +19,24 @@ import { identifyUserAvatar } from "@/lib/user";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { View } from "react-native";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 
 interface UpdateProfileProps {
   className?: string;
 }
 
 export const UpdateProfile = ({ className }: UpdateProfileProps) => {
+  const api = useApi();
   const isKeyboardVisible = useKeyboardVisible();
   const userStore = useUserStore();
   const queryClient = useQueryClient();
   const { t } = useTranslation("settings");
 
   const { mutate: updateUser, isPending: isUpdatePending } = useMutation({
-    mutationFn: (user: UpdateUserDto) => api.user.updateCurrent(user),
+    mutationFn: (user: UpdateUserDto) => api.currentUser.update(user),
     onSuccess: () => {
       router.back();
       toast.success(t("settings.account.screens.profile.toasts.updated"), {
@@ -75,6 +77,9 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
     uploadFiles: uploadProfilePicture,
     isUploadPending: isProfilePictureUploadPending,
   } = useUploadMutation({
+    onProgress: (progress: number) => {
+      userStore.set("progress", progress);
+    },
     onSuccess: (response: Upload[]) => {
       userStore.setNested("updateDto.pictureId", response?.[0]?.id);
     },
@@ -152,6 +157,11 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
         ]}
       />
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
+        <View className="p-4">
+          <Text className="text-sm text-muted-foreground leading-relaxed">
+            {t("settings.account.screens.profile.description")}
+          </Text>
+        </View>
         <FormBuilder structure={structure} className="px-2" />
       </StableKeyboardAwareScrollView>
       {!isKeyboardVisible && (

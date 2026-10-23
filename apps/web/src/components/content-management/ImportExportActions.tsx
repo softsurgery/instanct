@@ -5,7 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { MoreHorizontal } from "lucide-react";
 
 type ImportExportActionsProps = {

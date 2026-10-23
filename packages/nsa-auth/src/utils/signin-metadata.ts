@@ -1,5 +1,5 @@
-import { createHash } from 'crypto';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { randomBytes } from 'crypto';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
 export interface SigninMetadata {
   device: string;
@@ -10,7 +10,26 @@ export interface SigninMetadata {
   location: string;
   time: string;
   when: string;
-  fingerprint: string;
+  macAddress: string;
+}
+
+export function formatAsMacAddress(seed: string): string {
+  const macRegex = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
+  if (macRegex.test(seed)) {
+    return seed.replace(/-/g, ':').toLowerCase();
+  }
+  const clean = seed.replace(/[^0-9a-fA-F]/g, '');
+  const padded = clean.padEnd(12, '0').slice(0, 12);
+  const octets = padded.match(/.{1,2}/g);
+  return (octets || ['00', '00', '00', '00', '00', '00']).join(':').toLowerCase();
+}
+
+export function generateRandomMacAddress(): string {
+  const bytes = randomBytes(6);
+  bytes[0] = (bytes[0] & 0xfe) | 0x02;
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join(':');
 }
 
 function parseUserAgent(userAgent?: string): { device: string; os: string } {
@@ -119,10 +138,8 @@ export async function getSigninMetadata(
   bodyParams?: {
     device?: string;
     os?: string;
-    latitude?: number;
-    longitude?: number;
-    location?: string;
-    fingerprint?: string;
+    macAddress?: string;
+    mac?: string;
   },
 ): Promise<SigninMetadata> {
   const headers = req.headers || {};
@@ -150,54 +167,28 @@ export async function getSigninMetadata(
     ip = '127.0.0.1';
   }
 
-  const rawLat =
-    bodyParams?.latitude ??
-    (headers['x-latitude']
-      ? parseFloat(headers['x-latitude'] as string)
-      : undefined);
-  const rawLng =
-    bodyParams?.longitude ??
-    (headers['x-longitude']
-      ? parseFloat(headers['x-longitude'] as string)
-      : undefined);
+  const geo = await resolveIpGeo(ip);
+  const latitude = geo?.latitude;
+  const longitude = geo?.longitude;
+  const location =
+    geo?.location ||
+    (latitude !== undefined && longitude !== undefined
+      ? `${latitude}, ${longitude}`
+      : 'Unknown Location');
 
-  let latitude =
-    typeof rawLat === 'number' && !isNaN(rawLat) ? rawLat : undefined;
-  let longitude =
-    typeof rawLng === 'number' && !isNaN(rawLng) ? rawLng : undefined;
-  let location = bodyParams?.location || (headers['x-location'] as string);
+  const rawMac =
+    bodyParams?.macAddress ||
+    bodyParams?.mac ||
+    (headers['x-mac-address'] as string) ||
+    (headers['x-device-mac'] as string);
 
-  if (!location || latitude === undefined || longitude === undefined) {
-    const geo = await resolveIpGeo(ip);
-    if (geo) {
-      if (!location && geo.location) {
-        location = geo.location;
-      }
-      if (latitude === undefined && geo.latitude !== undefined) {
-        latitude = geo.latitude;
-      }
-      if (longitude === undefined && geo.longitude !== undefined) {
-        longitude = geo.longitude;
-      }
-    }
+  let macAddress: string;
+
+  if (rawMac && rawMac.trim().length > 0) {
+    macAddress = formatAsMacAddress(rawMac.trim());
+  } else {
+    macAddress = generateRandomMacAddress();
   }
-
-  if (!location) {
-    if (latitude !== undefined && longitude !== undefined) {
-      location = `${latitude}, ${longitude}`;
-    } else {
-      location = 'Unknown Location';
-    }
-  }
-
-  const rawFingerprint =
-    bodyParams?.fingerprint ||
-    (headers['x-device-fingerprint'] as string) ||
-    createHash('sha256')
-      .update(`${device}|${os}|${userAgent}|${ip}`)
-      .digest('hex');
-
-  const fingerprint = rawFingerprint;
 
   const now = new Date();
   const time = now.toLocaleDateString('en-GB', {
@@ -219,6 +210,6 @@ export async function getSigninMetadata(
     location,
     time,
     when,
-    fingerprint,
+    macAddress,
   };
 }

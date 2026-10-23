@@ -1,7 +1,10 @@
 {
-  "name": "nsa-workflows",
+  "name": "@softsurgery/nsa-workflows",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared workflows module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +38,7 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/build-shared-packages.mjs",
+    "build": "node ../../scripts/mjs/build-shared-packages.mjs",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
@@ -45,7 +48,6 @@
     "xstate": "^5.32.0"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
     "@types/node": "^22.10.7"
   }
 }

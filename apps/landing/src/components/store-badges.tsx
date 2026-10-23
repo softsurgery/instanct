@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { site } from "@/lib/site";
 
 type StoreBadgesProps = {

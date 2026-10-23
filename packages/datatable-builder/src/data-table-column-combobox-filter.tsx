@@ -12,7 +12,7 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor
-} from '@instanct/ui';
+} from '@softsurgery/ui';
 import {
   buildMultiOptionFilter,
   getOptionFilterField,

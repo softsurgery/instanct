@@ -1,6 +1,6 @@
 import React from "react";
 import { BadgeCheck, Bell, CreditCard, LogOut, User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/ui";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useTranslation } from "react-i18next";
-import { identifyUser, identifyUserAvatar } from "@instanct/lib";
+import { identifyUser, identifyUserAvatar } from "@softsurgery/lib";
 
 interface UserNavProps {
   className?: string;

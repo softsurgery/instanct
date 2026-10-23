@@ -1,4 +1,4 @@
-import { createApiClient } from "@instanct/api-client";
+import { createApiClient } from "@softsurgery/api-client";
 
 const baseURL =
   process.env.API_BASE_URL ||

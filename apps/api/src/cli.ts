@@ -1,3 +1,5 @@
+import './instrument';
+import './bind-app-values';
 import { NestFactory } from '@nestjs/core';
 import { CommandModule, CommandService } from 'nestjs-command';
 import { AppModule } from './app/app.module';

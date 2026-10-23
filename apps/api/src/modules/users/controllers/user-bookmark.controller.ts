@@ -9,15 +9,15 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { UserBookmarkService } from '../services/user-bookmark.service';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { ResponseUserBookmarkDto } from '../dtos/user-bookmark/response-user-bookmark.dto';
-import { toDto } from 'nsa-database';
+import { toDto } from '@softsurgery/nsa-database';
 import { UserService } from '../services/user.service';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 
 @ApiTags('user-bookmark')
 @ApiBearerAuth('access_token')
@@ -61,14 +61,10 @@ export class UserBookmarkController {
       ResponseUserBookmarkDto,
       await this.userBookmarkService.saveBookmark(req?.user?.sub, id),
     );
-    const user = await this.userService.findOneById(req?.user?.sub);
     const bookmarkedUser = await this.userService.findOneById(id);
 
     req.logInfo = {
-      id: bookmark.id,
-      userId: bookmark.userId,
-      userIdentity: identifyUser(user),
-      bookmarkId: bookmark.bookmarkId,
+      targetUserId: id,
       bookmarkIdentity: identifyUser(bookmarkedUser),
     };
     return bookmark;
@@ -88,14 +84,10 @@ export class UserBookmarkController {
       id,
     );
 
-    const user = await this.userService.findOneById(req?.user?.sub);
     const bookmarkedUser = await this.userService.findOneById(id);
 
     req.logInfo = {
-      id: bookmark?.id,
-      userId: bookmark?.userId,
-      userIdentity: identifyUser(user),
-      bookmarkId: bookmark?.bookmarkId,
+      targetUserId: id,
       bookmarkIdentity: identifyUser(bookmarkedUser),
     };
     return toDto(ResponseUserBookmarkDto, bookmark);

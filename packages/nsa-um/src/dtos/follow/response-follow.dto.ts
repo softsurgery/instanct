@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { Expose, Type } from 'class-transformer';
 import { ResponseAbstractUserDto } from '../abstract-user/response-abstract-user.dto';
+import { getUserDto } from '../../registries/user-binding.registry';
 
 export class ResponseFollowDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -12,18 +13,18 @@ export class ResponseFollowDto extends ResponseDtoHelper {
   @Expose()
   followerId: string;
 
-  @ApiProperty({ type: () => ResponseAbstractUserDto })
+  @ApiProperty({ type: () => getUserDto() })
   @Expose()
-  @Type(() => ResponseAbstractUserDto)
+  @Type(() => getUserDto())
   follower?: ResponseAbstractUserDto;
 
   @ApiProperty({ type: String })
   @Expose()
   followingId: string;
 
-  @ApiProperty({ type: () => ResponseAbstractUserDto })
+  @ApiProperty({ type: () => getUserDto() })
   @Expose()
-  @Type(() => ResponseAbstractUserDto)
+  @Type(() => getUserDto())
   following?: ResponseAbstractUserDto;
 
   @ApiProperty({ type: Boolean })

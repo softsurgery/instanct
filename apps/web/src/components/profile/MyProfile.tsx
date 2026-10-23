@@ -1,7 +1,6 @@
 import React from "react";
 import { BaseProfile } from "./BaseProfile";
 import { useUserStore } from "@/hooks/stores/useUserStore";
-import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 
 interface MyProfileProps {
@@ -20,16 +19,6 @@ export const MyProfile = ({ className }: MyProfileProps) => {
   }, [user]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col flex-1 h-full overflow-auto no-scrollbar container mx-auto",
-        className,
-      )}
-    >
-      <BaseProfile
-        className={className}
-        isFetchUserPending={isFetchUserPending}
-      />
-    </div>
+    <BaseProfile className={className} isFetchUserPending={isFetchUserPending} />
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
-import { cn } from "@instanct/lib";
-import { ResponseUserDto } from "@/types/user-management";
+import { cn } from "@softsurgery/lib";
+import { ResponseUserDto } from "@softsurgery/api-client";
 import { LegendList } from "@legendapp/list";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import { router } from "expo-router";
@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Animated from "react-native-reanimated";
 import { UserCard } from "./UserCard";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { SessionCountdown } from "../session/SessionCountdown";
 import { SessionStarter } from "../session/SessionStarter";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
@@ -28,7 +28,7 @@ import {
   NotFound,
   StableSafeAreaView,
   Loader,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
@@ -255,10 +255,7 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
           </View>
         ) : users.length === 0 && filterCount > 0 ? (
           <View className="flex flex-col flex-1 justify-center items-center px-4">
-            <NotFound />
-            <Text variant={"large"} className="text-center">
-              {tExplore("explore.noMatchFilters")}
-            </Text>
+            <NotFound message={tExplore("explore.noMatchFilters")} />
           </View>
         ) : (
           <>

@@ -1,4 +1,4 @@
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import {
   Column,
   Entity,
@@ -9,11 +9,11 @@ import {
   TableInheritance,
 } from 'typeorm';
 import { RoleEntity } from './role.entity';
-import type { LogEntity } from 'nsa-logger/entities/log.entity';
-import type { NotificationEntity } from 'nsa-notifications/entities/notification.entity';
-import type { SessionEntity } from 'nsa-sessions/entities/session.entity';
-import { OAuthProvider } from 'nsa-auth/enums/oauth.enum';
-import type { UserDeviceEntity } from 'nsa-auth/entities/user-device.entity';
+import type { LogEntity } from '@softsurgery/nsa-logger/entities/log.entity';
+import type { NotificationEntity } from '@softsurgery/nsa-notifications/entities/notification.entity';
+import type { SessionEntity } from '@softsurgery/nsa-sessions/entities/session.entity';
+import { OAuthProvider } from '@softsurgery/nsa-auth/enums/oauth.enum';
+import type { UserDeviceEntity } from '@softsurgery/nsa-auth/entities/user-device.entity';
 
 @Entity('users')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })

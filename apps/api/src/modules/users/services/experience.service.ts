@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { ExperienceEntity } from '../entities/experience.entity';
 import { ExperienceRepository } from '../repositories/experience.repository';
 import { UserService } from './user.service';
-import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
+import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
 import { ExperienceNotFoundException } from '../errors/experiences/experience.notfound.error';
 import { LocationTypes } from '../enums/experience.location-type.enum';
 
@@ -59,6 +59,7 @@ export class ExperienceService extends AbstractCrudService<ExperienceEntity> {
     if (!experience) {
       throw new ExperienceNotFoundException();
     }
-    return this.experienceRepository.softDelete(id);
+    await this.experienceRepository.softDelete(id);
+    return experience;
   }
 }

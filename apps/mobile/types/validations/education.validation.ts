@@ -1,12 +1,9 @@
 import { z } from "zod";
+import { toDateOrNull } from "@/lib/date";
 
 // Messages are translation keys, resolved by the consumer in the "menu"
 // namespace (see useCreateEducationFormStructure / useUpdateEducationFormStructure).
-const dateOrNull = z.preprocess(
-  (value) =>
-    value === null || value === "" ? null : new Date(value as string),
-  z.date().nullable(),
-);
+const dateOrNull = z.preprocess(toDateOrNull, z.date().nullable());
 
 const baseEducationSchema = z.object({
   title: z
@@ -16,17 +13,17 @@ const baseEducationSchema = z.object({
   institution: z
     .string()
     .min(2, { error: "education.validation.institutionTooShort" })
-    .max(100, { error: "education.validation.institutionTooLong" }),
+    .max(255, { error: "education.validation.institutionTooLong" }),
   startDate: dateOrNull
     .refine((date) => date === null || date <= new Date(), {
       error: "education.validation.startDateInFuture",
     })
     .optional(),
   endDate: dateOrNull.optional(),
-  description: z
-    .string()
-    .max(500, { error: "education.validation.descriptionTooLong" })
-    .optional(),
+  description: z.preprocess(
+    (value) => (value == null ? "" : value),
+    z.string().max(500, { error: "education.validation.descriptionTooLong" }),
+  ),
 });
 
 const dateRefinements = (schema: typeof baseEducationSchema) =>
@@ -34,7 +31,7 @@ const dateRefinements = (schema: typeof baseEducationSchema) =>
     .refine(
       (data) => {
         if (data.endDate && data.startDate) {
-          return data.endDate > data.startDate;
+          return data.endDate >= data.startDate;
         }
         return true;
       },

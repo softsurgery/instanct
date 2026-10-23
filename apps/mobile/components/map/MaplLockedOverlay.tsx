@@ -1,6 +1,6 @@
 import React from "react";
-import { cn } from "@instanct/lib";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
+import { cn } from "@softsurgery/lib";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { MapPinOff } from "lucide-react-native";
@@ -14,7 +14,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { Icon } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
 
 interface MapLockedOverlayProps {
   className?: string;

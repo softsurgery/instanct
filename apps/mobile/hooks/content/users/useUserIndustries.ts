@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -11,13 +11,14 @@ export const useUserIndustries = ({
   userId,
   enabled = true,
 }: useUserIndustriesProps) => {
+  const api = useApi();
   const {
     data: userIndustriesResp,
     isPending: isUserIndustriesPending,
     refetch: refetchUserIndustries,
   } = useQuery({
     queryKey: ["user-industries", userId],
-    queryFn: () => api.user.getIndustries(userId),
+    queryFn: () => api.admin.user.getIndustries(userId),
     enabled,
   });
 

@@ -12,17 +12,17 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { BugService } from '../services/bug.service';
-import { IQueryObject } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 import { ResponseBugDto } from '../dtos/bug/response-bug.dto';
-import { PageDto } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { PageDto } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { CreateBugDto } from '../dtos/bug/create-bug.dto';
 import { BugStatus } from '../enums/bug-status.enum';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
 @ApiTags('bug')
 @ApiBearerAuth('access_token')
@@ -62,11 +62,18 @@ export class BugController {
     @Body() createBugDto: CreateBugDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseBugDto> {
-    const bug = await this.bugService.saveWithDeviceInfo(
-      createBugDto,
-      req?.user?.sub,
-    );
-    req.logInfo = { id: bug.id, variant: bug.variant };
+    const macAddress =
+      (req.headers['x-mac-address'] as string) ||
+      (req.headers['x-device-mac'] as string) ||
+      undefined;
+    const bug = await this.bugService.create(createBugDto, {
+      userId: req?.user?.sub,
+      macAddress,
+    });
+    req.logInfo = {
+      bugId: bug.id,
+      variant: bug.variant,
+    };
     return toDto(ResponseBugDto, bug);
   }
 
@@ -76,8 +83,12 @@ export class BugController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseBugDto | null> {
-    const bug = await this.bugService.softDelete(id);
-    req.logInfo = { id, variant: bug?.variant };
+    const bug = await this.bugService.findOneById(id);
+    await this.bugService.softDelete(id);
+    req.logInfo = {
+      bugId: id,
+      variant: bug?.variant,
+    };
     return toDto(ResponseBugDto, bug);
   }
 

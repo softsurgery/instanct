@@ -34,5 +34,27 @@
       "fr": "الفرنسي",
       "ar": "العربية"
     }
+  },
+  "formBuilder": {
+    "select": {
+      "placeholder": "اختر خياراً"
+    },
+    "multiSelect": {
+      "placeholder": "اختر خيارات"
+    },
+    "datePicker": {
+      "placeholder": "اختر تاريخاً"
+    },
+    "mapPinField": {
+      "placeholder": "اختر موقعاً",
+      "title": "اختر موقعاً",
+      "hint": "اضغط على الخريطة لتحديد الموقع",
+      "confirm": "تأكيد الموقع"
+    },
+    "timePicker": {
+      "placeholder": "اختر وقتاً",
+      "remove": "إزالة الوقت",
+      "done": "تم"
+    }
   }
 }

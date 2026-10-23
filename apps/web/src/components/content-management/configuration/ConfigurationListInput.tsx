@@ -1,4 +1,4 @@
-import { Button, Input, Label } from "@instanct/ui";
+import { Button, Input, Label } from "@softsurgery/ui";
 import { cn } from "@/lib/utils";
 import {
   ConfigurationListFieldSchema,

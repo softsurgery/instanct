@@ -1,6 +1,6 @@
 import React from "react";
-import { cn } from "@instanct/lib";
-import { Text, TextVariantDefaults } from "@instanct/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { Text, TextVariantDefaults } from "@softsurgery/mobile-ui";
 
 interface HTMLTextProps {
   children: string;

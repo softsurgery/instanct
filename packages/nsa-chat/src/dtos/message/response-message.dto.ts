@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { ResponseConversationDto } from '../conversation/response-conversation.dto';
 import { Expose, Type } from 'class-transformer';
 import { MessageVariant } from '../../enums/message-variant.enum';
-import { ResponseAbstractUserDto } from 'nsa-um/dtos/abstract-user/response-abstract-user.dto';
+import { getUserDto } from '@softsurgery/nsa-um/registries/user-binding.registry';
+import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
 import { StaticMessageEnum } from '../../enums/static-message.registry';
 import { ResponseMessageUploadDto } from '../message-upload/response-message-upload.dto';
 import { ResponseMessageLinkDto } from '../message-link/response-message-link.dto';
@@ -30,9 +31,9 @@ export class ResponseMessageDto extends ResponseDtoHelper {
   @Expose()
   userId: string;
 
-  @ApiProperty({ type: ResponseAbstractUserDto })
+  @ApiProperty({ type: () => getUserDto() })
   @Expose()
-  @Type(() => ResponseAbstractUserDto)
+  @Type(() => getUserDto())
   user: ResponseAbstractUserDto;
 
   @ApiProperty({ type: String, enum: MessageVariant })

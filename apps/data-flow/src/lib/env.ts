@@ -39,10 +39,17 @@ export function required(name: string): string {
 }
 
 export function folderId(raw: string): string {
-  let value = raw.trim().replace(/\/$/, "");
+  let value = raw.trim();
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    value = value.slice(1, -1).trim();
+  }
+  value = value.replace(/\/$/, "");
   const marker = "/folders/";
   if (value.includes("drive.google.com") && value.includes(marker)) {
-    value = value.split(marker)[1]?.split("?")[0]?.split("/")[0] ?? "";
+    value = value.split(marker)[1]?.split("?")[0]?.split("/")[0]?.trim() ?? "";
   }
   if (!value || /[\s/\\]/.test(value)) {
     throw new DataFlowError("GDRIVE_FOLDER_ID must be a Google Drive folder id");

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { ResponseRefTypeDto } from '../ref-type/response-ref-type.dto';
 
 export class ResponseRefParamDto extends ResponseDtoHelper {

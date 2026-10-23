@@ -1,36 +1,56 @@
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 import { View } from "react-native";
 import { Loader2 } from "lucide-react-native";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { createFeedbackSchema } from "~/types/validations/system-reports.validation";
-import { Button } from "@instanct/mobile-ui";
-import { FormBuilder } from "@instanct/mobile-form-builder";
+import { Button } from "@softsurgery/mobile-ui";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useSendFeedbackFormStructure } from "./useSendFeedbackFormStructure";
-import { cn } from "@instanct/lib";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
+import { cn } from "@softsurgery/lib";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
 import { router } from "expo-router";
-import { StableSafeAreaView } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { useSendFeedbackStore } from "@/stores/useFeedbackManager";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
-import { ServerErrorResponse } from "@/types/utils/server.interfaces";
+import { ServerErrorResponse } from "@softsurgery/api-client";
 import { toast } from "sonner-native";
-import { Icon } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { useQuery } from "@tanstack/react-query";
+import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
+import {
+  ResponseUserDeviceDto,
+  CreateFeedbackDto,
+} from "@softsurgery/api-client";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { getCurrentDevice } from "@/lib/device";
+
 interface SendFeedbackPortalProps {
   className?: string;
 }
 
 export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
   const sendFeedbackStore = useSendFeedbackStore();
+  const currentMacAddress = useCurrentDeviceMac();
+
+  const { data: devices = [] } = useQuery<ResponseUserDeviceDto[]>({
+    queryKey: ["user-devices"],
+    queryFn: async () => api.userDevices.getAll(),
+  });
+
+  const currentDevice = React.useMemo(
+    () => getCurrentDevice(devices, currentMacAddress),
+    [devices, currentMacAddress],
+  );
 
   React.useEffect(() => {
     return () => {
@@ -44,7 +64,8 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
 
   const { mutate: sendFeedback, isPending: isSendFeedbackPending } =
     useMutation({
-      mutationFn: async () => api.feedback.create(sendFeedbackStore.createDto),
+      mutationFn: async (payload: CreateFeedbackDto) =>
+        api.admin.feedback.create(payload),
       onSuccess: () => {
         toast.success("Feedback submitted successfully", {
           description: "Your feedback has been successfully submitted.",
@@ -62,11 +83,15 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
     });
 
   const handleSubmit = () => {
-    const result = createFeedbackSchema.safeParse(sendFeedbackStore.createDto);
+    const payload: CreateFeedbackDto = {
+      ...sendFeedbackStore.createDto,
+      deviceId: currentDevice?.id,
+    };
+    const result = createFeedbackSchema.safeParse(payload);
     if (!result.success) {
       sendFeedbackStore.set("errors", result.error.flatten().fieldErrors);
     } else {
-      sendFeedback();
+      sendFeedback(payload);
     }
   };
 
@@ -85,7 +110,7 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
         ]}
       />
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
-        <View className="px-5 pt-4 pb-2">
+        <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("settings.support.screens.send-feedback.description")}
           </Text>

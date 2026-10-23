@@ -2,11 +2,11 @@ import React, { forwardRef } from "react";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable, View } from "react-native";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { Ellipsis, type LucideIcon } from "lucide-react-native";
-import { Icon } from "@instanct/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
 import { useColorPalette } from "./hooks/useColorPalette";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 
 interface ThreeDotsActionSheetProps {
   icon?: LucideIcon;

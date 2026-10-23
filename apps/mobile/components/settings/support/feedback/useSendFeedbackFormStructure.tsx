@@ -1,5 +1,5 @@
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
-import { SendFeedbackStore } from "@/stores/useFeedbackManager";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import { SendFeedbackStore } from "@/stores/useFeedbackStore";
 import { useTranslation } from "react-i18next";
 import {
   Field,
@@ -8,8 +8,8 @@ import {
   RatingFieldProps,
   SelectFieldProps,
   TextareaFieldProps,
-} from "@instanct/mobile-form-builder";
-import { FeedbackCategory } from "~/types";
+} from "@softsurgery/mobile-form-builder";
+import { FeedbackCategory } from "@softsurgery/api-client";
 
 interface useSendFeedbackFormStructureProps {
   store: SendFeedbackStore;

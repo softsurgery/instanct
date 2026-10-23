@@ -10,9 +10,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@instanct/ui"
+} from "@softsurgery/ui"
 
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@instanct/ui"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@softsurgery/ui"
 
 // Données du graphique
 const chartData = [

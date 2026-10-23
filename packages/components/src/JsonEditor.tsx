@@ -2,14 +2,14 @@
 import React from "react";
 import { createContext, useContext, type HTMLAttributes } from "react";
 import { useMemo } from "react";
-import { Button } from "@instanct/ui/components/button";
-import { Input } from "@instanct/ui/components/input";
-import { Label } from "@instanct/ui/components/label";
-import { Switch } from "@instanct/ui/components/switch";
-import { Badge } from "@instanct/ui/components/badge";
-import { Separator } from "@instanct/ui/components/separator";
+import { Button } from "@softsurgery/ui/components/button";
+import { Input } from "@softsurgery/ui/components/input";
+import { Label } from "@softsurgery/ui/components/label";
+import { Switch } from "@softsurgery/ui/components/switch";
+import { Badge } from "@softsurgery/ui/components/badge";
+import { Separator } from "@softsurgery/ui/components/separator";
 import { ChevronsUpDown, GripVertical, Plus, X } from "lucide-react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import {
   DndContext,
   closestCenter,
@@ -30,16 +30,16 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@instanct/ui/components/collapsible";
+} from "@softsurgery/ui/components/collapsible";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@instanct/ui/components/select";
-import { Textarea } from "@instanct/ui/components/textarea";
-import InputColor from "@instanct/ui/components/input-color";
+} from "@softsurgery/ui/components/select";
+import { Textarea } from "@softsurgery/ui/components/textarea";
+import InputColor from "@softsurgery/ui/components/input-color";
 
 const capitalize = (value: string) =>
   value.charAt(0).toUpperCase() + value.slice(1);

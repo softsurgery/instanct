@@ -1,6 +1,6 @@
 import { Icon } from "./icon";
 import { TextClassContext } from "./text";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import * as AccordionPrimitive from "@rn-primitives/accordion";
 import { ChevronDown } from "lucide-react-native";
 import { Platform, Pressable, View } from "react-native";

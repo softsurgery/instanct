@@ -1,12 +1,8 @@
 import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
-import { cn } from "@instanct/lib";
-import {
-  ResponseConversationDto,
-  ResponseRefParamDto,
-  ResponseUserDto,
-} from "@/types";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import { cn } from "@softsurgery/lib";
+import { ResponseConversationDto, ResponseRefParamDto, ResponseUserDto } from "@softsurgery/api-client";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import {
@@ -24,7 +20,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Icon, Text } from "@instanct/mobile-ui";
+import { Icon, Text } from "@softsurgery/mobile-ui";
 import { useStartConversation } from "@/hooks/content/chat/useStartConversation";
 import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";
 import { useServerImages } from "@/hooks/content/useServerImages";

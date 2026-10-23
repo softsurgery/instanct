@@ -1,4 +1,4 @@
-import { ResponseWorkflowDto } from 'nsa-workflows/dtos/response-workflow.dto';
+import { ResponseWorkflowDto } from '@softsurgery/nsa-workflows/dtos/response-workflow.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ResponseRequestDto } from './response-request.dto';

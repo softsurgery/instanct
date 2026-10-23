@@ -12,14 +12,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
-import { EventType } from 'nsa-logger/enums/event-type.registry';
-import { Public } from 'nsa-auth/utils/public-strategy';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
+import { EventType } from '@softsurgery/nsa-logger/enums/event-type.registry';
+import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { ContentPageService } from '../services/content-page.service';
 import { ResponseContentPageDto } from '../dtos/response-content-page.dto';
 import { CreateContentPageDto } from '../dtos/create-content-page.dto';
@@ -92,7 +92,10 @@ export class ContentPageController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto> {
     const page = await this.contentPageService.save(dto);
-    req.logInfo = { id: page.id, slug: page.slug };
+    req.logInfo = {
+      pageId: page.id,
+      title: page.title || page.slug,
+    };
     return toDto(ResponseContentPageDto, page);
   }
 
@@ -104,7 +107,10 @@ export class ContentPageController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto> {
     const page = await this.contentPageService.update(id, dto);
-    req.logInfo = { id: page.id, slug: page.slug };
+    req.logInfo = {
+      pageId: page.id,
+      title: page.title || page.slug,
+    };
     return toDto(ResponseContentPageDto, page);
   }
 
@@ -114,8 +120,12 @@ export class ContentPageController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto | null> {
-    const page = await this.contentPageService.softDelete(id);
-    req.logInfo = { id, slug: page?.slug };
+    const page = await this.contentPageService.findOneById(id);
+    await this.contentPageService.softDelete(id);
+    req.logInfo = {
+      pageId: id,
+      title: page?.title || page?.slug,
+    };
     return toDto(ResponseContentPageDto, page);
   }
 }

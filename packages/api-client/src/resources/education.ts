@@ -24,14 +24,16 @@ export function createEducationResource(http: AxiosInstance) {
   };
 
   const update = async (
-    id: string,
+    id: string | number,
     education: UpdateEducationDto,
   ): Promise<ResponseEducationDto> => {
     const response = await http.put(`/education/${id}`, education);
     return response.data;
   };
 
-  const remove = async (id: string): Promise<ResponseEducationDto> => {
+  const remove = async (
+    id: string | number,
+  ): Promise<ResponseEducationDto> => {
     const response = await http.delete(`/education/${id}`);
     return response.data;
   };

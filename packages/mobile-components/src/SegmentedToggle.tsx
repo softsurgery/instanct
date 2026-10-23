@@ -5,8 +5,8 @@ import Animated, {
   withTiming,
   Easing,
 } from "react-native-reanimated";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 
 export interface SegmentedOption<T extends string> {
   label: string;

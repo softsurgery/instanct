@@ -1,7 +1,10 @@
 {
-  "name": "nsa-mail",
+  "name": "@softsurgery/nsa-mail",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared mail module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +38,7 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/build-shared-packages.mjs",
+    "build": "node ../../scripts/mjs/build-shared-packages.mjs",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
@@ -44,11 +47,10 @@
     "@nestjs/config": "^4.0.2",
     "ejs": "^5.0.2",
     "juice": "^11.1.1",
-    "nsa-templates": "workspace:*"
+    "@softsurgery/nsa-templates": "workspace:*"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
-    "@types/node": "^22.10.7",
-    "typescript": "5.9.3"
+    "@types/node": "^22.10.7"
   }
 }

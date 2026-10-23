@@ -1,18 +1,4 @@
-import { ResponseUserDto } from "./user-management";
-import { DatabaseEntity } from "./utils";
-
-export interface CreateGeolocationDto {
-  latitude: number;
-  longitude: number;
-}
-
-export interface ResponseGeolocationDto extends DatabaseEntity {
-  id: number;
-  latitude: number;
-  longitude: number;
-  user: ResponseUserDto;
-  userId: string;
-}
+import type { ResponseUserDto } from "@softsurgery/api-client";
 
 export interface NearbyUser {
   latitude: number;

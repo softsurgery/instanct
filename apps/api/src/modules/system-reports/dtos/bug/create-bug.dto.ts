@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BugVariant } from '../../enums/bug-variant.enum';
-import {
-  IsEnum,
-  IsObject,
-  IsOptional,
-  IsString,
-  Length,
-} from 'class-validator';
-import { CreateDeviceInfoDto } from '../device-info/create-device-info.dto';
+import { IsEnum, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateBugDto {
   @ApiProperty({ type: String, enum: BugVariant })
@@ -24,8 +17,8 @@ export class CreateBugDto {
   @Length(10, 1024)
   description: string;
 
-  @ApiProperty({ type: CreateDeviceInfoDto })
-  @IsObject()
+  @ApiProperty({ type: String, required: false })
+  @IsString()
   @IsOptional()
-  device?: CreateDeviceInfoDto;
+  deviceId?: string;
 }

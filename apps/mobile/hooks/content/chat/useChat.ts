@@ -1,14 +1,17 @@
 import React from "react";
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/api";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useApi } from "@/contexts/ApiContext";
 import {
   MessageVariant,
   ResponseConversationDto,
   StaticMessageEnum,
-} from "@/types";
-import { Socket } from "socket.io-client";
+} from "@softsurgery/api-client";
+import { getSocket, type Socket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { getSocket } from "@/lib/socket";
 import {
   createAndroidChannel,
   requestNotificationPermissions,
@@ -55,6 +58,7 @@ export const useChat = (
     enabled: true,
   },
 ) => {
+  const api = useApi();
   const segments = useSegments();
   const params = useGlobalSearchParams();
 

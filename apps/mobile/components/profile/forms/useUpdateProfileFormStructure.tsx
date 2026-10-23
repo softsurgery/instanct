@@ -1,4 +1,5 @@
-import { Gender } from "@/types";
+import { Gender } from "@softsurgery/api-client";
+import { type UploadFilesMutate } from "@/hooks/useUploadMutation";
 import {
   CustomFieldProps,
   DateFieldProps,
@@ -9,19 +10,18 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
   TextFieldProps,
-} from "@instanct/mobile-form-builder";
+  UploadFileInput,
+  UploadProgressCallback,
+} from "@softsurgery/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
 import { Pressable, View } from "react-native";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useTranslation } from "react-i18next";
 
 interface useUpdateProfileFormStructureProps {
   store: UserStore;
   fallback?: string;
-  uploadPicture: (options: {
-    files: File[];
-    onProgress: (progress: number) => void;
-  }) => void;
+  uploadPicture: UploadFilesMutate;
   isProfilePictureUploadPending: boolean;
   isPending?: boolean;
 }
@@ -46,18 +46,22 @@ export const useUpdateProfileFormStructure = ({
     wrapperClassName: "flex flex-row items-center justify-center",
     props: {
       image: store?.picture,
+      progress: store?.progress,
       alt: fallback,
       editable: !isProfilePictureUploadPending && !isPending,
-      onFileChange: (value) => {
+      onFileChange: (value: UploadFileInput) => {
         store.set("picture", value);
       },
-      onUpload: (file, onProgress) => {
+      onUpload: (
+        file: UploadFileInput,
+        onProgress?: UploadProgressCallback,
+      ) => {
         store.set("progress", 0);
         uploadPicture({
           files: [file],
           onProgress: (progress: number) => {
             store.set("progress", progress);
-            onProgress(progress);
+            onProgress?.(progress);
           },
         });
       },
@@ -70,7 +74,7 @@ export const useUpdateProfileFormStructure = ({
     variant: FieldVariant.CUSTOM,
     props: {
       children: (
-        <View className="flex-row items-center justify-center -mt-6">
+        <View className="flex-row items-center justify-center">
           <Pressable
             onPress={() => {
               store.set("picture", undefined);
@@ -138,6 +142,9 @@ export const useUpdateProfileFormStructure = ({
     id: "dateOfBirth",
     label: t("settings.account.screens.profile.form.date-of-birth"),
     variant: FieldVariant.DATE,
+    placeholder: t(
+      "settings.account.screens.profile.form.placeholders.date-of-birth",
+    ),
     description: t(
       "settings.account.screens.profile.form.descriptions.date-of-birth",
     ),
@@ -149,7 +156,7 @@ export const useUpdateProfileFormStructure = ({
         store.setNested("updateDto.dateOfBirth", value);
         store.setNested("errors.dateOfBirth", []);
       },
-  },
+    },
   };
 
   //bio
@@ -175,6 +182,7 @@ export const useUpdateProfileFormStructure = ({
     id: "gender",
     label: t("settings.account.screens.profile.form.gender"),
     variant: FieldVariant.SELECT,
+    placeholder: t("settings.account.screens.profile.form.placeholders.gender"),
     description: t("settings.account.screens.profile.form.descriptions.gender"),
     error: t(store?.errors?.gender?.[0]),
     props: {

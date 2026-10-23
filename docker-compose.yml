@@ -18,19 +18,17 @@ services:
   #     timeout: 5s
   #     retries: 5
 
-  rustfs:
-    image: rustfs/rustfs:latest
-    container_name: instanct_rustfs
-    restart: always
-    env_file: env/prod/infra.env
-    command: --address :9000 --console-address :9001 /data
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - rustfs_data:/data
-
-
+  # rustfs:
+  #   image: rustfs/rustfs:latest
+  #   container_name: instanct_rustfs
+  #   restart: always
+  #   env_file: env/prod/infra.env
+  #   command: --address :9000 --console-address :9001 /data
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - rustfs_data:/data
 
   api:
     build:
@@ -84,5 +82,4 @@ services:
 
 # volumes:
 #   mysql_data:
-volumes:
-  rustfs_data:
+#   rustfs_data:

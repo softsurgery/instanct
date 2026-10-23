@@ -18,19 +18,17 @@ services:
   #     timeout: 5s
   #     retries: 5
 
-  rustfs:
-    image: rustfs/rustfs:latest
-    container_name: instanct_rustfs_dev
-    restart: always
-    env_file: env/dev/infra.env
-    command: --address :9000 --console-address :9001 /data
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - rustfs_data:/data
-
-
+  # rustfs:
+  #   image: rustfs/rustfs:latest
+  #   container_name: instanct_rustfs_dev
+  #   restart: always
+  #   env_file: env/dev/infra.env
+  #   command: --address :9000 --console-address :9001 /data
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - rustfs_data:/data
 
   api:
     build:
@@ -82,26 +80,6 @@ services:
     ports:
       - "3008:3008"
 
-  mobile:
-    build:
-      context: .
-      dockerfile: apps/mobile/Dockerfile
-      args:
-        MOBILE_ENV_FILE: env/dev/mobile.env
-    image: instanct-mobile:dev
-    container_name: instanct_mobile_dev
-    restart: on-failure
-    depends_on:
-      - api
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    env_file: env/dev/mobile.env
-    ports:
-      - "${MOBILE_PORT:-8081}:8081"
-    stdin_open: true
-    tty: true
-
 # volumes:
 #   mysql_data:
-volumes:
-  rustfs_data:
+#   rustfs_data:

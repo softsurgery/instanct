@@ -1,7 +1,7 @@
 # Build from the repository root:
-#   docker build -f apps/dataFlow/Dockerfile -t instanct-data-flow .
+#   docker build -f apps/data-flow/Dockerfile -t instanct-data-flow .
 #
-#   docker run --rm --env-file apps/dataFlow/.env \
+#   docker run --rm --env-file apps/data-flow/.env \
 #     -e GDRIVE_SERVICE_ACCOUNT_FILE=/secrets/gdrive-service-account.json \
 #     -v /path/to/gdrive-service-account.json:/secrets/gdrive-service-account.json:ro \
 #     -v instanct-data-flows:/dataFlows \
@@ -16,7 +16,7 @@ RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 COPY apps/api/package.json ./apps/api/package.json
-COPY apps/dataFlow/package.json ./apps/dataFlow/package.json
+COPY apps/data-flow/package.json ./apps/data-flow/package.json
 COPY apps/landing/package.json ./apps/landing/package.json
 COPY apps/mobile/package.json ./apps/mobile/package.json
 COPY apps/web/package.json ./apps/web/package.json
@@ -38,9 +38,9 @@ COPY packages/ui/package.json ./packages/ui/package.json
 
 RUN pnpm install --frozen-lockfile --filter instanct-data-flow... --ignore-scripts
 
-COPY apps/dataFlow ./apps/dataFlow
-RUN rm -rf apps/dataFlow/dist && cd apps/dataFlow && /repo/node_modules/.bin/nest build
-RUN test -f /repo/apps/dataFlow/dist/main.js
+COPY apps/data-flow ./apps/data-flow
+RUN rm -rf apps/data-flow/dist && cd apps/data-flow && /repo/node_modules/.bin/nest build
+RUN test -f /repo/apps/data-flow/dist/main.js
 
 RUN pnpm deploy --legacy --filter instanct-data-flow --prod --ignore-scripts /pruned
 
@@ -53,9 +53,9 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY --from=builder --chown=app:app /repo/apps/dataFlow/dist ./dist
+COPY --from=builder --chown=app:app /repo/apps/data-flow/dist ./dist
 COPY --from=builder --chown=app:app /pruned/node_modules ./node_modules
-COPY --from=builder --chown=app:app /repo/apps/dataFlow/package.json ./
+COPY --from=builder --chown=app:app /repo/apps/data-flow/package.json ./
 
 RUN mkdir -p /dataFlows && chown app:app /dataFlows
 

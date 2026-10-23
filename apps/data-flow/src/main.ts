@@ -29,6 +29,10 @@ async function bootstrap(): Promise<void> {
 }
 
 bootstrap().catch((error: unknown) => {
-  Logger.error(error, "DataFlow");
+  if (error instanceof DataFlowError) {
+    Logger.error(error.message, "DataFlow");
+  } else {
+    Logger.error(error, "DataFlow");
+  }
   process.exit(1);
 });

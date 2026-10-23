@@ -1,9 +1,9 @@
 import { LucideIcon } from "lucide-react-native";
 import { TextInputProps, View } from "react-native";
 
-import { Icon } from "@instanct/mobile-ui";
-import { Input } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Input } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 
 interface MarkedInputProps extends TextInputProps {
   classNames?: { input?: string; container?: string };

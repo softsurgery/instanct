@@ -13,7 +13,9 @@
       "createUser": "Create User",
       "deleteUser": "Delete User",
       "notify": "Notify",
-      "userDetails": "User Details"
+      "userDetails": "User Details",
+      "connected": "Connected",
+      "disconnected": "Disconnected"
     },
     "columns": {
       "id": "ID",
@@ -22,6 +24,7 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "dateOfBirth": "Date of Birth",
+      "connected": "Connected",
       "isActive": "Active",
       "isApproved": "Approved",
       "email": "Email",
@@ -29,7 +32,8 @@
       "role": "Role",
       "roleId": "Role ID",
       "createdAt": "Created At",
-      "updatedAt": "Updated At"
+      "updatedAt": "Updated At",
+      "lastSeen": "Last seen"
     },
     "forms": {
       "step1Title": "General Information",
@@ -170,6 +174,8 @@
         "activity": "Activity",
         "conversations": "Conversations",
         "notifications": "Notifications",
+        "devices": "Devices",
+        "connections": "Connections",
         "settings": "Settings"
       },
       "stats": {
@@ -347,6 +353,40 @@
         "notifications": "Notifications",
         "configureNotifications": "Configure notifications",
         "notificationSettings": "Notification Settings"
+      },
+      "devices": {
+        "title": "User Devices",
+        "singular": "Device",
+        "plural": "Devices",
+        "columns": {
+          "deviceName": "Device Name",
+          "deviceModel": "Model",
+          "os": "Operating System",
+          "macAddress": "MAC Address",
+          "status": "Status",
+          "trusted": "Trusted",
+          "untrusted": "Untrusted",
+          "lastActive": "Last Active",
+          "createdAt": "Registered At"
+        },
+        "empty": "No devices registered for this user."
+      },
+      "connections": {
+        "title": "User Connections",
+        "singular": "Connection",
+        "plural": "Connections",
+        "columns": {
+          "device": "Device",
+          "source": "Source",
+          "ipAddress": "IP Address",
+          "location": "Location",
+          "status": "Status",
+          "active": "Active",
+          "disconnected": "Disconnected",
+          "connectedAt": "Connected At",
+          "disconnectedAt": "Disconnected At"
+        },
+        "empty": "No connection history recorded for this user."
       },
       "noPhoneNumber": "No phone number"
     }

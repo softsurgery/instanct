@@ -1,9 +1,13 @@
 import React from "react";
 import { Alert } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
-import { api } from "@/api";
-import { ReactNativeUploadFile } from "@/api/upload";
-import { MessageVariant, PendingFileUpload, ResponseMessageDto } from "@/types";
+import { useApi } from "@/contexts/ApiContext";
+import {
+  calculateBatchUploadProgress,
+  type ReactNativeUploadFile,
+} from "@/lib/upload";
+import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
+import { PendingFileUpload } from "@/types";
 import { waitForUiReady } from "@/lib/device";
 import { toast } from "sonner-native";
 import { useChatPendingStore } from "@/stores/useChatPendingStore";
@@ -29,6 +33,7 @@ export const useSendChatFile = ({
   messages,
   onSend,
 }: UseSendChatFileProps) => {
+  const api = useApi();
   const pendingUploads = useChatPendingStore(
     useShallow((state) =>
       state.pendingFileUploads.filter(
@@ -98,12 +103,13 @@ export const useSendChatFile = ({
         for (let index = 0; index < uploadPayloads.length; index++) {
           const upload = await api.upload.uploadFile(
             uploadPayloads[index],
-            (filePercent) => {
-              const overall = Math.round(
-                (index * 100 + filePercent) / uploadPayloads.length,
-              );
+            (filePercent: number) => {
               updatePendingFile(clientId, {
-                progress: Math.min(99, overall),
+                progress: calculateBatchUploadProgress(
+                  index,
+                  uploadPayloads.length,
+                  filePercent,
+                ),
               });
             },
             true,

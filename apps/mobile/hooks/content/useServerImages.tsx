@@ -1,5 +1,5 @@
-import { Image } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Image } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { ImageSource } from "expo-image";
 import React from "react";
 import { View } from "react-native";
@@ -7,11 +7,11 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@instanct/mobile-components";
-import { Skeleton } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+} from "@softsurgery/mobile-components";
+import { Skeleton } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useAuthPersistStore } from "../useAuthPersistStore";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 
 interface UseServerImagesProps {
   ids: (number | undefined)[];
@@ -30,6 +30,7 @@ export const useServerImages = ({
   wrapperClassName,
   fallbackClassName,
 }: UseServerImagesProps) => {
+  const api = useApi();
   const accessToken = useAuthPersistStore((s) => s.accessToken);
 
   const getUploadSource = React.useCallback(

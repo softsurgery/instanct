@@ -27,6 +27,7 @@ sudo apt-get install -y \
   libasound2t64 \
   libnss3 \
   libgtk-3-0 \
-  libxss1
+  libxss1 \
+  libatomic1
 
 echo "Dependencies installed successfully!"

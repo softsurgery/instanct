@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { cn } from "@instanct/lib";
-import { Button } from "@instanct/ui";
+import { cn } from "@softsurgery/lib";
+import { Button } from "@softsurgery/ui";
 import { ChevronUp } from "lucide-react";
 
 export function ScrollToTop() {

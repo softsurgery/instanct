@@ -1,12 +1,12 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useEducationStore } from "../../../../hooks/stores/useEducation.store";
-import { FormBuilder } from "@instanct/form-builder";
-import { Button } from "@instanct/ui";
+import { FormBuilder } from "@softsurgery/form-builder";
+import { Button } from "@softsurgery/ui";
 import { useUpdateEducationFormStructure } from "./useUpdateEducationFormStructure";
 import { Save } from "lucide-react";
 import { updateEducationSchema } from "@/types/validations/education.validation";
-import { Spinner } from "@instanct/components";
+import { Spinner } from "@softsurgery/components";
 import { UpdateEducationDto } from "@/types";
 import { useTranslation } from "react-i18next";
 

@@ -10,10 +10,10 @@ import {
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
-import { api } from "~/api";
-import { ResponseMessageDto, ServerErrorResponse } from "~/types";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
+import { useApi } from "@/contexts/ApiContext";
+import { ResponseMessageDto, ServerErrorResponse } from "@softsurgery/api-client";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
@@ -24,8 +24,8 @@ import {
 } from "@/lib/chat";
 import { ScrollView } from "react-native-gesture-handler";
 import { ConversationDetailsRow } from "./ConversationDetailsRow";
-import { useUserPresence } from "@/hooks/content/chat/useUserPresence";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { useUserPresence } from "@/hooks/content/users/useUserPresence";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { ConversationSearchOverlay } from "../conversation/search/ConversationSearchOverlay";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useTranslation } from "react-i18next";
@@ -41,6 +41,7 @@ interface ConversationDetailsProps {
  * Screen displaying settings, participant info, media/file galleries, and block/report/delete actions for a conversation.
  */
 export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
+  const api = useApi();
   const { t } = useTranslation("chat");
   const conversationId = Number(id);
   const queryClient = useQueryClient();
@@ -62,7 +63,7 @@ export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
   }, [conversation, currentUser]);
 
   const identification = identifyUser(user);
-  const { isOnline } = useUserPresence({ userId: user?.id });
+  const { isConnected } = useUserPresence({ userId: user?.id });
 
   const [isSearching, setIsSearching] = React.useState(false);
 
@@ -218,7 +219,7 @@ export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
         >
           <View className="relative">
             {profilePicture}
-            {isOnline && (
+            {isConnected && (
               <View className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-card rounded-full" />
             )}
           </View>

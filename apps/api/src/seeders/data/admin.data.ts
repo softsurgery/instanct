@@ -1,5 +1,5 @@
-import { BasicRoles } from 'nsa-um/enums/basic-roles.enum';
-import { Gender } from 'nsa-um/enums/gender.enum';
+import { BasicRoles } from '@softsurgery/nsa-um/enums/basic-roles.enum';
+import { Gender } from '@softsurgery/nsa-um/enums/gender.enum';
 
 export const adminSeed = {
   core: {

@@ -1,12 +1,12 @@
 import { Table } from "@tanstack/react-table";
-import { Button } from "@instanct/ui/components/button";
+import { Button } from "@softsurgery/ui/components/button";
 import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { cn } from "@instanct/lib";
-import { Toggle } from "@instanct/ui/components/toggle";
+import { cn } from "@softsurgery/lib";
+import { Toggle } from "@softsurgery/ui/components/toggle";
 import { useTranslation } from "react-i18next";
 import { DataTableConfig } from "./types";
 

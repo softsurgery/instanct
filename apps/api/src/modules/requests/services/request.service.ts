@@ -7,13 +7,13 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { AbstractCrudService } from 'nsa-database';
-import { SessionEntity } from 'nsa-sessions/entities/session.entity';
-import { SessionRepository } from 'nsa-sessions/repositories/session.repository';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { PageMetaDto } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
+import { SessionEntity } from '@softsurgery/nsa-sessions/entities/session.entity';
+import { SessionRepository } from '@softsurgery/nsa-sessions/repositories/session.repository';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
 import { FindManyOptions, IsNull, MoreThan } from 'typeorm';
 import { RequestEntity } from '../entities/request.entity';
 import { RequestRepository } from '../repositories/request.repository';
@@ -21,7 +21,7 @@ import { UserService } from 'src/modules/users/services/user.service';
 import { CreateRequestDto } from '../dtos/create-request.dto';
 import { UpdateRequestDto } from '../dtos/update-request.dto';
 import { RequestStatus } from '../enums/request-status.enum';
-import { SessionService } from 'nsa-sessions/services/session.service';
+import { SessionService } from '@softsurgery/nsa-sessions/services/session.service';
 
 @Injectable()
 export class RequestService
@@ -44,8 +44,14 @@ export class RequestService
   }
 
   async onModuleInit(): Promise<void> {
-    await this.expireStaleRequests();
-    await this.scheduleActiveSessionExpirations();
+    try {
+      await this.expireStaleRequests();
+      await this.scheduleActiveSessionExpirations();
+    } catch (error) {
+      this.logger.warn(
+        `Skipped request expiration during startup: ${error instanceof Error ? error.message : error}`,
+      );
+    }
   }
 
   async findOneById(id: number | string, join?: string) {
@@ -74,7 +80,7 @@ export class RequestService
     const count = await this.repository.getTotalCount({
       where: queryOptions.where,
       relations: queryOptions.relations,
-    } as FindManyOptions<RequestEntity>);
+    });
 
     const entities = await this.repository.findAll(
       queryOptions as FindManyOptions<RequestEntity>,

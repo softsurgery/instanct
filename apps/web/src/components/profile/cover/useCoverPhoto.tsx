@@ -36,6 +36,7 @@ export const useCoverPhoto = (userId: string | undefined) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) uploadCover({ files: [file] });
+    event.target.value = "";
   };
 
   return {

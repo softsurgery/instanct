@@ -9,29 +9,32 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "nativewind",
-    "declaration": true,
+    "declaration": false,
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@instanct/lib": [
+      "react-native": [
+        "../../node_modules/react-native/types_generated/index.d.ts"
+      ],
+      "@softsurgery/lib": [
         "../lib/src/index.ts"
       ],
-      "@instanct/lib/*": [
+      "@softsurgery/lib/*": [
         "../lib/src/*"
       ],
-      "@instanct/mobile-ui": [
+      "@softsurgery/mobile-ui": [
         "../mobile-ui/src/index.ts"
       ],
-      "@instanct/mobile-ui/*": [
+      "@softsurgery/mobile-ui/*": [
         "../mobile-ui/src/*"
       ],
-      "@instanct/hooks": [
+      "@softsurgery/hooks": [
         "../hooks/src/index.ts"
       ],
-      "@instanct/hooks/*": [
+      "@softsurgery/hooks/*": [
         "../hooks/src/*"
       ]
     }

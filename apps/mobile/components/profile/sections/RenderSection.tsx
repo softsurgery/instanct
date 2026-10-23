@@ -1,6 +1,6 @@
-import { Icon, Text } from "@instanct/mobile-ui";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
-import { cn } from "@instanct/lib";
+import { Icon, Text } from "@softsurgery/mobile-ui";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import { cn } from "@softsurgery/lib";
 import { router } from "expo-router";
 import {
   Briefcase,
@@ -74,27 +74,19 @@ export const RenderSection = (section: ProfileSection) => {
             </Pressable>
           )}
 
-          <Pressable
-            className="h-9 w-9 items-center justify-center rounded-full border border-border active:bg-primary/15"
-            onPress={() => {
-              switch (section.key) {
-                case "experience":
-                  router.push("/main/profile/update-experiences");
-                  break;
-                case "education":
-                  router.push("/main/profile/update-educations");
-                  break;
-                case "industries":
-                  router.push({
-                    pathname: "/main/profile/industries",
-                    params: { userId: section?.userId },
-                  });
-                  break;
-              }
-            }}
-          >
-            <Icon as={Pen} size={16} color={primary} />
-          </Pressable>
+          {isBadge && (
+            <Pressable
+              className="h-9 w-9 items-center justify-center rounded-full border border-border active:bg-primary/15"
+              onPress={() => {
+                router.push({
+                  pathname: "/main/profile/industries",
+                  params: { userId: section?.userId },
+                });
+              }}
+            >
+              <Icon as={Pen} size={16} color={primary} />
+            </Pressable>
+          )}
         </View>
       </View>
 

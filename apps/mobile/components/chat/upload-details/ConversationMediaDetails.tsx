@@ -1,7 +1,7 @@
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
-import { useColorPalette, hslToHex } from "@instanct/mobile-components";
-import { MessageVariant, ResponseMessageDto } from "@/types";
+import { useColorPalette, hslToHex } from "@softsurgery/mobile-components";
+import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
 import { LegendList } from "@legendapp/list";
 import React from "react";
 import {

@@ -1,6 +1,6 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 
 interface useInfiniteIncomingSessionRequestsProps {
   limit?: number;
@@ -19,6 +19,7 @@ export const useInfiniteIncomingSessionRequests = (
     enabled: true,
   },
 ) => {
+  const api = useApi();
   const {
     data,
     fetchNextPage,

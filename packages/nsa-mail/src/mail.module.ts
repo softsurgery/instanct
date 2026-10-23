@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MailService } from './services/mail.service';
-import { TemplateModule } from 'nsa-templates/template.module';
+import { TemplateModule } from '@softsurgery/nsa-templates/template.module';
 
 @Module({
   controllers: [],

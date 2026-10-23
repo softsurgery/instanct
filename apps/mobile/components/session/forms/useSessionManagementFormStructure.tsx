@@ -6,7 +6,7 @@ import {
   MultiSelectFieldProps,
   SelectOption,
   TimeFieldProps,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 import { useTranslation } from "react-i18next";
 
 interface useSessionManagementFormStructureProps {
@@ -25,6 +25,7 @@ export const useSessionManagementFormStructure = ({
     id: "end-date",
     label: t("session.manage.endTime"),
     variant: FieldVariant.TIME,
+    placeholder: t("session.manage.placeholders.endTime"),
     error: t(store.errors.plannedEnd?.[0]),
     description: t("session.manage.descriptions.endTime"),
     props: {

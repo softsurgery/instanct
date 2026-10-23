@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { LocationTypes, WorkTypes } from "../user-management";
+import { toDateOrNull } from "@/lib/date";
+import { LocationTypes, WorkTypes } from "@softsurgery/api-client";
 
 // Messages are translation keys, resolved by the consumer in the "menu"
 // namespace (see useCreateExperienceFormStructure / useUpdateExperienceFormStructure).
@@ -22,14 +23,13 @@ const baseExperienceSchema = z.object({
     .min(1, {
       error: "experience.validation.companyEmpty",
     })
-    .max(50, {
+    .max(255, {
       error: "experience.validation.companyTooLong",
     }),
 
   startDate: z
     .preprocess(
-      (value) =>
-        value === null || value === "" ? null : new Date(value as string),
+      toDateOrNull,
       z.date({
         error: "experience.validation.startDateRequired",
       }),
@@ -43,12 +43,12 @@ const baseExperienceSchema = z.object({
         error: "experience.validation.startDateInFuture",
       },
     ),
-  location: z
-    .string()
-    .max(50, {
+  location: z.preprocess(
+    (value) => (value == null ? "" : value),
+    z.string().max(255, {
       error: "experience.validation.locationTooLong",
-    })
-    .optional(),
+    }),
+  ),
 
   workType: z.nativeEnum(WorkTypes, {
     error: "experience.validation.invalidWorkType",
@@ -57,21 +57,20 @@ const baseExperienceSchema = z.object({
     error: "experience.validation.invalidLocationType",
   }),
   endDate: z
-    .preprocess(
-      (value) =>
-        value === null || value === "" ? null : new Date(value as string),
-      z.union([z.date(), z.null()]),
-    )
+    .preprocess(toDateOrNull, z.union([z.date(), z.null()]))
     .optional(),
 
-  description: z.string().optional(),
+  description: z.preprocess(
+    (value) => (value == null ? "" : value),
+    z.string(),
+  ),
 });
 
 const createExperienceSchema = baseExperienceSchema
   .refine(
     (data) => {
       if (data.endDate) {
-        return data.endDate > data.startDate;
+        return data.endDate >= data.startDate;
       }
       return true;
     },
@@ -97,7 +96,7 @@ const updateExperienceSchema = baseExperienceSchema
   .refine(
     (data) => {
       if (data.endDate) {
-        return data.endDate > data.startDate;
+        return data.endDate >= data.startDate;
       }
       return true;
     },

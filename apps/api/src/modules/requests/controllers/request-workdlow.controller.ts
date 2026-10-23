@@ -10,18 +10,19 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
-import { NotificationInterceptor } from 'nsa-notifications/decorators/notification.interceptor';
-import { toDto } from 'nsa-database';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { NotificationInterceptor } from '@softsurgery/nsa-notifications/decorators/notification.interceptor';
+import { toDto } from '@softsurgery/nsa-database';
 import { RequestWorkflowService } from '../services/request-workflow.service';
 import { RequestService } from '../services/request.service';
 import { ResponseRequestWorkflowDto } from '../dtos/response-request-workflow.dto';
 import { UpdateRequestStatusDto } from '../dtos/update-request-status.dto';
-import { BatchNotify } from 'nsa-notifications/decorators/notify.decorator';
+import { BatchNotify } from '@softsurgery/nsa-notifications/decorators/notify.decorator';
 import { NotificationType } from 'src/app/enums/notification-type.enum';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { EventType } from 'src/app/enums/event-type.enum';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { UserService } from 'src/modules/users/services/user.service';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { RequestEvent } from '../enums/request-event.enum';
 
@@ -72,10 +73,20 @@ export class RequestWorkflowController {
     const senderId = request?.session?.user?.id;
 
     if (senderId) {
-      const notificationType =
-        updateRequestStatusDto.event === RequestEvent.Accept
-          ? NotificationType.REQUEST_ACCEPTED
-          : NotificationType.REQUEST_REJECTED;
+      const isAccepted = updateRequestStatusDto.event === RequestEvent.Accept;
+      const notificationType = isAccepted
+        ? NotificationType.REQUEST_ACCEPTED
+        : NotificationType.REQUEST_REJECTED;
+
+      req.logEvent = isAccepted
+        ? EventType.REQUEST_ACCEPTED
+        : EventType.REQUEST_REJECTED;
+
+      req.logInfo = {
+        requestId: id,
+        senderId,
+        senderName: identifyUser(request?.session?.user),
+      };
 
       req.batchNotificationInfo = [
         {

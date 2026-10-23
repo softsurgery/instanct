@@ -21,16 +21,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@instanct/ui/components/table";
+} from "@softsurgery/ui/components/table";
 import { PackageOpen } from "lucide-react";
 import { DataTablePagination } from "./data-table-pagination";
-import { Spinner } from "@instanct/components";
-import { cn } from "@instanct/lib";
+import { Spinner } from "@softsurgery/components";
+import { cn } from "@softsurgery/lib";
 import { DataTableConfig } from "./types";
-import { useFooter } from "@instanct/contexts";
+import { useFooter } from "@softsurgery/contexts";
 import { useTranslation } from "react-i18next";
 
-interface DataTableProps<TData, TValue> {
+export interface DataTableProps<TData, TValue> {
   className?: string;
   containerClassName?: string;
   columns: ColumnDef<TData, TValue>[];
@@ -38,6 +38,7 @@ interface DataTableProps<TData, TValue> {
   context: DataTableConfig<TData>;
   footerPagination?: boolean;
   isPending: boolean;
+  sticky?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -48,6 +49,7 @@ export function DataTable<TData, TValue>({
   context,
   footerPagination = true,
   isPending,
+  sticky = true,
 }: DataTableProps<TData, TValue>) {
   //set pagination in footer
   const { setContent } = useFooter();
@@ -113,7 +115,11 @@ export function DataTable<TData, TValue>({
       <DataTableToolbar table={table} context={context} />
       <div className={cn("rounded-lg border", containerClassName)}>
         <Table>
-          <TableHeader>
+          <TableHeader
+            className={cn(
+              sticky && "sticky top-0 z-10 bg-background [&_th]:bg-background"
+            )}
+          >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

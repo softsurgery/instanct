@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { ResponseConfigurationNamespaceDto } from '../namespace/response-configuration-namespace.dto';
 import { ParamVariant } from '../../enums/param-variant.enum';
 import { ConfigurationListFieldSchema } from '../../utils/configuration-list-schema';

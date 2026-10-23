@@ -1,16 +1,51 @@
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { PhotoPreview } from "@instanct/mobile-components";
+import { Icon, Skeleton, Text } from "@softsurgery/mobile-ui";
+import { PhotoPreview } from "@softsurgery/mobile-components";
 import {
   toVideoSource,
   VideoPreview,
-} from "@instanct/mobile-components";
-import { VideoThumbnailPreview } from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
+import { VideoThumbnailPreview } from "@softsurgery/mobile-components";
 import { Image, ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
 import React from "react";
 import { View, ViewStyle } from "react-native";
 import { MediaUploadProgress } from "../staging/MediaUploadProgress";
+
+interface MediaGridImageCellProps {
+  source: ImageSource | string;
+}
+
+const MediaGridImageCell = ({ source }: MediaGridImageCellProps) => {
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const imageSource = typeof source === "string" ? { uri: source } : source;
+  const sourceUri =
+    typeof imageSource === "object" && imageSource && "uri" in imageSource
+      ? imageSource.uri
+      : undefined;
+
+  React.useEffect(() => {
+    setIsLoaded(false);
+  }, [sourceUri]);
+
+  return (
+    <View className="w-full h-full relative">
+      {!isLoaded && (
+        <Skeleton
+          className="absolute inset-0"
+          style={{ width: "100%", height: "100%" }}
+        />
+      )}
+      <Image
+        source={imageSource}
+        style={{ width: "100%", height: "100%" }}
+        contentFit="cover"
+        cachePolicy="memory-disk"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
+      />
+    </View>
+  );
+};
 
 interface MediaImageGridProps {
   uris?: string[];
@@ -69,13 +104,7 @@ export const MediaImageGrid = ({
         return <VideoThumbnailPreview source={source} />;
       }
 
-      return (
-        <Image
-          source={source}
-          style={{ width: "100%", height: "100%" }}
-          contentFit="cover"
-        />
-      );
+      return <MediaGridImageCell source={source} />;
     }
 
     if (uri) {
@@ -83,16 +112,10 @@ export const MediaImageGrid = ({
         return <VideoThumbnailPreview source={{ uri }} />;
       }
 
-      return (
-        <Image
-          source={{ uri }}
-          style={{ width: "100%", height: "100%" }}
-          contentFit="cover"
-        />
-      );
+      return <MediaGridImageCell source={uri} />;
     }
 
-    return <View className="w-full h-full bg-muted" />;
+    return <Skeleton className="w-full h-full" />;
   };
 
   return (

@@ -1,7 +1,7 @@
 import type { LucideIcon, LucideProps } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { Icon } from "./icon";
 import { Text } from "./text";
 

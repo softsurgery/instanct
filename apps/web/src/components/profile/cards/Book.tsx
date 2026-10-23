@@ -13,7 +13,7 @@ export const Book = ({ className }: BookProps) => {
   const user = React.useMemo(() => userStore.response, [userStore.response]);
 
   return (
-    <div className="overflow-auto no-scrollbar mb-10">
+    <div className="mb-10">
       <div className={className}>
         {user?.id && <Experience userId={user.id} className="w-full" />}
       </div>

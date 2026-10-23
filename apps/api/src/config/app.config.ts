@@ -5,6 +5,7 @@ export default registerAs('app', (): Record<string, unknown> => ({
   name: process.env.APP_NAME ?? 'Instanct API Server',
   globalPrefix: process.env.API_PREFIX ?? '/api',
   publicUrl: process.env.APP_PUBLIC_URL ?? '',
+  timezone: process.env.TZ ?? undefined,
   cors: {
     origins: parseCorsOrigins(process.env.CORS_ORIGINS),
     debug: process.env.DEBUG_CORS === 'true',

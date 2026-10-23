@@ -143,6 +143,7 @@ components/chat/
 │   │   ├── MessageTextContent.tsx         # Clickable text & link highlights
 │   │   ├── ChatMediaBubble.tsx            # Single/multi image & video player
 │   │   ├── ChatMediaImageGrid.tsx         # Mosaic grid layout for multiple media
+│   │   ├── ChatMediaSkeleton.tsx          # Skeleton loading placeholder for media bubbles
 │   │   ├── ChatFileBubble.tsx             # Downloadable file attachment card
 │   │   ├── ChatFileList.tsx               # List of files inside a bubble
 │   │   └── ChatStaticBubble.tsx           # System messages (First Message / Poke)
@@ -179,7 +180,8 @@ components/chat/
 ### 6.3 Message Bubbles & Rendering Pipeline
 - **`ChatBubble`**: Determines whether a message is incoming or outgoing, applies directional styling, and renders the appropriate inner bubble variant (`TEXT`, `IMAGE`, `VIDEO`, `FILE`, `STATIC`).
 - **`MessageTextContent`**: Parses raw text and `ResponseMessageLinkDto[]` segments, rendering clickable hyperlinks (`ExtractedMessageLink`) and plain text segments.
-- **`ChatMediaBubble` & `ChatMediaImageGrid`**: Displays responsive image grids or video players with fullscreen lightbox support.
+- **`ChatMediaBubble` & `ChatMediaImageGrid`**: Displays responsive image grids or video players with fullscreen lightbox support and integrated skeleton placeholders while media or thumbnails are loading.
+- **`ChatMediaSkeleton`**: Dedicated media bubble skeleton placeholder used while conversations or individual media messages are loading.
 
 ### 6.4 Input Bar, Action Sheets & Media Staging
 - **`ConversationInput`**: Handles text entry, send button state, and opens `ConversationInputActionsSheet`.

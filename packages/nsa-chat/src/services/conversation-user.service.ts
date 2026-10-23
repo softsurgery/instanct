@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { ConversationUserEntity } from '../entities/conversation-user.entity';
 import { ConversationUserRepository } from '../repositories/conversation-user.repository';
 

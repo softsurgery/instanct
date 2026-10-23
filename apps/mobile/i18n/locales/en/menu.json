@@ -49,6 +49,9 @@
       "labels": {
         "industries": "Industries"
       },
+      "placeholders": {
+        "industries": "Select industries"
+      },
       "actions": {
         "update": "Update Industries",
         "updatePending": "Saving..."
@@ -105,7 +108,7 @@
       "titleTooShort": "Title must be at least 2 characters long",
       "titleTooLong": "Title must not exceed 255 characters",
       "institutionTooShort": "Institution name must be at least 2 characters long",
-      "institutionTooLong": "Institution name must not exceed 100 characters",
+      "institutionTooLong": "Institution name must not exceed 255 characters",
       "descriptionTooLong": "Description must not exceed 500 characters",
       "startDateInFuture": "Start date cannot be in the future",
       "endDateBeforeStart": "End date must be after start date",
@@ -189,7 +192,11 @@
         "company": "Enter the company name",
         "description": "Describe your role and responsibilities",
         "location": "Enter the location of your job",
-        "locationUpdate": "Enter the location of your job (e.g., New York, NY)"
+        "locationUpdate": "Enter the location of your job (e.g., New York, NY)",
+        "workType": "Select work type",
+        "locationType": "Select location type",
+        "startDate": "Select start date",
+        "endDate": "Select end date"
       },
       "descriptions": {
         "title": "The title of your position (e.g., Software Engineer).",
@@ -215,8 +222,8 @@
       "titleTooLong": "Title cannot exceed 255 characters.",
       "companyRequired": "Company name is required.",
       "companyEmpty": "Company name cannot be empty.",
-      "companyTooLong": "Company name cannot exceed 50 characters.",
-      "locationTooLong": "Location cannot exceed 50 characters.",
+      "companyTooLong": "Company name cannot exceed 255 characters.",
+      "locationTooLong": "Location cannot exceed 255 characters.",
       "invalidWorkType": "You must select a valid work type",
       "invalidLocationType": "You must select a valid location type",
       "startDateRequired": "Start date is required.",

@@ -7,13 +7,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { UserBlockService } from '../services/user-block.service';
-import { AdvancedRequest } from 'nsa-helpers/http';
-import { toDto } from 'nsa-database';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
+import { toDto } from '@softsurgery/nsa-database';
 import { ResponseUserBlockDto } from '../dtos/user-block/response-user-block.dto';
-import { ConversationService } from 'nsa-chat/services/conversation.service';
-import { ChatGateway } from 'nsa-chat/gateways/chat.gateway';
+import { ConversationService } from '@softsurgery/nsa-chat/services/conversation.service';
+import { ChatGateway } from '@softsurgery/nsa-chat/gateways/chat.gateway';
 
 @ApiTags('user-block')
 @ApiBearerAuth('access_token')

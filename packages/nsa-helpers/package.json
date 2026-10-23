@@ -1,7 +1,10 @@
 {
-  "name": "nsa-helpers",
+  "name": "@softsurgery/nsa-helpers",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared helpers module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,19 +38,18 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/build-shared-packages.mjs",
+    "build": "node ../../scripts/mjs/build-shared-packages.mjs",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "express": "^5.0.0",
-    "nsa-notifications": "workspace:*",
+    "@softsurgery/nsa-notifications": "workspace:*",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.10.7",
-    "typescript": "5.9.3"
+    "@types/node": "^22.10.7"
   }
 }

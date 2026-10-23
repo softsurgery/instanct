@@ -1,35 +1,54 @@
 import React from "react";
-import { ScrollView, ScrollViewProps, Text } from "react-native";
+import {
+  ScrollView,
+  Text,
+  type ScrollViewProps,
+  type ScrollView as ScrollViewInstance,
+} from "react-native";
 
 interface StableScrollViewProps extends ScrollViewProps {
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
+
+type NativeWindScrollViewProps = ScrollViewProps & {
+  className?: string;
+};
+
+const NativeWindScrollView = ScrollView as React.ComponentType<
+  NativeWindScrollViewProps & React.RefAttributes<ScrollViewInstance>
+>;
 
 const wrapChildren = (children: React.ReactNode): React.ReactNode => {
   return React.Children.map(children, (child) => {
     if (child == null) return null;
 
-    // Plain string or number
+    // Wrap plain text and numbers in Text.
     if (typeof child === "string" || typeof child === "number") {
       return <Text>{child}</Text>;
     }
 
-    // Fragment: recurse into its children
+    // Recursively process fragments.
     if (React.isValidElement(child) && child.type === React.Fragment) {
-      const fragment = child as React.ReactElement<any>;
+      const fragment = child as React.ReactElement<{
+        children?: React.ReactNode;
+      }>;
+
       return <>{wrapChildren(fragment.props.children)}</>;
     }
 
-    // React element with children: recurse
+    // Recursively process children of other React elements.
     if (React.isValidElement(child)) {
-      const element = child as React.ReactElement<any>;
-      if (element.props.children) {
+      const element = child as React.ReactElement<{
+        children?: React.ReactNode;
+      }>;
+
+      if (element.props.children != null) {
         return React.cloneElement(element, {
-          ...element.props,
           children: wrapChildren(element.props.children),
         });
       }
+
       return element;
     }
 
@@ -37,33 +56,34 @@ const wrapChildren = (children: React.ReactNode): React.ReactNode => {
   });
 };
 
-const StableScrollView = React.forwardRef<ScrollView, StableScrollViewProps>(
-  (
-    { className, children, style, bounces = false, refreshControl, ...props },
-    ref,
-  ) => {
-    return (
-      <ScrollView
-        ref={ref}
-        bounces={refreshControl ? true : bounces}
-        alwaysBounceHorizontal={false}
-        alwaysBounceVertical={refreshControl ? true : false}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        nestedScrollEnabled={true}
-        overScrollMode={refreshControl ? "always" : "never"}
-        keyboardShouldPersistTaps="handled"
-        style={style}
-        className={className}
-        refreshControl={refreshControl}
-        contentContainerStyle={{ flexGrow: 1 }}
-        {...props}
-      >
-        {wrapChildren(children)}
-      </ScrollView>
-    );
-  },
-);
+const StableScrollView = React.forwardRef<
+  ScrollViewInstance,
+  StableScrollViewProps
+>(function StableScrollView(
+  { className, children, style, bounces = false, refreshControl, ...props },
+  ref,
+) {
+  return (
+    <NativeWindScrollView
+      {...props}
+      ref={ref}
+      className={className}
+      bounces={refreshControl ? true : bounces}
+      alwaysBounceHorizontal={false}
+      alwaysBounceVertical={refreshControl ? true : false}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      nestedScrollEnabled
+      overScrollMode={refreshControl ? "always" : "never"}
+      keyboardShouldPersistTaps="handled"
+      style={style}
+      refreshControl={refreshControl}
+      contentContainerStyle={[{ flexGrow: 1 }, props.contentContainerStyle]}
+    >
+      {wrapChildren(children)}
+    </NativeWindScrollView>
+  );
+});
 
 StableScrollView.displayName = "StableScrollView";
 

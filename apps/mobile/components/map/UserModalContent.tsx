@@ -1,13 +1,13 @@
 import { usePanResponder } from "@/hooks/usePanResponder";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { NearbyUser } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 import { router } from "expo-router";
 import React from "react";
 import { TouchableWithoutFeedback, View } from "react-native";
-import { StablePressable } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
+import { StablePressable } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 
 interface UserModalContentProps {

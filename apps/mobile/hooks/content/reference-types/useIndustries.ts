@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -9,6 +9,7 @@ interface useIndustriesProps {
 export const useIndustries = (
   { enabled }: useIndustriesProps = { enabled: true },
 ) => {
+  const api = useApi();
   const {
     data: industriesSubTypeResp,
     isPending: isIndustriesSubTypePending,
@@ -16,7 +17,7 @@ export const useIndustries = (
   } = useQuery({
     queryKey: ["industries"],
     queryFn: async () =>
-      api.referenceTypes.refType.findAll({
+      api.admin.refType.findAll({
         filter: "parentId||$eq||industry",
         join: "params",
       }),
@@ -25,7 +26,7 @@ export const useIndustries = (
 
   const industries = React.useMemo(() => {
     if (!industriesSubTypeResp) return [];
-    return industriesSubTypeResp.flatMap((refType) => refType.params);
+    return industriesSubTypeResp.flatMap((refType) => refType.params ?? []);
   }, [industriesSubTypeResp]);
 
   return {

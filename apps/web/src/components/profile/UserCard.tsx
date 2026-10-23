@@ -1,13 +1,13 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
-import { Card, CardContent } from "@instanct/ui";
-import { Badge } from "@instanct/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/ui";
+import { Card, CardContent } from "@softsurgery/ui";
+import { Badge } from "@softsurgery/ui";
 
 import { cn } from "@/lib/utils";
 import { ResponseUserDto } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import React from "react";
-import { identifyUser, identifyUserAvatar } from "@instanct/lib";
+import { identifyUser, identifyUserAvatar } from "@softsurgery/lib";
 
 interface UserCardProps {
   className?: string;

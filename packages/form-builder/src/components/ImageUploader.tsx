@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage, cn } from "@instanct/ui";
+import { Avatar, AvatarFallback, AvatarImage, cn } from "@softsurgery/ui";
 import React from "react";
 
 interface ImageUploaderProps

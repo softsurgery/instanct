@@ -1,9 +1,9 @@
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { ApiPaginatedResponse } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -20,7 +20,7 @@ import {
 import { ConversationService } from '../services/conversation.service';
 import { ChatGateway } from '../gateways/chat.gateway';
 import { ResponseConversationDto } from '../dtos/conversation/response-conversation.dto';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { CreateConversationDto } from '../dtos/conversation/create-conversation.dto';
 import { CreateConversationReportDto } from '../dtos/conversation/create-conversation-report.dto';
 

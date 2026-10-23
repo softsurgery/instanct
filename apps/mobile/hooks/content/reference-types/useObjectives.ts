@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -9,6 +9,7 @@ interface useObjectivesProps {
 export const useObjectives = (
   { enabled }: useObjectivesProps = { enabled: true },
 ) => {
+  const api = useApi();
   const {
     data: objectivesSubTypeResp,
     isPending: isObjectivesSubTypePending,
@@ -16,7 +17,7 @@ export const useObjectives = (
   } = useQuery({
     queryKey: ["objectives"],
     queryFn: async () =>
-      api.referenceTypes.refType.findAll({
+      api.admin.refType.findAll({
         filter: "parentId||$eq||objectif",
         join: "params",
       }),
@@ -25,7 +26,7 @@ export const useObjectives = (
 
   const objectives = React.useMemo(() => {
     if (!objectivesSubTypeResp) return [];
-    return objectivesSubTypeResp.flatMap((refType) => refType.params);
+    return objectivesSubTypeResp.flatMap((refType) => refType.params ?? []);
   }, [objectivesSubTypeResp]);
 
 

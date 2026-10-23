@@ -6,7 +6,7 @@ import {
   FormStructure,
   EmailFieldProps,
   PasswordFieldProps,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 
 interface UseChangeEmailFormStructureProps {
   store: UserStore;

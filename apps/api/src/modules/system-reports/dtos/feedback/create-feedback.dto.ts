@@ -1,12 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
-  IsObject,
+  IsNumber,
   IsOptional,
   IsString,
   Length,
+  Max,
+  Min,
 } from 'class-validator';
-import { CreateDeviceInfoDto } from '../device-info/create-device-info.dto';
 import { FeedbackCategory } from '../../enums/feedback-category.enum';
 
 export class CreateFeedbackDto {
@@ -19,12 +20,15 @@ export class CreateFeedbackDto {
   @Length(10, 1024)
   message: string;
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: Number, required: false })
+  @IsNumber()
+  @Min(1)
+  @Max(5)
   @IsOptional()
   rating?: number;
 
-  @ApiProperty({ type: CreateDeviceInfoDto })
-  @IsObject()
+  @ApiProperty({ type: String, required: false })
+  @IsString()
   @IsOptional()
-  device?: CreateDeviceInfoDto;
+  deviceId?: string;
 }

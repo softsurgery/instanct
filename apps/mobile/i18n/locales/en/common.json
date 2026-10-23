@@ -80,6 +80,15 @@
     "previous": "Previous"
   },
   "formBuilder": {
+    "select": {
+      "placeholder": "Select an option"
+    },
+    "multiSelect": {
+      "placeholder": "Select options"
+    },
+    "datePicker": {
+      "placeholder": "Select a date"
+    },
     "mapPinField": {
       "placeholder": "Select a location",
       "title": "Pick a Location",

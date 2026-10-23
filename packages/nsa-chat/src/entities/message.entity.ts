@@ -1,4 +1,4 @@
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import {
   Column,
   Entity,
@@ -11,7 +11,7 @@ import { ConversationEntity } from './conversation.entity';
 import { MessageVariant } from '../enums/message-variant.enum';
 import { MessageUploadEntity } from './message-upload.entity';
 import { MessageLinkEntity } from './message-link.entity';
-import type { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
+import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
 import { StaticMessageEnum } from '../enums/static-message.registry';
 
 @Entity('messages')

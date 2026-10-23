@@ -1,5 +1,5 @@
-import { Skeleton } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Skeleton } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { View } from "react-native";
 
 interface SessionRequestCardSkeletonProps {

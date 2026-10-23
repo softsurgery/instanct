@@ -40,25 +40,49 @@ export const useAuthValidation = ({}: useAuthValidationProps = {}) => {
   );
 
   React.useEffect(() => {
-    if (!debouncedFirstName) return;
+    if (!debouncedFirstName) {
+      if (authStore.signUpRequestErrors?.firstName?.length) {
+        authStore.setNested("signUpRequestErrors.firstName", []);
+      }
+      return;
+    }
     const error = validateFirstName(debouncedFirstName);
     authStore.setNested("signUpRequestErrors.firstName", error ? [error] : []);
   }, [debouncedFirstName]);
 
   React.useEffect(() => {
-    if (!debouncedLastName) return;
+    if (!debouncedLastName) {
+      if (authStore.signUpRequestErrors?.lastName?.length) {
+        authStore.setNested("signUpRequestErrors.lastName", []);
+      }
+      return;
+    }
     const error = validateLastName(debouncedLastName);
     authStore.setNested("signUpRequestErrors.lastName", error ? [error] : []);
   }, [debouncedLastName]);
 
   React.useEffect(() => {
-    if (!debouncedPassword) return;
+    if (!debouncedPassword) {
+      if (authStore.signUpRequestErrors?.password?.length) {
+        authStore.setNested("signUpRequestErrors.password", [
+          validatePassword(debouncedPassword)!,
+        ]);
+      }
+      return;
+    }
     const error = validatePassword(debouncedPassword);
     authStore.setNested("signUpRequestErrors.password", error ? [error] : []);
   }, [debouncedPassword]);
 
   React.useEffect(() => {
-    if (!debouncedConfirmPassword) return;
+    if (!debouncedConfirmPassword) {
+      if (authStore.signUpRequestErrors?.confirmPassword?.length) {
+        authStore.setNested("signUpRequestErrors.confirmPassword", [
+          validateConfirmPassword(debouncedPassword, debouncedConfirmPassword)!,
+        ]);
+      }
+      return;
+    }
     const error = validateConfirmPassword(
       debouncedPassword,
       debouncedConfirmPassword,
@@ -91,6 +115,22 @@ export const useAuthValidation = ({}: useAuthValidationProps = {}) => {
       enabled: !!debouncedEmail && !emailError,
     });
 
+  React.useEffect(() => {
+    if (usernameUser) {
+      authStore.setNested("signUpRequestErrors.username", [
+        "auth.signUp.errors.usernameTaken",
+      ]);
+    }
+  }, [usernameUser]);
+
+  React.useEffect(() => {
+    if (emailUser) {
+      authStore.setNested("signUpRequestErrors.email", [
+        "auth.signUp.errors.emailTaken",
+      ]);
+    }
+  }, [emailUser]);
+
   return {
     usernameValidation: {
       usernameError,
@@ -105,8 +145,8 @@ export const useAuthValidation = ({}: useAuthValidationProps = {}) => {
   };
 };
 
-export const validateFirstName = (value: string) => {
-  if (!value.trim()) return `auth.validation.signUp.firstNameRequired`;
+export const validateFirstName = (value?: string) => {
+  if (!value || !value.trim()) return null;
 
   if (value.trim().length < 2)
     return `auth.validation.signUp.firstNameTooShort`;
@@ -118,8 +158,8 @@ export const validateFirstName = (value: string) => {
   return null;
 };
 
-export const validateLastName = (value: string) => {
-  if (!value.trim()) return `auth.validation.signUp.lastNameRequired`;
+export const validateLastName = (value?: string) => {
+  if (!value || !value.trim()) return null;
 
   if (value.trim().length < 2) return `auth.validation.signUp.lastNameTooShort`;
 
@@ -179,5 +219,12 @@ export const validateConfirmPassword = (
   if (password !== confirmPassword)
     return `auth.validation.signUp.passwordsMismatch`;
 
+  return null;
+};
+
+export const validateIndustries = (industries?: number[]) => {
+  if (!industries || industries.length === 0) {
+    return "auth.validation.signUp.industriesRequired";
+  }
   return null;
 };

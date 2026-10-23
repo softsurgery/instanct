@@ -2,8 +2,8 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
 import { MessageUploadEntity } from '../entities/message-upload.entity';
 import { CreateMessageUploadDto } from '../dtos/message-upload/create-message-upload.dto';
-import { StorageService } from 'nsa-storage/services/storage.service';
-import { AbstractCrudService } from 'nsa-database';
+import { StorageService } from '@softsurgery/nsa-storage/services/storage.service';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { MessageUploadRepository } from '../repositories/message-upload.repository';
 
 @Injectable()

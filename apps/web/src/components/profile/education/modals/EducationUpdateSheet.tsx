@@ -1,5 +1,5 @@
 import { GraduationCap } from "lucide-react";
-import { useSheet } from "@instanct/components";
+import { useSheet } from "@softsurgery/components";
 import { EducationUpdateForm } from "../forms/EducationUpdateFrom";
 import { useTranslation } from "react-i18next";
 

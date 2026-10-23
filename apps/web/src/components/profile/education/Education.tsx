@@ -16,7 +16,7 @@ import { useEducationCreateSheet } from "./modals/EducationCreateSheet";
 import { useEducationUpdateSheet } from "./modals/EducationUpdateSheet";
 import { useEducationDeleteDialog } from "./modals/EducationDeleteDialog";
 import { EducationSection } from "./EducationSection";
-import { Spinner } from "@instanct/components";
+import { Spinner } from "@softsurgery/components";
 
 interface EducationProps {
   className?: string;
@@ -54,7 +54,7 @@ export const Education = ({ className, userId }: EducationProps) => {
 
   // Update education mutation
   const { mutate: updateEducation, isPending: isUpdatePending } = useMutation({
-    mutationFn: (data: { id: string; education: UpdateEducationDto }) =>
+    mutationFn: (data: { id: number; education: UpdateEducationDto }) =>
       api.education.update(data.id, data.education),
     onSuccess: () => {
       t("userManagement.inspect.books.experience.messages.updatedSuccess");
@@ -69,7 +69,7 @@ export const Education = ({ className, userId }: EducationProps) => {
 
   // Delete education mutation
   const { mutate: deleteEducation, isPending: isDeletePending } = useMutation({
-    mutationFn: (id: string) => api.education.remove(id),
+    mutationFn: (id: number) => api.education.remove(id),
     onSuccess: () => {
       toast(t("userManagement.education.messages.deletedSuccess"));
       refetchEducations();
@@ -148,7 +148,7 @@ export const Education = ({ className, userId }: EducationProps) => {
   };
 
   // Handle delete click - set education in store and open delete dialog
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = (id: number) => {
     const educationToDelete = educations?.find((edu) => edu.id === id);
     if (educationToDelete) {
       educationStore.set("response", educationToDelete);

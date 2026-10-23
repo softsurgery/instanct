@@ -1,5 +1,6 @@
 import type { AxiosInstance } from "axios";
 import {
+  type CreateBugDto,
   type QueryParams,
   type Paginated,
   type ResponseBugDto,
@@ -7,6 +8,10 @@ import {
 
 export function createBugResource(http: AxiosInstance) {
   return {
+    create: async (createBugDto: CreateBugDto): Promise<ResponseBugDto> => {
+      const { data } = await http.post<ResponseBugDto>(`/bug`, createBugDto);
+      return data;
+    },
     findPaginated: async (
       options?: QueryParams
     ): Promise<Paginated<ResponseBugDto>> => {

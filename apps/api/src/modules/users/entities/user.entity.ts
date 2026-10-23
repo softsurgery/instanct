@@ -9,12 +9,12 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { Gender } from 'nsa-um/enums/gender.enum';
-import { StorageEntity } from 'nsa-storage/entities/storage.entity';
+import { Gender } from '@softsurgery/nsa-um/enums/gender.enum';
+import { StorageEntity } from '@softsurgery/nsa-storage/entities/storage.entity';
 import { UserUploadEntity } from './user-upload.entity';
 
-import { RefParamEntity } from 'nsa-reference-types/entities/ref-param.entity';
-import { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
+import { RefParamEntity } from '@softsurgery/nsa-reference-types/entities/ref-param.entity';
+import { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
 import { GeolocationEntity } from 'src/modules/geolocation/entities/geolocation.entity';
 import { FollowEntity } from './follow.entity';
 import { ExperienceEntity } from './experience.entity';
@@ -22,8 +22,8 @@ import { EducationEntity } from './education.entity';
 import { IsOptional } from 'class-validator';
 import { UserBookmarkEntity } from './user-bookmark.entity';
 import { Expose } from 'class-transformer';
-import { SessionEntity } from 'nsa-sessions/entities/session.entity';
-import { SessionStatus } from 'nsa-sessions/enums/session-status.enum';
+import { SessionEntity } from '@softsurgery/nsa-sessions/entities/session.entity';
+import { SessionStatus } from '@softsurgery/nsa-sessions/enums/session-status.enum';
 
 @ChildEntity()
 export class UserEntity extends AbstractUserEntity {

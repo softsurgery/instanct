@@ -1,7 +1,10 @@
 {
-  "name": "nsa-configurations",
+  "name": "@softsurgery/nsa-configurations",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared configurations module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +38,7 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/build-shared-packages.mjs",
+    "build": "node ../../scripts/mjs/build-shared-packages.mjs",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
@@ -45,14 +48,13 @@
     "@nestjs/swagger": "^11.2.1",
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
-    "nsa-um": "workspace:*",
-    "nsa-auth": "workspace:*",
-    "nsa-database": "workspace:*",
-    "nsa-logger": "workspace:*",
+    "@softsurgery/nsa-um": "workspace:*",
+    "@softsurgery/nsa-auth": "workspace:*",
+    "@softsurgery/nsa-database": "workspace:*",
+    "@softsurgery/nsa-logger": "workspace:*",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
     "@types/node": "^22.10.7"
   }
 }

@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { api } from "~/api";
+import { useApi } from "@/contexts/ApiContext";
 
 interface UseInfiniteUserBookmarksProps {
   search?: string;
@@ -15,6 +15,7 @@ export const useInfiniteUserBookmarks = (
     enabled: true,
   },
 ) => {
+  const api = useApi();
   const {
     data,
     fetchNextPage,
@@ -34,7 +35,7 @@ export const useInfiniteUserBookmarks = (
         join: join.join(","),
       };
 
-      return api.user.findPaginatedBookmarks({
+      return api.currentUser.findPaginatedBookmarks({
         ...queryParams,
         search,
       });

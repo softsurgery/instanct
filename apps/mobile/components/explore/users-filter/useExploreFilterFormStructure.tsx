@@ -3,7 +3,7 @@ import {
   FieldVariant,
   MultiSelectFieldProps,
   SelectOption,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 import { ExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useTranslation } from "react-i18next";
 

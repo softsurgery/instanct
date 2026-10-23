@@ -1,37 +1,34 @@
 import React from "react";
-import { Text, Icon } from "@instanct/mobile-ui";
+import { Text, Icon } from "@softsurgery/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useEducations } from "@/hooks/content/users/useEducations";
 import { useExperiences } from "@/hooks/content/users/useExperiences";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { identifyUser } from "@/lib/user";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { createClientStore, useUserStore } from "@/stores/useUserStore";
-import {
-  ResponseEducationDto,
-  ResponseExperienceDto,
-  ResponseRefParamDto,
-  ServerErrorResponse,
-} from "@/types";
-import { useFocusEffect, useNavigation } from "expo-router";
-import { View, Pressable } from "react-native";
+import { ResponseEducationDto, ResponseExperienceDto, ResponseRefParamDto, ServerErrorResponse } from "@softsurgery/api-client";
+import { router, useFocusEffect, useNavigation } from "expo-router";
+import { toUpdateExperienceDto } from "./experience/toUpdateExperienceDto";
+import { toUpdateEducationDto } from "./education/toUpdateEducationDto";
+import { View, Pressable, useWindowDimensions } from "react-native";
 import { ProfileStat } from "./ProfileStat";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
-import { createMaterialTopTabNavigator } from "expo-router/js-top-tabs";
+import { TabView, TabBar } from "react-native-tab-view";
 import { AboutTab } from "./sections/AboutTab";
 import { CareerTab } from "./sections/CareerTab";
 import { RenderSection } from "./sections/RenderSection";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { ProfileCover } from "./ProfileCover";
 import { toast } from "sonner-native";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { useMutation } from "@tanstack/react-query";
 import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
 import { ExperienceInstance } from "./experience/ExperienceInstance";
 import { EducationInstance } from "./education/EducationInstance";
-import { hslToHex, useColorPalette } from "@instanct/mobile-components";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { useScrollableElement } from "@/hooks/useScrollableElement";
 import Animated, {
   useAnimatedStyle,
@@ -61,6 +58,7 @@ export const InspectBaseProfile = ({
   id,
   coverExtra,
 }: InspectBaseProfileProps) => {
+  const api = useApi();
   const { animatedHeaderStyle, handleScroll, onLayout, showHeader } =
     useScrollableElement({
       deltaThreshold: 0,
@@ -115,7 +113,7 @@ export const InspectBaseProfile = ({
 
   const { mutate: sendVerifyEmail, isPending: isSendVerifyEmailPending } =
     useMutation({
-      mutationFn: () => api.auth.sendVerifyEmail(user?.email),
+      mutationFn: () => api.clientAuth.sendVerifyEmail({ email: user?.email }),
       onMutate: () => {
         setLoading(true);
       },
@@ -137,7 +135,6 @@ export const InspectBaseProfile = ({
 
   React.useEffect(() => {
     return () => {
-      userStore?.reset();
       storeRef.current = null as any;
       setLoading(false);
     };
@@ -168,11 +165,58 @@ export const InspectBaseProfile = ({
     }, [onRefresh]),
   );
 
+  const handleEditExperience = React.useCallback(
+    (experience: ResponseExperienceDto) => {
+      userStore?.set("responseExperience", experience);
+      userStore?.set("updateExperienceDto", toUpdateExperienceDto(experience));
+      userStore?.set("present", experience.endDate == null);
+      userStore?.set("experienceErrors", {});
+      router.push("/main/profile/update-experience");
+    },
+    [userStore],
+  );
+
+  const handleEditEducation = React.useCallback(
+    (education: ResponseEducationDto) => {
+      userStore?.set("responseEducation", education);
+      userStore?.set("updateEducationDto", toUpdateEducationDto(education));
+      userStore?.set("educationErrors", {});
+      router.push("/main/profile/update-education");
+    },
+    [userStore],
+  );
+
   // ---------------------------------------------------------------
   //  PROFILE SECTIONS CONFIG
   // ---------------------------------------------------------------
   const profileSections: ProfileSection[] = React.useMemo(
     () => [
+      {
+        key: "experience",
+        title: t("menu.tabs.career.experience.title"),
+        data: experiences as unknown[],
+        editable: currentUser?.id === user?.id,
+        renderItem: (experience: ResponseExperienceDto) => (
+          <ExperienceInstance
+            experience={experience}
+            editable={currentUser?.id === user?.id}
+            onEdit={() => handleEditExperience(experience)}
+          />
+        ),
+      },
+      {
+        key: "education",
+        title: t("menu.tabs.career.education.title"),
+        data: educations as unknown[],
+        editable: currentUser?.id === user?.id,
+        renderItem: (education: ResponseEducationDto) => (
+          <EducationInstance
+            education={education}
+            editable={currentUser?.id === user?.id}
+            onEdit={() => handleEditEducation(education)}
+          />
+        ),
+      },
       {
         key: "industries",
         title: t("menu.tabs.career.industries.title"),
@@ -186,24 +230,6 @@ export const InspectBaseProfile = ({
           </View>
         ),
       },
-      {
-        key: "experience",
-        title: t("menu.tabs.career.experience.title"),
-        data: experiences as unknown[],
-        editable: currentUser?.id === user?.id,
-        renderItem: (experience: ResponseExperienceDto) => (
-          <ExperienceInstance experience={experience} />
-        ),
-      },
-      {
-        key: "education",
-        title: t("menu.tabs.career.education.title"),
-        data: educations as unknown[],
-        editable: currentUser?.id === user?.id,
-        renderItem: (education: ResponseEducationDto) => (
-          <EducationInstance education={education} />
-        ),
-      },
     ],
     [
       experiences,
@@ -212,11 +238,74 @@ export const InspectBaseProfile = ({
       userIndustries,
       currentUser?.id,
       user?.id,
+      handleEditExperience,
+      handleEditEducation,
       t,
     ],
   );
 
-  const Tab = createMaterialTopTabNavigator();
+  const layout = useWindowDimensions();
+  const [tabIndex, setTabIndex] = React.useState(0);
+  const routes = React.useMemo(
+    () => [
+      { key: "about", title: t("menu.tabs.about.title") },
+      { key: "career", title: t("menu.tabs.career.title") },
+    ],
+    [t],
+  );
+
+  const tabOptions = React.useMemo(
+    () => ({
+      about: {
+        labelText: t("menu.tabs.about.title"),
+        labelStyle: {
+          fontSize: 12,
+          fontWeight: "600" as const,
+          textTransform: "none" as const,
+        },
+      },
+      career: {
+        labelText: t("menu.tabs.career.title"),
+        labelStyle: {
+          fontSize: 12,
+          fontWeight: "600" as const,
+          textTransform: "none" as const,
+        },
+      },
+    }),
+    [t],
+  );
+
+  const renderScene = React.useCallback(
+    ({ route }: { route: { key: string } }) => {
+      switch (route.key) {
+        case "about":
+          return (
+            <AboutTab
+              className="flex-1"
+              user={user}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              onScroll={handleScroll}
+            />
+          );
+        case "career":
+          return (
+            <CareerTab
+              profileSections={profileSections}
+              renderSection={RenderSection}
+              userId={id}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              onScroll={handleScroll}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [user, onRefresh, refreshing, handleScroll, profileSections, id],
+  );
 
   const animatedTabsStyle = useAnimatedStyle(() => {
     return {
@@ -279,8 +368,12 @@ export const InspectBaseProfile = ({
                         disabled={isSendVerifyEmailPending}
                         className="flex-row items-center gap-1.5 rounded-xl border border-border px-3.5 py-2 active:opacity-80 bg-yellow-700"
                       >
-                        <Icon as={Mail} size={16} color={"white"} />
-                        <Text className="text-md font-semibold text-white">
+                        <Icon
+                          as={Mail}
+                          size={16}
+                          color={palette.primaryForeground}
+                        />
+                        <Text className="text-md font-semibold text-primary-foreground">
                           {t("menu.actions.verifyEmail")}
                         </Text>
                       </Pressable>
@@ -296,74 +389,32 @@ export const InspectBaseProfile = ({
         className={cn("flex-1", !user?.emailVerified ? "mt-2" : "")}
         style={animatedTabsStyle}
       >
-        <Tab.Navigator
-          screenOptions={{
-            tabBarScrollEnabled: false,
-            tabBarLabelStyle: {
-              fontSize: 12,
-              fontWeight: "600",
-              textTransform: "none",
-            },
-            tabBarIndicatorStyle: {
-              backgroundColor: hslToHex(palette.primary),
-            },
-            tabBarStyle: { backgroundColor: "transparent" },
-            sceneStyle: { flex: 1 },
-            swipeEnabled: true,
-            animationEnabled: true,
-          }}
-        >
-          <Tab.Screen
-            name={t("menu.tabs.about.title")}
-            options={{
-              tabBarLabel: t("menu.tabs.about.title"),
-            }}
-          >
-            {() => (
-              <AboutTab
-                className="flex-1"
-                user={user}
-                onRefresh={onRefresh}
-                refreshing={refreshing}
-                onScroll={handleScroll}
-              />
-            )}
-          </Tab.Screen>
-          <Tab.Screen
-            name={t("menu.tabs.career.title")}
-            options={{
-              tabBarLabel: t("menu.tabs.career.title"),
-            }}
-          >
-            {() => (
-              <CareerTab
-                profileSections={profileSections}
-                renderSection={RenderSection}
-                userId={id}
-                onRefresh={onRefresh}
-                refreshing={refreshing}
-                onScroll={handleScroll}
-              />
-            )}
-          </Tab.Screen>
-          {/* <Tab.Screen
-            name="Interests"
-            options={{
-              tabBarLabel: "Interests",
-            }}
-          >
-            {() => (
-              <InterestsTab
-                profileSections={profileSections}
-                renderSection={RenderSection}
-                userId={id}
-                onRefresh={onRefresh}
-                refreshing={refreshing}
-                onScroll={handleScroll}
-              />
-            )}
-          </Tab.Screen> */}
-        </Tab.Navigator>
+        <TabView
+          navigationState={{ index: tabIndex, routes }}
+          renderScene={renderScene}
+          onIndexChange={setTabIndex}
+          initialLayout={{ width: layout.width }}
+          swipeEnabled={true}
+          renderTabBar={(props) => (
+            <TabBar
+              {...props}
+              scrollEnabled={false}
+              options={tabOptions}
+              indicatorStyle={{
+                backgroundColor: hslToHex(palette.primary),
+                height: 2,
+              }}
+              style={{
+                backgroundColor: "transparent",
+                elevation: 0,
+                shadowOpacity: 0,
+              }}
+              activeColor={hslToHex(palette.foreground)}
+              inactiveColor={hslToHex(palette.mutedForeground)}
+              pressColor="transparent"
+            />
+          )}
+        />
       </Animated.View>
     </View>
   );

@@ -1,12 +1,12 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { api } from "@/lib/api";
-import { useBreadcrumb } from "@instanct/contexts";
-import { useDebounce } from "@instanct/hooks/utils";
+import { useBreadcrumb } from "@softsurgery/contexts";
+import { useDebounce } from "@softsurgery/hooks/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useUserColumns } from "./columns";
-import { DataTable } from "@instanct/datatable-builder";
+import { DataTable } from "@softsurgery/datatable-builder";
 import { useUserCreateSheet } from "./modals/UserCreateSheet";
 import { useUserUpdateSheet } from "./modals/UserUpdateSheet";
 import { useUserDeleteDialog } from "./modals/UserDeleteDialog";
@@ -21,15 +21,16 @@ import {
   UpdateUserDto,
 } from "@/types";
 import { updateUserSchema } from "@/types/validations/user.validation";
-import { useIntro } from "@instanct/contexts";
+import { useIntro } from "@softsurgery/contexts";
 import { ArrowDown, ArrowUp, BellPlus } from "lucide-react";
 import { useApproveUserDialog } from "./modals/UserApproveDialog";
 import { useDisapproveUserDialog } from "./modals/UserDisapproveDialog";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-import { DataTableConfig } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
 import { useUploads } from "@/hooks/content/useUploads";
 import { useUpload } from "@/hooks/content/useUpload";
+import { useUserConnection } from "@/hooks/content/user/useUserConnection";
 
 interface UsersProps {
   className?: string;
@@ -414,7 +415,10 @@ export const Users = ({ className }: UsersProps) => {
     },
   };
 
-  const columns = useUserColumns(context, t);
+  const userIds = React.useMemo(() => users.map((u) => u.id), [users]);
+  const { isUserConnected, statuses } = useUserConnection(userIds);
+
+  const columns = useUserColumns(context, t, isUserConnected, statuses);
 
   const isPending =
     isUsersPending || paging || resizing || searching || sorting;
@@ -422,7 +426,7 @@ export const Users = ({ className }: UsersProps) => {
   return (
     <div className={cn("flex flex-col flex-1 overflow-hidden", className)}>
       <DataTable
-        className="flex flex-col flex-1 overflow-auto p-1"
+        className="flex flex-col flex-1 overflow-hidden p-1"
         containerClassName="overflow-auto"
         columns={columns}
         data={users}

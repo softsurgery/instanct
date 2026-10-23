@@ -8,7 +8,7 @@
   },
   "descriptions": {
     "TEST": "هذا هو إشعار اختبار يوصف كيفية اختبار النظام للتحقق من أن نظام الإشعارات يعمل بشكل صحيح.",
-    "NEW_SIGNIN": "لقد رأينا إشعار جديد من جهاز جديد",
+    "NEW_SIGNIN": "لاحظنا تسجيل دخول جديد من جهاز جديد",
     "REQUEST_RECEIVED": "لقد تلقيت طلبًا جديدًا من {{senderIdentification}}. انقر لعرض تفاصيل الطلب والرد عليه.",
     "REQUEST_ACCEPTED": "{{responderIdentification}} قد قبل طلبك. يمكنك الآن الاتصال والبدء في التعاون!",
     "REQUEST_REJECTED": "{{responderIdentification}} قد رفض طلبك. لا تقلق"

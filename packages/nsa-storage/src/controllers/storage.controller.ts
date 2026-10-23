@@ -16,12 +16,12 @@ import {
 import { Request, Response } from 'express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { IQueryObject } from 'nsa-database';
-import { ApiPaginatedResponse } from 'nsa-database';
-import { PageDto } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
 import { StorageService } from '../services/storage.service';
 import { StorageEntity } from '../entities/storage.entity';
-import { Public } from 'nsa-auth/utils/public-strategy';
+import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
 
 @ApiTags('storage')
 @ApiBearerAuth('access_token')

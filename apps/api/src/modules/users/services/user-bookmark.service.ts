@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { UserBookmarkEntity } from '../entities/user-bookmark.entity';
 import { UserBookmarkRepository } from '../repositories/user-bookmark.repository';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
 import { FindManyOptions } from 'typeorm';
-import { PageMetaDto } from 'nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
 
 @Injectable()
 export class UserBookmarkService extends AbstractCrudService<UserBookmarkEntity> {

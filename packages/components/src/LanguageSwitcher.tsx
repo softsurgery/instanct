@@ -1,14 +1,14 @@
 "use client"
 
 import React from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@instanct/ui/components/select";
+} from "@softsurgery/ui/components/select";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 

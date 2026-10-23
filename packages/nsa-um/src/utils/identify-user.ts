@@ -1,6 +1,6 @@
 import { AbstractUserEntity } from '../entities/abstract-user.entity';
 
-export const identifyUser = (user: AbstractUserEntity | null) => {
+export const identifyUser = (user?: AbstractUserEntity | null) => {
   if (!user) return 'unknown';
   return user?.firstName && user?.lastName
     ? `${user?.firstName?.charAt(0).toUpperCase() + user?.firstName.slice(1)} ${

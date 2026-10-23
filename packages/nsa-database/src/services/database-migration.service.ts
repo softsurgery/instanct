@@ -5,7 +5,6 @@ import { DataSource, FindManyOptions } from 'typeorm';
 import * as fs from 'fs';
 import { join } from 'path';
 import { readFileSync } from 'fs';
-import { MigrationChecksumValidationException } from '../errors/migration.checksum-validation.error';
 import { MigrationMissingMigrationFilesException } from '../errors/migration.missing-file.error';
 import { MigrationRepository } from '../repositories/migration.repository';
 import { MigrationEntity } from '../entities/migration.entity';
@@ -131,19 +130,26 @@ export class MigrationService {
       });
 
       if (existingMigration) {
-        if (
-          !existingMigration.success &&
-          migrationFile.checksum !== existingMigration.checksum
-        ) {
-          throw new MigrationChecksumValidationException(
-            migrationFile.description,
-          );
+        if (existingMigration.success) {
+          if (migrationFile.checksum !== existingMigration.checksum) {
+            // Already applied — do not re-run. Sync stored checksum so boot
+            // does not keep treating the file as pending after editorial edits.
+            this.logger.warn(
+              `Checksum changed for already-applied migration '${migrationFile.description}' (${existingMigration.checksum} -> ${migrationFile.checksum}); skipping re-run`,
+            );
+            existingMigration.checksum = migrationFile.checksum;
+            await this.save(existingMigration);
+          }
+          continue;
         }
-        if (!existingMigration.success) {
-          await this.executeMigration(migrationPath, migrationFile);
-          existingMigration.success = true;
-          await this.save(existingMigration);
-        }
+
+        // Allow retrying a failed migration after the SQL file was fixed.
+        existingMigration.checksum = migrationFile.checksum;
+        existingMigration.script = migrationFile.script;
+        existingMigration.description = migrationFile.description;
+        await this.executeMigration(migrationPath, migrationFile);
+        existingMigration.success = true;
+        await this.save(existingMigration);
       } else {
         const migration = new MigrationEntity();
         migration.version = migrationFile.version;

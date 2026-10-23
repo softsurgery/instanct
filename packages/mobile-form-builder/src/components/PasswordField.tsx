@@ -1,6 +1,6 @@
-import { Icon } from "@instanct/mobile-ui";
-import { Input } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Input } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { Eye, EyeOff } from "lucide-react-native";
 import React from "react";
 import { TextInputProps, TouchableOpacity, View } from "react-native";

@@ -1,9 +1,11 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { api } from "@/lib/api";
 import { OAuthProvider } from "@/types";
+import { AppleAuthWebUtils } from "@/lib/apple-auth";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -38,17 +40,35 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
+    ...(process.env.APPLE_CLIENT_ID && process.env.APPLE_TEAM_ID && process.env.APPLE_KEY_ID
+      ? [
+          AppleProvider({
+            clientId: process.env.APPLE_CLIENT_ID,
+            clientSecret: AppleAuthWebUtils.generateClientSecret({
+              clientId: process.env.APPLE_CLIENT_ID,
+              teamId: process.env.APPLE_TEAM_ID,
+              keyId: process.env.APPLE_KEY_ID,
+              privateKey: process.env.APPLE_PRIVATE_KEY,
+              privateKeyPath: process.env.APPLE_PRIVATE_KEY_PATH,
+            }),
+          }),
+        ]
+      : []),
   ],
   callbacks: {
     async signIn({ account, user }) {
-      if (account?.provider === "google" || account?.provider === "github") {
+      if (
+        account?.provider === "google" ||
+        account?.provider === "github" ||
+        account?.provider === "apple"
+      ) {
         const idToken = account.id_token || account.access_token;
         if (!idToken) {
           console.warn("No ID token found for OAuth provider");
           return false;
         }
         try {
-          // Call your backend OAuth login
+          // Call backend OAuth login
           const data = await api.auth.oauth({
             provider: account.provider as OAuthProvider,
             idToken,

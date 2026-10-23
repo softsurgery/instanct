@@ -1,6 +1,6 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { PermissionService } from 'nsa-um/services/permission.service';
+import { PermissionService } from '@softsurgery/nsa-um/services/permission.service';
 import {
   permissionActionsSeed,
   permissionEntitiesSeed,

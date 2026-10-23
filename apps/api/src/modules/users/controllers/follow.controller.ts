@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FollowService } from '../services/follow.service';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 
 @ApiTags('follow')
 @ApiBearerAuth('access_token')
@@ -26,16 +27,29 @@ export class FollowController {
 
   @Post(':id/follow')
   @LogEvent(EventType.USER_FOLLOW)
-  follow(@Param('id') targetId: string, @Request() req: AdvancedRequest) {
-    req.logInfo = { id: req.user?.sub, targetId };
-    return this.followService.follow(targetId, req.user?.sub);
+  async follow(@Param('id') targetId: string, @Request() req: AdvancedRequest) {
+    const result = await this.followService.follow(targetId, req.user?.sub);
+    req.logInfo = {
+      targetUserId: targetId,
+      followerName: identifyUser(result.follower),
+      followedName: identifyUser(result.following),
+    };
+    return result;
   }
 
   @Delete(':id/unfollow')
   @LogEvent(EventType.USER_UNFOLLOW)
-  unfollow(@Param('id') targetId: string, @Request() req: AdvancedRequest) {
-    req.logInfo = { id: req.user?.sub, targetId };
-    return this.followService.unfollow(targetId, req.user?.sub);
+  async unfollow(
+    @Param('id') targetId: string,
+    @Request() req: AdvancedRequest,
+  ) {
+    const result = await this.followService.unfollow(targetId, req.user?.sub);
+    req.logInfo = {
+      targetUserId: targetId,
+      followerName: identifyUser(result.follower),
+      followedName: identifyUser(result.following),
+    };
+    return result;
   }
 
   @Get(':id/followers')

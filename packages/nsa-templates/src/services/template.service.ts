@@ -1,10 +1,10 @@
 import { Transactional } from '@nestjs-cls/transactional';
 import { Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { PageMetaDto } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
 import { TemplateRepository } from '../repositories/template.repository';
 import { TemplateEntity } from '../entities/template.entity';
 import { TemplateNotFoundException } from '../errors/template.notfound.error';
@@ -73,6 +73,14 @@ export class TemplateService {
 
   @Transactional()
   async save(template: Partial<TemplateEntity>): Promise<TemplateEntity> {
+    if (
+      template.content !== undefined &&
+      template.content !== null &&
+      template.size === undefined
+    ) {
+      template.size = Buffer.byteLength(template.content, 'utf8');
+    }
+
     const existingTemplate = await this.findOneByName(template.name);
 
     if (existingTemplate) {
@@ -87,7 +95,29 @@ export class TemplateService {
   async saveMany(
     templates: Partial<TemplateEntity>[],
   ): Promise<TemplateEntity[]> {
+    for (const template of templates) {
+      if (
+        template.content !== undefined &&
+        template.content !== null &&
+        template.size === undefined
+      ) {
+        template.size = Buffer.byteLength(template.content, 'utf8');
+      }
+    }
     return this.templateRepository.saveMany(templates);
+  }
+
+  @Transactional()
+  async update(
+    id: string,
+    template: Partial<TemplateEntity>,
+  ): Promise<TemplateEntity> {
+    const existingTemplate = await this.findOneById(id);
+    if (template.content !== undefined && template.content !== null) {
+      template.size = Buffer.byteLength(template.content, 'utf8');
+    }
+    Object.assign(existingTemplate, template);
+    return await this.templateRepository.save(existingTemplate);
   }
 
   async softDelete(id: string): Promise<TemplateEntity | null> {

@@ -1,12 +1,12 @@
 import React from "react";
 import { api } from "@/lib/api";
-import { useDebounce } from "@instanct/hooks/utils";
+import { useDebounce } from "@softsurgery/hooks/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useBreadcrumb } from "@instanct/contexts";
+import { useBreadcrumb } from "@softsurgery/contexts";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useIntro } from "@instanct/contexts";
-import { DataTable } from "@instanct/datatable-builder";
+import { useIntro } from "@softsurgery/contexts";
+import { DataTable } from "@softsurgery/datatable-builder";
 import { useTranslation } from "react-i18next";
 import {
   CreateRefParamDto,
@@ -14,7 +14,7 @@ import {
   ServerErrorResponse,
   UpdateRefParamDto,
 } from "@/types";
-import { DataTableConfig } from "@instanct/datatable-builder";
+import { DataTableConfig } from "@softsurgery/datatable-builder";
 import { useReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
 import { useRefParamColumns } from "./useRefParamColumns";
 import { useRefParamCreateSheet } from "./modals/RefParamCreateSheet";

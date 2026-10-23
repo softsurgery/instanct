@@ -5,7 +5,7 @@ import {
   FieldVariant,
   FormStructure,
   PasswordFieldProps,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 
 interface UseChangePasswordFormStructureProps {
   store: UserStore;

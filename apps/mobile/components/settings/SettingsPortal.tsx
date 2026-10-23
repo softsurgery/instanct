@@ -1,23 +1,27 @@
 import React from "react";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { identifyUser } from "@/lib/user";
 import { router } from "expo-router";
 import { ChevronRight, LogOut, Trash2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { AppHeaderBack, ApplicationHeader, StableSafeAreaView, StableScrollView } from "@instanct/mobile-components";
-import { createSettingRow, SettingRow } from "./SettingsRow";
-import type { SettingRowConfig } from "./SettingsRow";
+import {
+  AppHeaderBack,
+  ApplicationHeader,
+  StableSafeAreaView,
+  StableScrollView,
+} from "@softsurgery/mobile-components";
+import { SettingRow, SettingRowProps } from "./SettingsRow";
 import { useLogout } from "@/hooks/useLogout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner-native";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
+import { getAppVersionInfo } from "@/lib/app-version";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
-import type { ServerErrorResponse } from "~/types";
-import Sentry from "@/lib/sentry";
-import { Badge, Button, Icon, Separator, Text } from "@instanct/mobile-ui";
+import type { ServerErrorResponse } from "@softsurgery/api-client";
+import { Button, Icon, Separator, Text } from "@softsurgery/mobile-ui";
 
 interface SettingsPortalProps {
   className?: string;
@@ -27,37 +31,40 @@ interface SettingsSection {
   key: string;
   title: string;
   description: string;
-  rows: SettingRowConfig[];
+  rows: SettingRowProps[];
   showOnDevelopment?: boolean;
 }
 
 export const SettingsPortal = ({ className }: SettingsPortalProps) => {
+  const api = useApi();
   const queryClient = useQueryClient();
   const { t: tSettings } = useTranslation("settings");
-  const settingsRows: SettingsSection[] = [
+  const { installedVersion } = React.useMemo(() => getAppVersionInfo(), []);
+
+  const settingsSections: SettingsSection[] = [
     {
       key: "account",
       title: tSettings("settings.account.title"),
       description: tSettings("settings.account.description"),
       rows: [
-        createSettingRow({
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.account.screens.profile.title"),
           description: tSettings(
             "settings.account.screens.profile.description",
           ),
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
           onPress: () => router.push("/main/profile/update-profile"),
-        }),
-        createSettingRow({
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.account.screens.privacy-security.title"),
           description: tSettings(
             "settings.account.screens.privacy-security.description",
           ),
-          className: "p-1 px-4",
           rightIcon: ChevronRight,
           onPress: () => router.push("/main/profile/privacy-security"),
-        }),
+        },
       ],
       showOnDevelopment: false,
     },
@@ -66,24 +73,24 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       title: tSettings("settings.preferences.title"),
       description: tSettings("settings.preferences.description"),
       rows: [
-        createSettingRow({
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.preferences.screens.language.title"),
           description: tSettings(
             "settings.preferences.screens.language.description",
           ),
-          className: "p-1 px-4",
           rightIcon: ChevronRight,
           onPress: () => router.push("/main/settings/language"),
-        }),
-        createSettingRow({
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.preferences.screens.theme.title"),
           description: tSettings(
             "settings.preferences.screens.theme.description",
           ),
-          className: "p-1 px-4",
           rightIcon: ChevronRight,
           onPress: () => router.push("/main/settings/theme"),
-        }),
+        },
       ],
       showOnDevelopment: false,
     },
@@ -92,32 +99,33 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       title: tSettings("settings.support.title"),
       description: tSettings("settings.support.description"),
       rows: [
-        createSettingRow({
+        {
+          className: "p-1 px-4 mt-1",
+          title: tSettings("settings.support.screens.support.title"),
+          description: tSettings(
+            "settings.support.screens.support.description",
+          ),
+          rightIcon: ChevronRight,
+          onPress: () => router.push("/main/settings/support"),
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.support.screens.report-bug.title"),
           description: tSettings(
             "settings.support.screens.report-bug.description",
           ),
-
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => router.push("/main/profile/support/report-bug"),
-        }),
-        createSettingRow({
+          onPress: () => router.push("/main/settings/report-bug"),
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.support.screens.send-feedback.title"),
           description: tSettings(
             "settings.support.screens.send-feedback.description",
           ),
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => router.push("/main/profile/support/send-feedback"),
-        }),
-        createSettingRow({
-          title: tSettings("settings.support.screens.faqs.title"),
-          description: tSettings("settings.support.screens.faqs.description"),
-          rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => router.push("/main/profile/support/faqs"),
-        }),
+          onPress: () => router.push("/main/settings/send-feedback"),
+        },
       ],
       showOnDevelopment: false,
     },
@@ -126,7 +134,15 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       title: tSettings("settings.info-legal.title"),
       description: tSettings("settings.info-legal.description"),
       rows: [
-        createSettingRow({
+        {
+          className: "p-1 px-4 mt-1",
+          title: tSettings("settings.support.screens.faqs.title"),
+          description: tSettings("settings.support.screens.faqs.description"),
+          rightIcon: ChevronRight,
+          onPress: () => router.push("/main/settings/faqs"),
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings(
             "settings.info-legal.screens.terms-of-service.title",
           ),
@@ -134,67 +150,26 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
             "settings.info-legal.screens.terms-of-service.description",
           ),
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
           onPress: () => router.push("/main/settings/terms"),
-        }),
-        createSettingRow({
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.info-legal.screens.privacy-policy.title"),
           description: tSettings(
             "settings.info-legal.screens.privacy-policy.description",
           ),
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
           onPress: () => router.push("/main/settings/privacy-policy"),
-        }),
-        createSettingRow({
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: tSettings("settings.info-legal.screens.about.title"),
           description: tSettings(
             "settings.info-legal.screens.about.description",
           ),
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
           onPress: () => router.push("/main/settings/about"),
-        }),
-      ],
-      showOnDevelopment: false,
-    },
-    {
-      key: "bugsink-testing",
-      title: "Bugsink Testing",
-      description: "Test error reporting and tracking",
-      rows: [
-        createSettingRow({
-          title: "Send Test Error (Handled)",
-          description: "Capture an error via Sentry.captureException and send to Bugsink",
-          rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => {
-            try {
-              const eventId = Sentry.captureException(
-                new Error("Test Bugsink error from Mobile settings")
-              );
-              toast.success("Test error sent to Bugsink!", {
-                description: `Event ID: ${eventId || "sent"}`,
-              });
-            } catch (err) {
-              toast.error("Failed to send test error", {
-                description: String(err),
-              });
-            }
-          },
-        }),
-        createSettingRow({
-          title: "Trigger Uncaught Crash",
-          description: "Throw an unhandled error to test global crash reporting",
-          rightIcon: ChevronRight,
-          className: "p-1 px-4",
-          onPress: () => {
-            toast.info("Triggering uncaught crash...");
-            setTimeout(() => {
-              throw new Error("Test Bugsink Uncaught Crash from Mobile App");
-            }, 500);
-          },
-        }),
+        },
       ],
       showOnDevelopment: false,
     },
@@ -203,25 +178,25 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       title: "Test",
       description: "This is just for development purposes",
       rows: [
-        createSettingRow({
+        {
+          className: "p-1 px-4 mt-1",
           title: "Deep link",
           description: "Test deep linking",
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
           onPress: () => router.push("/main/test/deep-link-test"),
-        }),
-        createSettingRow({
+        },
+        {
+          className: "p-1 px-4 mt-1",
           title: "Invalidate Queries",
           description: "Invalidate all queries",
           rightIcon: ChevronRight,
-          className: "p-1 px-4",
           onPress: () => {
             queryClient.invalidateQueries();
             toast.success("Queries invalidated successfully", {
               description: "All queries have been invalidated",
             });
           },
-        }),
+        },
       ],
       showOnDevelopment: true,
     },
@@ -235,7 +210,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
 
   const { mutate: deleteAccount, isPending: isDeleteAccountPending } =
     useMutation({
-      mutationFn: () => api.user.deleteCurrent(),
+      mutationFn: () => api.currentUser.remove(),
       onSuccess: () => {
         deleteAccountSheetRef.current?.hide();
         toast.success(tSettings("settings.session.deleteAlert.success"));
@@ -271,20 +246,12 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
       />
       <StableScrollView className="flex-1 bg-background">
         <View className="flex flex-col">
-          <View className="px-4 mb-4">
+          <View className="px-4 mb-2">
             <View className="flex flex-col justify-between p-4">
               <View className="flex flex-row justify-between items-center w-full">
                 <Text variant="h4">
                   {identifyUser(currentUser) || "Your account"}
                 </Text>
-
-                {currentUser?.username ? (
-                  <Badge variant="outline" className="self-start">
-                    <Text className="uppercase tracking-wide">
-                      @{currentUser.username}
-                    </Text>
-                  </Badge>
-                ) : null}
               </View>
 
               <Text variant="muted">
@@ -293,7 +260,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
             </View>
           </View>
 
-          {settingsRows.map((section) => (
+          {settingsSections.map((section) => (
             <View key={section.key} className="bg-background">
               <View className="px-8 py-4 bg-card mb-4">
                 <Text className="text-lg font-semibold">{section.title}</Text>
@@ -308,7 +275,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
 
                   return (
                     <View key={index} className="flex flex-col gap-2">
-                      <SettingRow className="mt-1" {...row} />
+                      <SettingRow {...row} />
                       {!isLast && <Separator className="mb-2" />}
                     </View>
                   );
@@ -352,6 +319,12 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
                     {tSettings("settings.session.actions.remove-account")}
                   </Text>
                 </Button>
+
+                <Text className="pt-1 text-center text-xs text-muted-foreground">
+                  {tSettings("settings.session.version", {
+                    version: installedVersion,
+                  })}
+                </Text>
               </View>
             </View>
           </View>

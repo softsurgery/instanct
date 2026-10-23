@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { Button, Input, Label, cn } from "@instanct/ui";
+import { Button, Input, Label, cn } from "@softsurgery/ui";
 import { AuthFormHeader } from "./AuthFormHeader";
 import React from "react";
 

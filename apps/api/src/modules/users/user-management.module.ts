@@ -1,24 +1,34 @@
-import { Global, Module, forwardRef } from '@nestjs/common';
+import { Global, Module, OnModuleInit, forwardRef } from '@nestjs/common';
+import { AuthModule } from '@softsurgery/nsa-auth/auth.module';
 import {
   USER_REPOSITORY,
   USER_SERVICE,
-} from 'nsa-um/tokens/user-access';
+} from '@softsurgery/nsa-um/tokens/user-access';
+import {
+  USER_DTO,
+  USER_ENTITY,
+  bindUserDto,
+  bindUserEntity,
+  bindUserService,
+  bindUserRepository,
+} from '@softsurgery/nsa-um/registries/user-binding.registry';
+import { ResponseUserDto } from './dtos/user/response-user.dto';
 import { FollowService } from 'src/modules/users/services/follow.service';
-import { NotificationModule } from 'nsa-notifications/notifications.module';
-import { LoggerModule } from 'nsa-logger/logger.module';
-import { SessionModule } from 'nsa-sessions/sessions.module';
-import { PermissionService } from 'nsa-um/services/permission.service';
-import { RolePermissionService } from 'nsa-um/services/role-permission.service';
-import { RoleService } from 'nsa-um/services/role.service';
-import { RoleRepository } from 'nsa-um/repositories/role.repository';
-import { PermissionRepository } from 'nsa-um/repositories/permission.repository';
-import { RolePermissionRepository } from 'nsa-um/repositories/role-permission.repository';
+import { NotificationModule } from '@softsurgery/nsa-notifications/notifications.module';
+import { LoggerModule } from '@softsurgery/nsa-logger/logger.module';
+import { SessionModule } from '@softsurgery/nsa-sessions/sessions.module';
+import { PermissionService } from '@softsurgery/nsa-um/services/permission.service';
+import { RolePermissionService } from '@softsurgery/nsa-um/services/role-permission.service';
+import { RoleService } from '@softsurgery/nsa-um/services/role.service';
+import { RoleRepository } from '@softsurgery/nsa-um/repositories/role.repository';
+import { PermissionRepository } from '@softsurgery/nsa-um/repositories/permission.repository';
+import { RolePermissionRepository } from '@softsurgery/nsa-um/repositories/role-permission.repository';
 import { FollowRepository } from './repositories/follow.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
-import { RoleEntity } from 'nsa-um/entities/role.entity';
-import { PermissionEntity } from 'nsa-um/entities/permission.entity';
-import { RolePermissionEntity } from 'nsa-um/entities/role-permission.entity';
+import { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
+import { RoleEntity } from '@softsurgery/nsa-um/entities/role.entity';
+import { PermissionEntity } from '@softsurgery/nsa-um/entities/permission.entity';
+import { RolePermissionEntity } from '@softsurgery/nsa-um/entities/role-permission.entity';
 import { UserUploadEntity } from './entities/user-upload.entity';
 import { UserEntity } from './entities/user.entity';
 import { FollowEntity } from 'src/modules/users/entities/follow.entity';
@@ -32,24 +42,30 @@ import { ExperienceEntity } from './entities/experience.entity';
 import { EducationService } from './services/education.service';
 import { EducationRepository } from './repositories/education.repository';
 import { EducationEntity } from './entities/education.entity';
-import { ReferenceTypesModule } from 'nsa-reference-types/reference-types.module';
-import { StorageModule } from 'nsa-storage/storage.module';
+import { ReferenceTypesModule } from '@softsurgery/nsa-reference-types/reference-types.module';
+import { StorageModule } from '@softsurgery/nsa-storage/storage.module';
 import { UserConfigurationService } from './services/user-configuration.service';
-import { ConfigurationsModule } from 'nsa-configurations/configurations.module';
+import { ConfigurationsModule } from '@softsurgery/nsa-configurations/configurations.module';
 import { UserBookmarkRepository } from './repositories/user-bookmark.repository';
 import { UserBookmarkService } from './services/user-bookmark.service';
 import { UserBookmarkEntity } from './entities/user-bookmark.entity';
 import { UserBlockRepository } from './repositories/user-block.repository';
 import { UserBlockService } from './services/user-block.service';
 import { UserBlockEntity } from './entities/user-block.entity';
-import { MailModule } from 'nsa-mail/mail.module';
+import { MailModule } from '@softsurgery/nsa-mail/mail.module';
 import { CustomAuthService } from './services/custom-auth.service';
+import { UserPresenceService } from '@softsurgery/nsa-um/services/user-presence.service';
+import { UserPresenceGateway } from './gateways/user-presence.gateway';
+import { AdminPresenceGateway } from './gateways/admin-presence.gateway';
 
 @Global()
 @Module({
   controllers: [],
   providers: [
     CustomAuthService,
+    UserPresenceService,
+    UserPresenceGateway,
+    AdminPresenceGateway,
     //services
     UserService,
     UserUploadService,
@@ -83,8 +99,13 @@ import { CustomAuthService } from './services/custom-auth.service';
     UserBlockRepository,
     { provide: USER_SERVICE, useExisting: UserService },
     { provide: USER_REPOSITORY, useExisting: UserRepository },
+    { provide: USER_DTO, useValue: ResponseUserDto },
+    { provide: USER_ENTITY, useValue: UserEntity },
   ],
   exports: [
+    UserPresenceService,
+    UserPresenceGateway,
+    AdminPresenceGateway,
     //services
     CustomAuthService,
     UserService,
@@ -118,6 +139,8 @@ import { CustomAuthService } from './services/custom-auth.service';
     UserBlockRepository,
     USER_SERVICE,
     USER_REPOSITORY,
+    USER_DTO,
+    USER_ENTITY,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -140,6 +163,14 @@ import { CustomAuthService } from './services/custom-auth.service';
     NotificationModule,
     LoggerModule,
     forwardRef(() => SessionModule),
+    forwardRef(() => AuthModule),
   ],
 })
-export class UserManagementModule {}
+export class UserManagementModule implements OnModuleInit {
+  onModuleInit() {
+    bindUserDto(ResponseUserDto);
+    bindUserEntity(UserEntity);
+    bindUserService(UserService);
+    bindUserRepository(UserRepository);
+  }
+}

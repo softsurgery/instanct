@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import {
   ActivityIndicator,
@@ -14,7 +13,7 @@ import { ChevronDown } from "lucide-react-native";
 import { useFocusEffect } from "expo-router";
 import { setConversationMessageParam } from "@/lib/chat";
 
-import { StableSafeAreaView } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { ChatBubble } from "./conversation/bubbles/ChatBubble";
 import { ChatMediaBubble } from "./conversation/bubbles/ChatMediaBubble";
 import { ChatFileBubble } from "./conversation/bubbles/ChatFileBubble";
@@ -27,13 +26,13 @@ import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { ConversationInput } from "./conversation/input/ConversationInput";
 import { ConversationMediaStaging } from "./conversation/staging/ConversationMediaStaging";
 import { useServerImages } from "@/hooks/content/useServerImages";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 
 import { useConversationFeatures } from "@/hooks/content/chat/useConversationFeatures";
 import { useLastSeenMessageId } from "@/hooks/content/chat/useLastSeenMessageId";
 import { useSendChatMedia } from "@/hooks/content/chat/useSendChatMedia";
 import { useSendChatFile } from "@/hooks/content/chat/useSendChatFile";
-import { useUserPresence } from "@/hooks/content/chat/useUserPresence";
+import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { ImageBackground } from "expo-image";
 import { ChatStaticBubble } from "./conversation/bubbles/ChatStaticBubble";
 import { ConversationMessagesSkeleton } from "./conversation/ConversationMessagesSkeleton";
@@ -44,9 +43,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { useGradualAnimation } from "@/hooks/useGradualAnimation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { MessageFlatListItem, ResponseMessageDto } from "@/types";
-import { useColorPalette } from "@instanct/mobile-components";
-import { cn } from "@instanct/lib";
+import { ResponseMessageDto } from "@softsurgery/api-client";
+import { MessageFlatListItem } from "@/types";
+import { useColorPalette } from "@softsurgery/mobile-components";
+import { cn } from "@softsurgery/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";
 import { useTranslation } from "react-i18next";
 import { formatLastSeen } from "@/lib/date";
@@ -283,13 +283,13 @@ export const Conversation = ({
     size: { width: 40, height: 40 },
   });
 
-  const { isOnline, lastSeen } = useUserPresence({ userId: headerUserId });
+  const { isConnected, lastSeen } = useUserPresence({ userId: headerUserId });
 
   const presenceText = React.useMemo(() => {
-    if (isOnline) return t("chat.conversation.presence.online");
+    if (isConnected) return t("chat.conversation.presence.online");
     if (lastSeen) return formatLastSeen(lastSeen, t);
     return "";
-  }, [isOnline, lastSeen, t]);
+  }, [isConnected, lastSeen, t]);
 
   const listData = React.useMemo(() => {
     const pendingTextItems = pendingTextMessages.map(
@@ -371,7 +371,7 @@ export const Conversation = ({
           profilePicture={profilePictures[0]}
           identifier={headerIdentifier}
           lastSeen={presenceText}
-          isOnline={isOnline}
+          isConnected={isConnected}
         />
         <ChatHeaderRight
           conversationId={id}
@@ -533,7 +533,7 @@ export const Conversation = ({
                     <View className="py-4 items-center">
                       <ActivityIndicator size="small" />
                     </View>
-                  ) : null
+                  ) : undefined
                 }
                 ListEmptyComponent={
                   <View className="flex-1 justify-center items-center py-20">

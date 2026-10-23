@@ -1,6 +1,6 @@
 import React from "react";
 import { Plus, Edit, Trash2, ChevronDown, Briefcase } from "lucide-react";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import { ResponseExperienceDto } from "@/types";
 
 interface ExperienceSectionProps {

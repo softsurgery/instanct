@@ -1,14 +1,11 @@
 import React from "react";
-import { View } from "react-native";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Pressable, View } from "react-native";
+import { Icon, Text } from "@softsurgery/mobile-ui";
 import { StableKeyboardAwareScrollView } from "./StableKeyboardAwareScrollView";
 import { useKeyboardVisible } from "./hooks/useKeyboardVisible";
-import { cn } from "@instanct/lib";
-import { Icon } from "@instanct/mobile-ui";
-import { ChevronLeft, ChevronRight } from "lucide-react-native";
-import { type VariantProps } from "class-variance-authority";
+import { cn } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
 
 interface StepperProps {
   classNames?: {
@@ -20,6 +17,8 @@ interface StepperProps {
     description?: string;
     component: React.ReactNode;
     validation: boolean | (() => boolean);
+    onNext?: () => boolean | void | Promise<boolean | void>;
+    onNextAttempt?: () => void;
   }[];
   initialStep?: number;
   forwaredAdditionalActions?: Record<number, () => void>;
@@ -28,7 +27,6 @@ interface StepperProps {
     id?: string | number;
     label: string;
     className?: string;
-    variant?: VariantProps<typeof Button>["variant"];
     onPress: () => void;
     disabled?: boolean;
   }[];
@@ -62,7 +60,16 @@ export const Stepper = ({
     [steps],
   );
 
-  const nextStep = () => {
+  const nextStep = async () => {
+    const currentStepConfig = steps[currentStep];
+
+    currentStepConfig?.onNextAttempt?.();
+
+    if (currentStepConfig?.onNext) {
+      const allowed = await currentStepConfig.onNext();
+      if (allowed === false) return;
+    }
+
     const isValid = runValidation(currentStep);
 
     // 🚫 block navigation if invalid
@@ -114,64 +121,69 @@ export const Stepper = ({
       {!isKeyboardVisible && (
         <View
           className={cn(
-            "flex-row p-4 bg-muted border-t border-border",
+            "flex-row p-2 bg-muted border-t border-border",
             currentStep === 0 ? "justify-end" : "justify-between",
             classNames?.controlsWrapper,
           )}
         >
           {/* Previous */}
-          <Button
-            size="sm"
+          <Pressable
             disabled={pending}
             onPress={prevStep}
-            variant="outline"
             className={cn(
-              "px-4 py-2 rounded-xl",
+              "flex-row gap-2 px-3 py-1.5 rounded-xl active:opacity-70",
+              pending && "opacity-50",
               currentStep === 0 ? "hidden" : "block",
             )}
           >
             <Icon as={ChevronLeft} size={20} />
-            <Text className="font-semibold">
+            <Text className="text-base font-semibold">
               {placeholders?.previousLabel || t("actions.previous")}
             </Text>
-          </Button>
+          </Pressable>
 
           {/* Next / Finish */}
 
           {isLastStep && closingActions.length > 0 ? (
             <View className="flex-row gap-2">
-              {closingActions.map((closingAction, index) => (
-                <Button
-                  key={closingAction.id ?? `closing-action-${index}`}
-                  size="sm"
-                  variant={closingAction.variant}
-                  onPress={closingAction.onPress}
-                  disabled={
-                    closingAction.disabled ||
-                    pending ||
-                    runValidation(currentStep) === false
-                  }
-                  className={cn(
-                    "px-4 py-2 rounded-xl",
-                    closingAction.className,
-                  )}
-                >
-                  <Text className="font-semibold">{closingAction.label}</Text>
-                </Button>
-              ))}
+              {closingActions.map((closingAction, index) => {
+                const isActionDisabled =
+                  closingAction.disabled ||
+                  pending ||
+                  runValidation(currentStep) === false;
+
+                return (
+                  <Pressable
+                    key={closingAction.id ?? `closing-action-${index}`}
+                    onPress={closingAction.onPress}
+                    disabled={isActionDisabled}
+                    className={cn(
+                      "px-3 py-1.5 rounded-xl active:opacity-70",
+                      isActionDisabled && "opacity-50",
+                      closingAction.className,
+                    )}
+                  >
+                    <Text className="text-base font-semibold">
+                      {closingAction.label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
             </View>
           ) : (
-            <Button
-              size="sm"
+            <Pressable
               onPress={nextStep}
-              className={cn("px-4 py-2 rounded-xl")}
+              className={cn(
+                "flex-row gap-2 px-3 py-1.5 rounded-xl active:opacity-70",
+                pending && "opacity-50",
+              )}
               disabled={pending}
             >
-              <Text className="font-semibold">
+              <Text className="text-base font-semibold">
                 {placeholders?.nextLabel || t("actions.next")}
               </Text>
               <Icon as={ChevronRight} size={20} />
-            </Button>
+            </Pressable>
           )}
         </View>
       )}

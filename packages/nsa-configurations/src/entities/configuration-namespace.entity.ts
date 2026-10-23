@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ConfigurationParamEntity } from './configuration-param.entity';
-import type { AbstractUserEntity } from 'nsa-um/entities/abstract-user.entity';
+import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
 
 @Entity('configuration-namespace')
 export class ConfigurationNamespaceEntity {

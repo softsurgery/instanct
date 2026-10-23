@@ -1,12 +1,12 @@
 import { ConversationReportStore } from "@/stores/useConversationReportStore";
-import { ConversationReportReason } from "@/types";
+import { ConversationReportReason } from "@softsurgery/api-client";
 import {
   Field,
   FieldVariant,
   FormStructure,
   SelectFieldProps,
   TextareaFieldProps,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 import { useTranslation } from "react-i18next";
 
 interface UseConversationReportFormStructureProps {

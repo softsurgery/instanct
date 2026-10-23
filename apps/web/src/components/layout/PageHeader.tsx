@@ -1,5 +1,5 @@
-import { Separator } from "@instanct/ui";
-import { useIntro } from "@instanct/contexts";
+import { Separator } from "@softsurgery/ui";
+import { useIntro } from "@softsurgery/contexts";
 
 interface PageHeaderProps {
   className?: string;

@@ -1,25 +1,25 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RequestClientSpecializedSignUpDto } from '../dtos/custom-auth/request-client-specialized-signup.dto';
-import { BasicRoles } from 'nsa-um/enums/basic-roles.enum';
-import { MailService } from 'nsa-mail/services/mail.service';
-import { ClientAuthService } from 'nsa-auth/services/client-auth.service';
+import { BasicRoles } from '@softsurgery/nsa-um/enums/basic-roles.enum';
+import { MailService } from '@softsurgery/nsa-mail/services/mail.service';
+import { ClientAuthService } from '@softsurgery/nsa-auth/services/client-auth.service';
 import { UserRepository } from '../repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
-import { CONFIGURATION_NAMESPACES } from 'nsa-configurations/enums/configuration-namespaces.registry';
-import { StorageService } from 'nsa-storage/services/storage.service';
-import { STORAGE_SYSTEMATICS_TOKEN } from 'nsa-storage/constants/storage-systematics.registry';
+import { ConfigurationNamespaceService } from '@softsurgery/nsa-configurations/services/configuration-namespace.service';
+import { CONFIGURATION_NAMESPACES } from '@softsurgery/nsa-configurations/enums/configuration-namespaces.registry';
+import { StorageService } from '@softsurgery/nsa-storage/services/storage.service';
+import { STORAGE_SYSTEMATICS_TOKEN } from '@softsurgery/nsa-storage/constants/storage-systematics.registry';
 
 @Injectable()
 export class CustomAuthService extends ClientAuthService {
   constructor(
-    protected readonly userService: UserService,
-    protected readonly mailService: MailService,
     protected readonly userRepository: UserRepository,
+    protected readonly userService: UserService,
     protected readonly jwtService: JwtService,
     protected readonly configService: ConfigService,
+    protected readonly mailService: MailService,
     protected readonly storageService: StorageService,
     @Inject(CONFIGURATION_NAMESPACES)
     configurationNamespaces: Record<string, string>,

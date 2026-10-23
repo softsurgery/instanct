@@ -13,7 +13,9 @@
       "createUser": "Créer un Utilisateur",
       "deleteUser": "Supprimer l'Utilisateur",
       "notify": "Notifier",
-      "userDetails": "Détails de l'Utilisateur"
+      "userDetails": "Détails de l'Utilisateur",
+      "connected": "Connecté",
+      "disconnected": "Déconnecté"
     },
     "columns": {
       "id": "ID",
@@ -21,6 +23,7 @@
       "firstName": "Prénom",
       "lastName": "Nom",
       "dateOfBirth": "Date de naissance",
+      "connected": "Connecté",
       "isActive": "Actif",
       "isApproved": "Approuvé",
       "username": "Nom d'utilisateur",
@@ -29,7 +32,8 @@
       "role": "Rôle",
       "roleId": "ID du rôle",
       "createdAt": "Créé le",
-      "updatedAt": "Mise à jour le"
+      "updatedAt": "Mise à jour le",
+      "lastSeen": "Dernière connexion"
     },
     "forms": {
       "step1Title": "Informations Générales",
@@ -167,6 +171,8 @@
         "activity": "Activité",
         "conversations": "Conversations",
         "notifications": "Notifications",
+        "devices": "Appareils",
+        "connections": "Connexions",
         "settings": "Paramètres"
       },
       "stats": {
@@ -338,6 +344,40 @@
         "configureNotifications": "Configurer les notifications",
         "notificationSettings": "Paramètres de notification",
         "testNotification": "Tester la notification"
+      },
+      "devices": {
+        "title": "Appareils de l'utilisateur",
+        "singular": "Appareil",
+        "plural": "Appareils",
+        "columns": {
+          "deviceName": "Nom de l'appareil",
+          "deviceModel": "Modèle",
+          "os": "Système d'exploitation",
+          "macAddress": "Adresse MAC",
+          "status": "Statut",
+          "trusted": "De confiance",
+          "untrusted": "Non approuvé",
+          "lastActive": "Dernière activité",
+          "createdAt": "Enregistré le"
+        },
+        "empty": "Aucun appareil enregistré pour cet utilisateur."
+      },
+      "connections": {
+        "title": "Connexions de l'utilisateur",
+        "singular": "Connexion",
+        "plural": "Connexions",
+        "columns": {
+          "device": "Appareil",
+          "source": "Source",
+          "ipAddress": "Adresse IP",
+          "location": "Localisation",
+          "status": "Statut",
+          "active": "Actif",
+          "disconnected": "Déconnecté",
+          "connectedAt": "Connecté le",
+          "disconnectedAt": "Déconnecté le"
+        },
+        "empty": "Aucun historique de connexion pour cet utilisateur."
       },
       "noPhoneNumber": "Aucun numéro de téléphone"
     }

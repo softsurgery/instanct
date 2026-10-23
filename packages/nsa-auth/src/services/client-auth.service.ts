@@ -1,39 +1,44 @@
-import { Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
-import { OAuthProvider } from '../enums/oauth.enum';
-import { RequestResetTokenDto } from '../dtos/web/request-reset-token.dto';
-import { MailService } from 'nsa-mail/services/mail.service';
-import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
-import { ResponseResetTokenDto } from '../dtos/web/response-reset-token.dto';
-import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-token.dto';
-import { RequestCheckResetTokenDto } from '../dtos/web/request-check-reset-token.dto';
-import { ForgetPasswordTemplateProps } from '../types/forget-password.type';
-import { VerifyEmailTemplateProps } from '../types/verify-email.type';
-import { identifyUser } from 'nsa-um/utils/identify-user';
-import { ResponseClientSigninDto } from '../dtos/client/response-client-signin.dto';
-import { ResponseClientSignupDto } from '../dtos/client/response-client-signup.dto';
-import { BasicRoles } from 'nsa-um/enums/basic-roles.enum';
-import { AuthNotActiveException } from '../errors/auth.notactive.error';
-import { CreateAbstractUserDto } from 'nsa-um/dtos/abstract-user/create-abstract-user.dto';
-import { ResponseAbstractUserDto } from 'nsa-um/dtos/abstract-user/response-abstract-user.dto';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
+import * as bcrypt from "bcrypt";
+import { OAuthProvider } from "../enums/oauth.enum";
+import { RequestResetTokenDto } from "../dtos/web/request-reset-token.dto";
+import { MailService } from "@softsurgery/nsa-mail/services/mail.service";
+import { UserNotFoundException } from "@softsurgery/nsa-um/errors/user/user.notfound.error";
+import { ResponseResetTokenDto } from "../dtos/web/response-reset-token.dto";
+import { ResponseCheckResetTokenDto } from "../dtos/web/response-check-reset-token.dto";
+import { RequestCheckResetTokenDto } from "../dtos/web/request-check-reset-token.dto";
+import { ForgetPasswordTemplateProps } from "../types/forget-password.type";
+import { VerifyEmailTemplateProps } from "../types/verify-email.type";
+import { identifyUser } from "@softsurgery/nsa-um/utils/identify-user";
+import { ResponseClientSigninDto } from "../dtos/client/response-client-signin.dto";
+import { ResponseClientSignupDto } from "../dtos/client/response-client-signup.dto";
+import { BasicRoles } from "@softsurgery/nsa-um/enums/basic-roles.enum";
+import { AuthNotActiveException } from "../errors/auth.notactive.error";
+import { CreateAbstractUserDto } from "@softsurgery/nsa-um/dtos/abstract-user/create-abstract-user.dto";
+import { ResponseAbstractUserDto } from "@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto";
 import {
   USER_REPOSITORY,
   USER_SERVICE,
   AppUserRecord,
   AppUserRepository,
   AppUserService,
-} from 'nsa-um/tokens/user-access';
-import { RequestClientUpdateMailDto } from '../dtos/client/request-client-update-mail.dto';
-import { RequestClientUpdatePasswordDto } from '../dtos/client/request-client-update-password.dto';
-import { ConfigurationNamespaceService } from 'nsa-configurations/services/configuration-namespace.service';
-import { CONFIGURATION_NAMESPACES } from 'nsa-configurations/enums/configuration-namespaces.registry';
-import { StorageService } from 'nsa-storage/services/storage.service';
-import { STORAGE_SYSTEMATICS_TOKEN } from 'nsa-storage/constants/storage-systematics.registry';
-import { buildStaticUrl } from 'nsa-helpers/url.utils';
-import { AuthProvidersService } from './auth-provider.service';
-import { DeepPartial } from 'typeorm';
+} from "@softsurgery/nsa-um/tokens/user-access";
+import { RequestClientUpdateMailDto } from "../dtos/client/request-client-update-mail.dto";
+import { RequestClientUpdatePasswordDto } from "../dtos/client/request-client-update-password.dto";
+import { ConfigurationNamespaceService } from "@softsurgery/nsa-configurations/services/configuration-namespace.service";
+import { CONFIGURATION_NAMESPACES } from "@softsurgery/nsa-configurations/enums/configuration-namespaces.registry";
+import { StorageService } from "@softsurgery/nsa-storage/services/storage.service";
+import { STORAGE_SYSTEMATICS_TOKEN } from "@softsurgery/nsa-storage/constants/storage-systematics.registry";
+import { buildStaticUrl } from "@softsurgery/nsa-helpers/url.utils";
+import { AuthProvidersService } from "./auth-provider.service";
+import { DeepPartial } from "typeorm";
 
 @Injectable()
 export class ClientAuthService {
@@ -60,13 +65,13 @@ export class ClientAuthService {
     const payload = { sub: id, email: email };
 
     const access_token = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('app.jwt.secret'),
-      expiresIn: this.configService.get('app.jwt.accessExpiration'),
+      secret: this.configService.get("app.jwt.secret"),
+      expiresIn: this.configService.get("app.jwt.accessExpiration"),
     });
 
     const refresh_token = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('app.jwt.secret'),
-      expiresIn: this.configService.get('app.jwt.refreshExpiration'),
+      secret: this.configService.get("app.jwt.secret"),
+      expiresIn: this.configService.get("app.jwt.refreshExpiration"),
     });
 
     return { access_token, refresh_token };
@@ -82,7 +87,7 @@ export class ClientAuthService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('User does not exist');
+      throw new UnauthorizedException("User does not exist");
     }
 
     if (user.deletedAt) {
@@ -91,12 +96,12 @@ export class ClientAuthService {
     }
 
     if (!user.password) {
-      throw new UnauthorizedException('User does not have a password');
+      throw new UnauthorizedException("User does not have a password");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     if (!user.isActive) {
@@ -130,12 +135,12 @@ export class ClientAuthService {
     try {
       const payload: { sub: string; email: string } =
         await this.jwtService.verifyAsync(refreshToken, {
-          secret: this.configService.get('app.jwt.secret'),
+          secret: this.configService.get("app.jwt.secret"),
         });
 
       const user = await this.userRepository.findOneById(payload.sub);
       if (!user) {
-        throw new UnauthorizedException('User does not exist');
+        throw new UnauthorizedException("User does not exist");
       }
 
       const { access_token, refresh_token } = await this.generateTokens(
@@ -171,24 +176,24 @@ export class ClientAuthService {
       const buffer = Buffer.from(arrayBuffer);
 
       if (buffer.length === 0) {
-        this.logger.warn('Profile picture download returned empty buffer');
+        this.logger.warn("Profile picture download returned empty buffer");
         return null;
       }
 
-      const contentType = response.headers.get('content-type') || 'image/jpeg';
-      const extension = contentType.split('/')[1]?.split(';')[0] || 'jpg';
+      const contentType = response.headers.get("content-type") || "image/jpeg";
+      const extension = contentType.split("/")[1]?.split(";")[0] || "jpg";
 
       const multerFile: Express.Multer.File = {
         buffer,
         originalname: `ipp-${Date.now()}.${extension}`,
         mimetype: contentType,
         size: buffer.length,
-        fieldname: 'file',
-        encoding: '7bit',
-        stream: null as unknown as Express.Multer.File['stream'],
-        destination: '',
-        filename: '',
-        path: '',
+        fieldname: "file",
+        encoding: "7bit",
+        stream: null as unknown as Express.Multer.File["stream"],
+        destination: "",
+        filename: "",
+        path: "",
       };
 
       // Store as non-temporary and non-private (profile pictures are public)
@@ -227,7 +232,7 @@ export class ClientAuthService {
       newUser.email = data?.email;
       newUser.firstName = data?.given_name;
       newUser.lastName = data?.family_name;
-      newUser.username = data?.email?.split('@')[0];
+      newUser.username = data?.email?.split("@")[0];
       pictureUrl = data?.picture;
     } else if (provider == OAuthProvider.GITHUB) {
       const data = await this.authProvidersService?.githubOAuth(idToken);
@@ -242,17 +247,56 @@ export class ClientAuthService {
       newUser.username = data?.username;
       pictureUrl = data?.picture;
     } else if (provider == OAuthProvider.APPLE) {
-      const decoded: { email?: string; sub?: string } | null =
-        this.jwtService.decode(idToken);
-      newUser.email = decoded?.email;
-      newUser.username = decoded?.email?.split('@')[0] || decoded?.sub;
+      let appleData: { sub: string; email?: string } | undefined;
+      if (this.authProvidersService?.appleOAuth) {
+        try {
+          appleData = await this.authProvidersService.appleOAuth(
+            idToken,
+            redirectUri,
+          );
+        } catch (error) {
+          this.logger.warn(
+            `Apple OAuth service error: ${error}. Falling back to token decode.`,
+          );
+        }
+      }
+
+      if (!appleData) {
+        const decoded: { email?: string; sub?: string } | null =
+          this.jwtService.decode(idToken);
+        appleData = {
+          sub: decoded?.sub || "",
+          email: decoded?.email,
+        };
+      }
+
+      const appleSub = appleData.sub;
+      const appleEmail = appleData.email;
+      newUser.email = appleEmail;
+      newUser.username = appleEmail?.split("@")[0] || appleSub;
+
+      // Returning Apple users may not have email in subsequent ID tokens
+      if (!newUser.email && newUser.username) {
+        const existing = await this.userService.findOneByUsername(
+          newUser.username,
+          true,
+        );
+        if (existing?.email) {
+          newUser.email = existing.email;
+        }
+      }
+
+      // Fallback email to ensure authentication completes
+      if (!newUser.email && appleSub) {
+        newUser.email = `${appleSub}@appleid.apple.com`;
+      }
     } else {
-      throw new UnauthorizedException('Unsupported OAuth provider');
+      throw new UnauthorizedException("Unsupported OAuth provider");
     }
 
     if (!newUser.email || !newUser.username) {
       throw new UnauthorizedException(
-        'Could not retrieve valid email or username from provider',
+        "Could not retrieve valid email or username from provider",
       );
     }
 
@@ -276,16 +320,29 @@ export class ClientAuthService {
         }
       }
 
-      newUser = await this.userService.extendedSave({
-        email: newUser.email,
-        username: newUser.username.toLowerCase().replace(/\s/g, '_'),
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        roleId: BasicRoles.User,
-        isActive: true,
-        source: provider,
-        pictureId,
-      });
+      if (typeof this.userService?.extendedSave === "function") {
+        newUser = await this.userService.extendedSave({
+          email: newUser.email,
+          username: newUser.username.toLowerCase().replace(/\s/g, "_"),
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          roleId: BasicRoles.User,
+          isActive: true,
+          source: provider,
+          pictureId,
+        });
+      } else {
+        const saved = await this.userService.save({
+          email: newUser.email,
+          username: newUser.username.toLowerCase().replace(/\s/g, "_"),
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          roleId: BasicRoles.User,
+          isActive: true,
+          source: provider,
+        });
+        if (saved) newUser = saved;
+      }
     } else if (userByEmail) {
       if (userByEmail.deletedAt) {
         await this.userService.restore(userByEmail.id);
@@ -322,35 +379,35 @@ export class ClientAuthService {
       const verifyToken = await this.jwtService.signAsync(
         { sub: user.id, email: user.email, callbackUrl },
         {
-          secret: this.configService.get('app.jwt.secret'),
-          expiresIn: '15m',
+          secret: this.configService.get("app.jwt.secret"),
+          expiresIn: "15m",
         },
       );
 
       const publicUrl = (
-        this.configService.get<string>('app.publicUrl') || ''
-      ).replace(/\/$/, '');
-      const host = this.configService.get<string | null>('app.http.host') || '';
-      const port = this.configService.get<number>('app.http.port') || 80;
-      const secure = this.configService.get<boolean>('app.http.secure');
+        this.configService.get<string>("app.publicUrl") || ""
+      ).replace(/\/$/, "");
+      const host = this.configService.get<string | null>("app.http.host") || "";
+      const port = this.configService.get<number>("app.http.port") || 80;
+      const secure = this.configService.get<boolean>("app.http.secure");
       const url = publicUrl || buildStaticUrl(host, port, secure);
       const verifyLink = `${url}/api/client-auth/verify-email?token=${verifyToken}`;
 
       const name =
         ((await this.configurationNamespaceService.getSpecificParam(
           this.configurationNamespaces.CORE,
-          'company.name',
-        )) as string) || 'Our App';
+          "company.name",
+        )) as string) || "Our App";
       const address =
         ((await this.configurationNamespaceService.getSpecificParam(
           this.configurationNamespaces.CORE,
-          'company.address',
-        )) as string) || 'N/A';
+          "company.address",
+        )) as string) || "N/A";
       const support =
         ((await this.configurationNamespaceService.getSpecificParam(
           this.configurationNamespaces.CORE,
-          'company.support',
-        )) as string) || 'N/A';
+          "company.support",
+        )) as string) || "N/A";
 
       const applicationLogo = await this.storageService.findBySystematicName(
         this.storageSystematics.APPLICATION_LOGO,
@@ -359,7 +416,7 @@ export class ClientAuthService {
       await this.mailService.sendTemplate<VerifyEmailTemplateProps>(
         user.email,
         `Verify your email address - ${name}`,
-        'verify-email',
+        "verify-email",
         {
           name,
           address,
@@ -373,7 +430,7 @@ export class ClientAuthService {
 
       return { email: user.email, success: true };
     } catch (error) {
-      console.error('Error sending verify email:', error);
+      console.error("Error sending verify email:", error);
       return { email: user.email, success: false };
     }
   }
@@ -385,11 +442,11 @@ export class ClientAuthService {
   ) {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
-      throw new UnauthorizedException('User does not exist');
+      throw new UnauthorizedException("User does not exist");
     }
 
     if (!user.password) {
-      throw new UnauthorizedException('User does not have a password');
+      throw new UnauthorizedException("User does not have a password");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -397,7 +454,7 @@ export class ClientAuthService {
       user.password,
     );
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Your password is incorrect');
+      throw new UnauthorizedException("Your password is incorrect");
     }
 
     await this.userRepository.update(user.id, {
@@ -416,11 +473,11 @@ export class ClientAuthService {
   ) {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
-      throw new UnauthorizedException('User does not exist');
+      throw new UnauthorizedException("User does not exist");
     }
 
     if (!user.password) {
-      throw new UnauthorizedException('User does not have a password');
+      throw new UnauthorizedException("User does not have a password");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -428,7 +485,7 @@ export class ClientAuthService {
       user.password,
     );
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Your current password is incorrect');
+      throw new UnauthorizedException("Your current password is incorrect");
     }
 
     await this.userService.updatePassword(
@@ -443,26 +500,26 @@ export class ClientAuthService {
     try {
       const payload: { sub: string; email: string; callbackUrl?: string } =
         await this.jwtService.verifyAsync(token, {
-          secret: this.configService.get('app.jwt.secret'),
+          secret: this.configService.get("app.jwt.secret"),
         });
 
       const user = await this.userRepository.findOne({
         where: [{ id: payload.sub }],
       });
       if (!user) {
-        throw new UnauthorizedException('User does not exist');
+        throw new UnauthorizedException("User does not exist");
       }
 
       await this.userRepository.update(user.id, { emailVerified: new Date() });
 
       let url: string;
       if (payload.callbackUrl) {
-        url = payload.callbackUrl.includes('?')
+        url = payload.callbackUrl.includes("?")
           ? `${payload.callbackUrl}&verifyToken=${encodeURIComponent(token)}`
           : `${payload.callbackUrl}?verifyToken=${encodeURIComponent(token)}`;
       } else {
         const mobileScheme =
-          this.configService.get('app.mobile.scheme') || 'instanctmobileapp';
+          this.configService.get("app.mobile.scheme") || "instanctmobileapp";
         url = `${mobileScheme}://main/profile/email-success?verifyToken=${encodeURIComponent(
           token,
         )}`;
@@ -471,7 +528,7 @@ export class ClientAuthService {
       return url;
     } catch (error) {
       throw new UnauthorizedException(
-        'Invalid or expired verify token ' + error,
+        "Invalid or expired verify token " + error,
       );
     }
   }
@@ -489,37 +546,37 @@ export class ClientAuthService {
       const resetToken = await this.jwtService.signAsync(
         { sub: user.id, email: user.email },
         {
-          secret: this.configService.get('app.passwordReset.secret'),
-          expiresIn: this.configService.get('app.passwordReset.expiration'),
+          secret: this.configService.get("app.passwordReset.secret"),
+          expiresIn: this.configService.get("app.passwordReset.expiration"),
         },
       );
 
-      const webAppUrl = this.configService.get('app.webAppUrl');
+      const webAppUrl = this.configService.get("app.webAppUrl");
       const resetLink = `${webAppUrl}?token=${resetToken}`;
 
       //gather informations
 
       await this.mailService.sendTemplate<ForgetPasswordTemplateProps>(
         user.email,
-        'Password Reset Request',
-        'forget-password',
+        "Password Reset Request",
+        "forget-password",
         {
           name:
             ((await this.configurationNamespaceService.getSpecificParam(
               this.configurationNamespaces.CORE,
-              'company.name',
-            )) as string) || 'Our App',
+              "company.name",
+            )) as string) || "Our App",
           address:
             ((await this.configurationNamespaceService.getSpecificParam(
               this.configurationNamespaces.CORE,
-              'company.address',
-            )) as string) || 'N/A',
+              "company.address",
+            )) as string) || "N/A",
           support:
             ((await this.configurationNamespaceService.getSpecificParam(
               this.configurationNamespaces.CORE,
-              'company.support',
-            )) as string) || 'N/A',
-          logo: `${this.configService.get<string>('app.webAppUrl')}/logo.png`,
+              "company.support",
+            )) as string) || "N/A",
+          logo: `${this.configService.get<string>("app.webAppUrl")}/logo.png`,
           client: identifyUser(user),
           email: user.email,
           url: resetLink,
@@ -527,7 +584,7 @@ export class ClientAuthService {
       );
       return { email: user.email, success: true };
     } catch (error) {
-      console.error('Error sending password reset email:', error);
+      console.error("Error sending password reset email:", error);
       return { email: user.email, success: false };
     }
   }
@@ -538,12 +595,12 @@ export class ClientAuthService {
     try {
       const payload: { sub: string; email: string } =
         await this.jwtService.verifyAsync(requestCheckResetTokenDto.token, {
-          secret: this.configService.get('app.passwordReset.secret'),
+          secret: this.configService.get("app.passwordReset.secret"),
         });
 
       const user = await this.userRepository.findOneById(payload.sub);
       if (!user) {
-        throw new UnauthorizedException('User does not exist');
+        throw new UnauthorizedException("User does not exist");
       }
 
       return {
@@ -551,7 +608,7 @@ export class ClientAuthService {
         valid: true,
       };
     } catch (error) {
-      throw new UnauthorizedException('Invalid or expired reset token' + error);
+      throw new UnauthorizedException("Invalid or expired reset token" + error);
     }
   }
 }

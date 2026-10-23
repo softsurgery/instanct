@@ -11,16 +11,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { FeedbackService } from '../services/feedback.service';
-import { IQueryObject } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 import { ResponseFeedbackDto } from '../dtos/feedback/response-feedback.dto';
-import { PageDto } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { PageDto } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { CreateFeedbackDto } from '../dtos/feedback/create-feedback.dto';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
 @ApiTags('feedback')
 @ApiBearerAuth('access_token')
@@ -70,11 +70,18 @@ export class FeedbackController {
     @Body() createFeedbackDto: CreateFeedbackDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseFeedbackDto> {
-    const feedback = await this.feedbackService.saveWithDeviceInfo(
-      createFeedbackDto,
-      req?.user?.sub,
-    );
-    req.logInfo = { id: feedback.id, category: feedback.category };
+    const macAddress =
+      (req.headers['x-mac-address'] as string) ||
+      (req.headers['x-device-mac'] as string) ||
+      undefined;
+    const feedback = await this.feedbackService.create(createFeedbackDto, {
+      userId: req?.user?.sub,
+      macAddress,
+    });
+    req.logInfo = {
+      feedbackId: feedback.id,
+      category: feedback.category,
+    };
     return toDto(ResponseFeedbackDto, feedback);
   }
 
@@ -84,8 +91,12 @@ export class FeedbackController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseFeedbackDto | null> {
-    const feedback = await this.feedbackService.softDelete(id);
-    req.logInfo = { id, category: feedback?.category };
+    const feedback = await this.feedbackService.findOneById(id);
+    await this.feedbackService.softDelete(id);
+    req.logInfo = {
+      feedbackId: id,
+      category: feedback?.category,
+    };
     return toDto(ResponseFeedbackDto, feedback);
   }
 }

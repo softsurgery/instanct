@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { NotificationRepository } from '../repositories/notification.repository';
 import { NotificationEntity } from '../entities/notification.entity';
-import { IQueryObject } from 'nsa-database';
-import { QueryBuilder } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { QueryBuilder } from '@softsurgery/nsa-database';
 import { FindManyOptions, IsNull } from 'typeorm';
-import { PageDto } from 'nsa-database';
-import { PageMetaDto } from 'nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { PageMetaDto } from '@softsurgery/nsa-database';
 import { Transactional } from '@nestjs-cls/transactional';
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 
 @Injectable()
 export class NotificationService extends AbstractCrudService<NotificationEntity> {

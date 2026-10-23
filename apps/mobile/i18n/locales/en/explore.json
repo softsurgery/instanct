@@ -45,6 +45,8 @@
         "schedule": "Schedule"
       },
       "placeholders": {
+        "startTime": "Select start time",
+        "endTime": "Select end time",
         "objectives": "Select objectives"
       },
       "descriptions": {
@@ -74,8 +76,8 @@
       "endTime": "End Time",
       "objectives": "Objectives",
       "placeholders": {
-        "endTime": "You can adjust the end time of your session here.",
-        "objectives": "You can adjust your objectives here."
+        "endTime": "Select end time",
+        "objectives": "Select objectives"
       },
       "descriptions": {
         "endTime": "You can adjust the end time of your session here.",

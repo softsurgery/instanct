@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import * as LabelPrimitive from "@rn-primitives/label";
 import { Platform } from "react-native";
 
@@ -18,7 +18,7 @@ function Label({
         Platform.select({
           web: "cursor-default leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50 group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50",
         }),
-        disabled && "opacity-50"
+        disabled && "opacity-50",
       )}
       onPress={onPress}
       onLongPress={onLongPress}
@@ -30,7 +30,7 @@ function Label({
         className={cn(
           "text-foreground text-sm font-medium",
           Platform.select({ web: "leading-none" }),
-          className
+          className,
         )}
         {...props}
       />

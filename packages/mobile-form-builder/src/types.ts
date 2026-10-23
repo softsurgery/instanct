@@ -52,6 +52,7 @@ export enum FieldVariant {
   RATING = "rating",
   PICTURE = "picture",
   CHOICEPICKER = "choice-picker",
+  SLIDER = "slider",
   CUSTOM = "custom",
 }
 
@@ -108,12 +109,18 @@ export interface MapPinFieldProps {
 }
 
 export interface DateFieldProps {
+  placeholder?: string;
   value?: Date;
   onDateChange?: (date: Date) => void;
   editable?: boolean;
+  /** Inclusive lower year bound. Defaults to 1920. */
+  minYear?: number;
+  /** Inclusive upper year bound. Pass `"current"` for this year. Defaults to `"current"`. */
+  maxYear?: number | "current";
 }
 
 export interface TimeFieldProps {
+  placeholder?: string;
   value?: Date;
   onTimeChange?: (time: Date) => void;
   editable?: boolean;
@@ -129,6 +136,8 @@ export interface SelectFieldProps {
   onSelect?: (value: string) => void;
   options?: SelectOption[];
   editable?: boolean;
+  searchable?: boolean;
+  searchPlaceholder?: string;
 }
 
 export interface MultiSelectFieldProps {
@@ -137,6 +146,8 @@ export interface MultiSelectFieldProps {
   options?: SelectOption[];
   editable?: boolean;
   max?: number;
+  searchable?: boolean;
+  searchPlaceholder?: string;
 }
 
 export interface RatingFieldProps {
@@ -148,13 +159,28 @@ export interface RatingFieldProps {
   starSize?: number;
 }
 
+export interface MobileUploadFile {
+  uri: string;
+  name: string;
+  type: string;
+}
+
+export type UploadFileInput = File | MobileUploadFile;
+
+export type UploadProgressCallback = (percent: number) => void;
+
 export interface PictureFieldProps {
-  image?: string | null;
+  image?: string | UploadFileInput | null;
   progress?: number;
   alt?: string;
   editable?: boolean;
-  onFileChange?: (e: string) => void;
-  onUpload?: (file: File, onProgress: (percent: number) => void) => void;
+  onPickStart?: () => void;
+  onPickEnd?: () => void;
+  onFileChange?: (file: UploadFileInput) => void;
+  onUpload?: (
+    file: UploadFileInput,
+    onProgress?: UploadProgressCallback,
+  ) => void;
 }
 
 export interface RadioFieldProps {
@@ -181,6 +207,20 @@ export interface ChoicePickerFieldProps {
   onSelectChange?: (value: string) => void;
   options?: SelectOption[];
   editable?: boolean;
+}
+
+export interface SliderFieldProps {
+  value?: number;
+  minimumValue?: number;
+  maximumValue?: number;
+  step?: number;
+  onValueChange?: (value: number) => void;
+  onSlidingComplete?: (value: number) => void;
+  editable?: boolean;
+  unit?: string;
+  formatValue?: (value: number) => string;
+  showMinMaxLabels?: boolean;
+  hapticsEnabled?: boolean;
 }
 
 export interface CustomFieldProps {

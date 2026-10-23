@@ -1,6 +1,6 @@
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { prependConversationToPages } from "@/lib/chat";
-import { CreateConversationDto, ResponseConversationDto } from "@/types";
+import { CreateConversationDto, ResponseConversationDto } from "@softsurgery/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface useStartConversationProps {
@@ -13,6 +13,7 @@ interface useStartConversationProps {
 export const useStartConversation = ({
   onSuccess,
 }: useStartConversationProps = {}) => {
+  const api = useApi();
   const queryClient = useQueryClient();
 
   const { mutate: startConversation, isPending: isStartingConversation } =

@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BugVariant } from '../../enums/bug-variant.enum';
 import { BugStatus } from '../../enums/bug-status.enum';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { Expose, Type } from 'class-transformer';
-import { ResponseDeviceInfoDto } from '../device-info/response-device-info.dto';
+import { ResponseUserDeviceDto } from '@softsurgery/nsa-auth/dtos/user-device/response-user-device.dto';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
 
 export class ResponseBugDto extends ResponseDtoHelper {
@@ -27,14 +27,14 @@ export class ResponseBugDto extends ResponseDtoHelper {
   @Expose()
   description: string;
 
-  @ApiProperty({ type: ResponseDeviceInfoDto })
+  @ApiProperty({ type: () => ResponseUserDeviceDto, required: false })
   @Expose()
-  @Type(() => ResponseDeviceInfoDto)
-  device: ResponseDeviceInfoDto;
+  @Type(() => ResponseUserDeviceDto)
+  device?: ResponseUserDeviceDto;
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String, required: false })
   @Expose()
-  deviceId: number;
+  deviceId?: string;
 
   @ApiProperty({ type: String })
   @Expose()

@@ -1,7 +1,7 @@
 import {
   AbstractTrigger,
   TriggerApply,
-} from 'nsa-database';
+} from '@softsurgery/nsa-database';
 
 export class ConversationParticipantsTrigger extends AbstractTrigger {
   name = 'conv_participants_sync';

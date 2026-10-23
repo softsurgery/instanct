@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Slider } from "@instanct/ui";
+import { Input, Slider } from "@softsurgery/ui";
 import { cn } from "@/lib/utils";
 import { ResponseConfigurationParamDto } from "@/types";
 import { useTranslation } from "react-i18next";

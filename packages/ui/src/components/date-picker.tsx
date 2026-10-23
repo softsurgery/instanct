@@ -7,7 +7,7 @@ import { DayPicker } from "react-day-picker";
 import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { cn } from "#lib/utils";
-import { getDateFnsLocale } from "@instanct/lib";
+import { getDateFnsLocale } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
 
 export interface InputProps extends Omit<

@@ -1,5 +1,5 @@
 {
-  "name": "@instanct/i18n",
+  "name": "@softsurgery/i18n",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -20,8 +20,5 @@
     "check-types": "tsc --noEmit",
     "dev": "tsc --watch",
     "clean": "rm -rf node_modules .next dist build .turbo"
-  },
-  "devDependencies": {
-    "typescript": "^5.5.3"
   }
 }

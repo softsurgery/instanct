@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, cn } from '@instanct/ui';
+import { Card, CardContent, cn } from '@softsurgery/ui';
 import { ImageIcon } from 'lucide-react';
 
 interface CardViewProps<T> {

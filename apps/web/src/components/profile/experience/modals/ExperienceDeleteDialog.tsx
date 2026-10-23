@@ -1,6 +1,6 @@
-import { useDialog } from "@instanct/components";
-import { Spinner } from "@instanct/components";
-import { Button } from "@instanct/ui";
+import { useDialog } from "@softsurgery/components";
+import { Spinner } from "@softsurgery/components";
+import { Button } from "@softsurgery/ui";
 import { useTranslation } from "react-i18next";
 
 interface ExperienceDeleteDialogProps {

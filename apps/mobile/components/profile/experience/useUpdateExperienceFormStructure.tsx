@@ -7,9 +7,9 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
   TextFieldProps,
-} from "@instanct/mobile-form-builder";
+} from "@softsurgery/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
-import { LocationTypes, WorkTypes } from "@/types";
+import { LocationTypes, WorkTypes } from "@softsurgery/api-client";
 import { useTranslation } from "react-i18next";
 
 interface UseUpdateExperienceFormStructureProps {
@@ -95,6 +95,7 @@ export const useUpdateExperienceFormStructure = ({
     label: t("experience.form.labels.workType"),
     variant: FieldVariant.SELECT,
     required: true,
+    placeholder: t("experience.form.placeholders.workType"),
     description: t("experience.form.descriptions.workType"),
     error: t(store.experienceErrors?.workType?.[0]),
     props: {
@@ -115,6 +116,7 @@ export const useUpdateExperienceFormStructure = ({
     label: t("experience.form.labels.locationType"),
     variant: FieldVariant.SELECT,
     required: true,
+    placeholder: t("experience.form.placeholders.locationType"),
     description: t("experience.form.descriptions.locationTypeUpdate"),
     error: t(store.experienceErrors?.locationType?.[0]),
     props: {
@@ -135,6 +137,7 @@ export const useUpdateExperienceFormStructure = ({
     label: t("experience.form.labels.startDate"),
     variant: FieldVariant.DATE,
     required: true,
+    placeholder: t("experience.form.placeholders.startDate"),
     description: t("experience.form.descriptions.startDate"),
     error: t(store.experienceErrors?.startDate?.[0]),
     props: {
@@ -161,7 +164,9 @@ export const useUpdateExperienceFormStructure = ({
       checked: store.present,
       onCheckedChange: (value) => {
         store.set("present", value);
-        store.setNested("updateExperienceDto.endDate", null);
+        if (value) {
+          store.setNested("updateExperienceDto.endDate", null);
+        }
         store.setNested("experienceErrors.endDate", []);
       },
     },
@@ -172,6 +177,7 @@ export const useUpdateExperienceFormStructure = ({
     label: t("experience.form.labels.endDate"),
     variant: FieldVariant.DATE,
     required: false,
+    placeholder: t("experience.form.placeholders.endDate"),
     description: t("experience.form.descriptions.endDate"),
     error: t(store.experienceErrors?.endDate?.[0]),
     hidden: store.present,

@@ -1,8 +1,8 @@
-import { cn } from "@instanct/lib";
-import { ResponseMessageDto, StaticMessageEnum } from "@/types";
+import { cn } from "@softsurgery/lib";
+import { ResponseMessageDto, StaticMessageEnum } from "@softsurgery/api-client";
 import React from "react";
 import { Pressable } from "react-native";
-import { Text } from "@instanct/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useTranslation } from "react-i18next";
 

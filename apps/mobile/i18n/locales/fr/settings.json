@@ -127,7 +127,7 @@
                 "title": "Appareils et accès autorisés",
                 "description": "Gérez les appareils autorisés à accéder à votre compte",
                 "sectionTitle": "Appareils enregistrés",
-                "sectionDescription": "Gérez les appareils connectés à votre compte. Contrôlez si chaque appareil est autorisé ou révoquez son accès.",
+                "sectionDescription": "Gérez les appareils connectés à votre compte. Appuyez sur un appareil pour voir les détails ou le supprimer et déconnecter.",
                 "loading": "Chargement des appareils...",
                 "emptyTitle": "Aucun appareil enregistré",
                 "emptyDescription": "Les appareils depuis lesquels vous vous connectez apparaîtront ici.",
@@ -137,22 +137,62 @@
                 "accessAllowed": "Accès autorisé",
                 "accessRestricted": "Accès restreint",
                 "lastSignIn": "Dernière activité",
+                "details": {
+                  "title": "Détails de l'appareil",
+                  "os": "Système d'exploitation",
+                  "ipAddress": "Adresse IP",
+                  "location": "Localisation",
+                  "lastSignIn": "Dernière activité",
+                  "signIns": "Connexions",
+                  "deviceMap": "Localisation de l'appareil",
+                  "deviceInfo": "Informations sur l'appareil",
+                  "noLocation": "Détails de localisation indisponibles pour cet appareil",
+                  "approximate": "Localisation approximative basée sur l'IP de connexion",
+                  "notFound": "Appareil introuvable"
+                },
                 "actions": {
-                  "revoke": "Révoquer"
+                  "revoke": "Supprimer et déconnecter",
+                  "logoutAll": "Déconnecter tous les appareils",
+                  "logoutAllDescription": "Vous serez déconnecté de toutes les sessions actives, y compris celle-ci.",
+                  "viewConnections": "Voir l'historique des connexions",
+                  "showMore": "Voir plus",
+                  "showLess": "Voir moins"
+                },
+                "connections": {
+                  "title": "Historique des connexions",
+                  "description": "Historique de toutes les connexions actives et passées depuis cet appareil avec l'adresse IP et la géolocalisation détectées.",
+                  "date": "Date",
+                  "time": "Heure",
+                  "loading": "Chargement des connexions...",
+                  "emptyTitle": "Aucun historique de connexion",
+                  "emptyDescription": "Chaque fois que cet appareil se connecte, un journal d'historique est créé.",
+                  "connectedNow": "Connecté",
+                  "disconnected": "Déconnecté",
+                  "ended": "Terminé",
+                  "recently": "Récemment",
+                  "mobileDevice": "Appareil mobile"
                 },
                 "revokeAlert": {
-                  "title": "Révoquer l'accès de l'appareil",
-                  "message": "Êtes-vous sûr de vouloir révoquer l'accès de cet appareil ? Vous devrez vous reconnecter depuis cet appareil.",
+                  "title": "Supprimer et déconnecter l'appareil",
+                  "message": "Êtes-vous sûr de vouloir supprimer et déconnecter cet appareil ? Vous devrez vous reconnecter depuis cet appareil.",
                   "cancel": "Annuler",
-                  "confirm": "Révoquer"
+                  "confirm": "Supprimer et déconnecter"
+                },
+                "logoutAllAlert": {
+                  "title": "Déconnecter tous les appareils",
+                  "message": "Êtes-vous sûr de vouloir déconnecter tous les appareils ? Vous serez déconnecté de cet appareil et de tous les autres appareils.",
+                  "cancel": "Annuler",
+                  "confirm": "Tout déconnecter"
                 },
                 "toasts": {
                   "allowedSuccess": "Accès de l'appareil autorisé",
                   "allowedError": "Échec de la mise à jour des autorisations de l'appareil",
                   "disallowedSuccess": "Accès de l'appareil restreint",
                   "disallowedError": "Échec de la mise à jour des autorisations de l'appareil",
-                  "revokeSuccess": "Accès de l'appareil révoqué avec succès",
-                  "revokeError": "Échec de la révocation de l'appareil"
+                  "revokeSuccess": "Appareil supprimé et déconnecté avec succès",
+                  "revokeError": "Échec de la suppression et déconnexion de l'appareil",
+                  "logoutAllSuccess": "Tous les appareils ont été déconnectés",
+                  "logoutAllError": "Échec de la déconnexion de tous les appareils"
                 }
               },
               "two-factor-authentication": {
@@ -194,6 +234,10 @@
       "title": "Assistance",
       "description": "Signalez des problèmes ou envoyez-nous vos commentaires.",
       "screens": {
+        "support": {
+          "title": "Centre d'aide & Support",
+          "description": "Obtenez de l'aide, contactez notre équipe et consultez nos guides d'utilisation."
+        },
         "report-bug": {
           "title": "Signaler un bug",
           "description": "Aidez-nous à améliorer l’application en signalant les bugs que vous rencontrez.",
@@ -311,6 +355,7 @@
         "sign-out": "Se déconnecter",
         "remove-account": "Supprimer le compte"
       },
+      "version": "Version {{version}}",
       "deleteAlert": {
         "title": "Supprimer le compte",
         "message": "Êtes-vous sûr de vouloir supprimer votre compte ? Toutes vos données seront définitivement supprimées et cette action est irréversible.",
@@ -319,6 +364,17 @@
         "success": "Compte supprimé avec succès.",
         "error": "Échec de la suppression du compte. Veuillez réessayer."
       }
+    },
+    "updateGate": {
+      "title": "Mise à jour requise",
+      "description": "Une version plus récente d'Instanct est nécessaire pour continuer. Veuillez mettre à jour l'application pour y accéder.",
+      "updateButton": "Mettre à jour",
+      "installedVersion": "Installée : v{{version}}",
+      "requiredVersion": "Requise : v{{version}}",
+      "urlNotConfigured": "Le lien de mise à jour pour votre plateforme n'est pas encore disponible. Veuillez réessayer ultérieurement ou contacter le support.",
+      "retryButton": "Vérifier à nouveau",
+      "checking": "Vérification de la version...",
+      "linkUnavailable": "Lien de mise à jour indisponible"
     }
   },
   "map-settings": {

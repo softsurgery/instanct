@@ -1,12 +1,13 @@
 import type { Request as ExpressRequest } from 'express';
 import type { Socket } from 'socket.io';
-import type { BatchNotificationInfo } from 'nsa-notifications/decorators/notify.decorator';
+import type { BatchNotificationInfo } from '@softsurgery/nsa-notifications/decorators/notify.decorator';
 
 export interface AdvancedRequest extends ExpressRequest {
   user?: {
     sub: string;
     email: string;
   };
+  logEvent?: string;
   logInfo?: Record<string, unknown>;
   notificationInfo?: Record<string, unknown>;
   batchNotificationInfo?: BatchNotificationInfo[];

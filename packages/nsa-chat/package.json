@@ -1,7 +1,10 @@
 {
-  "name": "nsa-chat",
+  "name": "@softsurgery/nsa-chat",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "description": "Instanct shared chat module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +38,7 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/build-shared-packages.mjs",
+    "build": "node ../../scripts/mjs/build-shared-packages.mjs",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
@@ -48,17 +51,16 @@
     "@nestjs/websockets": "^11.1.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
-    "nsa-um": "workspace:*",
-    "nsa-auth": "workspace:*",
-    "nsa-database": "workspace:*",
-    "nsa-helpers": "workspace:*",
-    "nsa-logger": "workspace:*",
-    "nsa-storage": "workspace:*",
+    "@softsurgery/nsa-um": "workspace:*",
+    "@softsurgery/nsa-auth": "workspace:*",
+    "@softsurgery/nsa-database": "workspace:*",
+    "@softsurgery/nsa-helpers": "workspace:*",
+    "@softsurgery/nsa-logger": "workspace:*",
+    "@softsurgery/nsa-storage": "workspace:*",
     "socket.io": "^4.8.1",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
     "@types/node": "^22.10.7"
   }
 }

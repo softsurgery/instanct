@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Search, Save, X } from "lucide-react";
-import { Badge, Button, cn, Input } from "@instanct/ui";
+import { Badge, Button, cn, Input } from "@softsurgery/ui";
 
 interface Option {
   value: string | number;

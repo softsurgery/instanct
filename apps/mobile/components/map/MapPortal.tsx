@@ -1,5 +1,5 @@
 import { useNotificationContext } from "@/contexts/NotificationsContext";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { IconMapPinCog, IconMessageChatbot } from "@tabler/icons-react-native";
 import { router } from "expo-router";
@@ -16,7 +16,7 @@ import {
   Loader,
   StableSafeAreaView,
   ApplicationHeader,
-} from "@instanct/mobile-components";
+} from "@softsurgery/mobile-components";
 import { MapStatus } from "./MapDebugging/MapStatus";
 import { MapLockedOverlay } from "./MaplLockedOverlay";
 

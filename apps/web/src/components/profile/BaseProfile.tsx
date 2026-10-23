@@ -6,20 +6,23 @@ import {
   MessageSquare,
   BellIcon,
   BookUser,
+  Smartphone,
+  Wifi,
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@instanct/ui";
-import { Spinner } from "@instanct/components";
+import { SideNav, Spinner } from "@softsurgery/components";
+import { useUI } from "@softsurgery/contexts";
 import { About } from "./cards/About";
 import { Settings } from "./cards/Settings";
 import { Activity } from "./cards/Activity";
+import { Devices } from "./cards/devices/Devices";
+import { Connections } from "./cards/connections/Connections";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/stores/useUserStore";
-import { Avatar, AvatarFallback, AvatarImage } from "@instanct/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useFollowerDialog } from "./modals/FollowersDialog";
 import { useFollowingDialog } from "./modals/FollowingDialog";
 import { useFollowSystem } from "@/hooks/useFollowSystem";
-import { Separator } from "@instanct/ui";
 import { Notifications } from "../audit-monitoring/notifications/Notifications";
 import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
@@ -28,9 +31,9 @@ import { Book } from "./cards/Book";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { Edit } from "lucide-react";
-import { Button } from "@instanct/ui";
+import { Button } from "@softsurgery/ui";
 import { useCoverPhoto } from "./cover/useCoverPhoto";
-import { identifyUserAvatar } from "@instanct/lib";
+import { identifyUserAvatar } from "@softsurgery/lib";
 
 interface BaseProfileProps {
   className?: string;
@@ -51,6 +54,19 @@ export const BaseProfile = ({
   const searchParams = useSearchParams();
   const initialTab = searchParams.get("tab") || "about";
   const [activeTab, setActiveTab] = React.useState(initialTab);
+  const { setEnableMainOverflow, clearEnableMainOverflow } = useUI();
+
+  React.useEffect(() => {
+    setEnableMainOverflow?.(true);
+    return () => {
+      clearEnableMainOverflow?.();
+    };
+  }, [clearEnableMainOverflow, setEnableMainOverflow]);
+
+  React.useEffect(() => {
+    const tab = searchParams.get("tab") || "about";
+    setActiveTab((current) => (current === tab ? current : tab));
+  }, [searchParams]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -59,10 +75,10 @@ export const BaseProfile = ({
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const { followerDialog, openFollowerDialog } = useFollowerDialog({
+  const { followerDialog } = useFollowerDialog({
     userStore,
   });
-  const { followingDialog, openFollowingDialog } = useFollowingDialog({
+  const { followingDialog } = useFollowingDialog({
     userStore,
   });
 
@@ -72,7 +88,7 @@ export const BaseProfile = ({
     enabled: !!user?.pictureId,
   });
 
-  const { data: coverPicture } = useQuery({
+  const { data: coverPicture, isLoading: isCoverPictureLoading } = useQuery({
     queryKey: ["cover-picture", user?.coverId],
     queryFn: () => api.upload.getUploadById(user?.coverId as number),
     enabled: !!user?.coverId,
@@ -88,11 +104,10 @@ export const BaseProfile = ({
 
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
-  const { followers, followings, isFollowersPending, isFollowingPending } =
-    useFollowSystem({
-      id: user?.id || "",
-      use: ["followers", "followings"],
-    });
+  useFollowSystem({
+    id: user?.id || "",
+    use: ["followers", "followings"],
+  });
 
   if (isFetchUserPending || !user) {
     return <Spinner className="h-screen" />;
@@ -130,6 +145,18 @@ export const BaseProfile = ({
       content: <Notifications userId={user?.id as string} />,
     },
     {
+      value: "devices",
+      label: t("userManagement.inspect.tabs.devices"),
+      icon: Smartphone,
+      content: <Devices userId={user?.id} />,
+    },
+    {
+      value: "connections",
+      label: t("userManagement.inspect.tabs.connections"),
+      icon: Wifi,
+      content: <Connections userId={user?.id} />,
+    },
+    {
       value: "settings",
       label: t("userManagement.inspect.tabs.settings"),
       icon: SettingsIcon,
@@ -141,100 +168,93 @@ export const BaseProfile = ({
     (tab) => tab.value !== "notifications" || user?.id !== currentUser?.id,
   );
 
+  const displayName =
+    [user.firstName, user.lastName].filter(Boolean).join(" ") || user.username;
+  const currentSection =
+    filteredTabs.find((tab) => tab.value === activeTab) ?? filteredTabs[0];
+
   return (
-    <div
-      className={cn(
-        "flex flex-col flex-1 h-full overflow-auto no-scrollbar ",
-        className,
-      )}
-    >
-      <div className="relative">
-        <Avatar className={cn("w-screen h-64 rounded-none", className)}>
-          <AvatarImage src={coverPicture} alt={fallback} />
-          <AvatarFallback>{fallback}</AvatarFallback>
-        </Avatar>
+    <div className={cn("flex flex-col", className)}>
+      <div className="relative -mx-2 -mt-2 h-56 overflow-hidden bg-muted md:-mx-4 md:-mt-4">
+        {coverPicture ? (
+          <img
+            src={coverPicture}
+            alt={fallback || "Cover photo"}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-muted/50 via-muted to-muted/80">
+            {isCoverPictureLoading && (
+              <Spinner className="h-6 w-6 text-muted-foreground" />
+            )}
+          </div>
+        )}
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
+
         {user?.id === currentUser?.id && (
           <Button
             variant="outline"
             size="icon"
-            className="cursor-pointer rounded-lg absolute top-4 right-4 bg-white/80 hover:bg-white/90"
+            className="absolute top-4 right-4 z-10 cursor-pointer rounded-lg bg-background/80 shadow-sm backdrop-blur-sm hover:bg-background"
             onClick={handleCoverEdit}
             disabled={isCoverUploadPending || isCoverUpdatePending}
           >
-            <Edit className="h-4 w-4" />
+            {isCoverUploadPending || isCoverUpdatePending ? (
+              <Spinner className="h-4 w-4" />
+            ) : (
+              <Edit className="h-4 w-4" />
+            )}
           </Button>
         )}
       </div>
 
-      <div className="container mx-auto">
-        {/* Profile Info */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-4 p-4">
-          <div className="flex flex-row items-center gap-4">
-            <Avatar className={cn("w-24 h-24 rounded-full", className)}>
+      <div className="px-1 sm:px-4">
+        <div className="-mt-12">
+          <div className="flex items-center gap-2">
+            <Avatar className="size-24 border-4 border-background bg-background shadow-md">
               <AvatarImage src={profilePicture} alt={fallback} />
               <AvatarFallback>{fallback}</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col items-start">
-              <h1 className="font-semibold text-lg">
-                {user?.firstName} {user?.lastName}
+            <div className="z-20">
+              <h1 className="text-2xl font-bold text-foreground">
+                {displayName}
               </h1>
-              <h2 className="text-sm text-muted-foreground hover:underline cursor-pointer">
-                <a href={`mailto:${user?.email}`}>
-                  {user?.email || "No email"}
-                </a>
-              </h2>
-              <div className="flex flex-row items-center mt-2">
-                <Separator orientation="vertical" className="mx-1 h-4" />
+              {user.username && (
                 <p className="text-sm text-muted-foreground">
-                  {user?.phone || t("userManagement.inspect.noPhoneNumber")}
+                  @{user.username}
                 </p>
-              </div>
+              )}
+              <a
+                href={`mailto:${user.email}`}
+                className="block text-sm text-muted-foreground hover:underline"
+              >
+                {user.email}
+              </a>
+              {user.phone && (
+                <p className="text-sm text-muted-foreground">{user.phone}</p>
+              )}
             </div>
           </div>
-
-          {/* Remove stats following/follower section or all the feature??*/}
         </div>
 
-        {/* Tabs */}
-        <Tabs
-          value={activeTab}
-          onValueChange={handleTabChange}
-          className="flex flex-col flex-1 overflow-auto"
-        >
-          <TabsList
-            className={`grid border-b-2 border-[#3B82F6]`}
-            style={{
-              gridTemplateColumns: `repeat(${filteredTabs.length}, minmax(0, 1fr))`,
-            }}
-          >
-            {filteredTabs.map(({ value, label, icon: Icon }) => (
-              <TabsTrigger
-                key={value}
-                value={value}
-                className="flex items-center gap-2"
-              >
-                <Icon className="h-4 w-4" />
-                <span className="hidden lg:block">{label}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>{" "}
-          {followingDialog}
-          {followerDialog}
-          <div className="flex flex-col flex-1 overflow-auto h-full">
-            {filteredTabs.map(({ value, content }) =>
-              activeTab === value ? (
-                <TabsContent
-                  key={value}
-                  value={value}
-                  className="flex flex-col flex-1 overflow-auto h-full no-scrollbar"
-                >
-                  {content}
-                </TabsContent>
-              ) : null,
-            )}
-          </div>
-        </Tabs>
+        <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-start">
+          <aside className="w-full shrink-0 lg:sticky lg:top-4 lg:w-56">
+            <SideNav
+              activeHref={currentSection?.value}
+              onSelect={(item) => handleTabChange(item.href)}
+              items={filteredTabs.map(({ value, label, icon: Icon }) => ({
+                href: value,
+                title: label,
+                icon: <Icon className="h-4 w-4" />,
+              }))}
+            />
+          </aside>
+          <div className="min-w-0 flex-1 pb-8">{currentSection?.content}</div>
+        </div>
       </div>
+
+      {followingDialog}
+      {followerDialog}
       <input
         type="file"
         ref={fileInputRef}

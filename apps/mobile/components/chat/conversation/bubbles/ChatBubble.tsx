@@ -1,4 +1,4 @@
-import { ResponseMessageLinkDto, StaticMessageEnum } from "@/types";
+import { ResponseMessageLinkDto, StaticMessageEnum } from "@softsurgery/api-client";
 import { format } from "date-fns";
 import { Alert, Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -9,8 +9,8 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { MessageTextContent } from "./MessageTextContent";
 import { useTranslation } from "react-i18next";
 

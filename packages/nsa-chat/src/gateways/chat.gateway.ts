@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, OnModuleInit, Optional } from '@nestjs/common';
 import {
   WebSocketGateway,
   SubscribeMessage,
@@ -9,12 +9,16 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { getTokenPayloadForWebSocket } from 'nsa-auth/utils/token-payload';
-import { AdvancedSocket } from 'nsa-helpers/http';
+import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
+import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
 import { MessageService } from '../services/message.service';
 import { CreateMessageDto } from '../dtos/message/create-message.dto';
 import { ConversationService } from '../services/conversation.service';
-import { USER_REPOSITORY, AppUserRepository } from 'nsa-um/tokens/user-access';
+import { USER_REPOSITORY, AppUserRepository } from '@softsurgery/nsa-um/tokens/user-access';
+import {
+  UserPresenceEvent,
+  UserPresenceService,
+} from '@softsurgery/nsa-um/services/user-presence.service';
 import { ConversationEntity } from '../entities/conversation.entity';
 import { DeepPartial } from 'typeorm';
 
@@ -24,22 +28,35 @@ const MAX_LIMIT = 20;
   namespace: '/chat',
   cors: { origin: '*' },
 })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ChatGateway
+  implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
+{
   @WebSocketServer()
   server: Server;
-
-  /**
-   * userId -> Set of connected socket IDs (supports multiple devices)
-   */
-  private readonly connectedUsers = new Map<string, Set<string>>();
 
   constructor(
     private readonly messageService: MessageService,
     private readonly conversationService: ConversationService,
     @Inject(USER_REPOSITORY)
     private readonly userRepository: AppUserRepository,
+    @Optional()
+    private readonly userPresenceService?: UserPresenceService,
   ) {}
 
+  /**
+   * Initializes module and subscribes to centralized presence events
+   * to broadcast presence updates to all clients connected to the /chat namespace.
+   */
+  onModuleInit() {
+    this.userPresenceService?.onPresenceChange((event: UserPresenceEvent) => {
+      this.server?.emit('user-presence', event);
+    });
+  }
+
+  /**
+   * Handles incoming chat WebSocket connection, verifies token, joins personal user room,
+   * and registers the connection with the centralized UserPresenceService.
+   */
   async handleConnection(client: AdvancedSocket) {
     const payload = getTokenPayloadForWebSocket(client);
     if (!payload) {
@@ -48,109 +65,116 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     const userId = payload.sub;
+    client.data.userId = userId;
     await client.join(`user_${userId}`);
 
-    // Track connection
-    const wasOffline =
-      !this.connectedUsers.has(userId) ||
-      this.connectedUsers.get(userId)!.size === 0;
+    const source = this.extractClientSource(client);
 
-    if (!this.connectedUsers.has(userId)) {
-      this.connectedUsers.set(userId, new Set());
-    }
-    this.connectedUsers.get(userId)!.add(client.id);
-
-    // Notify other users if this user just came online
-    if (wasOffline) {
-      this.broadcastPresenceChange(userId, true);
-    }
+    // Centralize presence tracking into UserPresenceService
+    this.userPresenceService?.trackConnection(
+      userId,
+      client.id,
+      source,
+      'chat',
+    );
   }
 
+  /**
+   * Handles chat WebSocket disconnection and deregisters connection from UserPresenceService.
+   */
   async handleDisconnect(client: AdvancedSocket) {
     const payload = getTokenPayloadForWebSocket(client);
-    if (!payload) return;
+    if (!payload?.sub) return;
 
     const userId = payload.sub;
-    const sockets = this.connectedUsers.get(userId);
 
-    if (sockets) {
-      sockets.delete(client.id);
-
-      // User is fully offline when all sockets are disconnected
-      if (sockets.size === 0) {
-        this.connectedUsers.delete(userId);
-        const now = new Date();
-        await this.userRepository.update(userId, { lastSeen: now });
-        this.broadcastPresenceChange(userId, false, now);
-      }
-    }
+    // Centralize disconnection tracking into UserPresenceService
+    this.userPresenceService?.trackDisconnection(userId, client.id, 'chat');
   }
 
-  // get user online status **************************************************************************************************************************
-
+  /**
+   * Retrieves and emits presence status for a single user using UserPresenceService.
+   */
   @SubscribeMessage('get-user-status')
   async handleGetUserStatus(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { userId: string },
   ) {
-    const isOnline = this.isUserOnline(data.userId);
-    let lastSeen: Date | null = null;
+    if (!data?.userId) return;
 
-    if (!isOnline) {
+    let status;
+    if (this.userPresenceService) {
+      status = await this.userPresenceService.getUserStatus(data.userId);
+    } else {
+      const isConnected = this.isUserConnected(data.userId);
       const user = await this.userRepository.findOneById(data.userId);
-      lastSeen = user?.lastSeen ?? null;
+      status = {
+        userId: data.userId,
+        isConnected,
+        sources: [],
+        lastSeen: user?.lastSeen ?? null,
+      };
     }
 
-    client.emit('user-status', {
-      userId: data.userId,
-      isOnline,
-      lastSeen,
-    });
+    client.emit('user-status', status);
+    return status;
   }
 
-  // get multiple users online status ****************************************************************************************************************
-
+  /**
+   * Retrieves and emits presence statuses for multiple users in batch using UserPresenceService.
+   */
   @SubscribeMessage('get-users-status')
   async handleGetUsersStatus(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { userIds: string[] },
   ) {
-    const statuses = await Promise.all(
-      data.userIds.map(async (userId) => {
-        const isOnline = this.isUserOnline(userId);
-        let lastSeen: Date | null = null;
+    const userIds = data?.userIds ?? [];
 
-        if (!isOnline) {
+    let statuses;
+    if (this.userPresenceService) {
+      statuses = await this.userPresenceService.getUsersStatus(userIds);
+    } else {
+      statuses = await Promise.all(
+        userIds.map(async (userId) => {
+          const isConnected = this.isUserConnected(userId);
           const user = await this.userRepository.findOneById(userId);
-          lastSeen = user?.lastSeen ?? null;
-        }
-
-        return { userId, isOnline, lastSeen };
-      }),
-    );
+          return {
+            userId,
+            isConnected,
+            sources: [],
+            lastSeen: user?.lastSeen ?? null,
+          };
+        }),
+      );
+    }
 
     client.emit('users-status', statuses);
+    return statuses;
   }
 
-  // helpers *****************************************************************************************************************************************
-
-  isUserOnline(userId: string): boolean {
-    const sockets = this.connectedUsers.get(userId);
-    return !!sockets && sockets.size > 0;
+  /**
+   * Checks whether a user is connected via centralized UserPresenceService.
+   */
+  isUserConnected(userId: string): boolean {
+    return this.userPresenceService?.isUserConnected(userId) ?? false;
   }
 
-  private broadcastPresenceChange(
-    userId: string,
-    isOnline: boolean,
-    lastSeen?: Date | null,
-  ) {
-    this.server.emit('user-presence', {
-      userId,
-      isOnline,
-      lastSeen: lastSeen ?? null,
-    });
+  /**
+   * Helper to extract client source ('web' | 'mobile') from handshake data.
+   */
+  private extractClientSource(client: AdvancedSocket): string {
+    return (
+      (client.handshake?.auth?.source as string) ||
+      (client.handshake?.query?.source as string) ||
+      (client.handshake?.headers?.['x-client-source'] as string) ||
+      (client.handshake?.headers?.['source'] as string) ||
+      'chat'
+    );
   }
 
+  /**
+   * Broadcasts updated unread conversation count to a specific user.
+   */
   async emitUnreadCountUpdate(userId?: string): Promise<void> {
     if (!userId) {
       return;
@@ -164,6 +188,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('conversations-unread-count', { count });
   }
 
+  /**
+   * Emits new conversation creation event and unread count update to all conversation participants.
+   */
   async emitNewConversation(
     conversationId: number,
     creatorUserId?: string,
@@ -193,8 +220,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  // join a conversation ******************************************************************************************************************************
-
+  /**
+   * Subscribes a client to a conversation room and returns recent paginated messages.
+   */
   @SubscribeMessage('join-conversation')
   async joinConversation(
     @ConnectedSocket() client: AdvancedSocket,
@@ -236,8 +264,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.emit('conversation-messages', recentMessages.data);
   }
 
-  // load messages for a conversation *****************************************************************************************************************
-
+  /**
+   * Fetches paginated messages for a conversation requested by a participant.
+   */
   @SubscribeMessage('get-conversation-messages')
   async getConversationMessages(
     @ConnectedSocket() client: AdvancedSocket,
@@ -270,7 +299,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.emit('conversation-messages', messages.data);
   }
 
-  // new message handler *****************************************************************************************************************************
+  /**
+   * Handles incoming new chat message creation, updates conversation seen timestamps,
+   * and emits the message to the conversation room and participant user rooms.
+   */
   @SubscribeMessage('message')
   async handleMessage(
     @ConnectedSocket() client: AdvancedSocket,
@@ -324,7 +356,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  // mark conversation as seen ***********************************************************************************************************************
+  /**
+   * Marks a conversation as seen by the current user and notifies other participants.
+   */
   @SubscribeMessage('see-conversation')
   async seeConversation(
     @ConnectedSocket() client: AdvancedSocket,

@@ -1,6 +1,6 @@
 # Instanct web
 
-Backoffice for Instanct (`instanct-ui`). Operators manage users, roles, content pages, configuration, reference data, logs, bug reports, and feedback, and they can open a user profile. It is a Next.js **pages router** app. Shared UI and data access come from `@instanct/*` packages. The abstractions themselves are described in the [root README](../../README.md).
+Backoffice for Instanct (`instanct-ui`). Operators manage users, roles, content pages, templates, configuration, reference data, logs, bug reports, and feedback, and they can open a user profile. It is a Next.js **pages router** app. Shared UI and data access come from `@softsurgery/*` and `@softsurgery/template`. The abstractions themselves are described in the [root README](../../README.md).
 
 ## Run
 
@@ -30,14 +30,14 @@ pnpm dev:web
 SessionProvider
   AuthTokenSync          # copies the NextAuth access token into useAuthPersistStore
   QueryClientProvider
-    ThemeProvider        # @instanct/contexts, class strategy, default dark
+    ThemeProvider        # @softsurgery/contexts, class strategy, default light
       AppProvider        # { appType: "admin", api }
         Application
 ```
 
 `Application` treats `/auth` as public. Any other route redirects to `/auth` until `useSession()` has a session, and an authenticated visit to `/auth` redirects home. Signed-in pages render inside `Layout` (sidebar, header). `AppProviders` holds breadcrumb, page intro, and footer content that feature screens set on mount and clear on unmount.
 
-`src/lib/api.ts` calls `createApiClient` from `@instanct/api-client`. The browser uses `NEXT_PUBLIC_BASE_URL`; the server uses `BASE_URL`. `onUnauthorized` signs out through NextAuth and returns to `/auth`. Feature code imports `api` and calls a resource (`api.admin.user`, `api.auth`, `api.upload`), not Axios.
+`src/lib/api.ts` calls `createApiClient` from `@softsurgery/api-client`. The browser uses `NEXT_PUBLIC_BASE_URL`; the server uses `BASE_URL`. `onUnauthorized` signs out through NextAuth and returns to `/auth`. Feature code imports `api` and calls a resource (`api.admin.user`, `api.auth`, `api.upload`), not Axios.
 
 NextAuth lives at `pages/api/auth/[...nextauth].ts`. The credentials provider calls `api.auth.signIn`. GitHub and Google are NextAuth providers; the API remains the source of the access and refresh tokens stored on the session.
 
@@ -56,7 +56,8 @@ Pages are thin. They render a feature component or a `*Portal`.
 | `/audit-monitoring/logger` | Request logs |
 | `/audit-monitoring/bug-report` | Bug reports |
 | `/audit-monitoring/feedback` | Feedback |
-| `/content-management/pages` | Content pages (landing legal HTML) |
+| `/content-management/pages` | Content pages (`terms`, `privacy`, `about`, `faqs`, `support`) |
+| `/content-management/templates` | Email and document templates. `create` and `[id]` edit one template |
 | `/content-management/configuration` | Configuration namespaces |
 | `/content-management/reference-types` | Reference type tree |
 | `/content-management/reference-parameters` | Reference parameters |
@@ -67,12 +68,12 @@ The sidebar in `components/layout/AppSidebar.tsx` is the same map.
 
 A management screen has four pieces. Users (`components/administrative-tools/user-management/users/Users.tsx`) is the reference:
 
-1. **Query.** `useQuery` / `useMutation` from TanStack Query. The query key includes the table state. The query function calls an `@instanct/api-client` resource with `page`, `limit`, `sort`, `search`, `filter`, and `join`. That string is what the API `QueryBuilder` compiles.
-2. **Table.** `DataTable` from `@instanct/datatable-builder` receives a `DataTableConfig`: names, pagination setters, sort, search, column filters, and callbacks for create, inspect, update, and delete. Column definitions live in a `columns.tsx` next to the screen and declare filter and export meta.
+1. **Query.** `useQuery` / `useMutation` from TanStack Query. The query key includes the table state. The query function calls an `@softsurgery/api-client` resource with `page`, `limit`, `sort`, `search`, `filter`, and `join`. That string is what the API `QueryBuilder` compiles.
+2. **Table.** `DataTable` from `@softsurgery/datatable-builder` receives a `DataTableConfig`: names, pagination setters, sort, search, column filters, and callbacks for create, inspect, update, and delete. Column definitions live in a `columns.tsx` next to the screen and declare filter and export meta.
 3. **Form structure.** Create and update sheets call a hook such as `useUpdateUserFormStructure` or `useCreateEducationFormStructure`. The hook returns a `FormStructure` whose fields bind `props.value` / `props.onChange` to a Zustand store. `FormBuilder` renders it. Zod schemas in `src/types/validations` check the DTO before the mutation runs.
-4. **Chrome.** `useBreadcrumb` and `useIntro` from `@instanct/contexts` set the header for the lifetime of the screen.
+4. **Chrome.** `useBreadcrumb` and `useIntro` from `@softsurgery/contexts` set the header for the lifetime of the screen.
 
-Portals (`DashboardPortal`, `LoggerPortal`, `ContentPagesPortal`, `ConfigurationPortal`, `RefTypePortal`, `RefParamPortal`, `BugReportPortal`, `FeedbackPortal`) are the same pattern behind a single component the page renders.
+Portals (`DashboardPortal`, `LoggerPortal`, `ContentPagesPortal`, `TemplatesPortal`, `ConfigurationPortal`, `RefTypePortal`, `RefParamPortal`, `BugReportPortal`, `FeedbackPortal`) are the same pattern behind a single component the page renders. Template screens come from `@softsurgery/template`.
 
 Profile editors (experience, education, cover) reuse the form-structure hooks and the upload helpers in `hooks/content/useUploads.ts`. Uploads go through `api.upload`, which hits the API `StorageService`.
 
@@ -86,7 +87,7 @@ src/
 │   ├── auth/
 │   ├── administrative-tools/   # users, roles
 │   ├── audit-monitoring/       # logger, bugs, feedback
-│   ├── content-management/     # pages, configuration, reference data
+│   ├── content-management/     # pages, configuration, reference data (templates live in @softsurgery/template)
 │   ├── profile/
 │   └── dashboard/
 ├── hooks/

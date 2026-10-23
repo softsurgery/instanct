@@ -1,32 +1,33 @@
 import React from "react";
 import { View } from "react-native";
-import { Lock, Loader2 } from "lucide-react-native";
+import { Loader2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@instanct/lib";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { FormBuilder } from "@instanct/mobile-form-builder";
+import { cn } from "@softsurgery/lib";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { Button } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useChangePasswordFormStructure } from "./useChangePasswordFormStructure";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@/types";
+import { ServerErrorResponse } from "@softsurgery/api-client";
 import * as Haptics from "expo-haptics";
 import { useLogout } from "@/hooks/useLogout";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface ChangePasswordProps {
   className?: string;
 }
 
 export const ChangePassword = ({ className }: ChangePasswordProps) => {
+  const api = useApi();
   const { t } = useTranslation("settings");
   const userStore = useUserStore();
   const isKeyboardVisible = useKeyboardVisible();
@@ -38,7 +39,7 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
 
   const { mutate: updatePassword, isPending } = useMutation({
     mutationFn: async () =>
-      api.auth.updatePassword({
+      api.clientAuth.updatePassword({
         currentPassword: userStore.updatePasswordDto.currentPassword!,
         newPassword: userStore.updatePasswordDto.newPassword!,
       }),
@@ -86,21 +87,14 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
         ]}
       />
       <StableKeyboardAwareScrollView className="flex-1 bg-background">
-        <View className="border border-primary/20 bg-primary/5 p-4">
-          <View className="flex-row justify-center items-center gap-3">
-            <Icon
-              as={Lock}
-              size={28}
-              className="mt-0.5 flex-shrink-0 text-primary"
-            />
-            <Text className="flex-1 text-sm leading-5 text-muted-foreground">
-              {t(
-                "settings.account.screens.privacy-security.screens.account-security.change-password.forms.description",
-              )}
-            </Text>
-          </View>
+        <View className="p-4">
+          <Text className="text-sm text-muted-foreground leading-relaxed">
+            {t(
+              "settings.account.screens.privacy-security.screens.account-security.change-password.forms.description",
+            )}
+          </Text>
         </View>
-        <FormBuilder structure={structure} className="mt-4 px-2" />
+        <FormBuilder structure={structure} className="px-2" />
       </StableKeyboardAwareScrollView>
 
       {!isKeyboardVisible && (

@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { Platform, View, ViewProps } from "react-native";
 
 interface BottomButtonWrapperProps extends ViewProps {}

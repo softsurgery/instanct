@@ -1,8 +1,8 @@
 # Instanct mobile
 
-Expo Router client for Instanct (`instanct-mobile-app`). People discover nearby professionals, manage a profile, chat, schedule sessions, and send meeting requests. UI primitives come from `@instanct/mobile-ui` and `@instanct/mobile-components`. Forms use `@instanct/mobile-form-builder`. Auth and theme persistence use `@instanct/hooks`. The shared abstractions are described in the [root README](../../README.md).
+Expo Router client for Instanct (`instanct-mobile-app`). People discover nearby professionals, manage a profile, chat, schedule sessions, and send meeting requests. UI primitives come from `@softsurgery/mobile-ui` and `@softsurgery/mobile-components`. Forms use `@softsurgery/mobile-form-builder`. Auth and theme persistence use `@softsurgery/hooks`. The shared abstractions are described in the [root README](../../README.md).
 
-This app does not use `@instanct/api-client`. It has its own Axios instance and one module per resource, with the same interceptor contract as the shared client.
+HTTP goes through `@softsurgery/api-client`. `lib/api.ts` builds that client with the mobile Axios settings (base URL, delay, `/client-auth/refresh-token`, and the device auth store) and `ApiProvider` injects it. Screens read it with `useApi()`.
 
 ## Run
 
@@ -24,7 +24,6 @@ pnpm dev:mobile
 | `GOOGLE_MAPS_API_KEY` | Native maps |
 | `EXPO_PUBLIC_GOOGLE_CLIENT_ID`, `EXPO_PUBLIC_LINKEDIN_CLIENT_ID` | SSO |
 | `EXPO_PUBLIC_OAUTH_REDIRECT_URI` | Deep link the provider returns to (`app/oauth.tsx`) |
-| `EXPO_PUBLIC_SENTRY_DSN` | BugSink / Sentry-compatible reporting |
 
 ## Navigation
 
@@ -41,7 +40,7 @@ Routes are files under `app/`. `app/_layout.tsx` is the root: gesture handler, s
 | `app/main/request/` | New request, answer |
 | `app/main/explore/` | Session starter, user filters |
 | `app/main/profile/` | Profile, education, experience, industries, devices |
-| `app/main/settings/` | Language, theme, about, privacy, terms |
+| `app/main/settings/` | Language, theme, about, FAQs, support, privacy, terms |
 | `app/main/notifications.tsx` | Notification inbox |
 
 Tabs are declared in `app/main/(tabs)/_layout.tsx`. Stack screens push on top of that layout.
@@ -51,14 +50,12 @@ Tabs are declared in `app/main/(tabs)/_layout.tsx`. Stack screens push on top of
 ```text
 Screen
   -> hooks/content/<domain>/useX.ts     # useQuery / useMutation / useInfiniteQuery
-       -> api/<resource>.ts             # typed functions, query-string params
-            -> api/axios.ts             # bearer, x-timezone, one refresh, logout
+       -> useApi()                       # @softsurgery/api-client resources
+            -> lib/api.ts                # bearer, x-timezone, one refresh, logout
                  -> API QueryBuilder / CRUD services
 ```
 
-`api/axios.ts` reads the access token from the app's `useAuthPersistStore` (`hooks/useAuthPersistStore.ts`), a Zustand store persisted on the device. On 401 it retries `/auth/refresh-token` once, then `performLogout`. `FormData` uploads drop the JSON content type so multipart boundaries stay intact. The web client uses the store in `@instanct/hooks` instead; the interceptor behavior matches.
-
-Resource modules (`api/auth.ts`, `api/user.ts`, `api/session.ts`, `api/request.ts`, `api/education.ts`, `api/experience.ts`, `api/notifications.ts`, `api/upload.ts`, `api/configuration.ts`, `api/content-page.ts`, `api/bookmark.ts`, `api/bug.ts`, `api/feedback.ts`, `api/devices.ts`, `api/store.ts`) return the DTOs in `types/`. List functions take the same `page`, `limit`, `sort`, `search`, `filter`, and `join` fields the API `QueryBuilder` understands. Infinite lists (sessions, bookmarks, incoming and outgoing requests) use that pagination with `useInfiniteQuery`.
+`lib/api.ts` reads the access token from the app's `useAuthPersistStore` (`hooks/useAuthPersistStore.ts`), a Zustand store persisted on the device. On 401 it retries `/client-auth/refresh-token` once, then `performLogout`. `FormData` uploads drop the JSON content type so multipart boundaries stay intact. DTOs are imported from `@softsurgery/api-client`. List functions take the same `page`, `limit`, `sort`, `search`, `filter`, and `join` fields the API `QueryBuilder` understands. Infinite lists (sessions, bookmarks, incoming and outgoing requests) use that pagination with `useInfiniteQuery`.
 
 Hooks under `hooks/content/` are the only place screens should fetch. Group them by domain: `users`, `sessions`, `chat`, `notification`, `reference-types`, `configurations`. Reference data hooks (`useIndustries`, `useObjectives`) read the `RefType` / `RefParam` tree. Configuration hooks read namespaces the map and the client need.
 
@@ -66,22 +63,21 @@ Chat does not poll. `lib/socket.ts` keeps one Socket.IO connection per namespace
 
 ## Forms
 
-Create and edit screens use `@instanct/mobile-form-builder`. A hook such as `useSigninFormStructure` or `useSessionStarterFormStructure` returns a `FormStructure`: fieldsets, rows, and fields. `FormBuilder` renders native controls (text, select, date, time, picture, map pin). The field `props` write into a local store. Zod schemas in `types/validations/` check the payload before the resource function runs. Translation keys for those errors live in the namespace named at the top of each schema file.
+Create and edit screens use `@softsurgery/mobile-form-builder`. A hook such as `useSigninFormStructure` or `useSessionStarterFormStructure` returns a `FormStructure`: fieldsets, rows, and fields. `FormBuilder` renders native controls (text, select, date, time, picture, map pin). The field `props` write into a local store. Zod schemas in `types/validations/` check the payload before the resource function runs. Translation keys for those errors live in the namespace named at the top of each schema file.
 
 ## Layout of the app
 
 ```text
 app/                 # Expo Router screens
-api/                 # Axios instance and resource functions
 components/          # auth, chat, map, profile, request, session, settings
-contexts/            # loader and other screen-level providers
+contexts/            # API client, loader, and other screen-level providers
 hooks/
   content/           # React Query hooks by domain
   useAuthPersistStore.ts
 i18n/locales/        # en, and further locales
-lib/                 # socket, query client, theme, sentry, logout
+lib/                 # socket, query client, theme, logout
 stores/              # feature Zustand stores
-types/               # DTOs and Zod schemas
+types/               # Zod schemas and UI-only types
 ```
 
 Internationalization is i18next. `app/_layout.tsx` imports `../i18n`. Add a locale under `i18n/locales` and a settings entry; the language screen writes the preference the detector reads.

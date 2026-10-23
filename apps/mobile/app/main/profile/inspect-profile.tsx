@@ -1,5 +1,5 @@
 import { InspectProfile } from "@/components/profile/InspectProfile";
-import { useLocalSearchParams } from "expo-router/build/hooks";
+import { useLocalSearchParams } from "expo-router";
 
 export default function Screen() {
   const { id } = useLocalSearchParams();

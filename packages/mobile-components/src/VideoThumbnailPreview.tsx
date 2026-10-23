@@ -1,4 +1,4 @@
-import { Image } from "@instanct/mobile-ui";
+import { Image, Skeleton } from "@softsurgery/mobile-ui";
 import {
   requestVideoThumbnail,
   getDiskCachedThumbnailUri,
@@ -26,6 +26,11 @@ export const VideoThumbnailPreview = ({
     thumbnail?: ImageSource;
     hasFailed: boolean;
   }>({ cacheKey: "", hasFailed: false });
+  const [isImageLoaded, setIsImageLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsImageLoaded(false);
+  }, [cacheKey]);
 
   const activeThumbnail =
     state.cacheKey === cacheKey
@@ -67,7 +72,7 @@ export const VideoThumbnailPreview = ({
     }
   }, [cacheKey]);
 
-  if (!activeThumbnail || activeHasFailed) {
+  if (activeHasFailed) {
     return (
       <View
         className="bg-muted"
@@ -81,23 +86,59 @@ export const VideoThumbnailPreview = ({
     );
   }
 
+  if (!activeThumbnail) {
+    return (
+      <Skeleton
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          zIndex: 0,
+        }}
+      />
+    );
+  }
+
   return (
-    <Image
-      source={activeThumbnail}
-      onLoad={handleImageLoad}
-      onError={() =>
-        setState((prev) =>
-          prev.cacheKey === cacheKey ? { ...prev, hasFailed: true } : prev,
-        )
-      }
+    <View
       style={{
         width: "100%",
         height: "100%",
         position: "absolute",
         zIndex: 0,
       }}
-      contentFit="cover"
-      cachePolicy="memory-disk"
-    />
+    >
+      {!isImageLoaded && (
+        <Skeleton
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            zIndex: 0,
+          }}
+        />
+      )}
+      <Image
+        source={activeThumbnail}
+        onLoad={() => {
+          setIsImageLoaded(true);
+          handleImageLoad();
+        }}
+        onError={() => {
+          setIsImageLoaded(true);
+          setState((prev) =>
+            prev.cacheKey === cacheKey ? { ...prev, hasFailed: true } : prev,
+          );
+        }}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          zIndex: 0,
+        }}
+        contentFit="cover"
+        cachePolicy="memory-disk"
+      />
+    </View>
   );
 };

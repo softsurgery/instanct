@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseAbstractRepository } from 'nsa-database';
+import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TransactionHost } from '@nestjs-cls/transactional';

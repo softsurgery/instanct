@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from 'nsa-database';
+import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { UserService } from './user.service';
-import { UserNotFoundException } from 'nsa-um/errors/user/user.notfound.error';
+import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
 import { EducationRepository } from '../repositories/education.repository';
 import { EducationEntity } from '../entities/education.entity';
 import { EducationNotFoundException } from '../errors/educations/education.notfound.error';
@@ -56,6 +56,7 @@ export class EducationService extends AbstractCrudService<EducationEntity> {
     if (!education) {
       throw new EducationNotFoundException();
     }
-    return this.educationRepository.softDelete(id);
+    await this.educationRepository.softDelete(id);
+    return education;
   }
 }

@@ -8,9 +8,9 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@instanct/ui/components/sheet";
-import { cn } from "@instanct/lib";
-import { useMediaQuery } from "@instanct/ui";
+} from "@softsurgery/ui/components/sheet";
+import { cn } from "@softsurgery/lib";
+import { useMediaQuery } from "@softsurgery/ui";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;

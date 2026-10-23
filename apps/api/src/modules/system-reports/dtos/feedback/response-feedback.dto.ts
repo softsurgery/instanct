@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { Expose, Type } from 'class-transformer';
 import { FeedbackCategory } from '../../enums/feedback-category.enum';
-import { ResponseDeviceInfoDto } from '../device-info/response-device-info.dto';
+import { ResponseUserDeviceDto } from '@softsurgery/nsa-auth/dtos/user-device/response-user-device.dto';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
 
 export class ResponseFeedbackDto extends ResponseDtoHelper {
@@ -22,14 +22,14 @@ export class ResponseFeedbackDto extends ResponseDtoHelper {
   @Expose()
   rating?: number;
 
-  @ApiProperty({ type: ResponseDeviceInfoDto })
+  @ApiProperty({ type: () => ResponseUserDeviceDto, required: false })
   @Expose()
-  @Type(() => ResponseDeviceInfoDto)
-  device: ResponseDeviceInfoDto;
+  @Type(() => ResponseUserDeviceDto)
+  device?: ResponseUserDeviceDto;
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String, required: false })
   @Expose()
-  deviceId: number;
+  deviceId?: string;
 
   @ApiProperty({ type: String })
   @Expose()

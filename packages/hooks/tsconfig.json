@@ -14,16 +14,16 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "paths": {
-      "@instanct/hooks": [
+      "@softsurgery/hooks": [
         "./src/index.ts"
       ],
-      "@instanct/hooks/*": [
+      "@softsurgery/hooks/*": [
         "./src/*"
       ],
-      "@instanct/lib": [
+      "@softsurgery/lib": [
         "../lib/src/index.ts"
       ],
-      "@instanct/lib/*": [
+      "@softsurgery/lib/*": [
         "../lib/src/*"
       ]
     },

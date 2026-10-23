@@ -1,4 +1,4 @@
-import { LegalContentScreen } from "@/components/legal/LegalContentScreen";
+import { LegalContentScreen } from "@/components/settings/info-legal/ContentScreen";
 
 export type LegalDocument = "terms" | "privacy";
 

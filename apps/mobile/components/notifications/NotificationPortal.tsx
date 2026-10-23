@@ -3,22 +3,23 @@ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, View } from "react-native";
-import { api } from "~/api";
-import { cn } from "@instanct/lib";
-import { ResponseNotificationDto } from "~/types/notifications";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { Text } from "@instanct/mobile-ui";
+import { useApi } from "@/contexts/ApiContext";
+import { cn } from "@softsurgery/lib";
+import { ResponseNotificationDto } from "@softsurgery/api-client";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { Text } from "@softsurgery/mobile-ui";
 import { NotificationEntry } from "./NotificationEntry";
 import { NotificationEntrySkeleton } from "./NotificationEntrySkeleton";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface NotificationPortalProps {
   className?: string;
 }
 
 export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
+  const api = useApi();
   const queryClient = useQueryClient();
   const { t } = useTranslation("common");
   const { resetCount } = useNotificationContext();
@@ -40,7 +41,7 @@ export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
     queryKey: ["notifications"],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
-      api.notifications.findPaginatedUserConversations({
+      api.notification.findPaginated({
         page: String(pageParam),
         limit: "20",
         sort: "createdAt,desc",
@@ -125,7 +126,12 @@ export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
           }}
           onEndReachedThreshold={0.5}
           refreshControl={
-            <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={() => {
+                refetch();
+              }}
+            />
           }
           ListEmptyComponent={
             !isPending ? (

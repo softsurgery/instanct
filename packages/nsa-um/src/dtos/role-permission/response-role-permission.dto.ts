@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from 'nsa-database';
+import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { ResponseRoleDto } from '../role/response-role.dto';
 import { ResponsePermissionDto } from '../permission/response-permission.dto';
 import { Expose, Type } from 'class-transformer';

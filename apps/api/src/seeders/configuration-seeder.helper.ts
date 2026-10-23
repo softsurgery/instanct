@@ -1,6 +1,6 @@
-import { ConfigurationParamRepository } from 'nsa-configurations/repositories/configuration-param.repository';
-import { ConfigurationNamespaceRepository } from 'nsa-configurations/repositories/configuration-namespace.repository';
-import { ConfigurationParamEntity } from 'nsa-configurations/entities/configuration-param.entity';
+import { ConfigurationParamRepository } from '@softsurgery/nsa-configurations/repositories/configuration-param.repository';
+import { ConfigurationNamespaceRepository } from '@softsurgery/nsa-configurations/repositories/configuration-namespace.repository';
+import { ConfigurationParamEntity } from '@softsurgery/nsa-configurations/entities/configuration-param.entity';
 import { DeepPartial } from 'typeorm';
 
 export async function seedConfigurationParams(
@@ -15,6 +15,7 @@ export async function seedConfigurationParams(
 
   if (!namespaceEntity) {
     namespaceEntity = await configurationNamespaceRepository.save({
+      id: namespace,
       name: namespace,
       description: `${namespace} configuration`,
     });

@@ -13,7 +13,7 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { branding } from './utils/branding';
 import { corsConfig } from './config/cors.config';
-import { MigrationService } from 'nsa-database';
+import { MigrationService } from '@softsurgery/nsa-database';
 
 async function bootstrap() {
   const app: NestApplication = await NestFactory.create(AppModule);
@@ -108,7 +108,8 @@ async function bootstrap() {
   logger.log(`==========================================================`);
   branding(logger);
   logger.log(`Http Server running on ${await app.getUrl()}`, 'NestApplication');
-  logger.log(`Timezone set to ${process.env.TZ}`);
+  const timezone = configService.get<string>('app.timezone');
+  logger.log(timezone ? `Timezone set to ${timezone}` : 'Timezone is not set');
   logger.log(`Storage driver set to ${process.env.STORAGE_DRIVER}`);
   logger.log(`==========================================================`);
 

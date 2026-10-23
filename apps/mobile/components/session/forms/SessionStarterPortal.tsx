@@ -1,30 +1,29 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import { View } from "react-native";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { ApplicationHeader } from "@instanct/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { Info } from "lucide-react-native";
 import { router } from "expo-router";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useSessionStarterFormStructure } from "./useSessionStarterFormStructure";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { createSessionSchema } from "@/types/validations/session.validation";
-import { ServerErrorResponse } from "@/types";
-import { SessionType } from "@/types/session";
+import { ServerErrorResponse, SessionType } from "@softsurgery/api-client";
 import { useUserSessions } from "@/hooks/content/sessions/useUserSessions";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { mapToSelectOptions } from "@instanct/mobile-form-builder";
+import { mapToSelectOptions } from "@softsurgery/mobile-form-builder";
 import { zodErrorsToNested } from "@/lib/object";
 import { toast } from "sonner-native";
-import { AppHeaderBack } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 interface SessionStarterPortalProps {
   className?: string;
 }
@@ -32,6 +31,7 @@ interface SessionStarterPortalProps {
 export const SessionStarterPortal = ({
   className,
 }: SessionStarterPortalProps) => {
+  const api = useApi();
   const { t } = useTranslation("explore");
   const queryClient = useQueryClient();
   const isKeyboardVisible = useKeyboardVisible();

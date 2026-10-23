@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  MessageVariant,
-  ResponseConversationDto,
-  ResponseMessageDto,
-} from "@/types";
+import { MessageVariant, ResponseConversationDto, ResponseMessageDto } from "@softsurgery/api-client";
 
 interface UseLastSeenMessageIdProps {
   conversation?: ResponseConversationDto | null;

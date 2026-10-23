@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 
 interface StableSafeAreaViewProps extends ViewProps {
   children: React.ReactNode;

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../../../../packages/ui/src/styles/scrollbar.css";
 
 @source "../../../../packages/ui/src";
 @source "../../../../packages/components/src";
@@ -186,28 +187,6 @@
   }
 }
 
-@layer base {
-  ::-webkit-scrollbar {
-    @apply w-1 h-2;
-    opacity: 0; /* Initially invisible */
-    transition: opacity 1s ease; /* Smooth fade out */
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    @apply bg-zinc-400 rounded-lg;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-zinc-500;
-  }
-
-  /* Scrollbar visible state */
-  .scrollbar-visible ::-webkit-scrollbar {
-    opacity: 1; /* Visible scrollbar */
-  }
-}
 
 html,
 body {

@@ -13,17 +13,17 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RoleService } from '../services/role.service';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
 import { CreateRoleDto } from '../dtos/role/create-role.dto';
 import { UpdateRoleDto } from '../dtos/role/update-role.dto';
 import { ResponseRoleDto } from '../dtos/role/response-role.dto';
-import { ApiPaginatedResponse } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
-import { EventType } from 'nsa-logger/enums/event-type.registry';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
+import { EventType } from '@softsurgery/nsa-logger/enums/event-type.registry';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
 @ApiTags('role')
 @ApiBearerAuth('access_token')
@@ -62,7 +62,7 @@ export class RoleController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto> {
     const role = await this.roleService.saveWithPermissions(createRoleDto);
-    req.logInfo = { id: role.id, label: role.label };
+    req.logInfo = { roleId: role.id, label: role.label };
     return toDto(ResponseRoleDto, role);
   }
 
@@ -73,7 +73,10 @@ export class RoleController {
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto | null> {
     const role = await this.roleService.duplicateWithPermissions(id);
-    req.logInfo = { id: role?.id, fid: id, label: role?.label };
+    req.logInfo = {
+      roleId: role?.id,
+      label: role?.label,
+    };
     return toDto(ResponseRoleDto, role);
   }
 
@@ -88,7 +91,7 @@ export class RoleController {
       id,
       updateRoleDto,
     );
-    req.logInfo = { id, label: role?.label };
+    req.logInfo = { roleId: id, label: role?.label };
     return toDto(ResponseRoleDto, role);
   }
 
@@ -98,8 +101,9 @@ export class RoleController {
     @Param('id') id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto | null> {
-    const role = await this.roleService.softDelete(id);
-    req.logInfo = { id, label: role?.label };
+    const role = await this.roleService.findOneById(id);
+    await this.roleService.softDelete(id);
+    req.logInfo = { roleId: id, label: role?.label };
     return toDto(ResponseRoleDto, role);
   }
 }

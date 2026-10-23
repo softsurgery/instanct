@@ -1,4 +1,4 @@
-import { cn } from "@instanct/ui";
+import { cn } from "@softsurgery/ui";
 
 interface AuthFormHeaderProps {
   className?: string;

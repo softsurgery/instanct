@@ -1,6 +1,6 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Public } from 'nsa-auth/utils/public-strategy';
+import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
 import { ConfigurationNamespaceService } from '../services/configuration-namespace.service';
 import { CONFIGURATION_NAMESPACES } from '../enums/configuration-namespaces.registry';
 

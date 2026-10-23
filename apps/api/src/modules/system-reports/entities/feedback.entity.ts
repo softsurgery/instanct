@@ -1,4 +1,4 @@
-import { EntityHelper } from 'nsa-database';
+import { EntityHelper } from '@softsurgery/nsa-database';
 import {
   Column,
   Entity,
@@ -6,8 +6,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { DeviceInfoEntity } from './device-info.entity';
 import { FeedbackCategory } from '../enums/feedback-category.enum';
+import { UserDeviceEntity } from '@softsurgery/nsa-auth/entities/user-device.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 @Entity('feedback')
@@ -24,15 +24,16 @@ export class FeedbackEntity extends EntityHelper {
   @Column({ nullable: true })
   rating?: number;
 
-  @ManyToOne(() => DeviceInfoEntity, (device) => device.feedbacks, {
-    onDelete: 'CASCADE',
+  @ManyToOne(() => UserDeviceEntity, {
+    onDelete: 'SET NULL',
     eager: true,
+    nullable: true,
   })
   @JoinColumn({ name: 'deviceId' })
-  device: DeviceInfoEntity;
+  device?: UserDeviceEntity;
 
-  @Column({})
-  deviceId: number;
+  @Column({ nullable: true })
+  deviceId?: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',

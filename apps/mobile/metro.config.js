@@ -8,6 +8,7 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 const config = getDefaultConfig(projectRoot);
 
 config.watchFolders = [
+  path.resolve(workspaceRoot, "packages/api-client"),
   path.resolve(workspaceRoot, "packages/mobile-components"),
   path.resolve(workspaceRoot, "packages/mobile-ui"),
   path.resolve(workspaceRoot, "packages/hooks"),
@@ -27,14 +28,15 @@ config.resolver = {
     path.resolve(workspaceRoot, "node_modules"),
   ],
   extraNodeModules: {
-    "@instanct/mobile-components": path.resolve(
+    "@softsurgery/api-client": path.resolve(workspaceRoot, "packages/api-client"),
+    "@softsurgery/mobile-components": path.resolve(
       workspaceRoot,
       "packages/mobile-components",
     ),
-    "@instanct/mobile-ui": path.resolve(workspaceRoot, "packages/mobile-ui"),
-    "@instanct/hooks": path.resolve(workspaceRoot, "packages/hooks"),
-    "@instanct/lib": path.resolve(workspaceRoot, "packages/lib"),
-    "@instanct/mobile-form-builder": path.resolve(
+    "@softsurgery/mobile-ui": path.resolve(workspaceRoot, "packages/mobile-ui"),
+    "@softsurgery/hooks": path.resolve(workspaceRoot, "packages/hooks"),
+    "@softsurgery/lib": path.resolve(workspaceRoot, "packages/lib"),
+    "@softsurgery/mobile-form-builder": path.resolve(
       workspaceRoot,
       "packages/mobile-form-builder",
     ),

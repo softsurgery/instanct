@@ -16,9 +16,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@instanct/ui"
+} from "@softsurgery/ui"
 
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@instanct/ui"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@softsurgery/ui"
 
 const chartData = [
   { browser: "chrome", visitors: 275, fill: "#f87171" }, // rouge

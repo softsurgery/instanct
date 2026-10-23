@@ -1,9 +1,9 @@
 import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from 'nsa-database';
-import { ApiPaginatedResponse } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { toDtoArray } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { toDtoArray } from '@softsurgery/nsa-database';
 import { SessionService } from '../services/session.service';
 import { ResponseSessionDto } from '../dtos/response-session.dto';
 

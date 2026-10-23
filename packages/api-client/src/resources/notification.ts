@@ -44,6 +44,17 @@ export function createNotificationResource(http: AxiosInstance) {
     return response.data;
   };
 
+  const getUnreadCount = async (): Promise<number> => {
+    const response = await http.get<{ count: number }>(
+      `/notification/unread-count`,
+    );
+    return response.data.count;
+  };
+
+  const markAllAsRead = async (): Promise<void> => {
+    await http.post(`/notification/mark-read`);
+  };
+
   const testNotify = async (id: string) => {
     const response = await http.post<ResponseNotificationDto>(
       `/notification/test/${id}`,
@@ -57,6 +68,8 @@ export function createNotificationResource(http: AxiosInstance) {
     findPaginatedByUser,
     findAll,
     findById,
+    getUnreadCount,
+    markAllAsRead,
     testNotify,
   };
 }

@@ -1,26 +1,30 @@
-import { Button } from "@instanct/mobile-ui";
-import { Icon } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { toLongDateString } from "@instanct/mobile-components";
-import { ScrollViewContext } from "@instanct/mobile-components";
-import { cn } from "@instanct/lib";
-import { Calendar, ChevronDown } from "lucide-react-native";
+import { Button } from "@softsurgery/mobile-ui";
+import { Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import {
+  toLongDateString,
+  RotatingChevron,
+} from "@softsurgery/mobile-components";
+import { ScrollViewContext } from "@softsurgery/mobile-components";
+import { cn } from "@softsurgery/lib";
+import { Calendar } from "lucide-react-native";
 import React from "react";
-import { Keyboard, Platform, Pressable, UIManager, View } from "react-native";
+import {
+  Keyboard,
+  Platform,
+  Pressable,
+  UIManager,
+  View,
+  ViewInstance,
+} from "react-native";
 import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  Easing,
   FadeIn,
   FadeOut,
   LinearTransition,
 } from "react-native-reanimated";
-import { StableScrollable } from "@instanct/mobile-components";
-import { Separator } from "@instanct/mobile-ui";
-import { triggerHaptic } from "@instanct/mobile-components";
-
-
+import { StableScrollable } from "@softsurgery/mobile-components";
+import { Separator } from "@softsurgery/mobile-ui";
+import { triggerHaptic } from "@softsurgery/mobile-components";
 
 const MONTHS = [
   { label: "January", value: "jan" },
@@ -37,41 +41,65 @@ const MONTHS = [
   { label: "December", value: "dec" },
 ];
 
+type YearBound = number | "current";
+
 interface DatePickerProps {
   className?: string;
   classNames?: {
     trigger: string;
     content: string;
   };
+  placeholder?: string;
   value?: Date | null;
   onDateChange: (date: Date | null) => void;
   disabled?: boolean;
   nullable?: boolean;
+  /** Inclusive lower year bound. Defaults to 1920. */
+  minYear?: number;
+  /** Inclusive upper year bound. Pass `"current"` for this year. Defaults to `"current"`. */
+  maxYear?: YearBound;
 }
+
+const resolveYear = (bound: YearBound) =>
+  bound === "current" ? new Date().getFullYear() : bound;
 
 export const DatePicker = ({
   className,
   classNames,
   disabled,
+  placeholder,
   value: date = null,
   onDateChange,
   nullable = true,
+  minYear = 1920,
+  maxYear = "current",
 }: DatePickerProps) => {
   const [expanded, setExpanded] = React.useState(false);
-  const rotation = useSharedValue(0);
   const { scrollToView } = React.useContext(ScrollViewContext);
-  const contentRef = React.useRef<View>(null);
+  const contentRef = React.useRef<ViewInstance>(null);
+
+  const resolvedMinYear = minYear;
+  const resolvedMaxYear = Math.max(resolveYear(maxYear), resolvedMinYear);
+  const defaultYear = String(resolvedMaxYear);
+
+  const clampToRange = React.useCallback(
+    (candidate: Date) => {
+      const year = Math.min(
+        resolvedMaxYear,
+        Math.max(resolvedMinYear, candidate.getFullYear()),
+      );
+      if (year === candidate.getFullYear()) return candidate;
+      return new Date(year, candidate.getMonth(), candidate.getDate());
+    },
+    [resolvedMinYear, resolvedMaxYear],
+  );
 
   const toggle = () => {
     if (disabled) return;
     Keyboard.dismiss();
     const next = !expanded;
     setExpanded(next);
-    rotation.value = withTiming(next ? 180 : 0, {
-      duration: 250,
-      easing: Easing.out(Easing.ease),
-    });
-    if (!date) onDateChange(new Date());
+    if (!date) onDateChange(clampToRange(new Date()));
     if (next) {
       setTimeout(() => {
         scrollToView(contentRef);
@@ -79,38 +107,43 @@ export const DatePicker = ({
     }
   };
 
-  const chevronStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value}deg` }],
-  }));
+  const validDate = date && !Number.isNaN(date.getTime()) ? date : null;
 
   const displayText = React.useMemo(
-    () => (date ? toLongDateString(date) : "Select a date"),
-    [date],
+    () =>
+      validDate ? toLongDateString(validDate) : placeholder || "Select a date",
+    [validDate, placeholder],
   );
 
   const [year, setYear] = React.useState(
-    date ? String(date.getFullYear()) : "2023",
+    validDate ? String(validDate.getFullYear()) : defaultYear,
   );
   const [month, setMonth] = React.useState(
-    date ? MONTHS[date.getMonth()].value : "jan",
+    validDate ? MONTHS[validDate.getMonth()].value : "jan",
   );
-  const [day, setDay] = React.useState(date ? String(date.getDate()) : "1");
+  const [day, setDay] = React.useState(
+    validDate ? String(validDate.getDate()) : "1",
+  );
 
   // Sync local state when controlled date changes externally
-  const dateTime = date ? date.getTime() : null;
+  const dateTime = validDate ? validDate.getTime() : null;
   React.useEffect(() => {
-    if (date) {
-      setYear(String(date.getFullYear()));
-      setMonth(MONTHS[date.getMonth()].value);
-      setDay(String(date.getDate()));
+    if (validDate) {
+      const clamped = clampToRange(validDate);
+      setYear(String(clamped.getFullYear()));
+      setMonth(MONTHS[clamped.getMonth()].value);
+      setDay(String(clamped.getDate()));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateTime]);
+  }, [dateTime, resolvedMinYear, resolvedMaxYear]);
 
-  const years = Array.from({ length: 50 }, (_, i) => {
-    const y = new Date().getFullYear() - i;
-    return { label: String(y), value: String(y) };
-  }).reverse();
+  const years = React.useMemo(() => {
+    const length = resolvedMaxYear - resolvedMinYear + 1;
+    return Array.from({ length }, (_, i) => {
+      const y = resolvedMinYear + i;
+      return { label: String(y), value: String(y) };
+    });
+  }, [resolvedMinYear, resolvedMaxYear]);
 
   const days = Array.from({ length: 31 }, (_, i) => {
     const d = i + 1;
@@ -175,13 +208,13 @@ export const DatePicker = ({
         <View className="flex flex-row items-center justify-between w-full">
           <View className="flex flex-row items-center gap-2">
             <Icon as={Calendar} size={16} color={"gray"} />
-            <Text className={cn("text-base", !date && "text-foreground/50")}>
+            <Text
+              className={cn("text-base", !validDate && "text-foreground/50")}
+            >
               {displayText}
             </Text>
           </View>
-          <Animated.View style={chevronStyle}>
-            <Icon as={ChevronDown} size={16} color={"gray"} />
-          </Animated.View>
+          <RotatingChevron isOpen={expanded} size={16} color={"gray"} />
         </View>
       </Button>
 
@@ -197,7 +230,7 @@ export const DatePicker = ({
           )}
           // Prevent parent ScrollView from stealing touches while interacting with the wheels
         >
-          <View 
+          <View
             className="flex-row items-center justify-center gap-4"
             onStartShouldSetResponder={() => true}
             onMoveShouldSetResponder={() => true}

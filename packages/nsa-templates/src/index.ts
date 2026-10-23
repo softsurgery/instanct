@@ -1,1 +1,9 @@
-export { TemplateModule } from './template.module';
+export { TemplateModule } from "./template.module";
+export { TemplateEntity } from "./entities/template.entity";
+export { TemplateStyleEntity } from "./entities/template-style.entity";
+export { TemplateService } from "./services/template.service";
+export { TemplateStyleService } from "./services/template-style.service";
+export { TemplateController } from "./controllers/template.controller";
+export { ResponseTemplateDto } from "./dtos/response-template.dto";
+export { CreateTemplateDto } from "./dtos/create-template.dto";
+export { UpdateTemplateDto } from "./dtos/update-template.dto";

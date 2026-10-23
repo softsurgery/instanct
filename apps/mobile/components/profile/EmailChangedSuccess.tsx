@@ -1,7 +1,7 @@
-import { Success } from "@instanct/mobile-components";
+import { Success } from "@softsurgery/mobile-components";
 import { View } from "react-native";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";

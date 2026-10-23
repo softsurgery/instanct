@@ -45,6 +45,8 @@
         "schedule": "Planifier"
       },
       "placeholders": {
+        "startTime": "Sélectionnez l'heure de début",
+        "endTime": "Sélectionnez l'heure de fin",
         "objectives": "Sélectionnez des objectifs"
       },
       "descriptions": {
@@ -74,8 +76,8 @@
       "endTime": "Heure de fin",
       "objectives": "Objectifs",
       "placeholders": {
-        "endTime": "Vous pouvez modifier l'heure de fin de votre session ici.",
-        "objectives": "Vous pouvez modifier vos objectifs ici."
+        "endTime": "Sélectionnez l'heure de fin",
+        "objectives": "Sélectionnez vos objectifs"
       },
       "descriptions": {
         "endTime": "Vous pouvez modifier l'heure de fin de votre session ici.",

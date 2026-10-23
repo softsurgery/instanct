@@ -16,7 +16,7 @@ import {
   SelectValue,
   Switch,
   Textarea,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { ComboboxMultiSelectField } from "./components/ComboboxMultiSelectField";
 import { AvatarField } from "./components/AvatarField";
 import { ImageUploader } from "./components/ImageUploader";

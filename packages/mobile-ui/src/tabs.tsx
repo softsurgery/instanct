@@ -1,5 +1,5 @@
 import { TextClassContext } from "./text";
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import * as TabsPrimitive from "@rn-primitives/tabs";
 import { Platform } from "react-native";
 

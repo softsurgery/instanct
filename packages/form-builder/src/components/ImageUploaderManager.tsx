@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, cn, Separator } from "@instanct/ui";
+import { Button, cn, Separator } from "@softsurgery/ui";
 import { X, GripVertical, Plus } from "lucide-react";
 import { ImageFile } from "../types";
 import { useTranslation } from "react-i18next";

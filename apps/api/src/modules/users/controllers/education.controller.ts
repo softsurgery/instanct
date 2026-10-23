@@ -11,12 +11,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
 import { EducationService } from '../services/education.service';
-import { toDto, toDtoArray } from 'nsa-database';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'nsa-helpers/http';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 import { ResponseEducationDto } from '../dtos/education/response-education.dto';
 import { CreateEducationDto } from '../dtos/education/create-education.dto';
 import { UpdateEducationDto } from '../dtos/education/update-education.dto';
@@ -54,7 +54,6 @@ export class EducationController {
       createEducationDto,
     );
     request.logInfo = {
-      userId: id,
       educationId: education.id,
       title: education.title,
     };
@@ -73,7 +72,6 @@ export class EducationController {
       updateEducationDto,
     );
     request.logInfo = {
-      userId: education.userId,
       educationId: education.id,
       title: education.title,
     };
@@ -88,8 +86,8 @@ export class EducationController {
   ): Promise<ResponseEducationDto | null> {
     const education = await this.educationService.deleteEducation(id);
     request.logInfo = {
-      userId: education?.userId,
       educationId: id,
+      title: education?.title,
     };
     return toDto(ResponseEducationDto, education);
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@instanct/ui/components/button";
+import { Button } from "@softsurgery/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuLabel,
@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@instanct/ui/components/dropdown-menu";
+} from "@softsurgery/ui/components/dropdown-menu";
 import { DataTableConfig } from "./types";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";

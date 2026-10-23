@@ -11,23 +11,23 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from 'nsa-logger/decorators/logger.interceptor';
-import { NotificationInterceptor } from 'nsa-notifications/decorators/notification.interceptor';
+import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { NotificationInterceptor } from '@softsurgery/nsa-notifications/decorators/notification.interceptor';
 import { RequestService } from '../services/request.service';
-import { ApiPaginatedResponse } from 'nsa-database';
+import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
 import { ResponseRequestDto } from '../dtos/response-request.dto';
-import { IQueryObject } from 'nsa-database';
-import { PageDto } from 'nsa-database';
-import { toDto, toDtoArray } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
+import { toDto, toDtoArray } from '@softsurgery/nsa-database';
 import { CreateRequestDto } from '../dtos/create-request.dto';
 import { UpdateRequestDto } from '../dtos/update-request.dto';
-import { LogEvent } from 'nsa-logger/decorators/log-event.decorator';
+import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
-import { AdvancedRequest } from 'nsa-helpers/http';
-import { BatchNotify } from 'nsa-notifications/decorators/notify.decorator';
+import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
+import { BatchNotify } from '@softsurgery/nsa-notifications/decorators/notify.decorator';
 import { NotificationType } from 'src/app/enums/notification-type.enum';
 import { UserService } from 'src/modules/users/services/user.service';
-import { identifyUser } from 'nsa-um/utils/identify-user';
+import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 @ApiTags('requests')
@@ -124,8 +124,7 @@ export class RequestController {
       req.user.sub,
     );
     req.logInfo = {
-      id: request.id,
-      receiverSessionIds: createRequestDto.receiverIds,
+      requestId: request.id,
     };
     req.batchNotificationInfo = [
       {

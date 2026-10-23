@@ -8,6 +8,8 @@ export { setNestedValue } from "./store";
 
 export { slugify } from "./string.utils";
 
+export { formatFileSize } from "./file.utils";
+
 export {
   LEGAL_PLACEHOLDERS,
   hasNotAppliedBlocks,
@@ -17,3 +19,19 @@ export {
 } from "./legal/legal-html";
 
 export { cn } from "./cn";
+
+export {
+  getSocket,
+  disconnectSocket,
+  disconnectAllSockets,
+  getSocketBaseUrl,
+  setSocketBaseUrl,
+  getDefaultSocketSource,
+} from "./socket";
+export type {
+  Socket,
+  SocketConfig,
+  SocketNamespace,
+  ManagerOptions,
+  SocketOptions,
+} from "./socket";

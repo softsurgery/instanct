@@ -1,4 +1,4 @@
-import { cn } from "@instanct/lib";
+import { cn } from "@softsurgery/lib";
 import * as SwitchPrimitives from "@rn-primitives/switch";
 import { Platform } from "react-native";
 

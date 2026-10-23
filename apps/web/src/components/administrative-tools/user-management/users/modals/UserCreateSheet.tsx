@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import { useSheet } from "@instanct/components";
+import { useSheet } from "@softsurgery/components";
 import { UserCreateForm } from "../forms/UserCreateForm";
 import { useTranslation } from "react-i18next";
 import { CreateUserDto } from "@/types";

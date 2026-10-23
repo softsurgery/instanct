@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge } from "@instanct/ui";
+import { Badge } from "@softsurgery/ui";
 import { useTranslation } from "react-i18next";
 import {
   Card,
@@ -7,8 +7,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@instanct/ui";
-import { Separator } from "@instanct/ui";
+} from "@softsurgery/ui";
+import { Separator } from "@softsurgery/ui";
 import { useUpload } from "@/hooks/content/useUpload";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 import { cn } from "@/lib/utils";
@@ -49,7 +49,7 @@ export const About = ({ className }: AboutProps) => {
     });
 
   return (
-    <Card className={cn(className, "flex flex-col overflow-auto mb-5")}>
+    <Card className={cn(className, "flex flex-col mb-5")}>
       <CardHeader>
         <CardTitle>{t("userManagement.inspect.about.title")}</CardTitle>
         <CardDescription>

@@ -1,13 +1,14 @@
-import { api } from "@/api";
-import { ApplicationHeader } from "@instanct/mobile-components";
-import { FormBuilder } from "@instanct/mobile-form-builder";
-import { StableKeyboardAwareScrollView } from "@instanct/mobile-components";
-import { StableSafeAreaView } from "@instanct/mobile-components";
-import { Button } from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+import { useApi } from "@/contexts/ApiContext";
+import { ApplicationHeader } from "@softsurgery/mobile-components";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { Button } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
+import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
-import { CreateExperienceDto, ServerErrorResponse } from "@/types";
+import { CreateExperienceDto, ServerErrorResponse } from "@softsurgery/api-client";
 import { createExperienceSchema } from "@/types/validations/experience.validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -18,23 +19,25 @@ import { useCreateExperienceFormStructure } from "./useCreateExperienceFormStruc
 import { toast } from "sonner-native";
 import React from "react";
 
-import { AppHeaderBack } from "@instanct/mobile-components";
-import { BottomButtonWrapper } from "@instanct/mobile-components";
+import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 interface CreateExperienceProps {
   className?: string;
 }
 
 export const CreateExperience = ({ className }: CreateExperienceProps) => {
+  const api = useApi();
   const { t } = useTranslation("menu");
   const isKeyboardVisible = useKeyboardVisible();
   const userStore = useUserStore();
+  const { currentUser } = useCurrentUser();
   const queryClient = useQueryClient();
 
   const { structure } = useCreateExperienceFormStructure({
     store: userStore,
   });
 
-  const { mutate: createExperience } = useMutation({
+  const { mutate: createExperience, isPending } = useMutation({
     mutationFn: (data: { id: string; experience: CreateExperienceDto }) =>
       api.experience.create(data.id, data.experience),
     onSuccess: () => {
@@ -55,23 +58,35 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
   });
 
   const handleCreateSubmit = () => {
-    const data = userStore.createExperienceDto;
+    const state = useUserStore.getState();
+    const data = state.present
+      ? { ...state.createExperienceDto, endDate: null }
+      : state.createExperienceDto;
     const result = createExperienceSchema.safeParse(data);
     if (!result.success) {
-      userStore.set("experienceErrors", result.error.flatten().fieldErrors);
-    } else {
-      if (userStore.response?.id) {
-        createExperience({
-          id: userStore.response?.id!,
-          experience: data,
-        });
-      }
+      const fieldErrors = result.error.flatten().fieldErrors;
+      state.set("experienceErrors", fieldErrors);
+      const firstError = Object.values(fieldErrors).find(
+        (messages) => messages?.[0],
+      )?.[0];
+      toast.error(firstError ? t(firstError) : t("experience.toasts.error"));
+      return;
     }
+
+    if (!currentUser?.id) {
+      toast.error(t("experience.toasts.error"));
+      return;
+    }
+
+    createExperience({
+      id: currentUser.id,
+      experience: result.data,
+    });
   };
 
   React.useEffect(() => {
     return () => {
-      userStore.reset();
+      useUserStore.getState().resetExperienceDraft();
     };
   }, []);
 
@@ -103,7 +118,12 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
       {/* Sticky bottom button */}
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
-          <Button size="lg" className="rounded-xl" onPress={handleCreateSubmit}>
+          <Button
+            size="lg"
+            className="rounded-xl"
+            disabled={isPending}
+            onPress={handleCreateSubmit}
+          >
             <Text className="text-md font-bold">
               {t("experience.form.actions.create")}
             </Text>

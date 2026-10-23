@@ -1,11 +1,11 @@
-import { Input, Switch } from "@instanct/ui";
+import { Input, Switch } from "@softsurgery/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import { cn } from "@/lib/utils";
 import { ParamVariant, ResponseConfigurationParamDto } from "@/types";

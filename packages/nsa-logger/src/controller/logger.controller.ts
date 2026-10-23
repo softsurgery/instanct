@@ -1,12 +1,12 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '../services/logger.service';
-import { IQueryObject } from 'nsa-database';
+import { IQueryObject } from '@softsurgery/nsa-database';
 import { LogEntity } from '../entities/log.entity';
-import { ApiPaginatedResponse } from 'nsa-database';
-import { PageDto } from 'nsa-database';
+import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
+import { PageDto } from '@softsurgery/nsa-database';
 import { ResponseLogDto } from '../dtos/response-log.dto';
-import { toDtoArray } from 'nsa-database';
+import { toDtoArray } from '@softsurgery/nsa-database';
 
 @ApiTags('logger')
 @ApiBearerAuth('access_token')

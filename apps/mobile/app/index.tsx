@@ -1,5 +1,5 @@
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
-import { usePreferencePersistStore } from "@instanct/hooks";
+import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
@@ -21,15 +21,18 @@ export default function Page() {
     setTimeout(() => {
       setColorScheme(preferencePersistStore.theme);
       if (Platform.OS === "android") {
-        const activeTheme = preferencePersistStore.theme === "system" 
-            ? (Appearance.getColorScheme() ?? "light") 
+        const activeTheme =
+          preferencePersistStore.theme === "system"
+            ? (Appearance.getColorScheme() ?? "light")
             : preferencePersistStore.theme;
-        setAndroidNavigationBar((activeTheme === 'dark' ? 'dark' : 'light'));
+        setAndroidNavigationBar(activeTheme === "dark" ? "dark" : "light");
       }
-      
+
       let lang = preferencePersistStore.language;
       if (lang === "system") {
-        lang = (Localization.getLocales()[0]?.languageCode as "en" | "fr" | "ar") || "en";
+        lang =
+          (Localization.getLocales()[0]?.languageCode as "en" | "fr" | "ar") ||
+          "en";
       }
       i18n.changeLanguage(lang);
       router.replace("/main");

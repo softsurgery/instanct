@@ -1,8 +1,6 @@
 import { setDeepValue } from "@/lib/object";
-import {
-  RequestClientSignInDto,
-  RequestSpecializedClientSignUpDto,
-} from "@/types";
+import { type UploadFileInput } from "@/lib/upload";
+import { RequestClientSignInDto, RequestSpecializedClientSignUpDto } from "@softsurgery/api-client";
 import { create } from "zustand";
 
 interface AuthData {
@@ -10,7 +8,7 @@ interface AuthData {
   signUpRequest: RequestSpecializedClientSignUpDto;
   utilities: {
     confirmPassword: string;
-    picture?: string;
+    picture?: string | UploadFileInput;
     progress: number;
     acceptedTerms: boolean;
   };
@@ -93,7 +91,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   resetErrors: () => {
     set((state) => ({
       ...state,
-      errors: {},
+      signUpRequestErrors: {},
+      signInRequestErrors: {},
     }));
   },
 }));

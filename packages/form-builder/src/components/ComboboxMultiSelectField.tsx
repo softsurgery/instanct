@@ -13,7 +13,7 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
-} from "@instanct/ui";
+} from "@softsurgery/ui";
 
 interface ComboboxItem {
   label: string;

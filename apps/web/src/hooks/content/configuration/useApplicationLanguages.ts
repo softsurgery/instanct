@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { SelectOption } from "@instanct/form-builder";
+import { SelectOption } from "@softsurgery/form-builder";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 

@@ -6,7 +6,7 @@ import {
   SelectFieldProps,
   TextFieldProps,
   TextareaFieldProps,
-} from "@instanct/form-builder";
+} from "@softsurgery/form-builder";
 import { ExperienceStore } from "@/hooks/stores/useExperienceStore";
 import { LocationTypes, WorkTypes } from "@/types";
 import { useTranslation } from "react-i18next";

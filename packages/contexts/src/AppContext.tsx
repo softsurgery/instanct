@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import type { ApiResources } from "@instanct/api-client";
+import type { ApiResources } from "@softsurgery/api-client";
 
 export type AppType = "admin" | "web";
 

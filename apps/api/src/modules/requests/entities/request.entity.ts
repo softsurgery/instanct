@@ -1,6 +1,6 @@
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { EntityHelper } from 'nsa-database';
-import { SessionEntity } from 'nsa-sessions/entities/session.entity';
+import { EntityHelper } from '@softsurgery/nsa-database';
+import { SessionEntity } from '@softsurgery/nsa-sessions/entities/session.entity';
 import {
   Column,
   Entity,

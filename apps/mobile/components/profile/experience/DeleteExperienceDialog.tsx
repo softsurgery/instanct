@@ -1,12 +1,12 @@
-import { Button } from "@instanct/mobile-ui";
+import { Button } from "@softsurgery/mobile-ui";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "@instanct/mobile-ui";
-import { Text } from "@instanct/mobile-ui";
-import { cn } from "@instanct/lib";
+} from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
+import { cn } from "@softsurgery/lib";
 import { UserStore } from "@/stores/useUserStore";
 import React from "react";
 import { View } from "react-native";
