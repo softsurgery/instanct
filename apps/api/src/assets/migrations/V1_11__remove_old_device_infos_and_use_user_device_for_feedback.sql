@@ -30,11 +30,34 @@ SET @drop_temp_fk_sql = IF(@temp_fk_name IS NOT NULL, CONCAT('ALTER TABLE `feedb
 PREPARE stmt_temp_fk FROM @drop_temp_fk_sql;
 EXECUTE stmt_temp_fk;
 DEALLOCATE PREPARE stmt_temp_fk;
-ALTER TABLE `feedback` DROP COLUMN IF EXISTS `userDeviceId`;
 
--- Ensure deviceId column exists on feedback with varchar(36)
-ALTER TABLE `feedback` ADD COLUMN IF NOT EXISTS `deviceId` varchar(36) DEFAULT NULL;
+SET @col_exists = (
+    SELECT COUNT(*)
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'feedback'
+      AND COLUMN_NAME = 'userDeviceId'
+);
+SET @drop_col_sql = IF(@col_exists > 0, 'ALTER TABLE `feedback` DROP COLUMN `userDeviceId`', 'SELECT 1');
+PREPARE stmt_drop_col FROM @drop_col_sql;
+EXECUTE stmt_drop_col;
+DEALLOCATE PREPARE stmt_drop_col;
+
+-- Ensure deviceId exists as nullable varchar, then clear legacy device-infos int IDs
+SET @col_exists = (
+    SELECT COUNT(*)
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'feedback'
+      AND COLUMN_NAME = 'deviceId'
+);
+SET @add_col_sql = IF(@col_exists = 0, 'ALTER TABLE `feedback` ADD COLUMN `deviceId` varchar(36) DEFAULT NULL', 'SELECT 1');
+PREPARE stmt_add_col FROM @add_col_sql;
+EXECUTE stmt_add_col;
+DEALLOCATE PREPARE stmt_add_col;
+
 ALTER TABLE `feedback` MODIFY COLUMN `deviceId` varchar(36) DEFAULT NULL;
+UPDATE `feedback` SET `deviceId` = NULL;
 
 -- Add foreign key to user_devices for feedback
 SET @new_fk_name = (
