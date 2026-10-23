@@ -1,81 +1,62 @@
-import { Type } from '@nestjs/common';
-import { ResponseAbstractUserDto } from '../dtos/abstract-user/response-abstract-user.dto';
+import { Type } from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
+import { ResponseAbstractUserDto } from "../dtos/abstract-user/response-abstract-user.dto";
 import {
   USER_REPOSITORY,
   USER_SERVICE,
   AppUserRepository,
   AppUserService,
-} from '../tokens/user-access';
+} from "../tokens/user-access";
+import {
+  createBindingSlot,
+  resolveBoundProvider,
+} from "@softsurgery/nsa-helpers";
 
 export type UserEntityClass = any;
 export type UserDtoClass = Type<ResponseAbstractUserDto>;
 export type UserServiceClass = Type<AppUserService> | any;
 export type UserRepositoryClass = Type<AppUserRepository> | any;
 
-export const USER_ENTITY = Symbol.for('USER_ENTITY');
-export const USER_DTO = Symbol.for('USER_DTO');
+export const USER_ENTITY = Symbol.for("USER_ENTITY");
+export const USER_DTO = Symbol.for("USER_DTO");
 export { USER_SERVICE, USER_REPOSITORY };
 
-let userEntityClass: UserEntityClass = 'AbstractUserEntity';
-let userDtoClass: UserDtoClass = ResponseAbstractUserDto;
-let userServiceClass: UserServiceClass = null;
-let userRepositoryClass: UserRepositoryClass = null;
+export function resolveBoundUserService(
+  moduleRef: ModuleRef,
+): AppUserService | null {
+  return resolveBoundProvider(moduleRef, getUserService);
+}
+
+export function resolveBoundUserRepository(
+  moduleRef: ModuleRef,
+): AppUserRepository | null {
+  return resolveBoundProvider(moduleRef, getUserRepository);
+}
+
+const userEntity = createBindingSlot<UserEntityClass>("AbstractUserEntity");
+const userDto = createBindingSlot<UserDtoClass>(ResponseAbstractUserDto);
+const userService = createBindingSlot<UserServiceClass>(null);
+const userRepository = createBindingSlot<UserRepositoryClass>(null);
 
 export const userBindingRegistry = {
-  getUserEntity(): UserEntityClass {
-    return userEntityClass;
-  },
-  setUserEntity(entity: UserEntityClass) {
-    userEntityClass = entity;
-  },
-  getUserDto(): UserDtoClass {
-    return userDtoClass;
-  },
-  setUserDto(dto: UserDtoClass) {
-    userDtoClass = dto;
-  },
-  getUserService(): UserServiceClass {
-    return userServiceClass;
-  },
-  setUserService(service: UserServiceClass) {
-    userServiceClass = service;
-  },
-  getUserRepository(): UserRepositoryClass {
-    return userRepositoryClass;
-  },
-  setUserRepository(repository: UserRepositoryClass) {
-    userRepositoryClass = repository;
-  },
+  getUserEntity: userEntity.get,
+  setUserEntity: userEntity.set,
+  getUserDto: userDto.get,
+  setUserDto: userDto.set,
+  getUserService: userService.get,
+  setUserService: userService.set,
+  getUserRepository: userRepository.get,
+  setUserRepository: userRepository.set,
 };
 
-export function bindUserEntity(entity: UserEntityClass) {
-  userBindingRegistry.setUserEntity(entity);
-}
+export const bindUserEntity = userEntity.set;
+export const getUserEntity = userEntity.get;
 
-export function getUserEntity(): UserEntityClass {
-  return userBindingRegistry.getUserEntity();
-}
+export const bindUserDto = userDto.set;
+export const getUserDto = userDto.get;
 
-export function bindUserDto(dto: UserDtoClass) {
-  userBindingRegistry.setUserDto(dto);
-}
+export const bindUserService = userService.set;
+export const getUserService = userService.get;
 
-export function getUserDto(): UserDtoClass {
-  return userBindingRegistry.getUserDto();
-}
-
-export function bindUserService(service: UserServiceClass) {
-  userBindingRegistry.setUserService(service);
-}
-
-export function getUserService(): UserServiceClass {
-  return userBindingRegistry.getUserService();
-}
-
-export function bindUserRepository(repository: UserRepositoryClass) {
-  userBindingRegistry.setUserRepository(repository);
-}
-
-export function getUserRepository(): UserRepositoryClass {
-  return userBindingRegistry.getUserRepository();
-}
+export const bindUserRepository = userRepository.set;
+export const getUserRepository = userRepository.get;

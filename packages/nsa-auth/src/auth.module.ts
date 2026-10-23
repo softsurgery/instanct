@@ -19,8 +19,8 @@ import { UserConnectionHistoryService } from './services/user-connection-history
 import {
   USER_REPOSITORY,
   USER_SERVICE,
-  getUserRepository,
-  getUserService,
+  resolveBoundUserRepository,
+  resolveBoundUserService,
 } from '@softsurgery/nsa-um/registries/user-binding.registry';
 
 @Module({
@@ -46,40 +46,13 @@ import {
     UserConnectionHistoryService,
     {
       provide: USER_SERVICE,
-      useFactory: (moduleRef: ModuleRef) => {
-        const serviceClass = getUserService();
-        if (serviceClass) {
-          try {
-            return moduleRef.get(serviceClass, { strict: false });
-          } catch {
-            // fallback
-          }
-        }
-        try {
-          return moduleRef.get(USER_SERVICE, { strict: false });
-        } catch {
-          return null;
-        }
-      },
+      useFactory: (moduleRef: ModuleRef) => resolveBoundUserService(moduleRef),
       inject: [ModuleRef],
     },
     {
       provide: USER_REPOSITORY,
-      useFactory: (moduleRef: ModuleRef) => {
-        const repoClass = getUserRepository();
-        if (repoClass) {
-          try {
-            return moduleRef.get(repoClass, { strict: false });
-          } catch {
-            // fallback
-          }
-        }
-        try {
-          return moduleRef.get(USER_REPOSITORY, { strict: false });
-        } catch {
-          return null;
-        }
-      },
+      useFactory: (moduleRef: ModuleRef) =>
+        resolveBoundUserRepository(moduleRef),
       inject: [ModuleRef],
     },
     {
