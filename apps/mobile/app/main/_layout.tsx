@@ -454,6 +454,7 @@ export default function MainLayout() {
                 headerShown: false,
                 animation: "fade_from_bottom",
                 animationDuration: 200,
+                gestureEnabled: false,
               }}
             />
             {/* Request  ********************************************************************************************* */}

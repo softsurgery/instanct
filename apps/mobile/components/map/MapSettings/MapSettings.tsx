@@ -4,29 +4,21 @@ import { useMapStore } from "@/stores/useMapStore";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
-import { SettingRow, SettingRowProps } from "../../settings/SettingsRow";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { Separator } from "@softsurgery/mobile-ui";
-import { Switch } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
-import { Button } from "@softsurgery/mobile-ui";
-import { RadiusSlider } from "./RadiusSlider";
+import {
+  ApplicationHeader,
+  AppHeaderBack,
+  BottomButtonWrapper,
+  StableSafeAreaView,
+} from "@softsurgery/mobile-components";
+import { Button, Text } from "@softsurgery/mobile-ui";
+import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
+import { useMapSettingsFormStructure } from "./useMapSettingsFormStructure";
 
 interface MapSettingsProps {
   className?: string;
-}
-
-interface SettingsSection {
-  key: string;
-  title: string;
-  description: string;
-  rows: SettingRowProps[];
 }
 
 export const MapSettings = ({ className }: MapSettingsProps) => {
@@ -45,99 +37,6 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
       );
     };
   }, []);
-
-  const step = React.useMemo(() => {
-    const range = mapStore.parameters.rangeMax - mapStore.parameters.rangeMin;
-    return Math.max(1, Math.floor(range / 20));
-  }, [mapStore.parameters.rangeMax, mapStore.parameters.rangeMin]);
-
-  const handleDraftRadiusChange = React.useCallback((value: number) => {
-    mapStore.setNested("draftSettings.radius", value);
-  }, []);
-
-  const [initialRadius] = React.useState(mapStore.settings.radius);
-
-  const StableRadiusRow = React.useMemo(() => {
-    return function RadiusRow() {
-      const ms = useMapStore();
-      return (
-        <RadiusSlider
-          initialValue={initialRadius}
-          rangeMinValue={ms.parameters.rangeMin}
-          rangeMaxValue={ms.parameters.rangeMax}
-          onValueChange={handleDraftRadiusChange}
-          step={step}
-        />
-      );
-    };
-  }, [handleDraftRadiusChange, step, initialRadius]);
-
-  const settingsRows: SettingsSection[] = [
-    {
-      key: "discovery",
-      title: t("map-settings.discovery-range.title"),
-      description: t("map-settings.discovery-range.description"),
-      rows: [
-        {
-          Component: StableRadiusRow,
-        },
-      ],
-    },
-    {
-      key: "display",
-      title: t("map-settings.display-preferences.title"),
-      description: t("map-settings.display-preferences.description"),
-      rows: [
-        {
-          title: t("map-settings.display-preferences.show-usernames.title"),
-          description: t(
-            "map-settings.display-preferences.show-usernames.description",
-          ),
-          rightComponent: (
-            <Switch
-              checked={mapStore.draftSettings.showUsernames}
-              onCheckedChange={(value) =>
-                mapStore.setNested("draftSettings.showUsernames", value)
-              }
-            />
-          ),
-        },
-      ],
-    },
-
-    // {
-    //   key: "location",
-    //   title: "Location Updates",
-    //   description: "Manage how often your location is shared.",
-    //   rows: [
-    //     {
-    //       title: "Auto Refresh",
-    //       description: "Automatically update nearby users",
-    //       leftIcon: RefreshCw,
-    //       rightComponent: (
-    //         <Switch checked={autoRefresh} onCheckedChange={setAutoRefresh} />
-    //       ),
-    //     },
-    //   ],
-    // },
-    // {
-    //   key: "privacy",
-    //   title: "Privacy & Visibility",
-    //   description: "Control who can see you on the map.",
-    //   rows: [
-    //     {
-    //       title: "Location Sharing",
-    //       description: "Currently visible to everyone",
-    //       leftIcon: MapPin,
-    //       rightComponent: (
-    //         <Badge variant="default">
-    //           <Text className="text-xs font-medium">Active</Text>
-    //         </Badge>
-    //       ),
-    //     },
-    //   ],
-    // },
-  ];
 
   const {
     mutate: updateMapConfiguration,
@@ -163,6 +62,10 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
     },
   });
 
+  const { sections } = useMapSettingsFormStructure({
+    isPending: isUpdateMapConfigurationPending,
+  });
+
   const handleMapConfigurationUpdate = () => {
     updateMapConfiguration();
   };
@@ -181,15 +84,12 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
           },
         ]}
       />
-      <ScrollView className="bg-background">
+      <ScrollView className="bg-background flex-1">
         <View className="flex flex-col">
-          {/* Settings Sections */}
-          {settingsRows.map((section) => (
+          {sections.map((section) => (
             <View
               key={section.key}
-              className={
-                "border border-b-border border-t-border overflow-hidden"
-              }
+              className="border border-b-border border-t-border overflow-hidden"
             >
               <View className="px-8 py-4 bg-card mb-4">
                 <Text className="text-lg font-semibold">{section.title}</Text>
@@ -199,14 +99,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
               </View>
 
               <View className="px-4 pb-4 flex flex-col">
-                {section.rows.map((row, index) => (
-                  <View key={index} className="flex flex-col gap-2">
-                    <SettingRow className="mt-1" {...row} />
-                    {index < section.rows.length - 1 && (
-                      <Separator className="mb-2" />
-                    )}
-                  </View>
-                ))}
+                <FormBuilder structure={section.structure} />
               </View>
             </View>
           ))}
