@@ -24,12 +24,13 @@ export type UseUserConnectionInput =
 /**
  * Normalizes incoming user status payloads.
  */
-function normalizeStatus(raw: any): UserConnectionStatus {
+function normalizeStatus(raw: unknown): UserConnectionStatus {
+  const r = (raw && typeof raw === "object" ? raw : {}) as Partial<UserConnectionStatus> & { userId?: string };
   return {
-    userId: raw?.userId || "",
-    isConnected: !!raw?.isConnected,
-    sources: Array.isArray(raw?.sources) ? raw.sources : [],
-    lastSeen: raw?.lastSeen ?? null,
+    userId: r.userId || "",
+    isConnected: !!r.isConnected,
+    sources: Array.isArray(r.sources) ? r.sources : [],
+    lastSeen: r.lastSeen ?? null,
   };
 }
 
@@ -69,20 +70,22 @@ export function usePresenceSubscription(
       socket.emit("get-status", { ids });
     };
 
-    const onPresence = (data: any) => {
-      if (!data?.userId) return;
+    const onPresence = (data: unknown) => {
+      const d = data as { userId?: string } | undefined;
+      if (!d?.userId) return;
       setStatuses((prev) => ({
         ...prev,
-        [data.userId]: normalizeStatus(data),
+        [d.userId as string]: normalizeStatus(data),
       }));
     };
 
-    const onBulkStatuses = (list: any[]) => {
+    const onBulkStatuses = (list: unknown) => {
       if (!Array.isArray(list)) return;
       setStatuses((prev) => {
         const next = { ...prev };
         for (const item of list) {
-          if (item?.userId) next[item.userId] = normalizeStatus(item);
+          const it = item as { userId?: string } | undefined;
+          if (it?.userId) next[it.userId] = normalizeStatus(item);
         }
         return next;
       });

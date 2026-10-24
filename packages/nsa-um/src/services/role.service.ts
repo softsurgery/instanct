@@ -1,15 +1,15 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
-import { RoleRepository } from '../repositories/role.repository';
-import { RoleNotFoundException } from '../errors/role/role.notfound.error';
-import { CreateRoleDto } from '../dtos/role/create-role.dto';
-import { RoleAlreadyExistsException } from '../errors/role/role.alreadyexists.error';
-import { RolePermissionService } from './role-permission.service';
-import { UpdateRoleDto } from '../dtos/role/update-role.dto';
-import { RolePermissionEntity } from '../entities/role-permission.entity';
-import { CreateRolePermissionDto } from '../dtos/role-permission/create-role-permission.dto';
-import { RoleEntity } from '../entities/role.entity';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
+import { RoleRepository } from "../repositories/role.repository";
+import { RoleNotFoundException } from "../errors/role/role.notfound.error";
+import { CreateRoleDto } from "../dtos/role/create-role.dto";
+import { RoleAlreadyExistsException } from "../errors/role/role.alreadyexists.error";
+import { RolePermissionService } from "./role-permission.service";
+import { UpdateRoleDto } from "../dtos/role/update-role.dto";
+import { RolePermissionEntity } from "../entities/role-permission.entity";
+import { CreateRolePermissionDto } from "../dtos/role-permission/create-role-permission.dto";
+import { RoleEntity } from "../entities/role.entity";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
 
 @Injectable()
 export class RoleService extends AbstractCrudService<RoleEntity> {
@@ -61,7 +61,7 @@ export class RoleService extends AbstractCrudService<RoleEntity> {
 
     const updatedRole = await this.roleRepository.findOne({
       where: { id },
-      relations: ['permissions'],
+      relations: ["permissions"],
     });
 
     if (!updatedRole) throw new RoleNotFoundException();
@@ -77,7 +77,7 @@ export class RoleService extends AbstractCrudService<RoleEntity> {
     );
 
     await this.roleRepository.updateAssociations<
-      Pick<RolePermissionEntity, 'id' | 'permissionId' | 'roleId'>
+      Pick<RolePermissionEntity, "id" | "permissionId" | "roleId">
     >({
       existingItems: existingPermissions || [],
       updatedItems: permissions?.map((permission) => ({
@@ -85,7 +85,7 @@ export class RoleService extends AbstractCrudService<RoleEntity> {
         permissionId: permission.permissionId,
         roleId: updatedRole?.id,
       })),
-      keys: ['permissionId', 'roleId'],
+      keys: ["permissionId", "roleId"],
       onDelete: async (id: string) => {
         return this.rolePermissionService.softDelete(id);
       },
@@ -104,7 +104,7 @@ export class RoleService extends AbstractCrudService<RoleEntity> {
   async duplicateWithPermissions(id: string): Promise<RoleEntity | null> {
     const role = await this.roleRepository.findOne({
       where: { id },
-      relations: ['permissions'],
+      relations: ["permissions"],
     });
     if (!role) {
       throw new RoleNotFoundException();

@@ -1,14 +1,14 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { UserNotFoundException } from '../errors/user/user.notfound.error';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { hashPassword } from '@softsurgery/nsa-helpers/hash.utils';
-import { AbstractUserEntity } from '../entities/abstract-user.entity';
-import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
+import { FindManyOptions, FindOneOptions } from "typeorm";
+import { UserNotFoundException } from "../errors/user/user.notfound.error";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { hashPassword } from "@softsurgery/nsa-helpers";
+import { AbstractUserEntity } from "../entities/abstract-user.entity";
+import { DatabaseAbstractRepository } from "@softsurgery/nsa-database";
 
 @Injectable()
 export abstract class AbstractUserService {
@@ -21,7 +21,7 @@ export abstract class AbstractUserService {
 
   async findOneById(
     id: string,
-    query?: Pick<IQueryObject, 'join'>,
+    query?: Pick<IQueryObject, "join">,
   ): Promise<AbstractUserEntity | null> {
     const queryBuilder = new QueryBuilder(
       this.abstractUserRepository.getMetadata(),
@@ -124,7 +124,7 @@ export abstract class AbstractUserService {
   async findOneByEmail(
     email: string,
     withDeleted = false,
-    query?: Pick<IQueryObject, 'join'>,
+    query?: Pick<IQueryObject, "join">,
   ): Promise<AbstractUserEntity | null | undefined> {
     const queryBuilder = new QueryBuilder(
       this.abstractUserRepository.getMetadata(),
@@ -140,7 +140,7 @@ export abstract class AbstractUserService {
   async findOneByUsername(
     username: string,
     withDeleted: boolean = false,
-    query?: Pick<IQueryObject, 'join'>,
+    query?: Pick<IQueryObject, "join">,
   ): Promise<AbstractUserEntity | null | undefined> {
     const queryBuilder = new QueryBuilder(
       this.abstractUserRepository.getMetadata(),

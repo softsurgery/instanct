@@ -1,11 +1,11 @@
-import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
-import { USER_REPOSITORY, AppUserRepository } from '../tokens/user-access';
+import { Inject, Injectable, Logger, Optional } from "@nestjs/common";
+import { USER_REPOSITORY, AppUserRepository } from "../tokens/user-access";
 import {
   ClientPresenceSource,
   SocketConnectionMeta,
   UserPresenceEvent,
   UserPresenceStatus,
-} from '../interfaces';
+} from "../interfaces";
 
 export type {
   ClientPresenceSource,
@@ -47,7 +47,7 @@ export class UserPresenceService {
   trackConnection(
     userId: string,
     socketId: string,
-    source: ClientPresenceSource = 'web',
+    source: ClientPresenceSource = "web",
     namespace?: string,
   ): { isConnected: boolean; meta?: SocketConnectionMeta } {
     if (!userId || !socketId) {
@@ -81,7 +81,7 @@ export class UserPresenceService {
     if (!wasConnected || sourcesChanged) {
       this.logger.debug(
         `User ${userId} connected on socket ${socketId} from source '${source}'${
-          namespace ? ` (${namespace})` : ''
+          namespace ? ` (${namespace})` : ""
         }`,
       );
 
@@ -127,7 +127,7 @@ export class UserPresenceService {
       });
 
       this.logger.debug(
-        `User ${userId} disconnected${namespace ? ` from (${namespace})` : ''}`,
+        `User ${userId} disconnected${namespace ? ` from (${namespace})` : ""}`,
       );
 
       this.emitPresenceChange({
@@ -191,7 +191,10 @@ export class UserPresenceService {
         const user = await this.userRepository.findOneById(userId);
         lastSeen = user?.lastSeen ?? null;
       } catch (err) {
-        this.logger.error(`Failed to retrieve lastSeen for user ${userId}`, err);
+        this.logger.error(
+          `Failed to retrieve lastSeen for user ${userId}`,
+          err,
+        );
       }
     }
 
@@ -216,10 +219,7 @@ export class UserPresenceService {
   /**
    * Persists the lastSeen timestamp for a user into the underlying database repository.
    */
-  async updateLastSeen(
-    userId: string,
-    date: Date = new Date(),
-  ): Promise<void> {
+  async updateLastSeen(userId: string, date: Date = new Date()): Promise<void> {
     if (!this.userRepository || !userId) {
       return;
     }
@@ -248,7 +248,7 @@ export class UserPresenceService {
       try {
         listener(event);
       } catch (err) {
-        this.logger.error('Error executing presence listener callback', err);
+        this.logger.error("Error executing presence listener callback", err);
       }
     }
   }

@@ -162,7 +162,6 @@ export const MapRenderer = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleRegionChange = React.useCallback(
-    // eslint-disable-next-line react-hooks/use-memo
     _.throttle((region: Region) => {
       setCurrentRegion(region);
     }, 250),

@@ -218,14 +218,12 @@ export const UserCard = ({
           <Animated.View style={bookmarkStyle}>
             <Pressable
               onPressIn={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 bookmarkScale.value = withSpring(0.85, {
                   damping: 12,
                   stiffness: 250,
                 });
               }}
               onPressOut={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 bookmarkScale.value = withSpring(1, {
                   damping: 12,
                   stiffness: 250,
@@ -265,14 +263,12 @@ export const UserCard = ({
             <Animated.View style={requestStyle}>
               <Pressable
                 onPressIn={() => {
-                  // eslint-disable-next-line react-hooks/immutability
                   requestScale.value = withSpring(0.85, {
                     damping: 12,
                     stiffness: 250,
                   });
                 }}
                 onPressOut={() => {
-                  // eslint-disable-next-line react-hooks/immutability
                   requestScale.value = withSpring(1, {
                     damping: 12,
                     stiffness: 250,
@@ -300,14 +296,12 @@ export const UserCard = ({
           <Animated.View style={messageStyle}>
             <Pressable
               onPressIn={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 messageScale.value = withSpring(0.85, {
                   damping: 12,
                   stiffness: 250,
                 });
               }}
               onPressOut={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 messageScale.value = withSpring(1, {
                   damping: 12,
                   stiffness: 250,

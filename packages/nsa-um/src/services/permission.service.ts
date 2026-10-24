@@ -1,15 +1,15 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { PermissionRepository } from '../repositories/permission.repository';
-import { PermissionEntity } from '../entities/permission.entity';
-import { CreatePermissionDto } from '../dtos/permission/create-permission.dto';
-import { PermissionNotFoundException } from '../errors/permission/permission.notfound.error';
-import { PermissionAlreadyExistsException } from '../errors/permission/permission.alreadyexists.error';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
+import { FindManyOptions, FindOneOptions } from "typeorm";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { PermissionRepository } from "../repositories/permission.repository";
+import { PermissionEntity } from "../entities/permission.entity";
+import { CreatePermissionDto } from "../dtos/permission/create-permission.dto";
+import { PermissionNotFoundException } from "../errors/permission/permission.notfound.error";
+import { PermissionAlreadyExistsException } from "../errors/permission/permission.alreadyexists.error";
 
 @Injectable()
 export class PermissionService {

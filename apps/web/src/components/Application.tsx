@@ -32,7 +32,6 @@ function Application({
   const isProtectedRoute = !isAuthPage;
 
   React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasMounted(true);
   }, []);
 
