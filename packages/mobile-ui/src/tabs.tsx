@@ -24,7 +24,7 @@ function TabsList({
       className={cn(
         "bg-muted flex h-9 flex-row items-center justify-center rounded-lg p-[3px]",
         Platform.select({ web: "inline-flex w-fit", native: "mr-auto" }),
-        className
+        className,
       )}
       {...props}
     />
@@ -40,7 +40,7 @@ function TabsTrigger({
     <TextClassContext.Provider
       value={cn(
         "text-foreground dark:text-muted-foreground text-sm font-medium",
-        value === props.value && "dark:text-foreground"
+        value === props.value && "dark:text-foreground",
       )}
     >
       <TabsPrimitive.Trigger
@@ -52,7 +52,7 @@ function TabsTrigger({
           props.disabled && "opacity-50",
           props.value === value &&
             "bg-background dark:border-foreground/10 dark:bg-input/30",
-          className
+          className,
         )}
         {...props}
       />

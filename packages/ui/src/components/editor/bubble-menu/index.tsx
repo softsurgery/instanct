@@ -17,7 +17,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
     (ed) => ({
       isCodeBlock: ed.isActive("codeBlock"),
     }),
-    shallowEqual
+    shallowEqual,
   );
 
   const shouldShow = useCallback(
@@ -40,7 +40,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
       }
       return true;
     },
-    []
+    [],
   );
 
   if (!editor) {

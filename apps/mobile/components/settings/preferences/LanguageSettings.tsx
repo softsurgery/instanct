@@ -2,13 +2,15 @@ import React from "react";
 import { View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  StableKeyboardAwareScrollView,
+  StableSafeAreaView,
+  ApplicationHeader,
+  LanguageSwitcher,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { LanguageSwitcher } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface LanguageSettingsPortalProps {
   className?: string;
 }

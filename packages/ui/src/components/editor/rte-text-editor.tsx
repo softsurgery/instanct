@@ -27,7 +27,7 @@ const RichTextEditorRoot = ({
 }: RichTextEditorProps) => {
   const mergedLabels = useMemo(
     () => ({ ...DEFAULT_LABELS, ...labels }),
-    [labels]
+    [labels],
   );
 
   const mergedIcons = useMemo(() => ({ ...DEFAULT_ICONS, ...icons }), [icons]);
@@ -52,7 +52,7 @@ const RichTextEditorRoot = ({
         className={cn(
           "rte-root",
           variant !== "default" && `rte-root--${variant}`,
-          className
+          className,
         )}
         data-variant={variant}
       >

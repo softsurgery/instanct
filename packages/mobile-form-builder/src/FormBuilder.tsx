@@ -134,7 +134,9 @@ export const FormBuilder = React.forwardRef(
                                     (![FieldVariant.CHECKBOX].includes(
                                       field.variant,
                                     ) ? (
-                                      <Text className={cn("text-sm opacity-70")}>
+                                      <Text
+                                        className={cn("text-sm opacity-70")}
+                                      >
                                         {field.description}
                                       </Text>
                                     ) : null)}

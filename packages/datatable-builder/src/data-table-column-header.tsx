@@ -13,8 +13,10 @@ import { CaretSortIcon, EyeNoneIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import { DataTableConfig } from "./types";
 
-interface DataTableColumnHeaderProps<TData, TValue>
-  extends React.HTMLAttributes<HTMLDivElement> {
+interface DataTableColumnHeaderProps<
+  TData,
+  TValue,
+> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
   attribute?: string;

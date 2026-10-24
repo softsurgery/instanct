@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { TransactionHost } from '@nestjs-cls/transactional';
-import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
-import { MessageLinkEntity } from '../entities/message-link.entity';
+import { Injectable } from "@nestjs/common";
+import { DatabaseAbstractRepository } from "@softsurgery/nsa-database";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterTypeOrm } from "@nestjs-cls/transactional-adapter-typeorm";
+import { MessageLinkEntity } from "../entities/message-link.entity";
 
 @Injectable()
 export class MessageLinkRepository extends DatabaseAbstractRepository<MessageLinkEntity> {

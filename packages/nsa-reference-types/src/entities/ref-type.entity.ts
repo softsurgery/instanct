@@ -1,4 +1,4 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   Entity,
   Column,
@@ -6,10 +6,10 @@ import {
   ManyToOne,
   JoinColumn,
   PrimaryColumn,
-} from 'typeorm';
-import { RefParamEntity } from './ref-param.entity';
+} from "typeorm";
+import { RefParamEntity } from "./ref-param.entity";
 
-@Entity('ref-type')
+@Entity("ref-type")
 export class RefTypeEntity extends EntityHelper {
   @PrimaryColumn()
   id: string;
@@ -17,25 +17,25 @@ export class RefTypeEntity extends EntityHelper {
   @Column({ unique: true })
   label: string;
 
-  @Column({ nullable: true, type: 'varchar', length: 255 })
+  @Column({ nullable: true, type: "varchar", length: 255 })
   description: string;
 
-  @OneToMany('RefParamEntity', (user: any) => user.refType)
+  @OneToMany("RefParamEntity", (user: any) => user.refType)
   params: RefParamEntity[];
 
-  @ManyToOne('RefTypeEntity', (reftype: any) => reftype.children, {
-    onDelete: 'CASCADE',
+  @ManyToOne("RefTypeEntity", (reftype: any) => reftype.children, {
+    onDelete: "CASCADE",
     nullable: true,
   })
-  @JoinColumn({ name: 'parentId' })
+  @JoinColumn({ name: "parentId" })
   parent?: RefTypeEntity;
 
   @Column({ nullable: true })
   parentId: string;
 
-  @OneToMany('RefTypeEntity', (user: any) => user.parent)
+  @OneToMany("RefTypeEntity", (user: any) => user.parent)
   children: RefTypeEntity[];
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: "json", nullable: true })
   extras: object;
 }

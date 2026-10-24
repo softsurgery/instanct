@@ -16,7 +16,9 @@ export function createContentPageResource(http: AxiosInstance) {
     filter = "",
     join = "",
     locale,
-  }: QueryParams & { locale?: string }): Promise<Paginated<ResponseContentPageDto>> => {
+  }: QueryParams & { locale?: string }): Promise<
+    Paginated<ResponseContentPageDto>
+  > => {
     const params: { [key: string]: string | undefined } = {
       page,
       limit,

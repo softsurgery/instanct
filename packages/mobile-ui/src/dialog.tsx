@@ -26,7 +26,7 @@ const DialogOverlayWeb = React.forwardRef<
         open
           ? "web:animate-in web:fade-in-0"
           : "web:animate-out web:fade-out-0",
-        className
+        className,
       )}
       {...props}
       ref={ref}
@@ -45,7 +45,7 @@ const DialogOverlayNative = React.forwardRef<
       style={StyleSheet.absoluteFill}
       className={cn(
         "flex bg-black/80 justify-center items-center p-2",
-        className
+        className,
       )}
       {...props}
       ref={ref}
@@ -82,7 +82,7 @@ const DialogContent = React.forwardRef<
             open
               ? "web:animate-in web:fade-in-0 web:zoom-in-95"
               : "web:animate-out web:fade-out-0 web:zoom-out-95",
-            className
+            className,
           )}
           {...props}
         >
@@ -98,7 +98,7 @@ const DialogContent = React.forwardRef<
                 size={Platform.OS === "web" ? 16 : 18}
                 className={cn(
                   "text-muted-foreground",
-                  open && "text-accent-foreground"
+                  open && "text-accent-foreground",
                 )}
               />
             )}
@@ -122,7 +122,7 @@ const DialogFooter = ({ className, ...props }: ViewProps) => (
   <View
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end gap-2",
-      className
+      className,
     )}
     {...props}
   />
@@ -137,7 +137,7 @@ const DialogTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-lg native:text-xl text-foreground font-semibold leading-none tracking-tight",
-      className
+      className,
     )}
     {...props}
   />

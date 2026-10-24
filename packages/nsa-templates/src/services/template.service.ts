@@ -1,13 +1,13 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { TemplateRepository } from '../repositories/template.repository';
-import { TemplateEntity } from '../entities/template.entity';
-import { TemplateNotFoundException } from '../errors/template.notfound.error';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
+import { FindManyOptions, FindOneOptions } from "typeorm";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { TemplateRepository } from "../repositories/template.repository";
+import { TemplateEntity } from "../entities/template.entity";
+import { TemplateNotFoundException } from "../errors/template.notfound.error";
 
 @Injectable()
 export class TemplateService {
@@ -78,7 +78,7 @@ export class TemplateService {
       template.content !== null &&
       template.size === undefined
     ) {
-      template.size = Buffer.byteLength(template.content, 'utf8');
+      template.size = Buffer.byteLength(template.content, "utf8");
     }
 
     const existingTemplate = await this.findOneByName(template.name);
@@ -101,7 +101,7 @@ export class TemplateService {
         template.content !== null &&
         template.size === undefined
       ) {
-        template.size = Buffer.byteLength(template.content, 'utf8');
+        template.size = Buffer.byteLength(template.content, "utf8");
       }
     }
     return this.templateRepository.saveMany(templates);
@@ -114,7 +114,7 @@ export class TemplateService {
   ): Promise<TemplateEntity> {
     const existingTemplate = await this.findOneById(id);
     if (template.content !== undefined && template.content !== null) {
-      template.size = Buffer.byteLength(template.content, 'utf8');
+      template.size = Buffer.byteLength(template.content, "utf8");
     }
     Object.assign(existingTemplate, template);
     return await this.templateRepository.save(existingTemplate);
@@ -134,7 +134,7 @@ export class TemplateService {
   async findOneByName(name?: string): Promise<TemplateEntity | null> {
     return this.templateRepository.findOne({
       where: { name },
-      relations: ['styles'],
+      relations: ["styles"],
     });
   }
 }

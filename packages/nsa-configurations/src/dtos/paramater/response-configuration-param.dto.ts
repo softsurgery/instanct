@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { ResponseConfigurationNamespaceDto } from '../namespace/response-configuration-namespace.dto';
-import { ParamVariant } from '../../enums/param-variant.enum';
-import { ConfigurationListFieldSchema } from '../../utils/configuration-list-schema';
+import { ApiProperty } from "@nestjs/swagger";
+import { Expose, Type } from "class-transformer";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { ResponseConfigurationNamespaceDto } from "../namespace/response-configuration-namespace.dto";
+import { ParamVariant } from "../../enums/param-variant.enum";
+import { ConfigurationListFieldSchema } from "../../utils/configuration-list-schema";
 
 export class ResponseConfigurationParamDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -29,7 +29,7 @@ export class ResponseConfigurationParamDto extends ResponseDtoHelper {
 
   @ApiProperty({
     enum: ParamVariant,
-    description: 'Variant of the parameter',
+    description: "Variant of the parameter",
     example: ParamVariant.STRING,
   })
   @Expose()

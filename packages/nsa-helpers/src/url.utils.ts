@@ -4,9 +4,9 @@ export function buildStaticUrl(
   secure = false,
 ): string {
   if (!host) {
-    return '';
+    return "";
   }
-  const protocol = secure ? 'https' : 'http';
+  const protocol = secure ? "https" : "http";
   const defaultPort = secure ? 443 : 80;
   if (!port || port === defaultPort) {
     return `${protocol}://${host}`;

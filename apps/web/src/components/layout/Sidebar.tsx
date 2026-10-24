@@ -147,7 +147,12 @@ export const Sidebar = ({ className }: SidebarProps) => {
   }
 
   return (
-    <div className={cn("hidden border-r md:block bg-sidebar text-sidebar-foreground", className)}>
+    <div
+      className={cn(
+        "hidden border-r md:block bg-sidebar text-sidebar-foreground",
+        className,
+      )}
+    >
       <div className="flex h-full max-h-screen flex-col gap-2">
         {/* Header */}
         <div className="flex h-14 items-center border-b px-4 lg:h-15 lg:px-6">

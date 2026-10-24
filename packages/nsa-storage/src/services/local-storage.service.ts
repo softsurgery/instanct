@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
-import * as mime from 'mime-types';
-import { join } from 'path';
-import { createReadStream, promises as fs } from 'fs';
-import { constants } from 'fs';
-import { ReadStream } from 'typeorm/platform/PlatformTools';
-import { ConfigService } from '@nestjs/config';
-import { FileNotFoundException } from '../errors/file.not-found.error';
-import { StorageRepository } from '../repositories/storage.repository';
-import { StorageEntity } from '../entities/storage.entity';
-import { StorageBadRequestException } from '../errors/storage.bad-request.error';
-import { StorageService } from './storage.service';
+import { Injectable } from "@nestjs/common";
+import { v4 as uuidv4 } from "uuid";
+import * as mime from "mime-types";
+import { join } from "path";
+import { createReadStream, promises as fs } from "fs";
+import { constants } from "fs";
+import { ReadStream } from "typeorm/platform/PlatformTools";
+import { ConfigService } from "@nestjs/config";
+import { FileNotFoundException } from "../errors/file.not-found.error";
+import { StorageRepository } from "../repositories/storage.repository";
+import { StorageEntity } from "../entities/storage.entity";
+import { StorageBadRequestException } from "../errors/storage.bad-request.error";
+import { StorageService } from "./storage.service";
 
 @Injectable()
 export class LocalStorageService extends StorageService {
@@ -21,11 +21,11 @@ export class LocalStorageService extends StorageService {
   ) {
     super(storageRepository);
     this.rootLocation =
-      this.configService.get<string>('app.uploadPath') || '/upload';
+      this.configService.get<string>("app.uploadPath") || "/upload";
   }
 
   getStorageType(): string {
-    return 'local';
+    return "local";
   }
 
   async store(
@@ -39,7 +39,7 @@ export class LocalStorageService extends StorageService {
     const mimetype = file.mimetype;
     const size = file.size;
 
-    const extension = mime.extension(mimetype) || '';
+    const extension = mime.extension(mimetype) || "";
     let relativePath = slug;
 
     if (extension) {
@@ -60,7 +60,7 @@ export class LocalStorageService extends StorageService {
     const destinationFile = join(this.rootLocation, relativePath);
     try {
       if (!file.buffer || file.buffer.length === 0) {
-        throw new StorageBadRequestException('Failed to store empty file.');
+        throw new StorageBadRequestException("Failed to store empty file.");
       }
 
       await fs.mkdir(this.rootLocation, { recursive: true });
@@ -114,7 +114,7 @@ export class LocalStorageService extends StorageService {
       this.rootLocation,
       originalUpload.relativePath,
     );
-    const fileExtension = mime.extension(originalUpload.mimetype) || '';
+    const fileExtension = mime.extension(originalUpload.mimetype) || "";
     let newRelativePath = newSlug;
 
     if (fileExtension) {

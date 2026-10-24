@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { FindManyOptions } from 'typeorm';
-import { LogRepository } from '../repositories/log.repository';
-import { LogEntity } from '../entities/log.entity';
-import { LogNotFoundException } from '../errors/log.notfound.error';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
+import { Injectable } from "@nestjs/common";
+import { FindManyOptions } from "typeorm";
+import { LogRepository } from "../repositories/log.repository";
+import { LogEntity } from "../entities/log.entity";
+import { LogNotFoundException } from "../errors/log.notfound.error";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
 
 @Injectable()
 export class LoggerService {
@@ -63,7 +63,7 @@ export class LoggerService {
     await this.loggerRepository
       .createQueryBuilder()
       .softDelete()
-      .where('userId = :userId', { userId })
+      .where("userId = :userId", { userId })
       .execute();
   }
 

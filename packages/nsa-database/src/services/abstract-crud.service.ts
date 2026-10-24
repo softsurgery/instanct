@@ -1,16 +1,16 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
 import {
   DeepPartial,
   FindManyOptions,
   FindOneOptions,
   ObjectLiteral,
-} from 'typeorm';
-import { IQueryObject } from '../interfaces/database-query-options.interface';
-import { QueryBuilder } from '../utils/database-query-builder';
-import { PageDto } from '../dtos/database.page.dto';
-import { PageMetaDto } from '../dtos/database.page-meta.dto';
-import { DatabaseAbstractRepository } from '../repositories/database.repository';
+} from "typeorm";
+import { IQueryObject } from "../interfaces/database-query-options.interface";
+import { QueryBuilder } from "../utils/database-query-builder";
+import { PageDto } from "../dtos/database.page.dto";
+import { PageMetaDto } from "../dtos/database.page-meta.dto";
+import { DatabaseAbstractRepository } from "../repositories/database.repository";
 
 @Injectable()
 export class AbstractCrudService<T extends ObjectLiteral> {
@@ -79,7 +79,7 @@ export class AbstractCrudService<T extends ObjectLiteral> {
   @Transactional()
   async update(id: string | number, dto: Partial<T>) {
     const entity = await this.findOneById(id);
-    if (!entity) throw new Error('Entity not found');
+    if (!entity) throw new Error("Entity not found");
     return this.repository.update(id, dto);
   }
 
@@ -94,7 +94,7 @@ export class AbstractCrudService<T extends ObjectLiteral> {
 
   async delete(id: string | number): Promise<T | null> {
     const entity = await this.findOneById(id);
-    if (!entity) throw new Error('Entity not found');
+    if (!entity) throw new Error("Entity not found");
     return this.repository.remove(entity);
   }
 }

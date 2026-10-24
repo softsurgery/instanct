@@ -1,15 +1,15 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@softsurgery/ui';
-import { DataTableColumnFilterOption } from './types';
-import { DataTableColumnComboboxFilter } from './data-table-column-combobox-filter';
+  SelectValue,
+} from "@softsurgery/ui";
+import { DataTableColumnFilterOption } from "./types";
+import { DataTableColumnComboboxFilter } from "./data-table-column-combobox-filter";
 
 interface DataTableColumnSelectFilterProps {
   filterKey: string;
@@ -26,14 +26,14 @@ export function DataTableColumnSelectFilter({
   options,
   multiSelect = false,
   onApply,
-  onClose
+  onClose,
 }: DataTableColumnSelectFilterProps) {
   const { t } = useTranslation("datatable");
-  const { t: tCommon } = useTranslation('common');
-  const [pendingValue, setPendingValue] = React.useState(activeFilter ?? '');
+  const { t: tCommon } = useTranslation("common");
+  const [pendingValue, setPendingValue] = React.useState(activeFilter ?? "");
 
   React.useEffect(() => {
-    setPendingValue(activeFilter ?? '');
+    setPendingValue(activeFilter ?? "");
   }, [activeFilter]);
 
   if (multiSelect) {
@@ -54,7 +54,7 @@ export function DataTableColumnSelectFilter({
   };
 
   const handleClear = () => {
-    setPendingValue('');
+    setPendingValue("");
     onApply(filterKey, null);
     onClose?.();
   };
@@ -63,10 +63,11 @@ export function DataTableColumnSelectFilter({
     <div
       className="space-y-2 p-2"
       onPointerDown={(event) => event.stopPropagation()}
-      onKeyDown={(event) => event.stopPropagation()}>
+      onKeyDown={(event) => event.stopPropagation()}
+    >
       <Select value={pendingValue} onValueChange={setPendingValue}>
         <SelectTrigger className="h-8">
-          <SelectValue placeholder={t('datatable.filter.selectPlaceholder')} />
+          <SelectValue placeholder={t("datatable.filter.selectPlaceholder")} />
         </SelectTrigger>
         <SelectContent className="max-h-64">
           {options.map((option) => (
@@ -78,15 +79,16 @@ export function DataTableColumnSelectFilter({
       </Select>
       <div className="flex gap-2">
         <Button size="sm" className="flex-1" onClick={handleConfirm}>
-          {tCommon('commands.confirm')}
+          {tCommon("commands.confirm")}
         </Button>
         <Button
           size="sm"
           variant="outline"
           className="flex-1"
           disabled={!activeFilter && !pendingValue}
-          onClick={handleClear}>
-          {t('datatable.filter.clear')}
+          onClick={handleClear}
+        >
+          {t("datatable.filter.clear")}
         </Button>
       </div>
     </div>

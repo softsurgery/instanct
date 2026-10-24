@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import React from "react"
-import { TrendingUp } from "lucide-react"
-import { Pie, PieChart, Tooltip, Cell, ResponsiveContainer } from "recharts"
+import React from "react";
+import { TrendingUp } from "lucide-react";
+import { Pie, PieChart, Tooltip, Cell, ResponsiveContainer } from "recharts";
 import {
   Card,
   CardContent,
@@ -10,9 +10,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@softsurgery/ui"
+} from "@softsurgery/ui";
 
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@softsurgery/ui"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@softsurgery/ui";
 
 // Données du graphique
 const chartData = [
@@ -21,7 +25,7 @@ const chartData = [
   { browser: "firefox", visitors: 187, fill: "#34d399" }, // vert
   { browser: "edge", visitors: 173, fill: "#facc15" }, // jaune
   { browser: "other", visitors: 90, fill: "#a78bfa" }, // violet
-]
+];
 
 export function ChartPieSimple() {
   return (
@@ -65,5 +69,5 @@ export function ChartPieSimple() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

@@ -65,7 +65,9 @@ export function NavMain({
                             isActive={pathname.startsWith(subItem.url)}
                           >
                             <Link href={subItem.url}>
-                              {subItem.icon && <subItem.icon className="size-4" />}
+                              {subItem.icon && (
+                                <subItem.icon className="size-4" />
+                              )}
                               <span>{subItem.title}</span>
                             </Link>
                           </SidebarMenuSubButton>

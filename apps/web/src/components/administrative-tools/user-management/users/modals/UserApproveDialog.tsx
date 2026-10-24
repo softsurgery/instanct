@@ -1,4 +1,3 @@
-
 import { useDialog } from "@softsurgery/components";
 import { Spinner } from "@softsurgery/components";
 import { Button } from "@softsurgery/ui";
@@ -26,11 +25,11 @@ export const useApproveUserDialog = ({
   } = useDialog({
     title: (
       <div className="leading-normal">
-        {t("userManagement.dialogs.approveUserTitle")} <span className="font-light">{representation}</span> ?
+        {t("userManagement.dialogs.approveUserTitle")}{" "}
+        <span className="font-light">{representation}</span> ?
       </div>
     ),
-    description:
-      t("userManagement.dialogs.approveUserDescription"),
+    description: t("userManagement.dialogs.approveUserDescription"),
     children: (
       <div>
         <div className="flex gap-2 justify-end">

@@ -1,1 +1,1 @@
-export type ClientPresenceSource = 'web' | 'mobile' | string;
+export type ClientPresenceSource = "web" | "mobile" | string;

@@ -1,5 +1,5 @@
 export function formatFileSize(
-  bytes: number | string | undefined | null
+  bytes: number | string | undefined | null,
 ): string {
   if (bytes === undefined || bytes === null || bytes === "") return "—";
   const num = Number(bytes);

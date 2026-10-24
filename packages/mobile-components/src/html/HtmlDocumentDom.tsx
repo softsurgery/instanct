@@ -38,7 +38,8 @@ function postWebViewMessage(payload: { type: string; url?: string }) {
     return true;
   }
 
-  const webkitPost = win.webkit?.messageHandlers?.ReactNativeWebView?.postMessage;
+  const webkitPost =
+    win.webkit?.messageHandlers?.ReactNativeWebView?.postMessage;
   if (typeof webkitPost === "function") {
     webkitPost(message);
     return true;

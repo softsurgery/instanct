@@ -1,6 +1,6 @@
 export type ConfigurationNamespaces = string;
 
-export const CONFIGURATION_NAMESPACES = Symbol('CONFIGURATION_NAMESPACES');
+export const CONFIGURATION_NAMESPACES = Symbol("CONFIGURATION_NAMESPACES");
 
 export const ConfigurationNamespaces: Record<string, ConfigurationNamespaces> =
   {};

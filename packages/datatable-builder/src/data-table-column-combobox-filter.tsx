@@ -1,5 +1,5 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   Combobox,
@@ -11,15 +11,15 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxValue,
-  useComboboxAnchor
-} from '@softsurgery/ui';
+  useComboboxAnchor,
+} from "@softsurgery/ui";
 import {
   buildMultiOptionFilter,
   getOptionFilterField,
   getOptionFilterValue,
-  getSelectedOptionFilterValues
-} from './column-filter';
-import { DataTableColumnFilterOption } from './types';
+  getSelectedOptionFilterValues,
+} from "./column-filter";
+import { DataTableColumnFilterOption } from "./types";
 
 interface ComboboxFilterItem {
   label: string;
@@ -40,10 +40,10 @@ export function DataTableColumnComboboxFilter({
   activeFilter,
   options,
   onApply,
-  onClose
+  onClose,
 }: DataTableColumnComboboxFilterProps) {
   const { t } = useTranslation("datatable");
-  const { t: tCommon } = useTranslation('common');
+  const { t: tCommon } = useTranslation("common");
   const anchorRef = useComboboxAnchor();
 
   const items = React.useMemo(
@@ -55,7 +55,7 @@ export function DataTableColumnComboboxFilter({
           return { label: option.label, value, filter: option.filter };
         })
         .filter(Boolean) as ComboboxFilterItem[],
-    [options]
+    [options],
   );
 
   const appliedItems = React.useMemo(() => {
@@ -63,7 +63,8 @@ export function DataTableColumnComboboxFilter({
     return items.filter((item) => selectedValues.includes(item.value));
   }, [activeFilter, items]);
 
-  const [draftItems, setDraftItems] = React.useState<ComboboxFilterItem[]>(appliedItems);
+  const [draftItems, setDraftItems] =
+    React.useState<ComboboxFilterItem[]>(appliedItems);
 
   React.useEffect(() => {
     setDraftItems(appliedItems);
@@ -88,13 +89,15 @@ export function DataTableColumnComboboxFilter({
     <div
       className="space-y-2 p-2"
       onPointerDown={(event) => event.stopPropagation()}
-      onKeyDown={(event) => event.stopPropagation()}>
+      onKeyDown={(event) => event.stopPropagation()}
+    >
       <Combobox
         items={items}
         multiple
         value={draftItems}
         onValueChange={setDraftItems}
-        isItemEqualToValue={(item, selected) => item.value === selected.value}>
+        isItemEqualToValue={(item, selected) => item.value === selected.value}
+      >
         <ComboboxChips ref={anchorRef} className="w-full">
           <ComboboxValue>
             {(values: ComboboxFilterItem[]) => (
@@ -102,13 +105,15 @@ export function DataTableColumnComboboxFilter({
                 {values.map((item) => (
                   <ComboboxChip key={item.value}>{item.label}</ComboboxChip>
                 ))}
-                <ComboboxChipsInput placeholder={t('datatable.filter.selectPlaceholder')} />
+                <ComboboxChipsInput
+                  placeholder={t("datatable.filter.selectPlaceholder")}
+                />
               </>
             )}
           </ComboboxValue>
         </ComboboxChips>
         <ComboboxContent anchor={anchorRef}>
-          <ComboboxEmpty>{t('datatable.noResults')}</ComboboxEmpty>
+          <ComboboxEmpty>{t("datatable.noResults")}</ComboboxEmpty>
           <ComboboxList>
             {(item: ComboboxFilterItem) => (
               <ComboboxItem key={item.value} value={item}>
@@ -120,15 +125,16 @@ export function DataTableColumnComboboxFilter({
       </Combobox>
       <div className="flex gap-2">
         <Button size="sm" className="flex-1" onClick={handleConfirm}>
-          {tCommon('commands.confirm')}
+          {tCommon("commands.confirm")}
         </Button>
         <Button
           size="sm"
           variant="outline"
           className="flex-1"
           disabled={draftItems.length === 0 && !activeFilter}
-          onClick={handleClear}>
-          {t('datatable.filter.clear')}
+          onClick={handleClear}
+        >
+          {t("datatable.filter.clear")}
         </Button>
       </div>
     </div>

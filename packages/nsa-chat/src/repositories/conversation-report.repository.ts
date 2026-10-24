@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { TransactionHost } from '@nestjs-cls/transactional';
-import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
-import { ConversationReportEntity } from '../entities/conversation-report.entity';
+import { Injectable } from "@nestjs/common";
+import { DatabaseAbstractRepository } from "@softsurgery/nsa-database";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterTypeOrm } from "@nestjs-cls/transactional-adapter-typeorm";
+import { ConversationReportEntity } from "../entities/conversation-report.entity";
 
 @Injectable()
 export class ConversationReportRepository extends DatabaseAbstractRepository<ConversationReportEntity> {

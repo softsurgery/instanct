@@ -1,9 +1,9 @@
-import { FindOneOptions } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { AbstractUserEntity } from '../entities/abstract-user.entity';
+import { FindOneOptions } from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+import { AbstractUserEntity } from "../entities/abstract-user.entity";
 
-export const USER_SERVICE = Symbol.for('USER_SERVICE');
-export const USER_REPOSITORY = Symbol.for('USER_REPOSITORY');
+export const USER_SERVICE = Symbol.for("USER_SERVICE");
+export const USER_REPOSITORY = Symbol.for("USER_REPOSITORY");
 
 export type AppUserRecord = AbstractUserEntity & {
   pictureId?: number;

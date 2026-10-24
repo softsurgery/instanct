@@ -1,5 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { getNextSnapshot } from 'xstate';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { getNextSnapshot } from "xstate";
 
 interface WorkflowMachine {
   resolveState(config: { value: unknown }): WorkflowSnapshot;

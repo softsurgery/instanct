@@ -1,7 +1,7 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { EntityHelper } from "@softsurgery/nsa-database";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity('storage')
+@Entity("storage")
 export class StorageEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;

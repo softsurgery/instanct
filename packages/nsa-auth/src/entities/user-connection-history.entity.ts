@@ -5,39 +5,39 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { EntityHelper } from '@softsurgery/nsa-database';
-import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
-import { UserDeviceEntity } from './user-device.entity';
+} from "typeorm";
+import { EntityHelper } from "@softsurgery/nsa-database";
+import type { AbstractUserEntity } from "@softsurgery/nsa-um/entities/abstract-user.entity";
+import { UserDeviceEntity } from "./user-device.entity";
 
-@Entity('user_connection_history')
-@Index(['userId', 'createdAt'])
+@Entity("user_connection_history")
+@Index(["userId", "createdAt"])
 export class UserConnectionHistoryEntity extends EntityHelper {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
   userId: string;
 
-  @ManyToOne('AbstractUserEntity', {
-    onDelete: 'CASCADE',
+  @ManyToOne("AbstractUserEntity", {
+    onDelete: "CASCADE",
     eager: false,
   })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user?: AbstractUserEntity;
 
   @Column({ nullable: true })
   deviceId?: string;
 
   @ManyToOne(() => UserDeviceEntity, (device) => device.connections, {
-    onDelete: 'SET NULL',
+    onDelete: "SET NULL",
     nullable: true,
     eager: false,
   })
-  @JoinColumn({ name: 'deviceId' })
+  @JoinColumn({ name: "deviceId" })
   device?: UserDeviceEntity;
 
-  @Column({ default: 'mobile' })
+  @Column({ default: "mobile" })
   source: string;
 
   @Column({ nullable: true })
@@ -46,15 +46,15 @@ export class UserConnectionHistoryEntity extends EntityHelper {
   @Column({ nullable: true })
   ipAddress?: string;
 
-  @Column({ type: 'double', nullable: true })
+  @Column({ type: "double", nullable: true })
   latitude?: number;
 
-  @Column({ type: 'double', nullable: true })
+  @Column({ type: "double", nullable: true })
   longitude?: number;
 
   @Column({ nullable: true })
   location?: string;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: "timestamp", nullable: true })
   disconnectedAt?: Date;
 }

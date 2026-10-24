@@ -3,19 +3,19 @@ import {
   OnGatewayDisconnect,
   WebSocketGateway,
   WebSocketServer,
-} from '@nestjs/websockets';
-import { Server } from 'socket.io';
-import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
-import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
-import { Injectable, Logger, Optional } from '@nestjs/common';
-import { NotificationService } from '../services/notification.service';
-import { NotificationEntity } from '../entities/notification.entity';
-import { NotificationType } from '../enums/notification-type.registry';
-import { UserPresenceService } from '@softsurgery/nsa-um/services/user-presence.service';
+} from "@nestjs/websockets";
+import { Server } from "socket.io";
+import { getTokenPayloadForWebSocket } from "@softsurgery/nsa-auth/utils/token-payload";
+import { AdvancedSocket } from "@softsurgery/nsa-helpers/http";
+import { Injectable, Logger, Optional } from "@nestjs/common";
+import { NotificationService } from "../services/notification.service";
+import { NotificationEntity } from "../entities/notification.entity";
+import { NotificationType } from "../enums/notification-type.registry";
+import { UserPresenceService } from "@softsurgery/nsa-um/services/user-presence.service";
 
 @WebSocketGateway({
-  namespace: '/notifications',
-  cors: { origin: '*' },
+  namespace: "/notifications",
+  cors: { origin: "*" },
 })
 @Injectable()
 export class NotificationGateway
@@ -56,13 +56,13 @@ export class NotificationGateway
     const source =
       (client.handshake?.auth?.source as string) ||
       (client.handshake?.query?.source as string) ||
-      'web';
+      "web";
 
     this.userPresenceService?.trackConnection(
       userId,
       client.id,
       source,
-      'notifications',
+      "notifications",
     );
 
     this.logger.log(`✅ User ${userId} connected (${client.id})`);
@@ -78,7 +78,7 @@ export class NotificationGateway
     this.userPresenceService?.trackDisconnection(
       userId,
       client.id,
-      'notifications',
+      "notifications",
     );
 
     const sockets = this.userSockets.get(userId);
@@ -109,7 +109,7 @@ export class NotificationGateway
     const sockets = this.userSockets.get(userId);
     if (sockets?.size) {
       for (const socketId of sockets) {
-        this.server.to(socketId).emit('notification', saved);
+        this.server.to(socketId).emit("notification", saved);
       }
       this.logger.log(`📨 Sent live notification to ${userId}`);
     } else {

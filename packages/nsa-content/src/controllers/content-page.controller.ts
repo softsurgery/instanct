@@ -10,49 +10,49 @@ import {
   Query,
   Request,
   UseInterceptors,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
-import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
-import { EventType } from '@softsurgery/nsa-logger/enums/event-type.registry';
-import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { toDto, toDtoArray } from '@softsurgery/nsa-database';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
-import { ContentPageService } from '../services/content-page.service';
-import { ResponseContentPageDto } from '../dtos/response-content-page.dto';
-import { CreateContentPageDto } from '../dtos/create-content-page.dto';
-import { UpdateContentPageDto } from '../dtos/update-content-page.dto';
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
+import { LogEvent } from "@softsurgery/nsa-logger/decorators/log-event.decorator";
+import { EventType } from "@softsurgery/nsa-logger/enums/event-type.registry";
+import { Public } from "@softsurgery/nsa-auth/utils/public-strategy";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
+import { ContentPageService } from "../services/content-page.service";
+import { ResponseContentPageDto } from "../dtos/response-content-page.dto";
+import { CreateContentPageDto } from "../dtos/create-content-page.dto";
+import { UpdateContentPageDto } from "../dtos/update-content-page.dto";
 
-@ApiTags('content-page')
-@ApiBearerAuth('access_token')
+@ApiTags("content-page")
+@ApiBearerAuth("access_token")
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
 @Controller({
-  version: '1',
-  path: '/content-pages',
+  version: "1",
+  path: "/content-pages",
 })
 export class ContentPageController {
   constructor(private readonly contentPageService: ContentPageService) {}
 
   @Public()
-  @Get('/slug/:slug')
+  @Get("/slug/:slug")
   async findBySlug(
-    @Param('slug') slug: string,
-    @Query('locale') locale?: string,
+    @Param("slug") slug: string,
+    @Query("locale") locale?: string,
   ): Promise<ResponseContentPageDto> {
     return toDto(
       ResponseContentPageDto,
-      await this.contentPageService.findBySlug(slug, locale ?? 'fr'),
+      await this.contentPageService.findBySlug(slug, locale ?? "fr"),
     );
   }
 
   @Public()
-  @Get('/list')
+  @Get("/list")
   async findAllPaginated(
     @Query() query: IQueryObject,
-    @Query('locale') locale?: string,
+    @Query("locale") locale?: string,
   ): Promise<PageDto<ResponseContentPageDto>> {
     const paginated = await this.contentPageService.findAllPaginated(
       query,
@@ -65,10 +65,10 @@ export class ContentPageController {
   }
 
   @Public()
-  @Get('/all')
+  @Get("/all")
   async findAll(
     @Query() query: IQueryObject,
-    @Query('locale') locale?: string,
+    @Query("locale") locale?: string,
   ): Promise<ResponseContentPageDto[]> {
     return toDtoArray(
       ResponseContentPageDto,
@@ -77,8 +77,8 @@ export class ContentPageController {
   }
 
   @Public()
-  @Get(':id')
-  async findOneById(@Param('id') id: string): Promise<ResponseContentPageDto> {
+  @Get(":id")
+  async findOneById(@Param("id") id: string): Promise<ResponseContentPageDto> {
     return toDto(
       ResponseContentPageDto,
       await this.contentPageService.findOneById(id),
@@ -99,10 +99,10 @@ export class ContentPageController {
     return toDto(ResponseContentPageDto, page);
   }
 
-  @Put(':id')
+  @Put(":id")
   @LogEvent(EventType.CONTENT_PAGE_UPDATE)
   async update(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() dto: UpdateContentPageDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto> {
@@ -114,10 +114,10 @@ export class ContentPageController {
     return toDto(ResponseContentPageDto, page);
   }
 
-  @Delete(':id')
+  @Delete(":id")
   @LogEvent(EventType.CONTENT_PAGE_DELETE)
   async delete(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseContentPageDto | null> {
     const page = await this.contentPageService.findOneById(id);

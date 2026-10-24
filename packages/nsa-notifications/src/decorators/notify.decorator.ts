@@ -1,8 +1,8 @@
-import 'reflect-metadata';
-import { NotificationType } from '../enums/notification-type.registry';
+import "reflect-metadata";
+import { NotificationType } from "../enums/notification-type.registry";
 
-export const NOTIFY_METADATA_KEY = 'notification:types';
-export const BATCH_NOTIFY_METADATA_KEY = 'notification:batch';
+export const NOTIFY_METADATA_KEY = "notification:types";
+export const BATCH_NOTIFY_METADATA_KEY = "notification:batch";
 
 export interface BatchNotificationEntry {
   userId: string;

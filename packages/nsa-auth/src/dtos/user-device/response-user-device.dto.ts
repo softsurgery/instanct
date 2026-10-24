@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { Expose } from 'class-transformer';
+import { ApiProperty } from "@nestjs/swagger";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { Expose } from "class-transformer";
 
 export class ResponseUserDeviceDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })
@@ -11,7 +11,7 @@ export class ResponseUserDeviceDto extends ResponseDtoHelper {
   @Expose()
   userId: string;
 
-  @ApiProperty({ type: String, example: 'aa:bb:cc:dd:ee:ff' })
+  @ApiProperty({ type: String, example: "aa:bb:cc:dd:ee:ff" })
   @Expose()
   macAddress: string;
 

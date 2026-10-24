@@ -1,7 +1,17 @@
 import { setDeepValue } from "@/lib/object";
 import { type UploadFileInput } from "@/lib/upload";
 import { create } from "zustand";
-import { CreateEducationDto, CreateExperienceDto, ResponseEducationDto, ResponseExperienceDto, ResponseUserDto, UpdateEducationDto, UpdateExperienceDto, UpdateUserCoverDto, UpdateUserDto } from "@softsurgery/api-client";
+import {
+  CreateEducationDto,
+  CreateExperienceDto,
+  ResponseEducationDto,
+  ResponseExperienceDto,
+  ResponseUserDto,
+  UpdateEducationDto,
+  UpdateExperienceDto,
+  UpdateUserCoverDto,
+  UpdateUserDto,
+} from "@softsurgery/api-client";
 
 interface UserData {
   response?: ResponseUserDto;

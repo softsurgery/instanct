@@ -47,7 +47,8 @@ export function defineNativeBackgroundTasks(
   tasks: NativeBackgroundTaskDefinition[],
   options: { supportsNative?: boolean } = {},
 ) {
-  const canUseNative = options.supportsNative ?? supportsNativeBackgroundTasks();
+  const canUseNative =
+    options.supportsNative ?? supportsNativeBackgroundTasks();
   if (!canUseNative || !tasks.length) return;
 
   const modules = loadNativeModules();
@@ -71,7 +72,8 @@ export async function registerNativeBackgroundTasks(
   tasks: NativeBackgroundTaskDefinition[],
   options: { supportsNative?: boolean } = {},
 ) {
-  const canUseNative = options.supportsNative ?? supportsNativeBackgroundTasks();
+  const canUseNative =
+    options.supportsNative ?? supportsNativeBackgroundTasks();
   if (!canUseNative || !tasks.length) return;
 
   const { TaskManager: TM, BackgroundTask: BT } = loadNativeModules();
@@ -105,7 +107,8 @@ export async function unregisterNativeBackgroundTasks(
   taskNames: string[],
   options: { supportsNative?: boolean } = {},
 ) {
-  const canUseNative = options.supportsNative ?? supportsNativeBackgroundTasks();
+  const canUseNative =
+    options.supportsNative ?? supportsNativeBackgroundTasks();
   if (!canUseNative || !taskNames.length) return;
 
   const { TaskManager: TM, BackgroundTask: BT } = loadNativeModules();

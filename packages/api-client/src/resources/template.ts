@@ -37,17 +37,14 @@ export function createTemplateResource(http: AxiosInstance) {
   const findAll = async (
     params?: QueryParams,
   ): Promise<ResponseTemplateDto[]> => {
-    const response = await http.get<ResponseTemplateDto[]>(
-      `/templates/all`,
-      { params },
-    );
+    const response = await http.get<ResponseTemplateDto[]>(`/templates/all`, {
+      params,
+    });
     return response.data;
   };
 
   const findById = async (id: string): Promise<ResponseTemplateDto> => {
-    const response = await http.get<ResponseTemplateDto>(
-      `/templates/${id}`,
-    );
+    const response = await http.get<ResponseTemplateDto>(`/templates/${id}`);
     return response.data;
   };
 

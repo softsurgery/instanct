@@ -64,7 +64,16 @@ export const TemplateEditPortal = ({
       clearRoutes?.();
       clearIntro?.();
     };
-  }, [t, ready, template, setRoutes, clearRoutes, setIntro, clearIntro, backRoute]);
+  }, [
+    t,
+    ready,
+    template,
+    setRoutes,
+    clearRoutes,
+    setIntro,
+    clearIntro,
+    backRoute,
+  ]);
 
   const { mutate: updateTemplate, isPending } = useMutation({
     mutationFn: (data: UpdateTemplateDto) => api.update(id, data),
@@ -142,11 +151,7 @@ export const TemplateEditPortal = ({
               "Could not load the requested template details.",
             )}
         </p>
-        <Button
-          variant="outline"
-          onClick={handleCancel}
-          className="gap-2"
-        >
+        <Button variant="outline" onClick={handleCancel} className="gap-2">
           <ArrowLeft className="h-4 w-4" />
           {t("templates.editor.backToTemplates", "Back to Templates")}
         </Button>

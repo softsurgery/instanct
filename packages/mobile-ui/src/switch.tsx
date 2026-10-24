@@ -15,7 +15,7 @@ function Switch({
         }),
         props.checked ? "bg-primary" : "bg-input dark:bg-input/80",
         props.disabled && "opacity-50",
-        className
+        className,
       )}
       {...props}
     >
@@ -27,7 +27,7 @@ function Switch({
           }),
           props.checked
             ? "dark:bg-primary-foreground translate-x-3.5"
-            : "dark:bg-foreground translate-x-0"
+            : "dark:bg-foreground translate-x-0",
         )}
       />
     </SwitchPrimitives.Root>

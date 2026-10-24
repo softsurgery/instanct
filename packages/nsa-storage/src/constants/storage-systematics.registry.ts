@@ -1,6 +1,6 @@
 export type StorageSystematics = string;
 
-export const STORAGE_SYSTEMATICS_TOKEN = Symbol('STORAGE_SYSTEMATICS');
+export const STORAGE_SYSTEMATICS_TOKEN = Symbol("STORAGE_SYSTEMATICS");
 
 export const STORAGE_SYSTEMATICS: Record<string, StorageSystematics> = {};
 

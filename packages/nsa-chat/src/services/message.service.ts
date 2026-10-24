@@ -1,21 +1,21 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOptionsWhere, Not } from 'typeorm';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { MessageRepository } from '../repositories/message.repository';
-import { MessageEntity } from '../entities/message.entity';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { MessageUploadService } from './message-upload.service';
-import { MessageLinkService } from './message-link.service';
-import { StorageService } from '@softsurgery/nsa-storage/services/storage.service';
-import { MessageVariant } from '../enums/message-variant.enum';
-import { CreateMessageDto } from '../dtos/message/create-message.dto';
-import { extractMessageLinks } from '../utils/extract-message-links';
+import { Transactional } from "@nestjs-cls/transactional";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { FindManyOptions, FindOptionsWhere, Not } from "typeorm";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { MessageRepository } from "../repositories/message.repository";
+import { MessageEntity } from "../entities/message.entity";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { MessageUploadService } from "./message-upload.service";
+import { MessageLinkService } from "./message-link.service";
+import { StorageService } from "@softsurgery/nsa-storage/services/storage.service";
+import { MessageVariant } from "../enums/message-variant.enum";
+import { CreateMessageDto } from "../dtos/message/create-message.dto";
+import { extractMessageLinks } from "../utils/extract-message-links";
 
-export const MESSAGE_DEFAULT_RELATIONS = 'uploads,uploads.upload,links';
+export const MESSAGE_DEFAULT_RELATIONS = "uploads,uploads.upload,links";
 
 @Injectable()
 export class MessageService extends AbstractCrudService<MessageEntity> {
@@ -35,7 +35,7 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     const queryBuilder = new QueryBuilder(this.messageRepository.getMetadata());
     const queryOptions = queryBuilder.build({
       ...query,
-      sort: query.sort ?? 'createdAt,DESC',
+      sort: query.sort ?? "createdAt,DESC",
       join: query.join ?? MESSAGE_DEFAULT_RELATIONS,
     });
 
@@ -71,13 +71,13 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     };
 
     if (excludeStatic) {
-      where.content = Not('');
+      where.content = Not("");
     }
 
     const messages = await this.messageRepository.findAll({
       where,
       order: {
-        createdAt: 'DESC',
+        createdAt: "DESC",
       },
       take: 1,
     });
@@ -89,20 +89,20 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     mimetypes: string[],
   ): MessageVariant.IMAGE | MessageVariant.VIDEO | MessageVariant.FILE {
     const hasVideo = mimetypes.some((mimetype) =>
-      mimetype.startsWith('video/'),
+      mimetype.startsWith("video/"),
     );
     const hasImage = mimetypes.some((mimetype) =>
-      mimetype.startsWith('image/'),
+      mimetype.startsWith("image/"),
     );
     const hasFile = mimetypes.some(
       (mimetype) =>
-        !mimetype.startsWith('video/') && !mimetype.startsWith('image/'),
+        !mimetype.startsWith("video/") && !mimetype.startsWith("image/"),
     );
 
     const mediaKinds = [hasVideo, hasImage, hasFile].filter(Boolean).length;
     if (mediaKinds > 1) {
       throw new BadRequestException(
-        'Messages cannot contain mixed upload types',
+        "Messages cannot contain mixed upload types",
       );
     }
 
@@ -110,7 +110,7 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     if (hasImage) return MessageVariant.IMAGE;
     if (hasFile) return MessageVariant.FILE;
 
-    throw new BadRequestException('Unsupported upload type');
+    throw new BadRequestException("Unsupported upload type");
   }
 
   @Transactional()
@@ -119,10 +119,10 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
     userId?: string,
   ): Promise<MessageEntity> {
     if (!userId) {
-      throw new BadRequestException('User id is required');
+      throw new BadRequestException("User id is required");
     }
     if (!createMessage.conversationId) {
-      throw new BadRequestException('Conversation id is required');
+      throw new BadRequestException("Conversation id is required");
     }
 
     const { uploadIds, ...messageData } = createMessage;
@@ -133,7 +133,7 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
       !messageData.content?.trim() &&
       (!uploadIds || uploadIds.length === 0)
     ) {
-      throw new BadRequestException('Message content or uploads are required');
+      throw new BadRequestException("Message content or uploads are required");
     }
 
     let variant = messageData.variant ?? MessageVariant.TEXT;
@@ -179,7 +179,7 @@ export class MessageService extends AbstractCrudService<MessageEntity> {
       MESSAGE_DEFAULT_RELATIONS,
     );
     if (!savedMessage) {
-      throw new BadRequestException('Failed to load created message');
+      throw new BadRequestException("Failed to load created message");
     }
     return savedMessage;
   }

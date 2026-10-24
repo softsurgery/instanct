@@ -1,15 +1,15 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
-import { ConversationEntity } from './conversation.entity';
+} from "typeorm";
+import type { AbstractUserEntity } from "@softsurgery/nsa-um/entities/abstract-user.entity";
+import { ConversationEntity } from "./conversation.entity";
 
-@Entity('conversation_users')
+@Entity("conversation_users")
 export class ConversationUserEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,22 +20,22 @@ export class ConversationUserEntity extends EntityHelper {
   @Column()
   conversationId: number;
 
-  @ManyToOne('AbstractUserEntity', {
-    onDelete: 'CASCADE',
+  @ManyToOne("AbstractUserEntity", {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: AbstractUserEntity;
 
-  @ManyToOne('ConversationEntity', {
-    onDelete: 'CASCADE',
+  @ManyToOne("ConversationEntity", {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'conversationId' })
+  @JoinColumn({ name: "conversationId" })
   conversation: ConversationEntity;
 
   @Column({
-    type: 'datetime',
+    type: "datetime",
     precision: 3,
-    default: () => 'CURRENT_TIMESTAMP(3)',
+    default: () => "CURRENT_TIMESTAMP(3)",
   })
   lastCheck: Date;
 }

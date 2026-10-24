@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { DatabaseTrigger } from '../interfaces/database-trigger.interface';
+import { Injectable } from "@nestjs/common";
+import { DatabaseTrigger } from "../interfaces/database-trigger.interface";
 
 @Injectable()
 export class TriggerRegistry {

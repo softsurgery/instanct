@@ -13,11 +13,11 @@ interface JSONExtrasProps {
 
 export const JSONExtras = ({ className, value, onChange }: JSONExtrasProps) => {
   const [jsonText, setJsonText] = React.useState(
-    JSON.stringify(value, null, 2)
+    JSON.stringify(value, null, 2),
   );
   const lineNumbers = React.useMemo(
     () => (jsonText.match(/\n/g) || []).length + 1,
-    [jsonText]
+    [jsonText],
   );
   const [error, setError] = React.useState<string | null>(null);
 

@@ -7,5 +7,5 @@ export interface GithubEmail {
   email: string;
   primary: boolean;
   verified: boolean;
-  visibility: 'public' | 'private' | null;
+  visibility: "public" | "private" | null;
 }

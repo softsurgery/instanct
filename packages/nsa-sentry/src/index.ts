@@ -1,1 +1,1 @@
-export { SentryCatchAllFilter } from './sentry-catch-all.filter';
+export { SentryCatchAllFilter } from "./sentry-catch-all.filter";

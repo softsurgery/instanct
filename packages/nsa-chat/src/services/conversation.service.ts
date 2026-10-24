@@ -1,24 +1,27 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { FindManyOptions } from 'typeorm';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { ConversationRepository } from '../repositories/conversation.repository';
-import { ConversationEntity } from '../entities/conversation.entity';
-import { CreateConversationDto } from '../dtos/conversation/create-conversation.dto';
-import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
-import { USER_SERVICE, AppUserService } from '@softsurgery/nsa-um/tokens/user-access';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { MessageService } from './message.service';
-import { ConversationNotFoundException } from '../errors/conversation/conversation.notfound.error';
-import { ConversationUserEntity } from '../entities/conversation-user.entity';
-import { ConversationUserService } from './conversation-user.service';
-import { MessageVariant } from '../enums/message-variant.enum';
-import { StaticMessageEnum } from '../enums/static-message.registry';
-import { CreateConversationReportDto } from '../dtos/conversation/create-conversation-report.dto';
-import { ConversationReportService } from './conversation-report.service';
+import { Transactional } from "@nestjs-cls/transactional";
+import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { FindManyOptions } from "typeorm";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { ConversationRepository } from "../repositories/conversation.repository";
+import { ConversationEntity } from "../entities/conversation.entity";
+import { CreateConversationDto } from "../dtos/conversation/create-conversation.dto";
+import { UserNotFoundException } from "@softsurgery/nsa-um/errors/user/user.notfound.error";
+import {
+  USER_SERVICE,
+  AppUserService,
+} from "@softsurgery/nsa-um/tokens/user-access";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { MessageService } from "./message.service";
+import { ConversationNotFoundException } from "../errors/conversation/conversation.notfound.error";
+import { ConversationUserEntity } from "../entities/conversation-user.entity";
+import { ConversationUserService } from "./conversation-user.service";
+import { MessageVariant } from "../enums/message-variant.enum";
+import { StaticMessageEnum } from "../enums/static-message.registry";
+import { CreateConversationReportDto } from "../dtos/conversation/create-conversation-report.dto";
+import { ConversationReportService } from "./conversation-report.service";
 
 @Injectable()
 export class ConversationService extends AbstractCrudService<ConversationEntity> {
@@ -39,7 +42,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
   ): Promise<boolean> {
     const conversation = await this.conversationRepository.findOne({
       where: { id: conversationId },
-      relations: ['participants'],
+      relations: ["participants"],
     } as FindManyOptions<ConversationEntity>);
 
     if (!conversation) return false;
@@ -56,8 +59,8 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     const conversationIds = userConversations.map((uc) => uc.conversationId);
 
     query.filter = query.filter
-      ? `${query.filter},id||$in||${conversationIds.join(',')}`
-      : `id||$in||${conversationIds.join(',')}`;
+      ? `${query.filter},id||$in||${conversationIds.join(",")}`
+      : `id||$in||${conversationIds.join(",")}`;
 
     const queryBuilder = new QueryBuilder(
       this.conversationRepository.getMetadata(),
@@ -103,7 +106,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     duplicateCheck = true,
   ): Promise<ConversationEntity> {
     if (!userId) {
-      throw new BadRequestException('User id is required');
+      throw new BadRequestException("User id is required");
     }
     const targetUser = await this.userService.findOneById(targetUserId);
     if (!targetUser) {
@@ -146,7 +149,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     userId?: string,
   ): Promise<ConversationEntity> {
     if (!userId) {
-      throw new BadRequestException('User id is required');
+      throw new BadRequestException("User id is required");
     }
     for (const targetUserId of createConversationDto.users) {
       const targetUser = await this.userService.findOneById(targetUserId);
@@ -186,7 +189,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     userId?: string,
     date = new Date(),
   ): Promise<ConversationEntity | null> {
-    const join = ['participants', 'participants.user', 'lastMessage'].join(',');
+    const join = ["participants", "participants.user", "lastMessage"].join(",");
 
     const conversation = await this.findOneById(conversationId, join);
 
@@ -198,7 +201,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     );
     if (!participant) {
       throw new BadRequestException(
-        'User is not a participant of the conversation',
+        "User is not a participant of the conversation",
       );
     }
     await this.conversationUserService.update(participant.id, {
@@ -213,7 +216,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     userId?: string,
   ): Promise<void> {
     if (!userId) {
-      throw new BadRequestException('User id is required');
+      throw new BadRequestException("User id is required");
     }
 
     const isParticipant = await this.isUserInConversation(
@@ -222,7 +225,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     );
     if (!isParticipant) {
       throw new BadRequestException(
-        'User is not a participant of the conversation',
+        "User is not a participant of the conversation",
       );
     }
 
@@ -238,10 +241,10 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     createConversationReportDto: CreateConversationReportDto,
   ) {
     if (!userId) {
-      throw new BadRequestException('User id is required');
+      throw new BadRequestException("User id is required");
     }
 
-    const join = ['participants'].join(',');
+    const join = ["participants"].join(",");
     const conversation = await this.findOneById(conversationId, join);
     if (!conversation) {
       throw new ConversationNotFoundException();
@@ -252,7 +255,7 @@ export class ConversationService extends AbstractCrudService<ConversationEntity>
     );
     if (!isParticipant) {
       throw new BadRequestException(
-        'User is not a participant of the conversation',
+        "User is not a participant of the conversation",
       );
     }
 

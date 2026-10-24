@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
-import { PendingFileUpload, PendingMediaUpload, PendingTextMessage } from "@/types";
+import {
+  PendingFileUpload,
+  PendingMediaUpload,
+  PendingTextMessage,
+} from "@/types";
 
 interface ChatPendingStore {
   pendingTextMessages: PendingTextMessage[];

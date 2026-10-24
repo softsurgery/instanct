@@ -1,19 +1,19 @@
-import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger } from "@nestjs/common";
 import {
   GoogleTokenResponse,
   GoogleUserInfo,
-} from '../interfaces/google.interface';
+} from "../interfaces/google.interface";
 import {
   GithubEmail,
   GithubUserResponse,
-} from '../interfaces/github.interface';
+} from "../interfaces/github.interface";
 import {
   AppleTokenResponse,
   AppleIdTokenPayload,
   AppleUserIdentity,
-} from '../interfaces/apple.interface';
-import { AppleAuthUtils } from '../utils/apple-auth.utils';
-import { ConfigService } from '@nestjs/config';
+} from "../interfaces/apple.interface";
+import { AppleAuthUtils } from "../utils/apple-auth.utils";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AuthProvidersService {
@@ -23,15 +23,15 @@ export class AuthProvidersService {
 
   async googleOAuth(
     code: string,
-    codeVerifier: string = '',
+    codeVerifier: string = "",
     redirectUri?: string,
   ) {
     const tokenResponse: GoogleTokenResponse = await fetch(
-      'https://oauth2.googleapis.com/token',
+      "https://oauth2.googleapis.com/token",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
           code,
@@ -39,7 +39,7 @@ export class AuthProvidersService {
           client_id: process.env.GOOGLE_ID!,
           client_secret: process.env.GOOGLE_SECRET!,
           redirect_uri: redirectUri!,
-          grant_type: 'authorization_code',
+          grant_type: "authorization_code",
         }).toString(),
       },
     ).then((res) => res.json());
@@ -51,7 +51,7 @@ export class AuthProvidersService {
     }
 
     const userInfo: GoogleUserInfo = await fetch(
-      'https://openidconnect.googleapis.com/v1/userinfo',
+      "https://openidconnect.googleapis.com/v1/userinfo",
       {
         headers: {
           Authorization: `Bearer ${tokenResponse.access_token}`,
@@ -64,7 +64,7 @@ export class AuthProvidersService {
 
   async githubOAuth(idToken: string) {
     const userResponse: GithubUserResponse = await fetch(
-      'https://api.github.com/user',
+      "https://api.github.com/user",
       {
         headers: {
           Authorization: `Bearer ${idToken}`,
@@ -77,7 +77,7 @@ export class AuthProvidersService {
 
     if (!email) {
       const emails: GithubEmail[] = await fetch(
-        'https://api.github.com/user/emails',
+        "https://api.github.com/user/emails",
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -98,29 +98,29 @@ export class AuthProvidersService {
   async linkedinOauth(idToken: string, redirectUri?: string) {
     let accessToken = idToken;
 
-    if (!idToken.includes('.')) {
+    if (!idToken.includes(".")) {
       const tokenResponse: { access_token?: string } = await fetch(
-        'https://www.linkedin.com/oauth/v2/accessToken',
+        "https://www.linkedin.com/oauth/v2/accessToken",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/x-www-form-urlencoded",
           },
           body: new URLSearchParams({
-            grant_type: 'authorization_code',
+            grant_type: "authorization_code",
             code: idToken,
-            client_id: process.env.LINKEDIN_CLIENT_ID || '',
-            client_secret: process.env.LINKEDIN_CLIENT_SECRET || '',
+            client_id: process.env.LINKEDIN_CLIENT_ID || "",
+            client_secret: process.env.LINKEDIN_CLIENT_SECRET || "",
             redirect_uri:
               redirectUri ||
-              `${this.configService.get<string>('app.mobile.scheme') || 'instanctmobileapp'}://`,
+              `${this.configService.get<string>("app.mobile.scheme") || "instanctmobileapp"}://`,
           }).toString(),
         },
       ).then((res) => res.json());
 
       if (!tokenResponse.access_token) {
         throw new UnauthorizedException(
-          'Failed to exchange LinkedIn authorization code',
+          "Failed to exchange LinkedIn authorization code",
         );
       }
       accessToken = tokenResponse.access_token;
@@ -132,7 +132,7 @@ export class AuthProvidersService {
       name?: string;
       given_name?: string;
       picture?: string;
-    } = await fetch('https://api.linkedin.com/v2/userinfo', {
+    } = await fetch("https://api.linkedin.com/v2/userinfo", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -143,7 +143,7 @@ export class AuthProvidersService {
       username:
         userInfoResponse.name ||
         userInfoResponse.given_name ||
-        userInfoResponse.email?.split('@')[0],
+        userInfoResponse.email?.split("@")[0],
       picture: userInfoResponse.picture,
     };
   }
@@ -154,26 +154,26 @@ export class AuthProvidersService {
   generateAppleClientSecret(clientId?: string): string {
     const resolvedClientId =
       clientId ||
-      this.configService.get<string>('APPLE_CLIENT_ID') ||
+      this.configService.get<string>("APPLE_CLIENT_ID") ||
       process.env.APPLE_CLIENT_ID ||
-      'com.instanct.instanctma';
+      "com.instanct.instanctma";
 
     const teamId =
-      this.configService.get<string>('APPLE_TEAM_ID') ||
+      this.configService.get<string>("APPLE_TEAM_ID") ||
       process.env.APPLE_TEAM_ID ||
-      '';
+      "";
 
     const keyId =
-      this.configService.get<string>('APPLE_KEY_ID') ||
+      this.configService.get<string>("APPLE_KEY_ID") ||
       process.env.APPLE_KEY_ID ||
-      'CM4NR9YR9G';
+      "CM4NR9YR9G";
 
     const privateKey =
-      this.configService.get<string>('APPLE_PRIVATE_KEY') ||
+      this.configService.get<string>("APPLE_PRIVATE_KEY") ||
       process.env.APPLE_PRIVATE_KEY;
 
     const privateKeyPath =
-      this.configService.get<string>('APPLE_PRIVATE_KEY_PATH') ||
+      this.configService.get<string>("APPLE_PRIVATE_KEY_PATH") ||
       process.env.APPLE_PRIVATE_KEY_PATH;
 
     return AppleAuthUtils.generateClientSecret({
@@ -195,9 +195,9 @@ export class AuthProvidersService {
   ): Promise<AppleTokenResponse> {
     const resolvedClientId =
       clientId ||
-      this.configService.get<string>('APPLE_CLIENT_ID') ||
+      this.configService.get<string>("APPLE_CLIENT_ID") ||
       process.env.APPLE_CLIENT_ID ||
-      'com.instanct.instanctma';
+      "com.instanct.instanctma";
 
     const clientSecret = this.generateAppleClientSecret(resolvedClientId);
 
@@ -205,17 +205,17 @@ export class AuthProvidersService {
       client_id: resolvedClientId,
       client_secret: clientSecret,
       code,
-      grant_type: 'authorization_code',
+      grant_type: "authorization_code",
     };
 
     if (redirectUri) {
       bodyParams.redirect_uri = redirectUri;
     }
 
-    const response = await fetch('https://appleid.apple.com/auth/token', {
-      method: 'POST',
+    const response = await fetch("https://appleid.apple.com/auth/token", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams(bodyParams).toString(),
     });
@@ -229,7 +229,7 @@ export class AuthProvidersService {
       throw new UnauthorizedException(
         tokenResponse.error_description ||
           tokenResponse.error ||
-          'Failed to exchange Apple authorization code',
+          "Failed to exchange Apple authorization code",
       );
     }
 
@@ -247,13 +247,13 @@ export class AuthProvidersService {
     let idToken = tokenOrCode;
 
     // If tokenOrCode is an authorization code (does not look like a 3-part JWT)
-    if (!tokenOrCode.includes('.') || tokenOrCode.split('.').length !== 3) {
+    if (!tokenOrCode.includes(".") || tokenOrCode.split(".").length !== 3) {
       const tokenResponse = await this.exchangeAppleAuthCode(
         tokenOrCode,
         redirectUri,
       );
       if (!tokenResponse.id_token) {
-        throw new UnauthorizedException('Missing ID token from Apple');
+        throw new UnauthorizedException("Missing ID token from Apple");
       }
       idToken = tokenResponse.id_token;
     }
@@ -261,13 +261,13 @@ export class AuthProvidersService {
     // Determine allowed audiences from configuration
     const allowedAudiences: string[] = [];
     const envClientId =
-      this.configService.get<string>('APPLE_CLIENT_ID') ||
+      this.configService.get<string>("APPLE_CLIENT_ID") ||
       process.env.APPLE_CLIENT_ID;
     if (envClientId) allowedAudiences.push(envClientId);
 
     // Common app bundle/service IDs for Instanct
-    if (!allowedAudiences.includes('com.instanct.instanctma')) {
-      allowedAudiences.push('com.instanct.instanctma');
+    if (!allowedAudiences.includes("com.instanct.instanctma")) {
+      allowedAudiences.push("com.instanct.instanctma");
     }
 
     let payload: AppleIdTokenPayload;
@@ -281,27 +281,28 @@ export class AuthProvidersService {
         `Apple public key verification warning: ${err.message}. Decoding payload as fallback.`,
       );
       // Decode JWT payload safely if offline/network issue with JWKS
-      const parts = idToken.split('.');
+      const parts = idToken.split(".");
       if (parts.length === 3) {
         payload = JSON.parse(
-          Buffer.from(parts[1], 'base64url').toString('utf8'),
+          Buffer.from(parts[1], "base64url").toString("utf8"),
         );
       } else {
-        throw new UnauthorizedException('Invalid Apple token format');
+        throw new UnauthorizedException("Invalid Apple token format");
       }
     }
 
     if (!payload?.sub) {
-      throw new UnauthorizedException('Invalid Apple token: missing sub claim');
+      throw new UnauthorizedException("Invalid Apple token: missing sub claim");
     }
 
     return {
       sub: payload.sub,
       email: payload.email,
       emailVerified:
-        payload.email_verified === true || payload.email_verified === 'true',
+        payload.email_verified === true || payload.email_verified === "true",
       isPrivateEmail:
-        payload.is_private_email === true || payload.is_private_email === 'true',
+        payload.is_private_email === true ||
+        payload.is_private_email === "true",
     };
   }
 }

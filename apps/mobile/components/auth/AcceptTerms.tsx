@@ -1,8 +1,7 @@
 import { cn } from "@softsurgery/lib";
 import { router } from "expo-router";
 import { View } from "react-native";
-import { Checkbox } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Checkbox, Text } from "@softsurgery/mobile-ui";
 import { useTranslation } from "react-i18next";
 
 interface AcceptTermsProps {

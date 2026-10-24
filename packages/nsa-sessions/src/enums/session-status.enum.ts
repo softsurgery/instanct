@@ -1,6 +1,6 @@
 export enum SessionStatus {
-  SCHEDULED = 'scheduled',
-  ACTIVE = 'active',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
+  SCHEDULED = "scheduled",
+  ACTIVE = "active",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled",
 }

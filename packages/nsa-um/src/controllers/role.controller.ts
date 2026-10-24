@@ -10,33 +10,33 @@ import {
   Query,
   Request,
   UseInterceptors,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { RoleService } from '../services/role.service';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { CreateRoleDto } from '../dtos/role/create-role.dto';
-import { UpdateRoleDto } from '../dtos/role/update-role.dto';
-import { ResponseRoleDto } from '../dtos/role/response-role.dto';
-import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
-import { toDto, toDtoArray } from '@softsurgery/nsa-database';
-import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
-import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
-import { EventType } from '@softsurgery/nsa-logger/enums/event-type.registry';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { RoleService } from "../services/role.service";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { CreateRoleDto } from "../dtos/role/create-role.dto";
+import { UpdateRoleDto } from "../dtos/role/update-role.dto";
+import { ResponseRoleDto } from "../dtos/role/response-role.dto";
+import { ApiPaginatedResponse } from "@softsurgery/nsa-database";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
+import { LogEvent } from "@softsurgery/nsa-logger/decorators/log-event.decorator";
+import { EventType } from "@softsurgery/nsa-logger/enums/event-type.registry";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
 
-@ApiTags('role')
-@ApiBearerAuth('access_token')
+@ApiTags("role")
+@ApiBearerAuth("access_token")
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
 @Controller({
-  version: '1',
-  path: '/role',
+  version: "1",
+  path: "/role",
 })
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  @Get('/list')
+  @Get("/list")
   @ApiPaginatedResponse(ResponseRoleDto)
   async findAllPaginated(
     @Query() query: IQueryObject,
@@ -45,13 +45,13 @@ export class RoleController {
     return { ...paginated, data: toDtoArray(ResponseRoleDto, paginated.data) };
   }
 
-  @Get('/all')
+  @Get("/all")
   async findAll(@Query() options: IQueryObject): Promise<ResponseRoleDto[]> {
     return toDtoArray(ResponseRoleDto, await this.roleService.findAll(options));
   }
 
-  @Get(':id')
-  async findOneById(@Param('id') id: string): Promise<ResponseRoleDto | null> {
+  @Get(":id")
+  async findOneById(@Param("id") id: string): Promise<ResponseRoleDto | null> {
     return toDto(ResponseRoleDto, await this.roleService.findOneById(id));
   }
 
@@ -66,10 +66,10 @@ export class RoleController {
     return toDto(ResponseRoleDto, role);
   }
 
-  @Post('duplicate/:id')
+  @Post("duplicate/:id")
   @LogEvent(EventType.ROLE_DUPLICATE)
   async duplicate(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto | null> {
     const role = await this.roleService.duplicateWithPermissions(id);
@@ -80,10 +80,10 @@ export class RoleController {
     return toDto(ResponseRoleDto, role);
   }
 
-  @Put(':id')
+  @Put(":id")
   @LogEvent(EventType.ROLE_UPDATE)
   async update(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() updateRoleDto: UpdateRoleDto,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto | null> {
@@ -95,10 +95,10 @@ export class RoleController {
     return toDto(ResponseRoleDto, role);
   }
 
-  @Delete(':id')
+  @Delete(":id")
   @LogEvent(EventType.ROLE_DELETE)
   async delete(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Request() req: AdvancedRequest,
   ): Promise<ResponseRoleDto | null> {
     const role = await this.roleService.findOneById(id);

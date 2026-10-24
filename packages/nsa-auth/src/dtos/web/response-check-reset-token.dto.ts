@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class ResponseCheckResetTokenDto {
   @ApiProperty({
     type: String,
-    example: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...',
+    example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
   })
   token: string;
 

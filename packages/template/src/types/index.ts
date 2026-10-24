@@ -59,7 +59,10 @@ export interface TemplateApiResource {
   }) => Promise<TemplatePaginatedResponse | any>;
   findById?: (id: string) => Promise<ResponseTemplateDto | any>;
   create?: (dto: CreateTemplateDto) => Promise<ResponseTemplateDto | any>;
-  update?: (id: string, dto: UpdateTemplateDto) => Promise<ResponseTemplateDto | any>;
+  update?: (
+    id: string,
+    dto: UpdateTemplateDto,
+  ) => Promise<ResponseTemplateDto | any>;
   remove?: (id: string) => Promise<void | any>;
 }
 
@@ -99,4 +102,3 @@ export interface TemplateEditPortalProps {
   onSuccess?: (updated: any) => void;
   onCancel?: () => void;
 }
-

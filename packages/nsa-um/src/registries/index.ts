@@ -1,1 +1,1 @@
-export * from './user-binding.registry';
+export * from "./user-binding.registry";

@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { ConversationReportEntity } from '../entities/conversation-report.entity';
-import { ConversationReportRepository } from '../repositories/conversation-report.repository';
-import { CreateConversationReportDto } from '../dtos/conversation/create-conversation-report.dto';
+import { Injectable } from "@nestjs/common";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { ConversationReportEntity } from "../entities/conversation-report.entity";
+import { ConversationReportRepository } from "../repositories/conversation-report.repository";
+import { CreateConversationReportDto } from "../dtos/conversation/create-conversation-report.dto";
 
 @Injectable()
 export class ConversationReportService extends AbstractCrudService<ConversationReportEntity> {

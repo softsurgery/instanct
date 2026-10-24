@@ -12,7 +12,7 @@ import { JsonToggler } from "@softsurgery/components";
 import { DataTableCell } from "@softsurgery/datatable-builder";
 
 export const useRefParamColumns = (
-  context: DataTableConfig<ResponseRefParamDto>
+  context: DataTableConfig<ResponseRefParamDto>,
 ): ColumnDef<ResponseRefParamDto>[] => {
   const { t: tCommon } = useTranslation("common");
   const { t } = useTranslation("content-management");

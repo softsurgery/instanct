@@ -31,7 +31,7 @@ export const LinkControl = () => {
       }
       setOpen(isOpen);
     },
-    [editor]
+    [editor],
   );
 
   const handleSave = () => {
@@ -53,7 +53,7 @@ export const LinkControl = () => {
   };
 
   const handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void = (
-    e
+    e,
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();

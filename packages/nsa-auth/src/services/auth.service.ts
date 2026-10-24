@@ -1,32 +1,32 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
-import { ResponseSigninDto } from '../dtos/web/response-signin.dto';
-import { RequestResetTokenDto } from '../dtos/web/request-reset-token.dto';
-import { MailService } from '@softsurgery/nsa-mail/services/mail.service';
-import { UserNotFoundException } from '@softsurgery/nsa-um/errors/user/user.notfound.error';
-import { ResponseResetTokenDto } from '../dtos/web/response-reset-token.dto';
-import { ResponseCheckResetTokenDto } from '../dtos/web/response-check-reset-token.dto';
-import { RequestCheckResetTokenDto } from '../dtos/web/request-check-reset-token.dto';
-import { ForgetPasswordTemplateProps } from '../types/forget-password.type';
-import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
-import { AuthNotActiveException } from '../errors/auth.notactive.error';
-import { OAuthProvider } from '../enums/oauth.enum';
-import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
-import { OAuth2Client } from 'google-auth-library';
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
+import * as bcrypt from "bcrypt";
+import { ResponseSigninDto } from "../dtos/web/response-signin.dto";
+import { RequestResetTokenDto } from "../dtos/web/request-reset-token.dto";
+import { MailService } from "@softsurgery/nsa-mail/services/mail.service";
+import { UserNotFoundException } from "@softsurgery/nsa-um/errors/user/user.notfound.error";
+import { ResponseResetTokenDto } from "../dtos/web/response-reset-token.dto";
+import { ResponseCheckResetTokenDto } from "../dtos/web/response-check-reset-token.dto";
+import { RequestCheckResetTokenDto } from "../dtos/web/request-check-reset-token.dto";
+import { ForgetPasswordTemplateProps } from "../types/forget-password.type";
+import { identifyUser } from "@softsurgery/nsa-um/utils/identify-user";
+import { AuthNotActiveException } from "../errors/auth.notactive.error";
+import { OAuthProvider } from "../enums/oauth.enum";
+import { ResponseAbstractUserDto } from "@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto";
+import { OAuth2Client } from "google-auth-library";
 import {
   GithubEmail,
   GithubUserResponse,
-} from '../interfaces/github.interface';
+} from "../interfaces/github.interface";
 import {
   USER_REPOSITORY,
   USER_SERVICE,
   AppUserRepository,
   AppUserService,
-} from '@softsurgery/nsa-um/tokens/user-access';
-import { ConfigurationNamespaceService } from '@softsurgery/nsa-configurations/services/configuration-namespace.service';
-import { CONFIGURATION_NAMESPACES } from '@softsurgery/nsa-configurations/enums/configuration-namespaces.registry';
+} from "@softsurgery/nsa-um/tokens/user-access";
+import { ConfigurationNamespaceService } from "@softsurgery/nsa-configurations/services/configuration-namespace.service";
+import { CONFIGURATION_NAMESPACES } from "@softsurgery/nsa-configurations/enums/configuration-namespaces.registry";
 
 @Injectable()
 export class AuthService {
@@ -47,13 +47,13 @@ export class AuthService {
     const payload = { sub: id, email: email };
 
     const access_token = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('app.jwt.secret'),
-      expiresIn: this.configService.get('app.jwt.accessExpiration'),
+      secret: this.configService.get("app.jwt.secret"),
+      expiresIn: this.configService.get("app.jwt.accessExpiration"),
     });
 
     const refresh_token = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('app.jwt.secret'),
-      expiresIn: this.configService.get('app.jwt.refreshExpiration'),
+      secret: this.configService.get("app.jwt.secret"),
+      expiresIn: this.configService.get("app.jwt.refreshExpiration"),
     });
 
     return { access_token, refresh_token };
@@ -68,16 +68,16 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('User does not exist');
+      throw new UnauthorizedException("User does not exist");
     }
 
     if (!user.password) {
-      throw new UnauthorizedException('User does not have a password');
+      throw new UnauthorizedException("User does not have a password");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     if (!user.isActive) {
@@ -85,7 +85,7 @@ export class AuthService {
     }
 
     if (!user.isApproved) {
-      throw new UnauthorizedException('User not approved');
+      throw new UnauthorizedException("User not approved");
     }
 
     const { access_token, refresh_token } = await this.generateTokens(
@@ -104,12 +104,12 @@ export class AuthService {
     try {
       const payload: { sub: string; email: string } =
         await this.jwtService.verifyAsync(refreshToken, {
-          secret: this.configService.get('app.jwt.secret'),
+          secret: this.configService.get("app.jwt.secret"),
         });
 
       const user = await this.userRepository.findOneById(payload.sub);
       if (!user) {
-        throw new UnauthorizedException('User does not exist');
+        throw new UnauthorizedException("User does not exist");
       }
 
       const { access_token, refresh_token } = await this.generateTokens(
@@ -148,10 +148,10 @@ export class AuthService {
       });
       const payload = ticket.getPayload();
       email = payload?.email;
-      username = payload?.name || payload?.email?.split('@')[0];
+      username = payload?.name || payload?.email?.split("@")[0];
     } else if (provider == OAuthProvider.GITHUB) {
       const userResponse: GithubUserResponse = await fetch(
-        'https://api.github.com/user',
+        "https://api.github.com/user",
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -167,7 +167,7 @@ export class AuthService {
 
       if (!email) {
         const emails: GithubEmail[] = await fetch(
-          'https://api.github.com/user/emails',
+          "https://api.github.com/user/emails",
           {
             headers: {
               Authorization: `Bearer ${idToken}`,
@@ -180,12 +180,12 @@ export class AuthService {
         email = primary?.email || undefined;
       }
     } else {
-      throw new UnauthorizedException('Unsupported OAuth provider');
+      throw new UnauthorizedException("Unsupported OAuth provider");
     }
 
     if (!email || !username) {
       throw new UnauthorizedException(
-        'Could not retrieve valid email or username from provider',
+        "Could not retrieve valid email or username from provider",
       );
     }
 
@@ -219,40 +219,40 @@ export class AuthService {
       const resetToken = await this.jwtService.signAsync(
         { sub: user.id, email: user.email },
         {
-          secret: this.configService.get('app.passwordReset.secret'),
-          expiresIn: this.configService.get('app.passwordReset.expiration'),
+          secret: this.configService.get("app.passwordReset.secret"),
+          expiresIn: this.configService.get("app.passwordReset.expiration"),
         },
       );
       const webAppUrl: string =
-        this.configService.get<string>('app.webAppUrl') ?? '';
+        this.configService.get<string>("app.webAppUrl") ?? "";
       const resetLink = `${webAppUrl}?token=${resetToken}`;
 
       //gather informations
       const coreName =
         ((await this.configurationNamespaceService.getSpecificParam(
           this.configurationNamespaces.CORE,
-          'company.name',
-        )) as string) || 'Our App';
+          "company.name",
+        )) as string) || "Our App";
       const coreAddress =
         ((await this.configurationNamespaceService.getSpecificParam(
           this.configurationNamespaces.CORE,
-          'company.address',
-        )) as string) || 'N/A';
+          "company.address",
+        )) as string) || "N/A";
       const coreSupport =
         ((await this.configurationNamespaceService.getSpecificParam(
           this.configurationNamespaces.CORE,
-          'company.support',
-        )) as string) || 'N/A';
+          "company.support",
+        )) as string) || "N/A";
 
       await this.mailService.sendTemplate<ForgetPasswordTemplateProps>(
         user.email,
-        'Password Reset Request',
-        'forget-password',
+        "Password Reset Request",
+        "forget-password",
         {
           name: coreName,
           address: coreAddress,
           support: coreSupport,
-          logo: `${this.configService.get<string>('app.webAppUrl')}/logo.png`,
+          logo: `${this.configService.get<string>("app.webAppUrl")}/logo.png`,
           client: identifyUser(user),
           email: user.email,
           url: resetLink,
@@ -260,7 +260,7 @@ export class AuthService {
       );
       return { email: user.email, success: true };
     } catch (error) {
-      console.error('Error sending password reset email:', error);
+      console.error("Error sending password reset email:", error);
       return { email: user.email, success: false };
     }
   }
@@ -271,12 +271,12 @@ export class AuthService {
     try {
       const payload: { sub: string; email: string } =
         await this.jwtService.verifyAsync(requestCheckResetTokenDto.token, {
-          secret: this.configService.get('app.passwordReset.secret'),
+          secret: this.configService.get("app.passwordReset.secret"),
         });
 
       const user = await this.userRepository.findOneById(payload.sub);
       if (!user) {
-        throw new UnauthorizedException('User does not exist');
+        throw new UnauthorizedException("User does not exist");
       }
 
       return {
@@ -284,7 +284,7 @@ export class AuthService {
         valid: true,
       };
     } catch (error) {
-      throw new UnauthorizedException('Invalid or expired reset token' + error);
+      throw new UnauthorizedException("Invalid or expired reset token" + error);
     }
   }
 }

@@ -28,8 +28,9 @@ function normalizeLocale(value?: string | null): string | undefined {
 }
 
 function getProcessEnvLang(): string | undefined {
-  const env = (globalThis as { process?: { env?: Record<string, string | undefined> } })
-    .process?.env;
+  const env = (
+    globalThis as { process?: { env?: Record<string, string | undefined> } }
+  ).process?.env;
   return env?.NEXT_PUBLIC_LANG ?? env?.VITE_LANG;
 }
 

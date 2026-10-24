@@ -92,9 +92,7 @@ export function getChatNotificationDestination(input: {
       ...(input.pictureId != null
         ? { pictureId: String(input.pictureId) }
         : {}),
-      ...(input.avatarFallback
-        ? { avatarFallback: input.avatarFallback }
-        : {}),
+      ...(input.avatarFallback ? { avatarFallback: input.avatarFallback } : {}),
     },
   };
 }

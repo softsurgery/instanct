@@ -1,31 +1,28 @@
-import {
-  AbstractTrigger,
-  TriggerApply,
-} from '@softsurgery/nsa-database';
+import { AbstractTrigger, TriggerApply } from "@softsurgery/nsa-database";
 
 export class ConversationParticipantsTrigger extends AbstractTrigger {
-  name = 'conv_participants_sync';
+  name = "conv_participants_sync";
 
   apply: TriggerApply[] = [
     {
-      table: 'conversation_users',
-      type: 'AFTER',
-      operation: 'INSERT',
+      table: "conversation_users",
+      type: "AFTER",
+      operation: "INSERT",
     },
     {
-      table: 'conversation_users',
-      type: 'AFTER',
-      operation: 'DELETE',
+      table: "conversation_users",
+      type: "AFTER",
+      operation: "DELETE",
     },
     {
-      table: 'users',
-      type: 'AFTER',
-      operation: 'UPDATE',
+      table: "users",
+      type: "AFTER",
+      operation: "UPDATE",
     },
   ];
 
   createFunctionSql(): string {
-    return '';
+    return "";
   }
 
   private participantsSelectSql(conversationIdExpr: string): string {
@@ -46,8 +43,8 @@ export class ConversationParticipantsTrigger extends AbstractTrigger {
   }
 
   createTriggerSql(apply: TriggerApply, triggerName: string): string {
-    if (apply.table === 'conversation_users') {
-      const row = apply.operation === 'DELETE' ? 'OLD' : 'NEW';
+    if (apply.table === "conversation_users") {
+      const row = apply.operation === "DELETE" ? "OLD" : "NEW";
       return `
         CREATE TRIGGER \`${triggerName}\`
         ${apply.type} ${apply.operation} ON \`${apply.table}\`
@@ -67,7 +64,7 @@ export class ConversationParticipantsTrigger extends AbstractTrigger {
       FOR EACH ROW
       BEGIN
         UPDATE conversations c
-        SET c.participantsIdentifiers = (${this.participantsSelectSql('c.id')})
+        SET c.participantsIdentifiers = (${this.participantsSelectSql("c.id")})
         WHERE c.id IN (
           SELECT cp.conversationId
           FROM conversation_users cp

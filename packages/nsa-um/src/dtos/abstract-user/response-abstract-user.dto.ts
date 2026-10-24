@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { ResponseRoleDto } from '../role/response-role.dto';
-import { OAuthProvider } from '@softsurgery/nsa-auth/enums/oauth.enum';
+import { ApiProperty } from "@nestjs/swagger";
+import { Exclude, Expose, Type } from "class-transformer";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { ResponseRoleDto } from "../role/response-role.dto";
+import { OAuthProvider } from "@softsurgery/nsa-auth/enums/oauth.enum";
 
 export class ResponseAbstractUserDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })
@@ -56,7 +56,7 @@ export class ResponseAbstractUserDto extends ResponseDtoHelper {
   @ApiProperty({
     enum: OAuthProvider,
     required: true,
-    description: 'Source of the user',
+    description: "Source of the user",
   })
   @Expose()
   source?: OAuthProvider;

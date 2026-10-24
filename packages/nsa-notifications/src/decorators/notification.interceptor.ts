@@ -1,20 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
-import { tap } from 'rxjs';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
-import { AccessTokenPayload } from '@softsurgery/nsa-auth/interfaces/access-token-payload.interface';
-import { getTokenPayload } from '@softsurgery/nsa-auth/utils/token-payload';
-import { NotificationGateway } from '../gateways/notification.gateway';
+import { Inject, Injectable } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+import { tap } from "rxjs";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
+import { AccessTokenPayload } from "@softsurgery/nsa-auth/interfaces/access-token-payload.interface";
+import { getTokenPayload } from "@softsurgery/nsa-auth/utils/token-payload";
+import { NotificationGateway } from "../gateways/notification.gateway";
 import {
   NOTIFICATION_TYPE,
   type NotificationType,
-} from '../enums/notification-type.registry';
+} from "../enums/notification-type.registry";
 import {
   NOTIFY_METADATA_KEY,
   BATCH_NOTIFY_METADATA_KEY,
-} from './notify.decorator';
-import type { BatchNotificationInfo } from './notify.decorator';
+} from "./notify.decorator";
+import type { BatchNotificationInfo } from "./notify.decorator";
 
 @Injectable()
 export class NotificationInterceptor implements NestInterceptor {
@@ -56,8 +56,7 @@ export class NotificationInterceptor implements NestInterceptor {
 
     for (const type of types) {
       const isNewSignin =
-        type === this.notificationType.NEW_SIGNIN ||
-        type === 'NEW_SIGNIN';
+        type === this.notificationType.NEW_SIGNIN || type === "NEW_SIGNIN";
 
       if (isNewSignin) {
         if (!notificationInfo?.userId) continue;

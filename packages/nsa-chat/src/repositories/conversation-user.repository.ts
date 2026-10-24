@@ -1,12 +1,12 @@
-import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionHost } from '@nestjs-cls/transactional';
-import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
-import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
-import { ConversationUserEntity } from '../entities/conversation-user.entity';
-import { MessageVariant } from '../enums/message-variant.enum';
-import { StaticMessageEnum } from '../enums/static-message.registry';
+import { Repository } from "typeorm";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterTypeOrm } from "@nestjs-cls/transactional-adapter-typeorm";
+import { DatabaseAbstractRepository } from "@softsurgery/nsa-database";
+import { ConversationUserEntity } from "../entities/conversation-user.entity";
+import { MessageVariant } from "../enums/message-variant.enum";
+import { StaticMessageEnum } from "../enums/static-message.registry";
 
 @Injectable()
 export class ConversationUserRepository extends DatabaseAbstractRepository<ConversationUserEntity> {
@@ -19,14 +19,14 @@ export class ConversationUserRepository extends DatabaseAbstractRepository<Conve
   }
 
   async countUnreadMessages(userId: string): Promise<number> {
-    const result = await this.createQueryBuilder('participant')
-      .innerJoin('participant.conversation', 'conversation')
-      .innerJoin('conversation.messages', 'message')
-      .where('participant.userId = :userId', { userId })
-      .andWhere('message.userId != :userId')
-      .andWhere('message.createdAt > participant.lastCheck')
+    const result = await this.createQueryBuilder("participant")
+      .innerJoin("participant.conversation", "conversation")
+      .innerJoin("conversation.messages", "message")
+      .where("participant.userId = :userId", { userId })
+      .andWhere("message.userId != :userId")
+      .andWhere("message.createdAt > participant.lastCheck")
       .andWhere(
-        '(message.variant != :staticVariant OR message.static IS NULL OR message.static != :firstMessage)',
+        "(message.variant != :staticVariant OR message.static IS NULL OR message.static != :firstMessage)",
         {
           staticVariant: MessageVariant.STATIC,
           firstMessage: StaticMessageEnum.FIRST_MESSAGE,
@@ -42,7 +42,7 @@ export class ConversationUserRepository extends DatabaseAbstractRepository<Conve
         )`,
         { userId },
       )
-      .select('COUNT(message.id)', 'count')
+      .select("COUNT(message.id)", "count")
       .getRawOne<{ count: string }>();
 
     return Number(result?.count ?? 0);

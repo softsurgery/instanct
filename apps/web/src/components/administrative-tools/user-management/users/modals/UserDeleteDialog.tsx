@@ -23,14 +23,11 @@ export const useUserDeleteDialog = ({
   } = useDialog({
     title: (
       <div className="leading-normal">
-        {t("userManagement.dialogs.deleteUserTitle")} <span className="font-light">{userFullname}</span> ?
+        {t("userManagement.dialogs.deleteUserTitle")}{" "}
+        <span className="font-light">{userFullname}</span> ?
       </div>
     ),
-    description: (
-      <div>
-        {t("userManagement.dialogs.deleteUserDescription")}
-      </div>
-    ),
+    description: <div>{t("userManagement.dialogs.deleteUserDescription")}</div>,
     children: (
       <div>
         <div className="flex gap-2 justify-end">

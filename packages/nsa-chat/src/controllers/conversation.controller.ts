@@ -1,9 +1,9 @@
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
-import { toDto, toDtoArray } from '@softsurgery/nsa-database';
-import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { ApiPaginatedResponse } from "@softsurgery/nsa-database";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
 import {
   ClassSerializerInterceptor,
   Controller,
@@ -12,26 +12,26 @@ import {
   ParseIntPipe,
   Query,
   UseInterceptors,
-} from '@nestjs/common';
-import { ConversationService } from '../services/conversation.service';
-import { ResponseConversationDto } from '../dtos/conversation/response-conversation.dto';
+} from "@nestjs/common";
+import { ConversationService } from "../services/conversation.service";
+import { ResponseConversationDto } from "../dtos/conversation/response-conversation.dto";
 
-@ApiTags('conversation')
-@ApiBearerAuth('access_token')
+@ApiTags("conversation")
+@ApiBearerAuth("access_token")
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
 @Controller({
-  version: '1',
-  path: '/conversation',
+  version: "1",
+  path: "/conversation",
 })
 export class ConversationController {
   constructor(private readonly conversationService: ConversationService) {}
 
   @ApiOperation({
-    description: 'Find all paginated user conversations',
-    summary: 'Find all paginated user conversations',
+    description: "Find all paginated user conversations",
+    summary: "Find all paginated user conversations",
   })
-  @Get('/list')
+  @Get("/list")
   @ApiPaginatedResponse(ResponseConversationDto)
   async findAllPaginated(
     @Query() query: IQueryObject,
@@ -45,13 +45,13 @@ export class ConversationController {
   }
 
   @ApiOperation({
-    description: 'Find all paginated conversations of a specific user',
-    summary: 'Find all paginated conversations of a specific user',
+    description: "Find all paginated conversations of a specific user",
+    summary: "Find all paginated conversations of a specific user",
   })
-  @Get('/list/:id')
+  @Get("/list/:id")
   @ApiPaginatedResponse(ResponseConversationDto)
   async findAllUserPaginated(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Query() query: IQueryObject,
   ): Promise<PageDto<ResponseConversationDto>> {
     const paginated =
@@ -63,12 +63,12 @@ export class ConversationController {
   }
 
   @ApiOperation({
-    description: 'Find a conversation by its id',
-    summary: 'Find a conversation by its id',
+    description: "Find a conversation by its id",
+    summary: "Find a conversation by its id",
   })
-  @Get(':id')
+  @Get(":id")
   async findOneById(
-    @Param('id', ParseIntPipe) id: number,
+    @Param("id", ParseIntPipe) id: number,
   ): Promise<ResponseConversationDto | null> {
     return toDto(
       ResponseConversationDto,

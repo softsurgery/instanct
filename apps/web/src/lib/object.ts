@@ -3,7 +3,7 @@ export const createSearchFilterExpression = (
   structure: any,
   operator: string,
   value: string,
-  seperator: string
+  seperator: string,
 ): string => {
   return `(${Object.values(structure)
     .map((svalue) => `${svalue}${operator}${value}`)
@@ -11,7 +11,7 @@ export const createSearchFilterExpression = (
 };
 
 export const parseBooleanField = (
-  field: string | string[] | boolean | undefined
+  field: string | string[] | boolean | undefined,
 ): boolean => {
   if (typeof field === "string") {
     return field === "true";
@@ -23,7 +23,7 @@ export const parseBooleanField = (
 };
 
 export const parseIntField = (
-  field: string | string[] | number | undefined
+  field: string | string[] | number | undefined,
 ): number => {
   if (typeof field === "string") {
     return parseInt(field, 10);
@@ -35,7 +35,7 @@ export const parseIntField = (
 };
 
 export const parseStringField = (
-  field: string | string[] | number | undefined
+  field: string | string[] | number | undefined,
 ): string => {
   if (typeof field === "string") {
     return field;
@@ -70,7 +70,7 @@ export const safeStringify = (obj: any) => {
       }
       return value;
     },
-    2
+    2,
   );
 };
 

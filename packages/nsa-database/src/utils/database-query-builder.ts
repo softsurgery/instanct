@@ -10,13 +10,13 @@ import {
   MoreThan,
   MoreThanOrEqual,
   Not,
-} from 'typeorm';
+} from "typeorm";
 import {
   ILooseObject,
   IOptionsObject,
   IQueryObject,
   IQueryTypeOrm,
-} from '../interfaces/database-query-options.interface';
+} from "../interfaces/database-query-options.interface";
 
 export class QueryBuilder {
   private options: IOptionsObject;
@@ -28,24 +28,24 @@ export class QueryBuilder {
   ) {
     this.options = {
       ...{
-        LOOKUP_DELIMITER: '||',
-        RELATION_DELIMITER: '.',
-        CONDITION_DELIMITER: ';',
-        VALUE_DELIMITER: ',',
-        EXACT: '$eq',
-        NOT: '!',
-        CONTAINS: '$cont',
-        IS_NULL: '$isnull',
-        GT: '$gt',
-        GTE: '$gte',
-        LT: '$lt',
-        LTE: '$lte',
-        STARTS_WITH: '$starts',
-        ENDS_WITH: '$ends',
-        IN: '$in',
-        BETWEEN: '$between',
-        OR: '$or',
-        DEFAULT_LIMIT: '25',
+        LOOKUP_DELIMITER: "||",
+        RELATION_DELIMITER: ".",
+        CONDITION_DELIMITER: ";",
+        VALUE_DELIMITER: ",",
+        EXACT: "$eq",
+        NOT: "!",
+        CONTAINS: "$cont",
+        IS_NULL: "$isnull",
+        GT: "$gt",
+        GTE: "$gte",
+        LT: "$lt",
+        LTE: "$lte",
+        STARTS_WITH: "$starts",
+        ENDS_WITH: "$ends",
+        IN: "$in",
+        BETWEEN: "$between",
+        OR: "$or",
+        DEFAULT_LIMIT: "25",
       },
       ...configuration,
     };
@@ -76,7 +76,7 @@ export class QueryBuilder {
     if (!this.notValid(query.limit)) {
       const limit = parseInt(query.limit as string, 10);
       if (!limit) {
-        throw new Error('Limit must be a number.');
+        throw new Error("Limit must be a number.");
       }
       output.take = limit;
     }
@@ -147,11 +147,11 @@ export class QueryBuilder {
       );
       if (!key) return;
 
-      const direction = (value || 'ASC').toUpperCase();
+      const direction = (value || "ASC").toUpperCase();
       const bareDirection = key.toUpperCase();
 
-      if (!value && (bareDirection === 'ASC' || bareDirection === 'DESC')) {
-        this.assignObjectKey(order, 'createdAt', bareDirection);
+      if (!value && (bareDirection === "ASC" || bareDirection === "DESC")) {
+        this.assignObjectKey(order, "createdAt", bareDirection);
         return;
       }
 
@@ -193,7 +193,7 @@ export class QueryBuilder {
   }
 
   private assignObjectKey(obj: ILooseObject, field: string, value: unknown) {
-    const keyParts = field.split('.');
+    const keyParts = field.split(".");
 
     let current: ILooseObject = obj;
 
@@ -201,7 +201,7 @@ export class QueryBuilder {
       if (index === keyParts.length - 1) {
         current[part] = value;
       } else {
-        if (typeof current[part] !== 'object' || current[part] === null) {
+        if (typeof current[part] !== "object" || current[part] === null) {
           current[part] = {};
         }
         current = current[part] as ILooseObject;

@@ -30,7 +30,10 @@ export class AppleAuthWebUtils {
     if (privateKeyPath && privateKeyPath.trim().length > 0) {
       const resolvedPath = path.isAbsolute(privateKeyPath)
         ? privateKeyPath
-        : path.resolve(/* turbopackIgnore: true */ process.cwd(), privateKeyPath);
+        : path.resolve(
+            /* turbopackIgnore: true */ process.cwd(),
+            privateKeyPath,
+          );
 
       if (fs.existsSync(resolvedPath)) {
         return fs.readFileSync(resolvedPath, "utf8").trim();

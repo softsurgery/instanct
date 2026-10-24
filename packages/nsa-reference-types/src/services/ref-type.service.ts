@@ -1,14 +1,14 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
-import { DeepPartial, FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { RefTypeRepository } from '../repositories/ref-type.repository';
-import { RefTypeEntity } from '../entities/ref-type.entity';
-import { RefTypeNotFoundException } from '../errors/ref-type/ref-type.notfound.error';
-import { RefTypeAlreadyExistsException } from '../errors/ref-type/ref-type.alreadyexists.error';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
+import { DeepPartial, FindManyOptions, FindOneOptions } from "typeorm";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { RefTypeRepository } from "../repositories/ref-type.repository";
+import { RefTypeEntity } from "../entities/ref-type.entity";
+import { RefTypeNotFoundException } from "../errors/ref-type/ref-type.notfound.error";
+import { RefTypeAlreadyExistsException } from "../errors/ref-type/ref-type.alreadyexists.error";
 
 @Injectable()
 export class RefTypeService {

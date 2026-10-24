@@ -29,7 +29,7 @@ export function IconBadge({
         <View
           className={cn(
             "absolute -top-1 -right-1 bg-red-500 rounded-full min-w-[16px] h-[16px] items-center justify-center",
-            badgeClassName
+            badgeClassName,
           )}
         >
           {badgeText ? (

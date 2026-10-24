@@ -135,12 +135,7 @@ export {
   TableRow,
 } from "./components/table";
 export { Toggle, toggleVariants } from "./components/toggle";
-export {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "./components/tabs";
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
 export {
   ChartContainer,
   ChartTooltip,

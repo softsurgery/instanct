@@ -17,7 +17,7 @@ export function createLazyModuleRefProxy<T extends object>(
 
   return new Proxy({} as T, {
     get(_target, prop, _receiver) {
-      if (prop === 'then') {
+      if (prop === "then") {
         return undefined;
       }
       const instance = getInstance() as Record<PropertyKey, unknown> | null;
@@ -25,7 +25,7 @@ export function createLazyModuleRefProxy<T extends object>(
         return undefined;
       }
       const value = instance[prop];
-      return typeof value === 'function' ? value.bind(instance) : value;
+      return typeof value === "function" ? value.bind(instance) : value;
     },
   });
 }

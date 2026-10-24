@@ -1,1 +1,1 @@
-export { MailModule } from './mail.module';
+export { MailModule } from "./mail.module";

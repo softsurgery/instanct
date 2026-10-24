@@ -6,8 +6,8 @@ import {
   ObjectLiteral,
   QueryRunner,
   SelectQueryBuilder,
-} from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+} from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 export interface DatabaseInterfaceRepository<T extends ObjectLiteral> {
   createQueryBuilder(

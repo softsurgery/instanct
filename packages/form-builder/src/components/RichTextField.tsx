@@ -84,7 +84,8 @@ export const RichTextField = ({ field }: RichTextFieldProps) => {
         editable={!disabled}
         className={cn(
           "bg-input selection:bg-primary selection:text-primary-foreground",
-          isFullscreen && "h-full min-h-0 flex flex-col flex-1 overflow-hidden bg-input",
+          isFullscreen &&
+            "h-full min-h-0 flex flex-col flex-1 overflow-hidden bg-input",
         )}
       >
         <RichTextEditor.Toolbar>

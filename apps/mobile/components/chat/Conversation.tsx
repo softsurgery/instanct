@@ -13,7 +13,10 @@ import { ChevronDown } from "lucide-react-native";
 import { useFocusEffect } from "expo-router";
 import { setConversationMessageParam } from "@/lib/chat";
 
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  StableSafeAreaView,
+  useColorPalette,
+} from "@softsurgery/mobile-components";
 import { ChatBubble } from "./conversation/bubbles/ChatBubble";
 import { ChatMediaBubble } from "./conversation/bubbles/ChatMediaBubble";
 import { ChatFileBubble } from "./conversation/bubbles/ChatFileBubble";
@@ -45,7 +48,6 @@ import { useGradualAnimation } from "@/hooks/useGradualAnimation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResponseMessageDto } from "@softsurgery/api-client";
 import { MessageFlatListItem } from "@/types";
-import { useColorPalette } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";
 import { useTranslation } from "react-i18next";

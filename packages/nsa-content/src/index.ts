@@ -1,1 +1,1 @@
-export { ContentModule } from './content.module';
+export { ContentModule } from "./content.module";

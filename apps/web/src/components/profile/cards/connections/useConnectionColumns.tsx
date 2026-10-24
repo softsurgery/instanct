@@ -73,7 +73,9 @@ export const useConnectionColumns = (
         />
       ),
       cell: ({ row }) => (
-        <span className="font-mono text-xs">{row.original.ipAddress || "-"}</span>
+        <span className="font-mono text-xs">
+          {row.original.ipAddress || "-"}
+        </span>
       ),
       enableSorting: true,
       enableHiding: true,

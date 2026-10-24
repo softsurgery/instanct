@@ -1,6 +1,6 @@
 export type EventType = string;
 
-export const EVENT_TYPE = Symbol('EVENT_TYPE');
+export const EVENT_TYPE = Symbol("EVENT_TYPE");
 
 export const EventType: Record<string, EventType> = {};
 

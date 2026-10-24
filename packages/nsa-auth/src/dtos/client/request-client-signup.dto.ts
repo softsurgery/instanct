@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { faker } from '@faker-js/faker';
+import { ApiProperty } from "@nestjs/swagger";
+import { faker } from "@faker-js/faker";
 import {
   IsEmail,
   IsOptional,
   IsString,
   Length,
   MinLength,
-} from 'class-validator';
+} from "class-validator";
 
 export class RequestClientSignUpDto {
   @ApiProperty({ type: String })
@@ -30,7 +30,7 @@ export class RequestClientSignUpDto {
   @Length(3, 50)
   username: string;
 
-  @ApiProperty({ type: String, example: 'super-secret-password' })
+  @ApiProperty({ type: String, example: "super-secret-password" })
   @IsString()
   @MinLength(6)
   password: string;

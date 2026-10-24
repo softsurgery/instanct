@@ -1,9 +1,5 @@
 import type { AxiosInstance } from "axios";
-import type {
-  Paginated,
-  QueryParams,
-  ResponsePermissionDto,
-} from "../types";
+import type { Paginated, QueryParams, ResponsePermissionDto } from "../types";
 import { listParams } from "./query";
 
 export function createPermissionResource(http: AxiosInstance) {

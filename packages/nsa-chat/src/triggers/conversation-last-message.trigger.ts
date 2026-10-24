@@ -1,21 +1,18 @@
-import {
-  AbstractTrigger,
-  TriggerApply,
-} from '@softsurgery/nsa-database';
+import { AbstractTrigger, TriggerApply } from "@softsurgery/nsa-database";
 
 export class ConversationLastMessageTrigger extends AbstractTrigger {
-  name = 'conv_last_message_sync';
+  name = "conv_last_message_sync";
 
   apply: TriggerApply[] = [
     {
-      table: 'messages',
-      type: 'AFTER',
-      operation: 'INSERT',
+      table: "messages",
+      type: "AFTER",
+      operation: "INSERT",
     },
   ];
 
   createFunctionSql(): string {
-    return '';
+    return "";
   }
 
   createTriggerSql(apply: TriggerApply, triggerName: string): string {

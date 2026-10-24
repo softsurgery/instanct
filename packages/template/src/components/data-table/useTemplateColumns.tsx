@@ -46,9 +46,7 @@ export const useTemplateColumns = (
       ),
       cell: ({ row }) => {
         return (
-          <div className="font-medium truncate">
-            {row.original.name || "—"}
-          </div>
+          <div className="font-medium truncate">{row.original.name || "—"}</div>
         );
       },
       enableSorting: true,

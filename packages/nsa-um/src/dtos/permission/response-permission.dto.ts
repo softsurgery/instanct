@@ -1,7 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { RolePermissionEntity } from '../../entities/role-permission.entity';
-import { Expose, Type } from 'class-transformer';
+import { ApiProperty } from "@nestjs/swagger";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { RolePermissionEntity } from "../../entities/role-permission.entity";
+import { Expose, Type } from "class-transformer";
 
 export class ResponsePermissionDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })

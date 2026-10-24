@@ -1,7 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class ResponseResetTokenDto {
-  @ApiProperty({ type: String, example: 'user@example.com' })
+  @ApiProperty({ type: String, example: "user@example.com" })
   email: string;
 
   @ApiProperty({ type: Boolean, example: true })

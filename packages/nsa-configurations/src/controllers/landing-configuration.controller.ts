@@ -1,13 +1,13 @@
-import { Controller, Get, Inject } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
-import { ConfigurationNamespaceService } from '../services/configuration-namespace.service';
-import { CONFIGURATION_NAMESPACES } from '../enums/configuration-namespaces.registry';
+import { Controller, Get, Inject } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
+import { Public } from "@softsurgery/nsa-auth/utils/public-strategy";
+import { ConfigurationNamespaceService } from "../services/configuration-namespace.service";
+import { CONFIGURATION_NAMESPACES } from "../enums/configuration-namespaces.registry";
 
-@ApiTags('landing-configuration')
+@ApiTags("landing-configuration")
 @Controller({
-  version: '1',
-  path: '/landing-configuration',
+  version: "1",
+  path: "/landing-configuration",
 })
 export class LandingConfigurationController {
   constructor(
@@ -22,7 +22,7 @@ export class LandingConfigurationController {
     const contactEmail =
       await this.configurationNamespaceService.getSpecificParam(
         this.configurationNamespaces.CORE,
-        'company.support',
+        "company.support",
       );
 
     return {

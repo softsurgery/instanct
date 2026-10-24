@@ -1,1 +1,1 @@
-export { ChatModule } from './chat.module';
+export { ChatModule } from "./chat.module";

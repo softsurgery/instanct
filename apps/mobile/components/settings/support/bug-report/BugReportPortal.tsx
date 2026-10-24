@@ -2,16 +2,19 @@ import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react-native";
 import { useApi } from "@/contexts/ApiContext";
-import { Button } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Button, Text, Icon } from "@softsurgery/mobile-ui";
 import { View } from "react-native";
 import { useBugReportFormStructure } from "./useBugReportFormStructure";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { cn } from "@softsurgery/lib";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import {
+  StableKeyboardAwareScrollView,
+  StableSafeAreaView,
+  ApplicationHeader,
+  BottomButtonWrapper,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { router } from "expo-router";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 import { createBugSchema } from "@/types/validations/system-reports.validation";
 import { useReportBugStore } from "@/stores/useReportBugStore";
@@ -23,10 +26,7 @@ import {
   ServerErrorResponse,
   ResponseUserDeviceDto,
 } from "@softsurgery/api-client";
-import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { getCurrentDevice } from "@/lib/device";
 
 interface BugReportPortalProps {

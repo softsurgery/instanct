@@ -1,8 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage, cn } from "@softsurgery/ui";
 import React from "react";
 
-interface ImageUploaderProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+interface ImageUploaderProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   wrapperClassName?: string;
   image?: File | string | null;
@@ -52,7 +51,7 @@ export const ImageUploader = ({
         className={cn(
           "w-24 h-24 cursor-pointer hover:opacity-80 transition",
           disabled && "opacity-40 pointer-events-none",
-          className
+          className,
         )}
         onClick={() => fileInputRef.current?.click()}
       >

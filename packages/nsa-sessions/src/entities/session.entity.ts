@@ -1,6 +1,6 @@
-import { Expose } from 'class-transformer';
-import { SessionType } from '../enums/session-type.registry';
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { Expose } from "class-transformer";
+import { SessionType } from "../enums/session-type.registry";
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   AfterLoad,
   Column,
@@ -8,37 +8,37 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { SessionStatus } from '../enums/session-status.enum';
-import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
+} from "typeorm";
+import { SessionStatus } from "../enums/session-status.enum";
+import type { AbstractUserEntity } from "@softsurgery/nsa-um/entities/abstract-user.entity";
 
-@Entity('sessions')
+@Entity("sessions")
 export class SessionEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne('AbstractUserEntity', (user: any) => user.sessions, {
+  @ManyToOne("AbstractUserEntity", (user: any) => user.sessions, {
     nullable: true,
   })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: AbstractUserEntity;
 
   @Column({ nullable: true })
   userId?: string;
 
-  @Column({ type: 'enum', enum: SessionType, nullable: true })
+  @Column({ type: "enum", enum: SessionType, nullable: true })
   sessionType: SessionType;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: "timestamp", nullable: true })
   plannedStart: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: "timestamp", nullable: true })
   plannedEnd: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: "timestamp", nullable: true })
   ended: Date;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: "json", nullable: true })
   payload?: object;
 
   @Expose()

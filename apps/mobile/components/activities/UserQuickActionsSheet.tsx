@@ -1,9 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
-import { Text } from "@softsurgery/mobile-ui";
-import { Button } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
+import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { identifyUser } from "@/lib/user";
 import { ResponseUserDto } from "@softsurgery/api-client";
 import { LucideIcon } from "lucide-react-native";

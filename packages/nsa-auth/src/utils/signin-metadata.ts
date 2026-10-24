@@ -1,5 +1,5 @@
-import { randomBytes } from 'crypto';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
+import { randomBytes } from "crypto";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
 
 export interface SigninMetadata {
   device: string;
@@ -16,61 +16,63 @@ export interface SigninMetadata {
 export function formatAsMacAddress(seed: string): string {
   const macRegex = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
   if (macRegex.test(seed)) {
-    return seed.replace(/-/g, ':').toLowerCase();
+    return seed.replace(/-/g, ":").toLowerCase();
   }
-  const clean = seed.replace(/[^0-9a-fA-F]/g, '');
-  const padded = clean.padEnd(12, '0').slice(0, 12);
+  const clean = seed.replace(/[^0-9a-fA-F]/g, "");
+  const padded = clean.padEnd(12, "0").slice(0, 12);
   const octets = padded.match(/.{1,2}/g);
-  return (octets || ['00', '00', '00', '00', '00', '00']).join(':').toLowerCase();
+  return (octets || ["00", "00", "00", "00", "00", "00"])
+    .join(":")
+    .toLowerCase();
 }
 
 export function generateRandomMacAddress(): string {
   const bytes = randomBytes(6);
   bytes[0] = (bytes[0] & 0xfe) | 0x02;
   return Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join(':');
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join(":");
 }
 
 function parseUserAgent(userAgent?: string): { device: string; os: string } {
   if (!userAgent) {
-    return { device: 'Mobile Device', os: 'iOS / Android' };
+    return { device: "Mobile Device", os: "iOS / Android" };
   }
 
   const ua = userAgent.toLowerCase();
-  let device = 'Mobile Device';
-  let os = 'iOS / Android';
+  let device = "Mobile Device";
+  let os = "iOS / Android";
 
   if (
-    ua.includes('iphone') ||
-    ua.includes('cfnetwork') ||
-    ua.includes('darwin')
+    ua.includes("iphone") ||
+    ua.includes("cfnetwork") ||
+    ua.includes("darwin")
   ) {
-    device = 'iPhone';
-    os = 'iOS';
+    device = "iPhone";
+    os = "iOS";
     const match = userAgent.match(/iPhone\s?([^;)]+)/i);
     if (match && match[0]) {
       device = match[0].trim();
     }
-  } else if (ua.includes('ipad')) {
-    device = 'iPad';
-    os = 'iPadOS';
+  } else if (ua.includes("ipad")) {
+    device = "iPad";
+    os = "iPadOS";
   } else if (
-    ua.includes('android') ||
-    ua.includes('okhttp') ||
-    ua.includes('dalvik')
+    ua.includes("android") ||
+    ua.includes("okhttp") ||
+    ua.includes("dalvik")
   ) {
-    device = 'Android Device';
-    os = 'Android';
-  } else if (ua.includes('macintosh') || ua.includes('mac os')) {
-    device = 'MacBook';
-    os = 'macOS';
-  } else if (ua.includes('windows')) {
-    device = 'Windows PC';
-    os = 'Windows';
-  } else if (ua.includes('linux')) {
-    device = 'Linux PC';
-    os = 'Linux';
+    device = "Android Device";
+    os = "Android";
+  } else if (ua.includes("macintosh") || ua.includes("mac os")) {
+    device = "MacBook";
+    os = "macOS";
+  } else if (ua.includes("windows")) {
+    device = "Windows PC";
+    os = "Windows";
+  } else if (ua.includes("linux")) {
+    device = "Linux PC";
+    os = "Linux";
   }
 
   return { device, os };
@@ -85,11 +87,11 @@ async function resolveIpGeo(ip: string): Promise<{
 } | null> {
   if (
     !ip ||
-    ip === '127.0.0.1' ||
-    ip === 'localhost' ||
-    ip.startsWith('192.168.') ||
-    ip.startsWith('10.') ||
-    ip.startsWith('172.')
+    ip === "127.0.0.1" ||
+    ip === "localhost" ||
+    ip.startsWith("192.168.") ||
+    ip.startsWith("10.") ||
+    ip.startsWith("172.")
   ) {
     return null;
   }
@@ -113,7 +115,7 @@ async function resolveIpGeo(ip: string): Promise<{
         lon?: number;
       };
 
-      if (data && data.status === 'success') {
+      if (data && data.status === "success") {
         const city = data.city;
         const country = data.country;
         const location =
@@ -143,28 +145,28 @@ export async function getSigninMetadata(
   },
 ): Promise<SigninMetadata> {
   const headers = req.headers || {};
-  const userAgent = (headers['user-agent'] as string) || '';
+  const userAgent = (headers["user-agent"] as string) || "";
   const parsedUa = parseUserAgent(userAgent);
 
   const device =
     bodyParams?.device ||
-    (headers['x-device-name'] as string) ||
+    (headers["x-device-name"] as string) ||
     parsedUa.device;
 
-  const os = bodyParams?.os || (headers['x-os-name'] as string) || parsedUa.os;
+  const os = bodyParams?.os || (headers["x-os-name"] as string) || parsedUa.os;
 
   const ipRaw =
-    (headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
+    (headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() ||
     req.ip ||
     req.socket?.remoteAddress ||
-    '127.0.0.1';
+    "127.0.0.1";
 
   let ip = ipRaw;
-  if (ip.startsWith('::ffff:')) {
-    ip = ip.replace('::ffff:', '');
+  if (ip.startsWith("::ffff:")) {
+    ip = ip.replace("::ffff:", "");
   }
-  if (ip === '::1') {
-    ip = '127.0.0.1';
+  if (ip === "::1") {
+    ip = "127.0.0.1";
   }
 
   const geo = await resolveIpGeo(ip);
@@ -174,13 +176,13 @@ export async function getSigninMetadata(
     geo?.location ||
     (latitude !== undefined && longitude !== undefined
       ? `${latitude}, ${longitude}`
-      : 'Unknown Location');
+      : "Unknown Location");
 
   const rawMac =
     bodyParams?.macAddress ||
     bodyParams?.mac ||
-    (headers['x-mac-address'] as string) ||
-    (headers['x-device-mac'] as string);
+    (headers["x-mac-address"] as string) ||
+    (headers["x-device-mac"] as string);
 
   let macAddress: string;
 
@@ -191,15 +193,15 @@ export async function getSigninMetadata(
   }
 
   const now = new Date();
-  const time = now.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+  const time = now.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
-  const when = 'Just now';
+  const when = "Just now";
 
   return {
     device,

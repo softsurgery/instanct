@@ -16,7 +16,9 @@ export function createFollowResource(http: AxiosInstance) {
     return response.data;
   };
 
-  const findDataCount = async (id: string): Promise<ResponseFollowCountsDto> => {
+  const findDataCount = async (
+    id: string,
+  ): Promise<ResponseFollowCountsDto> => {
     const response = await http.get(`/follow/${id}/data-count`);
     return response.data;
   };

@@ -1,12 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
-import { tap } from 'rxjs';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
-import { LoggerService } from '../services/logger.service';
-import { EVENT_TYPE } from '../enums/event-type.registry';
-import { AccessTokenPayload } from '@softsurgery/nsa-auth/interfaces/access-token-payload.interface';
-import { getTokenPayload } from '@softsurgery/nsa-auth/utils/token-payload';
+import { Inject, Injectable } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+import { tap } from "rxjs";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
+import { LoggerService } from "../services/logger.service";
+import { EVENT_TYPE } from "../enums/event-type.registry";
+import { AccessTokenPayload } from "@softsurgery/nsa-auth/interfaces/access-token-payload.interface";
+import { getTokenPayload } from "@softsurgery/nsa-auth/utils/token-payload";
 
 @Injectable()
 export class LogInterceptor implements NestInterceptor {
@@ -23,7 +23,7 @@ export class LogInterceptor implements NestInterceptor {
         const request: AdvancedRequest = context.switchToHttp().getRequest();
         const event =
           request.logEvent ||
-          this.reflector.get<string>('event', context.getHandler());
+          this.reflector.get<string>("event", context.getHandler());
 
         if (!event) return;
 

@@ -50,7 +50,7 @@ export const usePulseAnimation = ({
             useNativeDriver: true,
           }),
         ]),
-      ])
+      ]),
     );
 
     pulse.start();

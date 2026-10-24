@@ -114,16 +114,9 @@ export default function HtmlDocument({
   }, [width, style, dom?.style]);
 
   const finalScrollEnabled =
-    scrollEnabled ??
-    scrollable ??
-    dom?.scrollEnabled ??
-    false;
+    scrollEnabled ?? scrollable ?? dom?.scrollEnabled ?? false;
 
-  const finalBounces =
-    bounces ??
-    bouncing ??
-    dom?.bounces ??
-    false;
+  const finalBounces = bounces ?? bouncing ?? dom?.bounces ?? false;
 
   const domProps = React.useMemo<import("expo/dom").DOMProps>(() => {
     const injectedScript = enableBridgeInjection
@@ -213,7 +206,8 @@ export default function HtmlDocument({
       alwaysBounceHorizontal: finalBounces,
       overScrollMode: (finalBounces ? "always" : "never") as "always" | "never",
       showsVerticalScrollIndicator:
-        dom?.showsVerticalScrollIndicator ?? (finalScrollEnabled ? true : false),
+        dom?.showsVerticalScrollIndicator ??
+        (finalScrollEnabled ? true : false),
       showsHorizontalScrollIndicator:
         dom?.showsHorizontalScrollIndicator ?? false,
       style: [baseStyle, dom?.style, style].filter(Boolean),

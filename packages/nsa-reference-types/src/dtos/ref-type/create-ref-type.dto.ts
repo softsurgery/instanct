@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 import {
   IsNumber,
   IsObject,
@@ -6,7 +6,7 @@ import {
   IsString,
   Length,
   MaxLength,
-} from 'class-validator';
+} from "class-validator";
 
 export class CreateRefTypeDto {
   @ApiProperty({ type: String })

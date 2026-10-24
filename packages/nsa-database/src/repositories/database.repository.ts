@@ -10,12 +10,12 @@ import {
   QueryRunner,
   Repository,
   SelectQueryBuilder,
-} from 'typeorm';
-import { DatabaseInterfaceRepository } from '../interfaces/database.repository.interface';
-import { TransactionHost } from '@nestjs-cls/transactional';
-import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { NotFoundException } from '@nestjs/common';
+} from "typeorm";
+import { DatabaseInterfaceRepository } from "../interfaces/database.repository.interface";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterTypeOrm } from "@nestjs-cls/transactional-adapter-typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+import { NotFoundException } from "@nestjs/common";
 
 export abstract class DatabaseAbstractRepository<
   T extends ObjectLiteral,
@@ -96,7 +96,7 @@ export abstract class DatabaseAbstractRepository<
     data: Partial<T>,
     uniqueFields?: string[],
   ): Promise<InsertResult> {
-    return this.getRepository().upsert(data, uniqueFields || ['id']);
+    return this.getRepository().upsert(data, uniqueFields || ["id"]);
   }
 
   public async upsertMany(data: Partial<T>[]): Promise<InsertResult[]> {

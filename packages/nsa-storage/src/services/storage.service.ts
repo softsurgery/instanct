@@ -1,15 +1,15 @@
 // storage.interface.ts
-import { ReadStream } from 'fs';
-import { StorageEntity } from '../entities/storage.entity';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { StorageRepository } from '../repositories/storage.repository';
-import { FindManyOptions } from 'typeorm';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { StorageNotFoundException } from '../errors/storage.not-found.error';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { Logger } from '@nestjs/common';
+import { ReadStream } from "fs";
+import { StorageEntity } from "../entities/storage.entity";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { StorageRepository } from "../repositories/storage.repository";
+import { FindManyOptions } from "typeorm";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { StorageNotFoundException } from "../errors/storage.not-found.error";
+import { Cron, CronExpression } from "@nestjs/schedule";
+import { Logger } from "@nestjs/common";
 
 export abstract class StorageService {
   storageRepository: StorageRepository;
@@ -143,10 +143,10 @@ export abstract class StorageService {
 
   @Cron(CronExpression.EVERY_2_HOURS)
   async cleanTemporary(): Promise<void> {
-    this.logger.log('Cleaning temporary uploads');
+    this.logger.log("Cleaning temporary uploads");
     const uploads = await this.findTemporary();
     await Promise.all(uploads.map((upload) => this.delete(upload.id)));
-    if (uploads.length === 0) this.logger.log('No temporary uploads to clean');
+    if (uploads.length === 0) this.logger.log("No temporary uploads to clean");
     else this.logger.log(`Cleaned ${uploads.length} temporary uploads`);
   }
 }

@@ -1,15 +1,15 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { MessageEntity } from './message.entity';
-import { StorageEntity } from '@softsurgery/nsa-storage/entities/storage.entity';
+} from "typeorm";
+import { MessageEntity } from "./message.entity";
+import { StorageEntity } from "@softsurgery/nsa-storage/entities/storage.entity";
 
-@Entity('message_uploads')
+@Entity("message_uploads")
 export class MessageUploadEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,17 +20,17 @@ export class MessageUploadEntity extends EntityHelper {
   @Column()
   uploadId: number;
 
-  @ManyToOne('MessageEntity', (message: any) => message.uploads, {
-    onDelete: 'CASCADE',
+  @ManyToOne("MessageEntity", (message: any) => message.uploads, {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'messageId' })
+  @JoinColumn({ name: "messageId" })
   message: MessageEntity;
 
-  @ManyToOne('StorageEntity', {
-    onDelete: 'CASCADE',
+  @ManyToOne("StorageEntity", {
+    onDelete: "CASCADE",
     eager: true,
   })
-  @JoinColumn({ name: 'uploadId' })
+  @JoinColumn({ name: "uploadId" })
   upload?: StorageEntity;
 
   @Column({ nullable: false })

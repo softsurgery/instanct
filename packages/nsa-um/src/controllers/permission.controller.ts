@@ -5,25 +5,25 @@ import {
   Param,
   Query,
   UseInterceptors,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { PermissionService } from '../services/permission.service';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { ResponsePermissionDto } from '../dtos/permission/response-permission.dto';
-import { toDto, toDtoArray } from '@softsurgery/nsa-database';
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { PermissionService } from "../services/permission.service";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { ResponsePermissionDto } from "../dtos/permission/response-permission.dto";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
 
-@ApiTags('permission')
-@ApiBearerAuth('access_token')
+@ApiTags("permission")
+@ApiBearerAuth("access_token")
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller({
-  version: '1',
-  path: '/permission',
+  version: "1",
+  path: "/permission",
 })
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
-  @Get('/list')
+  @Get("/list")
   async findAllPaginated(
     @Query() query: IQueryObject,
   ): Promise<PageDto<ResponsePermissionDto>> {
@@ -34,7 +34,7 @@ export class PermissionController {
     };
   }
 
-  @Get('/all')
+  @Get("/all")
   async findAll(
     @Query() options: IQueryObject,
   ): Promise<ResponsePermissionDto[]> {
@@ -44,9 +44,9 @@ export class PermissionController {
     );
   }
 
-  @Get(':id')
+  @Get(":id")
   async findOneById(
-    @Param('id') id: string,
+    @Param("id") id: string,
   ): Promise<ResponsePermissionDto | null> {
     return toDto(
       ResponsePermissionDto,

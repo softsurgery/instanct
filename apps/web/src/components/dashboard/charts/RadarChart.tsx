@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import React from "react"
-import { TrendingUp } from "lucide-react"
+import React from "react";
+import { TrendingUp } from "lucide-react";
 import {
   PolarAngleAxis,
   PolarGrid,
   Radar,
   RadarChart,
   ResponsiveContainer,
-} from "recharts"
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -16,9 +16,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@softsurgery/ui"
+} from "@softsurgery/ui";
 
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@softsurgery/ui"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@softsurgery/ui";
 
 // Données du radar chart
 const chartData = [
@@ -28,14 +32,16 @@ const chartData = [
   { month: "April", desktop: 173, mobile: 160 },
   { month: "May", desktop: 160, mobile: 190 },
   { month: "June", desktop: 174, mobile: 204 },
-]
+];
 
 export const ChartRadarLinesOnly = () => {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Radar Chart - Lines Only</CardTitle>
-        <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+        <CardDescription>
+          Showing total visitors for the last 6 months
+        </CardDescription>
       </CardHeader>
 
       <CardContent className="flex-1 flex items-center justify-center pb-0">
@@ -75,5 +81,5 @@ export const ChartRadarLinesOnly = () => {
         </div>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};

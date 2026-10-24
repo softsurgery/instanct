@@ -1,7 +1,10 @@
 import React from "react";
-import { StableScrollView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  StableScrollView,
+  ApplicationHeader,
+  StableSafeAreaView,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { MapSessionPayload, ResponseSessionDto } from "@softsurgery/api-client";
@@ -11,7 +14,6 @@ import { View } from "react-native";
 import { SessionDetailsContent } from "./SessionDetailsContent";
 import { useTranslation } from "react-i18next";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface SessionDetailsPortalProps {
   className?: string;
 }

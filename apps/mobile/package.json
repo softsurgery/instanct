@@ -10,7 +10,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint",
+    "lint": "expo lint --fix",
     "clean": "rm -rf node_modules .next dist build .turbo",
     "postinstall": "node ../../scripts/mjs/sync-shared-deps.mjs && npx tailwindcss -i ./global.css -o ./node_modules/.cache/nativewind/global.css"
   },

@@ -44,8 +44,8 @@ export const LanguageSwitcher = ({
         let lang = value;
         if (lang === "system") {
           lang =
-            (Localization.getLocales()[0]?.languageCode as "en" | "fr" | "ar") ||
-            "en";
+            (Localization.getLocales()[0]?.languageCode as
+              "en" | "fr" | "ar") || "en";
         }
         i18n.changeLanguage(lang);
         preferencePersistStore.setLanguage(

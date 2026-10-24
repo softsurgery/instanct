@@ -9,23 +9,23 @@ import {
   Put,
   Query,
   UseInterceptors,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
-import { ResponseConfigurationNamespaceDto } from '../dtos/namespace/response-configuration-namespace.dto';
-import { toDto, toDtoArray } from '@softsurgery/nsa-database';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { ConfigurationNamespaceService } from '../services/configuration-namespace.service';
-import { ConfigurationParamService } from '../services/configuration-param.service';
-import { UpdateConfigurationParamaterDto } from '../dtos/paramater/update-configuration-paramater.dto';
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
+import { ResponseConfigurationNamespaceDto } from "../dtos/namespace/response-configuration-namespace.dto";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { ConfigurationNamespaceService } from "../services/configuration-namespace.service";
+import { ConfigurationParamService } from "../services/configuration-param.service";
+import { UpdateConfigurationParamaterDto } from "../dtos/paramater/update-configuration-paramater.dto";
 
-@ApiTags('configuration')
-@ApiBearerAuth('access_token')
+@ApiTags("configuration")
+@ApiBearerAuth("access_token")
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
 @Controller({
-  version: '1',
-  path: '/configuration',
+  version: "1",
+  path: "/configuration",
 })
 export class ConfigurationController {
   constructor(
@@ -33,9 +33,9 @@ export class ConfigurationController {
     private readonly configurationParamService: ConfigurationParamService,
   ) {}
 
-  @Get('/namespace/global/name/:name')
+  @Get("/namespace/global/name/:name")
   async findGlobalOneByName(
-    @Param('name') name: string,
+    @Param("name") name: string,
   ): Promise<ResponseConfigurationNamespaceDto | null> {
     return toDto(
       ResponseConfigurationNamespaceDto,
@@ -43,9 +43,9 @@ export class ConfigurationController {
     );
   }
 
-  @Get('/namespace/:id')
+  @Get("/namespace/:id")
   async findOneById(
-    @Param('id') id: string,
+    @Param("id") id: string,
   ): Promise<ResponseConfigurationNamespaceDto | null> {
     return toDto(
       ResponseConfigurationNamespaceDto,
@@ -53,7 +53,7 @@ export class ConfigurationController {
     );
   }
 
-  @Get('/all')
+  @Get("/all")
   async findAll(
     @Query() query: IQueryObject,
   ): Promise<ResponseConfigurationNamespaceDto[]> {
@@ -63,7 +63,7 @@ export class ConfigurationController {
     );
   }
 
-  @Get('/all/global')
+  @Get("/all/global")
   async findAllGlobal(
     @Query() query: IQueryObject,
   ): Promise<ResponseConfigurationNamespaceDto[]> {
@@ -83,7 +83,7 @@ export class ConfigurationController {
     );
   }
 
-  @Post('/namespace')
+  @Post("/namespace")
   async createNamespace(
     @Body() dto: { name: string; description?: string },
   ): Promise<ResponseConfigurationNamespaceDto> {
@@ -94,9 +94,9 @@ export class ConfigurationController {
     return toDto(ResponseConfigurationNamespaceDto, created);
   }
 
-  @Delete('/namespace/:id')
+  @Delete("/namespace/:id")
   async deleteNamespace(
-    @Param('id') id: string,
+    @Param("id") id: string,
   ): Promise<ResponseConfigurationNamespaceDto | null> {
     const entity = await this.configurationNamespaceService.findOneById(id);
     if (entity) {

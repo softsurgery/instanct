@@ -1,12 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Button,
-  Input,
-  Label,
-  Textarea,
-  Badge,
-} from "@softsurgery/ui";
+import { Button, Input, Label, Textarea, Badge } from "@softsurgery/ui";
 import { cn } from "@softsurgery/lib";
 import {
   ArrowLeft,
@@ -27,8 +21,8 @@ const QUICK_TAGS = [
   "{{year}}",
   "<h1>Title</h1>",
   "<p>Paragraph</p>",
-  "<a href=\"#\">Link</a>",
-  "<button style=\"padding:10px 20px;\">CTA</button>",
+  '<a href="#">Link</a>',
+  '<button style="padding:10px 20px;">CTA</button>',
 ];
 
 export const TemplateEditor = ({
@@ -70,7 +64,8 @@ export const TemplateEditor = ({
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    const nextContent = content.substring(0, start) + tag + content.substring(end);
+    const nextContent =
+      content.substring(0, start) + tag + content.substring(end);
     setContent(nextContent);
 
     // Reposition cursor right after inserted tag
@@ -89,7 +84,8 @@ export const TemplateEditor = ({
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const indent = "  ";
-      const nextContent = content.substring(0, start) + indent + content.substring(end);
+      const nextContent =
+        content.substring(0, start) + indent + content.substring(end);
       setContent(nextContent);
       setTimeout(() => {
         textarea.selectionStart = textarea.selectionEnd = start + indent.length;
@@ -100,7 +96,9 @@ export const TemplateEditor = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setNameError(t("templates.fields.nameRequired", "Template name is required."));
+      setNameError(
+        t("templates.fields.nameRequired", "Template name is required."),
+      );
       return;
     }
     setNameError(null);
@@ -124,14 +122,21 @@ export const TemplateEditor = ({
             className="h-9 gap-1.5 text-xs font-medium"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>{t("templates.editor.backToTemplates", "Back to Templates")}</span>
+            <span>
+              {t("templates.editor.backToTemplates", "Back to Templates")}
+            </span>
           </Button>
 
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
-              <Badge variant={mode === "create" ? "default" : "secondary"} className="text-[10px]">
-                {mode === "create" ? t("templates.singularName", "Template") : "Edit"}
+              <Badge
+                variant={mode === "create" ? "default" : "secondary"}
+                className="text-[10px]"
+              >
+                {mode === "create"
+                  ? t("templates.singularName", "Template")
+                  : "Edit"}
               </Badge>
             </div>
             {description && (
@@ -211,7 +216,9 @@ export const TemplateEditor = ({
           <div className="flex items-center justify-between px-4 py-2.5 bg-muted/40 border-b">
             <div className="flex items-center gap-2 text-sm font-semibold">
               <Code className="h-4 w-4 text-primary" />
-              <span>{t("templates.fields.content", "HTML / Template Content")}</span>
+              <span>
+                {t("templates.fields.content", "HTML / Template Content")}
+              </span>
             </div>
             <div className="text-[11px] text-muted-foreground font-mono">
               EJS &amp; HTML supported
@@ -227,7 +234,10 @@ export const TemplateEditor = ({
                   <span className="text-destructive ml-1">*</span>
                 </Label>
                 <span className="text-[11px] text-muted-foreground">
-                  {t("templates.fields.nameDescription", "Unique template identifier.")}
+                  {t(
+                    "templates.fields.nameDescription",
+                    "Unique template identifier.",
+                  )}
                 </span>
               </div>
               <Input
@@ -240,7 +250,8 @@ export const TemplateEditor = ({
                 placeholder="e.g. welcome-email"
                 className={cn(
                   "h-9 font-mono text-xs",
-                  nameError && "border-destructive focus-visible:ring-destructive",
+                  nameError &&
+                    "border-destructive focus-visible:ring-destructive",
                 )}
               />
               {nameError && (
@@ -255,7 +266,9 @@ export const TemplateEditor = ({
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Tag className="h-3 w-3" />
-                <span>{t("templates.editor.quickInsert", "Quick Insert:")}</span>
+                <span>
+                  {t("templates.editor.quickInsert", "Quick Insert:")}
+                </span>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {QUICK_TAGS.map((tag) => (

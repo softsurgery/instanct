@@ -29,7 +29,8 @@ export function formatArrayItem(item: unknown): string {
 
   // If object has a clear primary key ('label', 'name', 'title', 'key')
   const primaryKey = keys.find(
-    (k) => (k === "label" || k === "name" || k === "title" || k === "key") && obj[k],
+    (k) =>
+      (k === "label" || k === "name" || k === "title" || k === "key") && obj[k],
   );
   if (primaryKey && obj[primaryKey]) {
     const otherKeys = keys.filter(

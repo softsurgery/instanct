@@ -1,11 +1,7 @@
 "use client";
 
 import { Button } from "./button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./popover";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { HexColorPicker, HexAlphaColorPicker } from "react-colorful";
 import {
   Select,
@@ -41,7 +37,7 @@ function rgbToHex(r: number, g: number, b: number): string {
 function rgbToHsl(
   r: number,
   g: number,
-  b: number
+  b: number,
 ): { h: number; s: number; l: number } {
   r /= 255;
   g /= 255;
@@ -81,7 +77,7 @@ function rgbToHsl(
 function hslToRgb(
   h: number,
   s: number,
-  l: number
+  l: number,
 ): { r: number; g: number; b: number } {
   h /= 360;
   s /= 100;
@@ -153,7 +149,7 @@ function rgbaToHsla(
   r: number,
   g: number,
   b: number,
-  a: number
+  a: number,
 ): { h: number; s: number; l: number; a: number } {
   const hsl = rgbToHsl(r, g, b);
   return { ...hsl, a };
@@ -163,7 +159,7 @@ function hslaToRgba(
   h: number,
   s: number,
   l: number,
-  a: number
+  a: number,
 ): { r: number; g: number; b: number; a: number } {
   const rgb = hslToRgb(h, s, l);
   return { ...rgb, a };
@@ -288,7 +284,7 @@ export default function InputColor({
   // Handle RGBA input change
   const handleRgbaChange = (
     component: "r" | "g" | "b" | "a",
-    value: string
+    value: string,
   ) => {
     if (!alpha || !colorValues.rgba) return;
 
@@ -336,7 +332,7 @@ export default function InputColor({
   // Handle HSLA input change
   const handleHslaChange = (
     component: "h" | "s" | "l" | "a",
-    value: string
+    value: string,
   ) => {
     if (!alpha || !colorValues.hsla) return;
 
@@ -414,7 +410,7 @@ export default function InputColor({
         colorValues.rgba.r,
         colorValues.rgba.g,
         colorValues.rgba.b,
-        colorValues.rgba.a
+        colorValues.rgba.a,
       );
     }
     return colorValues.hex;

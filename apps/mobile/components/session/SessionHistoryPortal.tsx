@@ -1,23 +1,28 @@
 import React from "react";
 import { View } from "react-native";
 import { LegendList } from "@legendapp/list";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  StablePressable,
+  Loader,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { Map as MapIcon, ChevronRight, Calendar } from "lucide-react-native";
 import { router } from "expo-router";
-import { Text } from "@softsurgery/mobile-ui";
-import { SessionStatus, SessionType, type ResponseSessionDto } from "@softsurgery/api-client";
+import { Text, Icon } from "@softsurgery/mobile-ui";
+import {
+  SessionStatus,
+  SessionType,
+  type ResponseSessionDto,
+} from "@softsurgery/api-client";
 import { toDateOnly, toTimeOnly } from "@/lib/date";
-import { Icon } from "@softsurgery/mobile-ui";
 import { useInfiniteUserSessions } from "@/hooks/content/sessions/useInfiniteUserSessions";
-import { StablePressable } from "@softsurgery/mobile-components";
 import { SessionStarter } from "./SessionStarter";
 import { useTranslation } from "react-i18next";
-import { Loader } from "@softsurgery/mobile-components";
 import { SessionStatusLegend } from "./SessionStatusLegend";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface SessionHistoryPortalProps {
   className?: string;
 }

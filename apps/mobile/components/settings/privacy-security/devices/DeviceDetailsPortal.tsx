@@ -113,7 +113,7 @@ export const DeviceDetailsPortal = ({
 
     const grouped: Record<
       string,
-      Array<{ connection: ResponseUserConnectionHistoryDto; isLatest: boolean }>
+      { connection: ResponseUserConnectionHistoryDto; isLatest: boolean }[]
     > = {};
 
     visibleConnections.forEach((conn, index) => {

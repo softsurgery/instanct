@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { EventType } from '../enums/event-type.registry';
-import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
-import { getUserDto } from '@softsurgery/nsa-um/registries/user-binding.registry';
+import { ApiProperty } from "@nestjs/swagger";
+import { Expose, Type } from "class-transformer";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { EventType } from "../enums/event-type.registry";
+import { ResponseAbstractUserDto } from "@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto";
+import { getUserDto } from "@softsurgery/nsa-um/registries/user-binding.registry";
 
 export class ResponseLogDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number, example: 1 })
@@ -14,15 +14,15 @@ export class ResponseLogDto extends ResponseDtoHelper {
   @Expose()
   event: EventType;
 
-  @ApiProperty({ type: String, example: '/api/v1/user/list' })
+  @ApiProperty({ type: String, example: "/api/v1/user/list" })
   @Expose()
   api?: string;
 
-  @ApiProperty({ type: String, example: 'GET' })
+  @ApiProperty({ type: String, example: "GET" })
   @Expose()
   method?: string;
 
-  @ApiProperty({ type: String, example: '1' })
+  @ApiProperty({ type: String, example: "1" })
   @Expose()
   userId?: string;
 

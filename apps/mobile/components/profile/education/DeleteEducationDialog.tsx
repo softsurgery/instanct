@@ -1,11 +1,11 @@
-import { Button } from "@softsurgery/mobile-ui";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
+  Text,
 } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { UserStore } from "@/stores/useUserStore";
 import React from "react";

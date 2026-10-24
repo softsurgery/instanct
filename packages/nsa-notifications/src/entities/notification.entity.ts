@@ -1,37 +1,37 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { NotificationType } from '../enums/notification-type.registry';
-import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
+} from "typeorm";
+import { NotificationType } from "../enums/notification-type.registry";
+import type { AbstractUserEntity } from "@softsurgery/nsa-um/entities/abstract-user.entity";
 
-@Entity('notification')
+@Entity("notification")
 export class NotificationEntity extends EntityHelper {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @Column({ type: 'enum', enum: NotificationType, nullable: true })
+  @Column({ type: "enum", enum: NotificationType, nullable: true })
   type: NotificationType;
 
-  @ManyToOne('AbstractUserEntity', (user: any) => user.notifications, {
+  @ManyToOne("AbstractUserEntity", (user: any) => user.notifications, {
     nullable: true,
     eager: true,
   })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: AbstractUserEntity;
 
   @Column({ nullable: true })
   userId?: string;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: "json", nullable: true })
   payload?: object;
 
   @Column({
-    type: 'datetime',
+    type: "datetime",
     precision: 3,
     nullable: true,
   })

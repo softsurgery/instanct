@@ -1,5 +1,9 @@
 import React from "react";
-import { NativeScrollEvent, NativeSyntheticEvent, LayoutChangeEvent } from "react-native";
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  LayoutChangeEvent,
+} from "react-native";
 import {
   useAnimatedStyle,
   useSharedValue,
@@ -35,8 +39,10 @@ export const useScrollableElement = ({
       transform: [
         {
           translateY: withTiming(
-            showHeader.value ? 0 : -(headerHeight.value > 0 ? headerHeight.value : deltaThreshold),
-            { duration }
+            showHeader.value
+              ? 0
+              : -(headerHeight.value > 0 ? headerHeight.value : deltaThreshold),
+            { duration },
           ),
         },
       ],
@@ -59,7 +65,7 @@ export const useScrollableElement = ({
         headerHeight.value = h;
       }
     },
-    [headerHeight]
+    [headerHeight],
   );
 
   // Track scroll direction

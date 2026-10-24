@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { NotificationType } from '../enums/notification-type.registry';
-import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
-import { getUserDto } from '@softsurgery/nsa-um/registries/user-binding.registry';
+import { ApiProperty } from "@nestjs/swagger";
+import { Expose, Type } from "class-transformer";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { NotificationType } from "../enums/notification-type.registry";
+import { ResponseAbstractUserDto } from "@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto";
+import { getUserDto } from "@softsurgery/nsa-um/registries/user-binding.registry";
 
 export class ResponseNotificationDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -18,7 +18,7 @@ export class ResponseNotificationDto extends ResponseDtoHelper {
   @Expose()
   type: NotificationType;
 
-  @ApiProperty({ type: String, example: '1' })
+  @ApiProperty({ type: String, example: "1" })
   @Expose()
   userId?: string;
 

@@ -1,10 +1,5 @@
 import type { AxiosInstance } from "axios";
-import type {
-  Paginated,
-  QueryParams,
-  ServerResponse,
-  Upload,
-} from "../types";
+import type { Paginated, QueryParams, ServerResponse, Upload } from "../types";
 import { listParams } from "./query";
 
 export function createUploadResource(http: AxiosInstance) {

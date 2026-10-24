@@ -56,9 +56,7 @@ const baseExperienceSchema = z.object({
   locationType: z.nativeEnum(LocationTypes, {
     error: "experience.validation.invalidLocationType",
   }),
-  endDate: z
-    .preprocess(toDateOrNull, z.union([z.date(), z.null()]))
-    .optional(),
+  endDate: z.preprocess(toDateOrNull, z.union([z.date(), z.null()])).optional(),
 
   description: z.preprocess(
     (value) => (value == null ? "" : value),

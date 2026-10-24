@@ -1,10 +1,10 @@
-import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionHost } from '@nestjs-cls/transactional';
-import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
-import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
-import { ConfigurationParamEntity } from '../entities/configuration-param.entity';
+import { Repository } from "typeorm";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterTypeOrm } from "@nestjs-cls/transactional-adapter-typeorm";
+import { DatabaseAbstractRepository } from "@softsurgery/nsa-database";
+import { ConfigurationParamEntity } from "../entities/configuration-param.entity";
 
 @Injectable()
 export class ConfigurationParamRepository extends DatabaseAbstractRepository<ConfigurationParamEntity> {

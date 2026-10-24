@@ -14,7 +14,7 @@ type IsActiveConfig =
   | { attrs: Record<string, unknown> };
 
 type ChainCommand = (
-  attributes?: Record<string, unknown> | string
+  attributes?: Record<string, unknown> | string,
 ) => Pick<ChainedCommands, "run">;
 
 interface CreateControlProps {
@@ -59,7 +59,7 @@ type EditorStateSelector = (ctx: { editor: Editor | null }) => {
 
 const resolveIsActive = (
   editor: Editor | null,
-  config?: IsActiveConfig
+  config?: IsActiveConfig,
 ): boolean => {
   if (!editor || !config) {
     return false;
@@ -73,7 +73,7 @@ const resolveIsActive = (
 const createSelector =
   (
     isActive?: IsActiveConfig,
-    isDisabled?: (editor: Editor) => boolean
+    isDisabled?: (editor: Editor) => boolean,
   ): EditorStateSelector =>
   (ctx) => {
     const safeEditor =

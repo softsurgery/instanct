@@ -1,6 +1,8 @@
 import { FormHeaderText } from "../types";
 
-export const formHeaderValue = (header?: FormHeaderText): string | undefined => {
+export const formHeaderValue = (
+  header?: FormHeaderText,
+): string | undefined => {
   if (header == null) return undefined;
   return typeof header === "string" ? header : header.value;
 };

@@ -5,9 +5,12 @@ import { View } from "react-native";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useSignUpFormStructure } from "./useSignupFormStructure";
 import { AcceptTerms } from "./AcceptTerms";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { Stepper } from "@softsurgery/mobile-components";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  Stepper,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { useSignupDebugButton } from "./useSignupDebugButton";
 import React from "react";
 import {
@@ -27,7 +30,6 @@ import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { useLoader } from "@/contexts/LoaderContext";
 
 interface SignupLayoutProps {

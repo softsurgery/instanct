@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { NotificationRepository } from '../repositories/notification.repository';
-import { NotificationEntity } from '../entities/notification.entity';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { FindManyOptions, IsNull } from 'typeorm';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { Transactional } from '@nestjs-cls/transactional';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
+import { Injectable } from "@nestjs/common";
+import { NotificationRepository } from "../repositories/notification.repository";
+import { NotificationEntity } from "../entities/notification.entity";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { FindManyOptions, IsNull } from "typeorm";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { Transactional } from "@nestjs-cls/transactional";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
 
 @Injectable()
 export class NotificationService extends AbstractCrudService<NotificationEntity> {
@@ -74,8 +74,8 @@ export class NotificationService extends AbstractCrudService<NotificationEntity>
       .createQueryBuilder()
       .update(NotificationEntity)
       .set({ readAt: new Date() })
-      .where('userId = :userId', { userId })
-      .andWhere('readAt IS NULL')
+      .where("userId = :userId", { userId })
+      .andWhere("readAt IS NULL")
       .execute();
   }
 
@@ -83,7 +83,7 @@ export class NotificationService extends AbstractCrudService<NotificationEntity>
     await this.notificationRepository
       .createQueryBuilder()
       .softDelete()
-      .where('userId = :userId', { userId })
+      .where("userId = :userId", { userId })
       .execute();
   }
 }

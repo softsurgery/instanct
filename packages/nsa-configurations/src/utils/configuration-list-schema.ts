@@ -1,4 +1,4 @@
-import { ParamVariant } from '../enums/param-variant.enum';
+import { ParamVariant } from "../enums/param-variant.enum";
 
 export interface ConfigurationListFieldSchema {
   key: string;
@@ -10,9 +10,9 @@ export interface ConfigurationListFieldSchema {
 export function coerceConfigurationListFieldValue(
   value: unknown,
 ): string | null {
-  if (value == null || value === '') return '';
-  if (typeof value === 'string') return value;
-  if (typeof value === 'number' || typeof value === 'boolean') {
+  if (value == null || value === "") return "";
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "boolean") {
     return String(value);
   }
   return null;
@@ -21,7 +21,7 @@ export function coerceConfigurationListFieldValue(
 function isPlainConfigurationListItem(
   value: unknown,
 ): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 export function isValidConfigurationListItem(
@@ -38,7 +38,7 @@ export function isValidConfigurationListItem(
 
   const hasAnyValue = schema.some(
     (field) =>
-      (coerceConfigurationListFieldValue(item[field.key]) ?? '').trim().length >
+      (coerceConfigurationListFieldValue(item[field.key]) ?? "").trim().length >
       0,
   );
 
@@ -46,7 +46,7 @@ export function isValidConfigurationListItem(
 
   return schema.every((field) => {
     if (!field.required) return true;
-    const text = coerceConfigurationListFieldValue(item[field.key]) ?? '';
+    const text = coerceConfigurationListFieldValue(item[field.key]) ?? "";
     return text.trim().length > 0;
   });
 }
@@ -76,7 +76,7 @@ export function parseConfigurationListValue(
     if (!Array.isArray(parsed)) return [];
     return parsed.filter(
       (item): item is Record<string, string> =>
-        Boolean(item) && typeof item === 'object' && !Array.isArray(item),
+        Boolean(item) && typeof item === "object" && !Array.isArray(item),
     );
   } catch {
     return [];

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { DataTableConfig } from "@softsurgery/datatable-builder";
 
 export const useRoleColumns = (
-  context: DataTableConfig<ResponseRoleDto>
+  context: DataTableConfig<ResponseRoleDto>,
 ): ColumnDef<ResponseRoleDto>[] => {
   const { t } = useTranslation("role");
   const { t: tCommon } = useTranslation("common");
@@ -73,7 +73,7 @@ export const useRoleColumns = (
               ))}
               {hiddenPermissions > 0 && (
                 <span className="opacity-50 mx-2">{`+${hiddenPermissions}${" "}${tCommon(
-                  "common.general.more"
+                  "common.general.more",
                 )}`}</span>
               )}
             </div>

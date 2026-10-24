@@ -1,4 +1,4 @@
-import { promises as dns } from 'dns';
+import { promises as dns } from "dns";
 
 // Configurable settings
 interface ResolveMXOptions {
@@ -11,47 +11,47 @@ interface ResolveMXOptions {
 const KNOWN_PROVIDERS = [
   {
     match: /(google|googlemail|gmail)\./i,
-    host: 'smtp.gmail.com',
+    host: "smtp.gmail.com",
     port: 587,
   },
   {
     match: /(outlook|office365|microsoft)\./i,
-    host: 'smtp.office365.com',
+    host: "smtp.office365.com",
     port: 587,
   },
   {
     match: /(yahoo|ymail)\./i,
-    host: 'smtp.mail.yahoo.com',
+    host: "smtp.mail.yahoo.com",
     port: 465,
   },
   {
     match: /(zoho)\./i,
-    host: 'smtp.zoho.com',
+    host: "smtp.zoho.com",
     port: 587,
   },
   {
     match: /(secureserver\.net|godaddy)\./i,
-    host: 'smtpout.secureserver.net',
+    host: "smtpout.secureserver.net",
     port: 465,
   },
   {
     match: /(titan\.email|hostinger)\./i,
-    host: 'smtp.titan.email',
+    host: "smtp.titan.email",
     port: 587,
   },
   {
     match: /(protonmail|pm\.me)\./i,
-    host: 'mail.protonmail.com',
+    host: "mail.protonmail.com",
     port: 587,
   },
   {
     match: /(icloud|me\.com)\./i,
-    host: 'smtp.mail.me.com',
+    host: "smtp.mail.me.com",
     port: 587,
   },
   {
     match: /(fastmail)\./i,
-    host: 'smtp.fastmail.com',
+    host: "smtp.fastmail.com",
     port: 587,
   },
 ] as const;
@@ -92,7 +92,7 @@ export const resolveMX = async (
     return { host: defaultHost, port: defaultPort };
   } catch (err) {
     clearTimeout(timeout);
-    if (err instanceof Error && err.name === 'AbortError') {
+    if (err instanceof Error && err.name === "AbortError") {
       throw new Error(`DNS query timed out after ${timeoutMs}ms`);
     }
     throw err; // Re-throw other errors

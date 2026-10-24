@@ -1,13 +1,13 @@
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { Injectable } from '@nestjs/common';
-import { ConfigurationParamEntity } from '../entities/configuration-param.entity';
-import { ConfigurationParamRepository } from '../repositories/configuration-param.repository';
-import { UpdateConfigurationParamaterDto } from '../dtos/paramater/update-configuration-paramater.dto';
-import { Transactional } from '@nestjs-cls/transactional';
-import { ParamVariant } from '../enums/param-variant.enum';
-import { ConfigurationParamaterNotFoundException } from '../errors/paramater/paramater.notfound.error copy';
-import { ConfigurationParamaterInvalideValueException } from '../errors/paramater/paramater.invalide.error';
-import { isValidConfigurationListValue } from '../utils/configuration-list-schema';
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { Injectable } from "@nestjs/common";
+import { ConfigurationParamEntity } from "../entities/configuration-param.entity";
+import { ConfigurationParamRepository } from "../repositories/configuration-param.repository";
+import { UpdateConfigurationParamaterDto } from "../dtos/paramater/update-configuration-paramater.dto";
+import { Transactional } from "@nestjs-cls/transactional";
+import { ParamVariant } from "../enums/param-variant.enum";
+import { ConfigurationParamaterNotFoundException } from "../errors/paramater/paramater.notfound.error copy";
+import { ConfigurationParamaterInvalideValueException } from "../errors/paramater/paramater.invalide.error";
+import { isValidConfigurationListValue } from "../utils/configuration-list-schema";
 
 @Injectable()
 export class ConfigurationParamService extends AbstractCrudService<ConfigurationParamEntity> {
@@ -24,7 +24,7 @@ export class ConfigurationParamService extends AbstractCrudService<Configuration
       case ParamVariant.NUMBER:
         return !isNaN(Number(param.value));
       case ParamVariant.BOOLEAN:
-        return param.value === 'true' || param.value === 'false';
+        return param.value === "true" || param.value === "false";
       case ParamVariant.SELECT:
         return param.options?.some((option) => option.value === param.value);
       case ParamVariant.LIST:

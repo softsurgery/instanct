@@ -37,8 +37,12 @@ export const useBugReportFormStructure = ({
     label: t("settings.support.screens.report-bug.forms.bug-title"),
     variant: FieldVariant.TEXT,
     required: true,
-    placeholder: t("settings.support.screens.report-bug.forms.placeholders.bug-title"),
-    description: t("settings.support.screens.report-bug.forms.descriptions.bug-title"),
+    placeholder: t(
+      "settings.support.screens.report-bug.forms.placeholders.bug-title",
+    ),
+    description: t(
+      "settings.support.screens.report-bug.forms.descriptions.bug-title",
+    ),
     error: t(store.errors.title?.[0]),
     props: {
       value: store.createDto.title,
@@ -55,8 +59,12 @@ export const useBugReportFormStructure = ({
     label: t("settings.support.screens.report-bug.forms.bug-description"),
     variant: FieldVariant.TEXTAREA,
     required: true,
-    placeholder: t("settings.support.screens.report-bug.forms.placeholders.bug-description"),
-    description: t("settings.support.screens.report-bug.forms.descriptions.bug-description"),
+    placeholder: t(
+      "settings.support.screens.report-bug.forms.placeholders.bug-description",
+    ),
+    description: t(
+      "settings.support.screens.report-bug.forms.descriptions.bug-description",
+    ),
     error: t(store.errors.description?.[0]),
     props: {
       value: store.createDto.description,
@@ -73,8 +81,12 @@ export const useBugReportFormStructure = ({
     label: t("settings.support.screens.report-bug.forms.bug-category"),
     variant: FieldVariant.SELECT,
     required: true,
-    placeholder: t("settings.support.screens.report-bug.forms.placeholders.bug-category"),
-    description: t("settings.support.screens.report-bug.forms.descriptions.bug-category"),
+    placeholder: t(
+      "settings.support.screens.report-bug.forms.placeholders.bug-category",
+    ),
+    description: t(
+      "settings.support.screens.report-bug.forms.descriptions.bug-category",
+    ),
     error: t(store.errors.variant?.[0]),
     props: {
       value: store.createDto.variant,

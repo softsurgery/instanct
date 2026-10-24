@@ -1,14 +1,14 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { RefTypeEntity } from './ref-type.entity';
+} from "typeorm";
+import { RefTypeEntity } from "./ref-type.entity";
 
-@Entity('ref-param')
+@Entity("ref-param")
 export class RefParamEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,18 +16,18 @@ export class RefParamEntity extends EntityHelper {
   @Column({ unique: true })
   label: string;
 
-  @Column({ nullable: true, type: 'varchar', length: 255 })
+  @Column({ nullable: true, type: "varchar", length: 255 })
   description: string;
 
-  @ManyToOne('RefTypeEntity', (reftype: any) => reftype.params, {
-    onDelete: 'CASCADE',
+  @ManyToOne("RefTypeEntity", (reftype: any) => reftype.params, {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'refTypeId' })
+  @JoinColumn({ name: "refTypeId" })
   refType: RefTypeEntity;
 
   @Column({})
   refTypeId: number;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: "json", nullable: true })
   extras: object;
 }

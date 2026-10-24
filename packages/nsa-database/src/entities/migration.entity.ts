@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { EntityHelper } from '../interfaces/database.entity.interface';
-import * as semver from 'semver';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { EntityHelper } from "../interfaces/database.entity.interface";
+import * as semver from "semver";
 
-@Entity('migrations')
+@Entity("migrations")
 export class MigrationEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;

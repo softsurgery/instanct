@@ -3,7 +3,10 @@ import { useConversationMessages } from "@/hooks/content/chat/useConversationMes
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { CONVERSATION_LINKS_MESSAGES_QUERY } from "@/lib/chat";
 import { getMessageLinksForDisplay } from "@/lib/messageLinks";
-import { ResponseMessageDto, ResponseMessageLinkDto } from "@softsurgery/api-client";
+import {
+  ResponseMessageDto,
+  ResponseMessageLinkDto,
+} from "@softsurgery/api-client";
 import { LegendList } from "@legendapp/list";
 import { useFocusEffect } from "expo-router";
 import React from "react";

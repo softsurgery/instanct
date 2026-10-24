@@ -46,7 +46,6 @@ export const getDeviceIcon = (os: string = "", name: string = "") => {
     return LinuxIcon;
   }
 
-
   if (
     osLower.includes("ios") ||
     osLower.includes("android") ||

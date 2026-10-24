@@ -1,4 +1,4 @@
-import { Inject, OnModuleInit, Optional } from '@nestjs/common';
+import { Inject, OnModuleInit, Optional } from "@nestjs/common";
 import {
   WebSocketGateway,
   SubscribeMessage,
@@ -7,26 +7,29 @@ import {
   ConnectedSocket,
   OnGatewayConnection,
   OnGatewayDisconnect,
-} from '@nestjs/websockets';
-import { Server } from 'socket.io';
-import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
-import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
-import { MessageService } from '../services/message.service';
-import { CreateMessageDto } from '../dtos/message/create-message.dto';
-import { ConversationService } from '../services/conversation.service';
-import { USER_REPOSITORY, AppUserRepository } from '@softsurgery/nsa-um/tokens/user-access';
+} from "@nestjs/websockets";
+import { Server } from "socket.io";
+import { getTokenPayloadForWebSocket } from "@softsurgery/nsa-auth/utils/token-payload";
+import { AdvancedSocket } from "@softsurgery/nsa-helpers/http";
+import { MessageService } from "../services/message.service";
+import { CreateMessageDto } from "../dtos/message/create-message.dto";
+import { ConversationService } from "../services/conversation.service";
+import {
+  USER_REPOSITORY,
+  AppUserRepository,
+} from "@softsurgery/nsa-um/tokens/user-access";
 import {
   UserPresenceEvent,
   UserPresenceService,
-} from '@softsurgery/nsa-um/services/user-presence.service';
-import { ConversationEntity } from '../entities/conversation.entity';
-import { DeepPartial } from 'typeorm';
+} from "@softsurgery/nsa-um/services/user-presence.service";
+import { ConversationEntity } from "../entities/conversation.entity";
+import { DeepPartial } from "typeorm";
 
 const MAX_LIMIT = 20;
 
 @WebSocketGateway({
-  namespace: '/chat',
-  cors: { origin: '*' },
+  namespace: "/chat",
+  cors: { origin: "*" },
 })
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
@@ -49,7 +52,7 @@ export class ChatGateway
    */
   onModuleInit() {
     this.userPresenceService?.onPresenceChange((event: UserPresenceEvent) => {
-      this.server?.emit('user-presence', event);
+      this.server?.emit("user-presence", event);
     });
   }
 
@@ -75,7 +78,7 @@ export class ChatGateway
       userId,
       client.id,
       source,
-      'chat',
+      "chat",
     );
   }
 
@@ -89,13 +92,13 @@ export class ChatGateway
     const userId = payload.sub;
 
     // Centralize disconnection tracking into UserPresenceService
-    this.userPresenceService?.trackDisconnection(userId, client.id, 'chat');
+    this.userPresenceService?.trackDisconnection(userId, client.id, "chat");
   }
 
   /**
    * Retrieves and emits presence status for a single user using UserPresenceService.
    */
-  @SubscribeMessage('get-user-status')
+  @SubscribeMessage("get-user-status")
   async handleGetUserStatus(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { userId: string },
@@ -116,14 +119,14 @@ export class ChatGateway
       };
     }
 
-    client.emit('user-status', status);
+    client.emit("user-status", status);
     return status;
   }
 
   /**
    * Retrieves and emits presence statuses for multiple users in batch using UserPresenceService.
    */
-  @SubscribeMessage('get-users-status')
+  @SubscribeMessage("get-users-status")
   async handleGetUsersStatus(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { userIds: string[] },
@@ -148,7 +151,7 @@ export class ChatGateway
       );
     }
 
-    client.emit('users-status', statuses);
+    client.emit("users-status", statuses);
     return statuses;
   }
 
@@ -166,9 +169,9 @@ export class ChatGateway
     return (
       (client.handshake?.auth?.source as string) ||
       (client.handshake?.query?.source as string) ||
-      (client.handshake?.headers?.['x-client-source'] as string) ||
-      (client.handshake?.headers?.['source'] as string) ||
-      'chat'
+      (client.handshake?.headers?.["x-client-source"] as string) ||
+      (client.handshake?.headers?.["source"] as string) ||
+      "chat"
     );
   }
 
@@ -185,7 +188,7 @@ export class ChatGateway
 
     this.server
       .to(`user_${userId}`)
-      .emit('conversations-unread-count', { count });
+      .emit("conversations-unread-count", { count });
   }
 
   /**
@@ -197,7 +200,7 @@ export class ChatGateway
   ): Promise<void> {
     const conversation = await this.conversationService.findOneById(
       conversationId,
-      'participants,participants.user,lastMessage,lastMessage.uploads',
+      "participants,participants.user,lastMessage,lastMessage.uploads",
     );
 
     if (!conversation) {
@@ -207,7 +210,7 @@ export class ChatGateway
     for (const participant of conversation.participants ?? []) {
       this.server
         .to(`user_${participant.userId}`)
-        .emit('conversation-created', {
+        .emit("conversation-created", {
           conversation,
           creatorUserId,
         });
@@ -223,7 +226,7 @@ export class ChatGateway
   /**
    * Subscribes a client to a conversation room and returns recent paginated messages.
    */
-  @SubscribeMessage('join-conversation')
+  @SubscribeMessage("join-conversation")
   async joinConversation(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { conversationId: number },
@@ -237,14 +240,14 @@ export class ChatGateway
     );
 
     if (!isParticipant) {
-      client.emit('error', 'You are not part of this conversation');
+      client.emit("error", "You are not part of this conversation");
       return;
     }
 
     const rooms = [...client.rooms];
 
     for (const room of rooms) {
-      if (room.startsWith('conversation_')) {
+      if (room.startsWith("conversation_")) {
         await client.leave(room);
       }
     }
@@ -254,20 +257,20 @@ export class ChatGateway
     const recentMessages =
       await this.messageService.findPaginatedConversationMessages(
         {
-          sort: 'createdAt,DESC',
+          sort: "createdAt,DESC",
           limit: MAX_LIMIT.toString(),
-          page: '1',
+          page: "1",
         },
         data.conversationId,
       );
 
-    client.emit('conversation-messages', recentMessages.data);
+    client.emit("conversation-messages", recentMessages.data);
   }
 
   /**
    * Fetches paginated messages for a conversation requested by a participant.
    */
-  @SubscribeMessage('get-conversation-messages')
+  @SubscribeMessage("get-conversation-messages")
   async getConversationMessages(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody()
@@ -282,28 +285,28 @@ export class ChatGateway
     );
 
     if (!isParticipant) {
-      client.emit('error', 'You are not part of this conversation');
+      client.emit("error", "You are not part of this conversation");
       return;
     }
 
     const messages =
       await this.messageService.findPaginatedConversationMessages(
         {
-          sort: 'createdAt,DESC',
+          sort: "createdAt,DESC",
           limit: MAX_LIMIT.toString(),
-          page: data.page ?? '1',
+          page: data.page ?? "1",
         },
         data.conversationId,
       );
 
-    client.emit('conversation-messages', messages.data);
+    client.emit("conversation-messages", messages.data);
   }
 
   /**
    * Handles incoming new chat message creation, updates conversation seen timestamps,
    * and emits the message to the conversation room and participant user rooms.
    */
-  @SubscribeMessage('message')
+  @SubscribeMessage("message")
   async handleMessage(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: CreateMessageDto,
@@ -316,7 +319,7 @@ export class ChatGateway
       userId,
     );
     if (!isParticipant) {
-      client.emit('error', 'You are not part of this conversation');
+      client.emit("error", "You are not part of this conversation");
       return;
     }
 
@@ -330,12 +333,12 @@ export class ChatGateway
 
     this.server
       .to(`conversation_${data.conversationId}`)
-      .emit('message', message);
+      .emit("message", message);
 
     let conversation: DeepPartial<ConversationEntity> =
       (await this.conversationService.findOneById(
         data.conversationId,
-        'participants,participants.user,lastMessage,lastMessage.uploads',
+        "participants,participants.user,lastMessage,lastMessage.uploads",
       )) as DeepPartial<ConversationEntity>;
 
     conversation = {
@@ -346,20 +349,20 @@ export class ChatGateway
     for (const participant of conversation?.participants ?? []) {
       this.server
         .to(`user_${participant.userId}`)
-        .emit('conversation-updated-last-check', conversation);
+        .emit("conversation-updated-last-check", conversation);
     }
 
     for (const participant of conversation?.participants ?? []) {
       this.server
         .to(`user_${participant.userId}`)
-        .emit('conversation-updated-message', conversation);
+        .emit("conversation-updated-message", conversation);
     }
   }
 
   /**
    * Marks a conversation as seen by the current user and notifies other participants.
    */
-  @SubscribeMessage('see-conversation')
+  @SubscribeMessage("see-conversation")
   async seeConversation(
     @ConnectedSocket() client: AdvancedSocket,
     @MessageBody() data: { conversationId: number; lastCheck?: string },
@@ -373,7 +376,7 @@ export class ChatGateway
     );
 
     if (!isParticipant) {
-      client.emit('error', 'You are not part of this conversation');
+      client.emit("error", "You are not part of this conversation");
       return;
     }
 
@@ -386,7 +389,7 @@ export class ChatGateway
     for (const participant of conversation?.participants ?? []) {
       this.server
         .to(`user_${participant.userId}`)
-        .emit('conversation-updated-last-check', conversation);
+        .emit("conversation-updated-last-check", conversation);
     }
   }
 }

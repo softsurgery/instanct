@@ -1,1 +1,1 @@
-export { StorageModule } from './storage.module';
+export { StorageModule } from "./storage.module";

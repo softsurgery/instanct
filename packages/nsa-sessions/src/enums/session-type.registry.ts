@@ -1,6 +1,6 @@
 export type SessionType = string;
 
-export const SESSION_TYPE = Symbol('SESSION_TYPE');
+export const SESSION_TYPE = Symbol("SESSION_TYPE");
 
 export const SessionType: Record<string, SessionType> = {};
 

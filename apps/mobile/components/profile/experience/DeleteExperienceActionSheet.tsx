@@ -1,9 +1,7 @@
 import React from "react";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
-import { Text } from "@softsurgery/mobile-ui";
-import { Button } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
+import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { Trash2 } from "lucide-react-native";
 import { useColorPalette } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";

@@ -36,7 +36,9 @@ export const TemplateVisualizer = ({
   const [viewport, setViewport] = React.useState<ViewportMode>("desktop");
   const [reloadKey, setReloadKey] = React.useState(0);
   const [copied, setCopied] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState<"preview" | "source">("preview");
+  const [activeTab, setActiveTab] = React.useState<"preview" | "source">(
+    "preview",
+  );
 
   // Calculate actual UTF-8 byte size (size in octets)
   const byteSize = React.useMemo(() => {
@@ -199,11 +201,17 @@ export const TemplateVisualizer = ({
       >
         <div className="px-4 py-2 border-b bg-muted/20">
           <TabsList className="grid grid-cols-2 max-w-[280px] h-8">
-            <TabsTrigger value="preview" className="text-xs flex items-center gap-1.5">
+            <TabsTrigger
+              value="preview"
+              className="text-xs flex items-center gap-1.5"
+            >
               <Eye className="h-3.5 w-3.5" />
               {t("templates.visualizer.rendered", "Rendered View")}
             </TabsTrigger>
-            <TabsTrigger value="source" className="text-xs flex items-center gap-1.5">
+            <TabsTrigger
+              value="source"
+              className="text-xs flex items-center gap-1.5"
+            >
               <Code2 className="h-3.5 w-3.5" />
               {t("templates.visualizer.source", "Source Code")}
             </TabsTrigger>

@@ -19,14 +19,14 @@ export const AnimatedDot = ({
       progress.value,
       [index - 1, index, index + 1],
       [0.3, 1, 0.3],
-      Extrapolate.CLAMP
+      Extrapolate.CLAMP,
     );
 
     const scale = interpolate(
       progress.value,
       [index - 1, index, index + 1],
       [0.8, 1.2, 0.8],
-      Extrapolate.CLAMP
+      Extrapolate.CLAMP,
     );
 
     return {

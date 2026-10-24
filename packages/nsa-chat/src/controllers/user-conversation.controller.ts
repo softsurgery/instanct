@@ -1,9 +1,9 @@
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
-import { toDto, toDtoArray } from '@softsurgery/nsa-database';
-import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { ApiPaginatedResponse } from "@softsurgery/nsa-database";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
 import {
   Body,
   ClassSerializerInterceptor,
@@ -16,21 +16,21 @@ import {
   Query,
   Request,
   UseInterceptors,
-} from '@nestjs/common';
-import { ConversationService } from '../services/conversation.service';
-import { ChatGateway } from '../gateways/chat.gateway';
-import { ResponseConversationDto } from '../dtos/conversation/response-conversation.dto';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
-import { CreateConversationDto } from '../dtos/conversation/create-conversation.dto';
-import { CreateConversationReportDto } from '../dtos/conversation/create-conversation-report.dto';
+} from "@nestjs/common";
+import { ConversationService } from "../services/conversation.service";
+import { ChatGateway } from "../gateways/chat.gateway";
+import { ResponseConversationDto } from "../dtos/conversation/response-conversation.dto";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
+import { CreateConversationDto } from "../dtos/conversation/create-conversation.dto";
+import { CreateConversationReportDto } from "../dtos/conversation/create-conversation-report.dto";
 
-@ApiTags('current-conversation')
-@ApiBearerAuth('access_token')
+@ApiTags("current-conversation")
+@ApiBearerAuth("access_token")
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
 @Controller({
-  version: '1',
-  path: '/current-conversation',
+  version: "1",
+  path: "/current-conversation",
 })
 export class CurrentConversationController {
   constructor(
@@ -39,10 +39,10 @@ export class CurrentConversationController {
   ) {}
 
   @ApiOperation({
-    description: 'Find all paginated conversations of the current user',
-    summary: 'Find all paginated conversations of the current user',
+    description: "Find all paginated conversations of the current user",
+    summary: "Find all paginated conversations of the current user",
   })
-  @Get('/list')
+  @Get("/list")
   @ApiPaginatedResponse(ResponseConversationDto)
   async findAllPaginated(
     @Query() query: IQueryObject,
@@ -60,12 +60,12 @@ export class CurrentConversationController {
   }
 
   @ApiOperation({
-    description: 'Find a conversation by its id',
-    summary: 'Find a conversation by its id',
+    description: "Find a conversation by its id",
+    summary: "Find a conversation by its id",
   })
-  @Get(':id')
+  @Get(":id")
   async findOneById(
-    @Param('id', ParseIntPipe) id: number,
+    @Param("id", ParseIntPipe) id: number,
     @Query() query: IQueryObject,
   ): Promise<ResponseConversationDto | null> {
     const conversation = await this.conversationService.findOneById(
@@ -76,10 +76,10 @@ export class CurrentConversationController {
   }
 
   @ApiOperation({
-    description: 'Get the number of unread conversations of the current user',
-    summary: 'Get the number of unread conversations of the current user',
+    description: "Get the number of unread conversations of the current user",
+    summary: "Get the number of unread conversations of the current user",
   })
-  @Get('/unread-count')
+  @Get("/unread-count")
   async getUnreadCount(
     @Request() req: AdvancedRequest,
   ): Promise<{ count: number }> {
@@ -91,8 +91,8 @@ export class CurrentConversationController {
 
   @ApiOperation({
     description:
-      'Create a conversation between the current user and another user',
-    summary: 'Create a conversation between the current user and another user',
+      "Create a conversation between the current user and another user",
+    summary: "Create a conversation between the current user and another user",
   })
   @Post()
   async createConversation(
@@ -109,19 +109,19 @@ export class CurrentConversationController {
 
     const fullConversation = await this.conversationService.findOneById(
       conversation.id,
-      'participants,participants.user,lastMessage,lastMessage.uploads',
+      "participants,participants.user,lastMessage,lastMessage.uploads",
     );
 
     return toDto(ResponseConversationDto, fullConversation);
   }
 
   @ApiOperation({
-    description: 'Report a conversation',
-    summary: 'Report a conversation',
+    description: "Report a conversation",
+    summary: "Report a conversation",
   })
-  @Post(':id/report')
+  @Post(":id/report")
   async reportConversation(
-    @Param('id', ParseIntPipe) id: number,
+    @Param("id", ParseIntPipe) id: number,
     @Body() createConversationReportDto: CreateConversationReportDto,
     @Request() req: AdvancedRequest,
   ): Promise<void> {
@@ -133,12 +133,12 @@ export class CurrentConversationController {
   }
 
   @ApiOperation({
-    description: 'Leave a conversation',
-    summary: 'Leave a conversation',
+    description: "Leave a conversation",
+    summary: "Leave a conversation",
   })
-  @Delete(':id')
+  @Delete(":id")
   async deleteConversation(
-    @Param('id', ParseIntPipe) id: number,
+    @Param("id", ParseIntPipe) id: number,
     @Request() req: AdvancedRequest,
   ): Promise<void> {
     const userId = req?.user?.sub;

@@ -1,18 +1,18 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { ResponseRefTypeDto } from '../ref-type/response-ref-type.dto';
+import { ApiProperty } from "@nestjs/swagger";
+import { Expose, Type } from "class-transformer";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { ResponseRefTypeDto } from "../ref-type/response-ref-type.dto";
 
 export class ResponseRefParamDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number, example: 1 })
   @Expose()
   id: number;
 
-  @ApiProperty({ type: String, example: 'label' })
+  @ApiProperty({ type: String, example: "label" })
   @Expose()
   label: string;
 
-  @ApiProperty({ type: String, example: 'description' })
+  @ApiProperty({ type: String, example: "description" })
   @Expose()
   description: string;
 

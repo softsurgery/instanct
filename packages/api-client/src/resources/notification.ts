@@ -1,9 +1,5 @@
 import type { AxiosInstance } from "axios";
-import type {
-  Paginated,
-  QueryParams,
-  ResponseNotificationDto,
-} from "../types";
+import type { Paginated, QueryParams, ResponseNotificationDto } from "../types";
 import { listParams } from "./query";
 
 export function createNotificationResource(http: AxiosInstance) {
@@ -29,9 +25,8 @@ export function createNotificationResource(http: AxiosInstance) {
   };
 
   const findAll = async (): Promise<ResponseNotificationDto[]> => {
-    const response = await http.get<ResponseNotificationDto[]>(
-      `/notification/all`,
-    );
+    const response =
+      await http.get<ResponseNotificationDto[]>(`/notification/all`);
     return response.data;
   };
 
@@ -74,4 +69,6 @@ export function createNotificationResource(http: AxiosInstance) {
   };
 }
 
-export type NotificationResource = ReturnType<typeof createNotificationResource>;
+export type NotificationResource = ReturnType<
+  typeof createNotificationResource
+>;

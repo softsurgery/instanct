@@ -5,7 +5,7 @@ export const useCurrentUser = (join?: string) => {
   const { data: session } = useSession();
   const { user, isFetchUserPending, refetchUser } = useEmailUser(
     session?.user.email || "",
-    join
+    join,
   );
   return {
     user,

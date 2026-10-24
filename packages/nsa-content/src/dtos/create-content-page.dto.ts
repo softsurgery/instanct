@@ -1,14 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 import {
   IsOptional,
   IsString,
   Length,
   Matches,
   MaxLength,
-} from 'class-validator';
+} from "class-validator";
 
 export class CreateContentPageDto {
-  @ApiProperty({ type: String, example: 'terms' })
+  @ApiProperty({ type: String, example: "terms" })
   @IsString()
   @Length(2, 64)
   @Matches(/^[a-z0-9-]+$/)
@@ -29,7 +29,7 @@ export class CreateContentPageDto {
   @IsString()
   body: string;
 
-  @ApiProperty({ type: String, required: false, example: 'fr' })
+  @ApiProperty({ type: String, required: false, example: "fr" })
   @IsString()
   @IsOptional()
   @Length(2, 8)

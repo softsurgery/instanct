@@ -69,4 +69,3 @@ export interface AppVersionPolicyDto {
   ios: PlatformVersionPolicyDto;
   android: PlatformVersionPolicyDto;
 }
-

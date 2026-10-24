@@ -1,10 +1,12 @@
 import { cn } from "@softsurgery/lib";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  StableKeyboardAwareScrollView,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface VerifyEmailPortalProps {
   className?: string;
 }

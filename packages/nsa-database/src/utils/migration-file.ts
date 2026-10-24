@@ -1,5 +1,5 @@
-import * as semver from 'semver';
-import * as crc32 from 'crc-32';
+import * as semver from "semver";
+import * as crc32 from "crc-32";
 
 export class MigrationFile {
   version: string;
@@ -22,11 +22,11 @@ export class MigrationFile {
   }
 
   static initializeEmptyMigrationFile() {
-    return new MigrationFile('', '', '', '');
+    return new MigrationFile("", "", "", "");
   }
 
   private static getCRC32Checksum(content: string): number {
-    return crc32.str(content.replace(/\s/g, ''));
+    return crc32.str(content.replace(/\s/g, ""));
   }
 
   setContent(content: string): void {

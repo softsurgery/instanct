@@ -9,32 +9,32 @@ import {
   Query,
   Req,
   UseInterceptors,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { toDto, toDtoArray } from '@softsurgery/nsa-database';
-import { SessionService } from '../services/session.service';
-import { ResponseSessionDto } from '../dtos/response-session.dto';
-import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
-import { CreateSessionDto } from '../dtos/create-session.dto';
-import { LogInterceptor } from '@softsurgery/nsa-logger/decorators/logger.interceptor';
-import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
-import { EventType } from '@softsurgery/nsa-logger/enums/event-type.registry';
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { ApiPaginatedResponse } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { toDto, toDtoArray } from "@softsurgery/nsa-database";
+import { SessionService } from "../services/session.service";
+import { ResponseSessionDto } from "../dtos/response-session.dto";
+import { AdvancedRequest } from "@softsurgery/nsa-helpers/http";
+import { CreateSessionDto } from "../dtos/create-session.dto";
+import { LogInterceptor } from "@softsurgery/nsa-logger/decorators/logger.interceptor";
+import { LogEvent } from "@softsurgery/nsa-logger/decorators/log-event.decorator";
+import { EventType } from "@softsurgery/nsa-logger/enums/event-type.registry";
 
-@ApiTags('current-session')
-@ApiBearerAuth('access_token')
+@ApiTags("current-session")
+@ApiBearerAuth("access_token")
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(LogInterceptor)
 @Controller({
-  version: '1',
-  path: '/current-session',
+  version: "1",
+  path: "/current-session",
 })
 export class CurrentSessionController {
   constructor(private readonly sessionService: SessionService) {}
 
-  @Get('/list')
+  @Get("/list")
   async findAllUserSessions(
     @Query() query: IQueryObject,
     @Req() req: AdvancedRequest,
@@ -49,7 +49,7 @@ export class CurrentSessionController {
     };
   }
 
-  @Get('/all')
+  @Get("/all")
   async findAllSessions(
     @Query() query: IQueryObject,
     @Req() req: AdvancedRequest,
@@ -60,7 +60,7 @@ export class CurrentSessionController {
     );
   }
 
-  @Get('/active-list')
+  @Get("/active-list")
   @ApiPaginatedResponse(ResponseSessionDto)
   async findAllPaginatedActiveSessions(
     @Query() query: IQueryObject,
@@ -77,7 +77,7 @@ export class CurrentSessionController {
     };
   }
 
-  @Get('/active-all')
+  @Get("/active-all")
   async findAllActiveSessions(
     @Query() query: IQueryObject,
     @Req() req: AdvancedRequest,
@@ -88,7 +88,7 @@ export class CurrentSessionController {
     );
   }
 
-  @Post('/start')
+  @Post("/start")
   @LogEvent(EventType.SESSION_START)
   async start(
     @Body() createSessionDto: CreateSessionDto,
@@ -105,10 +105,10 @@ export class CurrentSessionController {
     return toDto(ResponseSessionDto, session);
   }
 
-  @Put('/update/:id')
+  @Put("/update/:id")
   @LogEvent(EventType.SESSION_UPDATE)
   async update(
-    @Param('id') id: number,
+    @Param("id") id: number,
     @Body() updateSessionDto: Partial<CreateSessionDto>,
     @Req() req: AdvancedRequest,
   ): Promise<ResponseSessionDto> {
@@ -125,10 +125,10 @@ export class CurrentSessionController {
     return toDto(ResponseSessionDto, session);
   }
 
-  @Put('/end/:id')
+  @Put("/end/:id")
   @LogEvent(EventType.SESSION_END)
   async end(
-    @Param('id') id: number,
+    @Param("id") id: number,
     @Req() req: AdvancedRequest,
   ): Promise<ResponseSessionDto | null> {
     const session = await this.sessionService.end(id);

@@ -38,7 +38,6 @@ export const ConfigurationPortal = ({
   const { configurations, isConfigurationsPending, refetchConfigurations } =
     useConfigurations();
 
-
   const [selectedNamespaceForDelete, setSelectedNamespaceForDelete] =
     React.useState<ResponseConfigurationNamespaceDto | null>(null);
 
@@ -53,7 +52,10 @@ export const ConfigurationPortal = ({
   React.useEffect(() => {
     setRoutes?.([
       {
-        title: t("configuration.breadcrumbs.contentManagement", "Content Management"),
+        title: t(
+          "configuration.breadcrumbs.contentManagement",
+          "Content Management",
+        ),
         href: "/content-management",
       },
       {
@@ -83,7 +85,9 @@ export const ConfigurationPortal = ({
       useConfigStore.getState().updateDtos,
     );
     downloadConfigurationExport(payload);
-    toast.success(t("configuration.messages.exportSuccess", "Configuration exported"));
+    toast.success(
+      t("configuration.messages.exportSuccess", "Configuration exported"),
+    );
   }, [configurations, t]);
 
   const handleImport = React.useCallback(
@@ -115,7 +119,10 @@ export const ConfigurationPortal = ({
         toast.error(
           error instanceof Error
             ? error.message
-            : t("configuration.messages.importError", "Failed to import configuration"),
+            : t(
+                "configuration.messages.importError",
+                "Failed to import configuration",
+              ),
         );
       }
     },
@@ -136,25 +143,41 @@ export const ConfigurationPortal = ({
     return () => {
       clearFloating?.();
     };
-  }, [clearFloating, configurations, handleExportAll, handleImport, isConfigurationsPending, setFloating, t]);
+  }, [
+    clearFloating,
+    configurations,
+    handleExportAll,
+    handleImport,
+    isConfigurationsPending,
+    setFloating,
+    t,
+  ]);
 
-  const { mutate: deleteNamespace, isPending: isDeletionPending } = useMutation({
-    mutationFn: (id: string) => api.admin.configuration.deleteNamespace(id),
-    onSuccess: () => {
-      toast.success(
-        t("configuration.messages.deleteSuccess", "Configuration deleted successfully."),
-      );
-      refetchConfigurations();
-      setSelectedNamespaceForDelete(null);
-      closeDeleteConfigurationDialog();
+  const { mutate: deleteNamespace, isPending: isDeletionPending } = useMutation(
+    {
+      mutationFn: (id: string) => api.admin.configuration.deleteNamespace(id),
+      onSuccess: () => {
+        toast.success(
+          t(
+            "configuration.messages.deleteSuccess",
+            "Configuration deleted successfully.",
+          ),
+        );
+        refetchConfigurations();
+        setSelectedNamespaceForDelete(null);
+        closeDeleteConfigurationDialog();
+      },
+      onError: (error: ServerErrorResponse) => {
+        toast.error(
+          error.response?.data?.message ||
+            t(
+              "configuration.messages.deleteError",
+              "Failed to delete configuration.",
+            ),
+        );
+      },
     },
-    onError: (error: ServerErrorResponse) => {
-      toast.error(
-        error.response?.data?.message ||
-          t("configuration.messages.deleteError", "Failed to delete configuration."),
-      );
-    },
-  });
+  );
 
   const {
     deleteConfigurationDialog,
@@ -189,9 +212,15 @@ export const ConfigurationPortal = ({
       );
     }
     list.sort((a, b) => {
-      const fieldA = (a[sortDetails.sortKey as keyof ResponseConfigurationNamespaceDto] || "").toString();
-      const fieldB = (b[sortDetails.sortKey as keyof ResponseConfigurationNamespaceDto] || "").toString();
-      return sortDetails.order ? fieldA.localeCompare(fieldB) : fieldB.localeCompare(fieldA);
+      const fieldA = (
+        a[sortDetails.sortKey as keyof ResponseConfigurationNamespaceDto] || ""
+      ).toString();
+      const fieldB = (
+        b[sortDetails.sortKey as keyof ResponseConfigurationNamespaceDto] || ""
+      ).toString();
+      return sortDetails.order
+        ? fieldA.localeCompare(fieldB)
+        : fieldB.localeCompare(fieldA);
     });
     return list;
   }, [configurations, searchTerm, sortDetails]);
@@ -204,12 +233,12 @@ export const ConfigurationPortal = ({
 
   const totalNamespacePages = Math.ceil(filteredNamespaces.length / size) || 1;
 
-
   // Namespace Table Context
   const namespaceContext: DataTableConfig<ResponseConfigurationNamespaceDto> = {
     singularName: t("configuration.singularName", "Configuration"),
     pluralName: t("configuration.pluralName", "Configurations"),
-    createCallback: () => router.push("/content-management/configuration/create"),
+    createCallback: () =>
+      router.push("/content-management/configuration/create"),
     updateCallback: (entity: ResponseConfigurationNamespaceDto) =>
       router.push(`/content-management/configuration/${entity.id}`),
     deleteCallback: (entity: ResponseConfigurationNamespaceDto) => {

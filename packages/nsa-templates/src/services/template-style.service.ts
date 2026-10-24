@@ -1,13 +1,13 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { PageMetaDto } from '@softsurgery/nsa-database';
-import { TemplateStyleRepository } from '../repositories/template-style.repository';
-import { TemplateStyleEntity } from '../entities/template-style.entity';
-import { TemplateStyleNotFoundException } from '../errors/template-style.notfound.error';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
+import { FindManyOptions, FindOneOptions } from "typeorm";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { PageMetaDto } from "@softsurgery/nsa-database";
+import { TemplateStyleRepository } from "../repositories/template-style.repository";
+import { TemplateStyleEntity } from "../entities/template-style.entity";
+import { TemplateStyleNotFoundException } from "../errors/template-style.notfound.error";
 
 @Injectable()
 export class TemplateStyleService {

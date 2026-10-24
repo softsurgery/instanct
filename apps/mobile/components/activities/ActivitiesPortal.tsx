@@ -1,7 +1,9 @@
 import React from "react";
-import { StableScrollView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  StableScrollView,
+  ApplicationHeader,
+  StableSafeAreaView,
+} from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
 import { MapSessionPayload, ResponseSessionDto } from "@softsurgery/api-client";
 import { router, useLocalSearchParams } from "expo-router";

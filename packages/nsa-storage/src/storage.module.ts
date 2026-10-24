@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { StorageRepository } from './repositories/storage.repository';
-import { StorageEntity } from './entities/storage.entity';
-import { storageProvider } from './providers/storage.provider';
-import { ConfigModule } from '@nestjs/config';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { StorageRepository } from "./repositories/storage.repository";
+import { StorageEntity } from "./entities/storage.entity";
+import { storageProvider } from "./providers/storage.provider";
+import { ConfigModule } from "@nestjs/config";
 import {
   STORAGE_SYSTEMATICS_TOKEN,
   storageSystematicsRegistry,
-} from './constants/storage-systematics.registry';
+} from "./constants/storage-systematics.registry";
 
 @Module({
   controllers: [],

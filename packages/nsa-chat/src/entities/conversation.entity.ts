@@ -1,4 +1,4 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -8,37 +8,37 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { MessageEntity } from './message.entity';
-import { identifyUser } from '@softsurgery/nsa-um/utils/identify-user';
-import { ConversationUserEntity } from './conversation-user.entity';
+} from "typeorm";
+import { MessageEntity } from "./message.entity";
+import { identifyUser } from "@softsurgery/nsa-um/utils/identify-user";
+import { ConversationUserEntity } from "./conversation-user.entity";
 
-@Entity('conversations')
+@Entity("conversations")
 export class ConversationEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
 
   @OneToMany(
-    'ConversationUserEntity',
+    "ConversationUserEntity",
     (participant: any) => participant.conversation,
     {
-      onDelete: 'CASCADE',
+      onDelete: "CASCADE",
     },
   )
   participants: ConversationUserEntity[];
 
-  @OneToMany('MessageEntity', (message: any) => message.conversation)
+  @OneToMany("MessageEntity", (message: any) => message.conversation)
   messages: MessageEntity[];
 
-  @OneToOne('MessageEntity', { nullable: true })
-  @JoinColumn({ name: 'lastMessageId' })
+  @OneToOne("MessageEntity", { nullable: true })
+  @JoinColumn({ name: "lastMessageId" })
   lastMessage: MessageEntity;
 
   @Column({ nullable: true })
   lastMessageId: number;
 
   @Column({
-    type: 'text',
+    type: "text",
     nullable: true,
   })
   participantsIdentifiers: string;
@@ -53,6 +53,6 @@ export class ConversationEntity extends EntityHelper {
       this.participants
         ?.map((p) => identifyUser(p.user))
         .filter(Boolean)
-        .join(',') || '';
+        .join(",") || "";
   }
 }

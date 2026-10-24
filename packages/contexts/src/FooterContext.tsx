@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface FooterContextProps {
   content: React.ReactNode;
@@ -6,6 +6,8 @@ interface FooterContextProps {
   clearContent: () => void;
 }
 
-export const FooterContext = React.createContext<Partial<FooterContextProps>>({});
+export const FooterContext = React.createContext<Partial<FooterContextProps>>(
+  {},
+);
 
 export const useFooter = () => React.useContext(FooterContext);

@@ -1,14 +1,13 @@
 import { timeAgo } from "@/lib/date";
 import { useTranslation } from "react-i18next";
 import { View, Pressable } from "react-native";
-import { Image } from "@softsurgery/mobile-ui";
+import { Image, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import {
   NotificationType,
   ResponseNotificationDto,
 } from "@softsurgery/api-client";
 import { HTMLText } from "@softsurgery/mobile-components";
-import { Text } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import {
   getNotificationDestination,
@@ -28,9 +27,7 @@ export const NotificationEntry = ({
 }: NotificationEntryProps) => {
   const { t } = useTranslation("notifications");
   const onPress = () => {
-    navigateToNotificationDestination(
-      getNotificationDestination(notification),
-    );
+    navigateToNotificationDestination(getNotificationDestination(notification));
   };
 
   const isNewSignin = notification.type === NotificationType.NEW_SIGNIN;

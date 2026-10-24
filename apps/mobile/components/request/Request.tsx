@@ -1,10 +1,12 @@
 import React from "react";
 import { useApi } from "@/contexts/ApiContext";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { Button } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import {
+  ApplicationHeader,
+  StableSafeAreaView,
+  Loader,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
+import { Button, Icon, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -17,7 +19,6 @@ import {
 import { View } from "react-native";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { useTranslation } from "react-i18next";
-import { Loader } from "@softsurgery/mobile-components";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
@@ -28,7 +29,6 @@ import { RequestDetailsCard } from "./RequestDetailsCard";
 import { RequestLocationSection } from "./RequestLocationSection";
 import { RequestSkeleton } from "./RequestSkeleton";
 import { StatusBadge } from "./RequestStatus";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { RequestConfirmActionSheet } from "./RequestConfirmActionSheet";
 
 interface RequestProps {

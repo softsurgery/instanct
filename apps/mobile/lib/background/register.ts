@@ -24,8 +24,7 @@ export async function registerBackgroundUtilities(
   const supportsNative =
     options.supportsNative ?? supportsNativeBackgroundTasks();
   const tasks = options.tasks ?? [];
-  const activities =
-    options.activities ?? tasks.map((task) => task.activity);
+  const activities = options.activities ?? tasks.map((task) => task.activity);
 
   const appStateEnabled = options.appState?.enabled ?? true;
   if (appStateEnabled && activities.length) {

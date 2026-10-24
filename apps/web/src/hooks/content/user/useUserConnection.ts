@@ -16,16 +16,15 @@ export interface UseUserConnectionOptions {
 }
 
 export type UseUserConnectionInput =
-  | string
-  | string[]
-  | UseUserConnectionOptions
-  | undefined;
+  string | string[] | UseUserConnectionOptions | undefined;
 
 /**
  * Normalizes incoming user status payloads.
  */
 function normalizeStatus(raw: unknown): UserConnectionStatus {
-  const r = (raw && typeof raw === "object" ? raw : {}) as Partial<UserConnectionStatus> & { userId?: string };
+  const r = (
+    raw && typeof raw === "object" ? raw : {}
+  ) as Partial<UserConnectionStatus> & { userId?: string };
   return {
     userId: r.userId || "",
     isConnected: !!r.isConnected,

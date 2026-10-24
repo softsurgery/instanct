@@ -110,7 +110,9 @@ export const useVersionPersistStore = create<VersionPersistStore>()(
             let confirmedStore = state.confirmedStoreUrl;
 
             if (state.hasPendingMandatoryUpdate && state.pendingMinVersion) {
-              if (isVersionOutdated(installedVersion, state.pendingMinVersion)) {
+              if (
+                isVersionOutdated(installedVersion, state.pendingMinVersion)
+              ) {
                 confirmed = true;
                 confirmedMin = state.pendingMinVersion;
                 confirmedStore = state.pendingStoreUrl;

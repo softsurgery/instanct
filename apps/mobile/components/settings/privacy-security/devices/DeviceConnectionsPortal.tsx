@@ -69,7 +69,9 @@ export const DeviceConnectionsPortal = ({
   } = useQuery<ResponseUserConnectionHistoryDto[]>({
     queryKey: ["device-history", id],
     queryFn: async () =>
-      id ? api.userDeviceHistory.getByDeviceId(id) : api.userDeviceHistory.getAll(),
+      id
+        ? api.userDeviceHistory.getByDeviceId(id)
+        : api.userDeviceHistory.getAll(),
   });
 
   const screenTitle = t(
@@ -83,7 +85,7 @@ export const DeviceConnectionsPortal = ({
 
     const grouped: Record<
       string,
-      Array<{ connection: ResponseUserConnectionHistoryDto; isLatest: boolean }>
+      { connection: ResponseUserConnectionHistoryDto; isLatest: boolean }[]
     > = {};
 
     history.forEach((conn, index) => {
@@ -171,11 +173,7 @@ export const DeviceConnectionsPortal = ({
     if (isLoading) {
       return (
         <View className="flex-1 items-center justify-center p-10 gap-2">
-          <Icon
-            as={Loader2}
-            className="animate-spin text-primary"
-            size={24}
-          />
+          <Icon as={Loader2} className="animate-spin text-primary" size={24} />
           <Text className="text-sm text-muted-foreground">
             {t(
               "settings.account.screens.privacy-security.screens.account-security.devices.connections.loading",

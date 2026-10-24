@@ -1,6 +1,6 @@
-import type { Request as ExpressRequest } from 'express';
-import type { Socket } from 'socket.io';
-import type { BatchNotificationInfo } from '@softsurgery/nsa-notifications/decorators/notify.decorator';
+import type { Request as ExpressRequest } from "express";
+import type { Socket } from "socket.io";
+import type { BatchNotificationInfo } from "@softsurgery/nsa-notifications/decorators/notify.decorator";
 
 export interface AdvancedRequest extends ExpressRequest {
   user?: {

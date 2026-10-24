@@ -12,44 +12,44 @@ import {
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
-} from '@nestjs/common';
-import { Request, Response } from 'express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { StorageService } from '../services/storage.service';
-import { StorageEntity } from '../entities/storage.entity';
-import { Public } from '@softsurgery/nsa-auth/utils/public-strategy';
+} from "@nestjs/common";
+import { Request, Response } from "express";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { ApiPaginatedResponse } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { StorageService } from "../services/storage.service";
+import { StorageEntity } from "../entities/storage.entity";
+import { Public } from "@softsurgery/nsa-auth/utils/public-strategy";
 
-@ApiTags('storage')
-@ApiBearerAuth('access_token')
+@ApiTags("storage")
+@ApiBearerAuth("access_token")
 @Controller({
-  version: '1',
-  path: '/storage',
+  version: "1",
+  path: "/storage",
 })
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
   @Public()
-  @Get('/resource/:slug')
+  @Get("/resource/:slug")
   async viewResourceBySlug(
-    @Param('slug') slug: string,
+    @Param("slug") slug: string,
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<void> {
     const upload = await this.storageService.findBySlug(slug);
     if (upload.isPrivate) {
       throw new UnauthorizedException(
-        'You do not have permission to access this file',
+        "You do not have permission to access this file",
       );
     }
 
     await this.streamResource(req, res, upload, false);
   }
 
-  @Get('/list')
+  @Get("/list")
   @ApiPaginatedResponse(StorageEntity)
   async findAllPaginated(
     @Query() query: IQueryObject,
@@ -57,80 +57,80 @@ export class StorageController {
     return this.storageService.findAllPaginated(query);
   }
 
-  @Get('/all')
+  @Get("/all")
   async findAll(@Query() options: IQueryObject): Promise<StorageEntity[]> {
     return await this.storageService.findAll(options);
   }
 
-  @Get(':id')
-  async getFileByIdOrSlug(@Param('id') id: number): Promise<StorageEntity> {
+  @Get(":id")
+  async getFileByIdOrSlug(@Param("id") id: number): Promise<StorageEntity> {
     return this.storageService.findOneById(id);
   }
 
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         files: {
-          type: 'array',
+          type: "array",
           items: {
-            type: 'string',
-            format: 'binary',
+            type: "string",
+            format: "binary",
           },
         },
       },
     },
   })
-  @Post('/multiple')
-  @UseInterceptors(FilesInterceptor('files'))
+  @Post("/multiple")
+  @UseInterceptors(FilesInterceptor("files"))
   async uploadMultipleFiles(
     @UploadedFiles() files: Express.Multer.File[],
   ): Promise<StorageEntity[]> {
     return this.storageService.storeMultipleFiles(files);
   }
 
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         files: {
-          type: 'array',
+          type: "array",
           items: {
-            type: 'string',
-            format: 'binary',
+            type: "string",
+            format: "binary",
           },
         },
       },
     },
   })
   @Public()
-  @Post('/multiple/temporary')
-  @UseInterceptors(FilesInterceptor('files'))
+  @Post("/multiple/temporary")
+  @UseInterceptors(FilesInterceptor("files"))
   async uploadTemporaryMultipleFiles(
     @UploadedFiles() files: Express.Multer.File[],
   ): Promise<StorageEntity[]> {
     return this.storageService.storeMultipleFiles(files, true);
   }
 
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         file: {
-          type: 'string',
-          format: 'binary',
+          type: "string",
+          format: "binary",
         },
       },
     },
   })
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @Post("upload")
+  @UseInterceptors(FileInterceptor("file"))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    @Body('filename') filename?: string,
+    @Body("filename") filename?: string,
   ): Promise<StorageEntity> {
     if (filename?.trim()) {
       file.originalname = filename.trim();
@@ -139,24 +139,24 @@ export class StorageController {
     return this.storageService.store(file);
   }
 
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         file: {
-          type: 'string',
-          format: 'binary',
+          type: "string",
+          format: "binary",
         },
       },
     },
   })
   @Public()
-  @Post('upload/temporary')
-  @UseInterceptors(FileInterceptor('file'))
+  @Post("upload/temporary")
+  @UseInterceptors(FileInterceptor("file"))
   async uploadTemporaryFile(
     @UploadedFile() file: Express.Multer.File,
-    @Body('filename') filename?: string,
+    @Body("filename") filename?: string,
   ): Promise<StorageEntity> {
     if (filename?.trim()) {
       file.originalname = filename.trim();
@@ -165,41 +165,41 @@ export class StorageController {
     return this.storageService.store(file, true);
   }
 
-  @Get('/download/slug/:slug')
+  @Get("/download/slug/:slug")
   async downloadFileBySlug(
-    @Param('slug') slug: string,
+    @Param("slug") slug: string,
     @Res() res: Response,
   ): Promise<void> {
     const upload = await this.storageService.findBySlug(slug);
     const fileStream = await this.storageService.loadResource(slug);
-    res.setHeader('Content-Type', upload.mimetype);
-    res.setHeader('Content-Length', upload.size);
+    res.setHeader("Content-Type", upload.mimetype);
+    res.setHeader("Content-Length", upload.size);
     res.setHeader(
-      'Content-Disposition',
+      "Content-Disposition",
       `attachment; filename="${upload.filename}"`,
     );
     fileStream.pipe(res);
   }
 
-  @Get('download/id/:id')
+  @Get("download/id/:id")
   async downloadFileById(
-    @Param('id') id: number,
+    @Param("id") id: number,
     @Res() res: Response,
   ): Promise<void> {
     const upload = await this.storageService.findOneById(id);
     const fileStream = await this.storageService.loadResource(upload.slug);
-    res.setHeader('Content-Type', upload.mimetype);
-    res.setHeader('Content-Length', upload.size);
+    res.setHeader("Content-Type", upload.mimetype);
+    res.setHeader("Content-Length", upload.size);
     res.setHeader(
-      'Content-Disposition',
+      "Content-Disposition",
       `attachment; filename="${upload.filename}"`,
     );
     fileStream.pipe(res);
   }
 
-  @Get('/view/slug/:slug')
+  @Get("/view/slug/:slug")
   async viewFileBySlug(
-    @Param('slug') slug: string,
+    @Param("slug") slug: string,
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<void> {
@@ -208,9 +208,9 @@ export class StorageController {
     await this.streamResource(req, res, upload, true);
   }
 
-  @Get('/view/id/:id')
+  @Get("/view/id/:id")
   async viewFileById(
-    @Param('id') id: number,
+    @Param("id") id: number,
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<void> {
@@ -219,13 +219,13 @@ export class StorageController {
     await this.streamResource(req, res, upload, true);
   }
 
-  @Delete(':id')
-  async delete(@Param('id') id: number): Promise<StorageEntity> {
+  @Delete(":id")
+  async delete(@Param("id") id: number): Promise<StorageEntity> {
     return this.storageService.delete(id);
   }
 
-  @Delete('slug/:slug')
-  async deleteBySlug(@Param('slug') slug: string): Promise<StorageEntity> {
+  @Delete("slug/:slug")
+  async deleteBySlug(@Param("slug") slug: string): Promise<StorageEntity> {
     return this.storageService.deleteBySlug(slug);
   }
 
@@ -237,7 +237,7 @@ export class StorageController {
   ) {
     const range = req.headers.range;
     if (range) {
-      const parts = range.replace(/bytes=/, '').split('-');
+      const parts = range.replace(/bytes=/, "").split("-");
       const start = parseInt(parts[0], 10);
       const end = parts[1] ? parseInt(parts[1], 10) : upload.size - 1;
 
@@ -245,7 +245,7 @@ export class StorageController {
         res
           .status(416)
           .send(
-            'Requested range not satisfiable\n' + start + ' >= ' + upload.size,
+            "Requested range not satisfiable\n" + start + " >= " + upload.size,
           );
         return;
       }
@@ -258,28 +258,28 @@ export class StorageController {
       );
 
       res.status(206);
-      res.setHeader('Content-Range', `bytes ${start}-${end}/${upload.size}`);
-      res.setHeader('Accept-Ranges', 'bytes');
-      res.setHeader('Content-Length', chunksize);
-      res.setHeader('Content-Type', upload.mimetype);
+      res.setHeader("Content-Range", `bytes ${start}-${end}/${upload.size}`);
+      res.setHeader("Accept-Ranges", "bytes");
+      res.setHeader("Content-Length", chunksize);
+      res.setHeader("Content-Type", upload.mimetype);
       if (useCache) {
-        res.setHeader('Cache-Control', 'public, max-age=3600, immutable');
+        res.setHeader("Cache-Control", "public, max-age=3600, immutable");
       }
       res.setHeader(
-        'Content-Disposition',
+        "Content-Disposition",
         `inline; filename="${upload.filename}"`,
       );
       fileStream.pipe(res);
     } else {
       const fileStream = await this.storageService.loadResource(upload.slug);
-      res.setHeader('Content-Type', upload.mimetype);
-      res.setHeader('Content-Length', upload.size);
-      res.setHeader('Accept-Ranges', 'bytes');
+      res.setHeader("Content-Type", upload.mimetype);
+      res.setHeader("Content-Length", upload.size);
+      res.setHeader("Accept-Ranges", "bytes");
       if (useCache) {
-        res.setHeader('Cache-Control', 'public, max-age=3600, immutable');
+        res.setHeader("Cache-Control", "public, max-age=3600, immutable");
       }
       res.setHeader(
-        'Content-Disposition',
+        "Content-Disposition",
         `inline; filename="${upload.filename}"`,
       );
       fileStream.pipe(res);

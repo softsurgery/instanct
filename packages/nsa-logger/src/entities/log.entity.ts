@@ -4,17 +4,17 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { EntityHelper } from '@softsurgery/nsa-database';
-import { EventType } from '../enums/event-type.registry';
-import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
+} from "typeorm";
+import { EntityHelper } from "@softsurgery/nsa-database";
+import { EventType } from "../enums/event-type.registry";
+import type { AbstractUserEntity } from "@softsurgery/nsa-um/entities/abstract-user.entity";
 
-@Entity('log')
+@Entity("log")
 export class LogEntity extends EntityHelper {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @Column({ type: 'enum', enum: EventType, nullable: true })
+  @Column({ type: "enum", enum: EventType, nullable: true })
   event: EventType;
 
   @Column({ nullable: true })
@@ -23,16 +23,16 @@ export class LogEntity extends EntityHelper {
   @Column({ nullable: true })
   method?: string;
 
-  @ManyToOne('AbstractUserEntity', (user: any) => user.logs, {
+  @ManyToOne("AbstractUserEntity", (user: any) => user.logs, {
     nullable: true,
     eager: true,
   })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: AbstractUserEntity;
 
   @Column({ nullable: true })
   userId?: string;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: "json", nullable: true })
   logInfo?: object;
 }

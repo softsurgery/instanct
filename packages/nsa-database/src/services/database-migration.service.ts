@@ -1,16 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { MigrationNotFoundException } from '../errors/migration.notfound.error';
-import { IQueryObject } from '../interfaces/database-query-options.interface';
-import { DataSource, FindManyOptions } from 'typeorm';
-import * as fs from 'fs';
-import { join } from 'path';
-import { readFileSync } from 'fs';
-import { MigrationMissingMigrationFilesException } from '../errors/migration.missing-file.error';
-import { MigrationRepository } from '../repositories/migration.repository';
-import { MigrationEntity } from '../entities/migration.entity';
-import { QueryBuilder } from '../utils/database-query-builder';
-import { MigrationFile } from '../utils/migration-file';
-import { splitSqlStatements } from '../utils/split-sql-statements';
+import { Injectable, Logger } from "@nestjs/common";
+import { MigrationNotFoundException } from "../errors/migration.notfound.error";
+import { IQueryObject } from "../interfaces/database-query-options.interface";
+import { DataSource, FindManyOptions } from "typeorm";
+import * as fs from "fs";
+import { join } from "path";
+import { readFileSync } from "fs";
+import { MigrationMissingMigrationFilesException } from "../errors/migration.missing-file.error";
+import { MigrationRepository } from "../repositories/migration.repository";
+import { MigrationEntity } from "../entities/migration.entity";
+import { QueryBuilder } from "../utils/database-query-builder";
+import { MigrationFile } from "../utils/migration-file";
+import { splitSqlStatements } from "../utils/split-sql-statements";
 
 @Injectable()
 export class MigrationService {
@@ -72,7 +72,7 @@ export class MigrationService {
     const files = fs.readdirSync(dir);
 
     for (const file of files) {
-      const content = readFileSync(join(dir, file), 'utf-8');
+      const content = readFileSync(join(dir, file), "utf-8");
       try {
         const migrationFile = this.parse(file, content);
         if (migrationFile) {
@@ -112,7 +112,7 @@ export class MigrationService {
       `Parsed migration file: ${filename} with version ${versionString} and checksum ${migrationFile.checksum}`,
     );
 
-    migrationFile.repeated = filename.startsWith('R');
+    migrationFile.repeated = filename.startsWith("R");
 
     return migrationFile;
   }
@@ -173,7 +173,7 @@ export class MigrationService {
   ) {
     const rawSql = readFileSync(
       `${migrationPath}/${migrationFile.script}`,
-      'utf-8',
+      "utf-8",
     );
     const queries = splitSqlStatements(rawSql);
     for (const query of queries) if (query) await this.dataSource.query(query);

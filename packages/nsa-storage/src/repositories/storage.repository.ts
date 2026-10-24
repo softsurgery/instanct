@@ -1,10 +1,10 @@
-import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionHost } from '@nestjs-cls/transactional';
-import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
-import { DatabaseAbstractRepository } from '@softsurgery/nsa-database';
-import { StorageEntity } from '../entities/storage.entity';
+import { Repository } from "typeorm";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterTypeOrm } from "@nestjs-cls/transactional-adapter-typeorm";
+import { DatabaseAbstractRepository } from "@softsurgery/nsa-database";
+import { StorageEntity } from "../entities/storage.entity";
 
 @Injectable()
 export class StorageRepository extends DatabaseAbstractRepository<StorageEntity> {

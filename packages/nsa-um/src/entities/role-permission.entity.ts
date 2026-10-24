@@ -1,15 +1,15 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { RoleEntity } from './role.entity';
-import { PermissionEntity } from './permission.entity';
+} from "typeorm";
+import { RoleEntity } from "./role.entity";
+import { PermissionEntity } from "./permission.entity";
 
-@Entity('role_permissions')
+@Entity("role_permissions")
 export class RolePermissionEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,15 +20,15 @@ export class RolePermissionEntity extends EntityHelper {
   @Column()
   permissionId: string;
 
-  @ManyToOne('RoleEntity', (role: any) => role.permissions, {
-    onDelete: 'CASCADE',
+  @ManyToOne("RoleEntity", (role: any) => role.permissions, {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'roleId' })
+  @JoinColumn({ name: "roleId" })
   role: RoleEntity;
 
-  @ManyToOne('PermissionEntity', (permission: any) => permission.roles, {
-    onDelete: 'CASCADE',
+  @ManyToOne("PermissionEntity", (permission: any) => permission.roles, {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'permissionId' })
+  @JoinColumn({ name: "permissionId" })
   permission?: PermissionEntity;
 }

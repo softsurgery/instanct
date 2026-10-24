@@ -1,6 +1,6 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { TriggerRegistry } from './trigger-registry.service';
+import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
+import { DataSource } from "typeorm";
+import { TriggerRegistry } from "./trigger-registry.service";
 
 @Injectable()
 export class TriggerSynchronizer implements OnApplicationBootstrap {

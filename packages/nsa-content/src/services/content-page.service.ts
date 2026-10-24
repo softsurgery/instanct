@@ -1,12 +1,12 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { ConflictException, Injectable } from '@nestjs/common';
-import { ContentPageRepository } from '../repositories/content-page.repository';
-import { ContentPageEntity } from '../entities/content-page.entity';
-import { CreateContentPageDto } from '../dtos/create-content-page.dto';
-import { UpdateContentPageDto } from '../dtos/update-content-page.dto';
-import { ContentInterpolationService } from './content-interpolation.service';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { IQueryObject } from '@softsurgery/nsa-database';
+import { Transactional } from "@nestjs-cls/transactional";
+import { ConflictException, Injectable } from "@nestjs/common";
+import { ContentPageRepository } from "../repositories/content-page.repository";
+import { ContentPageEntity } from "../entities/content-page.entity";
+import { CreateContentPageDto } from "../dtos/create-content-page.dto";
+import { UpdateContentPageDto } from "../dtos/update-content-page.dto";
+import { ContentInterpolationService } from "./content-interpolation.service";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { IQueryObject } from "@softsurgery/nsa-database";
 
 @Injectable()
 export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
@@ -44,14 +44,14 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
 
   async findOneBySlug(
     slug: string,
-    locale: string = 'fr',
+    locale: string = "fr",
   ): Promise<ContentPageEntity | null> {
     return this.contentPageRepository.findOne({
       where: { slug, locale },
     });
   }
 
-  async findBySlug(slug: string, locale: string = 'fr') {
+  async findBySlug(slug: string, locale: string = "fr") {
     const page = await this.findOneBySlug(slug, locale);
     if (!page) return null;
 
@@ -70,7 +70,7 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
   @Transactional()
   async save(dto: CreateContentPageDto): Promise<ContentPageEntity> {
     const existing = await this.contentPageRepository.findOne({
-      where: { slug: dto.slug, locale: dto.locale ?? 'fr' },
+      where: { slug: dto.slug, locale: dto.locale ?? "fr" },
     });
     if (existing) {
       throw new ConflictException(
@@ -79,7 +79,7 @@ export class ContentPageService extends AbstractCrudService<ContentPageEntity> {
     }
     return this.contentPageRepository.save({
       ...dto,
-      locale: dto.locale ?? 'fr',
+      locale: dto.locale ?? "fr",
     });
   }
 

@@ -1,6 +1,6 @@
 export type NotificationType = string;
 
-export const NOTIFICATION_TYPE = Symbol('NOTIFICATION_TYPE');
+export const NOTIFICATION_TYPE = Symbol("NOTIFICATION_TYPE");
 
 export const NotificationType: Record<string, NotificationType> = {};
 

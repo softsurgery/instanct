@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateUserConnectionHistoryDto {
   @ApiProperty({ type: String, required: false })
@@ -12,7 +12,7 @@ export class CreateUserConnectionHistoryDto {
   @IsOptional()
   deviceId?: string;
 
-  @ApiProperty({ type: String, required: false, default: 'mobile' })
+  @ApiProperty({ type: String, required: false, default: "mobile" })
   @IsString()
   @IsOptional()
   source?: string;

@@ -26,9 +26,9 @@ export const RefTypeUpdateForm = ({
   const filtredRefTypes = React.useMemo(
     () =>
       refTypes.filter(
-        (refType) => referenceTypesStore.refType?.id !== refType.id
+        (refType) => referenceTypesStore.refType?.id !== refType.id,
       ),
-    [refTypes]
+    [refTypes],
   );
   const { refTypeUpdateFormStructure } = useUpdateRefTypeFormStructure({
     referenceTypesStore,

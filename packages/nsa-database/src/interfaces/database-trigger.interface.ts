@@ -1,7 +1,7 @@
 export interface TriggerApply {
   table: string;
-  type: 'BEFORE' | 'AFTER';
-  operation: 'INSERT' | 'UPDATE' | 'DELETE';
+  type: "BEFORE" | "AFTER";
+  operation: "INSERT" | "UPDATE" | "DELETE";
 }
 
 export interface DatabaseTrigger {

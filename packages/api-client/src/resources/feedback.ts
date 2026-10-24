@@ -18,11 +18,14 @@ export function createFeedbackResource(http: AxiosInstance) {
       return data;
     },
     findPaginated: async (
-      options?: QueryParams
+      options?: QueryParams,
     ): Promise<Paginated<ResponseFeedbackDto>> => {
-      const { data } = await http.get<Paginated<ResponseFeedbackDto>>(`/feedback/list`, {
-        params: options,
-      });
+      const { data } = await http.get<Paginated<ResponseFeedbackDto>>(
+        `/feedback/list`,
+        {
+          params: options,
+        },
+      );
       return data;
     },
     findAll: async (options?: QueryParams): Promise<ResponseFeedbackDto[]> => {
@@ -36,7 +39,9 @@ export function createFeedbackResource(http: AxiosInstance) {
       return data;
     },
     delete: async (id: string): Promise<ResponseFeedbackDto> => {
-      const { data } = await http.delete<ResponseFeedbackDto>(`/feedback/${id}`);
+      const { data } = await http.delete<ResponseFeedbackDto>(
+        `/feedback/${id}`,
+      );
       return data;
     },
   };

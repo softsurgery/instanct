@@ -5,7 +5,10 @@ import { isAbsolute, join, resolve } from "node:path";
 
 import { folderId, loadEnvFile, required } from "../lib/env";
 import { DataFlowError } from "../lib/error";
-import type { DataFlowConfig, ServiceAccountCredentials } from "../types/data-flow-config";
+import type {
+  DataFlowConfig,
+  ServiceAccountCredentials,
+} from "../types/data-flow-config";
 
 @Injectable()
 export class ConfigService implements OnModuleInit {
@@ -45,18 +48,25 @@ export class ConfigService implements OnModuleInit {
     }
 
     const retentionDaysRaw =
-      (process.env.DATA_FLOW_RETENTION_DAYS?.trim() ||
-        process.env.BACKUP_RETENTION_DAYS?.trim()) ||
+      process.env.DATA_FLOW_RETENTION_DAYS?.trim() ||
+      process.env.BACKUP_RETENTION_DAYS?.trim() ||
       "14";
     const retentionDays = Number(retentionDaysRaw);
     if (!Number.isInteger(retentionDays) || retentionDays < 0) {
-      throw new DataFlowError("DATA_FLOW_RETENTION_DAYS must be a whole number");
+      throw new DataFlowError(
+        "DATA_FLOW_RETENTION_DAYS must be a whole number",
+      );
     }
 
     const rawServiceAccountFile = required("GDRIVE_SERVICE_ACCOUNT_FILE");
-    const serviceAccountFile = this.resolveFilePath(rawServiceAccountFile, appRoot);
+    const serviceAccountFile = this.resolveFilePath(
+      rawServiceAccountFile,
+      appRoot,
+    );
     if (!existsSync(serviceAccountFile)) {
-      throw new DataFlowError(`Missing Google service account key file at ${serviceAccountFile}`);
+      throw new DataFlowError(
+        `Missing Google service account key file at ${serviceAccountFile}`,
+      );
     }
 
     let credentials: ServiceAccountCredentials;
@@ -75,7 +85,10 @@ export class ConfigService implements OnModuleInit {
       );
     }
 
-    if (!credentials.private_key || !credentials.private_key.includes("BEGIN PRIVATE KEY")) {
+    if (
+      !credentials.private_key ||
+      !credentials.private_key.includes("BEGIN PRIVATE KEY")
+    ) {
       throw new DataFlowError(
         `Invalid or missing "private_key" in Google service account key file at ${serviceAccountFile}`,
       );
@@ -92,7 +105,9 @@ export class ConfigService implements OnModuleInit {
       serviceAccountEmail.toLowerCase().endsWith("@gmail.com") ||
       serviceAccountEmail.toLowerCase().endsWith("@googlemail.com")
     ) {
-      const match = credentials.client_x509_cert_url?.match(/metadata\/x509\/([^?]+)/);
+      const match = credentials.client_x509_cert_url?.match(
+        /metadata\/x509\/([^?]+)/,
+      );
       const certEmail = match ? decodeURIComponent(match[1] ?? "") : null;
       if (certEmail && certEmail.includes(".gserviceaccount.com")) {
         Logger.warn(
@@ -114,7 +129,8 @@ export class ConfigService implements OnModuleInit {
       user: process.env.DATABASE_USERNAME?.trim() || "root",
       password: required("DATABASE_PASSWORD"),
       database,
-      sslEnabled: (process.env.DATABASE_SSL_ENABLED ?? "false").toLowerCase() === "true",
+      sslEnabled:
+        (process.env.DATABASE_SSL_ENABLED ?? "false").toLowerCase() === "true",
       dataFlowDir:
         process.env.DATA_FLOW_DIR?.trim() ||
         process.env.BACKUP_DIR?.trim() ||

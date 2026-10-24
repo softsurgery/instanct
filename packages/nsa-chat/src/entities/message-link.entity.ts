@@ -1,14 +1,14 @@
-import { EntityHelper } from '@softsurgery/nsa-database';
+import { EntityHelper } from "@softsurgery/nsa-database";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { MessageEntity } from './message.entity';
+} from "typeorm";
+import { MessageEntity } from "./message.entity";
 
-@Entity('message_links')
+@Entity("message_links")
 export class MessageLinkEntity extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,13 +16,13 @@ export class MessageLinkEntity extends EntityHelper {
   @Column()
   messageId: number;
 
-  @ManyToOne('MessageEntity', (message: any) => message.links, {
-    onDelete: 'CASCADE',
+  @ManyToOne("MessageEntity", (message: any) => message.links, {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'messageId' })
+  @JoinColumn({ name: "messageId" })
   message: MessageEntity;
 
-  @Column({ type: 'text' })
+  @Column({ type: "text" })
   url: string;
 
   @Column()

@@ -11,8 +11,10 @@ import { Badge } from "@softsurgery/ui";
 import { parseArrayValue, formatArrayItem } from "./formatConfigParam";
 import _ from "lodash";
 
-export interface FlatConfigParamItem
-  extends Omit<ResponseConfigurationParamDto, "namespaceId"> {
+export interface FlatConfigParamItem extends Omit<
+  ResponseConfigurationParamDto,
+  "namespaceId"
+> {
   namespaceName?: string;
   namespaceId?: string;
 }
@@ -99,7 +101,10 @@ export const useConfigurationParamColumns = (
         const val = row.original.value;
         if (row.original.variant === "boolean") {
           return (
-            <Badge variant={val === "true" ? "default" : "outline"} className="text-xs">
+            <Badge
+              variant={val === "true" ? "default" : "outline"}
+              className="text-xs"
+            >
               {val === "true" ? "True" : "False"}
             </Badge>
           );
@@ -117,17 +122,26 @@ export const useConfigurationParamColumns = (
           return (
             <div className="flex flex-col gap-0.5 py-0.5 font-mono text-xs text-muted-foreground max-h-40 overflow-y-auto">
               <span className="text-[11px] text-muted-foreground/80 mb-0.5">
-                ({parsedArray.length} {parsedArray.length === 1 ? "item" : "items"})
+                ({parsedArray.length}{" "}
+                {parsedArray.length === 1 ? "item" : "items"})
               </span>
               <div className="flex flex-col pl-2 border-l border-border/60 gap-0.5">
                 {parsedArray.map((item, idx) => (
                   <div
                     key={idx}
                     className="flex items-baseline gap-1.5 truncate max-w-md"
-                    title={typeof item === "object" ? JSON.stringify(item, null, 2) : String(item)}
+                    title={
+                      typeof item === "object"
+                        ? JSON.stringify(item, null, 2)
+                        : String(item)
+                    }
                   >
-                    <span className="text-muted-foreground/50 select-none">•</span>
-                    <span className="text-foreground truncate">{formatArrayItem(item)}</span>
+                    <span className="text-muted-foreground/50 select-none">
+                      •
+                    </span>
+                    <span className="text-foreground truncate">
+                      {formatArrayItem(item)}
+                    </span>
                   </div>
                 ))}
               </div>

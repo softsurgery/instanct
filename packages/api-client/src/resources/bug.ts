@@ -13,7 +13,7 @@ export function createBugResource(http: AxiosInstance) {
       return data;
     },
     findPaginated: async (
-      options?: QueryParams
+      options?: QueryParams,
     ): Promise<Paginated<ResponseBugDto>> => {
       const { data } = await http.get<Paginated<ResponseBugDto>>(`/bug/list`, {
         params: options,
@@ -32,7 +32,7 @@ export function createBugResource(http: AxiosInstance) {
     },
     updateStatus: async (
       id: string,
-      status: string
+      status: string,
     ): Promise<ResponseBugDto> => {
       const { data } = await http.patch<ResponseBugDto>(`/bug/${id}/status`, {
         status,

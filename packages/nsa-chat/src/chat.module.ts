@@ -1,33 +1,33 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConversationEntity } from './entities/conversation.entity';
-import { ConversationUserEntity } from './entities/conversation-user.entity';
-import { MessageEntity } from './entities/message.entity';
-import { MessageUploadEntity } from './entities/message-upload.entity';
-import { MessageLinkEntity } from './entities/message-link.entity';
-import { ConversationRepository } from './repositories/conversation.repository';
-import { MessageRepository } from './repositories/message.repository';
-import { MessageService } from './services/message.service';
-import { ChatGateway } from './gateways/chat.gateway';
-import { ConversationService } from './services/conversation.service';
-import { TriggerRegistry } from '@softsurgery/nsa-database';
-import { ConversationParticipantsTrigger } from './triggers/conversation-participants.trigger';
-import { ConversationLastMessageTrigger } from './triggers/conversation-last-message.trigger';
-import { DatabaseModule } from '@softsurgery/nsa-database';
-import { ConversationUserRepository } from './repositories/conversation-user.repository';
-import { ConversationUserService } from './services/conversation-user.service';
-import { MessageUploadRepository } from './repositories/message-upload.repository';
-import { MessageLinkRepository } from './repositories/message-link.repository';
-import { MessageUploadService } from './services/message-upload.service';
-import { MessageLinkService } from './services/message-link.service';
-import { StorageModule } from '@softsurgery/nsa-storage/storage.module';
-import { ConversationReportEntity } from './entities/conversation-report.entity';
-import { ConversationReportRepository } from './repositories/conversation-report.repository';
-import { ConversationReportService } from './services/conversation-report.service';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConversationEntity } from "./entities/conversation.entity";
+import { ConversationUserEntity } from "./entities/conversation-user.entity";
+import { MessageEntity } from "./entities/message.entity";
+import { MessageUploadEntity } from "./entities/message-upload.entity";
+import { MessageLinkEntity } from "./entities/message-link.entity";
+import { ConversationRepository } from "./repositories/conversation.repository";
+import { MessageRepository } from "./repositories/message.repository";
+import { MessageService } from "./services/message.service";
+import { ChatGateway } from "./gateways/chat.gateway";
+import { ConversationService } from "./services/conversation.service";
+import { TriggerRegistry } from "@softsurgery/nsa-database";
+import { ConversationParticipantsTrigger } from "./triggers/conversation-participants.trigger";
+import { ConversationLastMessageTrigger } from "./triggers/conversation-last-message.trigger";
+import { DatabaseModule } from "@softsurgery/nsa-database";
+import { ConversationUserRepository } from "./repositories/conversation-user.repository";
+import { ConversationUserService } from "./services/conversation-user.service";
+import { MessageUploadRepository } from "./repositories/message-upload.repository";
+import { MessageLinkRepository } from "./repositories/message-link.repository";
+import { MessageUploadService } from "./services/message-upload.service";
+import { MessageLinkService } from "./services/message-link.service";
+import { StorageModule } from "@softsurgery/nsa-storage/storage.module";
+import { ConversationReportEntity } from "./entities/conversation-report.entity";
+import { ConversationReportRepository } from "./repositories/conversation-report.repository";
+import { ConversationReportService } from "./services/conversation-report.service";
 import {
   STATIC_MESSAGE,
   staticMessageRegistry,
-} from './enums/static-message.registry';
+} from "./enums/static-message.registry";
 
 @Module({
   controllers: [],

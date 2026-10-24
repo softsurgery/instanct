@@ -11,7 +11,10 @@ import type {
 
 export function createAuthResource(http: AxiosInstance) {
   const signIn = async (payload: SigninPayload): Promise<ResponseSigninDto> => {
-    const response = await http.post<ResponseSigninDto>("/auth/sign-in", payload);
+    const response = await http.post<ResponseSigninDto>(
+      "/auth/sign-in",
+      payload,
+    );
     return response.data;
   };
 

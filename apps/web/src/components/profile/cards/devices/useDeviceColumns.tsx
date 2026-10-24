@@ -132,9 +132,7 @@ export const useDeviceColumns = (
       cell: ({ row }) => {
         const date = row.original.updatedAt || row.original.createdAt;
         return (
-          <span className="text-muted-foreground">
-            {formatDateSafe(date)}
-          </span>
+          <span className="text-muted-foreground">{formatDateSafe(date)}</span>
         );
       },
       enableSorting: true,

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { ConversationUserEntity } from '../entities/conversation-user.entity';
-import { ConversationUserRepository } from '../repositories/conversation-user.repository';
+import { Injectable } from "@nestjs/common";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { ConversationUserEntity } from "../entities/conversation-user.entity";
+import { ConversationUserRepository } from "../repositories/conversation-user.repository";
 
 @Injectable()
 export class ConversationUserService extends AbstractCrudService<ConversationUserEntity> {

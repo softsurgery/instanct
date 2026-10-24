@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigurationsModule } from '@softsurgery/nsa-configurations/configurations.module';
-import { ContentPageEntity } from './entities/content-page.entity';
-import { ContentPageRepository } from './repositories/content-page.repository';
-import { ContentPageService } from './services/content-page.service';
-import { ContentInterpolationService } from './services/content-interpolation.service';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConfigurationsModule } from "@softsurgery/nsa-configurations/configurations.module";
+import { ContentPageEntity } from "./entities/content-page.entity";
+import { ContentPageRepository } from "./repositories/content-page.repository";
+import { ContentPageService } from "./services/content-page.service";
+import { ContentInterpolationService } from "./services/content-interpolation.service";
 
 @Module({
   controllers: [],

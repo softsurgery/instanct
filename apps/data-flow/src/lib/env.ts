@@ -52,7 +52,9 @@ export function folderId(raw: string): string {
     value = value.split(marker)[1]?.split("?")[0]?.split("/")[0]?.trim() ?? "";
   }
   if (!value || /[\s/\\]/.test(value)) {
-    throw new DataFlowError("GDRIVE_FOLDER_ID must be a Google Drive folder id");
+    throw new DataFlowError(
+      "GDRIVE_FOLDER_ID must be a Google Drive folder id",
+    );
   }
   return value;
 }

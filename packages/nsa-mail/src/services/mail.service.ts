@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable, Logger } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer';
-import { ConfigService } from '@nestjs/config';
-import { TemplateService } from '@softsurgery/nsa-templates/services/template.service';
-import juice from 'juice';
-import * as ejs from 'ejs';
+import { Injectable, Logger } from "@nestjs/common";
+import { MailerService } from "@nestjs-modules/mailer";
+import { ConfigService } from "@nestjs/config";
+import { TemplateService } from "@softsurgery/nsa-templates/services/template.service";
+import juice from "juice";
+import * as ejs from "ejs";
 
 @Injectable()
 export class MailService {
@@ -31,7 +31,7 @@ export class MailService {
     const renderedHtml = ejs.render(template.content, variables);
 
     const styleContent =
-      template.styles?.map((style) => style.content).join('\n') ?? '';
+      template.styles?.map((style) => style.content).join("\n") ?? "";
     const fullHtml = `<style>${styleContent}</style>\n${renderedHtml}`;
 
     const inlinedHtml = juice(fullHtml);

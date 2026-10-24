@@ -1,13 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { ResponseConversationDto } from '../conversation/response-conversation.dto';
-import { Expose, Type } from 'class-transformer';
-import { MessageVariant } from '../../enums/message-variant.enum';
-import { getUserDto } from '@softsurgery/nsa-um/registries/user-binding.registry';
-import { ResponseAbstractUserDto } from '@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto';
-import { StaticMessageEnum } from '../../enums/static-message.registry';
-import { ResponseMessageUploadDto } from '../message-upload/response-message-upload.dto';
-import { ResponseMessageLinkDto } from '../message-link/response-message-link.dto';
+import { ApiProperty } from "@nestjs/swagger";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { ResponseConversationDto } from "../conversation/response-conversation.dto";
+import { Expose, Type } from "class-transformer";
+import { MessageVariant } from "../../enums/message-variant.enum";
+import { getUserDto } from "@softsurgery/nsa-um/registries/user-binding.registry";
+import { ResponseAbstractUserDto } from "@softsurgery/nsa-um/dtos/abstract-user/response-abstract-user.dto";
+import { StaticMessageEnum } from "../../enums/static-message.registry";
+import { ResponseMessageUploadDto } from "../message-upload/response-message-upload.dto";
+import { ResponseMessageLinkDto } from "../message-link/response-message-link.dto";
 
 export class ResponseMessageDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })

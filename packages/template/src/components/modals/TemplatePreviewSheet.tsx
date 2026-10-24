@@ -1,9 +1,18 @@
 import React from "react";
 import { useSheet } from "@softsurgery/components";
-import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@softsurgery/ui";
+import {
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@softsurgery/ui";
 import { useTranslation } from "react-i18next";
 import { Code2, Eye, HardDrive } from "lucide-react";
-import { DataTableCell, DataTableCellVariant } from "@softsurgery/datatable-builder";
+import {
+  DataTableCell,
+  DataTableCellVariant,
+} from "@softsurgery/datatable-builder";
 import { ResponseTemplateDto } from "../../types";
 
 export interface TemplatePreviewSheetProps {
@@ -37,7 +46,10 @@ export const useTemplatePreviewSheet = ({
     ),
     children: (
       <div className="flex flex-col flex-1 overflow-hidden px-4 gap-4 mt-2">
-        <Tabs defaultValue="preview" className="flex flex-col flex-1 overflow-hidden w-full">
+        <Tabs
+          defaultValue="preview"
+          className="flex flex-col flex-1 overflow-hidden w-full"
+        >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="preview" className="flex items-center gap-2">
               <Eye className="h-4 w-4" />

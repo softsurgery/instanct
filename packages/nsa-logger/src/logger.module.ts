@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { LoggerService } from './services/logger.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { LogEntity } from './entities/log.entity';
-import { LogRepository } from './repositories/log.repository';
-import { LogInterceptor } from './decorators/logger.interceptor';
-import { EVENT_TYPE, eventTypeRegistry } from './enums/event-type.registry';
+import { Module } from "@nestjs/common";
+import { LoggerService } from "./services/logger.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { LogEntity } from "./entities/log.entity";
+import { LogRepository } from "./repositories/log.repository";
+import { LogInterceptor } from "./decorators/logger.interceptor";
+import { EVENT_TYPE, eventTypeRegistry } from "./enums/event-type.registry";
 
 @Module({
   controllers: [],

@@ -18,64 +18,66 @@ export type FileTypeStyle = {
   label: string;
 };
 
-const FILE_TYPE_STYLES: Record<DocumentFileType, Omit<FileTypeStyle, "type">> =
-  {
-    pdf: {
-      color: "#DC2626",
-      backgroundColor: "rgba(220, 38, 38, 0.12)",
-      label: "PDF",
-    },
-    word: {
-      color: "#2563EB",
-      backgroundColor: "rgba(37, 99, 235, 0.12)",
-      label: "Word",
-    },
-    excel: {
-      color: "#16A34A",
-      backgroundColor: "rgba(22, 163, 74, 0.12)",
-      label: "Excel",
-    },
-    powerpoint: {
-      color: "#EA580C",
-      backgroundColor: "rgba(234, 88, 12, 0.12)",
-      label: "PowerPoint",
-    },
-    text: {
-      color: "#64748B",
-      backgroundColor: "rgba(100, 116, 139, 0.12)",
-      label: "Text",
-    },
-    image: {
-      color: "#9333EA",
-      backgroundColor: "rgba(147, 51, 234, 0.12)",
-      label: "Image",
-    },
-    archive: {
-      color: "#D97706",
-      backgroundColor: "rgba(217, 119, 6, 0.12)",
-      label: "Archive",
-    },
-    audio: {
-      color: "#DB2777",
-      backgroundColor: "rgba(219, 39, 119, 0.12)",
-      label: "Audio",
-    },
-    video: {
-      color: "#7C3AED",
-      backgroundColor: "rgba(124, 58, 237, 0.12)",
-      label: "Video",
-    },
-    code: {
-      color: "#0D9488",
-      backgroundColor: "rgba(13, 148, 136, 0.12)",
-      label: "Code",
-    },
-    generic: {
-      color: "#6B7280",
-      backgroundColor: "rgba(107, 114, 128, 0.12)",
-      label: "File",
-    },
-  };
+const FILE_TYPE_STYLES: Record<
+  DocumentFileType,
+  Omit<FileTypeStyle, "type">
+> = {
+  pdf: {
+    color: "#DC2626",
+    backgroundColor: "rgba(220, 38, 38, 0.12)",
+    label: "PDF",
+  },
+  word: {
+    color: "#2563EB",
+    backgroundColor: "rgba(37, 99, 235, 0.12)",
+    label: "Word",
+  },
+  excel: {
+    color: "#16A34A",
+    backgroundColor: "rgba(22, 163, 74, 0.12)",
+    label: "Excel",
+  },
+  powerpoint: {
+    color: "#EA580C",
+    backgroundColor: "rgba(234, 88, 12, 0.12)",
+    label: "PowerPoint",
+  },
+  text: {
+    color: "#64748B",
+    backgroundColor: "rgba(100, 116, 139, 0.12)",
+    label: "Text",
+  },
+  image: {
+    color: "#9333EA",
+    backgroundColor: "rgba(147, 51, 234, 0.12)",
+    label: "Image",
+  },
+  archive: {
+    color: "#D97706",
+    backgroundColor: "rgba(217, 119, 6, 0.12)",
+    label: "Archive",
+  },
+  audio: {
+    color: "#DB2777",
+    backgroundColor: "rgba(219, 39, 119, 0.12)",
+    label: "Audio",
+  },
+  video: {
+    color: "#7C3AED",
+    backgroundColor: "rgba(124, 58, 237, 0.12)",
+    label: "Video",
+  },
+  code: {
+    color: "#0D9488",
+    backgroundColor: "rgba(13, 148, 136, 0.12)",
+    label: "Code",
+  },
+  generic: {
+    color: "#6B7280",
+    backgroundColor: "rgba(107, 114, 128, 0.12)",
+    label: "File",
+  },
+};
 
 const EXTENSION_TYPE_MAP: Record<string, DocumentFileType> = {
   pdf: "pdf",

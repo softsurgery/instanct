@@ -6,16 +6,16 @@ import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { toast } from "sonner-native";
 import { useApi } from "@/contexts/ApiContext";
-import { Button } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
+import { Button, Text, Icon } from "@softsurgery/mobile-ui";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { cn } from "@softsurgery/lib";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
+import {
+  StableKeyboardAwareScrollView,
+  StableSafeAreaView,
+  ApplicationHeader,
+  AppHeaderBack,
+  BottomButtonWrapper,
+} from "@softsurgery/mobile-components";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useConversationReportStore } from "@/stores/useConversationReportStore";
 import { createConversationReportSchema } from "@/types/validations/chat.validation";
@@ -52,8 +52,8 @@ export const ConversationReportPortal = ({
     store: reportStore,
   });
 
-  const { mutate: submitReport, isPending: isSubmitReportPending } = useMutation(
-    {
+  const { mutate: submitReport, isPending: isSubmitReportPending } =
+    useMutation({
       mutationFn: async () =>
         api.chat.conversation.reportConversation(
           conversationId,
@@ -73,14 +73,15 @@ export const ConversationReportPortal = ({
             t("chat.report.toasts.error.description"),
         });
       },
-    },
-  );
+    });
 
   /**
    * Validates form store values with Zod schema before triggering report API mutation.
    */
   const handleSubmit = () => {
-    const result = createConversationReportSchema.safeParse(reportStore.createDto);
+    const result = createConversationReportSchema.safeParse(
+      reportStore.createDto,
+    );
     if (!result.success) {
       reportStore.set("errors", result.error.flatten().fieldErrors);
       return;

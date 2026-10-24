@@ -14,13 +14,13 @@ pnpm dev:web
 
 `pnpm dev:web` starts Next on port **3007**. The dev nginx host is `app-dev.instanct.com`.
 
-| Variable | Role |
-| --- | --- |
-| `NEXT_PUBLIC_BASE_URL` | API base used in the browser |
-| `BASE_URL` | API base used on the server (NextAuth's `authorize`) |
-| `NEXTAUTH_URL`, `NEXTAUTH_SECRET` | NextAuth session |
+| Variable                                                   | Role                                                             |
+| ---------------------------------------------------------- | ---------------------------------------------------------------- |
+| `NEXT_PUBLIC_BASE_URL`                                     | API base used in the browser                                     |
+| `BASE_URL`                                                 | API base used on the server (NextAuth's `authorize`)             |
+| `NEXTAUTH_URL`, `NEXTAUTH_SECRET`                          | NextAuth session                                                 |
 | `GITHUB_ID`, `GITHUB_SECRET`, `GOOGLE_ID`, `GOOGLE_SECRET` | OAuth providers. Credentials sign-in always goes through the API |
-| `NEXT_PUBLIC_SENTRY_DSN` | BugSink / Sentry-compatible reporting |
+| `NEXT_PUBLIC_SENTRY_DSN`                                   | BugSink / Sentry-compatible reporting                            |
 
 ## Shell
 
@@ -45,22 +45,22 @@ NextAuth lives at `pages/api/auth/[...nextauth].ts`. The credentials provider ca
 
 Pages are thin. They render a feature component or a `*Portal`.
 
-| Path | Screen |
-| --- | --- |
-| `/auth` | Sign-in |
-| `/dashboard` | Dashboard |
-| `/profile` | Current user profile (experience, education, follows) |
-| `/notifications` | Notifications |
-| `/user-management/users` | User table. `[id]` inspects one user |
-| `/user-management/roles` | Roles and permissions |
-| `/audit-monitoring/logger` | Request logs |
-| `/audit-monitoring/bug-report` | Bug reports |
-| `/audit-monitoring/feedback` | Feedback |
-| `/content-management/pages` | Content pages (`terms`, `privacy`, `about`, `faqs`, `support`) |
-| `/content-management/templates` | Email and document templates. `create` and `[id]` edit one template |
-| `/content-management/configuration` | Configuration namespaces |
-| `/content-management/reference-types` | Reference type tree |
-| `/content-management/reference-parameters` | Reference parameters |
+| Path                                       | Screen                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------- |
+| `/auth`                                    | Sign-in                                                             |
+| `/dashboard`                               | Dashboard                                                           |
+| `/profile`                                 | Current user profile (experience, education, follows)               |
+| `/notifications`                           | Notifications                                                       |
+| `/user-management/users`                   | User table. `[id]` inspects one user                                |
+| `/user-management/roles`                   | Roles and permissions                                               |
+| `/audit-monitoring/logger`                 | Request logs                                                        |
+| `/audit-monitoring/bug-report`             | Bug reports                                                         |
+| `/audit-monitoring/feedback`               | Feedback                                                            |
+| `/content-management/pages`                | Content pages (`terms`, `privacy`, `about`, `faqs`, `support`)      |
+| `/content-management/templates`            | Email and document templates. `create` and `[id]` edit one template |
+| `/content-management/configuration`        | Configuration namespaces                                            |
+| `/content-management/reference-types`      | Reference type tree                                                 |
+| `/content-management/reference-parameters` | Reference parameters                                                |
 
 The sidebar in `components/layout/AppSidebar.tsx` is the same map.
 

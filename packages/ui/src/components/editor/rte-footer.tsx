@@ -60,8 +60,7 @@ export const Footer = ({
 
     const count = (editor.storage as unknown as Record<string, unknown>)
       .characterCount as
-      | { words: () => number; characters: () => number }
-      | undefined;
+      { words: () => number; characters: () => number } | undefined;
     const words = count?.words() ?? 0;
     const characters = count?.characters() ?? 0;
 
@@ -84,7 +83,7 @@ export const Footer = ({
         "rte-footer",
         variant !== "default" && `rte-footer--${variant}`,
         sticky && "sticky z-10",
-        className
+        className,
       )}
       data-sticky={sticky ? "" : undefined}
       style={sticky ? { bottom: stickyOffset } : undefined}

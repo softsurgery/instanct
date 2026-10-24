@@ -1,8 +1,7 @@
 import React from "react";
 import { cn } from "@softsurgery/lib";
 import { View } from "react-native";
-import { Text } from "@softsurgery/mobile-ui";
-import { Button } from "@softsurgery/mobile-ui";
+import { Text, Button } from "@softsurgery/mobile-ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useSessionStore } from "@/stores/useSessionStore";
@@ -11,21 +10,25 @@ import { ServerErrorResponse } from "@softsurgery/api-client";
 import { router } from "expo-router";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useSessionManagementFormStructure } from "./useSessionManagementFormStructure";
-import { mapToSelectOptions } from "@softsurgery/mobile-form-builder";
+import {
+  mapToSelectOptions,
+  FormBuilder,
+} from "@softsurgery/mobile-form-builder";
 import { updateSessionSchema } from "@/types/validations/session.validation";
 import { zodErrorsToNested } from "@/lib/object";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
-import { FormBuilder } from "@softsurgery/mobile-form-builder";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  StableKeyboardAwareScrollView,
+  Loader,
+  BottomButtonWrapper,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { useApi } from "@/contexts/ApiContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
-import { Loader } from "@softsurgery/mobile-components";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { EndSessionActionSheet } from "../EndSessionActionSheet";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 interface SessionManagePortalProps {
   className?: string;

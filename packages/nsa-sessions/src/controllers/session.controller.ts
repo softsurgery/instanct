@@ -1,22 +1,22 @@
-import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { ApiPaginatedResponse } from '@softsurgery/nsa-database';
-import { PageDto } from '@softsurgery/nsa-database';
-import { toDtoArray } from '@softsurgery/nsa-database';
-import { SessionService } from '../services/session.service';
-import { ResponseSessionDto } from '../dtos/response-session.dto';
+import { Controller, Get, Headers, Param, Query } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { ApiPaginatedResponse } from "@softsurgery/nsa-database";
+import { PageDto } from "@softsurgery/nsa-database";
+import { toDtoArray } from "@softsurgery/nsa-database";
+import { SessionService } from "../services/session.service";
+import { ResponseSessionDto } from "../dtos/response-session.dto";
 
-@ApiTags('session')
-@ApiBearerAuth('access_token')
+@ApiTags("session")
+@ApiBearerAuth("access_token")
 @Controller({
-  version: '1',
-  path: '/session',
+  version: "1",
+  path: "/session",
 })
 export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
-  @Get('/list')
+  @Get("/list")
   async findAllPaginated(
     @Query() query: IQueryObject,
   ): Promise<PageDto<ResponseSessionDto>> {
@@ -27,7 +27,7 @@ export class SessionController {
     };
   }
 
-  @Get('/all')
+  @Get("/all")
   async findAll(@Query() options: IQueryObject): Promise<ResponseSessionDto[]> {
     return toDtoArray(
       ResponseSessionDto,
@@ -35,11 +35,11 @@ export class SessionController {
     );
   }
 
-  @Get('/active-list/:userId')
+  @Get("/active-list/:userId")
   @ApiPaginatedResponse(ResponseSessionDto)
   async findAllPaginatedActiveUserSessions(
     @Query() query: IQueryObject,
-    @Param('userId') userId: string,
+    @Param("userId") userId: string,
   ): Promise<PageDto<ResponseSessionDto>> {
     const paginated = await this.sessionService.findAllPaginatedUserSessions(
       query,
@@ -51,11 +51,11 @@ export class SessionController {
     };
   }
 
-  @Get('/active-all/:userId')
+  @Get("/active-all/:userId")
   async findAllActiveUserSessions(
     @Query() query: IQueryObject,
-    @Param('userId') userId: string,
-    @Headers('x-timezone') timezone?: string,
+    @Param("userId") userId: string,
+    @Headers("x-timezone") timezone?: string,
   ): Promise<ResponseSessionDto[]> {
     return toDtoArray(
       ResponseSessionDto,

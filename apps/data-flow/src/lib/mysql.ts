@@ -32,7 +32,10 @@ function mysqldumpHelp(binary: string): string {
       stdio: ["ignore", "pipe", "pipe"],
     });
   } catch (error) {
-    const failed = error as { stdout?: string | Buffer; stderr?: string | Buffer };
+    const failed = error as {
+      stdout?: string | Buffer;
+      stderr?: string | Buffer;
+    };
     return `${failed.stdout?.toString() ?? ""}\n${failed.stderr?.toString() ?? ""}`;
   }
 }

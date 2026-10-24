@@ -69,10 +69,7 @@ export const useSendChatFile = ({
    * Uploads selected files sequentially, tracking progress in pending state before dispatching the final message.
    */
   const uploadFileBatch = React.useCallback(
-    async (
-      files: DocumentPicker.DocumentPickerAsset[],
-      content?: string,
-    ) => {
+    async (files: DocumentPicker.DocumentPickerAsset[], content?: string) => {
       const clientId = `file-batch-${Date.now()}-${Math.random()}`;
 
       const pending: PendingFileUpload = {

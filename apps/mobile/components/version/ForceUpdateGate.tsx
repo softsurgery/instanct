@@ -221,7 +221,10 @@ export const ForceUpdateGate = () => {
           <Text className="text-md font-bold text-primary-foreground">
             {isStoreConfigured
               ? t("settings.updateGate.updateButton", "Update Now")
-              : t("settings.updateGate.linkUnavailable", "Update Link Unavailable")}
+              : t(
+                  "settings.updateGate.linkUnavailable",
+                  "Update Link Unavailable",
+                )}
           </Text>
         </Button>
 

@@ -3,20 +3,22 @@ import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { StableScrollView } from "@softsurgery/mobile-components";
-import { Badge } from "@softsurgery/mobile-ui";
 import {
+  ApplicationHeader,
+  StableSafeAreaView,
+  StableScrollView,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
+import {
+  Badge,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  Text,
 } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface InfoSection {
   title: string;
   description?: string;

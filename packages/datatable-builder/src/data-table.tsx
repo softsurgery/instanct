@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
           table={table}
           context={context}
           className="px-10"
-        />
+        />,
       );
     return () => {
       setContent?.(null);
@@ -72,11 +72,11 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(
       Object.fromEntries(
-        context?.invisibleColumns?.map((column) => [column, false]) || []
-      )
+        context?.invisibleColumns?.map((column) => [column, false]) || [],
+      ),
     );
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -117,7 +117,7 @@ export function DataTable<TData, TValue>({
         <Table>
           <TableHeader
             className={cn(
-              sticky && "sticky top-0 z-10 bg-background [&_th]:bg-background"
+              sticky && "sticky top-0 z-10 bg-background [&_th]:bg-background",
             )}
           >
             {table.getHeaderGroups().map((headerGroup) => (
@@ -133,7 +133,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -156,7 +156,7 @@ export function DataTable<TData, TValue>({
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

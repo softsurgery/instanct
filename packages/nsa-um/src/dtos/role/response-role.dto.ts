@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { ResponseRolePermissionDto } from '../role-permission/response-role-permission.dto';
-import { Expose, Type } from 'class-transformer';
-import { ResponseAbstractUserDto } from '../abstract-user/response-abstract-user.dto';
-import { getUserDto } from '../../registries/user-binding.registry';
+import { ApiProperty } from "@nestjs/swagger";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { ResponseRolePermissionDto } from "../role-permission/response-role-permission.dto";
+import { Expose, Type } from "class-transformer";
+import { ResponseAbstractUserDto } from "../abstract-user/response-abstract-user.dto";
+import { getUserDto } from "../../registries/user-binding.registry";
 
 export class ResponseRoleDto extends ResponseDtoHelper {
   @ApiProperty({ type: String })

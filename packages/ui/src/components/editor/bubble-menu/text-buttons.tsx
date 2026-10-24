@@ -110,7 +110,7 @@ export const TextButtons = ({ editor }: { editor: Editor }) => {
       isStrike: ed.isActive("strike"),
       isUnderline: ed.isActive("underline"),
     }),
-    shallowEqual
+    shallowEqual,
   );
 
   return (

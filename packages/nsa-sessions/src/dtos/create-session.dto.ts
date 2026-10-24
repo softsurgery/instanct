@@ -1,7 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsDate, IsObject } from 'class-validator';
-import { Type } from 'class-transformer';
-import { SessionType } from '../enums/session-type.registry';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsEnum, IsOptional, IsDate, IsObject } from "class-validator";
+import { Type } from "class-transformer";
+import { SessionType } from "../enums/session-type.registry";
 
 export class CreateSessionDto {
   @ApiProperty({ enum: SessionType })

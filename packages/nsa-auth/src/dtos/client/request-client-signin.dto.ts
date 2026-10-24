@@ -1,11 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsOptional,
-  IsString,
-  MinLength,
-} from 'class-validator';
-import { faker } from '@faker-js/faker';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
+import { faker } from "@faker-js/faker";
 
 export class RequestClientSignInDto {
   @ApiProperty({
@@ -15,22 +10,22 @@ export class RequestClientSignInDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty({ type: String, example: 'password123' })
+  @ApiProperty({ type: String, example: "password123" })
   @IsString()
   @MinLength(1)
   password: string;
 
-  @ApiPropertyOptional({ type: String, example: 'iPhone 15 Pro' })
+  @ApiPropertyOptional({ type: String, example: "iPhone 15 Pro" })
   @IsOptional()
   @IsString()
   device?: string;
 
-  @ApiPropertyOptional({ type: String, example: 'iOS 18.5' })
+  @ApiPropertyOptional({ type: String, example: "iOS 18.5" })
   @IsOptional()
   @IsString()
   os?: string;
 
-  @ApiPropertyOptional({ type: String, example: 'aa:bb:cc:dd:ee:ff' })
+  @ApiPropertyOptional({ type: String, example: "aa:bb:cc:dd:ee:ff" })
   @IsOptional()
   @IsString()
   macAddress?: string;

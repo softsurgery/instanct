@@ -20,14 +20,14 @@ export function getNowInTimezone(timezone?: string): Date {
   try {
     const nowUtcMs = Date.now();
     // Build a locale string that lets us extract each date/time part
-    const parts = new Intl.DateTimeFormat('en-US', {
+    const parts = new Intl.DateTimeFormat("en-US", {
       timeZone: timezone,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
       hour12: false,
     }).formatToParts(new Date(nowUtcMs));
 
@@ -38,12 +38,12 @@ export function getNowInTimezone(timezone?: string): Date {
     // requested timezone. This makes TypeORM comparisons timezone-aware.
     return new Date(
       Date.UTC(
-        get('year'),
-        get('month') - 1,
-        get('day'),
-        get('hour'),
-        get('minute'),
-        get('second'),
+        get("year"),
+        get("month") - 1,
+        get("day"),
+        get("hour"),
+        get("minute"),
+        get("second"),
       ),
     );
   } catch {

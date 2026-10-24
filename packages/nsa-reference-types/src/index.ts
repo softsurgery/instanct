@@ -1,1 +1,1 @@
-export { ReferenceTypesModule } from './reference-types.module';
+export { ReferenceTypesModule } from "./reference-types.module";

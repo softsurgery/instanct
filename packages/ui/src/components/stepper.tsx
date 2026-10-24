@@ -120,7 +120,7 @@ const defineStepper = <const Steps extends Stepperize.Step[]>(
               date-component="stepper-step"
               className={cn(
                 "flex shrink-0 items-center gap-4 rounded-md transition-colors",
-                className
+                className,
               )}
             >
               <CircleStepIndicator
@@ -172,7 +172,7 @@ const defineStepper = <const Steps extends Stepperize.Step[]>(
                   onStepKeyDown(
                     e,
                     utils.getNext(props.of),
-                    utils.getPrev(props.of)
+                    utils.getPrev(props.of),
                   )
                 }
                 {...props}
@@ -401,12 +401,12 @@ const classForSeparator = cva(
           "absolute left-[calc(50%+30px)] right-[calc(-50%+20px)] top-5 block shrink-0",
       },
     },
-  }
+  },
 );
 
 function scrollIntoStepperPanel(
   node: HTMLDivElement | null,
-  tracking?: boolean
+  tracking?: boolean,
 ) {
   if (tracking) {
     node?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -439,7 +439,7 @@ const extractChildren = (children: React.ReactNode) => {
 const onStepKeyDown = (
   e: React.KeyboardEvent<HTMLButtonElement>,
   nextStep: Stepperize.Step,
-  prevStep: Stepperize.Step
+  prevStep: Stepperize.Step,
 ) => {
   const { key } = e;
   const directions = {
@@ -502,14 +502,14 @@ namespace Stepper {
               | ((props: {
                   methods: Stepperize.Stepper<Steps>;
                 }) => React.ReactNode);
-          }
+          },
       ) => React.ReactElement;
       Navigation: (props: React.ComponentProps<"nav">) => React.ReactElement;
       Step: (
         props: React.ComponentProps<"button"> & {
           of: Stepperize.Get.Id<Steps>;
           icon?: React.ReactNode;
-        }
+        },
       ) => React.ReactElement;
       Title: (props: AsChildProps<"h4">) => React.ReactElement;
       Description: (props: AsChildProps<"p">) => React.ReactElement;

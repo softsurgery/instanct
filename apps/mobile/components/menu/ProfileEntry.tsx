@@ -7,9 +7,7 @@ import { Edit, Verified } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
 import { PremiumCarousel } from "../deprecated/premium/PremiumCarousel";
-import { Button } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Button, Icon, Text } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 
 interface ProfileEntryProps {

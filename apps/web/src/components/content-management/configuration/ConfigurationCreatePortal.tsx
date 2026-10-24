@@ -1,7 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { api } from "@/lib/api";
-import { useBreadcrumb, useFooter, useIntro, useUI } from "@softsurgery/contexts";
+import {
+  useBreadcrumb,
+  useFooter,
+  useIntro,
+  useUI,
+} from "@softsurgery/contexts";
 import { Button, Input, Label, Textarea, cn } from "@softsurgery/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save } from "lucide-react";
@@ -13,7 +18,9 @@ interface ConfigurationCreatePortalProps {
   className?: string;
 }
 
-export function ConfigurationCreatePortal({ className }: ConfigurationCreatePortalProps) {
+export function ConfigurationCreatePortal({
+  className,
+}: ConfigurationCreatePortalProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { t } = useTranslation("content-management");
@@ -47,7 +54,10 @@ export function ConfigurationCreatePortal({ className }: ConfigurationCreatePort
   React.useEffect(() => {
     setRoutes?.([
       {
-        title: t("configuration.breadcrumbs.contentManagement", "Content Management"),
+        title: t(
+          "configuration.breadcrumbs.contentManagement",
+          "Content Management",
+        ),
         href: "/content-management",
       },
       {
@@ -72,31 +82,41 @@ export function ConfigurationCreatePortal({ className }: ConfigurationCreatePort
     };
   }, [clearIntro, clearRoutes, setIntro, setRoutes, t]);
 
-  const { mutateAsync: createNamespaceAsync, isPending: isSaving } = useMutation({
-    mutationFn: (data: { name: string; description?: string }) =>
-      api.admin.configuration.createNamespace(data),
-    onSuccess: (created) => {
-      toast.success(
-        t("configuration.messages.createSuccess", "Configuration created successfully."),
-      );
-      queryClient.invalidateQueries({ queryKey: ["configurations"] });
-      if (created?.id) {
-        router.push(`/content-management/configuration/${created.id}`);
-      } else {
-        router.push("/content-management/configuration");
-      }
-    },
-    onError: (error: unknown) => {
-      const err = error as ServerErrorResponse;
-      toast.error(
-        err.response?.data?.message ||
-          t("configuration.messages.createError", "Failed to create configuration."),
-      );
-    },
-  });
+  const { mutateAsync: createNamespaceAsync, isPending: isSaving } =
+    useMutation({
+      mutationFn: (data: { name: string; description?: string }) =>
+        api.admin.configuration.createNamespace(data),
+      onSuccess: (created) => {
+        toast.success(
+          t(
+            "configuration.messages.createSuccess",
+            "Configuration created successfully.",
+          ),
+        );
+        queryClient.invalidateQueries({ queryKey: ["configurations"] });
+        if (created?.id) {
+          router.push(`/content-management/configuration/${created.id}`);
+        } else {
+          router.push("/content-management/configuration");
+        }
+      },
+      onError: (error: unknown) => {
+        const err = error as ServerErrorResponse;
+        toast.error(
+          err.response?.data?.message ||
+            t(
+              "configuration.messages.createError",
+              "Failed to create configuration.",
+            ),
+        );
+      },
+    });
 
   const handleSave = React.useCallback(async () => {
-    const cleanName = name.trim().toLowerCase().replace(/[^a-z0-9_-]+/g, "");
+    const cleanName = name
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "");
     if (!cleanName) {
       toast.error("Namespace name is required.");
       return;
@@ -143,7 +163,12 @@ export function ConfigurationCreatePortal({ className }: ConfigurationCreatePort
   }, [clearContent, handleSave, isSaving, router, setContent, t]);
 
   return (
-    <div className={cn("mt-4 flex flex-col gap-6 w-full max-w-2xl mx-auto pb-12", className)}>
+    <div
+      className={cn(
+        "mt-4 flex flex-col gap-6 w-full max-w-2xl mx-auto pb-12",
+        className,
+      )}
+    >
       <header className="flex items-center justify-between border-b pb-4">
         <div>
           <h2 className="text-xl font-bold text-foreground">
@@ -176,12 +201,16 @@ export function ConfigurationCreatePortal({ className }: ConfigurationCreatePort
             className="font-mono"
           />
           <p className="text-xs text-muted-foreground">
-            Lowercase technical identifier without spaces (e.g. map, core, application).
+            Lowercase technical identifier without spaces (e.g. map, core,
+            application).
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="namespace-description" className="text-sm font-semibold">
+          <Label
+            htmlFor="namespace-description"
+            className="text-sm font-semibold"
+          >
             Description
           </Label>
           <Textarea

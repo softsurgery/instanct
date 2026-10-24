@@ -1,4 +1,4 @@
-import { plainToInstance } from 'class-transformer';
+import { plainToInstance } from "class-transformer";
 
 export function toDto<T, V>(
   dtoClass: new (...args: unknown[]) => T,

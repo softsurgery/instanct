@@ -4,12 +4,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { Command as CommandPrimitive, useCommandState } from "cmdk";
 import { X } from "lucide-react";
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from "./command";
+import { Command, CommandGroup, CommandItem, CommandList } from "./command";
 import { Badge } from "./badge";
 import { cn } from "#lib/utils";
 
@@ -150,7 +145,7 @@ function removePickedOption(groupOption: GroupOption, picked: Option[]) {
 
   for (const [key, value] of Object.entries(cloneOption)) {
     cloneOption[key] = value.filter(
-      (val) => !picked.find((p) => p.value === val.value)
+      (val) => !picked.find((p) => p.value === val.value),
     );
   }
 
@@ -223,7 +218,7 @@ const MultipleSelector = ({
   const [selected, setSelected] = React.useState<Option[]>(value || []);
 
   const [options, setOptions] = React.useState<GroupOption>(
-    transToGroupOption(arrayDefaultOptions, groupBy)
+    transToGroupOption(arrayDefaultOptions, groupBy),
   );
 
   const [inputValue, setInputValue] = React.useState("");
@@ -248,7 +243,7 @@ const MultipleSelector = ({
       setSelected(newOptions);
       onChange?.(newOptions);
     },
-    [onChange, selected]
+    [onChange, selected],
   );
 
   const handleKeyDown = React.useCallback(
@@ -273,7 +268,7 @@ const MultipleSelector = ({
         }
       }
     },
-    [handleUnselect, selected]
+    [handleUnselect, selected],
   );
 
   useEffect(() => {
@@ -428,7 +423,7 @@ const MultipleSelector = ({
 
   const selectables = React.useMemo<GroupOption>(
     () => removePickedOption(options, selected),
-    [options, selected]
+    [options, selected],
   );
 
   const commandFilter = React.useCallback(() => {
@@ -470,7 +465,7 @@ const MultipleSelector = ({
             "cursor-text": !disabled && selected.length !== 0,
           },
           !hideClearAllButton && "pe-9",
-          className
+          className,
         )}
         onClick={() => {
           if (disabled) return;
@@ -485,7 +480,7 @@ const MultipleSelector = ({
                 variant="secondary"
                 className={cn(
                   "group/badge relative pr-8 hover:bg-secondary/80",
-                  badgeClassName
+                  badgeClassName,
                 )}
                 data-fixed={option.fixed}
                 data-disabled={disabled || undefined}
@@ -494,7 +489,7 @@ const MultipleSelector = ({
                 <button
                   className={cn(
                     "absolute right-1 top-1/2 -translate-y-1/2 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none",
-                    option.fixed && "hidden"
+                    option.fixed && "hidden",
                   )}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleUnselect(option);
@@ -542,7 +537,7 @@ const MultipleSelector = ({
                 "px-1 py-0.5": selected.length === 0,
                 "ml-1": selected.length !== 0,
               },
-              inputProps?.className
+              inputProps?.className,
             )}
           />
           {!hideClearAllButton &&
@@ -556,7 +551,7 @@ const MultipleSelector = ({
                 }}
                 className={cn(
                   "absolute right-3 top-1/2 -translate-y-1/2 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none",
-                  disabled && "hidden"
+                  disabled && "hidden",
                 )}
                 disabled={disabled}
                 aria-label="Clear all"
@@ -570,7 +565,7 @@ const MultipleSelector = ({
         {open && (
           <div
             className={cn(
-              "absolute top-2 z-50 w-full overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95"
+              "absolute top-2 z-50 w-full overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95",
             )}
           >
             <CommandList
@@ -626,7 +621,7 @@ const MultipleSelector = ({
                             "relative flex items-center rounded-sm px-2 py-1.5 text-sm outline-none",
                             option.disable
                               ? "pointer-events-none opacity-50"
-                              : "cursor-pointer"
+                              : "cursor-pointer",
                           )}
                         >
                           {option.label}

@@ -1,4 +1,4 @@
-import { ClientPresenceSource } from './client-presence-source.interface';
+import { ClientPresenceSource } from "./client-presence-source.interface";
 
 export interface SocketConnectionMeta {
   socketId: string;

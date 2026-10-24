@@ -1,12 +1,12 @@
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { ConfigurationNamespaceEntity } from '../entities/configuration-namespace.entity';
-import { Injectable } from '@nestjs/common';
-import { ConfigurationNamespaceRepository } from '../repositories/configuration-namespace.repository';
-import { ParamVariant } from '../enums/param-variant.enum';
-import { parseConfigurationListValue } from '../utils/configuration-list-schema';
-import { IQueryObject } from '@softsurgery/nsa-database';
-import { QueryBuilder } from '@softsurgery/nsa-database';
-import { FindManyOptions, FindOneOptions, IsNull } from 'typeorm';
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { ConfigurationNamespaceEntity } from "../entities/configuration-namespace.entity";
+import { Injectable } from "@nestjs/common";
+import { ConfigurationNamespaceRepository } from "../repositories/configuration-namespace.repository";
+import { ParamVariant } from "../enums/param-variant.enum";
+import { parseConfigurationListValue } from "../utils/configuration-list-schema";
+import { IQueryObject } from "@softsurgery/nsa-database";
+import { QueryBuilder } from "@softsurgery/nsa-database";
+import { FindManyOptions, FindOneOptions, IsNull } from "typeorm";
 
 @Injectable()
 export class ConfigurationNamespaceService extends AbstractCrudService<ConfigurationNamespaceEntity> {
@@ -26,7 +26,7 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
           name: namespace,
           userId: IsNull(),
         },
-        relations: ['params'],
+        relations: ["params"],
       });
     if (!namespaceEntity) return null;
     const paramEntity = namespaceEntity.params.find((p) => p.name === param);
@@ -37,7 +37,7 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
       case ParamVariant.NUMBER:
         return Number(paramEntity.value);
       case ParamVariant.BOOLEAN:
-        return paramEntity.value === 'true';
+        return paramEntity.value === "true";
       case ParamVariant.LIST:
         return parseConfigurationListValue(paramEntity.value);
       default:
@@ -61,7 +61,7 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
 
   async findGlobalByName(
     name: string,
-    query: Pick<IQueryObject, 'join'> = {},
+    query: Pick<IQueryObject, "join"> = {},
   ): Promise<ConfigurationNamespaceEntity | null> {
     const queryBuilder = new QueryBuilder(this.repository.getMetadata());
     const queryOptions = queryBuilder.build(query);
@@ -78,22 +78,22 @@ export class ConfigurationNamespaceService extends AbstractCrudService<Configura
   async deleteByUserId(userId: string): Promise<void> {
     const namespaces = await this.repository.findWithRelations({
       where: { userId },
-      select: ['id'],
+      select: ["id"],
     });
     if (namespaces.length > 0) {
       const namespaceIds = namespaces.map((n) => n.id);
       await this.repository
         .createQueryBuilder()
         .delete()
-        .from('configuration-param')
-        .where('namespaceId IN (:...namespaceIds)', { namespaceIds })
+        .from("configuration-param")
+        .where("namespaceId IN (:...namespaceIds)", { namespaceIds })
         .execute();
 
       await this.repository
         .createQueryBuilder()
         .delete()
-        .from('configuration-namespace')
-        .where('userId = :userId', { userId })
+        .from("configuration-namespace")
+        .where("userId = :userId", { userId })
         .execute();
     }
   }

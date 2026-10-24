@@ -11,12 +11,12 @@ import {
   QueryRunner,
   Repository,
   SelectQueryBuilder,
-} from 'typeorm';
-import { TransactionHost } from '@nestjs-cls/transactional';
-import { TransactionalAdapterTypeOrm } from '@nestjs-cls/transactional-adapter-typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { NotFoundException } from '@nestjs/common';
-import { DatabaseVersioningInterfaceRepository } from '../interfaces/database-versioning.repository.interface';
+} from "typeorm";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterTypeOrm } from "@nestjs-cls/transactional-adapter-typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+import { NotFoundException } from "@nestjs/common";
+import { DatabaseVersioningInterfaceRepository } from "../interfaces/database-versioning.repository.interface";
 
 export abstract class DatabaseVersioningAbstractRepository<
   T extends ObjectLiteral,
@@ -45,17 +45,17 @@ export abstract class DatabaseVersioningAbstractRepository<
   protected getIdColumn(): string {
     return (
       this.getMetadata().primaryColumns.find(
-        (col) => col.propertyName !== 'version',
-      )?.propertyName || 'id'
+        (col) => col.propertyName !== "version",
+      )?.propertyName || "id"
     );
   }
 
   protected getVersionColumn(): string {
-    return 'version';
+    return "version";
   }
 
   protected getIsLatestColumn(): string {
-    return 'isLatest';
+    return "isLatest";
   }
 
   public createQueryBuilder(
@@ -141,7 +141,7 @@ export abstract class DatabaseVersioningAbstractRepository<
       where: mergedWhere as FindOptionsWhere<T>,
       order: {
         ...(options?.order || {}),
-        [versionCol]: 'DESC',
+        [versionCol]: "DESC",
       } as FindOptionsOrder<T>,
     });
   }
@@ -183,12 +183,12 @@ export abstract class DatabaseVersioningAbstractRepository<
     const isLatestCol = this.getIsLatestColumn();
 
     if (!data[idCol]) {
-      throw new Error('Missing ID for versioned save.');
+      throw new Error("Missing ID for versioned save.");
     }
 
     const latest = await this.getRepository().findOne({
       where: { [idCol]: data[idCol] } as FindOptionsWhere<T>,
-      order: { [this.getVersionColumn()]: 'DESC' } as FindOptionsOrder<T>,
+      order: { [this.getVersionColumn()]: "DESC" } as FindOptionsOrder<T>,
     });
 
     const newVersion = ((latest?.[versionCol] as number) ?? 0) + 1;

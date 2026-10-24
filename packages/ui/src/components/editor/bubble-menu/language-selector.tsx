@@ -39,14 +39,14 @@ export const LanguageSelector = ({ editor }: { editor: Editor }) => {
     (ed) => ({
       currentLanguage: ed.getAttributes("codeBlock").language || "javascript",
     }),
-    shallowEqual
+    shallowEqual,
   );
 
   const langIcon = icons.languageIcons[currentLanguage] ?? <FallbackIcon />;
 
   const handleItemEnter = useCallback((target: EventTarget | null) => {
     const item = (target as HTMLElement).closest<HTMLElement>(
-      "[data-dropdown-item]"
+      "[data-dropdown-item]",
     );
     if (!item) {
       return;
@@ -63,14 +63,14 @@ export const LanguageSelector = ({ editor }: { editor: Editor }) => {
     (event: React.MouseEvent<HTMLDivElement>) => {
       handleItemEnter(event.target);
     },
-    [handleItemEnter]
+    [handleItemEnter],
   );
 
   const handleFocus = useCallback(
     (event: React.FocusEvent<HTMLDivElement>) => {
       handleItemEnter(event.target);
     },
-    [handleItemEnter]
+    [handleItemEnter],
   );
 
   return (

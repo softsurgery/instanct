@@ -208,7 +208,7 @@ export const ResizableNodeView = ({
 
   const getEditorWidth = useCallback(
     () => view?.dom?.parentElement?.offsetWidth ?? 800,
-    [view]
+    [view],
   );
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -236,8 +236,8 @@ export const ResizableNodeView = ({
           minWidth,
           Math.min(
             effectiveMax,
-            resize.startWidth + (e.clientX - resize.startX)
-          )
+            resize.startWidth + (e.clientX - resize.startX),
+          ),
         );
       } else if (
         resize.direction === "left" ||
@@ -247,8 +247,8 @@ export const ResizableNodeView = ({
           minWidth,
           Math.min(
             effectiveMax,
-            resize.startWidth - (e.clientX - resize.startX)
-          )
+            resize.startWidth - (e.clientX - resize.startX),
+          ),
         );
       }
 
@@ -261,8 +261,8 @@ export const ResizableNodeView = ({
           Math.round(minWidth / aspectRatio),
           Math.min(
             Math.round(effectiveMax / aspectRatio),
-            resize.startHeight + (e.clientY - resize.startY)
-          )
+            resize.startHeight + (e.clientY - resize.startY),
+          ),
         );
       }
 
@@ -285,7 +285,7 @@ export const ResizableNodeView = ({
       }
       setCurrentDimensions({ h: newHeight, w: newWidth });
     },
-    [lockAspect, aspectRatio, minWidth, maxWidth]
+    [lockAspect, aspectRatio, minWidth, maxWidth],
   );
 
   const handleMouseUp = useCallback(
@@ -310,7 +310,7 @@ export const ResizableNodeView = ({
       setIsResizing(false);
       setCurrentDimensions(null);
     },
-    [handleMouseMove, updateAttributes]
+    [handleMouseMove, updateAttributes],
   );
 
   const handleMouseDown = useCallback(
@@ -350,7 +350,7 @@ export const ResizableNodeView = ({
       document.body.style.cursor = cursors[direction];
       document.body.style.userSelect = "none";
     },
-    [width, height, getEditorWidth, handleMouseMove, handleMouseUp]
+    [width, height, getEditorWidth, handleMouseMove, handleMouseUp],
   );
 
   useEffect(
@@ -360,13 +360,13 @@ export const ResizableNodeView = ({
       document.body.style.cursor = "";
       document.body.style.userSelect = "";
     },
-    [handleMouseMove, handleMouseUp]
+    [handleMouseMove, handleMouseUp],
   );
 
   const handleApplyPreset = (percent: number) => {
     const editorW = getEditorWidth() || 800;
     const targetW = Math.round(
-      Math.max(minWidth, Math.min(maxWidth, (editorW * percent) / 100))
+      Math.max(minWidth, Math.min(maxWidth, (editorW * percent) / 100)),
     );
     updateAttributes({
       height: Math.round(targetW / aspectRatio),

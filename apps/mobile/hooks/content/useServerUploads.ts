@@ -10,8 +10,11 @@ export const useServerUploads = (ids: (number | undefined)[]) => {
   const memoizedIds = React.useMemo(() => ids, [idsString]);
 
   const uniqueIds = React.useMemo(
-    () =>
-      [...new Set(memoizedIds.filter((id): id is number => typeof id === "number"))],
+    () => [
+      ...new Set(
+        memoizedIds.filter((id): id is number => typeof id === "number"),
+      ),
+    ],
     [memoizedIds],
   );
 

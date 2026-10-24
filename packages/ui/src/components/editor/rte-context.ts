@@ -20,7 +20,7 @@ export const useRichTextEditorContext = (): RichTextEditorContextValue => {
   const context = useContext(RichTextEditorContext);
   if (!context) {
     throw new Error(
-      "useRichTextEditorContext must be used within RichTextEditor"
+      "useRichTextEditorContext must be used within RichTextEditor",
     );
   }
   return context;

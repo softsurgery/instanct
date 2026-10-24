@@ -2,7 +2,11 @@ import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
-import { ResponseConversationDto, ResponseRefParamDto, ResponseUserDto } from "@softsurgery/api-client";
+import {
+  ResponseConversationDto,
+  ResponseRefParamDto,
+  ResponseUserDto,
+} from "@softsurgery/api-client";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import {

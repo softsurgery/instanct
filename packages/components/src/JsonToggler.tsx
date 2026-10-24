@@ -35,7 +35,7 @@ export const JsonToggler = ({ className, data }: JsonTogglerProps) => {
     <div
       className={cn(
         "w-64 rounded-md border border-muted bg-muted/50 px-3 py-2 shadow-sm transition",
-        className
+        className,
       )}
     >
       <button
@@ -45,7 +45,7 @@ export const JsonToggler = ({ className, data }: JsonTogglerProps) => {
         <ChevronDown
           className={cn(
             "h-4 w-4 transform transition-transform duration-500",
-            open && "rotate-180"
+            open && "rotate-180",
           )}
         />
         {t("common.buttons.viewDetails")}

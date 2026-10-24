@@ -19,6 +19,9 @@ export const MyProfile = ({ className }: MyProfileProps) => {
   }, [user]);
 
   return (
-    <BaseProfile className={className} isFetchUserPending={isFetchUserPending} />
+    <BaseProfile
+      className={className}
+      isFetchUserPending={isFetchUserPending}
+    />
   );
 };

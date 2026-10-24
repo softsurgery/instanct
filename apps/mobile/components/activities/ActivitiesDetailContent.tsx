@@ -1,5 +1,8 @@
 import React from "react";
-import type { MapSessionPayload, ResponseSessionDto } from "@softsurgery/api-client";
+import type {
+  MapSessionPayload,
+  ResponseSessionDto,
+} from "@softsurgery/api-client";
 import { View, useWindowDimensions } from "react-native";
 import { SessionIncomingRequests } from "./SessionIncomingRequests";
 import { SessionOutgoingRequests } from "./SessionOutgoingRequests";
@@ -7,11 +10,18 @@ import { Text } from "@softsurgery/mobile-ui";
 import { useInfiniteUserBookmarks } from "@/hooks/content/users/useInfinteUserBookmarks";
 import { LegendList } from "@legendapp/list";
 import { BookmarkCard } from "./BookmarkCard";
-import { ResponseUserBookmarkDto, ResponseUserDto } from "@softsurgery/api-client";
-import { Loader, hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import {
+  ResponseUserBookmarkDto,
+  ResponseUserDto,
+} from "@softsurgery/api-client";
+import {
+  Loader,
+  hslToHex,
+  useColorPalette,
+  NotFound,
+} from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
-import { NotFound } from "@softsurgery/mobile-components";
 import { BookmarkSkeleton } from "./skeletons/BookmarkSkeleton";
 import { TabView, TabBar } from "react-native-tab-view";
 import { useTranslation } from "react-i18next";

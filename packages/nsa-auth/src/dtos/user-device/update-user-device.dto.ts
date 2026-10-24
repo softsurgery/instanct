@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsBoolean, IsOptional, IsString } from "class-validator";
 
 export class UpdateUserDeviceDto {
   @ApiProperty({ type: String, required: false })

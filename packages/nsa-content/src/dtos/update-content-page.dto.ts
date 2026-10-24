@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, Length, MaxLength } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsOptional, IsString, Length, MaxLength } from "class-validator";
 
 export class UpdateContentPageDto {
   @ApiProperty({ type: String, required: false })

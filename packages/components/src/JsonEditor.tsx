@@ -46,9 +46,7 @@ const capitalize = (value: string) =>
 
 type JSONPrimitive = string | number | boolean | null;
 export type JSONValue =
-  | JSONPrimitive
-  | JSONValue[]
-  | { [k: string]: JSONValue };
+  JSONPrimitive | JSONValue[] | { [k: string]: JSONValue };
 
 type SchemaNode =
   | { kind: "string" }
@@ -85,7 +83,7 @@ function deriveSchemaFromData(value: JSONValue): SchemaNode {
       for (const key of Object.keys(value as Record<string, JSONValue>)) {
         order.push(key);
         props[key] = deriveSchemaFromData(
-          (value as Record<string, JSONValue>)[key]
+          (value as Record<string, JSONValue>)[key],
         );
       }
       return { kind: "object", properties: props, order };
@@ -151,7 +149,7 @@ function cloneWithDefaultsFromExample(example: JSONValue): JSONValue {
     const out: Record<string, JSONValue> = {};
     for (const key of Object.keys(example as Record<string, JSONValue>)) {
       out[key] = cloneWithDefaultsFromExample(
-        (example as Record<string, JSONValue>)[key]
+        (example as Record<string, JSONValue>)[key],
       );
     }
     return out;
@@ -171,7 +169,7 @@ function cloneWithDefaultsFromExample(example: JSONValue): JSONValue {
 function updateAtPath(
   data: JSONValue,
   path: Path,
-  updater: (curr: JSONValue) => JSONValue
+  updater: (curr: JSONValue) => JSONValue,
 ): JSONValue {
   if (path.length === 0) return updater(data);
   const [head, ...rest] = path;
@@ -193,7 +191,7 @@ function pathToId(path: Path) {
   return [
     "root",
     ...path.map((seg) =>
-      typeof seg === "number" ? `i${seg}` : seg.replace(/[^a-zA-Z0-9_-]/g, "_")
+      typeof seg === "number" ? `i${seg}` : seg.replace(/[^a-zA-Z0-9_-]/g, "_"),
     ),
   ].join("__");
 }
@@ -211,7 +209,7 @@ export default function JSONForm(props: JSONFormProps) {
   const schema = useMemo(() => deriveSchemaFromData(value), [value]);
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(KeyboardSensor)
+    useSensor(KeyboardSensor),
   );
 
   return (
@@ -283,7 +281,7 @@ function FormNode({
               <div
                 key={key}
                 className={cn(
-                  "flex flex-col md:flex-row gap-2 w-full bg-background p-2 rounded-lg border items-center"
+                  "flex flex-col md:flex-row gap-2 w-full bg-background p-2 rounded-lg border items-center",
                 )}
               >
                 {childSchema.kind === "object" ||

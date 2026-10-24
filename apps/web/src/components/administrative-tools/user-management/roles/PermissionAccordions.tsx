@@ -37,7 +37,7 @@ export const PermissionAccordions = ({
                 {permissions.map((permission) => {
                   const isSelected = roleStore.isPermissionSelected(
                     permission?.id,
-                    type
+                    type,
                   );
                   return (
                     <Toggle
@@ -62,6 +62,6 @@ export const PermissionAccordions = ({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-    )
+    ),
   );
 };

@@ -1,6 +1,12 @@
 import React from "react";
 import { Camera } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage, cn, Progress } from "@softsurgery/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  cn,
+  Progress,
+} from "@softsurgery/ui";
 import type { AvatarFieldProps as AFP } from "../types";
 
 interface AvatarFieldProps extends AFP {

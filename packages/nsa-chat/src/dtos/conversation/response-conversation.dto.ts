@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose, Type } from 'class-transformer';
-import { ResponseDtoHelper } from '@softsurgery/nsa-database';
-import { ResponseMessageDto } from '../message/response-message.dto';
-import { ResponseConversationUserDto } from '../conversation-user/response-conversation-user.dto';
+import { ApiProperty } from "@nestjs/swagger";
+import { Exclude, Expose, Type } from "class-transformer";
+import { ResponseDtoHelper } from "@softsurgery/nsa-database";
+import { ResponseMessageDto } from "../message/response-message.dto";
+import { ResponseConversationUserDto } from "../conversation-user/response-conversation-user.dto";
 
 export class ResponseConversationDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })

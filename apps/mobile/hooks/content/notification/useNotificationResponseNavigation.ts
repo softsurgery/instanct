@@ -48,10 +48,9 @@ export function useNotificationResponseNavigation(enabled = true) {
       navigateToNotificationDestination(destination);
     };
 
-    const subscription =
-      Notifications.addNotificationResponseReceivedListener((response) =>
-        handleResponse(response),
-      );
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => handleResponse(response),
+    );
 
     void Notifications.getLastNotificationResponseAsync().then((response) =>
       handleResponse(response, { defer: true }),

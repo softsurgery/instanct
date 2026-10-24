@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from "@nestjs/common";
 
 export class PermissionAlreadyExistsException extends HttpException {
   constructor() {
-    super('Permission already exists', HttpStatus.CONFLICT);
+    super("Permission already exists", HttpStatus.CONFLICT);
   }
 }

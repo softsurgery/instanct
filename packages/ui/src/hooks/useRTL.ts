@@ -43,4 +43,3 @@ export function useRTL(explicitDir?: "ltr" | "rtl") {
 
   return { dir, isRTL };
 }
-

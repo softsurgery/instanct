@@ -1,8 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, DatePicker, Label } from '@softsurgery/ui';
-import { format } from 'date-fns';
-import { buildDateRangeFilter, parseDateRangeFilter } from './column-filter';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Button, DatePicker, Label } from "@softsurgery/ui";
+import { format } from "date-fns";
+import { buildDateRangeFilter, parseDateRangeFilter } from "./column-filter";
 
 interface DataTableColumnDateRangeFilterProps {
   filterField: string;
@@ -17,19 +17,19 @@ export function DataTableColumnDateRangeFilter({
   filterKey,
   activeFilter,
   onApply,
-  onClose
+  onClose,
 }: DataTableColumnDateRangeFilterProps) {
   const { t } = useTranslation("datatable");
-  const { t: tCommon } = useTranslation('common');
+  const { t: tCommon } = useTranslation("common");
   const parsed = activeFilter ? parseDateRangeFilter(activeFilter) : null;
 
-  const [from, setFrom] = React.useState(parsed?.from ?? '');
-  const [to, setTo] = React.useState(parsed?.to ?? '');
+  const [from, setFrom] = React.useState(parsed?.from ?? "");
+  const [to, setTo] = React.useState(parsed?.to ?? "");
 
   React.useEffect(() => {
     const p = activeFilter ? parseDateRangeFilter(activeFilter) : null;
-    setFrom(p?.from ?? '');
-    setTo(p?.to ?? '');
+    setFrom(p?.from ?? "");
+    setTo(p?.to ?? "");
   }, [activeFilter]);
 
   const handleApply = () => {
@@ -44,21 +44,22 @@ export function DataTableColumnDateRangeFilter({
     <div
       className="space-y-2 p-2"
       onPointerDown={(event) => event.stopPropagation()}
-      onKeyDown={(event) => event.stopPropagation()}>
+      onKeyDown={(event) => event.stopPropagation()}
+    >
       <div className="space-y-1">
-        <Label className="text-xs">{t('datatable.filter.dateFrom')}</Label>
+        <Label className="text-xs">{t("datatable.filter.dateFrom")}</Label>
         <DatePicker
           value={from}
           onChange={(date) => {
             if (date) {
-              setFrom(format(date as Date, 'yyyy-MM-dd'));
+              setFrom(format(date as Date, "yyyy-MM-dd"));
             } else {
-              setFrom('');
+              setFrom("");
             }
           }}
           className="h-8"
           onKeyDown={(event) => {
-            if (event.key === 'Enter') {
+            if (event.key === "Enter") {
               event.preventDefault();
               handleApply();
             }
@@ -66,19 +67,19 @@ export function DataTableColumnDateRangeFilter({
         />
       </div>
       <div className="space-y-1">
-        <Label className="text-xs">{t('datatable.filter.dateTo')}</Label>
+        <Label className="text-xs">{t("datatable.filter.dateTo")}</Label>
         <DatePicker
           value={to}
           onChange={(date) => {
             if (date) {
-              setTo(format(date as Date, 'yyyy-MM-dd'));
+              setTo(format(date as Date, "yyyy-MM-dd"));
             } else {
-              setTo('');
+              setTo("");
             }
           }}
           className="h-8"
           onKeyDown={(event) => {
-            if (event.key === 'Enter') {
+            if (event.key === "Enter") {
               event.preventDefault();
               handleApply();
             }
@@ -87,7 +88,7 @@ export function DataTableColumnDateRangeFilter({
       </div>
       <div className="flex gap-2">
         <Button size="sm" className="flex-1" onClick={handleApply}>
-          {tCommon('commands.apply')}
+          {tCommon("commands.apply")}
         </Button>
         <Button
           size="sm"
@@ -97,8 +98,9 @@ export function DataTableColumnDateRangeFilter({
           onClick={() => {
             onApply(filterKey, null);
             onClose?.();
-          }}>
-          {t('datatable.filter.clear')}
+          }}
+        >
+          {t("datatable.filter.clear")}
         </Button>
       </div>
     </div>

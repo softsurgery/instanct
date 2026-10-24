@@ -1,6 +1,6 @@
 export type StaticMessageEnum = string;
 
-export const STATIC_MESSAGE = Symbol('STATIC_MESSAGE');
+export const STATIC_MESSAGE = Symbol("STATIC_MESSAGE");
 
 export const StaticMessageEnum: Record<string, StaticMessageEnum> = {};
 

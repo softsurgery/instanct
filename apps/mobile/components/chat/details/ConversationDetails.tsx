@@ -11,9 +11,15 @@ import {
 import { router } from "expo-router";
 import { toast } from "sonner-native";
 import { useApi } from "@/contexts/ApiContext";
-import { ResponseMessageDto, ServerErrorResponse } from "@softsurgery/api-client";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
+import {
+  ResponseMessageDto,
+  ServerErrorResponse,
+} from "@softsurgery/api-client";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
@@ -25,7 +31,6 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { ConversationDetailsRow } from "./ConversationDetailsRow";
 import { useUserPresence } from "@/hooks/content/users/useUserPresence";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { ConversationSearchOverlay } from "../conversation/search/ConversationSearchOverlay";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useTranslation } from "react-i18next";

@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, Length, IsArray } from 'class-validator';
-import { RolePermissionEntity } from '../../entities/role-permission.entity';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsOptional, IsString, Length, IsArray } from "class-validator";
+import { RolePermissionEntity } from "../../entities/role-permission.entity";
 
 export class CreateRoleDto {
   @ApiProperty({ type: String })
@@ -15,5 +15,5 @@ export class CreateRoleDto {
 
   @ApiProperty({ isArray: true })
   @IsArray()
-  permissions: Pick<RolePermissionEntity, 'permissionId'>[];
+  permissions: Pick<RolePermissionEntity, "permissionId">[];
 }

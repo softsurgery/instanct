@@ -20,7 +20,7 @@ export const Toolbar = ({
         "rte-toolbar",
         variant !== "default" && `rte-toolbar--${variant}`,
         sticky && "sticky z-10",
-        className
+        className,
       )}
       data-sticky={sticky ? "" : undefined}
       style={sticky ? { top: stickyOffset } : undefined}

@@ -16,10 +16,16 @@ export function calculateLuminance(r: number, g: number, b: number): number {
 /**
  * Extracts average luminance from an image URL / URI asynchronously.
  */
-export async function getCoverLuminance(imageUri?: string): Promise<number | null> {
+export async function getCoverLuminance(
+  imageUri?: string,
+): Promise<number | null> {
   if (!imageUri) return null;
 
-  if (Platform.OS === "web" && typeof window !== "undefined" && typeof document !== "undefined") {
+  if (
+    Platform.OS === "web" &&
+    typeof window !== "undefined" &&
+    typeof document !== "undefined"
+  ) {
     return new Promise((resolve) => {
       const img = new Image();
       img.crossOrigin = "Anonymous";
@@ -45,7 +51,11 @@ export async function getCoverLuminance(imageUri?: string): Promise<number | nul
           const totalPixels = data.length / 4;
 
           for (let i = 0; i < data.length; i += 4) {
-            totalLuminance += calculateLuminance(data[i], data[i + 1], data[i + 2]);
+            totalLuminance += calculateLuminance(
+              data[i],
+              data[i + 1],
+              data[i + 2],
+            );
           }
 
           resolve(totalLuminance / totalPixels);
@@ -73,8 +83,8 @@ export function useLuminance(source: any) {
       typeof source === "object" && source !== null
         ? source.uri
         : typeof source === "string"
-        ? source
-        : undefined;
+          ? source
+          : undefined;
 
     if (uri) {
       getCoverLuminance(uri).then((lum) => {

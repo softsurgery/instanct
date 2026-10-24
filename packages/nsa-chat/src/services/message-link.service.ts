@@ -1,9 +1,9 @@
-import { Transactional } from '@nestjs-cls/transactional';
-import { Injectable } from '@nestjs/common';
-import { MessageLinkEntity } from '../entities/message-link.entity';
-import { CreateMessageLinkDto } from '../dtos/message-link/create-message-link.dto';
-import { AbstractCrudService } from '@softsurgery/nsa-database';
-import { MessageLinkRepository } from '../repositories/message-link.repository';
+import { Transactional } from "@nestjs-cls/transactional";
+import { Injectable } from "@nestjs/common";
+import { MessageLinkEntity } from "../entities/message-link.entity";
+import { CreateMessageLinkDto } from "../dtos/message-link/create-message-link.dto";
+import { AbstractCrudService } from "@softsurgery/nsa-database";
+import { MessageLinkRepository } from "../repositories/message-link.repository";
 
 @Injectable()
 export class MessageLinkService extends AbstractCrudService<MessageLinkEntity> {

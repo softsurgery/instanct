@@ -1,8 +1,12 @@
 import { StableScrollView } from "@softsurgery/mobile-components";
-import { Button } from "@softsurgery/mobile-ui";
-import { Dialog, DialogContent, DialogTrigger } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  Icon,
+  Text,
+} from "@softsurgery/mobile-ui";
 import { useMapStore } from "@/stores/useMapStore";
 import { Cog } from "lucide-react-native";
 

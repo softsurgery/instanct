@@ -1,23 +1,26 @@
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { FormBuilder } from "@softsurgery/mobile-form-builder";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  ApplicationHeader,
+  StableSafeAreaView,
+  StableKeyboardAwareScrollView,
+  BottomButtonWrapper,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
+import {
+  FormBuilder,
+  mapToSelectOptions,
+} from "@softsurgery/mobile-form-builder";
 import { router } from "expo-router";
 import { View } from "react-native";
 import { useExploreFilterFormStructure } from "./useExploreFilterFormStructure";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
-import { Button } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Button, Text } from "@softsurgery/mobile-ui";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { mapToSelectOptions } from "@softsurgery/mobile-form-builder";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useTranslation } from "react-i18next";
 import { cn } from "@softsurgery/lib";
 import React from "react";
 import { toast } from "sonner-native";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 
 interface UserFilterPortalProps {
   className?: string;

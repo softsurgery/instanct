@@ -6,8 +6,10 @@ import { Bell, FlaskConical, Settings } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { InspectBaseProfile } from "../profile/BaseProfile";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  ApplicationHeader,
+  StableSafeAreaView,
+} from "@softsurgery/mobile-components";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import React from "react";
 import { useChatContext } from "@/contexts/ChatContext";

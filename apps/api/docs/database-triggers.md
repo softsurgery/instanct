@@ -30,6 +30,7 @@ export interface DatabaseTrigger {
 #### `AbstractTrigger` Class
 
 Base implementation providing:
+
 - Automatic trigger name generation (respects MySQL's 64-character identifier limit)
 - Automatic drop statements for all apply entries
 - Helper methods for subclasses
@@ -49,6 +50,7 @@ export class TriggerRegistry {
 #### `TriggerSynchronizer` Service
 
 Runs during application bootstrap (`OnApplicationBootstrap`) and:
+
 1. Drops all existing triggers (using `dropSql()`)
 2. Executes any database functions (using `createFunctionSql()`)
 3. Creates all triggers in the `apply` array
@@ -127,6 +129,7 @@ export class MyModule {
 ## Complete Example: Conversation Participants Sync
 
 The `ConversationParticipantsTrigger` syncs a denormalized `participantsIdentifiers` column whenever:
+
 1. A participant is added to a conversation
 2. A participant is removed from a conversation
 3. A user's name is updated
@@ -184,7 +187,7 @@ export class ConversationParticipantsTrigger extends AbstractTrigger {
     if (apply.table === 'conversations_participants_users') {
       // For DELETE operations, use OLD instead of NEW
       const row = apply.operation === 'DELETE' ? 'OLD' : 'NEW';
-      
+
       return `
         CREATE TRIGGER \`${triggerName}\`
         ${apply.type} ${apply.operation} ON \`${apply.table}\`
@@ -232,6 +235,7 @@ export class ChatModule {
 ### Generated Triggers
 
 Three MySQL triggers are created:
+
 - `conv_participants_sync_insert_conversations_participants_users` — on INSERT to join table
 - `conv_participants_sync_delete_conversations_participants_users` — on DELETE from join table
 - `conv_participants_sync_update_users` — on UPDATE to users table
@@ -362,7 +366,7 @@ createTriggerSql(apply: TriggerApply, triggerName: string): string {
       END;
     `;
   }
-  
+
   return `
     CREATE TRIGGER \`${triggerName}\`
     AFTER DELETE ON \`sensitive_data\`

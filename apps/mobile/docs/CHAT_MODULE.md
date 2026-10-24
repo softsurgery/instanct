@@ -54,11 +54,14 @@ The Instanct Chat Module is a high-performance, real-time messaging system built
 All core TypeScript definitions reside in `types/chat.ts`:
 
 ### 2.1 Core Entities (`ResponseConversationDto`, `ResponseMessageDto`)
+
 - **`ResponseConversationDto`**: Represents a chat room. Tracks `participants` (`ResponseConversationUserDto[]`), `messages`, `lastMessage`, the conversation `variant` (`TEXT`, `STATIC`, etc.), and whether the room is `locked`.
 - **`ResponseMessageDto`**: Represents an individual message. Contains metadata (`id`, `content`, `userId`, `createdAt`), attached files (`uploads: ResponseMessageUploadDto[]`), extracted URLs (`links: ResponseMessageLinkDto[]`), and variant type.
 
 ### 2.2 Message Variants (`MessageVariant`)
+
 Messages are typed strictly by enum:
+
 - `TEXT`: Standard plain text or URL-linked message.
 - `STATIC`: System-generated messages such as first contact or poke events (`StaticMessageEnum.FIRST_MESSAGE`, `StaticMessageEnum.POKE`).
 - `EMOJI`: Large emoji-only display.
@@ -66,6 +69,7 @@ Messages are typed strictly by enum:
 - `FILE`: Document or archive attachments.
 
 ### 2.3 Pending Queue Models (`PendingTextMessage`, `PendingMediaUpload`, `PendingFileUpload`)
+
 Each pending entity uses a client-generated UUID (`clientId`) to identify inflight operations prior to receiving a database `id`.
 
 ---
@@ -75,6 +79,7 @@ Each pending entity uses a client-generated UUID (`clientId`) to identify inflig
 Located in `api/chat/`:
 
 ### 3.1 `api/chat/conversation.ts`
+
 - **`findPaginatedUserConversations(params)`**: Fetches paginated conversations for the authenticated user (`GET /current-conversation/list`). Supports search, filtering, and table joins.
 - **`findById(id, join)`**: Retrieves full details for a single conversation (`GET /current-conversation/:id`).
 - **`createConversation(dto)`**: Initiates a new conversation with a set of user IDs (`POST /current-conversation`).
@@ -83,6 +88,7 @@ Located in `api/chat/`:
 - **`reportConversation(id, dto)`**: Submits a moderation report (`POST /current-conversation/:id/report`).
 
 ### 3.2 `api/chat/message.ts`
+
 - **`findPaginatedConversationMessages(id, params)`**: Fetches paginated messages within a conversation (`GET /message/:id/list`).
 
 ---
@@ -92,17 +98,22 @@ Located in `api/chat/`:
 Located in `stores/useChatPendingStore.ts`, the Zustand store provides robust offline-first and optimistic UI capabilities:
 
 ### 4.1 Client ID Queues (`sentTextQueues`)
+
 When a user sends a text message:
+
 1. A unique `clientId` is generated.
 2. The message is added to `pendingTextMessages`.
 3. The `clientId` is pushed onto `sentTextQueues[conversationId]`, preserving exact FIFO order.
 
 ### 4.2 Automatic Reconciliation (`reconcileTextPending`)
+
 Whenever server messages are fetched or refreshed:
+
 1. The store inspects `sentTextQueues[conversationId]` and matches server-confirmed text messages belonging to the current user.
 2. If the message content and timestamp match the oldest item in the FIFO queue, the pending message is removed from `pendingTextMessages` and popped from the queue.
 
 ### 4.3 Upload Tracking
+
 - **`PendingMediaUpload` & `PendingFileUpload`**: Track upload progress (`0` to `100`), staging states (`uploading` → `sending` → `failed`), and upload IDs returned by the server before final message dispatch.
 
 ---
@@ -111,18 +122,18 @@ Whenever server messages are fetched or refreshed:
 
 All domain hooks are located in `hooks/content/chat/`:
 
-| Hook Name | File | Responsibility |
-| :--- | :--- | :--- |
-| **`useChat`** | `useChat.ts` | Manages paginated conversation list queries, search filtering, and conversation creation/deletion mutations. |
-| **`useConversationMessages`** | `useConversationMessages.ts` | Base infinite query hook for fetching conversation messages page-by-page. |
-| **`useConversationFeatures`** | `useConversationFeatures.ts` | Orchestrates active conversation state: combines server messages with pending store items, formats items into date-grouped flat list entries (`MessageFlatListItem`), handles seen status, and sends outgoing text messages. |
-| **`useConversationMessageSearch`** | `useConversationMessageSearch.ts` | Provides real-time searching across messages within an active conversation. |
-| **`useChatPendingSync`** | `useChatPendingSync.ts` | Effect hook that continuously triggers `reconcileTextPending` whenever server messages or pending queues update. |
-| **`useSendChatMedia`** | `useSendChatMedia.ts` | Manages the multi-step lifecycle of sending images/videos: stages files, tracks S3/API uploads, creates pending media entries, and sends the final message. |
-| **`useSendChatFile`** | `useSendChatFile.ts` | Manages document/file selection, upload progress tracking, pending file entries, and dispatching file messages. |
-| **`useLastSeenMessageId`** | `useLastSeenMessageId.ts` | Calculates the highest message ID seen by participants to render read receipts accurately. |
-| **`useStartConversation`** | `useStartConversation.ts` | Convenient wrapper around `conversation.createConversation` with automatic cache invalidation. |
-| **`useUserPresence`** | `useUserPresence.ts` | Resolves participant online/offline or last-seen status indicators. |
+| Hook Name                          | File                              | Responsibility                                                                                                                                                                                                               |
+| :--------------------------------- | :-------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`useChat`**                      | `useChat.ts`                      | Manages paginated conversation list queries, search filtering, and conversation creation/deletion mutations.                                                                                                                 |
+| **`useConversationMessages`**      | `useConversationMessages.ts`      | Base infinite query hook for fetching conversation messages page-by-page.                                                                                                                                                    |
+| **`useConversationFeatures`**      | `useConversationFeatures.ts`      | Orchestrates active conversation state: combines server messages with pending store items, formats items into date-grouped flat list entries (`MessageFlatListItem`), handles seen status, and sends outgoing text messages. |
+| **`useConversationMessageSearch`** | `useConversationMessageSearch.ts` | Provides real-time searching across messages within an active conversation.                                                                                                                                                  |
+| **`useChatPendingSync`**           | `useChatPendingSync.ts`           | Effect hook that continuously triggers `reconcileTextPending` whenever server messages or pending queues update.                                                                                                             |
+| **`useSendChatMedia`**             | `useSendChatMedia.ts`             | Manages the multi-step lifecycle of sending images/videos: stages files, tracks S3/API uploads, creates pending media entries, and sends the final message.                                                                  |
+| **`useSendChatFile`**              | `useSendChatFile.ts`              | Manages document/file selection, upload progress tracking, pending file entries, and dispatching file messages.                                                                                                              |
+| **`useLastSeenMessageId`**         | `useLastSeenMessageId.ts`         | Calculates the highest message ID seen by participants to render read receipts accurately.                                                                                                                                   |
+| **`useStartConversation`**         | `useStartConversation.ts`         | Convenient wrapper around `conversation.createConversation` with automatic cache invalidation.                                                                                                                               |
+| **`useUserPresence`**              | `useUserPresence.ts`              | Resolves participant online/offline or last-seen status indicators.                                                                                                                                                          |
 
 ---
 
@@ -171,19 +182,23 @@ components/chat/
 ```
 
 ### 6.1 Chat Portal & Conversation List
+
 - **`ChatPortal`**: Renders the conversation list header, search bar, empty states, and virtualized `FlatList` of conversations.
 - **`UserEntry`**: Renders each conversation row with avatar, participant names, last message preview, unread badges, and timestamp.
 
 ### 6.2 Conversation Screen & Header
+
 - **`Conversation`**: The core interactive chat room view. Renders inverted `FlatList` of messages (`MessageFlatListItem`), handles keyboard avoidance, pagination on scroll, and search overlay toggling.
 
 ### 6.3 Message Bubbles & Rendering Pipeline
+
 - **`ChatBubble`**: Determines whether a message is incoming or outgoing, applies directional styling, and renders the appropriate inner bubble variant (`TEXT`, `IMAGE`, `VIDEO`, `FILE`, `STATIC`).
 - **`MessageTextContent`**: Parses raw text and `ResponseMessageLinkDto[]` segments, rendering clickable hyperlinks (`ExtractedMessageLink`) and plain text segments.
 - **`ChatMediaBubble` & `ChatMediaImageGrid`**: Displays responsive image grids or video players with fullscreen lightbox support and integrated skeleton placeholders while media or thumbnails are loading.
 - **`ChatMediaSkeleton`**: Dedicated media bubble skeleton placeholder used while conversations or individual media messages are loading.
 
 ### 6.4 Input Bar, Action Sheets & Media Staging
+
 - **`ConversationInput`**: Handles text entry, send button state, and opens `ConversationInputActionsSheet`.
 - **`ConversationMediaStaging`**: Allows users to preview, caption, or remove staged photos and videos prior to uploading.
 

@@ -1,10 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 
 export type AuthScreen =
-  | "login"
-  | "sign-up"
-  | "forgot-password"
-  | "reset-password";
+  "login" | "sign-up" | "forgot-password" | "reset-password";
 
 const AUTH_SCREENS: AuthScreen[] = [
   "login",
@@ -38,9 +35,13 @@ export function useAuthScreen() {
       : requestedScreen;
 
   const goTo = (next: AuthScreen, extra?: Record<string, string>) => {
-    const params = new URLSearchParams(next === "login" ? {} : { target: next, ...extra });
+    const params = new URLSearchParams(
+      next === "login" ? {} : { target: next, ...extra },
+    );
     const query = params.toString();
-    const url = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    const url = query
+      ? `${window.location.pathname}?${query}`
+      : window.location.pathname;
     window.history.replaceState({}, "", url);
     refresh();
   };

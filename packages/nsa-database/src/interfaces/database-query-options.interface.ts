@@ -1,4 +1,4 @@
-import { FindOptionsWhere } from 'typeorm';
+import { FindOptionsWhere } from "typeorm";
 
 export interface IOptionsObject {
   LOOKUP_DELIMITER?: string;

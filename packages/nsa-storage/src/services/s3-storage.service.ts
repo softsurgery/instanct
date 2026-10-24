@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
-import * as mime from 'mime-types';
-import { Readable } from 'stream';
-import { ConfigService } from '@nestjs/config';
-import { StorageRepository } from '../repositories/storage.repository';
-import { StorageEntity } from '../entities/storage.entity';
-import { StorageBadRequestException } from '../errors/storage.bad-request.error';
-import { FileNotFoundException } from '../errors/file.not-found.error';
-import { StorageService } from './storage.service';
+import { Injectable } from "@nestjs/common";
+import { v4 as uuidv4 } from "uuid";
+import * as mime from "mime-types";
+import { Readable } from "stream";
+import { ConfigService } from "@nestjs/config";
+import { StorageRepository } from "../repositories/storage.repository";
+import { StorageEntity } from "../entities/storage.entity";
+import { StorageBadRequestException } from "../errors/storage.bad-request.error";
+import { FileNotFoundException } from "../errors/file.not-found.error";
+import { StorageService } from "./storage.service";
 import {
   S3Client,
   HeadBucketCommand,
@@ -15,8 +15,8 @@ import {
   GetObjectCommand,
   PutObjectCommand,
   DeleteObjectCommand,
-} from '@aws-sdk/client-s3';
-import { ReadStream } from 'typeorm/platform/PlatformTools';
+} from "@aws-sdk/client-s3";
+import { ReadStream } from "typeorm/platform/PlatformTools";
 
 @Injectable()
 export class S3StorageService extends StorageService {
@@ -29,25 +29,25 @@ export class S3StorageService extends StorageService {
   ) {
     super(storageRepository);
 
-    this.bucket = this.configService.get<string>('s3.bucket') || 'uploads';
+    this.bucket = this.configService.get<string>("s3.bucket") || "uploads";
 
     const endpoint =
-      this.configService.get<string>('s3.endpoint') || 'localhost';
-    const port = this.configService.get<number>('s3.port') || 9000;
-    const useSSL = this.configService.get<boolean>('s3.useSSL') || false;
-    const protocol = useSSL ? 'https' : 'http';
-    const url = endpoint.startsWith('http')
+      this.configService.get<string>("s3.endpoint") || "localhost";
+    const port = this.configService.get<number>("s3.port") || 9000;
+    const useSSL = this.configService.get<boolean>("s3.useSSL") || false;
+    const protocol = useSSL ? "https" : "http";
+    const url = endpoint.startsWith("http")
       ? endpoint
       : `${protocol}://${endpoint}:${port}`;
 
     this.s3Client = new S3Client({
       endpoint: url,
-      region: 'us-east-1',
+      region: "us-east-1",
       credentials: {
         accessKeyId:
-          this.configService.get<string>('s3.accessKey') || 's3admin',
+          this.configService.get<string>("s3.accessKey") || "s3admin",
         secretAccessKey:
-          this.configService.get<string>('s3.secretKey') || 's3admin',
+          this.configService.get<string>("s3.secretKey") || "s3admin",
       },
       forcePathStyle: true,
     });
@@ -56,25 +56,25 @@ export class S3StorageService extends StorageService {
   }
 
   getStorageType(): string {
-    return 's3';
+    return "s3";
   }
 
   private async ensureBucketExists(): Promise<void> {
     try {
       await this.s3Client.send(new HeadBucketCommand({ Bucket: this.bucket }));
     } catch (err: any) {
-      if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
+      if (err.name === "NotFound" || err.$metadata?.httpStatusCode === 404) {
         try {
           await this.s3Client.send(
             new CreateBucketCommand({ Bucket: this.bucket }),
           );
           console.log(`Bucket ${this.bucket} created successfully`);
         } catch (createErr) {
-          console.error('Error creating bucket', createErr);
+          console.error("Error creating bucket", createErr);
           throw createErr;
         }
       } else {
-        console.error('Error ensuring bucket exists', err);
+        console.error("Error ensuring bucket exists", err);
         throw err;
       }
     }
@@ -94,7 +94,7 @@ export class S3StorageService extends StorageService {
     try {
       let range: string | undefined;
       if (start !== undefined || end !== undefined) {
-        range = `bytes=${start !== undefined ? start : 0}-${end !== undefined ? end : ''}`;
+        range = `bytes=${start !== undefined ? start : 0}-${end !== undefined ? end : ""}`;
       }
 
       const response = await this.s3Client.send(
@@ -121,7 +121,7 @@ export class S3StorageService extends StorageService {
     const filename = file.originalname;
     const mimetype = file.mimetype;
     const size = file.size;
-    const extension = mime.extension(mimetype) || '';
+    const extension = mime.extension(mimetype) || "";
     const key = extension ? `${slug}.${extension}` : slug;
 
     const upload = await this.storageRepository.save({
@@ -137,7 +137,7 @@ export class S3StorageService extends StorageService {
 
     try {
       if (!file.buffer || file.buffer.length === 0) {
-        throw new StorageBadRequestException('Failed to store empty file.');
+        throw new StorageBadRequestException("Failed to store empty file.");
       }
 
       await this.s3Client.send(
@@ -205,7 +205,7 @@ export class S3StorageService extends StorageService {
   async duplicate(id: number): Promise<StorageEntity> {
     const original = await this.findOneById(id);
     const newSlug = uuidv4();
-    const extension = mime.extension(original.mimetype) || '';
+    const extension = mime.extension(original.mimetype) || "";
     const newKey = extension ? `${newSlug}.${extension}` : newSlug;
 
     try {

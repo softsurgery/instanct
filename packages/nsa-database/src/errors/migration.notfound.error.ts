@@ -1,5 +1,5 @@
 export class MigrationNotFoundException extends Error {
   constructor() {
-    super('Migration not found');
+    super("Migration not found");
   }
 }

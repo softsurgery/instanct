@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useEmailUser = (
   email?: string,
   join?: string,
-  enabled?: boolean
+  enabled?: boolean,
 ) => {
   const {
     isFetching: isFetchUserPending,

@@ -19,11 +19,16 @@ export class DumpService {
     const config = this.configService.load();
     const binary = resolveBinary("mysqldump");
     await mkdir(config.dataFlowDir, { recursive: true });
-    const outfile = join(config.dataFlowDir, `${config.database}-${this.stamp()}.sql.gz`);
+    const outfile = join(
+      config.dataFlowDir,
+      `${config.database}-${this.stamp()}.sql.gz`,
+    );
     const tempDir = await mkdtemp(join(tmpdir(), "instanct-data-flow-"));
     const defaultsFile = join(tempDir, "client.cnf");
 
-    console.log(`Dumping ${config.database} from ${config.host}:${config.port}`);
+    console.log(
+      `Dumping ${config.database} from ${config.host}:${config.port}`,
+    );
 
     try {
       await writeFile(
@@ -85,6 +90,10 @@ export class DumpService {
   }
 
   private stamp(): string {
-    return new Date().toISOString().replaceAll("-", "").replaceAll(":", "").replace(/\.\d{3}Z$/, "Z");
+    return new Date()
+      .toISOString()
+      .replaceAll("-", "")
+      .replaceAll(":", "")
+      .replace(/\.\d{3}Z$/, "Z");
   }
 }

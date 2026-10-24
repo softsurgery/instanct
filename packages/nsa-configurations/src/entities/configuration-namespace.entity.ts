@@ -5,30 +5,30 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { ConfigurationParamEntity } from './configuration-param.entity';
-import type { AbstractUserEntity } from '@softsurgery/nsa-um/entities/abstract-user.entity';
+} from "typeorm";
+import { ConfigurationParamEntity } from "./configuration-param.entity";
+import type { AbstractUserEntity } from "@softsurgery/nsa-um/entities/abstract-user.entity";
 
-@Entity('configuration-namespace')
+@Entity("configuration-namespace")
 export class ConfigurationNamespaceEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
+  @Column({ type: "varchar", length: 255, nullable: true, default: null })
   name?: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: "varchar", length: 255, nullable: true })
   description?: string;
 
-  @OneToMany('ConfigurationParamEntity', (param: any) => param.namespace, {
+  @OneToMany("ConfigurationParamEntity", (param: any) => param.namespace, {
     eager: true,
   })
   params: ConfigurationParamEntity[];
 
-  @ManyToOne('AbstractUserEntity', (user: any) => user.logs, {
+  @ManyToOne("AbstractUserEntity", (user: any) => user.logs, {
     nullable: true,
   })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: AbstractUserEntity;
 
   @Column({ nullable: true })

@@ -18,11 +18,11 @@ export function splitSqlStatements(sqlText: string): string[] {
 
   while (i < n) {
     const ch = sqlText[i];
-    const nextChar = i + 1 < n ? sqlText[i + 1] : '';
+    const nextChar = i + 1 < n ? sqlText[i + 1] : "";
 
     if (inLineComment) {
       current.push(ch);
-      if (ch === '\n') {
+      if (ch === "\n") {
         inLineComment = false;
       }
       i++;
@@ -31,8 +31,8 @@ export function splitSqlStatements(sqlText: string): string[] {
 
     if (inBlockComment) {
       current.push(ch);
-      if (ch === '*' && nextChar === '/') {
-        current.push('/');
+      if (ch === "*" && nextChar === "/") {
+        current.push("/");
         i += 2;
         inBlockComment = false;
         continue;
@@ -48,7 +48,7 @@ export function splitSqlStatements(sqlText: string): string[] {
       continue;
     }
 
-    if (ch === '\\') {
+    if (ch === "\\") {
       current.push(ch);
       escape = true;
       i++;
@@ -87,7 +87,7 @@ export function splitSqlStatements(sqlText: string): string[] {
 
     if (inBacktick) {
       current.push(ch);
-      if (ch === '`') {
+      if (ch === "`") {
         inBacktick = false;
       }
       i++;
@@ -95,21 +95,21 @@ export function splitSqlStatements(sqlText: string): string[] {
     }
 
     // Check for comment starts
-    if (ch === '-' && nextChar === '-') {
+    if (ch === "-" && nextChar === "-") {
       current.push(ch);
       inLineComment = true;
       i++;
       continue;
     }
 
-    if (ch === '#') {
+    if (ch === "#") {
       current.push(ch);
       inLineComment = true;
       i++;
       continue;
     }
 
-    if (ch === '/' && nextChar === '*') {
+    if (ch === "/" && nextChar === "*") {
       current.push(ch);
       inBlockComment = true;
       i++;
@@ -130,15 +130,15 @@ export function splitSqlStatements(sqlText: string): string[] {
       continue;
     }
 
-    if (ch === '`') {
+    if (ch === "`") {
       inBacktick = true;
       current.push(ch);
       i++;
       continue;
     }
 
-    if (ch === ';') {
-      const stmt = current.join('').trim();
+    if (ch === ";") {
+      const stmt = current.join("").trim();
       if (stmt) {
         statements.push(stmt);
       }
@@ -151,7 +151,7 @@ export function splitSqlStatements(sqlText: string): string[] {
     i++;
   }
 
-  const lastStmt = current.join('').trim();
+  const lastStmt = current.join("").trim();
   if (lastStmt) {
     statements.push(lastStmt);
   }

@@ -80,7 +80,10 @@ describe("Mobile Version Policy & Enforcement Test Suite (Direct Production Code
   // Requirement 5: iOS uses the iOS minimum, and Android uses the Android minimum.
   it("Requirement 5: iOS and Android have separate policy thresholds", () => {
     const policy = {
-      ios: { minVersion: "2.0.0", storeUrl: "https://apps.apple.com/app/id123" },
+      ios: {
+        minVersion: "2.0.0",
+        storeUrl: "https://apps.apple.com/app/id123",
+      },
       android: {
         minVersion: "1.5.0",
         storeUrl:
@@ -91,7 +94,10 @@ describe("Mobile Version Policy & Enforcement Test Suite (Direct Production Code
     const installedVersion = "1.6.0";
 
     // On iOS: 1.6.0 < 2.0.0 -> Outdated
-    assert.equal(isVersionOutdated(installedVersion, policy.ios.minVersion), true);
+    assert.equal(
+      isVersionOutdated(installedVersion, policy.ios.minVersion),
+      true,
+    );
 
     // On Android: 1.6.0 >= 1.5.0 -> Allowed
     assert.equal(
@@ -197,10 +203,7 @@ describe("Mobile Version Policy & Enforcement Test Suite (Direct Production Code
       useVersionPersistStore.getState().hasConfirmedMandatoryUpdate,
       false,
     );
-    assert.equal(
-      useVersionPersistStore.getState().confirmedMinVersion,
-      null,
-    );
+    assert.equal(useVersionPersistStore.getState().confirmedMinVersion, null);
   });
 
   // Requirement 11: A newly discovered mandatory update does not interrupt an already-running session and is enforced on the next cold launch.
@@ -231,10 +234,7 @@ describe("Mobile Version Policy & Enforcement Test Suite (Direct Production Code
       useVersionPersistStore.getState().hasPendingMandatoryUpdate,
       true,
     );
-    assert.equal(
-      useVersionPersistStore.getState().pendingMinVersion,
-      "2.0.0",
-    );
+    assert.equal(useVersionPersistStore.getState().pendingMinVersion, "2.0.0");
 
     // Next cold launch: user restarts the app
     store.bootstrapColdLaunch(installedVersion);
@@ -275,9 +275,6 @@ describe("Mobile Version Policy & Enforcement Test Suite (Direct Production Code
       useVersionPersistStore.getState().hasConfirmedMandatoryUpdate,
       false,
     );
-    assert.equal(
-      useVersionPersistStore.getState().confirmedMinVersion,
-      null,
-    );
+    assert.equal(useVersionPersistStore.getState().confirmedMinVersion, null);
   });
 });

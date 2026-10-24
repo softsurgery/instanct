@@ -116,8 +116,7 @@ async function syncNotificationsActivity(): Promise<BackgroundActivityResult> {
 
     const fresh = items.filter(
       (notification) =>
-        !notification.readAt &&
-        new Date(notification.createdAt) > lastSeenAt,
+        !notification.readAt && new Date(notification.createdAt) > lastSeenAt,
     );
     if (!fresh.length) return "no-data";
 

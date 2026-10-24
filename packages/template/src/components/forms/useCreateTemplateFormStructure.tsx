@@ -22,7 +22,10 @@ export const useCreateTemplateFormStructure = ({
     variant: FieldVariant.TEXT,
     required: true,
     placeholder: "e.g. welcome-email",
-    description: t("templates.fields.nameDescription", "Unique template identifier."),
+    description: t(
+      "templates.fields.nameDescription",
+      "Unique template identifier.",
+    ),
     error: templateStore?.templateCreateDtoErrors?.name?.[0],
     props: {
       value: templateStore?.templateCreateDto.name || undefined,

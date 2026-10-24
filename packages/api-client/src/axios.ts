@@ -98,8 +98,7 @@ export function createAxios({
     (res) => res,
     async (error: AxiosError) => {
       const originalRequest = error.config as
-        | RetryableRequestConfig
-        | undefined;
+        RetryableRequestConfig | undefined;
       const refreshToken = auth.getRefreshToken();
       const authenticated = auth.isAuthenticated();
 

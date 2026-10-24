@@ -31,9 +31,7 @@ export function createEducationResource(http: AxiosInstance) {
     return response.data;
   };
 
-  const remove = async (
-    id: string | number,
-  ): Promise<ResponseEducationDto> => {
+  const remove = async (id: string | number): Promise<ResponseEducationDto> => {
     const response = await http.delete(`/education/${id}`);
     return response.data;
   };

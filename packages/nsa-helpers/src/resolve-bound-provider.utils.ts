@@ -1,4 +1,4 @@
-import { createLazyModuleRefProxy } from './lazy-module-ref-proxy.utils';
+import { createLazyModuleRefProxy } from "./lazy-module-ref-proxy.utils";
 
 type ProviderClass<T> = abstract new (...args: never[]) => T;
 

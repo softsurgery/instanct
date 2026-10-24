@@ -13,6 +13,8 @@ export default async function PrivacyPolicyPage() {
   const acceptLanguage = headersList.get("accept-language");
   const locale = resolveSupportedLng(acceptLanguage ?? undefined);
 
-  const page = await api.contentPage.findBySlug("privacy", locale).catch(() => null);
+  const page = await api.contentPage
+    .findBySlug("privacy", locale)
+    .catch(() => null);
   return <LegalPageShell page={page} kind="privacy" />;
 }
