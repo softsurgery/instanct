@@ -2,15 +2,16 @@ import { Injectable, Logger } from "@nestjs/common";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { Transactional } from "@nestjs-cls/transactional";
 import { AbstractCrudService, toDto } from "@softsurgery/nsa-database";
-import { IsNull, LessThan } from "typeorm";
+import { FindOptionsWhere, IsNull, LessThan } from "typeorm";
 import { UserConnectionHistoryRepository } from "../repositories/user-connection-history.repository";
-import { UserDeviceRepository } from "../repositories/user-device.repository";
+import { UserDeviceService } from "./user-device.service";
 import { UserConnectionHistoryEntity } from "../entities/user-connection-history.entity";
 import { RegisterUserDeviceDto } from "../dtos/user-device/register-user-device.dto";
 import { ResponseUserDeviceRegistrationDto } from "../dtos/user-device/response-user-device-registration.dto";
 import { ResponseUserDeviceDto } from "../dtos/user-device/response-user-device.dto";
 import { ResponseUserConnectionHistoryDto } from "../dtos/user-connection-history/response-user-connection-history.dto";
 import { PresenceMetadata } from "../utils/presence-metadata";
+import { SigninMetadata } from "../utils/signin-metadata";
 
 @Injectable()
 export class UserConnectionHistoryService extends AbstractCrudService<UserConnectionHistoryEntity> {
@@ -18,16 +19,19 @@ export class UserConnectionHistoryService extends AbstractCrudService<UserConnec
 
   constructor(
     private readonly userConnectionHistoryRepository: UserConnectionHistoryRepository,
-    private readonly userDeviceRepository: UserDeviceRepository,
+    private readonly userDeviceService: UserDeviceService,
   ) {
     super(userConnectionHistoryRepository);
   }
 
+  /**
+   * Retrieves connection history records for a user, optionally filtered by device.
+   */
   async findHistory(
     userId: string,
     deviceId?: string,
   ): Promise<UserConnectionHistoryEntity[]> {
-    const where: Record<string, any> = { userId };
+    const where: FindOptionsWhere<UserConnectionHistoryEntity> = { userId };
     if (deviceId) where.deviceId = deviceId;
 
     return this.repository.findAll({
@@ -37,49 +41,67 @@ export class UserConnectionHistoryService extends AbstractCrudService<UserConnec
     });
   }
 
+  /**
+   * Registers a connection session for a user device, resolving or creating the device via UserDeviceService,
+   * merging fast sign-in + presence transitions into a single session, and maintaining connection records.
+   */
   @Transactional()
   async registerConnection(
     dto: RegisterUserDeviceDto,
   ): Promise<ResponseUserDeviceRegistrationDto> {
-    const macAddress = dto.macAddress || "02:00:00:00:00:00";
-    let device = await this.userDeviceRepository.findOne({
-      where: { userId: dto.userId, macAddress },
-    });
-
-    let isNew = false;
-    if (device) {
-      if (dto.deviceName) device.deviceName = dto.deviceName;
-      if (dto.deviceModel) device.deviceModel = dto.deviceModel;
-      if (dto.os) device.os = dto.os;
-      device = await this.userDeviceRepository.save(device);
-    } else {
-      device = await this.userDeviceRepository.save({
-        userId: dto.userId,
-        macAddress,
-        deviceName: dto.deviceName || "Unknown Device",
+    const { device, isNew } = await this.userDeviceService.getOrCreateDevice(
+      dto.userId,
+      {
+        macAddress: dto.macAddress,
+        deviceName: dto.deviceName,
         deviceModel: dto.deviceModel,
-        os: dto.os || "Unknown OS",
-        isTrusted: true,
-      });
-      isNew = true;
-    }
+        os: dto.os,
+      },
+    );
 
-    // Close any previous open connections for this device
-    const openConnections = await this.repository.findAll({
+    const now = new Date();
+    const active = await this.repository.findOne({
       where: {
         userId: dto.userId,
         deviceId: device.id,
         disconnectedAt: IsNull(),
       },
+      order: { createdAt: "DESC" },
     });
-    if (openConnections.length > 0) {
-      const now = new Date();
-      openConnections.forEach((conn) => {
-        conn.disconnectedAt = now;
-      });
-      await this.repository.saveMany(openConnections);
+
+    if (active) {
+      const createdAt = active.createdAt ? new Date(active.createdAt) : now;
+      const ageMs = now.getTime() - createdAt.getTime();
+
+      // Merge incoming socket into recent sign-in (<5 min) or socket reconnect (<60s)
+      const isRecentSignin =
+        !active.socketId && dto.socketId && ageMs < 5 * 60 * 1000;
+      const isRecentReconnect =
+        dto.socketId &&
+        (active.socketId === dto.socketId || ageMs < 60 * 1000);
+
+      if (isRecentSignin || isRecentReconnect) {
+        if (dto.socketId) active.socketId = dto.socketId;
+        if (dto.source && dto.source !== "signin") active.source = dto.source;
+        if (dto.ipAddress) active.ipAddress = dto.ipAddress;
+        if (dto.latitude !== undefined) active.latitude = dto.latitude;
+        if (dto.longitude !== undefined) active.longitude = dto.longitude;
+        if (dto.location) active.location = dto.location;
+
+        const updated = await this.repository.save(active);
+        return {
+          device: toDto(ResponseUserDeviceDto, device)!,
+          connection: toDto(ResponseUserConnectionHistoryDto, updated)!,
+          isNew,
+        };
+      }
+
+      // Starting a distinct new session: close previous session
+      active.disconnectedAt = now;
+      await this.repository.save(active);
     }
 
+    // Create a new connection history record
     const connection = await this.repository.save({
       userId: dto.userId,
       deviceId: device.id,
@@ -98,6 +120,30 @@ export class UserConnectionHistoryService extends AbstractCrudService<UserConnec
     };
   }
 
+  /**
+   * Helper to register a connection during user sign-in.
+   */
+  @Transactional()
+  async recordSignin(
+    userId: string,
+    meta: SigninMetadata,
+  ): Promise<ResponseUserDeviceRegistrationDto> {
+    return this.registerConnection({
+      userId,
+      source: "signin",
+      macAddress: meta.macAddress,
+      deviceName: meta.device,
+      os: meta.os,
+      ipAddress: meta.ip,
+      latitude: meta.latitude,
+      longitude: meta.longitude,
+      location: meta.location,
+    });
+  }
+
+  /**
+   * Helper to register a connection during WebSocket presence handshake.
+   */
   @Transactional()
   async recordPresenceConnection(params: {
     userId: string;
@@ -120,6 +166,9 @@ export class UserConnectionHistoryService extends AbstractCrudService<UserConnec
     });
   }
 
+  /**
+   * Records socket disconnection timestamp for active connection history.
+   */
   @Transactional()
   async recordDisconnection(
     socketId: string,
@@ -129,14 +178,15 @@ export class UserConnectionHistoryService extends AbstractCrudService<UserConnec
     if (!socketId && !connectionHistoryId) return;
 
     try {
-      const record = connectionHistoryId
-        ? await this.repository.findOne({
-            where: { id: connectionHistoryId },
-          })
-        : await this.repository.findOne({
-            where: { socketId, disconnectedAt: IsNull() },
-            order: { createdAt: "DESC" },
-          });
+      const where: FindOptionsWhere<UserConnectionHistoryEntity> =
+        connectionHistoryId
+          ? { id: connectionHistoryId }
+          : { socketId, disconnectedAt: IsNull() };
+
+      const record = await this.repository.findOne({
+        where,
+        order: { createdAt: "DESC" },
+      });
 
       if (record && !record.disconnectedAt) {
         record.disconnectedAt = disconnectedAt;
@@ -150,6 +200,45 @@ export class UserConnectionHistoryService extends AbstractCrudService<UserConnec
     }
   }
 
+  /**
+   * Updates coordinates of the currently active connection session when location updates occur.
+   */
+  @Transactional()
+  async updateActiveLocation(
+    userId: string,
+    latitude: number,
+    longitude: number,
+    location?: string,
+  ): Promise<void> {
+    if (!userId) return;
+
+    try {
+      const active = await this.repository.findOne({
+        where: { userId, disconnectedAt: IsNull() },
+        order: { createdAt: "DESC" },
+      });
+
+      if (active) {
+        const latDiff = Math.abs((active.latitude ?? 0) - latitude);
+        const lonDiff = Math.abs((active.longitude ?? 0) - longitude);
+        if (latDiff > 0.0001 || lonDiff > 0.0001) {
+          active.latitude = latitude;
+          active.longitude = longitude;
+          if (location) active.location = location;
+          await this.repository.save(active);
+        }
+      }
+    } catch (err) {
+      this.logger.debug(
+        `Failed to update active location for user ${userId}`,
+        err,
+      );
+    }
+  }
+
+  /**
+   * Removes connection history older than 30 days.
+   */
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async cleanOldConnectionHistory(): Promise<void> {
     const cutoffDate = new Date();

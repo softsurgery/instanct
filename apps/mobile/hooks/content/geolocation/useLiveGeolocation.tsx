@@ -4,8 +4,32 @@ import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
 import * as Location from "expo-location";
 import React from "react";
+import { AppState, type AppStateStatus } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 import { useLiveGeolocationParameters } from "./useLiveGeolocationParamters";
+
+const MIN_MOVEMENT_METERS = 5;
+const HEARTBEAT_INTERVAL_MS = 30_000;
+
+function calculateDistanceMeters(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+): number {
+  const toRad = (v: number) => (v * Math.PI) / 180;
+  const R = 6371000;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
 interface useLiveGeolocationOptions {
   enabled?: boolean; // reserved for future use
@@ -39,6 +63,11 @@ export function useLiveGeolocation(
   const socketRef = React.useRef<Socket | null>(null);
   const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
   const listenerSetupDoneRef = React.useRef(false);
+  const lastEmittedPosRef = React.useRef<{
+    latitude: number;
+    longitude: number;
+    timestamp: number;
+  } | null>(null);
 
   // Keep `join` in a ref so the callback doesn't depend on it
   const joinRef = React.useRef(join);
@@ -46,31 +75,60 @@ export function useLiveGeolocation(
     joinRef.current = join;
   }, [join]);
 
-  const updateLocation = React.useCallback(async (socket?: Socket) => {
-    try {
-      const pos = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-      });
+  const updateLocation = React.useCallback(
+    async (socket?: Socket, force = false) => {
+      try {
+        if (AppState.currentState !== "active" && !force) {
+          return;
+        }
 
-      useMapStore.getState().set("location", pos);
+        const pos = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.High,
+        });
 
-      const radius = useMapStore.getState().settings?.radius;
+        useMapStore.getState().set("location", pos);
 
-      if (radius == null) {
-        console.warn("⚠️ radius not initialized yet");
-        return;
+        const radius = useMapStore.getState().settings?.radius;
+
+        if (radius == null) {
+          console.warn("⚠️ radius not initialized yet");
+          return;
+        }
+
+        const now = Date.now();
+        const last = lastEmittedPosRef.current;
+        if (last && !force) {
+          const dist = calculateDistanceMeters(
+            last.latitude,
+            last.longitude,
+            pos.coords.latitude,
+            pos.coords.longitude,
+          );
+          const elapsed = now - last.timestamp;
+          // Skip redundant network emission when stationary unless heartbeat interval has elapsed
+          if (dist < MIN_MOVEMENT_METERS && elapsed < HEARTBEAT_INTERVAL_MS) {
+            return;
+          }
+        }
+
+        lastEmittedPosRef.current = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          timestamp: now,
+        };
+
+        socket?.emit("update_location", {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          radius,
+          query: { join: joinRef.current.join(",") },
+        });
+      } catch (err) {
+        console.warn("⚠️ Failed to fetch location:", err);
       }
-
-      socket?.emit("update_location", {
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-        radius,
-        query: { join: joinRef.current.join(",") },
-      });
-    } catch (err) {
-      console.warn("⚠️ Failed to fetch location:", err);
-    }
-  }, []);
+    },
+    [],
+  );
 
   const initializeSocket = React.useCallback(async () => {
     // Skip if already initialized
@@ -127,10 +185,6 @@ export function useLiveGeolocation(
         });
       });
 
-      socket.io.on("reconnect_error", (err: Error) => {
-        // console.log("⚠️ Reconnect error:", err.message);
-      });
-
       socket.io.on("reconnect_failed", () => {
         console.warn("❌ Reconnect failed — will retry automatically");
         useMapStore.getState().setNested("reconnection.reconnecting", false);
@@ -154,7 +208,7 @@ export function useLiveGeolocation(
         // fetch profiles for all nearby users
         for (const n of nearbyList) {
           try {
-            if (n.user) useMapStore.getState().addUser(n.user);
+            if (n.user) store.addUser(n.user);
           } catch (e) {
             console.warn("Failed to fetch profile:", e);
           }
@@ -172,6 +226,17 @@ export function useLiveGeolocation(
           console.warn("❌ Failed retrieving user", e);
         }
       });
+
+      socket.on(
+        "user_presence_changed",
+        (event: { userId: string; isConnected: boolean }) => {
+          if (event?.userId) {
+            useMapStore
+              .getState()
+              .updateNearbyUserPresence(event.userId, event.isConnected);
+          }
+        },
+      );
     }
 
     await updateLocation(socket);
@@ -202,6 +267,17 @@ export function useLiveGeolocation(
       listenerSetupDoneRef.current = false;
     };
   }, [enabled, initializeSocket, restartSignal, hasInitializedParameters]);
+
+  React.useEffect(() => {
+    const handleAppStateChange = (nextState: AppStateStatus) => {
+      if (nextState === "active" && socketRef.current?.connected) {
+        void updateLocation(socketRef.current, true);
+      }
+    };
+
+    const sub = AppState.addEventListener("change", handleAppStateChange);
+    return () => sub.remove();
+  }, [updateLocation]);
 
   const restartSocket = React.useCallback(async () => {
     if (intervalRef.current) {

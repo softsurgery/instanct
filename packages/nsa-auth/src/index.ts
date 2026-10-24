@@ -23,9 +23,16 @@ export {
   extractClientIp,
   resolveIpGeolocation,
   parseDeviceUserAgent,
+  formatAsMacAddress,
+  generateDeterministicMacAddress,
   type PresenceMetadata,
   type ClientConnectionPayload,
 } from "./utils/presence-metadata";
+export {
+  getSigninMetadata,
+  type SigninMetadata,
+  type SigninBodyParams,
+} from "./utils/signin-metadata";
 export { AppleAuthUtils } from "./utils/apple-auth.utils";
 export {
   type AppleTokenResponse,

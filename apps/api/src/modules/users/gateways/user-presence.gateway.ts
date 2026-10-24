@@ -97,11 +97,8 @@ export class UserPresenceGateway
 
     let connectionHistoryId: string | undefined;
 
-    // Record presence connection & device history (especially for mobile clients)
-    if (
-      this.userConnectionHistoryService &&
-      (source === 'mobile' || client.handshake?.auth?.device)
-    ) {
+    // Record presence connection & device history (for all authenticated clients, smoothly deduplicating with sign-in)
+    if (this.userConnectionHistoryService) {
       try {
         const result =
           await this.userConnectionHistoryService.recordPresenceConnection({

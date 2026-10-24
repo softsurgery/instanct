@@ -7,8 +7,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { Server, Socket } from 'socket.io';
+import { Injectable, Logger, OnModuleInit, Optional } from '@nestjs/common';
+import { Server } from 'socket.io';
 import { GeolocationService } from '../services/geolocation.service';
 import { AdvancedSocket } from '@softsurgery/nsa-helpers/http';
 import { getTokenPayloadForWebSocket } from '@softsurgery/nsa-auth/utils/token-payload';
@@ -17,6 +17,12 @@ import { ConfigurationNamespaces } from 'src/app/enums/configuration-namespaces.
 import { MapConfigurationParam } from 'src/app/configurations/map-configuration.enum';
 import { IQueryObject } from '@softsurgery/nsa-database';
 import { SessionService } from '@softsurgery/nsa-sessions/services/session.service';
+import {
+  ClientPresenceSource,
+  UserPresenceEvent,
+  UserPresenceService,
+} from '@softsurgery/nsa-um/services/user-presence.service';
+import { UserConnectionHistoryService } from '@softsurgery/nsa-auth/services/user-connection-history.service';
 
 @WebSocketGateway({
   namespace: '/geolocation',
@@ -33,16 +39,6 @@ export class GeolocationGateway
 
   private readonly logger = new Logger(GeolocationGateway.name);
 
-  /**
-   * socket.id -> userId
-   */
-  private readonly socketToUser = new Map<string, string>();
-
-  /**
-   * userId -> socket.id
-   */
-  private readonly userToSocket = new Map<string, string>();
-
   private rangeMin: number;
   private rangeMax: number;
 
@@ -50,6 +46,10 @@ export class GeolocationGateway
     private readonly geolocationService: GeolocationService,
     private readonly configurationNamespaceService: ConfigurationNamespaceService,
     private readonly sessionService: SessionService,
+    @Optional()
+    private readonly userPresenceService?: UserPresenceService,
+    @Optional()
+    private readonly userConnectionHistoryService?: UserConnectionHistoryService,
   ) {}
 
   async onModuleInit() {
@@ -63,12 +63,22 @@ export class GeolocationGateway
       MapConfigurationParam.RANGE_MAX,
     )) as number;
 
+    // Reactively broadcast presence changes to map clients so status badges reflect real-time transitions
+    this.userPresenceService?.onPresenceChange((event: UserPresenceEvent) => {
+      this.server?.emit('user_presence_changed', {
+        userId: event.userId,
+        isConnected: event.isConnected,
+        sources: event.sources,
+        lastSeen: event.lastSeen,
+      });
+    });
+
     this.logger.log(
       `Geolocation radius limits loaded: min=${this.rangeMin}, max=${this.rangeMax}`,
     );
   }
 
-  handleConnection(client: AdvancedSocket) {
+  async handleConnection(client: AdvancedSocket) {
     const payload = getTokenPayloadForWebSocket(client);
 
     if (!payload?.sub) {
@@ -78,37 +88,44 @@ export class GeolocationGateway
     }
 
     const userId = payload.sub;
+    client.data.userId = userId;
 
-    // remove previous socket if user reconnects
-    const previousSocketId = this.userToSocket.get(userId);
-    if (previousSocketId && previousSocketId !== client.id) {
-      this.socketToUser.delete(previousSocketId);
-    }
+    await client.join(`user_${userId}`);
+    await client.join('geolocation_subscribers');
 
-    this.socketToUser.set(client.id, userId);
-    this.userToSocket.set(userId, client.id);
+    const source: ClientPresenceSource =
+      (client.handshake?.auth?.source as ClientPresenceSource) ||
+      (client.handshake?.query?.source as ClientPresenceSource) ||
+      (client.handshake?.headers?.[
+        'x-client-source'
+      ] as ClientPresenceSource) ||
+      'mobile';
 
-    // this.logger.log(`User ${userId} connected on socket ${client.id}`);
+    // Centralize presence tracking into UserPresenceService
+    this.userPresenceService?.trackConnection(
+      userId,
+      client.id,
+      source,
+      'geolocation',
+    );
   }
 
-  handleDisconnect(client: Socket) {
-    const userId = this.socketToUser.get(client.id);
+  handleDisconnect(client: AdvancedSocket) {
+    const userId = client.data?.userId;
 
     if (!userId) return;
 
-    this.socketToUser.delete(client.id);
-
-    const currentSocket = this.userToSocket.get(userId);
-    if (currentSocket === client.id) {
-      this.userToSocket.delete(userId);
-    }
-
-    // this.logger.log(`User ${userId} disconnected`);
+    // Centralize disconnection tracking into UserPresenceService
+    this.userPresenceService?.trackDisconnection(
+      userId,
+      client.id,
+      'geolocation',
+    );
   }
 
   @SubscribeMessage('identify')
-  handleIdentify(@ConnectedSocket() socket: Socket) {
-    const userId = this.socketToUser.get(socket.id);
+  handleIdentify(@ConnectedSocket() socket: AdvancedSocket) {
+    const userId = socket.data?.userId;
 
     if (!userId) {
       socket.emit('error', { message: 'User not identified' });
@@ -130,7 +147,7 @@ export class GeolocationGateway
 
   @SubscribeMessage('update_location')
   async handleUpdateLocation(
-    @ConnectedSocket() socket: Socket,
+    @ConnectedSocket() socket: AdvancedSocket,
     @MessageBody()
     data: {
       latitude: number;
@@ -140,7 +157,7 @@ export class GeolocationGateway
     },
   ) {
     try {
-      const userId = this.socketToUser.get(socket.id);
+      const userId = socket.data?.userId;
 
       if (!userId) {
         socket.emit('error', { message: 'User not identified' });
@@ -188,34 +205,48 @@ export class GeolocationGateway
           data.query,
         );
 
-      // Check accepted requests for each nearby user
-      const nearbyWithPresence = await Promise.all(
-        nearbyUsers.map(async (geo) => {
-          const accepted =
-            await this.geolocationService.hasAcceptedRequestInSession(
-              userId,
-              geo.userId,
-            );
+      // Batch resolve bidirectional accepted requests for all candidate nearby users in a single query
+      const candidateUserIds = nearbyUsers.map((g) => g.userId);
+      const acceptedIds =
+        await this.geolocationService.getAcceptedRequestUserIds(
+          userId,
+          candidateUserIds,
+        );
 
-          return {
-            ...geo,
-            latitude: accepted ? geo.latitude : null,
-            longitude: accepted ? geo.longitude : null,
-            distance: accepted
-              ? GeolocationService.calculateDistanceKm(
-                  latitude,
-                  longitude,
-                  geo.latitude as number,
-                  geo.longitude as number,
-                )
-              : null,
-            isOnline: this.userToSocket.has(geo.userId),
-            coordinatesVisible: accepted,
-          };
-        }),
-      );
+      const nearbyWithPresence = nearbyUsers.map((geo) => {
+        const accepted = acceptedIds.has(geo.userId);
+        const isOnline =
+          this.userPresenceService?.isUserConnected(geo.userId) ?? false;
+
+        return {
+          ...geo,
+          latitude: accepted ? geo.latitude : null,
+          longitude: accepted ? geo.longitude : null,
+          distance: accepted
+            ? GeolocationService.calculateDistanceKm(
+                latitude,
+                longitude,
+                geo.latitude as number,
+                geo.longitude as number,
+              )
+            : null,
+          isOnline,
+          coordinatesVisible: accepted,
+        };
+      });
 
       socket.emit('nearby_users', nearbyWithPresence);
+
+      // Synchronize high-accuracy GPS coordinates with the active device connection history record
+      if (this.userConnectionHistoryService) {
+        this.userConnectionHistoryService
+          .updateActiveLocation(userId, latitude, longitude)
+          .catch((err) => {
+            this.logger.debug(
+              `Failed updating active connection location for ${userId}: ${err}`,
+            );
+          });
+      }
 
       const movementPayload = {
         userId,
@@ -224,15 +255,12 @@ export class GeolocationGateway
         updatedAt: new Date().toISOString(),
       };
 
-      // Only emit user_moved to users who have an accepted request
+      // Emit user_moved to user rooms (reliably covers multiple sockets/devices per user)
       for (const user of nearbyWithPresence) {
         if (!user.coordinatesVisible) continue;
-
-        const targetSocketId = this.userToSocket.get(user.userId);
-
-        if (!targetSocketId) continue;
-
-        this.server.to(targetSocketId).emit('user_moved', movementPayload);
+        this.server
+          .to(`user_${user.userId}`)
+          .emit('user_moved', movementPayload);
       }
     } catch (error) {
       this.logger.error(

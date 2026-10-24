@@ -73,29 +73,18 @@ export class ClientAuthController {
       signInDto.password,
     );
     const meta = await getSigninMetadata(req, signInDto);
-    const {
-      device: userDevice,
-      connection,
-      isNew,
-    } = await this.userConnectionHistoryService.registerConnection({
-      userId: result.user.id,
-      macAddress: meta.macAddress,
-      deviceName: meta.device,
-      os: meta.os,
-      source: "signin",
-      ipAddress: meta.ip,
-      latitude: meta.latitude,
-      longitude: meta.longitude,
-      location: meta.location,
-    });
+    const reg = await this.userConnectionHistoryService.recordSignin(
+      result.user.id,
+      meta,
+    );
     req.logInfo = {
       clientName: identifyUser(result.user as AbstractUserEntity),
     };
-    if (isNew) {
+    if (reg.isNew) {
       req.notificationInfo = {
         userId: result.user.id,
-        deviceId: userDevice.id,
-        connectionId: connection.id,
+        deviceId: reg.device.id,
+        connectionId: reg.connection.id,
       };
     }
     return result;
@@ -132,29 +121,18 @@ export class ClientAuthController {
     );
     if (result.user) {
       const meta = await getSigninMetadata(req, oauthDto);
-      const {
-        device: userDevice,
-        connection,
-        isNew,
-      } = await this.userConnectionHistoryService.registerConnection({
-        userId: result.user.id,
-        macAddress: meta.macAddress,
-        deviceName: meta.device,
-        os: meta.os,
-        source: "signin",
-        ipAddress: meta.ip,
-        latitude: meta.latitude,
-        longitude: meta.longitude,
-        location: meta.location,
-      });
+      const reg = await this.userConnectionHistoryService.recordSignin(
+        result.user.id,
+        meta,
+      );
       req.logInfo = {
         clientName: identifyUser(result.user as AbstractUserEntity),
       };
-      if (isNew) {
+      if (reg.isNew) {
         req.notificationInfo = {
           userId: result.user.id,
-          deviceId: userDevice.id,
-          connectionId: connection.id,
+          deviceId: reg.device.id,
+          connectionId: reg.connection.id,
         };
       }
     }

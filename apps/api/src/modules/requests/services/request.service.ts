@@ -315,4 +315,19 @@ export class RequestService
   private getExpirationJobName(sessionId: number): string {
     return `expire-requests-session-${sessionId}`;
   }
+
+  /**
+   * Delegates batch resolution of bidirectional accepted requests within active sessions.
+   */
+  async findAcceptedUserIdsInActiveSessions(
+    userId: string,
+    candidateUserIds: string[],
+    now: Date = new Date(),
+  ): Promise<string[]> {
+    return this.requestRepository.findAcceptedUserIdsInActiveSessions(
+      userId,
+      candidateUserIds,
+      now,
+    );
+  }
 }
