@@ -5,6 +5,7 @@ import { GeolocationEntity } from '../entities/geolocation.entity';
 import { CreateGeolocationDto } from '../dtos/create-geolocation.dto';
 import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { RequestService } from '@/modules/requests/services/request.service';
+import { SessionStatus } from '@softsurgery/nsa-sessions/enums/session-status.enum';
 
 @Injectable()
 export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
@@ -75,6 +76,21 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
     return this.geolocationRepository.findOne({ where: { userId } });
   }
 
+  async findByUserIdWithRelations(
+    userId: string,
+  ): Promise<GeolocationEntity | null> {
+    return this.geolocationRepository.findOne({
+      where: { userId },
+      relations: {
+        user: {
+          picture: true,
+          industries: true,
+          sessions: true,
+        },
+      },
+    });
+  }
+
   async findActiveSessionsByRadius(
     latitude: number,
     longitude: number,
@@ -93,8 +109,22 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
 
     const idsFilter = `id||$in||${geolocations.map((g) => g.id).join(',')}`;
     query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
+
+    // Ensure user and user.sessions relations are always joined so activeSession is reliably loaded
+    const existingJoins = query.join
+      ? Array.isArray(query.join)
+        ? (query.join as string[])
+        : String(query.join).split(',')
+      : [];
+    const requiredJoins = ['user', 'user.sessions', 'user.picture'];
+    query.join = Array.from(new Set([...existingJoins, ...requiredJoins])).join(
+      ',',
+    );
+
     const data = (await this.findAll(query)).filter(
-      (geo) => geo.user?.activeSession,
+      (geo) =>
+        geo.user?.activeSession ||
+        geo.user?.sessions?.some((s) => s.status === SessionStatus.ACTIVE),
     );
     return data;
   }

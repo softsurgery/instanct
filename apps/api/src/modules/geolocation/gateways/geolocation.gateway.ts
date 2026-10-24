@@ -137,7 +137,11 @@ export class GeolocationGateway
       message: 'User registered successfully',
     });
 
-    this.logger.debug(`User ${userId} identified on socket ${socket.id}`);
+    const socketData = socket.data as Record<string, unknown> | undefined;
+    if (!socketData?.hasLoggedIdentify) {
+      if (socketData) socketData.hasLoggedIdentify = true;
+      this.logger.debug(`User ${userId} identified on socket ${socket.id}`);
+    }
   }
 
   /**
@@ -248,18 +252,36 @@ export class GeolocationGateway
           });
       }
 
-      const movementPayload = {
-        userId,
-        latitude,
-        longitude,
-        updatedAt: new Date().toISOString(),
-      };
+      // Find moving user's full profile to include with user_moved so recipients update their users store
+      const currentUserGeo =
+        await this.geolocationService.findByUserIdWithRelations(userId);
+      const currentUserProfile = currentUserGeo?.user;
 
-      // Emit user_moved to user rooms (reliably covers multiple sockets/devices per user)
-      for (const user of nearbyWithPresence) {
-        if (!user.coordinatesVisible) continue;
+      // Emit user_moved to user rooms with full profile so they appear immediately in Explore
+      for (const nearby of nearbyWithPresence) {
+        const accepted = acceptedIds.has(nearby.userId);
+        const distance = accepted
+          ? GeolocationService.calculateDistanceKm(
+              latitude,
+              longitude,
+              nearby.latitude as number,
+              nearby.longitude as number,
+            )
+          : null;
+
+        const movementPayload = {
+          userId,
+          latitude: accepted ? latitude : null,
+          longitude: accepted ? longitude : null,
+          distance,
+          user: currentUserProfile,
+          isOnline: true,
+          coordinatesVisible: accepted,
+          updatedAt: new Date().toISOString(),
+        };
+
         this.server
-          .to(`user_${user.userId}`)
+          .to(`user_${nearby.userId}`)
           .emit('user_moved', movementPayload);
       }
     } catch (error) {

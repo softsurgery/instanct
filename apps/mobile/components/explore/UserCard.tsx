@@ -77,7 +77,7 @@ export const UserCard = ({
     size: { width: 100, height: 100 },
   });
 
-  const photoUri = uploadedProfilePicture[0]?.uri as string | undefined;
+  const photoSource = uploadedProfilePicture[0];
 
   const { startConversation } = useStartConversation({
     onSuccess: (conversation: ResponseConversationDto) => {
@@ -163,11 +163,12 @@ export const UserCard = ({
     >
       {/* Hero — the person */}
       <View style={{ height: HERO_HEIGHT, width: "100%" }}>
-        {photoUri ? (
+        {photoSource ? (
           <ImageBackground
-            source={{ uri: photoUri }}
+            source={photoSource}
             style={{ flex: 1 }}
             contentFit="cover"
+            cachePolicy="memory-disk"
           >
             <LinearGradient
               colors={["rgba(0,0,0,0.5)", "transparent"]}

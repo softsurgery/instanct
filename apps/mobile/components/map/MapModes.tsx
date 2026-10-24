@@ -17,7 +17,7 @@ export const MapModes = ({
   moveToCurrentLocation,
 }: MapModesProps) => {
   const { palette } = useColorPalette();
-  const { restartSocket } = useLiveGeolocation();
+  const { restartSocket } = useLiveGeolocation({ enabled: false });
   const mapStore = useMapStore();
   const modes = [
     {

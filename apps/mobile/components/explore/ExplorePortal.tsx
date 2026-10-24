@@ -241,12 +241,7 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
         />
       </Animated.View>
       {activeSession ? (
-        (users.length === 0 && filterCount === 0) ||
-        !initialized ||
-        !latitude ||
-        !longitude ||
-        isObjectivesSubTypePending ||
-        isIndustriesSubTypePending ? (
+        users.length === 0 && filterCount === 0 ? (
           <View className="flex flex-col flex-1 justify-center items-center px-4">
             <Loader />
             <Text variant={"large"} className="text-center">

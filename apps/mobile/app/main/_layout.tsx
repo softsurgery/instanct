@@ -33,9 +33,9 @@ export default function MainLayout() {
   const queryClient = useQueryClient();
   const { palette } = useColorPalette();
   const authPersistStore = useAuthPersistStore();
-  const {} = useLiveGeolocation({
+  const _geolocation = useLiveGeolocation({
     enabled: authPersistStore.isAuthenticated,
-    join: ["user", "user.industries"],
+    join: ["user", "user.industries", "user.sessions"],
   });
   useCheckHealth({
     enabled: authPersistStore.isAuthenticated,
