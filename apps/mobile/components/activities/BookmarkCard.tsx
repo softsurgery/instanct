@@ -16,10 +16,9 @@ import {
   UserRound,
 } from "lucide-react-native";
 import {
-  UserQuickActionsSheet,
-  type QuickAction,
-} from "./UserQuickActionsSheet";
-import { useColorPalette } from "@softsurgery/mobile-components";
+  ThreeDotsActionSheet,
+  useColorPalette,
+} from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
 interface BookmarkCardProps {
@@ -72,22 +71,26 @@ export const BookmarkCard = ({
     sheetRef.current?.show();
   }, []);
 
-  const actions = React.useMemo<QuickAction[]>(
+  const options = React.useMemo(
     () => [
       {
-        key: "profile",
         label: t("activities.bookmarks.actions.viewProfile"),
         icon: UserRound,
         onPress: openProfile,
       },
       {
-        key: "message",
         label: t("activities.bookmarks.actions.sendMessage"),
         icon: SendIcon,
-        onPress: () => {},
+        onPress: () => {
+          if (user?.id) {
+            router.push({
+              pathname: "/main/chat",
+              params: { userId: user.id },
+            });
+          }
+        },
       },
       {
-        key: "remove",
         label: t("activities.bookmarks.actions.removeBookmark"),
         icon: BookmarkX,
         destructive: true,
@@ -96,7 +99,7 @@ export const BookmarkCard = ({
         },
       },
     ],
-    [openProfile, deleteBookmark, user?.id, t],
+    [openProfile, deleteBookmark, user?.id, router, t],
   );
 
   return (
@@ -142,16 +145,47 @@ export const BookmarkCard = ({
               </Text>
             )}
           </View>
-          <Icon as={ChevronRight} size={20} color={palette.foreground} />
+          <TouchableOpacity
+            onPress={() => sheetRef.current?.show()}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Icon as={ChevronRight} size={20} color={palette.foreground} />
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
 
-      <UserQuickActionsSheet
+      <ThreeDotsActionSheet
         ref={sheetRef}
-        user={user}
-        avatar={bookmarkImages[0]}
-        subtitle={subtitle}
-        actions={actions}
+        renderTrigger={false}
+        customContent={
+          <View className="px-6 pt-2 pb-2">
+            <View className="flex-row items-center gap-3">
+              {!!bookmarkImages[0] && (
+                <View className="overflow-hidden rounded-full bg-muted">
+                  {bookmarkImages[0]}
+                </View>
+              )}
+              <View className="flex-1">
+                <Text
+                  numberOfLines={1}
+                  variant="large"
+                  className="text-foreground"
+                >
+                  {identifyUser(user)}
+                </Text>
+                {!!subtitle && (
+                  <Text
+                    numberOfLines={1}
+                    className="mt-0.5 text-sm text-muted-foreground"
+                  >
+                    {subtitle}
+                  </Text>
+                )}
+              </View>
+            </View>
+          </View>
+        }
+        options={options}
       />
     </>
   );
