@@ -15,9 +15,9 @@ COPY apps/api/package.json ./apps/api/package.json
 RUN sed -i '/"postinstall":/d' apps/api/package.json
 COPY apps/web/package.json ./apps/web/package.json
 COPY apps/landing/package.json ./apps/landing/package.json
+COPY apps/api-client/package.json ./apps/api-client/package.json
 
 # Package stubs for pnpm install (all workspace members must be present)
-COPY packages/api-client/package.json ./packages/api-client/package.json
 COPY packages/components/package.json ./packages/components/package.json
 COPY packages/contexts/package.json ./packages/contexts/package.json
 COPY packages/datatable-builder/package.json ./packages/datatable-builder/package.json
@@ -36,7 +36,7 @@ COPY apps/landing ./apps/landing
 COPY scripts/allowed-dev-origins.ts ./scripts/allowed-dev-origins.ts
 
 # Copy only the packages landing actually uses
-COPY packages/api-client ./packages/api-client
+COPY apps/api-client ./apps/api-client
 COPY packages/components ./packages/components
 COPY packages/contexts ./packages/contexts
 COPY packages/form-builder ./packages/form-builder

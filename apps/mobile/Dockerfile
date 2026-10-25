@@ -17,9 +17,9 @@ RUN sed -i '/"postinstall":/d' apps/api/package.json
 COPY apps/web/package.json ./apps/web/package.json
 COPY apps/landing/package.json ./apps/landing/package.json
 COPY apps/mobile/package.json ./apps/mobile/package.json
+COPY apps/api-client/package.json ./apps/api-client/package.json
 
 # Package stubs for pnpm install (all workspace members must be present)
-COPY packages/api-client/package.json ./packages/api-client/package.json
 COPY packages/components/package.json ./packages/components/package.json
 COPY packages/contexts/package.json ./packages/contexts/package.json
 COPY packages/datatable-builder/package.json ./packages/datatable-builder/package.json
@@ -41,6 +41,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.cache/pnpm \
 
 
 # Copy workspace packages mobile depends on
+COPY apps/api-client ./apps/api-client
 COPY packages/hooks ./packages/hooks
 COPY packages/lib ./packages/lib
 COPY packages/mobile-components ./packages/mobile-components

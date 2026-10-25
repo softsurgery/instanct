@@ -8,7 +8,7 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 const config = getDefaultConfig(projectRoot);
 
 config.watchFolders = [
-  path.resolve(workspaceRoot, "packages/api-client"),
+  path.resolve(workspaceRoot, "apps/api-client"),
   path.resolve(workspaceRoot, "packages/mobile-components"),
   path.resolve(workspaceRoot, "packages/mobile-ui"),
   path.resolve(workspaceRoot, "packages/hooks"),
@@ -28,7 +28,7 @@ config.resolver = {
     path.resolve(workspaceRoot, "node_modules"),
   ],
   extraNodeModules: {
-    "@softsurgery/api-client": path.resolve(workspaceRoot, "packages/api-client"),
+    "@softsurgery/api-client": path.resolve(workspaceRoot, "apps/api-client"),
     "@softsurgery/mobile-components": path.resolve(
       workspaceRoot,
       "packages/mobile-components",
