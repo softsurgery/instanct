@@ -18,6 +18,7 @@ COPY apps/web/package.json ./apps/web/package.json
 COPY apps/landing/package.json ./apps/landing/package.json
 COPY apps/mobile/package.json ./apps/mobile/package.json
 COPY apps/api-client/package.json ./apps/api-client/package.json
+COPY apps/i18n/package.json ./apps/i18n/package.json
 
 # Package stubs for pnpm install (all workspace members must be present)
 COPY packages/components/package.json ./packages/components/package.json
@@ -26,7 +27,6 @@ COPY packages/datatable-builder/package.json ./packages/datatable-builder/packag
 COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
 COPY packages/form-builder/package.json ./packages/form-builder/package.json
 COPY packages/hooks/package.json ./packages/hooks/package.json
-COPY packages/i18n/package.json ./packages/i18n/package.json
 COPY packages/lib/package.json ./packages/lib/package.json
 COPY packages/mobile-components/package.json ./packages/mobile-components/package.json
 COPY packages/mobile-form-builder/package.json ./packages/mobile-form-builder/package.json

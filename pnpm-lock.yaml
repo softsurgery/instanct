@@ -372,6 +372,8 @@ importers:
         specifier: ^29.2.5
         version: 29.4.12(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@29.7.0(supports-color@8.1.1))(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.2)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.20.4)(supports-color@8.1.1))(typescript@5.9.3)
 
+  apps/i18n: {}
+
   apps/landing:
     dependencies:
       '@sentry/nextjs':
@@ -388,7 +390,7 @@ importers:
         version: link:../../packages/contexts
       '@softsurgery/i18n':
         specifier: workspace:*
-        version: link:../../packages/i18n
+        version: link:../i18n
       '@softsurgery/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -1299,8 +1301,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.56.2
         version: 5.103.1(react@19.3.0)
-
-  packages/i18n: {}
 
   packages/lib:
     dependencies:
