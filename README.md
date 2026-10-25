@@ -2,7 +2,7 @@
 
 Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data. A separate `data-flow` app dumps MySQL and uploads the file to Google Drive.
 
-Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
+Clients talk to one NestJS API. Shared libraries live in the separate [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) repo and are checked out here as the `packages/` git submodule. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
 
 | App              | Package               | What it is                        | README                                           |
 | ---------------- | --------------------- | --------------------------------- | ------------------------------------------------ |
@@ -24,7 +24,7 @@ Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (pe
 │           ├── modules/    # users, requests, geolocation, system reports
 │           ├── routers/    # /  /admin  /public  /callback  /test
 │           └── seeders/
-├── packages/
+├── packages/         # git submodule → softsurgery/softsurgery-abstractions
 │   ├── nsa-*/        # Nest shared abstractions (database, auth, storage, …)
 │   └── @softsurgery/*   # UI, HTTP, form, and table abstractions
 ├── infra/nginx/      # reverse proxy in front of the apps
@@ -33,9 +33,26 @@ Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (pe
 └── pnpm-workspace.yaml
 ```
 
+## Clone
+
+`packages/` is a submodule. Clone with submodules, or init them after a plain clone:
+
+```sh
+git clone --recurse-submodules git@github.com:softsurgery/instanct.git
+# or
+git submodule update --init --recursive
+```
+
+Edit shared packages in [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) (or inside the `packages/` working tree). Instanct pins a submodule commit; bump it when you want apps to pick up a new abstractions revision:
+
+```sh
+cd packages && git pull origin main && cd ..
+git add packages && git commit -m "chore: bump softsurgery-abstractions"
+```
+
 ## Package manager
 
-The workspace uses **pnpm** (`apps/*`, `packages/*`) with Turbo. Install from the repository root:
+The workspace uses **pnpm** (`apps/*`, `packages/*`) with Turbo. App dependencies on `@softsurgery/*` stay `workspace:*`. Install from the repository root:
 
 ```sh
 pnpm install

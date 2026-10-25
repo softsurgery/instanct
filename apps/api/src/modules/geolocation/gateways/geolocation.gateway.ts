@@ -241,17 +241,6 @@ export class GeolocationGateway
 
       socket.emit('nearby_users', nearbyWithPresence);
 
-      // Synchronize high-accuracy GPS coordinates with the active device connection history record
-      if (this.userConnectionHistoryService) {
-        this.userConnectionHistoryService
-          .updateActiveLocation(userId, latitude, longitude)
-          .catch((err) => {
-            this.logger.debug(
-              `Failed updating active connection location for ${userId}: ${err}`,
-            );
-          });
-      }
-
       // Find moving user's full profile to include with user_moved so recipients update their users store
       const currentUserGeo =
         await this.geolocationService.findByUserIdWithRelations(userId);
