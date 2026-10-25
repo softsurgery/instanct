@@ -116,7 +116,7 @@ export const ConversationResourceDetails = ({
               height: 2,
             }}
             style={{
-              backgroundColor: "transparent",
+              backgroundColor: hslToHex(palette.background),
               elevation: 0,
               shadowOpacity: 0,
             }}

@@ -189,7 +189,7 @@ export const ConversationMediaDetails = ({
   );
 
   return (
-    <>
+    <View className="flex-1 bg-background">
       <LegendList
         data={mediaRows}
         keyExtractor={(_, index) => `media-row-${index}`}
@@ -247,6 +247,6 @@ export const ConversationMediaDetails = ({
           />
         </Modal>
       ) : null}
-    </>
+    </View>
   );
 };

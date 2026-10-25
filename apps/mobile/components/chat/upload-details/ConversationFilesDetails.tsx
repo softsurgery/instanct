@@ -87,33 +87,41 @@ export const ConversationFilesDetails = ({
   );
 
   return (
-    <LegendList
-      data={fileItems}
-      keyExtractor={(item) => item.key}
-      renderItem={renderFileItem}
-      onEndReached={handleEndReached}
-      onMomentumScrollBegin={() => {
-        endReachedDuringMomentum.current = false;
-      }}
-      onEndReachedThreshold={0.4}
-      ListEmptyComponent={() => (
-        <View className="flex-1 items-center justify-center py-10 mt-10">
-          {isLoadingFiles ? (
-            <ActivityIndicator size="small" color={hslToHex(palette.primary)} />
-          ) : (
-            <Text className="text-muted-foreground">
-              {t("chat.resources.empty.files")}
-            </Text>
-          )}
-        </View>
-      )}
-      ListFooterComponent={() =>
-        isFetchingNextPage ? (
-          <View className="py-4 items-center">
-            <ActivityIndicator size="small" color={hslToHex(palette.primary)} />
+    <View className="flex-1 bg-background">
+      <LegendList
+        data={fileItems}
+        keyExtractor={(item) => item.key}
+        renderItem={renderFileItem}
+        onEndReached={handleEndReached}
+        onMomentumScrollBegin={() => {
+          endReachedDuringMomentum.current = false;
+        }}
+        onEndReachedThreshold={0.4}
+        ListEmptyComponent={() => (
+          <View className="flex-1 items-center justify-center py-10 mt-10">
+            {isLoadingFiles ? (
+              <ActivityIndicator
+                size="small"
+                color={hslToHex(palette.primary)}
+              />
+            ) : (
+              <Text className="text-muted-foreground">
+                {t("chat.resources.empty.files")}
+              </Text>
+            )}
           </View>
-        ) : null
-      }
-    />
+        )}
+        ListFooterComponent={() =>
+          isFetchingNextPage ? (
+            <View className="py-4 items-center">
+              <ActivityIndicator
+                size="small"
+                color={hslToHex(palette.primary)}
+              />
+            </View>
+          ) : null
+        }
+      />
+    </View>
   );
 };
