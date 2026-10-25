@@ -1114,9 +1114,6 @@ importers:
 
   packages/contexts:
     dependencies:
-      api-client:
-        specifier: workspace:*
-        version: link:../../apps/api-client
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
