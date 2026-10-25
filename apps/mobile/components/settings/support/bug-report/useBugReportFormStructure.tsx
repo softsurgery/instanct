@@ -1,5 +1,5 @@
 import { ReportBugStore } from "@/stores/useReportBugStore";
-import { BugVariant } from "@softsurgery/api-client";
+import { BugVariant } from "api-client";
 import {
   Field,
   FieldVariant,

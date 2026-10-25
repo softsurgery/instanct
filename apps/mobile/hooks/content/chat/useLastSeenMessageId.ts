@@ -3,7 +3,7 @@ import {
   MessageVariant,
   ResponseConversationDto,
   ResponseMessageDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 
 interface UseLastSeenMessageIdProps {
   conversation?: ResponseConversationDto | null;

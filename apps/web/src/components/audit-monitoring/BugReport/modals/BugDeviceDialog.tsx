@@ -1,6 +1,6 @@
 import React from "react";
 import { useDialog } from "@softsurgery/components";
-import { ResponseUserDeviceDto } from "@softsurgery/api-client";
+import { ResponseUserDeviceDto } from "api-client";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 

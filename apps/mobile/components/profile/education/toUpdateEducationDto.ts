@@ -2,7 +2,7 @@ import { toDateOrNull } from "@/lib/date";
 import {
   ResponseEducationDto,
   UpdateEducationDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 
 export const toUpdateEducationDto = (
   edu: ResponseEducationDto,

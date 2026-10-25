@@ -12,7 +12,7 @@ import {
   ResponseExperienceDto,
   ResponseRefParamDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { router, useFocusEffect, useNavigation } from "expo-router";
 import { toUpdateExperienceDto } from "./experience/toUpdateExperienceDto";
 import { toUpdateEducationDto } from "./education/toUpdateEducationDto";

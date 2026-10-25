@@ -1,6 +1,6 @@
 import React from "react";
 import { api } from "@/lib/api";
-import type { ServerErrorResponse, Upload } from "@softsurgery/api-client";
+import type { ServerErrorResponse, Upload } from "api-client";
 import { useMutation } from "@tanstack/react-query";
 
 export type UploadProgressCallback = (percent: number) => void;

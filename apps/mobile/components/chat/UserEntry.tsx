@@ -7,7 +7,7 @@ import {
   MessageVariant,
   ResponseConversationDto,
   StaticMessageEnum,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { differenceInMilliseconds } from "date-fns";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";

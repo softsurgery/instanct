@@ -16,7 +16,7 @@ import {
   SessionStatus,
   SessionType,
   type ResponseSessionDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { toDateOnly, toTimeOnly } from "@/lib/date";
 import { useInfiniteUserSessions } from "@/hooks/content/sessions/useInfiniteUserSessions";
 import { SessionStarter } from "./SessionStarter";

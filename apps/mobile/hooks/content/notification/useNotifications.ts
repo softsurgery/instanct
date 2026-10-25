@@ -15,7 +15,7 @@ import { useApi } from "@/contexts/ApiContext";
 import {
   NotificationType,
   ResponseNotificationDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 
 export const NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY = [
   "notifications-unread-count",

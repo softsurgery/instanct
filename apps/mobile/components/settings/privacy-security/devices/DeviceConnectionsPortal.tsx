@@ -18,7 +18,7 @@ import { useApi } from "@/contexts/ApiContext";
 import type {
   ResponseUserDeviceDto,
   ResponseUserConnectionHistoryDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { ConnectionCard } from "./ConnectionCard";
 
 export type HistoryListItem =

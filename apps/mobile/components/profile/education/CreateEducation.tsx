@@ -16,7 +16,7 @@ import { useCreateEducationFormStructure } from "./useCreateEducationFormStructu
 import {
   CreateEducationDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { createEducationSchema } from "@/types/validations/education.validation";

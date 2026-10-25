@@ -6,7 +6,7 @@ import {
   ResponseConversationDto,
   ResponseRefParamDto,
   ResponseUserDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import {

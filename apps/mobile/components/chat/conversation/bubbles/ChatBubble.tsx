@@ -1,7 +1,7 @@
 import {
   ResponseMessageLinkDto,
   StaticMessageEnum,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { format } from "date-fns";
 import { Alert, Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";

@@ -1,7 +1,7 @@
 import {
   NotificationType,
   type ResponseNotificationDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { router } from "expo-router";
 
 export type NotificationDestination = {

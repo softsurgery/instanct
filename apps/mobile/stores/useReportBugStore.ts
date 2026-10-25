@@ -1,6 +1,6 @@
 import { setDeepValue } from "@/lib/object";
 import { create } from "zustand";
-import { CreateBugDto } from "@softsurgery/api-client";
+import { CreateBugDto } from "api-client";
 
 interface ReportBugData {
   createDto: CreateBugDto;

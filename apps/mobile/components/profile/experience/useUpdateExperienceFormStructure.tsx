@@ -9,7 +9,7 @@ import {
   TextFieldProps,
 } from "@softsurgery/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
-import { LocationTypes, WorkTypes } from "@softsurgery/api-client";
+import { LocationTypes, WorkTypes } from "api-client";
 import { useTranslation } from "react-i18next";
 
 interface UseUpdateExperienceFormStructureProps {

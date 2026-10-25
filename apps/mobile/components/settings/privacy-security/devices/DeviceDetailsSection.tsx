@@ -18,7 +18,7 @@ import {
   type DeviceLike,
 } from "@/lib/device";
 import { formatSmartDate, toDateOrNull } from "@/lib/date";
-import type { ResponseUserConnectionHistoryDto } from "@softsurgery/api-client";
+import type { ResponseUserConnectionHistoryDto } from "api-client";
 
 export type DeviceDetailsData = DeviceLike;
 

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { AppVersionPolicyDto } from "@softsurgery/api-client";
+import type { AppVersionPolicyDto } from "api-client";
 import { isVersionOutdated } from "../lib/semver";
 
 export interface VersionPersistData {

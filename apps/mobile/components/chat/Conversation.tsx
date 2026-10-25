@@ -46,7 +46,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useGradualAnimation } from "@/hooks/useGradualAnimation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ResponseMessageDto } from "@softsurgery/api-client";
+import { ResponseMessageDto } from "api-client";
 import { MessageFlatListItem } from "@/types";
 import { cn } from "@softsurgery/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";

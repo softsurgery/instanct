@@ -1,4 +1,4 @@
-import { ResponseMessageLinkDto } from "@softsurgery/api-client";
+import { ResponseMessageLinkDto } from "api-client";
 
 export type ExtractedMessageLink = Pick<
   ResponseMessageLinkDto,

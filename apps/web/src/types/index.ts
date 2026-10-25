@@ -1,1 +1,1 @@
-export * from "@softsurgery/api-client";
+export * from "api-client";

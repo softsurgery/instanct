@@ -3,7 +3,7 @@ import { type UploadFileInput } from "@/lib/upload";
 import {
   RequestClientSignInDto,
   RequestSpecializedClientSignUpDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { create } from "zustand";
 
 interface AuthData {

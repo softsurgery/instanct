@@ -1,4 +1,4 @@
-import { ConfigurationNamespaces } from "@softsurgery/api-client";
+import { ConfigurationNamespaces } from "api-client";
 import { useConfiguration } from "./useConfiguration";
 
 interface useGlobalMapConfigurationProps {

@@ -2,7 +2,7 @@ import React from "react";
 import { Linking } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { ResponseMessageLinkDto } from "@softsurgery/api-client";
+import { ResponseMessageLinkDto } from "api-client";
 import {
   ExtractedMessageLink,
   normalizeMessageLinkUrl,

@@ -23,7 +23,7 @@ import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { toDateOnly, toTimeOnly } from "@/lib/date";
-import { RequestEvent, RequestStatus } from "@softsurgery/api-client";
+import { RequestEvent, RequestStatus } from "api-client";
 import { toast } from "sonner-native";
 import { RequestDetailsCard } from "./RequestDetailsCard";
 import { RequestLocationSection } from "./RequestLocationSection";

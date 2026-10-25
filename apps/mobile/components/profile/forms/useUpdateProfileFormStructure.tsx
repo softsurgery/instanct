@@ -1,4 +1,4 @@
-import { Gender } from "@softsurgery/api-client";
+import { Gender } from "api-client";
 import { type UploadFilesMutate } from "@/hooks/useUploadMutation";
 import {
   CustomFieldProps,

@@ -1,5 +1,5 @@
 import { cn } from "@softsurgery/lib";
-import { ResponseSessionDto } from "@softsurgery/api-client";
+import { ResponseSessionDto } from "api-client";
 import React from "react";
 import { StyleProp, Text, TextStyle, View, ViewStyle } from "react-native";
 

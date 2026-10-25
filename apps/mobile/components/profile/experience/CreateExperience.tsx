@@ -14,7 +14,7 @@ import { useUserStore } from "@/stores/useUserStore";
 import {
   CreateExperienceDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { createExperienceSchema } from "@/types/validations/experience.validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";

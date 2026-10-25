@@ -16,13 +16,19 @@ export async function connectMobilePresence(
     console.warn("Failed to get device MAC for presence:", error);
   }
 
-  return getSocket("presence", {
+  const socket = getSocket("presence", {
     token: accessToken,
     source: "mobile",
     device: deviceInfo.device,
     os: deviceInfo.os,
     macAddress,
   });
+
+  if (!socket.connected) {
+    socket.connect();
+  }
+
+  return socket;
 }
 
 /**

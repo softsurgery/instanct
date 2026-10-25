@@ -21,7 +21,7 @@ import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@softsurgery/api-client";
+import { ServerErrorResponse } from "api-client";
 import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
 import { zodErrorsToNested } from "@/lib/object";
 import { useMapStore } from "@/stores/useMapStore";

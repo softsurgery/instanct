@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { LegalHtmlPage, LegalUnavailable } from "@/components/legal-html-page";
 import { api } from "@/lib/api";
-import type { ResponseContentPageDto } from "@softsurgery/api-client";
+import type { ResponseContentPageDto } from "api-client";
 import { resolveSupportedLng } from "@/i18n/config";
 import { Spinner } from "@softsurgery/components";
 

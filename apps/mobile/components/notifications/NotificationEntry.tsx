@@ -6,7 +6,7 @@ import { cn } from "@softsurgery/lib";
 import {
   NotificationType,
   ResponseNotificationDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { HTMLText } from "@softsurgery/mobile-components";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import {

@@ -9,7 +9,7 @@ import {
   ResponseBugDto,
   ResponseUserDeviceDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useTranslation } from "react-i18next";
 import { useBugReportColumns } from "./useBugReportColumns";
 import { useBugDeviceDialog } from "./modals/BugDeviceDialog";

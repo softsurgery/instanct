@@ -9,7 +9,7 @@ import {
   MessageVariant,
   ResponseConversationDto,
   StaticMessageEnum,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { getSocket, type Socket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import {

@@ -4,7 +4,7 @@ import { normalizeMessageLinkUrl } from "@/lib/messageLinks";
 import {
   ResponseMessageDto,
   ResponseMessageLinkDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { format } from "date-fns";
 import { Link2 } from "lucide-react-native";
 import React from "react";

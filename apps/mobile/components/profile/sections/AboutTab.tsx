@@ -6,7 +6,7 @@ import {
 import { Text, Icon } from "@softsurgery/mobile-ui";
 import { THEME } from "@/lib/theme";
 import { cn } from "@softsurgery/lib";
-import { ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseUserDto } from "api-client";
 import {
   ArrowUpRight,
   Globe,

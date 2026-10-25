@@ -1,5 +1,5 @@
 import { setDeepValue } from "@/lib/object";
-import { ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseUserDto } from "api-client";
 import { Cluster, NearbyUser } from "@/types";
 import * as Location from "expo-location";
 import { create } from "zustand";

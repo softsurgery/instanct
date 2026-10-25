@@ -27,7 +27,7 @@ import { useApi } from "@/contexts/ApiContext";
 import {
   ResponseUserDeviceDto,
   ResponseUserConnectionHistoryDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import {
   isCurrentDevice,

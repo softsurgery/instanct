@@ -37,7 +37,7 @@
     "@rn-primitives/slot": "^1.2.0",
     "@rn-primitives/switch": "^1.2.0",
     "@rn-primitives/tabs": "^1.2.0",
-    "@softsurgery/api-client": "workspace:*",
+    "api-client": "workspace:*",
     "@softsurgery/hooks": "workspace:*",
     "@softsurgery/lib": "workspace:*",
     "@softsurgery/mobile-components": "workspace:*",

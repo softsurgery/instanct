@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@softsurgery/i18n/*": ["./src/*"]
+      "i18n/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"]

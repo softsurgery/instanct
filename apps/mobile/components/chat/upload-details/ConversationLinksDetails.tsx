@@ -6,7 +6,7 @@ import { getMessageLinksForDisplay } from "@/lib/messageLinks";
 import {
   ResponseMessageDto,
   ResponseMessageLinkDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { LegendList } from "@legendapp/list";
 import { useFocusEffect } from "expo-router";
 import React from "react";

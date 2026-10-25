@@ -1,4 +1,4 @@
-import { ResponseNotificationDto } from "@softsurgery/api-client";
+import { ResponseNotificationDto } from "api-client";
 import React from "react";
 
 interface NotificationContextProps {

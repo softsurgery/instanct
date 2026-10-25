@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { cn } from "@softsurgery/lib";
 import { Text, Badge } from "@softsurgery/mobile-ui";
-import type { ResponseUserConnectionHistoryDto } from "@softsurgery/api-client";
+import type { ResponseUserConnectionHistoryDto } from "api-client";
 import type { DeviceLike } from "@/lib/device";
 
 export interface ConnectionCardProps {

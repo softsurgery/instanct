@@ -11,7 +11,7 @@ import {
   ResponseMessageDto,
   ResponseMessageUploadFileDto,
   Upload,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { format } from "date-fns";
 import React from "react";
 import { Pressable, View } from "react-native";

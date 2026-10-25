@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ConversationReportReason } from "@softsurgery/api-client";
+import { ConversationReportReason } from "api-client";
 
 export const ConversationReportReasonEnum = z.enum(
   Object.values(ConversationReportReason) as [string, ...string[]],

@@ -13,7 +13,7 @@ import { useUserStore } from "@/stores/useUserStore";
 import {
   ServerErrorResponse,
   UpdateEducationDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";

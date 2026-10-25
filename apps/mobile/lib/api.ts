@@ -1,7 +1,7 @@
 import {
   createApiClient,
   type AxiosAuthAdapter,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { bindMobileClientAuth } from "@/lib/client-auth";
 import { performLogout } from "@/lib/logout";

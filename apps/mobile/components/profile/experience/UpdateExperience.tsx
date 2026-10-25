@@ -13,7 +13,7 @@ import { useUserStore } from "@/stores/useUserStore";
 import {
   ServerErrorResponse,
   UpdateExperienceDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { updateExperienceSchema } from "@/types/validations/experience.validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";

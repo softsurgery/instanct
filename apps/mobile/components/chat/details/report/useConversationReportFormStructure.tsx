@@ -1,5 +1,5 @@
 import { ConversationReportStore } from "@/stores/useConversationReportStore";
-import { ConversationReportReason } from "@softsurgery/api-client";
+import { ConversationReportReason } from "api-client";
 import {
   Field,
   FieldVariant,

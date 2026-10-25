@@ -11,10 +11,10 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
-    "@softsurgery/api-client": "workspace:*",
+    "api-client": "workspace:*",
     "@softsurgery/components": "workspace:*",
     "@softsurgery/contexts": "workspace:*",
-    "@softsurgery/i18n": "workspace:*",
+    "i18n": "workspace:*",
     "@softsurgery/lib": "workspace:*",
     "@softsurgery/ui": "workspace:*",
     "@sentry/nextjs": "^11.0.0",

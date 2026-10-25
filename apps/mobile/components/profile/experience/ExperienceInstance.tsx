@@ -5,7 +5,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { ResponseExperienceDto } from "@softsurgery/api-client";
+import { ResponseExperienceDto } from "api-client";
 import { format } from "date-fns";
 import { Briefcase, CalendarDays, Laptop, MapPin } from "lucide-react-native";
 import { Pressable, View } from "react-native";

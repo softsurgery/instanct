@@ -268,7 +268,7 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 | `@softsurgery/nsa-chat`, `@softsurgery/nsa-sessions`, `@softsurgery/nsa-notifications`                                                  | Conversations, sessions, live alerts                                                           |
 | `@softsurgery/nsa-content`, `@softsurgery/nsa-templates`, `@softsurgery/nsa-configurations`, `@softsurgery/nsa-reference-types`         | CMS pages, layouts, settings, lookup trees                                                     |
 | `@softsurgery/nsa-workflows`, `@softsurgery/nsa-mail`, `@softsurgery/nsa-logger`, `@softsurgery/nsa-sentry`, `@softsurgery/nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers and runtime binding slots |
-| `@softsurgery/api-client`                                                                                                               | Axios instance and one resource object per API area                                            |
+| `api-client`                                                                                                               | Axios instance and one resource object per API area                                            |
 | `@softsurgery/form-builder`                                                                                                             | Declarative web forms                                                                          |
 | `@softsurgery/mobile-form-builder`                                                                                                      | The same form model for React Native                                                           |
 | `@softsurgery/datatable-builder`                                                                                                        | Server-driven admin tables                                                                     |
@@ -278,14 +278,14 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 | `@softsurgery/hooks`                                                                                                                    | Persisted auth and preference stores, shared hooks                                             |
 | `@softsurgery/contexts`                                                                                                                 | Breadcrumb, intro, footer, theme, and `AppProvider`                                            |
 | `@softsurgery/lib`                                                                                                                      | `cn`, centralized socket management, nested stores, legal HTML cleanup                         |
-| `@softsurgery/i18n`                                                                                                                     | Shared `en` / `fr` config. Landing copies live here                                            |
+| `i18n`                                                                                                                     | Shared `en` / `fr` config. Landing copies live here                                            |
 | `@repo/eslint-config`, `@repo/typescript-config`                                                                                        | Tooling                                                                                        |
 
 ### API client
 
 `createApiClient({ baseURL, authAdapter })` builds one Axios instance and a tree of resources (`auth`, `admin.user`, `admin.role`, `upload`, `notification`, `experience`, `contentPage`, `chat`, `session`, and so on). The request interceptor attaches the bearer token from `useAuthPersistStore`, the `x-timezone` header, and `x-custom-lang` from `localStorage`. A 401 retries once against `/auth/refresh-token` or `/client-auth/refresh-token`, then calls `onUnauthorized`.
 
-Web (`apps/web/src/lib/api.ts`), landing (`apps/landing/src/lib/api.ts`), and mobile (`apps/mobile/lib/api.ts`) all use `@softsurgery/api-client`. Web hooks into NextAuth session handling, landing reads public content pages, and mobile wires its persisted Zustand store (`useAuthPersistStore`). React Query hooks under `apps/mobile/hooks/content/` invoke these unified resource functions directly.
+Web (`apps/web/src/lib/api.ts`), landing (`apps/landing/src/lib/api.ts`), and mobile (`apps/mobile/lib/api.ts`) all use `api-client`. Web hooks into NextAuth session handling, landing reads public content pages, and mobile wires its persisted Zustand store (`useAuthPersistStore`). React Query hooks under `apps/mobile/hooks/content/` invoke these unified resource functions directly.
 
 ### Form builder
 

@@ -21,7 +21,7 @@ import {
   Upload,
   UpdateUserCoverDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { Image, ImageSource } from "expo-image";

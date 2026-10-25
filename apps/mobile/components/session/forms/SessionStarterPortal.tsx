@@ -21,7 +21,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { createSessionSchema } from "@/types/validations/session.validation";
-import { ServerErrorResponse, SessionType } from "@softsurgery/api-client";
+import { ServerErrorResponse, SessionType } from "api-client";
 import { useUserSessions } from "@/hooks/content/sessions/useUserSessions";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { zodErrorsToNested } from "@/lib/object";

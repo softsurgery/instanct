@@ -3,7 +3,7 @@ import { Alert, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useApi } from "@/contexts/ApiContext";
 import { clampUploadProgress, type ReactNativeUploadFile } from "@/lib/upload";
-import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
+import { MessageVariant, ResponseMessageDto } from "api-client";
 import { MediaKind, PendingMediaUpload, StagedMedia } from "@/types";
 import { waitForUiReady } from "@/lib/device";
 import { toast } from "sonner-native";

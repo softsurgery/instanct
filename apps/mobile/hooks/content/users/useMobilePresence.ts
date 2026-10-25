@@ -61,8 +61,6 @@ export function useMobilePresence({
     return () => {
       isMounted = false;
       subscription.remove();
-      disconnectSocket("presence");
-      socketRef.current = null;
     };
   }, [enabled, isAuthenticated, accessToken]);
 }

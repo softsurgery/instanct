@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-import { resources } from "@softsurgery/i18n";
+import { resources } from "i18n";
 import { i18nConfig, resolveSupportedLng } from "./config";
 
 void i18n

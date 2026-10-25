@@ -6,7 +6,7 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
-import { ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseUserDto } from "api-client";
 import {
   format,
   eachDayOfInterval,

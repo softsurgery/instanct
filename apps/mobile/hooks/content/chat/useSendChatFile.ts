@@ -6,7 +6,7 @@ import {
   calculateBatchUploadProgress,
   type ReactNativeUploadFile,
 } from "@/lib/upload";
-import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
+import { MessageVariant, ResponseMessageDto } from "api-client";
 import { PendingFileUpload } from "@/types";
 import { waitForUiReady } from "@/lib/device";
 import { toast } from "sonner-native";

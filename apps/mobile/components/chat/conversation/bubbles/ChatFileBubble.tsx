@@ -3,7 +3,7 @@ import { FileTypeIcon } from "@softsurgery/mobile-components";
 import { useServerUploads } from "@/hooks/content/useServerUploads";
 import { cn } from "@softsurgery/lib";
 import { openUploadFile } from "@/lib/files";
-import { ResponseMessageDto } from "@softsurgery/api-client";
+import { ResponseMessageDto } from "api-client";
 import { PendingFileUpload } from "@/types";
 import { format } from "date-fns";
 import React from "react";

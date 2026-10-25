@@ -34,7 +34,7 @@ Terms and privacy need a running API and seeded content pages (`pnpm --filter in
 | `/privacy` | Content page slug `privacy`, for the request locale                        |
 | `/support` | Content page slug `support`, with a local fallback when the API has no row |
 
-`src/lib/site.ts` holds store and contact URLs plus the FAQ keys the home page renders. Copy for English and French lives in `@softsurgery/i18n` (`landing` namespace). `src/i18n/config.ts` extends that shared config and resolves the language from `localStorage`, then the browser, with `en` as the fallback.
+`src/lib/site.ts` holds store and contact URLs plus the FAQ keys the home page renders. Copy for English and French lives in `i18n` (`landing` namespace). `src/i18n/config.ts` extends that shared config and resolves the language from `localStorage`, then the browser, with `en` as the fallback.
 
 The root layout reads `Accept-Language`, resolves `en` or `fr`, and sets `<html lang>`. A small inline script applies the stored theme (`light`, `dark`, or `system`) before paint so the default light theme does not flash. `Providers` mounts TanStack Query (five-minute stale time) and the same `ThemeProvider` the backoffice uses (`defaultTheme="light"`).
 
@@ -68,7 +68,7 @@ src/
 │   ├── support/page.tsx
 │   └── global-error.tsx
 ├── components/          # home sections and the legal shell
-├── i18n/                # wraps @softsurgery/i18n for the landing namespace
+├── i18n/                # wraps i18n for the landing namespace
 └── lib/
     ├── api.ts           # createApiClient
     ├── support-content.ts

@@ -14,7 +14,7 @@ import { useApi } from "@/contexts/ApiContext";
 import {
   ResponseMessageDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import {
   StableSafeAreaView,
   ApplicationHeader,

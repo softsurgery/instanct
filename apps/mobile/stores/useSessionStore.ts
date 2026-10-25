@@ -4,7 +4,7 @@ import {
   MapSessionPayload,
   SessionType,
   UpdateSessionDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { create } from "zustand";
 
 interface SessionData {

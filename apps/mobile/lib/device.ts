@@ -1,4 +1,4 @@
-import type { ResponseUserDeviceDto } from "@softsurgery/api-client";
+import type { ResponseUserDeviceDto } from "api-client";
 
 export type DeviceLike = Partial<ResponseUserDeviceDto> & {
   latitude?: number | string | null;

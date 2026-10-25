@@ -2,7 +2,7 @@ import { toDateOrNull } from "@/lib/date";
 import {
   ResponseExperienceDto,
   UpdateExperienceDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 
 export const toUpdateExperienceDto = (
   exp: ResponseExperienceDto,

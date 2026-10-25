@@ -23,7 +23,7 @@ import {
   ServerErrorResponse,
   ResponseUserDeviceDto,
   CreateFeedbackDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
 

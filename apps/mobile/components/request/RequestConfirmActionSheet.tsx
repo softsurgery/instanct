@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { Text, Button } from "@softsurgery/mobile-ui";
 import { useColorPalette } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { RequestEvent } from "@softsurgery/api-client";
+import { RequestEvent } from "api-client";
 
 interface RequestConfirmActionSheetProps {
   event: RequestEvent | null;

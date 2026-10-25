@@ -7,7 +7,7 @@ import { Search } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, RefreshControl, View } from "react-native";
 import { cn } from "@softsurgery/lib";
-import { ResponseConversationDto } from "@softsurgery/api-client";
+import { ResponseConversationDto } from "api-client";
 import {
   ApplicationHeader,
   StableSafeAreaView,

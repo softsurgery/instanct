@@ -20,7 +20,7 @@ import {
   Upload,
   UpdateUserDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";

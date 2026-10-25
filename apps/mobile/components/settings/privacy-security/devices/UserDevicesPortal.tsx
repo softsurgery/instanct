@@ -15,7 +15,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { Text, Badge, Button, Separator, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
-import { ResponseUserDeviceDto } from "@softsurgery/api-client";
+import { ResponseUserDeviceDto } from "api-client";
 import { useLogout } from "@/hooks/useLogout";
 import { getDeviceIcon } from "@/lib/device-icon";
 import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";

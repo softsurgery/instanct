@@ -14,7 +14,7 @@ import {
   ServerErrorResponse,
   UpdateUserDto,
   Upload,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserSchema } from "@/types/validations/user.validation";

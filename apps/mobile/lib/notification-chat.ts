@@ -3,7 +3,7 @@ import {
   StaticMessageEnum,
   type ResponseMessageDto,
   type ResponseUserDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import {
   getChatNotificationDestination,
   type NotificationDestination,

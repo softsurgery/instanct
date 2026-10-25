@@ -2,7 +2,7 @@ import React from "react";
 import type {
   MapSessionPayload,
   ResponseSessionDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { View, useWindowDimensions } from "react-native";
 import { SessionIncomingRequests } from "./SessionIncomingRequests";
 import { SessionOutgoingRequests } from "./SessionOutgoingRequests";
@@ -13,7 +13,7 @@ import { BookmarkCard } from "./BookmarkCard";
 import {
   ResponseUserBookmarkDto,
   ResponseUserDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import {
   Loader,
   hslToHex,

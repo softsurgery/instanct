@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
-import { ResponseMessageDto, ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseMessageDto, ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { MessageTextContent } from "../bubbles/MessageTextContent";
 import { useServerImages } from "@/hooks/content/useServerImages";

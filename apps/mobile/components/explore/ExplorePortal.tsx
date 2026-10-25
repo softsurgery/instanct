@@ -1,7 +1,7 @@
 import React from "react";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 import { cn } from "@softsurgery/lib";
-import { ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseUserDto } from "api-client";
 import { LegendList } from "@legendapp/list";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import { router } from "expo-router";

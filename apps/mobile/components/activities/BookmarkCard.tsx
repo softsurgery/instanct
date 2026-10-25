@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import * as Haptics from "expo-haptics";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { Icon, Text } from "@softsurgery/mobile-ui";
-import { ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";

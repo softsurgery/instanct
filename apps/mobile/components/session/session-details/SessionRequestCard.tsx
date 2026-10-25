@@ -6,7 +6,7 @@ import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar, identifyUser } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { timeAgo } from "@/lib/date";
-import { RequestStatus, ResponseRequestDto } from "@softsurgery/api-client";
+import { RequestStatus, ResponseRequestDto } from "api-client";
 import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react-native";
 import { useColorPalette } from "@softsurgery/mobile-components";
 

@@ -19,7 +19,7 @@ import {
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useConversationReportStore } from "@/stores/useConversationReportStore";
 import { createConversationReportSchema } from "@/types/validations/chat.validation";
-import { ServerErrorResponse } from "@softsurgery/api-client";
+import { ServerErrorResponse } from "api-client";
 import { useConversationReportFormStructure } from "./useConversationReportFormStructure";
 import { useTranslation } from "react-i18next";
 

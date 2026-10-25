@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@softsurgery/lib";
 import { LegendList } from "@legendapp/list";
 import { RefreshControl, View } from "react-native";
-import { ResponseRequestDto } from "@softsurgery/api-client";
+import { ResponseRequestDto } from "api-client";
 import { Loader, NotFound } from "@softsurgery/mobile-components";
 import { SessionRequestCard } from "../session/session-details/SessionRequestCard";
 import { useInfiniteOutgoingSessionRequests } from "@/hooks/content/sessions/useInfiniteOutgoingSessionRequests";

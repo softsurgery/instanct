@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { RefreshControl, View } from "react-native";
 import { useApi } from "@/contexts/ApiContext";
 import { cn } from "@softsurgery/lib";
-import { ResponseNotificationDto } from "@softsurgery/api-client";
+import { ResponseNotificationDto } from "api-client";
 import {
   ApplicationHeader,
   StableSafeAreaView,

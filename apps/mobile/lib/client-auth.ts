@@ -5,7 +5,7 @@ import type {
   RequestClientSignInDto,
   RequestClientUpdateMailDto,
   RequestClientVerifyEmailDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { getClientDeviceInfo } from "@/lib/device-info";
 import { getDeviceMacAddress } from "@/lib/device-mac";

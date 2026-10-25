@@ -5,7 +5,7 @@ import { ChevronLeft, Search } from "lucide-react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon, Text } from "@softsurgery/mobile-ui";
-import { ResponseMessageDto } from "@softsurgery/api-client";
+import { ResponseMessageDto } from "api-client";
 import {
   hslToHex,
   StableSafeAreaView,

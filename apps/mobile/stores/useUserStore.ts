@@ -11,7 +11,7 @@ import {
   UpdateExperienceDto,
   UpdateUserCoverDto,
   UpdateUserDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 
 interface UserData {
   response?: ResponseUserDto;

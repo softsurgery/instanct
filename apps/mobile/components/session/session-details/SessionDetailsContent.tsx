@@ -1,7 +1,7 @@
 import type {
   MapSessionPayload,
   ResponseSessionDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import React from "react";
 import { ScrollView, View, useWindowDimensions } from "react-native";
 import { Text, Badge, Separator, Icon } from "@softsurgery/mobile-ui";

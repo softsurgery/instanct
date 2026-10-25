@@ -2,7 +2,7 @@ import { disconnectSocket } from "@softsurgery/lib";
 import {
   NotificationType,
   type ResponseNotificationDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { api } from "@/lib/api";
 import {
   advanceTimestampWatermark,

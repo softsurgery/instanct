@@ -7,7 +7,7 @@ import {
   ResponseConversationDto,
   ResponseMessageDto,
   StaticMessageEnum,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { MessageFlatListItem } from "@/types";
 import { useAudioPlayer } from "expo-audio";
 import {

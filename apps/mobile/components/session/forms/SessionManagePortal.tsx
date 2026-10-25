@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@softsurgery/api-client";
+import { ServerErrorResponse } from "api-client";
 import { router } from "expo-router";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useSessionManagementFormStructure } from "./useSessionManagementFormStructure";

@@ -5,7 +5,7 @@ import { Dimensions, View } from "react-native";
 import { Image } from "expo-image";
 import { Icon, Skeleton, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
+import { MessageVariant, ResponseMessageDto } from "api-client";
 import { PendingMediaItem, PendingMediaUpload } from "@/types";
 import {
   PhotoPreview,

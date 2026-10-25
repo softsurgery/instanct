@@ -379,18 +379,12 @@ importers:
       '@sentry/nextjs':
         specifier: ^11.0.0
         version: 11.0.0(next@16.3.4(@babel/core@8.0.1)(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))
-      '@softsurgery/api-client':
-        specifier: workspace:*
-        version: link:../api-client
       '@softsurgery/components':
         specifier: workspace:*
         version: link:../../packages/components
       '@softsurgery/contexts':
         specifier: workspace:*
         version: link:../../packages/contexts
-      '@softsurgery/i18n':
-        specifier: workspace:*
-        version: link:../i18n
       '@softsurgery/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -400,6 +394,12 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.90.5
         version: 5.103.1(react@19.3.0)
+      api-client:
+        specifier: workspace:*
+        version: link:../api-client
+      i18n:
+        specifier: workspace:*
+        version: link:../i18n
       i18next:
         specifier: ^24.2.3
         version: 24.2.3(typescript@5.9.3)
@@ -515,9 +515,6 @@ importers:
       '@rn-primitives/tabs':
         specifier: ^1.2.0
         version: 1.5.2(@types/react-dom@19.2.5(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react-native-web@0.21.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
-      '@softsurgery/api-client':
-        specifier: workspace:*
-        version: link:../api-client
       '@softsurgery/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -545,6 +542,9 @@ importers:
       '@tanstack/react-query-persist-client':
         specifier: ^5.101.0
         version: 5.103.1(@tanstack/react-query@5.103.1(react@19.3.0))(react@19.3.0)
+      api-client:
+        specifier: workspace:*
+        version: link:../api-client
       axios:
         specifier: ^1.13.1
         version: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
@@ -864,9 +864,6 @@ importers:
       '@sentry/nextjs':
         specifier: ^11.0.0
         version: 11.0.0(next@16.3.4(@babel/core@8.0.1)(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))
-      '@softsurgery/api-client':
-        specifier: workspace:*
-        version: link:../api-client
       '@softsurgery/components':
         specifier: workspace:*
         version: link:../../packages/components
@@ -900,6 +897,9 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      api-client:
+        specifier: workspace:*
+        version: link:../api-client
       axios:
         specifier: ^1.12.2
         version: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
@@ -1114,7 +1114,7 @@ importers:
 
   packages/contexts:
     dependencies:
-      '@softsurgery/api-client':
+      api-client:
         specifier: workspace:*
         version: link:../../apps/api-client
       next-themes:

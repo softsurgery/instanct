@@ -28,7 +28,7 @@ config.resolver = {
     path.resolve(workspaceRoot, "node_modules"),
   ],
   extraNodeModules: {
-    "@softsurgery/api-client": path.resolve(workspaceRoot, "apps/api-client"),
+    "api-client": path.resolve(workspaceRoot, "apps/api-client"),
     "@softsurgery/mobile-components": path.resolve(
       workspaceRoot,
       "packages/mobile-components",

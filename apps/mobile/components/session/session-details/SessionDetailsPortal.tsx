@@ -7,7 +7,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { MapSessionPayload, ResponseSessionDto } from "@softsurgery/api-client";
+import { MapSessionPayload, ResponseSessionDto } from "api-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { View } from "react-native";

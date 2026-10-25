@@ -25,7 +25,7 @@ import {
   CreateBugDto,
   ServerErrorResponse,
   ResponseUserDeviceDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import * as Haptics from "expo-haptics";
 import { getCurrentDevice } from "@/lib/device";
 
