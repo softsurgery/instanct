@@ -105,7 +105,8 @@
         "photo_other": "{{count}} photos",
         "video_one": "{{count}} vidéo",
         "video_other": "{{count}} vidéos",
-        "items": "{{count}} éléments"
+        "items": "{{count}} éléments",
+        "send": "Envoyer"
       }
     },
     "search": {

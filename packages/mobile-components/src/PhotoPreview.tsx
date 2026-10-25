@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useImperativeHandle,
-  forwardRef,
-} from "react";
+import React from "react";
 import {
   Modal,
   Pressable,
@@ -17,6 +10,7 @@ import {
 } from "react-native";
 import { Image, ImageSource } from "expo-image";
 import { cn } from "@softsurgery/lib";
+import { Text } from "@softsurgery/mobile-ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { X } from "lucide-react-native";
 import {
@@ -83,48 +77,68 @@ function GestureImage({
   isClosing,
 }: GestureImageProps) {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const [isZoomedState, setIsZoomedState] = React.useState(false);
 
-  const targetTranslateX = triggerRect
+  const shouldAnimateFromTrigger = isSingleImage && !!triggerRect;
+  const targetTranslateX = shouldAnimateFromTrigger
     ? triggerRect.x + triggerRect.width / 2 - screenWidth / 2
     : 0;
-  const targetTranslateY = triggerRect
+  const targetTranslateY = shouldAnimateFromTrigger
     ? triggerRect.y + triggerRect.height / 2 - screenHeight / 2
     : 0;
-  const targetScale = triggerRect ? triggerRect.width / screenWidth : 1;
+  const targetScale = shouldAnimateFromTrigger
+    ? triggerRect.width / screenWidth
+    : 1;
 
-  const scale = useSharedValue(triggerRect ? targetScale : 1);
-  const savedScale = useSharedValue(triggerRect ? targetScale : 1);
-  const translateX = useSharedValue(triggerRect ? targetTranslateX : 0);
-  const translateY = useSharedValue(
-    triggerRect ? targetTranslateY : screenHeight,
+  const scale = useSharedValue(shouldAnimateFromTrigger ? targetScale : 1);
+  const savedScale = useSharedValue(shouldAnimateFromTrigger ? targetScale : 1);
+  const translateX = useSharedValue(
+    shouldAnimateFromTrigger ? targetTranslateX : 0,
   );
-  const savedTranslateX = useSharedValue(triggerRect ? targetTranslateX : 0);
+  const translateY = useSharedValue(
+    shouldAnimateFromTrigger ? targetTranslateY : 0,
+  );
+  const savedTranslateX = useSharedValue(
+    shouldAnimateFromTrigger ? targetTranslateX : 0,
+  );
   const savedTranslateY = useSharedValue(
-    triggerRect ? targetTranslateY : screenHeight,
+    shouldAnimateFromTrigger ? targetTranslateY : 0,
   );
 
   // Trigger open animation on mount
-  useEffect(() => {
-    translateX.value = withTiming(0, {
-      duration: ANIMATION_DURATION,
-      easing: ANIMATION_EASING,
-    });
-    translateY.value = withTiming(0, {
-      duration: ANIMATION_DURATION,
-      easing: ANIMATION_EASING,
-    });
-    scale.value = withTiming(1, {
-      duration: ANIMATION_DURATION,
-      easing: ANIMATION_EASING,
-    });
+  React.useEffect(() => {
+    if (shouldAnimateFromTrigger) {
+      translateX.value = withTiming(0, {
+        duration: ANIMATION_DURATION,
+        easing: ANIMATION_EASING,
+      });
+      translateY.value = withTiming(0, {
+        duration: ANIMATION_DURATION,
+        easing: ANIMATION_EASING,
+      });
+      scale.value = withTiming(1, {
+        duration: ANIMATION_DURATION,
+        easing: ANIMATION_EASING,
+      });
+    } else {
+      translateX.value = 0;
+      translateY.value = 0;
+      scale.value = 1;
+    }
     backdropOpacity.value = withTiming(1, {
       duration: ANIMATION_DURATION,
       easing: ANIMATION_EASING,
     });
-  }, [triggerRect, translateX, translateY, scale, backdropOpacity]);
+  }, [
+    shouldAnimateFromTrigger,
+    translateX,
+    translateY,
+    scale,
+    backdropOpacity,
+  ]);
 
-  const dismiss = useCallback(() => {
-    if (triggerRect) {
+  const dismiss = React.useCallback(() => {
+    if (shouldAnimateFromTrigger) {
       translateX.value = withTiming(targetTranslateX, {
         duration: ANIMATION_DURATION,
         easing: ANIMATION_EASING,
@@ -162,7 +176,7 @@ function GestureImage({
       );
     }
   }, [
-    triggerRect,
+    shouldAnimateFromTrigger,
     targetTranslateX,
     targetTranslateY,
     targetScale,
@@ -175,7 +189,7 @@ function GestureImage({
   ]);
 
   // Trigger close animation when parent requests it
-  useEffect(() => {
+  React.useEffect(() => {
     if (isClosing) {
       dismiss();
     }
@@ -205,6 +219,7 @@ function GestureImage({
         });
         savedTranslateX.value = 0;
         savedTranslateY.value = 0;
+        runOnJS(setIsZoomedState)(false);
         runOnJS(onZoomStateChange)(false);
       } else if (scale.value > 4) {
         scale.value = withTiming(4, {
@@ -214,15 +229,13 @@ function GestureImage({
         savedScale.value = 4;
       } else {
         savedScale.value = scale.value;
-        if (scale.value > 1.05) {
-          runOnJS(onZoomStateChange)(true);
-        } else {
-          runOnJS(onZoomStateChange)(false);
-        }
+        const zoomed = scale.value > 1.05;
+        runOnJS(setIsZoomedState)(zoomed);
+        runOnJS(onZoomStateChange)(zoomed);
       }
     });
 
-  const panGesture = Gesture.Pan()
+  const singlePanGesture = Gesture.Pan()
     .onStart(() => {
       savedTranslateX.value = translateX.value;
       savedTranslateY.value = translateY.value;
@@ -242,18 +255,13 @@ function GestureImage({
           maxTranslateY,
         );
       } else {
-        // Single image: drag in any direction
-        // Multiple images: drag vertically only (X is locked to 0)
-        if (isSingleImage) {
-          translateX.value = event.translationX;
-          translateY.value = event.translationY;
-        } else {
-          translateY.value = event.translationY;
-        }
+        translateX.value = event.translationX;
+        translateY.value = event.translationY;
 
-        const dx = isSingleImage ? translateX.value : 0;
-        const dy = translateY.value;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = Math.sqrt(
+          translateX.value * translateX.value +
+            translateY.value * translateY.value,
+        );
         backdropOpacity.value = Math.max(0, 1 - dist / 300);
       }
     })
@@ -262,9 +270,10 @@ function GestureImage({
         savedTranslateX.value = translateX.value;
         savedTranslateY.value = translateY.value;
       } else {
-        const dx = isSingleImage ? translateX.value : 0;
-        const dy = translateY.value;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = Math.sqrt(
+          translateX.value * translateX.value +
+            translateY.value * translateY.value,
+        );
 
         if (dist > DISMISS_THRESHOLD) {
           runOnJS(dismiss)();
@@ -283,6 +292,55 @@ function GestureImage({
           });
         }
       }
+    });
+
+  const multiVerticalDismissPan = Gesture.Pan()
+    .activeOffsetY([-10, 10])
+    .failOffsetX([-15, 15])
+    .onStart(() => {
+      savedTranslateY.value = translateY.value;
+    })
+    .onUpdate((event) => {
+      translateY.value = event.translationY;
+      const dist = Math.abs(translateY.value);
+      backdropOpacity.value = Math.max(0, 1 - dist / 300);
+    })
+    .onEnd(() => {
+      if (Math.abs(translateY.value) > DISMISS_THRESHOLD) {
+        runOnJS(dismiss)();
+      } else {
+        translateY.value = withTiming(0, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
+        backdropOpacity.value = withTiming(1, {
+          duration: ANIMATION_DURATION,
+          easing: ANIMATION_EASING,
+        });
+      }
+    });
+
+  const multiZoomPan = Gesture.Pan()
+    .onStart(() => {
+      savedTranslateX.value = translateX.value;
+      savedTranslateY.value = translateY.value;
+    })
+    .onUpdate((event) => {
+      const maxTranslateX = (scale.value - 1) * (screenWidth / 2);
+      const maxTranslateY = (scale.value - 1) * (screenHeight / 2);
+
+      translateX.value = Math.min(
+        Math.max(savedTranslateX.value + event.translationX, -maxTranslateX),
+        maxTranslateX,
+      );
+      translateY.value = Math.min(
+        Math.max(savedTranslateY.value + event.translationY, -maxTranslateY),
+        maxTranslateY,
+      );
+    })
+    .onEnd(() => {
+      savedTranslateX.value = translateX.value;
+      savedTranslateY.value = translateY.value;
     });
 
   const doubleTapGesture = Gesture.Tap()
@@ -304,6 +362,7 @@ function GestureImage({
         });
         savedTranslateX.value = 0;
         savedTranslateY.value = 0;
+        runOnJS(setIsZoomedState)(false);
         runOnJS(onZoomStateChange)(false);
       } else {
         scale.value = withTiming(2.5, {
@@ -311,9 +370,16 @@ function GestureImage({
           easing: ANIMATION_EASING,
         });
         savedScale.value = 2.5;
+        runOnJS(setIsZoomedState)(true);
         runOnJS(onZoomStateChange)(true);
       }
     });
+
+  const panGesture = isSingleImage
+    ? singlePanGesture
+    : isZoomedState
+      ? multiZoomPan
+      : multiVerticalDismissPan;
 
   const gesture = Gesture.Simultaneous(
     Gesture.Race(pinchGesture, doubleTapGesture),
@@ -361,7 +427,10 @@ function GestureImage({
   );
 }
 
-export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
+export const PhotoPreview = React.forwardRef<
+  PhotoPreviewRef,
+  PhotoPreviewProps
+>(
   (
     {
       className,
@@ -376,18 +445,20 @@ export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
     },
     ref,
   ) => {
-    const [visible, setVisible] = useState(false);
-    const [isZoomed, setIsZoomed] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
+    const [visible, setVisible] = React.useState(false);
+    const [isZoomed, setIsZoomed] = React.useState(false);
+    const [isClosing, setIsClosing] = React.useState(false);
     const backdropOpacity = useSharedValue(0);
-    const [triggerRect, setTriggerRect] = useState<{
+    const [triggerRect, setTriggerRect] = React.useState<{
       x: number;
       y: number;
       width: number;
       height: number;
     } | null>(null);
 
-    const containerRef = useRef<ViewInstance>(null);
+    const containerRef = React.useRef<ViewInstance>(null);
+    const listRef = React.useRef<FlatList<ImageSource>>(null);
+    const isDismissedRef = React.useRef(false);
     const { width: screenWidth, height: screenHeight } = useWindowDimensions();
     const insets = useSafeAreaInsets();
 
@@ -395,10 +466,13 @@ export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
     const initialIndex = images.length
       ? Math.min(Math.max(index, 0), images.length - 1)
       : 0;
+    const [activeIndex, setActiveIndex] = React.useState(initialIndex);
 
     const open = () => {
       onPress?.();
       if (!images.length) return;
+      isDismissedRef.current = false;
+      setActiveIndex(initialIndex);
       setIsClosing(false);
       backdropOpacity.value = 0;
       setIsZoomed(false);
@@ -419,11 +493,13 @@ export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
     };
 
     const handleDismiss = () => {
+      if (isDismissedRef.current) return;
+      isDismissedRef.current = true;
       setVisible(false);
       setIsClosing(false);
     };
 
-    useImperativeHandle(ref, () => ({
+    React.useImperativeHandle(ref, () => ({
       open,
       close,
     }));
@@ -433,6 +509,17 @@ export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
         opacity: backdropOpacity.value,
       };
     });
+
+    React.useEffect(() => {
+      if (visible && images.length > 1 && initialIndex > 0) {
+        requestAnimationFrame(() => {
+          listRef.current?.scrollToIndex({
+            index: initialIndex,
+            animated: false,
+          });
+        });
+      }
+    }, [visible, initialIndex, images.length]);
 
     return (
       <View ref={containerRef} className={className}>
@@ -451,110 +538,154 @@ export const PhotoPreview = forwardRef<PhotoPreviewRef, PhotoPreviewProps>(
           presentationStyle={presentationStyle}
           onRequestClose={close}
         >
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <View style={{ flex: 1, backgroundColor: "transparent" }}>
-              {/* Backdrop */}
-              <Animated.View
-                style={[
-                  StyleSheet.absoluteFill,
-                  { backgroundColor: color },
-                  animatedBackdropStyle,
-                ]}
-              />
+          {visible ? (
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <View style={{ flex: 1, backgroundColor: "transparent" }}>
+                {/* Backdrop */}
+                <Animated.View
+                  style={[
+                    StyleSheet.absoluteFill,
+                    { backgroundColor: color },
+                    animatedBackdropStyle,
+                  ]}
+                />
 
-              {/* Close Button */}
-              <Pressable
-                onPress={close}
-                hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-                style={{
-                  position: "absolute",
-                  top: insets.top + 10,
-                  right: 20,
-                  zIndex: 1000,
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <X size={20} color="white" />
-              </Pressable>
-
-              {/* Image Content */}
-              {images.length === 1 ? (
-                <View
+                {/* Close Button */}
+                <Pressable
+                  onPress={close}
+                  hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                   style={{
-                    flex: 1,
+                    position: "absolute",
+                    top: insets.top + 10,
+                    right: 20,
+                    zIndex: 1000,
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Close preview"
                 >
-                  <GestureImage
-                    source={images[0]}
-                    onDismiss={handleDismiss}
-                    isSingleImage={true}
-                    onZoomStateChange={setIsZoomed}
-                    backdropOpacity={backdropOpacity}
-                    triggerRect={triggerRect}
-                    isClosing={isClosing}
-                  />
-                </View>
-              ) : (
-                <FlatList
-                  data={images}
-                  horizontal
-                  pagingEnabled
-                  scrollEnabled={!isZoomed}
-                  initialScrollIndex={initialIndex}
-                  getItemLayout={(_, idx) => ({
-                    length: screenWidth,
-                    offset: screenWidth * idx,
-                    index: idx,
-                  })}
-                  onScrollToIndexFailed={() => {}}
-                  showsHorizontalScrollIndicator={false}
-                  keyExtractor={(_, idx) => idx.toString()}
-                  renderItem={({ item }) => (
-                    <View
-                      style={{
-                        width: screenWidth,
-                        height: screenHeight,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <GestureImage
-                        source={item}
-                        onDismiss={handleDismiss}
-                        isSingleImage={false}
-                        onZoomStateChange={setIsZoomed}
-                        backdropOpacity={backdropOpacity}
-                        triggerRect={triggerRect}
-                        isClosing={isClosing}
-                      />
-                    </View>
-                  )}
-                />
-              )}
+                  <X size={20} color="white" />
+                </Pressable>
 
-              {/* Footer */}
-              {footer && (
-                <View
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    zIndex: 100,
-                  }}
-                >
-                  {footer({ close, open })}
-                </View>
-              )}
-            </View>
-          </GestureHandlerRootView>
+                {/* Image Content */}
+                {images.length === 1 ? (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <GestureImage
+                      source={images[0]}
+                      onDismiss={handleDismiss}
+                      isSingleImage={true}
+                      onZoomStateChange={setIsZoomed}
+                      backdropOpacity={backdropOpacity}
+                      triggerRect={triggerRect}
+                      isClosing={isClosing}
+                    />
+                  </View>
+                ) : (
+                  <FlatList
+                    ref={listRef}
+                    data={images}
+                    horizontal
+                    pagingEnabled
+                    scrollEnabled={!isZoomed}
+                    initialScrollIndex={initialIndex}
+                    getItemLayout={(_, idx) => ({
+                      length: screenWidth,
+                      offset: screenWidth * idx,
+                      index: idx,
+                    })}
+                    onScrollToIndexFailed={(info) => {
+                      listRef.current?.scrollToOffset({
+                        offset: screenWidth * info.index,
+                        animated: false,
+                      });
+                    }}
+                    onScroll={(event) => {
+                      const nextIndex = Math.round(
+                        event.nativeEvent.contentOffset.x / screenWidth,
+                      );
+                      if (
+                        nextIndex >= 0 &&
+                        nextIndex < images.length &&
+                        nextIndex !== activeIndex
+                      ) {
+                        setActiveIndex(nextIndex);
+                      }
+                    }}
+                    onMomentumScrollEnd={(event) => {
+                      const nextIndex = Math.round(
+                        event.nativeEvent.contentOffset.x / screenWidth,
+                      );
+                      if (nextIndex >= 0 && nextIndex < images.length) {
+                        setActiveIndex(nextIndex);
+                      }
+                    }}
+                    scrollEventThrottle={16}
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={(_, idx) => idx.toString()}
+                    renderItem={({ item, index: itemIndex }) => (
+                      <View
+                        style={{
+                          width: screenWidth,
+                          height: screenHeight,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <GestureImage
+                          source={item}
+                          onDismiss={handleDismiss}
+                          isSingleImage={false}
+                          onZoomStateChange={setIsZoomed}
+                          backdropOpacity={backdropOpacity}
+                          triggerRect={
+                            itemIndex === initialIndex ? triggerRect : null
+                          }
+                          isClosing={isClosing}
+                        />
+                      </View>
+                    )}
+                  />
+                )}
+                {/* Page Counter */}
+                {images.length > 1 ? (
+                  <View
+                    className="absolute self-center px-3 py-1 rounded-full pointer-events-none"
+                    style={{ bottom: insets.bottom - 12, zIndex: 1000 }}
+                  >
+                    <Text className="text-sm font-medium text-white">
+                      {activeIndex + 1} / {images.length}
+                    </Text>
+                  </View>
+                ) : null}
+
+                {/* Footer */}
+                {footer && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      zIndex: 100,
+                    }}
+                  >
+                    {footer({ close, open })}
+                  </View>
+                )}
+              </View>
+            </GestureHandlerRootView>
+          ) : null}
         </Modal>
       </View>
     );

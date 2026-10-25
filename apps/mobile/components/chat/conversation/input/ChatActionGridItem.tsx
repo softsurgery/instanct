@@ -8,7 +8,7 @@ export interface ChatActionGridItemProps {
   className?: string;
   label: string;
   sublabel: string;
-  icon: React.ElementType;
+  icon: React.ElementType | React.ReactNode;
   iconColor: string;
   onPress: () => void;
   disabled?: boolean;
@@ -35,7 +35,11 @@ export const ChatActionGridItem = ({
       )}
     >
       <View className="mb-2 items-center justify-center">
-        <Icon as={icon as LucideIcon} size={26} color={iconColor} />
+        {React.isValidElement(icon) ? (
+          icon
+        ) : (
+          <Icon as={icon as LucideIcon} size={26} color={iconColor} />
+        )}
       </View>
       <Text className="text-center text-sm font-semibold">{label}</Text>
       <Text className="mt-px text-center text-xs text-muted-foreground">
