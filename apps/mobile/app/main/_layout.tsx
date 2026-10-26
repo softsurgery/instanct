@@ -3,6 +3,7 @@ import { NotificationContext } from "@/contexts/NotificationsContext";
 import { useChat } from "@/hooks/content/chat/useChat";
 import { useChatPendingSync } from "@/hooks/content/chat/useChatPendingSync";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
+import { useNotificationResponseNavigation } from "@/hooks/content/notification/useNotificationResponseNavigation";
 import { useNotifications } from "@/hooks/content/notification/useNotifications";
 import { useCheckHealth } from "@/hooks/content/useCheckHealth";
 import { useMobilePresence } from "@/hooks/content/users/useMobilePresence";
@@ -14,7 +15,7 @@ import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
 import { useColorPalette } from "@softsurgery/mobile-components";
 import { useQueryClient } from "@tanstack/react-query";
-import { NotificationType } from "@softsurgery/api-client";
+import { NotificationType } from "api-client";
 
 if (Notifications) {
   Notifications.setNotificationHandler({
@@ -28,13 +29,15 @@ if (Notifications) {
   });
 }
 
+const GEOLOCATION_JOIN = ["user", "user.industries", "user.sessions"];
+
 export default function MainLayout() {
   const queryClient = useQueryClient();
   const { palette } = useColorPalette();
   const authPersistStore = useAuthPersistStore();
-  const {} = useLiveGeolocation({
+  const _geolocation = useLiveGeolocation({
     enabled: authPersistStore.isAuthenticated,
-    join: ["user", "user.industries"],
+    join: GEOLOCATION_JOIN,
   });
   useCheckHealth({
     enabled: authPersistStore.isAuthenticated,
@@ -42,15 +45,13 @@ export default function MainLayout() {
   useMobilePresence({
     enabled: authPersistStore.isAuthenticated,
   });
+  useNotificationResponseNavigation(authPersistStore.isAuthenticated);
 
   const { count: chatCount, resetCount: resetChatCount } = useChat({});
   useChatPendingSync();
-  const {
-    count: notificationCount,
-    notifications,
-    resetCount: resetNotificationCount,
-  } = useNotifications({
-    consequences: {
+
+  const notificationConsequences = React.useMemo(
+    () => ({
       [NotificationType.TEST]: () => {},
       [NotificationType.NEW_SIGNIN]: () => {},
       [NotificationType.NEW_MESSAGE]: () => {},
@@ -63,7 +64,16 @@ export default function MainLayout() {
       [NotificationType.REQUEST_REJECTED]: () => {
         queryClient.invalidateQueries({ queryKey: ["outgoing-requests"] });
       },
-    },
+    }),
+    [queryClient],
+  );
+
+  const {
+    count: notificationCount,
+    notifications,
+    resetCount: resetNotificationCount,
+  } = useNotifications({
+    consequences: notificationConsequences,
   });
 
   const { mapSession, isSessionsPending } = useActiveSessions();
@@ -179,7 +189,7 @@ export default function MainLayout() {
             <Stack.Screen
               name="profile/inspect-profile"
               options={{
-                title: "",
+                title: "inspectProfile",
                 headerShown: false,
               }}
             />

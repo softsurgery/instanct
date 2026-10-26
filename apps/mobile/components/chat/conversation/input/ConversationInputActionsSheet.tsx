@@ -1,7 +1,7 @@
 import React from "react";
 import { useColorPalette } from "@softsurgery/mobile-components";
 import { File, Hand, Image as ImageIcon, Video } from "lucide-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { ChatActionGridItem } from "./ChatActionGridItem";
 import { useTranslation } from "react-i18next";
@@ -66,7 +66,7 @@ export const ConversationInputActionsSheet = React.forwardRef<
     {
       label: t("chat.conversation.attachments.poke.label"),
       sublabel: t("chat.conversation.attachments.poke.sublabel"),
-      icon: Hand,
+      icon: <Text className="text-xl">👋</Text>,
       iconColor: "#F97316",
       onPress: () => runAction(onPoke),
       disabled,

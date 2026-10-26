@@ -2,7 +2,11 @@ import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
-import { ResponseConversationDto, ResponseRefParamDto, ResponseUserDto } from "@softsurgery/api-client";
+import {
+  ResponseConversationDto,
+  ResponseRefParamDto,
+  ResponseUserDto,
+} from "api-client";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import {
@@ -73,7 +77,7 @@ export const UserCard = ({
     size: { width: 100, height: 100 },
   });
 
-  const photoUri = uploadedProfilePicture[0]?.uri as string | undefined;
+  const photoSource = uploadedProfilePicture[0];
 
   const { startConversation } = useStartConversation({
     onSuccess: (conversation: ResponseConversationDto) => {
@@ -159,11 +163,12 @@ export const UserCard = ({
     >
       {/* Hero — the person */}
       <View style={{ height: HERO_HEIGHT, width: "100%" }}>
-        {photoUri ? (
+        {photoSource ? (
           <ImageBackground
-            source={{ uri: photoUri }}
+            source={photoSource}
             style={{ flex: 1 }}
             contentFit="cover"
+            cachePolicy="memory-disk"
           >
             <LinearGradient
               colors={["rgba(0,0,0,0.5)", "transparent"]}
@@ -218,14 +223,12 @@ export const UserCard = ({
           <Animated.View style={bookmarkStyle}>
             <Pressable
               onPressIn={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 bookmarkScale.value = withSpring(0.85, {
                   damping: 12,
                   stiffness: 250,
                 });
               }}
               onPressOut={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 bookmarkScale.value = withSpring(1, {
                   damping: 12,
                   stiffness: 250,
@@ -265,14 +268,12 @@ export const UserCard = ({
             <Animated.View style={requestStyle}>
               <Pressable
                 onPressIn={() => {
-                  // eslint-disable-next-line react-hooks/immutability
                   requestScale.value = withSpring(0.85, {
                     damping: 12,
                     stiffness: 250,
                   });
                 }}
                 onPressOut={() => {
-                  // eslint-disable-next-line react-hooks/immutability
                   requestScale.value = withSpring(1, {
                     damping: 12,
                     stiffness: 250,
@@ -300,14 +301,12 @@ export const UserCard = ({
           <Animated.View style={messageStyle}>
             <Pressable
               onPressIn={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 messageScale.value = withSpring(0.85, {
                   damping: 12,
                   stiffness: 250,
                 });
               }}
               onPressOut={() => {
-                // eslint-disable-next-line react-hooks/immutability
                 messageScale.value = withSpring(1, {
                   damping: 12,
                   stiffness: 250,

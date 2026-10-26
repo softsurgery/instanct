@@ -1,16 +1,16 @@
-import type { MapSessionPayload, ResponseSessionDto } from "@softsurgery/api-client";
+import type {
+  MapSessionPayload,
+  ResponseSessionDto,
+} from "api-client";
 import React from "react";
 import { ScrollView, View, useWindowDimensions } from "react-native";
-import { Text } from "@softsurgery/mobile-ui";
+import { Text, Badge, Separator, Icon } from "@softsurgery/mobile-ui";
 import { format } from "date-fns";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { Badge } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
-import { Separator } from "@softsurgery/mobile-ui";
 import { ArrowRight } from "lucide-react-native";
-import { Icon } from "@softsurgery/mobile-ui";
 import { SessionIncomingRequests } from "../../activities/SessionIncomingRequests";
 import { SessionOutgoingRequests } from "../../activities/SessionOutgoingRequests";
 import { useTranslation } from "react-i18next";
@@ -165,7 +165,9 @@ export const SessionDetailsContent = ({
                   </View>
                   {payloadObjectiveIds.length > 0 ? (
                     <Badge variant="secondary">
-                      <Text className="text-xs">{payloadObjectiveIds.length}</Text>
+                      <Text className="text-xs">
+                        {payloadObjectiveIds.length}
+                      </Text>
                     </Badge>
                   ) : null}
                 </View>

@@ -25,7 +25,8 @@ export const ChatMediaSkeleton = ({
   const screenWidth = Dimensions.get("window").width;
   const CHAT_MEDIA_WIDTH = width ?? Math.round(screenWidth * 0.75);
   const CHAT_MEDIA_HEIGHT =
-    height ?? (isGrouped ? CHAT_MEDIA_WIDTH : Math.round(CHAT_MEDIA_WIDTH * 0.75));
+    height ??
+    (isGrouped ? CHAT_MEDIA_WIDTH : Math.round(CHAT_MEDIA_WIDTH * 0.75));
 
   return (
     <View

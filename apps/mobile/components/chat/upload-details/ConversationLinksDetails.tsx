@@ -3,7 +3,10 @@ import { useConversationMessages } from "@/hooks/content/chat/useConversationMes
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { CONVERSATION_LINKS_MESSAGES_QUERY } from "@/lib/chat";
 import { getMessageLinksForDisplay } from "@/lib/messageLinks";
-import { ResponseMessageDto, ResponseMessageLinkDto } from "@softsurgery/api-client";
+import {
+  ResponseMessageDto,
+  ResponseMessageLinkDto,
+} from "api-client";
 import { LegendList } from "@legendapp/list";
 import { useFocusEffect } from "expo-router";
 import React from "react";
@@ -104,33 +107,41 @@ export const ConversationLinksDetails = ({
   );
 
   return (
-    <LegendList
-      data={linkItems}
-      keyExtractor={(item) => item.key}
-      renderItem={renderLinkItem}
-      onEndReached={handleEndReached}
-      onMomentumScrollBegin={() => {
-        endReachedDuringMomentum.current = false;
-      }}
-      onEndReachedThreshold={0.4}
-      ListEmptyComponent={() => (
-        <View className="flex-1 items-center justify-center py-10 mt-10">
-          {isLoadingLinks ? (
-            <ActivityIndicator size="small" color={hslToHex(palette.primary)} />
-          ) : (
-            <Text className="text-muted-foreground">
-              {t("chat.resources.empty.links")}
-            </Text>
-          )}
-        </View>
-      )}
-      ListFooterComponent={() =>
-        isFetchingNextPage ? (
-          <View className="py-4 items-center">
-            <ActivityIndicator size="small" color={hslToHex(palette.primary)} />
+    <View className="flex-1 bg-background">
+      <LegendList
+        data={linkItems}
+        keyExtractor={(item) => item.key}
+        renderItem={renderLinkItem}
+        onEndReached={handleEndReached}
+        onMomentumScrollBegin={() => {
+          endReachedDuringMomentum.current = false;
+        }}
+        onEndReachedThreshold={0.4}
+        ListEmptyComponent={() => (
+          <View className="flex-1 items-center justify-center py-10 mt-10">
+            {isLoadingLinks ? (
+              <ActivityIndicator
+                size="small"
+                color={hslToHex(palette.primary)}
+              />
+            ) : (
+              <Text className="text-muted-foreground">
+                {t("chat.resources.empty.links")}
+              </Text>
+            )}
           </View>
-        ) : null
-      }
-    />
+        )}
+        ListFooterComponent={() =>
+          isFetchingNextPage ? (
+            <View className="py-4 items-center">
+              <ActivityIndicator
+                size="small"
+                color={hslToHex(palette.primary)}
+              />
+            </View>
+          ) : null
+        }
+      />
+    </View>
   );
 };

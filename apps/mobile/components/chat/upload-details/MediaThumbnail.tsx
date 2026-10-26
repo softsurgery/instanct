@@ -1,5 +1,5 @@
 import { Icon, Image, Skeleton, Text } from "@softsurgery/mobile-ui";
-import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
+import { MessageVariant, ResponseMessageDto } from "api-client";
 import { ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
 import React from "react";

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { CreateFeedbackDto } from "@softsurgery/api-client";
+import { CreateFeedbackDto } from "api-client";
 import { setDeepValue } from "@/lib/object";
 
 interface SendFeedbackData {

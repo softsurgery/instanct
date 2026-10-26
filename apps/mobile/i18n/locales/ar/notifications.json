@@ -2,15 +2,19 @@
   "titles": {
     "TEST": "هذا هو إشعار اختبار",
     "NEW_SIGNIN": "تم تسجيل الدخول الجديد!",
+    "NEW_MESSAGE": "رسالة جديدة",
     "REQUEST_RECEIVED": "تم استلام طلب جديد",
     "REQUEST_ACCEPTED": "تم قبول طلبك",
-    "REQUEST_REJECTED": "تم رفض طلبك"
+    "REQUEST_REJECTED": "تم رفض طلبك",
+    "fallback": "إشعار"
   },
   "descriptions": {
     "TEST": "هذا هو إشعار اختبار يوصف كيفية اختبار النظام للتحقق من أن نظام الإشعارات يعمل بشكل صحيح.",
     "NEW_SIGNIN": "لاحظنا تسجيل دخول جديد من جهاز جديد",
+    "NEW_MESSAGE": "لديك رسالة جديدة. اضغط لفتح المحادثة.",
     "REQUEST_RECEIVED": "لقد تلقيت طلبًا جديدًا من {{senderIdentification}}. انقر لعرض تفاصيل الطلب والرد عليه.",
     "REQUEST_ACCEPTED": "{{responderIdentification}} قد قبل طلبك. يمكنك الآن الاتصال والبدء في التعاون!",
-    "REQUEST_REJECTED": "{{responderIdentification}} قد رفض طلبك. لا تقلق"
+    "REQUEST_REJECTED": "{{responderIdentification}} قد رفض طلبك. لا تقلق",
+    "fallback": "لديك إشعار جديد"
   }
 }

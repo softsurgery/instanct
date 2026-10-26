@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     "@softsurgery/lib",
     "@softsurgery/components",
     "@softsurgery/contexts",
-    "@softsurgery/i18n",
+    "i18n",
   ],
   reactStrictMode: true,
   agentRules: false,

@@ -25,11 +25,11 @@ export const useDisapproveUserDialog = ({
   } = useDialog({
     title: (
       <div className="leading-normal">
-        {t("userManagement.dialogs.disapproveUserTitle")} <span className="font-light">{representation}</span> ?
+        {t("userManagement.dialogs.disapproveUserTitle")}{" "}
+        <span className="font-light">{representation}</span> ?
       </div>
     ),
-    description:
-      t("userManagement.dialogs.disapproveUserDescription"),
+    description: t("userManagement.dialogs.disapproveUserDescription"),
     children: (
       <div>
         <div className="flex gap-2 justify-end">

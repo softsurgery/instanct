@@ -1,4 +1,4 @@
-import { ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseUserDto } from "api-client";
 
 export const identifyUser = (user?: ResponseUserDto | null) => {
   if (!user) return "unknown";

@@ -7,17 +7,15 @@ import { useTranslation } from "react-i18next";
 import * as Haptics from "expo-haptics";
 import { toast } from "sonner-native";
 import { cn } from "@softsurgery/lib";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
-import { StableScrollView } from "@softsurgery/mobile-components";
-import { Text } from "@softsurgery/mobile-ui";
-import { Badge } from "@softsurgery/mobile-ui";
-import { Button } from "@softsurgery/mobile-ui";
-import { Separator } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
+import {
+  ApplicationHeader,
+  StableSafeAreaView,
+  AppHeaderBack,
+  StableScrollView,
+} from "@softsurgery/mobile-components";
+import { Text, Badge, Button, Separator, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
-import { ResponseUserDeviceDto } from "@softsurgery/api-client";
+import { ResponseUserDeviceDto } from "api-client";
 import { useLogout } from "@/hooks/useLogout";
 import { getDeviceIcon } from "@/lib/device-icon";
 import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";

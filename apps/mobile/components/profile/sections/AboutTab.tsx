@@ -6,7 +6,7 @@ import {
 import { Text, Icon } from "@softsurgery/mobile-ui";
 import { THEME } from "@/lib/theme";
 import { cn } from "@softsurgery/lib";
-import { ResponseUserDto } from "@softsurgery/api-client";
+import { ResponseUserDto } from "api-client";
 import {
   ArrowUpRight,
   Globe,
@@ -44,8 +44,8 @@ const SectionHeader = ({
   color?: string;
 }) => (
   <View className="mb-4 flex-row items-center gap-2.5">
-    <Icon as={icon} size={18} color={color} />
-    <Text className="text-base font-semibold text-foreground">{title}</Text>
+    <Icon as={icon} size={24} color={color} />
+    <Text className="text-xl font-semibold text-foreground">{title}</Text>
   </View>
 );
 

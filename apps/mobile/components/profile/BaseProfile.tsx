@@ -7,7 +7,12 @@ import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { identifyUser } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { createClientStore, useUserStore } from "@/stores/useUserStore";
-import { ResponseEducationDto, ResponseExperienceDto, ResponseRefParamDto, ServerErrorResponse } from "@softsurgery/api-client";
+import {
+  ResponseEducationDto,
+  ResponseExperienceDto,
+  ResponseRefParamDto,
+  ServerErrorResponse,
+} from "api-client";
 import { router, useFocusEffect, useNavigation } from "expo-router";
 import { toUpdateExperienceDto } from "./experience/toUpdateExperienceDto";
 import { toUpdateEducationDto } from "./education/toUpdateEducationDto";

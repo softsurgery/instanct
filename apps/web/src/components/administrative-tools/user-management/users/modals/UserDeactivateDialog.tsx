@@ -25,11 +25,11 @@ export const useDeactivateUserDialog = ({
   } = useDialog({
     title: (
       <div className="leading-normal">
-        {t("userManagement.dialogs.deactivateUserTitle")} <span className="font-light">{userFullname}</span> ?
+        {t("userManagement.dialogs.deactivateUserTitle")}{" "}
+        <span className="font-light">{userFullname}</span> ?
       </div>
     ),
-    description:
-      t("userManagement.dialogs.deactivateUserDescription"),
+    description: t("userManagement.dialogs.deactivateUserDescription"),
     children: (
       <div>
         <div className="flex gap-2 justify-end">

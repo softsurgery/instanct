@@ -1,7 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { Button, Input, Label, cn } from "@softsurgery/ui";
-import { useBreadcrumb, useFooter, useIntro, useUI } from "@softsurgery/contexts";
+import {
+  useBreadcrumb,
+  useFooter,
+  useIntro,
+  useUI,
+} from "@softsurgery/contexts";
 import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
 import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import _ from "lodash";
@@ -24,7 +29,10 @@ interface ConfigurationEditPortalProps {
   className?: string;
 }
 
-export function ConfigurationEditPortal({ id, className }: ConfigurationEditPortalProps) {
+export function ConfigurationEditPortal({
+  id,
+  className,
+}: ConfigurationEditPortalProps) {
   const router = useRouter();
   const { t } = useTranslation("content-management");
   const { setRoutes, clearRoutes } = useBreadcrumb();
@@ -78,17 +86,28 @@ export function ConfigurationEditPortal({ id, className }: ConfigurationEditPort
     const latestUpdateDtos = useConfigStore.getState().updateDtos;
     toast.promise(updateConfigs(latestUpdateDtos), {
       loading: t("configuration.actions.saving", "Saving..."),
-      success: t("configuration.messages.updateSuccess", "Configuration updated successfully"),
+      success: t(
+        "configuration.messages.updateSuccess",
+        "Configuration updated successfully",
+      ),
       error: (error) =>
         error.response?.data?.message ||
         error.message ||
-        t("configuration.messages.updateError", "Failed to update configuration"),
+        t(
+          "configuration.messages.updateError",
+          "Failed to update configuration",
+        ),
     });
   }, [t, updateConfigs]);
 
   const handleReset = React.useCallback(() => {
     useConfigStore.getState().set("updateDtos", [...originalValuesRef.current]);
-    toast.info(t("configuration.messages.resetSuccess", "Configuration reset to original values"));
+    toast.info(
+      t(
+        "configuration.messages.resetSuccess",
+        "Configuration reset to original values",
+      ),
+    );
   }, [t]);
 
   const handleExport = React.useCallback(() => {
@@ -98,7 +117,9 @@ export function ConfigurationEditPortal({ id, className }: ConfigurationEditPort
       useConfigStore.getState().updateDtos,
     );
     downloadConfigurationExport(payload);
-    toast.success(t("configuration.messages.exportSuccess", "Configuration exported"));
+    toast.success(
+      t("configuration.messages.exportSuccess", "Configuration exported"),
+    );
   }, [namespace, t]);
 
   const handleImport = React.useCallback(
@@ -130,7 +151,10 @@ export function ConfigurationEditPortal({ id, className }: ConfigurationEditPort
         toast.error(
           error instanceof Error
             ? error.message
-            : t("configuration.messages.importError", "Failed to import configuration"),
+            : t(
+                "configuration.messages.importError",
+                "Failed to import configuration",
+              ),
         );
       }
     },
@@ -152,10 +176,15 @@ export function ConfigurationEditPortal({ id, className }: ConfigurationEditPort
   ]);
 
   React.useEffect(() => {
-    const titleName = namespace?.name ? _.startCase(namespace.name) : "Configuration";
+    const titleName = namespace?.name
+      ? _.startCase(namespace.name)
+      : "Configuration";
     setRoutes?.([
       {
-        title: t("configuration.breadcrumbs.contentManagement", "Content Management"),
+        title: t(
+          "configuration.breadcrumbs.contentManagement",
+          "Content Management",
+        ),
         href: "/content-management",
       },
       {
@@ -281,7 +310,10 @@ export function ConfigurationEditPortal({ id, className }: ConfigurationEditPort
       <div className="flex items-center justify-center h-64">
         <Loader2 className="h-8 w-8 animate-spin" />
         <span className="ml-2">
-          {t("configuration.loading.configurations", "Loading configuration...")}
+          {t(
+            "configuration.loading.configurations",
+            "Loading configuration...",
+          )}
         </span>
       </div>
     );
@@ -290,7 +322,9 @@ export function ConfigurationEditPortal({ id, className }: ConfigurationEditPort
   if (!namespace) {
     return (
       <div className="flex flex-col items-center justify-center py-16 gap-4">
-        <p className="text-sm text-muted-foreground">Configuration namespace not found.</p>
+        <p className="text-sm text-muted-foreground">
+          Configuration namespace not found.
+        </p>
         <Button
           variant="outline"
           size="sm"
@@ -304,14 +338,20 @@ export function ConfigurationEditPortal({ id, className }: ConfigurationEditPort
   }
 
   return (
-    <div className={cn("mt-4 flex flex-col gap-6 w-full max-w-5xl mx-auto pb-12", className)}>
+    <div
+      className={cn(
+        "mt-4 flex flex-col gap-6 w-full max-w-5xl mx-auto pb-12",
+        className,
+      )}
+    >
       <header className="flex items-center justify-between border-b pb-4">
         <div>
           <h2 className="text-xl font-bold text-foreground capitalize">
             {_.startCase(namespace.name)}
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {namespace.description || `Configuration properties for ${namespace.name}`}
+            {namespace.description ||
+              `Configuration properties for ${namespace.name}`}
           </p>
         </div>
         <div className="flex items-center gap-2">

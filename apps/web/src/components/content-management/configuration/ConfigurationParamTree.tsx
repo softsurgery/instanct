@@ -184,7 +184,8 @@ export const ConfigurationParamTree: React.FC<ConfigurationParamTreeProps> = ({
   }, []);
 
   const hasBranches = allBranchIds.length > 0;
-  const allExpanded = hasBranches && allBranchIds.every((id) => expandedKeys.has(id));
+  const allExpanded =
+    hasBranches && allBranchIds.every((id) => expandedKeys.has(id));
 
   const toggleAll = React.useCallback(() => {
     if (allExpanded) {
@@ -430,7 +431,9 @@ const LeafIcon: React.FC<{ param?: ResponseConfigurationParamDto }> = ({
   }
 
   if (param.variant === "boolean") {
-    return <ToggleLeft className="h-3 w-3 text-emerald-500/80 shrink-0 mt-0.5" />;
+    return (
+      <ToggleLeft className="h-3 w-3 text-emerald-500/80 shrink-0 mt-0.5" />
+    );
   }
 
   if (param.variant === "list" || parseArrayValue(param.value)) {
@@ -464,7 +467,11 @@ const ParamValueRenderer: React.FC<ParamValueRendererProps> = ({
   const rawValue = param.value;
 
   // Boolean
-  if (param.variant === "boolean" || rawValue === "true" || rawValue === "false") {
+  if (
+    param.variant === "boolean" ||
+    rawValue === "true" ||
+    rawValue === "false"
+  ) {
     const isTrue = rawValue === "true";
     return (
       <Badge
@@ -490,8 +497,7 @@ const ParamValueRenderer: React.FC<ParamValueRendererProps> = ({
     return (
       <div className="flex flex-col gap-0.5 w-full">
         <span className="text-[11px] text-muted-foreground font-mono">
-          ({parsedArray.length}{" "}
-          {parsedArray.length === 1 ? "item" : "items"})
+          ({parsedArray.length} {parsedArray.length === 1 ? "item" : "items"})
         </span>
         <div className="relative pl-2.5 ml-1 border-l border-border/50 flex flex-col gap-0.5 mt-0.5 max-h-36 overflow-y-auto">
           {parsedArray.map((item, idx) => {
@@ -528,8 +534,7 @@ const ParamValueRenderer: React.FC<ParamValueRendererProps> = ({
   }
 
   // Default string / select
-  const displayVal =
-    rawValue !== undefined && rawValue !== "" ? rawValue : "—";
+  const displayVal = rawValue !== undefined && rawValue !== "" ? rawValue : "—";
 
   return (
     <span

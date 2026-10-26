@@ -1,10 +1,10 @@
 import { Icon, Skeleton, Text } from "@softsurgery/mobile-ui";
-import { PhotoPreview } from "@softsurgery/mobile-components";
 import {
+  PhotoPreview,
   toVideoSource,
   VideoPreview,
+  VideoThumbnailPreview,
 } from "@softsurgery/mobile-components";
-import { VideoThumbnailPreview } from "@softsurgery/mobile-components";
 import { Image, ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
 import React from "react";
@@ -89,8 +89,9 @@ export const MediaImageGrid = ({
     () =>
       allSources
         .map((item) => toVideoSource(item))
-        .filter((item): item is NonNullable<ReturnType<typeof toVideoSource>> =>
-          !!item,
+        .filter(
+          (item): item is NonNullable<ReturnType<typeof toVideoSource>> =>
+            !!item,
         ),
     [allSources],
   );

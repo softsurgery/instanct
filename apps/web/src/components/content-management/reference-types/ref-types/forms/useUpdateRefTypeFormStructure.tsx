@@ -51,7 +51,7 @@ export const useUpdateRefTypeFormStructure = ({
         referenceTypesStore?.setNested("refTypeUpdateDto.description", value);
         referenceTypesStore?.setNested(
           "refTypeUpdateDtoErrors.description",
-          []
+          [],
         );
       },
     },
@@ -72,7 +72,7 @@ export const useUpdateRefTypeFormStructure = ({
       onValueChange: (value) => {
         referenceTypesStore?.setNested(
           "refTypeCreateDto.parentId",
-          Number(value)
+          Number(value),
         );
         referenceTypesStore?.setNested("refTypeCreateDtoErrors.parentId", []);
       },

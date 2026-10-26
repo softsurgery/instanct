@@ -13,7 +13,10 @@ import { ChevronDown } from "lucide-react-native";
 import { useFocusEffect } from "expo-router";
 import { setConversationMessageParam } from "@/lib/chat";
 
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import {
+  StableSafeAreaView,
+  useColorPalette,
+} from "@softsurgery/mobile-components";
 import { ChatBubble } from "./conversation/bubbles/ChatBubble";
 import { ChatMediaBubble } from "./conversation/bubbles/ChatMediaBubble";
 import { ChatFileBubble } from "./conversation/bubbles/ChatFileBubble";
@@ -43,9 +46,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useGradualAnimation } from "@/hooks/useGradualAnimation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ResponseMessageDto } from "@softsurgery/api-client";
+import { ResponseMessageDto } from "api-client";
 import { MessageFlatListItem } from "@/types";
-import { useColorPalette } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";
 import { useTranslation } from "react-i18next";
@@ -363,10 +365,11 @@ export const Conversation = ({
   }, [scrollToMessageId, isMessagesLoading, listData, navigateToMessage]);
 
   return (
-    <StableSafeAreaView className="flex-1 bg-card">
+    <StableSafeAreaView className="flex-1 bg-background">
       {/* HEADER */}
-      <View className="flex flex-row justify-between items-center px-2 py-2 bg-card border-b border-border">
+      <View className="flex flex-row justify-between items-center px-2 py-2 bg-background border-b border-border">
         <ChatHeaderLeft
+          className="bg-background"
           id={headerUserId as string}
           profilePicture={profilePictures[0]}
           identifier={headerIdentifier}
@@ -569,7 +572,7 @@ export const Conversation = ({
 
           {/* INPUT */}
           <ConversationInput
-            className="bg-card"
+            className="bg-background"
             input={input}
             setInput={setInput}
             sendMessage={sendMessage}

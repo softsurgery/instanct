@@ -34,7 +34,7 @@ const UNNECESSARY_KEYS = new Set([
 ]);
 
 export const useLoggerColumns = (
-  context: DataTableConfig<ResponseLogDto>
+  context: DataTableConfig<ResponseLogDto>,
 ): ColumnDef<ResponseLogDto>[] => {
   const { t } = useTranslation("logs");
   return [
@@ -68,7 +68,10 @@ export const useLoggerColumns = (
       ),
       cell: ({ row }) => {
         const event = row?.original?.event;
-        const logInfo = (row?.original?.logInfo || {}) as Record<string, any>;
+        const logInfo = (row?.original?.logInfo || {}) as Record<
+          string,
+          unknown
+        >;
 
         const targetUserId =
           logInfo.targetUserId ||
@@ -161,62 +164,62 @@ export const useLoggerColumns = (
               a: renderLink(
                 row?.original?.user?.id
                   ? `/user-management/users/${row.original.user.id}`
-                  : undefined
+                  : undefined,
               ),
               userLink: renderLink(
                 currentUserId
                   ? `/user-management/users/${currentUserId}`
-                  : undefined
+                  : undefined,
               ),
               clientLink: renderLink(
                 currentUserId
                   ? `/user-management/users/${currentUserId}`
-                  : undefined
+                  : undefined,
               ),
               authorLink: renderLink(
-                authorId ? `/user-management/users/${authorId}` : undefined
+                authorId ? `/user-management/users/${authorId}` : undefined,
               ),
               targetUserLink: renderLink(
                 targetUserId
                   ? `/user-management/users/${targetUserId}`
-                  : undefined
+                  : undefined,
               ),
               roleLink: renderLink(
-                roleId ? `/user-management/roles/${roleId}` : undefined
+                roleId ? `/user-management/roles/${roleId}` : undefined,
               ),
               contentPageLink: renderLink(
-                pageId ? `/content-management/pages/${pageId}` : undefined
+                pageId ? `/content-management/pages/${pageId}` : undefined,
               ),
               refTypeLink: renderLink(
                 refTypeId
                   ? `/content-management/reference-types/${refTypeId}`
-                  : undefined
+                  : undefined,
               ),
               refParamLink: renderLink(
                 refParamId
                   ? `/content-management/reference-parameters/${refParamId}`
-                  : undefined
+                  : undefined,
               ),
               bugLink: renderLink(
-                bugId ? `/audit-monitoring/bug-report/${bugId}` : undefined
+                bugId ? `/audit-monitoring/bug-report/${bugId}` : undefined,
               ),
               feedbackLink: renderLink(
                 feedbackId
                   ? `/audit-monitoring/feedback/${feedbackId}`
-                  : undefined
+                  : undefined,
               ),
               sessionLink: renderLink(
-                sessionId ? `/sessions/${sessionId}` : undefined
+                sessionId ? `/sessions/${sessionId}` : undefined,
               ),
               requestLink: renderLink(
-                requestId ? `/requests/${requestId}` : undefined
+                requestId ? `/requests/${requestId}` : undefined,
               ),
               deviceLink: renderLink(undefined),
               educationLink: renderLink(
-                educationId ? `/education/${educationId}` : undefined
+                educationId ? `/education/${educationId}` : undefined,
               ),
               experienceLink: renderLink(
-                experienceId ? `/experience/${experienceId}` : undefined
+                experienceId ? `/experience/${experienceId}` : undefined,
               ),
             }}
           />
@@ -245,9 +248,9 @@ export const useLoggerColumns = (
           return <span className="text-muted-foreground text-xs">—</span>;
         }
 
-        const filtered: Record<string, any> = {};
+        const filtered: Record<string, unknown> = {};
         for (const [key, value] of Object.entries(
-          rawLogInfo as Record<string, any>
+          rawLogInfo as Record<string, unknown>,
         )) {
           if (
             !UNNECESSARY_KEYS.has(key) &&

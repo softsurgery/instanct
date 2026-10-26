@@ -187,7 +187,8 @@ export const useUserColumns = (
         }
 
         const rawDate =
-          statuses?.[userId]?.lastSeen || (row.original as any)?.lastSeen;
+          statuses?.[userId]?.lastSeen ||
+          (row.original as unknown as { lastSeen?: string | Date })?.lastSeen;
         const lastSeenDate = rawDate ? new Date(rawDate) : null;
 
         return (

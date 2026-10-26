@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 import {
   LineChart,
   Line,
@@ -8,14 +8,14 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"
-import ChartCard from "./ChartCard"
+} from "recharts";
+import ChartCard from "./ChartCard";
 
 const data = [
   { month: "Jan", uv: 400 },
   { month: "Feb", uv: 300 },
   { month: "Mar", uv: 200 },
-]
+];
 
 export default function LineChartExample() {
   return (
@@ -26,10 +26,15 @@ export default function LineChartExample() {
             <XAxis dataKey="month" />
             <YAxis />
             <Tooltip />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" strokeWidth={2} />
+            <Line
+              type="monotone"
+              dataKey="uv"
+              stroke="#82ca9d"
+              strokeWidth={2}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
     </ChartCard>
-  )
+  );
 }

@@ -1,7 +1,7 @@
 import type {
   MessageVariant,
   ResponseMessageDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import type { UploadFileInput } from "@/lib/upload";
 
 export type MediaKind = "image" | "video";

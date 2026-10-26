@@ -6,26 +6,26 @@ import { useApi } from "@/contexts/ApiContext";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
 import { cn } from "@softsurgery/lib";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { Text } from "@softsurgery/mobile-ui";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  StableKeyboardAwareScrollView,
+  BottomButtonWrapper,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
+import { Text, Icon, Button } from "@softsurgery/mobile-ui";
 import { Loader2 } from "lucide-react-native";
-import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
-import { Button } from "@softsurgery/mobile-ui";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { toast } from "sonner-native";
-import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import {
+  FormBuilder,
   FieldVariant,
   FormStructure,
   MultiSelectFieldProps,
 } from "@softsurgery/mobile-form-builder";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface IndustriesManagementProps {
   className?: string;
 }

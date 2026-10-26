@@ -19,7 +19,7 @@ interface UserStoreData {
   setManualPassword: boolean;
   confirmPassword?: string;
   picture?: File;
-  cover?: File
+  cover?: File;
   officialDocument?: File;
   driverLicenseDocument?: File;
   pictureUrl?: string;

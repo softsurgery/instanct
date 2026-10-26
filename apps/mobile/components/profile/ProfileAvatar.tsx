@@ -1,10 +1,13 @@
 import React, { useRef, useMemo } from "react";
 import { ActionSheetRef } from "react-native-actions-sheet";
-import { ThreeDotsActionSheet } from "@softsurgery/mobile-components";
+import {
+  ThreeDotsActionSheet,
+  PhotoPreview,
+  PhotoPreviewRef,
+} from "@softsurgery/mobile-components";
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable } from "react-native";
 import { Eye, Camera } from "lucide-react-native";
-import { PhotoPreview, PhotoPreviewRef } from "@softsurgery/mobile-components";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { type ReactNativeUploadFile } from "@/lib/upload";
 import { useApi } from "@/contexts/ApiContext";
@@ -12,7 +15,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
-import { ResponseUserDto, Upload, UpdateUserDto, ServerErrorResponse } from "@softsurgery/api-client";
+import {
+  ResponseUserDto,
+  Upload,
+  UpdateUserDto,
+  ServerErrorResponse,
+} from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";

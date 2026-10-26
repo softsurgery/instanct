@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
-import { SessionStatus } from "@softsurgery/api-client";
+import { SessionStatus } from "api-client";
 import { cn } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
 

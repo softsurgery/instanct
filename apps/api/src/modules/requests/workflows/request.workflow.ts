@@ -2,7 +2,7 @@ import { setup } from 'xstate';
 
 export const requestMachine = setup({
   types: {
-    context: {} as {},
+    context: {},
     events: {} as { type: 'Accept' } | { type: 'Reject' },
   },
 }).createMachine({

@@ -3,7 +3,11 @@ import React from "react";
 import { View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { MessageVariant, ResponseConversationDto, StaticMessageEnum } from "@softsurgery/api-client";
+import {
+  MessageVariant,
+  ResponseConversationDto,
+  StaticMessageEnum,
+} from "api-client";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { differenceInMilliseconds } from "date-fns";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
@@ -108,9 +112,7 @@ export const UserEntry = ({
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {isMe
-              ? t("chat.preview.pokeSent")
-              : t("chat.preview.pokeReceived")}
+            {isMe ? t("chat.preview.pokeSent") : t("chat.preview.pokeReceived")}
           </Text>
         );
       }

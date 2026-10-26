@@ -1,4 +1,4 @@
-import type { ResponseUserDto } from "@softsurgery/api-client";
+import type { ResponseUserDto } from "api-client";
 
 export interface NearbyUser {
   latitude: number;

@@ -9,7 +9,7 @@ import {
   prependMessageToConversationLinksCache,
 } from "@/lib/chat";
 import { messageHasLinks } from "@/lib/messageLinks";
-import { MessageVariant, ResponseMessageDto } from "@softsurgery/api-client";
+import { MessageVariant, ResponseMessageDto } from "api-client";
 
 interface CachedConversationMessages {
   messages: ResponseMessageDto[];

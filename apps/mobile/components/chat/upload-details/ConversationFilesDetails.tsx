@@ -1,7 +1,7 @@
 import { Text } from "@softsurgery/mobile-ui";
 import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
-import { MessageVariant } from "@softsurgery/api-client";
+import { MessageVariant } from "api-client";
 import { LegendList } from "@legendapp/list";
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
@@ -87,33 +87,41 @@ export const ConversationFilesDetails = ({
   );
 
   return (
-    <LegendList
-      data={fileItems}
-      keyExtractor={(item) => item.key}
-      renderItem={renderFileItem}
-      onEndReached={handleEndReached}
-      onMomentumScrollBegin={() => {
-        endReachedDuringMomentum.current = false;
-      }}
-      onEndReachedThreshold={0.4}
-      ListEmptyComponent={() => (
-        <View className="flex-1 items-center justify-center py-10 mt-10">
-          {isLoadingFiles ? (
-            <ActivityIndicator size="small" color={hslToHex(palette.primary)} />
-          ) : (
-            <Text className="text-muted-foreground">
-              {t("chat.resources.empty.files")}
-            </Text>
-          )}
-        </View>
-      )}
-      ListFooterComponent={() =>
-        isFetchingNextPage ? (
-          <View className="py-4 items-center">
-            <ActivityIndicator size="small" color={hslToHex(palette.primary)} />
+    <View className="flex-1 bg-background">
+      <LegendList
+        data={fileItems}
+        keyExtractor={(item) => item.key}
+        renderItem={renderFileItem}
+        onEndReached={handleEndReached}
+        onMomentumScrollBegin={() => {
+          endReachedDuringMomentum.current = false;
+        }}
+        onEndReachedThreshold={0.4}
+        ListEmptyComponent={() => (
+          <View className="flex-1 items-center justify-center py-10 mt-10">
+            {isLoadingFiles ? (
+              <ActivityIndicator
+                size="small"
+                color={hslToHex(palette.primary)}
+              />
+            ) : (
+              <Text className="text-muted-foreground">
+                {t("chat.resources.empty.files")}
+              </Text>
+            )}
           </View>
-        ) : null
-      }
-    />
+        )}
+        ListFooterComponent={() =>
+          isFetchingNextPage ? (
+            <View className="py-4 items-center">
+              <ActivityIndicator
+                size="small"
+                color={hslToHex(palette.primary)}
+              />
+            </View>
+          ) : null
+        }
+      />
+    </View>
   );
 };

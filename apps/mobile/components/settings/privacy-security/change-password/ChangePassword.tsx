@@ -3,12 +3,14 @@ import { View } from "react-native";
 import { Loader2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { cn } from "@softsurgery/lib";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
-import { Button } from "@softsurgery/mobile-ui";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import {
+  ApplicationHeader,
+  StableSafeAreaView,
+  StableKeyboardAwareScrollView,
+  BottomButtonWrapper,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
+import { Button, Icon, Text } from "@softsurgery/mobile-ui";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useChangePasswordFormStructure } from "./useChangePasswordFormStructure";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
@@ -16,12 +18,10 @@ import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@softsurgery/api-client";
+import { ServerErrorResponse } from "api-client";
 import * as Haptics from "expo-haptics";
 import { useLogout } from "@/hooks/useLogout";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface ChangePasswordProps {
   className?: string;
 }

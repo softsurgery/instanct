@@ -18,6 +18,14 @@
       "file_one": "📎 Fichier",
       "file_other": "📎 {{count}} fichiers"
     },
+    "notifications": {
+      "sentMessage": "Vous a envoyé un message",
+      "pokedYou": "Vous a envoyé un signe",
+      "wantsToChat": "Souhaite discuter avec vous",
+      "image": "📷 Image",
+      "video": "🎥 Vidéo",
+      "file": "📎 Fichier"
+    },
     "tabs": {
       "media": {
         "title": "Médias"
@@ -97,7 +105,8 @@
         "photo_other": "{{count}} photos",
         "video_one": "{{count}} vidéo",
         "video_other": "{{count}} vidéos",
-        "items": "{{count}} éléments"
+        "items": "{{count}} éléments",
+        "send": "Envoyer"
       }
     },
     "search": {

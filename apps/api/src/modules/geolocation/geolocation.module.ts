@@ -7,6 +7,7 @@ import { GeolocationGateway } from './gateways/geolocation.gateway';
 import { ConfigurationsModule } from '@softsurgery/nsa-configurations/configurations.module';
 import { RequestsModule } from '../requests/requests.module';
 import { SessionModule } from '@softsurgery/nsa-sessions/sessions.module';
+import { AuthModule } from '@softsurgery/nsa-auth/auth.module';
 
 @Module({
   controllers: [],
@@ -17,6 +18,7 @@ import { SessionModule } from '@softsurgery/nsa-sessions/sessions.module';
     ConfigurationsModule,
     RequestsModule,
     SessionModule,
+    AuthModule,
   ],
 })
 export class GeolocationModule {}

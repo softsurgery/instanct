@@ -20,7 +20,9 @@ export function formatAsMacAddress(seed: string): string {
   const cleanHex = seed.replace(/[^0-9a-fA-F]/g, "");
   const paddedHex = cleanHex.padEnd(12, "0").slice(0, 12);
   const octets = paddedHex.match(/.{1,2}/g);
-  return (octets || ["00", "00", "00", "00", "00", "00"]).join(":").toLowerCase();
+  return (octets || ["00", "00", "00", "00", "00", "00"])
+    .join(":")
+    .toLowerCase();
 }
 
 /**
@@ -62,7 +64,10 @@ export async function getDeviceMacAddress(): Promise<string> {
     console.warn("Error reading platform hardware identifier:", error);
   }
 
-  const hardwareSeed = platformId && platformId.trim().length > 0 ? platformId : Crypto.randomUUID();
+  const hardwareSeed =
+    platformId && platformId.trim().length > 0
+      ? platformId
+      : Crypto.randomUUID();
 
   const hash = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,

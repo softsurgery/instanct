@@ -1,12 +1,14 @@
-import { Text } from "@softsurgery/mobile-ui";
+import { Text, Icon } from "@softsurgery/mobile-ui";
 import { identifyUser } from "@/lib/user";
 import { normalizeMessageLinkUrl } from "@/lib/messageLinks";
-import { ResponseMessageDto, ResponseMessageLinkDto } from "@softsurgery/api-client";
+import {
+  ResponseMessageDto,
+  ResponseMessageLinkDto,
+} from "api-client";
 import { format } from "date-fns";
 import { Link2 } from "lucide-react-native";
 import React from "react";
 import { Linking, Pressable, View } from "react-native";
-import { Icon } from "@softsurgery/mobile-ui";
 
 interface LinkListItemProps {
   message: ResponseMessageDto;
@@ -49,7 +51,10 @@ export const LinkListItem = React.memo(function LinkListItem({
           <Icon as={Link2} size={18} className="text-primary" />
         </View>
         <View className="flex-1">
-          <Text className="text-primary text-[15px] font-medium" numberOfLines={2}>
+          <Text
+            className="text-primary text-[15px] font-medium"
+            numberOfLines={2}
+          >
             {link.url}
           </Text>
           <View className="flex-row items-center mt-1">

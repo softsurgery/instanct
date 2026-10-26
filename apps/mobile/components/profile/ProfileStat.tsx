@@ -1,8 +1,7 @@
 import { cn } from "@softsurgery/lib";
 import { Pressable, View } from "react-native";
 import { Pencil } from "lucide-react-native";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Icon, Text } from "@softsurgery/mobile-ui";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 

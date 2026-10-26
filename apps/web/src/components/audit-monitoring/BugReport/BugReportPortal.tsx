@@ -9,7 +9,7 @@ import {
   ResponseBugDto,
   ResponseUserDeviceDto,
   ServerErrorResponse,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useTranslation } from "react-i18next";
 import { useBugReportColumns } from "./useBugReportColumns";
 import { useBugDeviceDialog } from "./modals/BugDeviceDialog";
@@ -121,7 +121,10 @@ export const BugReportPortal = ({
     mutationFn: (id: string) => api.admin.bugReport.delete(id),
     onSuccess: () => {
       toast.success(
-        t("bugReport.messages.deleteSuccess", "Bug report deleted successfully."),
+        t(
+          "bugReport.messages.deleteSuccess",
+          "Bug report deleted successfully.",
+        ),
       );
       queryClient.invalidateQueries({ queryKey: ["bugs"] });
       setSelectedBugForDelete(undefined);
@@ -225,4 +228,3 @@ export const BugReportPortal = ({
     </div>
   );
 };
-

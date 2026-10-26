@@ -1,4 +1,4 @@
-import { ResponseMessageDto } from "@softsurgery/api-client";
+import { ResponseMessageDto } from "api-client";
 
 export const messageContentMatchesQuery = (
   message: ResponseMessageDto,

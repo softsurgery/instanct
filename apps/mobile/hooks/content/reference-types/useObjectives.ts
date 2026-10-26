@@ -29,7 +29,6 @@ export const useObjectives = (
     return objectivesSubTypeResp.flatMap((refType) => refType.params ?? []);
   }, [objectivesSubTypeResp]);
 
-
   return {
     objectivesSubTypeResp,
     objectives,

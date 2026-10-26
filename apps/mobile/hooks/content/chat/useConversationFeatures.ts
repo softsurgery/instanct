@@ -2,7 +2,12 @@ import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { MessageVariant, ResponseConversationDto, ResponseMessageDto, StaticMessageEnum } from "@softsurgery/api-client";
+import {
+  MessageVariant,
+  ResponseConversationDto,
+  ResponseMessageDto,
+  StaticMessageEnum,
+} from "api-client";
 import { MessageFlatListItem } from "@/types";
 import { useAudioPlayer } from "expo-audio";
 import {
@@ -115,8 +120,7 @@ export const useConversationFeatures = ({
 
   // ----- Helper to check if cache has real data -----
   const getCachedMessages = React.useCallback(():
-    | CachedConversationMessages
-    | undefined => {
+    CachedConversationMessages | undefined => {
     return queryClient.getQueryData<CachedConversationMessages>(
       messagesQueryKey,
     );

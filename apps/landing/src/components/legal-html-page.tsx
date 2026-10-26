@@ -4,7 +4,7 @@ import { prepareLegalHtml } from "@softsurgery/lib";
 import "@softsurgery/lib/legal/legal-html.css";
 import { useTranslation } from "react-i18next";
 import { resolveSupportedLng } from "@/i18n/config";
-import { ResponseContentPageDto } from "@softsurgery/api-client";
+import { ResponseContentPageDto } from "api-client";
 
 type LegalHtmlPageProps = {
   page: ResponseContentPageDto;

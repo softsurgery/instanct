@@ -26,6 +26,18 @@ export const ForceUpdateGate = () => {
   const [isRetrying, setIsRetrying] = React.useState(false);
   const [openUrlError, setOpenUrlError] = React.useState<string | null>(null);
 
+  const isStoreConfigured = React.useMemo(() => {
+    if (!storeUrl || typeof storeUrl !== "string" || !storeUrl.trim()) {
+      return false;
+    }
+    const trimmed = storeUrl.trim();
+    return (
+      /^https:\/\//i.test(trimmed) ||
+      /^market:\/\//i.test(trimmed) ||
+      /^itms-apps:\/\//i.test(trimmed)
+    );
+  }, [storeUrl]);
+
   // Prevent hardware back navigation on Android while mandatory update is active
   React.useEffect(() => {
     if (!hasConfirmedMandatoryUpdate) return;
@@ -109,18 +121,6 @@ export const ForceUpdateGate = () => {
       setIsRetrying(false);
     }
   };
-
-  const isStoreConfigured = React.useMemo(() => {
-    if (!storeUrl || typeof storeUrl !== "string" || !storeUrl.trim()) {
-      return false;
-    }
-    const trimmed = storeUrl.trim();
-    return (
-      /^https:\/\//i.test(trimmed) ||
-      /^market:\/\//i.test(trimmed) ||
-      /^itms-apps:\/\//i.test(trimmed)
-    );
-  }, [storeUrl]);
 
   return (
     <View
@@ -221,7 +221,10 @@ export const ForceUpdateGate = () => {
           <Text className="text-md font-bold text-primary-foreground">
             {isStoreConfigured
               ? t("settings.updateGate.updateButton", "Update Now")
-              : t("settings.updateGate.linkUnavailable", "Update Link Unavailable")}
+              : t(
+                  "settings.updateGate.linkUnavailable",
+                  "Update Link Unavailable",
+                )}
           </Text>
         </Button>
 

@@ -1,4 +1,4 @@
-import { SessionType } from "@softsurgery/api-client";
+import { SessionType } from "api-client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
 import { useApi } from "@/contexts/ApiContext";

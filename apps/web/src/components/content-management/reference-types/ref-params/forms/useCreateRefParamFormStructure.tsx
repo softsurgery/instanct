@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import {
   CustomFieldProps,
   Field,
@@ -53,7 +52,7 @@ export const useCreateRefParamFormStructure = ({
         referenceTypesStore?.setNested("refParamCreateDto.description", value);
         referenceTypesStore?.setNested(
           "refParamCreateDtoErrors.description",
-          []
+          [],
         );
       },
     },
@@ -75,7 +74,7 @@ export const useCreateRefParamFormStructure = ({
       onValueChange: (value) => {
         referenceTypesStore?.setNested(
           "refParamCreateDto.refTypeId",
-          Number(value)
+          Number(value),
         );
         referenceTypesStore?.setNested("refParamCreateDtoErrors.refTypeId", []);
       },
@@ -96,7 +95,7 @@ export const useCreateRefParamFormStructure = ({
             referenceTypesStore?.setNested("refParamCreateDto.extras", value);
             referenceTypesStore?.setNested(
               "refParamCreateDtoErrors.extras",
-              []
+              [],
             );
           }}
         />

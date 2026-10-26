@@ -37,7 +37,7 @@ export function useFollowSystem({
 
   const isFollowing = React.useMemo(
     () => isFollowingResp?.isFollowing as boolean,
-    [isFollowingResp]
+    [isFollowingResp],
   );
 
   const {
@@ -64,7 +64,7 @@ export function useFollowSystem({
 
   const followings = React.useMemo(
     () => followingsResp || [],
-    [followingsResp]
+    [followingsResp],
   );
 
   const { mutate: followUser, isPending: isFollowPending } = useMutation({

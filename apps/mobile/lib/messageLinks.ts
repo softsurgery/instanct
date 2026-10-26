@@ -1,4 +1,4 @@
-import { ResponseMessageLinkDto } from "@softsurgery/api-client";
+import { ResponseMessageLinkDto } from "api-client";
 
 export type ExtractedMessageLink = Pick<
   ResponseMessageLinkDto,
@@ -69,9 +69,7 @@ export const messageHasLinks = (message: {
   (message.links?.length ?? 0) > 0 ||
   extractMessageLinks(message.content).length > 0;
 
-export const getMessageLinksForDisplay = (
-  message: {
-    content?: string | null;
-    links?: ResponseMessageLinkDto[];
-  },
-) => resolveMessageLinks(message.content, message.links);
+export const getMessageLinksForDisplay = (message: {
+  content?: string | null;
+  links?: ResponseMessageLinkDto[];
+}) => resolveMessageLinks(message.content, message.links);

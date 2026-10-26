@@ -1,10 +1,14 @@
 import React from "react";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { Button } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  StableKeyboardAwareScrollView,
+  Loader,
+  BottomButtonWrapper,
+} from "@softsurgery/mobile-components";
+import { Button, Text } from "@softsurgery/mobile-ui";
 import { X } from "lucide-react-native";
 import { View } from "react-native";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { router } from "expo-router";
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
@@ -13,17 +17,14 @@ import { cn } from "@softsurgery/lib";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useCreateNewRequestFormStructure } from "./forms/useCreateRequestFormStructure";
 import { useRequestStore } from "@/stores/useRequestStore";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
-import { ServerErrorResponse } from "@softsurgery/api-client";
+import { ServerErrorResponse } from "api-client";
 import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
 import { zodErrorsToNested } from "@/lib/object";
 import { useMapStore } from "@/stores/useMapStore";
-import { Loader } from "@softsurgery/mobile-components";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
 interface NewRequestProps {
@@ -86,8 +87,7 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
       },
       onError: (error: ServerErrorResponse) => {
         toast.error(
-          error.response?.data?.message ||
-            t("request.newRequest.toasts.error"),
+          error.response?.data?.message || t("request.newRequest.toasts.error"),
         );
       },
     });

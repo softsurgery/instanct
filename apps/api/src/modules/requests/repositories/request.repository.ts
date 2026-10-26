@@ -46,4 +46,48 @@ export class RequestRepository extends DatabaseAbstractRepository<RequestEntity>
 
     return result.affected ?? 0;
   }
+
+  /**
+   * Optimized batch resolution of bidirectional accepted requests within active sessions.
+   * Completely avoids O(N*M) table-scanning iterations in geolocation/presence queries.
+   */
+  async findAcceptedUserIdsInActiveSessions(
+    userId: string,
+    candidateUserIds: string[],
+    now: Date = new Date(),
+  ): Promise<string[]> {
+    if (!candidateUserIds || candidateUserIds.length === 0) {
+      return [];
+    }
+
+    type AcceptedUserIdRow = {
+      sessionUserId: string;
+      receiverUserId: string;
+    };
+
+    const rows = await this.requestRepository
+      .createQueryBuilder('r')
+      .innerJoin('r.session', 's')
+      .innerJoin('r.receivers', 'rec')
+      .where('r.status = :status', { status: RequestStatus.Accepted })
+      .andWhere('s.ended IS NULL')
+      .andWhere('s.plannedStart <= :now', { now })
+      .andWhere('s.plannedEnd >= :now', { now })
+      .andWhere(
+        '( (s.userId = :userId AND rec.id IN (:...candidates)) OR (s.userId IN (:...candidates) AND rec.id = :userId) )',
+        { userId, candidates: candidateUserIds },
+      )
+      .select(['s.userId AS sessionUserId', 'rec.id AS receiverUserId'])
+      .getRawMany<AcceptedUserIdRow>();
+
+    const result = new Set<string>();
+    for (const row of rows) {
+      if (row.sessionUserId === userId) {
+        result.add(row.receiverUserId);
+      } else {
+        result.add(row.sessionUserId);
+      }
+    }
+    return Array.from(result);
+  }
 }

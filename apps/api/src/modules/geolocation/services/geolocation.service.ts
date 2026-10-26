@@ -5,16 +5,13 @@ import { GeolocationEntity } from '../entities/geolocation.entity';
 import { CreateGeolocationDto } from '../dtos/create-geolocation.dto';
 import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { RequestService } from '@/modules/requests/services/request.service';
-import { RequestStatus } from '@/modules/requests/enums/request-status.enum';
 import { SessionStatus } from '@softsurgery/nsa-sessions/enums/session-status.enum';
-import { SessionService } from '@softsurgery/nsa-sessions/services/session.service';
 
 @Injectable()
 export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
   constructor(
     private readonly geolocationRepository: GeolocationRepository,
     private readonly requestService: RequestService,
-    private readonly sessionService: SessionService,
   ) {
     super(geolocationRepository);
   }
@@ -55,6 +52,13 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
     });
 
     if (location) {
+      // Throttle DB write if position hasn't meaningfully changed (approx < 5 meters)
+      const latDiff = Math.abs((location.latitude ?? 0) - (latitude ?? 0));
+      const lonDiff = Math.abs((location.longitude ?? 0) - (longitude ?? 0));
+      if (latDiff < 0.00005 && lonDiff < 0.00005) {
+        return location;
+      }
+
       await this.geolocationRepository.upsert(
         {
           id: location?.id,
@@ -65,36 +69,26 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
         },
         ['userId'],
       );
-    } else
+    } else {
       await this.geolocationRepository.save({ userId, latitude, longitude });
+    }
 
     return this.geolocationRepository.findOne({ where: { userId } });
   }
 
-  async findByRadius(
-    latitude: number,
-    longitude: number,
-    radius: number,
-    excludeUserId?: string,
-    query: IQueryObject = {},
-  ): Promise<GeolocationEntity[]> {
-    const geolocations = await this.geolocationRepository.findByKmRadius(
-      latitude,
-      longitude,
-      radius,
-      excludeUserId,
-    );
-
-    if (!geolocations.length) {
-      return [];
-    }
-
-    const idsFilter = `id||$in||${geolocations.map((g) => g.id).join(',')}`;
-
-    query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
-
-    const data = await this.findAll(query);
-    return data;
+  async findByUserIdWithRelations(
+    userId: string,
+  ): Promise<GeolocationEntity | null> {
+    return this.geolocationRepository.findOne({
+      where: { userId },
+      relations: {
+        user: {
+          picture: true,
+          industries: true,
+          sessions: true,
+        },
+      },
+    });
   }
 
   async findActiveSessionsByRadius(
@@ -115,41 +109,42 @@ export class GeolocationService extends AbstractCrudService<GeolocationEntity> {
 
     const idsFilter = `id||$in||${geolocations.map((g) => g.id).join(',')}`;
     query.filter = query.filter ? `${query.filter};${idsFilter}` : idsFilter;
+
+    // Ensure user and user.sessions relations are always joined so activeSession is reliably loaded
+    const existingJoins = query.join
+      ? Array.isArray(query.join)
+        ? (query.join as string[])
+        : String(query.join).split(',')
+      : [];
+    const requiredJoins = ['user', 'user.sessions', 'user.picture'];
+    query.join = Array.from(new Set([...existingJoins, ...requiredJoins])).join(
+      ',',
+    );
+
     const data = (await this.findAll(query)).filter(
-      (geo) => geo.user?.activeSession,
+      (geo) =>
+        geo.user?.activeSession ||
+        geo.user?.sessions?.some((s) => s.status === SessionStatus.ACTIVE),
     );
     return data;
   }
 
-  async hasAcceptedRequestInSession(
-    userA: string,
-    userB: string,
-  ): Promise<boolean> {
-    const requests = await this.requestService.findAll({
-      filter: `status||$eq||${RequestStatus.Accepted}`,
-      join: 'session,receivers',
-    });
-
-    for (const req of requests) {
-      const session = await this.sessionService.findOneById(req.sessionId);
-
-      if (session?.status !== SessionStatus.ACTIVE) {
-        continue;
-      }
-
-      const isUserASessionToB =
-        req.session?.userId === userA &&
-        req.receivers?.some((r) => r.id === userB);
-
-      const isUserBSessionToA =
-        req.session?.userId === userB &&
-        req.receivers?.some((r) => r.id === userA);
-
-      if (isUserASessionToB || isUserBSessionToA) {
-        return true;
-      }
+  /**
+   * Batch resolves which candidate users have an accepted request with userId in an active session.
+   * Completely replaces O(N*M) table-scanning iterations with a single indexed SQL join.
+   */
+  async getAcceptedRequestUserIds(
+    userId: string,
+    candidateUserIds: string[],
+  ): Promise<Set<string>> {
+    if (!candidateUserIds || candidateUserIds.length === 0) {
+      return new Set();
     }
-
-    return false;
+    const accepted =
+      await this.requestService.findAcceptedUserIdsInActiveSessions(
+        userId,
+        candidateUserIds,
+      );
+    return new Set(accepted);
   }
 }

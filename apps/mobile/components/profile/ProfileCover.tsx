@@ -1,11 +1,14 @@
 import React, { useRef } from "react";
 import { ActionSheetRef } from "react-native-actions-sheet";
-import { ThreeDotsActionSheet } from "@softsurgery/mobile-components";
+import {
+  ThreeDotsActionSheet,
+  PhotoPreview,
+  PhotoPreviewRef,
+} from "@softsurgery/mobile-components";
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable, View } from "react-native";
 import { cn } from "@softsurgery/lib";
 import { Eye, Camera } from "lucide-react-native";
-import { PhotoPreview, PhotoPreviewRef } from "@softsurgery/mobile-components";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { type ReactNativeUploadFile } from "@/lib/upload";
 import { useApi } from "@/contexts/ApiContext";
@@ -13,7 +16,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
-import { ResponseUserDto, Upload, UpdateUserCoverDto, ServerErrorResponse } from "@softsurgery/api-client";
+import {
+  ResponseUserDto,
+  Upload,
+  UpdateUserCoverDto,
+  ServerErrorResponse,
+} from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { Image, ImageSource } from "expo-image";
@@ -52,43 +60,46 @@ export const ProfileCover = ({
   });
   const coverSource = coverUploads?.[0];
 
-  const { uploadFiles: uploadCover, isUploadPending: isCoverUploadPending } = useUploadMutation({
-    onSuccess: (response: Upload[]) => {
-      const coverId = response?.[0]?.id;
-      if (coverId) {
-        updateUserCover({ coverId });
-      }
-    },
-    onError: (error: ServerErrorResponse) => {
-      toast.error(
-        error.response?.data?.message || t("menu.toasts.uploadError"),
-        {}
-      );
-    },
-  });
+  const { uploadFiles: uploadCover, isUploadPending: isCoverUploadPending } =
+    useUploadMutation({
+      onSuccess: (response: Upload[]) => {
+        const coverId = response?.[0]?.id;
+        if (coverId) {
+          updateUserCover({ coverId });
+        }
+      },
+      onError: (error: ServerErrorResponse) => {
+        toast.error(
+          error.response?.data?.message || t("menu.toasts.uploadError"),
+          {},
+        );
+      },
+    });
 
-  const { mutate: updateUserCover, isPending: isUpdateCoverPending } = useMutation({
-    mutationFn: (coverDto: UpdateUserCoverDto) => api.currentUser.updateCover(coverDto),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", currentUser?.id] });
-      queryClient.invalidateQueries({ queryKey: ["current-user"] });
-      if (currentUser?.coverId) {
-        queryClient.invalidateQueries({
-          queryKey: ["server-image", currentUser.coverId],
+  const { mutate: updateUserCover, isPending: isUpdateCoverPending } =
+    useMutation({
+      mutationFn: (coverDto: UpdateUserCoverDto) =>
+        api.currentUser.updateCover(coverDto),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["user", currentUser?.id] });
+        queryClient.invalidateQueries({ queryKey: ["current-user"] });
+        if (currentUser?.coverId) {
+          queryClient.invalidateQueries({
+            queryKey: ["server-image", currentUser.coverId],
+          });
+        }
+        onRefresh();
+        toast.success(t("menu.toasts.profilePictureUpdated"), {
+          description: t("menu.toasts.profilePictureUpdatedDescription"),
         });
-      }
-      onRefresh();
-      toast.success(t("menu.toasts.profilePictureUpdated"), {
-        description: t("menu.toasts.profilePictureUpdatedDescription"),
-      });
-    },
-    onError: (error: ServerErrorResponse) => {
-      toast.error(
-        error.response?.data?.message || t("menu.toasts.profilePictureError"),
-        {}
-      );
-    },
-  });
+      },
+      onError: (error: ServerErrorResponse) => {
+        toast.error(
+          error.response?.data?.message || t("menu.toasts.profilePictureError"),
+          {},
+        );
+      },
+    });
 
   React.useEffect(() => {
     setLoading(isCoverUploadPending || isUpdateCoverPending || isPickingCover);
@@ -100,7 +111,7 @@ export const ProfileCover = ({
 
   const handlePickCover = async () => {
     if (!isCurrentUser) return;
-    
+
     setIsPickingCover(true);
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -138,23 +149,23 @@ export const ProfileCover = ({
     }
   };
 
-  const { isLight: isLightCover } = useLuminance(coverSource as ImageSource | undefined);
+  const { isLight: isLightCover } = useLuminance(
+    coverSource as ImageSource | undefined,
+  );
   const [isHovered, setIsHovered] = React.useState(false);
 
   return (
     <>
-      <Pressable 
+      <Pressable
         className={cn(
           "relative w-full h-56 overflow-hidden items-center justify-center",
           !coverSource ? "bg-primary/25" : "",
-          "active:opacity-85"
+          "active:opacity-85",
         )}
         onHoverIn={() => setIsHovered(true)}
         onHoverOut={() => setIsHovered(false)}
         onPress={handlePress}
       >
-        {coverExtra}
-        
         {/* Cover Image */}
         {coverSource ? (
           <Image
@@ -183,6 +194,8 @@ export const ProfileCover = ({
             bottom: 0,
           }}
         />
+
+        {coverExtra}
       </Pressable>
 
       <PhotoPreview

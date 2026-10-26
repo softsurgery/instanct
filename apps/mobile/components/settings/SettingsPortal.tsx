@@ -20,7 +20,7 @@ import { useApi } from "@/contexts/ApiContext";
 import { getAppVersionInfo } from "@/lib/app-version";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
-import type { ServerErrorResponse } from "@softsurgery/api-client";
+import type { ServerErrorResponse } from "api-client";
 import { Button, Icon, Separator, Text } from "@softsurgery/mobile-ui";
 
 interface SettingsPortalProps {

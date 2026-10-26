@@ -5,7 +5,7 @@ import {
   type UploadFileInput,
   type UploadProgressCallback,
 } from "@/lib/upload";
-import type { ServerErrorResponse, Upload } from "@softsurgery/api-client";
+import type { ServerErrorResponse, Upload } from "api-client";
 import { useMutation } from "@tanstack/react-query";
 
 export interface UploadFilesVariables {

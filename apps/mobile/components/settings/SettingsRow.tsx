@@ -2,8 +2,7 @@ import { cn } from "@softsurgery/lib";
 import { LucideIcon } from "lucide-react-native";
 import React, { useMemo } from "react";
 import { Pressable, View } from "react-native";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Icon, Text } from "@softsurgery/mobile-ui";
 
 export interface SettingRowProps {
   title?: string;

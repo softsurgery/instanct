@@ -4,9 +4,11 @@ import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 
 export interface UserPresenceData {
   userId: string;
-  isConnected: boolean;
+  isConnected?: boolean;
+  isOnline?: boolean;
   /** All active connection sources (e.g. ['web', 'mobile']). */
-  sources: string[];
+  sources?: string[];
+  source?: string;
   lastSeen?: string | Date | null;
 }
 
@@ -45,7 +47,9 @@ export const useUserPresence = ({
     /**
      * Updates local state when a status event for the target user is received.
      */
-    const handleStatusUpdate = (status: any) => {
+    const handleStatusUpdate = (
+      status: Partial<UserPresenceData> | null | undefined,
+    ) => {
       if (status?.userId === userId) {
         const active = !!status.isConnected || !!status.isOnline;
         setIsConnected(active);
@@ -62,9 +66,14 @@ export const useUserPresence = ({
     /**
      * Handles bulk user status responses.
      */
-    const handleUsersStatus = (statuses: any) => {
+    const handleUsersStatus = (statuses: unknown) => {
       if (!Array.isArray(statuses)) return;
-      const found = statuses.find((item) => item?.userId === userId);
+      const found = statuses.find(
+        (item): item is Partial<UserPresenceData> =>
+          typeof item === "object" &&
+          item !== null &&
+          (item as Partial<UserPresenceData>).userId === userId,
+      );
       if (found) {
         handleStatusUpdate(found);
       }
@@ -74,11 +83,15 @@ export const useUserPresence = ({
      * Emits get-status request upon socket connection or reconnection.
      */
     const onConnect = () => {
-      s.emit("get-status", { ids: [userId] }, (statuses?: any) => {
+      s.emit("get-status", { ids: [userId] }, (statuses?: unknown) => {
         if (Array.isArray(statuses)) {
           handleUsersStatus(statuses);
-        } else if (statuses?.userId === userId) {
-          handleStatusUpdate(statuses);
+        } else if (
+          typeof statuses === "object" &&
+          statuses !== null &&
+          (statuses as Partial<UserPresenceData>).userId === userId
+        ) {
+          handleStatusUpdate(statuses as Partial<UserPresenceData>);
         }
       });
     };

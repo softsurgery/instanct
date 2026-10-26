@@ -20,10 +20,7 @@ export function HowItWorks() {
 
         <ol className="mt-12 grid gap-6 md:grid-cols-3">
           {stepKeys.map((step) => (
-            <li
-              key={step}
-              className="rounded-xl border bg-card p-6 shadow-sm"
-            >
+            <li key={step} className="rounded-xl border bg-card p-6 shadow-sm">
               <span className="font-mono text-sm text-primary">{step}</span>
               <h3 className="mt-3 text-lg font-semibold">
                 {t(`howItWorks.steps.${step}.title`)}

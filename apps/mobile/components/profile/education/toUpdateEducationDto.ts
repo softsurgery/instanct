@@ -1,5 +1,8 @@
 import { toDateOrNull } from "@/lib/date";
-import { ResponseEducationDto, UpdateEducationDto } from "@softsurgery/api-client";
+import {
+  ResponseEducationDto,
+  UpdateEducationDto,
+} from "api-client";
 
 export const toUpdateEducationDto = (
   edu: ResponseEducationDto,

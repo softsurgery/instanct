@@ -62,7 +62,11 @@ const ChatFileRow = ({
 
   if (onPress) {
     return (
-      <Pressable onPress={onPress} disabled={isOpening} className="active:bg-muted/40">
+      <Pressable
+        onPress={onPress}
+        disabled={isOpening}
+        className="active:bg-muted/40"
+      >
         {content}
       </Pressable>
     );
@@ -94,7 +98,8 @@ export const ChatFileList = ({
     >
       {items.map((item, index) => {
         const isOpening =
-          typeof item.uploadId === "number" && openingUploadId === item.uploadId;
+          typeof item.uploadId === "number" &&
+          openingUploadId === item.uploadId;
 
         let subtitle = formatFileSize(item.size);
         if (isUploading) subtitle = t("chat.conversation.upload.uploading");

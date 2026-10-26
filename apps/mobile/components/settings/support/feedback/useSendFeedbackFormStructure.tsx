@@ -9,7 +9,7 @@ import {
   SelectFieldProps,
   TextareaFieldProps,
 } from "@softsurgery/mobile-form-builder";
-import { FeedbackCategory } from "@softsurgery/api-client";
+import { FeedbackCategory } from "api-client";
 
 interface useSendFeedbackFormStructureProps {
   store: SendFeedbackStore;

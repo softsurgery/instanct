@@ -17,10 +17,16 @@ export function calculateLuminance(r: number, g: number, b: number): number {
  * On web platform, utilizes canvas to sample image pixels.
  * Returns relative luminance (0..1) or null if unable to extract.
  */
-export async function getCoverLuminance(imageUri?: string): Promise<number | null> {
+export async function getCoverLuminance(
+  imageUri?: string,
+): Promise<number | null> {
   if (!imageUri) return null;
 
-  if (Platform.OS === "web" && typeof window !== "undefined" && typeof document !== "undefined") {
+  if (
+    Platform.OS === "web" &&
+    typeof window !== "undefined" &&
+    typeof document !== "undefined"
+  ) {
     return new Promise((resolve) => {
       const img = new Image();
       img.crossOrigin = "Anonymous";

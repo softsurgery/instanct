@@ -14,16 +14,16 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/api/package.json ./apps/api/package.json
 RUN sed -i '/"postinstall":/d' apps/api/package.json
 COPY apps/web/package.json ./apps/web/package.json
+COPY apps/api-client/package.json ./apps/api-client/package.json
+COPY apps/i18n/package.json ./apps/i18n/package.json
 
 # Package stubs for pnpm install (all workspace members must be present)
-COPY packages/api-client/package.json ./packages/api-client/package.json
 COPY packages/components/package.json ./packages/components/package.json
 COPY packages/contexts/package.json ./packages/contexts/package.json
 COPY packages/datatable-builder/package.json ./packages/datatable-builder/package.json
 COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
 COPY packages/form-builder/package.json ./packages/form-builder/package.json
 COPY packages/hooks/package.json ./packages/hooks/package.json
-COPY packages/i18n/package.json ./packages/i18n/package.json
 COPY packages/lib/package.json ./packages/lib/package.json
 
 COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
@@ -36,13 +36,13 @@ COPY apps/web ./apps/web
 COPY scripts/allowed-dev-origins.ts ./scripts/allowed-dev-origins.ts
 
 # Copy only the packages web actually uses
-COPY packages/api-client ./packages/api-client
+COPY apps/api-client ./apps/api-client
+COPY apps/i18n ./apps/i18n
 COPY packages/components ./packages/components
 COPY packages/contexts ./packages/contexts
 COPY packages/datatable-builder ./packages/datatable-builder
 COPY packages/form-builder ./packages/form-builder
 COPY packages/hooks ./packages/hooks
-COPY packages/i18n ./packages/i18n
 COPY packages/lib ./packages/lib
 COPY packages/ui ./packages/ui
 COPY packages/template ./packages/template

@@ -18,7 +18,7 @@ import {
   type DeviceLike,
 } from "@/lib/device";
 import { formatSmartDate, toDateOrNull } from "@/lib/date";
-import type { ResponseUserConnectionHistoryDto } from "@softsurgery/api-client";
+import type { ResponseUserConnectionHistoryDto } from "api-client";
 
 export type DeviceDetailsData = DeviceLike;
 
@@ -117,21 +117,22 @@ export const DeviceDetailsSection = ({
         return parsed ? formatSmartDate(parsed) : String(lastActiveTime || "");
       })(),
     },
-    connectionCount != null && connectionCount > 0 && {
-      key: "signIns",
-      icon: LogIn,
-      label: t(
-        "settings.account.screens.privacy-security.screens.account-security.devices.details.signIns",
-        "Sign-ins",
-      ),
-      value: connectionCount,
-    },
-  ].filter(Boolean) as Array<{
+    connectionCount != null &&
+      connectionCount > 0 && {
+        key: "signIns",
+        icon: LogIn,
+        label: t(
+          "settings.account.screens.privacy-security.screens.account-security.devices.details.signIns",
+          "Sign-ins",
+        ),
+        value: connectionCount,
+      },
+  ].filter(Boolean) as {
     key: string;
     icon: LucideIcon;
     label: string;
     value: React.ReactNode;
-  }>;
+  }[];
 
   return (
     <View className={cn("flex-col py-4 gap-3", className)}>

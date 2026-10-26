@@ -1,9 +1,9 @@
-import React from "react"
-import { Card, CardHeader, CardContent, CardTitle } from "@softsurgery/ui"
+import React from "react";
+import { Card, CardHeader, CardContent, CardTitle } from "@softsurgery/ui";
 
 interface ChartCardProps {
-  title: string
-  children: React.ReactNode
+  title: string;
+  children: React.ReactNode;
 }
 
 export default function ChartCard({ title, children }: ChartCardProps) {
@@ -14,5 +14,5 @@ export default function ChartCard({ title, children }: ChartCardProps) {
       </CardHeader>
       <CardContent className="flex-1 pb-0">{children}</CardContent>
     </Card>
-  )
+  );
 }

@@ -1,16 +1,21 @@
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import {
   createAndroidChannel,
+  presentLocalNotification,
   requestNotificationPermissions,
-  Notifications,
 } from "@/lib/notification";
+import { getNotificationDestination } from "@/lib/notification-destination";
+import { advanceNotificationWatermark } from "@/lib/app-background";
 import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import { sanitizeText } from "@/lib/string";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/contexts/ApiContext";
-import { NotificationType, ResponseNotificationDto } from "@softsurgery/api-client";
+import {
+  NotificationType,
+  ResponseNotificationDto,
+} from "api-client";
 
 export const NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY = [
   "notifications-unread-count",
@@ -74,21 +79,25 @@ export function useNotifications(
       }
 
       consequences?.[notification.type]?.(notification);
-      await Notifications?.scheduleNotificationAsync({
-        content: {
-          title: sanitizeText(
-            t(`titles.${notification.type}`, notification.payload).toString(),
-          ),
-          body: sanitizeText(
-            t(
-              `descriptions.${notification.type}`,
-              notification.payload,
-            ).toString(),
-          ),
-          sound: true,
+
+      const destination = getNotificationDestination(notification);
+      await presentLocalNotification({
+        title: sanitizeText(
+          t(`titles.${notification.type}`, notification.payload).toString(),
+        ),
+        body: sanitizeText(
+          t(
+            `descriptions.${notification.type}`,
+            notification.payload,
+          ).toString(),
+        ),
+        destination,
+        data: {
+          type: notification.type,
+          notificationId: notification.id,
         },
-        trigger: null,
       });
+      void advanceNotificationWatermark(notification.createdAt);
     });
 
     return () => {

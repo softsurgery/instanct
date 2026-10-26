@@ -1,7 +1,6 @@
-import { RequestStatus } from "@softsurgery/api-client";
+import { RequestStatus } from "api-client";
 import { View } from "react-native";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Icon, Text } from "@softsurgery/mobile-ui";
 import { CheckCircle2, XCircle } from "lucide-react-native";
 
 interface RequestStatusBadgeProps {

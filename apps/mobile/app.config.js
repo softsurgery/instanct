@@ -35,6 +35,13 @@ export default ({ config }) => ({
 
       LSApplicationCategoryType: "public.app-category.social-networking",
       UIDesignRequiresCompatibility: true,
+      UIBackgroundModes: [
+        ...new Set([
+          ...(config.ios?.infoPlist?.UIBackgroundModes ?? []),
+          "processing",
+          "remote-notification",
+        ]),
+      ],
 
       NSAppTransportSecurity: {
         ...config.ios?.infoPlist?.NSAppTransportSecurity,
@@ -88,6 +95,8 @@ export default ({ config }) => ({
         color: "#0B3A75",
       },
     ],
+    "expo-task-manager",
+    "expo-background-task",
 
     [
       "expo-image-picker",

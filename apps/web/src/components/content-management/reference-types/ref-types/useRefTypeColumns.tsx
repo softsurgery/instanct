@@ -12,7 +12,7 @@ import { JsonToggler } from "@softsurgery/components";
 import { Badge } from "@softsurgery/ui";
 
 export const useRefTypeColumns = (
-  context: DataTableConfig<ResponseRefTypeDto>
+  context: DataTableConfig<ResponseRefTypeDto>,
 ): ColumnDef<ResponseRefTypeDto>[] => {
   const { t: tCommon } = useTranslation("common");
   const { t } = useTranslation("content-management");

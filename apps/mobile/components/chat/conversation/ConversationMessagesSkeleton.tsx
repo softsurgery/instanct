@@ -12,7 +12,12 @@ const CONTENT_WIDTH = screenWidth - 24;
 
 type MessageSkeletonItem =
   | { type: "text"; right: boolean; width: number; height: number }
-  | { type: "media"; right: boolean; isGrouped?: boolean; hasCaption?: boolean };
+  | {
+      type: "media";
+      right: boolean;
+      isGrouped?: boolean;
+      hasCaption?: boolean;
+    };
 
 const MESSAGE_SKELETONS: MessageSkeletonItem[] = [
   { type: "text", right: true, width: CONTENT_WIDTH * 0.4, height: 56 },

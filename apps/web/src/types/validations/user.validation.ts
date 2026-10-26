@@ -53,8 +53,8 @@ const baseUserSchema = z.object({
 
           return age > 13 || (age === 13 && isBirthdayPassed);
         },
-        { message: "userManagement.validation.invalidAge" }
-      )
+        { message: "userManagement.validation.invalidAge" },
+      ),
     )
     .optional(),
 });
@@ -123,7 +123,7 @@ const profileSchema = z.object({
       },
       {
         message: "userManagement.validation.invalidPhoneFormat",
-      }
+      },
     ),
   cin: z
     .string({

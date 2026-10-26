@@ -1,4 +1,4 @@
-import type { ResponseContentPageDto } from "@softsurgery/api-client";
+import type { ResponseContentPageDto } from "api-client";
 
 export const fallbackSupportPages: Record<string, ResponseContentPageDto> = {
   en: {

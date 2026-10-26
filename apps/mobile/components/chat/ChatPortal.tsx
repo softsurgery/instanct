@@ -7,19 +7,21 @@ import { Search } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, RefreshControl, View } from "react-native";
 import { cn } from "@softsurgery/lib";
-import { ResponseConversationDto } from "@softsurgery/api-client";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ResponseConversationDto } from "api-client";
+import {
+  ApplicationHeader,
+  StableSafeAreaView,
+  MarkedInput,
+  NotFound,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { UserEntry } from "./UserEntry";
-import { MarkedInput } from "@softsurgery/mobile-components";
 import { Separator } from "@softsurgery/mobile-ui";
-import { NotFound } from "@softsurgery/mobile-components";
 import { useChat } from "@/hooks/content/chat/useChat";
 import { CONVERSATION_LIST_JOIN } from "@/lib/chat";
 import { UserEntrySkeleton } from "./UserEntrySkeleton";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface ChatPortalProps {
   className?: string;
 }

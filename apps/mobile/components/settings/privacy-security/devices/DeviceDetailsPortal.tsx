@@ -27,7 +27,7 @@ import { useApi } from "@/contexts/ApiContext";
 import {
   ResponseUserDeviceDto,
   ResponseUserConnectionHistoryDto,
-} from "@softsurgery/api-client";
+} from "api-client";
 import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import {
   isCurrentDevice,
@@ -113,7 +113,7 @@ export const DeviceDetailsPortal = ({
 
     const grouped: Record<
       string,
-      Array<{ connection: ResponseUserConnectionHistoryDto; isLatest: boolean }>
+      { connection: ResponseUserConnectionHistoryDto; isLatest: boolean }[]
     > = {};
 
     visibleConnections.forEach((conn, index) => {

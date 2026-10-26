@@ -1,8 +1,7 @@
 import { SeeMoreText } from "@softsurgery/mobile-components";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Icon, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-import { ResponseEducationDto } from "@softsurgery/api-client";
+import { ResponseEducationDto } from "api-client";
 import { GraduationCap } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 

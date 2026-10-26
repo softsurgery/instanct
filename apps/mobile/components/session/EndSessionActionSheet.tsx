@@ -1,8 +1,7 @@
 import React from "react";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
-import { Text } from "@softsurgery/mobile-ui";
-import { Button } from "@softsurgery/mobile-ui";
+import { Text, Button } from "@softsurgery/mobile-ui";
 import { useColorPalette } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 
@@ -44,7 +43,7 @@ export const EndSessionActionSheet = React.forwardRef<
           </View>
 
           <Text className="mb-4 text-sm text-muted-foreground">
-           {t("session.manage.actionSheet.message")}
+            {t("session.manage.actionSheet.message")}
           </Text>
 
           <View className="pt-4">
@@ -56,7 +55,9 @@ export const EndSessionActionSheet = React.forwardRef<
                 onPress={onConfirm}
                 disabled={isPending}
               >
-                <Text className="text-md font-bold">{t("session.manage.actionSheet.confirm")}</Text>
+                <Text className="text-md font-bold">
+                  {t("session.manage.actionSheet.confirm")}
+                </Text>
               </Button>
               <Button
                 size="lg"
@@ -65,7 +66,9 @@ export const EndSessionActionSheet = React.forwardRef<
                 onPress={onClose}
                 disabled={isPending}
               >
-                <Text className="text-md font-bold">{t("session.manage.actionSheet.cancel")}</Text>
+                <Text className="text-md font-bold">
+                  {t("session.manage.actionSheet.cancel")}
+                </Text>
               </Button>
             </View>
           </View>

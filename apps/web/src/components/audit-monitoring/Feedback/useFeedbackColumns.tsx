@@ -5,7 +5,7 @@ import {
   DataTableConfig,
 } from "@softsurgery/datatable-builder";
 
-import { ResponseFeedbackDto } from "@softsurgery/api-client";
+import { ResponseFeedbackDto } from "api-client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";

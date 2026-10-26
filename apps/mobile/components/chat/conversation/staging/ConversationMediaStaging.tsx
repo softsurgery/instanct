@@ -14,8 +14,7 @@ import { Image } from "expo-image";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { ImagePlus, Play, SendHorizonalIcon, X } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Icon } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Icon, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { VideoThumbnailPreview } from "@softsurgery/mobile-components";
 import { StagedMedia } from "@/types";
@@ -150,6 +149,7 @@ export const ConversationMediaStaging = ({
   if (!isVisible) return null;
 
   const selectedItem = stagedMedia[selectedIndex] ?? stagedMedia[0];
+  const isMultiple = stagedMedia.length > 1;
   const mediaLabel =
     stagedMedia.length === 1
       ? selectedItem.kind === "video"
@@ -171,6 +171,7 @@ export const ConversationMediaStaging = ({
         >
           <TouchableOpacity
             onPress={handleCancel}
+            accessibilityRole="button"
             className="w-10 h-10 items-center justify-center rounded-full bg-muted"
           >
             <Icon as={X} size={22} />
@@ -182,9 +183,22 @@ export const ConversationMediaStaging = ({
 
           <TouchableOpacity
             onPress={handleSend}
-            className="w-10 h-10 items-center justify-center rounded-full bg-muted"
+            accessibilityRole="button"
+            accessibilityLabel={t("chat.conversation.staging.send")}
+            className={cn(
+              "items-center justify-center",
+              isMultiple
+                ? "h-10 px-4 rounded-full bg-primary"
+                : "w-10 h-10 rounded-full bg-muted",
+            )}
           >
-            <Icon as={SendHorizonalIcon} size={28} strokeWidth={1.5} />
+            {isMultiple ? (
+              <Text className="text-sm font-semibold text-primary-foreground">
+                {t("chat.conversation.staging.send")}
+              </Text>
+            ) : (
+              <Icon as={SendHorizonalIcon} size={28} strokeWidth={1.5} />
+            )}
           </TouchableOpacity>
         </View>
 
@@ -196,10 +210,12 @@ export const ConversationMediaStaging = ({
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id}
+            onScroll={handlePreviewScroll}
+            scrollEventThrottle={16}
             onMomentumScrollEnd={handlePreviewScroll}
             onScrollToIndexFailed={(info) => {
               previewRef.current?.scrollToOffset({
-                offset: info.averageItemLength * info.index,
+                offset: screenWidth * info.index,
                 animated: true,
               });
             }}

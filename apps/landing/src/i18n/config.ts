@@ -3,7 +3,7 @@ import {
   resolveSupportedLng as resolveSharedLng,
   supportedLngs,
   type SupportedLng,
-} from "@softsurgery/i18n";
+} from "i18n";
 
 export { supportedLngs, type SupportedLng };
 

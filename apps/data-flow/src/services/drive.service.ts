@@ -64,7 +64,10 @@ export class DriveService {
       if (!fileId) {
         throw new DataFlowError("Google Drive did not return a file id");
       }
-      Logger.log(`Uploaded ${basename(filePath)} to Drive as ${fileId}`, "DriveService");
+      Logger.log(
+        `Uploaded ${basename(filePath)} to Drive as ${fileId}`,
+        "DriveService",
+      );
       return fileId;
     } catch (error) {
       stream.destroy();
@@ -102,7 +105,11 @@ export class DriveService {
 
     try {
       const drive = this.client();
-      for (const file of await this.listDumpFiles(drive, config.folderId, config.database)) {
+      for (const file of await this.listDumpFiles(
+        drive,
+        config.folderId,
+        config.database,
+      )) {
         if (!file.id || !file.createdTime || file.id === uploadedFileId) {
           continue;
         }
@@ -110,10 +117,16 @@ export class DriveService {
           continue;
         }
         await drive.files.delete({ fileId: file.id, supportsAllDrives: true });
-        Logger.log(`Deleted old Drive dump ${file.name ?? file.id}`, "DriveService");
+        Logger.log(
+          `Deleted old Drive dump ${file.name ?? file.id}`,
+          "DriveService",
+        );
       }
     } catch (error) {
-      Logger.warn(`Drive prune warning: ${(error as Error).message}`, "DriveService");
+      Logger.warn(
+        `Drive prune warning: ${(error as Error).message}`,
+        "DriveService",
+      );
     }
   }
 
@@ -182,7 +195,9 @@ export class DriveService {
       };
     };
 
-    const status = gerror.status ?? (typeof gerror.code === "number" ? gerror.code : undefined);
+    const status =
+      gerror.status ??
+      (typeof gerror.code === "number" ? gerror.code : undefined);
     const rawMsg =
       (typeof gerror.response?.data?.error === "object"
         ? gerror.response?.data?.error?.message
@@ -191,7 +206,10 @@ export class DriveService {
       gerror.message ??
       String(error);
 
-    if (rawMsg.includes("invalid_grant") || gerror.response?.data?.error === "invalid_grant") {
+    if (
+      rawMsg.includes("invalid_grant") ||
+      gerror.response?.data?.error === "invalid_grant"
+    ) {
       throw new DataFlowError(
         `Google authentication failed (invalid_grant: account not found). The service account "${saEmail}" could not be verified by Google OAuth2. Ensure the service account exists in project "${config.projectId ?? "Google Cloud"}" and the credentials file is valid.`,
       );

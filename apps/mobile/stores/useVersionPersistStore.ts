@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { AppVersionPolicyDto } from "@softsurgery/api-client";
+import type { AppVersionPolicyDto } from "api-client";
 import { isVersionOutdated } from "../lib/semver";
 
 export interface VersionPersistData {
@@ -110,7 +110,9 @@ export const useVersionPersistStore = create<VersionPersistStore>()(
             let confirmedStore = state.confirmedStoreUrl;
 
             if (state.hasPendingMandatoryUpdate && state.pendingMinVersion) {
-              if (isVersionOutdated(installedVersion, state.pendingMinVersion)) {
+              if (
+                isVersionOutdated(installedVersion, state.pendingMinVersion)
+              ) {
                 confirmed = true;
                 confirmedMin = state.pendingMinVersion;
                 confirmedStore = state.pendingStoreUrl;

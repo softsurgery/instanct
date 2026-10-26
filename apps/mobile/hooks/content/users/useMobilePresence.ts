@@ -1,9 +1,12 @@
 import React from "react";
 import { AppState, type AppStateStatus } from "react-native";
-import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
+import { disconnectSocket, type Socket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { getClientDeviceInfo } from "@/lib/device-info";
-import { getDeviceMacAddress } from "@/lib/device-mac";
+import {
+  registerBackgroundActivities,
+  unregisterBackgroundActivities,
+} from "@/lib/app-background";
+import { connectMobilePresence } from "@/lib/mobile-presence";
 
 export interface UseMobilePresenceOptions {
   enabled?: boolean;
@@ -11,8 +14,7 @@ export interface UseMobilePresenceOptions {
 
 /**
  * App-level hook that maintains the mobile user's presence connection.
- * Automatically detects device, OS, and macAddress, registers connection
- * history on the backend (with IP-based location), and handles app state changes.
+ * Registers background activities so presence can refresh while suspended.
  */
 export function useMobilePresence({
   enabled = true,
@@ -26,6 +28,7 @@ export function useMobilePresence({
         disconnectSocket("presence");
         socketRef.current = null;
       }
+      void unregisterBackgroundActivities();
       return;
     }
 
@@ -33,24 +36,8 @@ export function useMobilePresence({
 
     const establishPresence = async () => {
       try {
-        const deviceInfo = getClientDeviceInfo();
-        let macAddress = "02:00:00:00:00:00";
-        try {
-          macAddress = await getDeviceMacAddress();
-        } catch (e) {
-          console.warn("Failed to get device MAC for presence:", e);
-        }
-
+        const socket = await connectMobilePresence(accessToken);
         if (!isMounted) return;
-
-        const socket = getSocket("presence", {
-          token: accessToken,
-          source: "mobile",
-          device: deviceInfo.device,
-          os: deviceInfo.os,
-          macAddress,
-        });
-
         socketRef.current = socket;
       } catch (err) {
         console.warn("Failed to establish mobile presence:", err);
@@ -58,8 +45,8 @@ export function useMobilePresence({
     };
 
     void establishPresence();
+    void registerBackgroundActivities();
 
-    // Re-check or reconnect on foregrounding
     const handleAppStateChange = (nextState: AppStateStatus) => {
       if (nextState === "active") {
         void establishPresence();
@@ -74,8 +61,6 @@ export function useMobilePresence({
     return () => {
       isMounted = false;
       subscription.remove();
-      disconnectSocket("presence");
-      socketRef.current = null;
     };
   }, [enabled, isAuthenticated, accessToken]);
 }

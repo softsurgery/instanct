@@ -1,34 +1,33 @@
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { View } from "react-native";
 import { Loader2 } from "lucide-react-native";
-import { Text } from "@softsurgery/mobile-ui";
+import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { createFeedbackSchema } from "~/types/validations/system-reports.validation";
-import { Button } from "@softsurgery/mobile-ui";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useSendFeedbackFormStructure } from "./useSendFeedbackFormStructure";
 import { cn } from "@softsurgery/lib";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
+import {
+  StableKeyboardAwareScrollView,
+  StableSafeAreaView,
+  ApplicationHeader,
+  BottomButtonWrapper,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { router } from "expo-router";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
 import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
-import { ServerErrorResponse } from "@softsurgery/api-client";
-import { toast } from "sonner-native";
-import { Icon } from "@softsurgery/mobile-ui";
-import * as Haptics from "expo-haptics";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
-
-import { useQuery } from "@tanstack/react-query";
-import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import {
+  ServerErrorResponse,
   ResponseUserDeviceDto,
   CreateFeedbackDto,
-} from "@softsurgery/api-client";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
+} from "api-client";
+import { toast } from "sonner-native";
+import * as Haptics from "expo-haptics";
+
+import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import { getCurrentDevice } from "@/lib/device";
 
 interface SendFeedbackPortalProps {

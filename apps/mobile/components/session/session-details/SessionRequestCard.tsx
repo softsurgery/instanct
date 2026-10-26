@@ -1,13 +1,12 @@
 import React from "react";
 import { Pressable, View } from "react-native";
 import { router } from "expo-router";
-import { Text } from "@softsurgery/mobile-ui";
+import { Text, Icon } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar, identifyUser } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { timeAgo } from "@/lib/date";
-import { RequestStatus, ResponseRequestDto } from "@softsurgery/api-client";
-import { Icon } from "@softsurgery/mobile-ui";
+import { RequestStatus, ResponseRequestDto } from "api-client";
 import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react-native";
 import { useColorPalette } from "@softsurgery/mobile-components";
 

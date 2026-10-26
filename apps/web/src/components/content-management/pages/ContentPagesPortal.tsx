@@ -8,10 +8,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { DataTable, DataTableConfig } from "@softsurgery/datatable-builder";
 import { useTranslation } from "react-i18next";
-import {
-  ResponseContentPageDto,
-  ServerErrorResponse,
-} from "@/types";
+import { ResponseContentPageDto, ServerErrorResponse } from "@/types";
 import { useApplicationLanguages } from "@/hooks/content/configuration/useApplicationLanguages";
 import { useContentPageStore } from "@/hooks/stores/useContentPageStore";
 import { useContentPageColumns } from "./useContentPageColumns";

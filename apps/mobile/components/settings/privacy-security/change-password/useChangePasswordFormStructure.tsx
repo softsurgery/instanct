@@ -19,15 +19,15 @@ export const useChangePasswordFormStructure = ({
   const currentPasswordField: Field<PasswordFieldProps> = {
     id: "currentPassword",
     label: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.current-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.current-password",
     ),
     variant: FieldVariant.PASSWORD,
     required: true,
     placeholder: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.placeholders.current-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.placeholders.current-password",
     ),
     description: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.descriptions.current-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.descriptions.current-password",
     ),
     props: {
       value: store.updatePasswordDto.currentPassword,
@@ -39,15 +39,15 @@ export const useChangePasswordFormStructure = ({
   const newPasswordField: Field<PasswordFieldProps> = {
     id: "newPassword",
     label: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.new-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.new-password",
     ),
     variant: FieldVariant.PASSWORD,
     required: true,
     placeholder: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.placeholders.new-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.placeholders.new-password",
     ),
     description: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.descriptions.new-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.descriptions.new-password",
     ),
     props: {
       value: store.updatePasswordDto.newPassword,
@@ -59,15 +59,15 @@ export const useChangePasswordFormStructure = ({
   const confirmPasswordField: Field<PasswordFieldProps> = {
     id: "confirmPassword",
     label: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.confirm-new-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.confirm-new-password",
     ),
     variant: FieldVariant.PASSWORD,
     required: true,
     placeholder: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.placeholders.confirm-new-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.placeholders.confirm-new-password",
     ),
     description: t(
-      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.descriptions.confirm-new-password"
+      "settings.account.screens.privacy-security.screens.account-security.change-password.forms.descriptions.confirm-new-password",
     ),
     props: {
       value: store.updatePasswordDto.confirmPassword,

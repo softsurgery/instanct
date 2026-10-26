@@ -1,7 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
 import React from "react";
 import { useApi } from "@/contexts/ApiContext";
-import { Upload } from "@softsurgery/api-client";
+import { Upload } from "api-client";
 
 export const useServerUploads = (ids: (number | undefined)[]) => {
   const api = useApi();
@@ -10,8 +10,11 @@ export const useServerUploads = (ids: (number | undefined)[]) => {
   const memoizedIds = React.useMemo(() => ids, [idsString]);
 
   const uniqueIds = React.useMemo(
-    () =>
-      [...new Set(memoizedIds.filter((id): id is number => typeof id === "number"))],
+    () => [
+      ...new Set(
+        memoizedIds.filter((id): id is number => typeof id === "number"),
+      ),
+    ],
     [memoizedIds],
   );
 

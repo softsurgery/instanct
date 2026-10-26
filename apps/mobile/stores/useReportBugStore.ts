@@ -1,6 +1,6 @@
 import { setDeepValue } from "@/lib/object";
 import { create } from "zustand";
-import { CreateBugDto } from "@softsurgery/api-client";
+import { CreateBugDto } from "api-client";
 
 interface ReportBugData {
   createDto: CreateBugDto;
@@ -10,7 +10,7 @@ interface ReportBugData {
 export interface ReportBugStore extends ReportBugData {
   set: <K extends keyof ReportBugData>(
     name: K,
-    value: ReportBugData[K]
+    value: ReportBugData[K],
   ) => void;
   setNested: <T>(path: string, value: T) => void;
   reset: () => void;
@@ -41,7 +41,7 @@ export const useReportBugStore = create<ReportBugStore>((set, get) => ({
       const updatedRoot = setDeepValue(
         { ...state[rootKey as keyof ReportBugData] },
         nestedPath,
-        value
+        value,
       );
       return {
         ...state,

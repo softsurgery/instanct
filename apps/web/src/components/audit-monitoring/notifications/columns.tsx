@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
 export const useNotificationColumns = (
-  context: DataTableConfig<ResponseNotificationDto>
+  context: DataTableConfig<ResponseNotificationDto>,
 ): ColumnDef<ResponseNotificationDto>[] => {
   const { t } = useTranslation("notifications");
   return [

@@ -19,12 +19,12 @@ export interface RoleStore extends RoleStoreData {
   setNested: <T>(path: string, value: T) => void;
   addPermission: (
     permission: ResponsePermissionDto,
-    dto: "create" | "update"
+    dto: "create" | "update",
   ) => void;
   removePermission: (permissionId: string, dto: "create" | "update") => void;
   isPermissionSelected: (
     permissionId: string,
-    dto: "create" | "update"
+    dto: "create" | "update",
   ) => boolean;
   reset: () => void;
 }
@@ -103,7 +103,7 @@ export const useRoleStore = create<RoleStore>((set, get) => ({
         [dtoKey]: {
           ...state[dtoKey],
           permissions: permissions.filter(
-            (p) => p.permissionId !== permissionId
+            (p) => p.permissionId !== permissionId,
           ),
         },
       };

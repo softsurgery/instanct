@@ -2,7 +2,7 @@
 
 Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data. A separate `data-flow` app dumps MySQL and uploads the file to Google Drive.
 
-Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
+Clients talk to one NestJS API. Shared libraries live in the separate [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) repo and are checked out here as the `packages/` git submodule. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
 
 | App              | Package               | What it is                        | README                                           |
 | ---------------- | --------------------- | --------------------------------- | ------------------------------------------------ |
@@ -24,7 +24,7 @@ Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (pe
 │           ├── modules/    # users, requests, geolocation, system reports
 │           ├── routers/    # /  /admin  /public  /callback  /test
 │           └── seeders/
-├── packages/
+├── packages/         # git submodule → softsurgery/softsurgery-abstractions
 │   ├── nsa-*/        # Nest shared abstractions (database, auth, storage, …)
 │   └── @softsurgery/*   # UI, HTTP, form, and table abstractions
 ├── infra/nginx/      # reverse proxy in front of the apps
@@ -33,9 +33,26 @@ Clients talk to one NestJS API. `packages/nsa-*` holds the Nest abstractions (pe
 └── pnpm-workspace.yaml
 ```
 
+## Clone
+
+`packages/` is a submodule. Clone with submodules, or init them after a plain clone:
+
+```sh
+git clone --recurse-submodules git@github.com:softsurgery/instanct.git
+# or
+git submodule update --init --recursive
+```
+
+Edit shared packages in [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) (or inside the `packages/` working tree). Instanct pins a submodule commit; bump it when you want apps to pick up a new abstractions revision:
+
+```sh
+cd packages && git pull origin main && cd ..
+git add packages && git commit -m "chore: bump softsurgery-abstractions"
+```
+
 ## Package manager
 
-The workspace uses **pnpm** (`apps/*`, `packages/*`) with Turbo. Install from the repository root:
+The workspace uses **pnpm** (`apps/*`, `packages/*`) with Turbo. App dependencies on `@softsurgery/*` stay `workspace:*`. Install from the repository root:
 
 ```sh
 pnpm install
@@ -251,7 +268,7 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 | `@softsurgery/nsa-chat`, `@softsurgery/nsa-sessions`, `@softsurgery/nsa-notifications`                                                  | Conversations, sessions, live alerts                                                           |
 | `@softsurgery/nsa-content`, `@softsurgery/nsa-templates`, `@softsurgery/nsa-configurations`, `@softsurgery/nsa-reference-types`         | CMS pages, layouts, settings, lookup trees                                                     |
 | `@softsurgery/nsa-workflows`, `@softsurgery/nsa-mail`, `@softsurgery/nsa-logger`, `@softsurgery/nsa-sentry`, `@softsurgery/nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers and runtime binding slots |
-| `@softsurgery/api-client`                                                                                                               | Axios instance and one resource object per API area                                            |
+| `api-client`                                                                                                               | Axios instance and one resource object per API area                                            |
 | `@softsurgery/form-builder`                                                                                                             | Declarative web forms                                                                          |
 | `@softsurgery/mobile-form-builder`                                                                                                      | The same form model for React Native                                                           |
 | `@softsurgery/datatable-builder`                                                                                                        | Server-driven admin tables                                                                     |
@@ -261,14 +278,14 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 | `@softsurgery/hooks`                                                                                                                    | Persisted auth and preference stores, shared hooks                                             |
 | `@softsurgery/contexts`                                                                                                                 | Breadcrumb, intro, footer, theme, and `AppProvider`                                            |
 | `@softsurgery/lib`                                                                                                                      | `cn`, centralized socket management, nested stores, legal HTML cleanup                         |
-| `@softsurgery/i18n`                                                                                                                     | Shared `en` / `fr` config. Landing copies live here                                            |
+| `i18n`                                                                                                                     | Shared `en` / `fr` config. Landing copies live here                                            |
 | `@repo/eslint-config`, `@repo/typescript-config`                                                                                        | Tooling                                                                                        |
 
 ### API client
 
 `createApiClient({ baseURL, authAdapter })` builds one Axios instance and a tree of resources (`auth`, `admin.user`, `admin.role`, `upload`, `notification`, `experience`, `contentPage`, `chat`, `session`, and so on). The request interceptor attaches the bearer token from `useAuthPersistStore`, the `x-timezone` header, and `x-custom-lang` from `localStorage`. A 401 retries once against `/auth/refresh-token` or `/client-auth/refresh-token`, then calls `onUnauthorized`.
 
-Web (`apps/web/src/lib/api.ts`), landing (`apps/landing/src/lib/api.ts`), and mobile (`apps/mobile/lib/api.ts`) all use `@softsurgery/api-client`. Web hooks into NextAuth session handling, landing reads public content pages, and mobile wires its persisted Zustand store (`useAuthPersistStore`). React Query hooks under `apps/mobile/hooks/content/` invoke these unified resource functions directly.
+Web (`apps/web/src/lib/api.ts`), landing (`apps/landing/src/lib/api.ts`), and mobile (`apps/mobile/lib/api.ts`) all use `api-client`. Web hooks into NextAuth session handling, landing reads public content pages, and mobile wires its persisted Zustand store (`useAuthPersistStore`). React Query hooks under `apps/mobile/hooks/content/` invoke these unified resource functions directly.
 
 ### Form builder
 

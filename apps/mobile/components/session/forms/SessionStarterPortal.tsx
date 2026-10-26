@@ -1,13 +1,19 @@
 import { cn } from "@softsurgery/lib";
 import { View } from "react-native";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
+import {
+  StableSafeAreaView,
+  ApplicationHeader,
+  StableKeyboardAwareScrollView,
+  AppHeaderBack,
+  BottomButtonWrapper,
+} from "@softsurgery/mobile-components";
 import { Info } from "lucide-react-native";
 import { router } from "expo-router";
-import { StableKeyboardAwareScrollView } from "@softsurgery/mobile-components";
-import { FormBuilder } from "@softsurgery/mobile-form-builder";
-import { Button } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import {
+  FormBuilder,
+  mapToSelectOptions,
+} from "@softsurgery/mobile-form-builder";
+import { Button, Text } from "@softsurgery/mobile-ui";
 import { useSessionStarterFormStructure } from "./useSessionStarterFormStructure";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useSessionStore } from "@/stores/useSessionStore";
@@ -15,15 +21,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import React from "react";
 import { createSessionSchema } from "@/types/validations/session.validation";
-import { ServerErrorResponse, SessionType } from "@softsurgery/api-client";
+import { ServerErrorResponse, SessionType } from "api-client";
 import { useUserSessions } from "@/hooks/content/sessions/useUserSessions";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { mapToSelectOptions } from "@softsurgery/mobile-form-builder";
 import { zodErrorsToNested } from "@/lib/object";
 import { toast } from "sonner-native";
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { BottomButtonWrapper } from "@softsurgery/mobile-components";
 interface SessionStarterPortalProps {
   className?: string;
 }
@@ -72,8 +75,7 @@ export const SessionStarterPortal = ({
 
   React.useEffect(() => {
     const lastObjectives = lastSessions[0]?.payload?.objectives as
-      | number[]
-      | undefined;
+      number[] | undefined;
     if (lastObjectives?.length)
       sessionStore.setNested("createDto.payload.objectives", lastObjectives);
   }, [lastSessions]);

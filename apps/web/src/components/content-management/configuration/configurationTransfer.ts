@@ -43,7 +43,9 @@ export function buildConfigurationExport(
   };
 }
 
-function normalizeImportNamespaces(payload: unknown): Record<string, Record<string, string>> {
+function normalizeImportNamespaces(
+  payload: unknown,
+): Record<string, Record<string, string>> {
   if (!payload || typeof payload !== "object") {
     throw new Error("Invalid configuration file");
   }
@@ -64,10 +66,15 @@ function normalizeImportNamespaces(payload: unknown): Record<string, Record<stri
     return normalized;
   }
 
-  if (namespaces && typeof namespaces === "object" && !Array.isArray(namespaces)) {
+  if (
+    namespaces &&
+    typeof namespaces === "object" &&
+    !Array.isArray(namespaces)
+  ) {
     const normalized: Record<string, Record<string, string>> = {};
     for (const [namespaceName, params] of Object.entries(namespaces)) {
-      if (!params || typeof params !== "object" || Array.isArray(params)) continue;
+      if (!params || typeof params !== "object" || Array.isArray(params))
+        continue;
       normalized[namespaceName] = {};
       for (const [paramName, value] of Object.entries(params)) {
         normalized[namespaceName][paramName] =
@@ -118,7 +125,9 @@ export function applyConfigurationImport(
   }
 
   for (const namespaceName of Object.keys(importedNamespaces)) {
-    const known = configurations.some((namespace) => namespace.name === namespaceName);
+    const known = configurations.some(
+      (namespace) => namespace.name === namespaceName,
+    );
     if (!known) {
       skipped += Object.keys(importedNamespaces[namespaceName]).length;
     }

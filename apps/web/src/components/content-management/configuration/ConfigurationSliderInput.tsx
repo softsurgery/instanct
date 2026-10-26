@@ -27,8 +27,7 @@ function parseNumber(val: unknown): number | undefined {
   return undefined;
 }
 
-interface ExtendedConfigurationParamDto
-  extends ResponseConfigurationParamDto {
+interface ExtendedConfigurationParamDto extends ResponseConfigurationParamDto {
   step?: number;
 }
 

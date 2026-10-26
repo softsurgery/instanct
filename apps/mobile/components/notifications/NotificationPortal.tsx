@@ -5,15 +5,17 @@ import { useTranslation } from "react-i18next";
 import { RefreshControl, View } from "react-native";
 import { useApi } from "@/contexts/ApiContext";
 import { cn } from "@softsurgery/lib";
-import { ResponseNotificationDto } from "@softsurgery/api-client";
-import { ApplicationHeader } from "@softsurgery/mobile-components";
-import { StableSafeAreaView } from "@softsurgery/mobile-components";
+import { ResponseNotificationDto } from "api-client";
+import {
+  ApplicationHeader,
+  StableSafeAreaView,
+  AppHeaderBack,
+} from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { NotificationEntry } from "./NotificationEntry";
 import { NotificationEntrySkeleton } from "./NotificationEntrySkeleton";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 
-import { AppHeaderBack } from "@softsurgery/mobile-components";
 interface NotificationPortalProps {
   className?: string;
 }

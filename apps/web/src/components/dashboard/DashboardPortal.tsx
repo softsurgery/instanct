@@ -47,7 +47,7 @@ export const DashboardPortal: React.FC<DashboardPortalProps> = ({
     <div
       className={cn(
         "flex flex-col flex-1 w-full px-4 pt-4 overflow-hidden container mx-auto",
-        className
+        className,
       )}
     >
       <Tabs

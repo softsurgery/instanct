@@ -16,19 +16,25 @@ interface SettingsProps {
 }
 
 export const Settings = ({ className }: SettingsProps) => {
-  const { t } = useTranslation("user-management"); 
+  const { t } = useTranslation("user-management");
 
   return (
     <Card className={cn("flex flex-col", className)}>
       <CardHeader>
         <CardTitle>{t("userManagement.inspect.settings.title")}</CardTitle>
-        <CardDescription>{t("userManagement.inspect.settings.manageAccount")}</CardDescription>
+        <CardDescription>
+          {t("userManagement.inspect.settings.manageAccount")}
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 ">
         {/* Account */}
         <div className="space-y-2">
-          <h3 className="text-lg font-medium">{t("userManagement.inspect.settings.account")}</h3>
-          <p className="text-muted-foreground">{t("userManagement.inspect.settings.updateAccount")}</p>
+          <h3 className="text-lg font-medium">
+            {t("userManagement.inspect.settings.account")}
+          </h3>
+          <p className="text-muted-foreground">
+            {t("userManagement.inspect.settings.updateAccount")}
+          </p>
           <Button variant="outline" className="flex items-center gap-2">
             <Edit className="h-4 w-4" />
             {t("userManagement.inspect.settings.editAccount")}
@@ -39,8 +45,12 @@ export const Settings = ({ className }: SettingsProps) => {
 
         {/* Privacy */}
         <div className="space-y-2">
-          <h3 className="text-lg font-medium">{t("userManagement.inspect.settings.privacy")}</h3>
-          <p className="text-muted-foreground">{t("userManagement.inspect.settings.managePrivacy")}</p>
+          <h3 className="text-lg font-medium">
+            {t("userManagement.inspect.settings.privacy")}
+          </h3>
+          <p className="text-muted-foreground">
+            {t("userManagement.inspect.settings.managePrivacy")}
+          </p>
           <Button variant="outline" className="flex items-center gap-2">
             <SettingsIcon className="h-4 w-4" />
             {t("userManagement.inspect.settings.privacySettings")}
@@ -51,8 +61,12 @@ export const Settings = ({ className }: SettingsProps) => {
 
         {/* Notifications */}
         <div className="space-y-2">
-          <h3 className="text-lg font-medium">{t("userManagement.inspect.settings.notifications")}</h3>
-          <p className="text-muted-foreground">{t("userManagement.inspect.settings.configureNotifications")}</p>
+          <h3 className="text-lg font-medium">
+            {t("userManagement.inspect.settings.notifications")}
+          </h3>
+          <p className="text-muted-foreground">
+            {t("userManagement.inspect.settings.configureNotifications")}
+          </p>
           <Button variant="outline" className="flex items-center gap-2">
             <SettingsIcon className="h-4 w-4" />
             {t("userManagement.inspect.settings.notificationSettings")}

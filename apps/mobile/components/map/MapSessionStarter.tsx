@@ -1,10 +1,8 @@
-import { Button } from "@softsurgery/mobile-ui";
-import { Text } from "@softsurgery/mobile-ui";
+import { Button, Text, Icon } from "@softsurgery/mobile-ui";
 import { BlurView } from "expo-blur";
 import { MapPinned } from "lucide-react-native";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Icon } from "@softsurgery/mobile-ui";
 import { useColorScheme } from "nativewind";
 import { cn } from "@softsurgery/lib";
 

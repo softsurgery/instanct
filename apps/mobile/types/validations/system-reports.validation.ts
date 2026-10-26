@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BugVariant, FeedbackCategory } from "@softsurgery/api-client";
+import { BugVariant, FeedbackCategory } from "api-client";
 
 // Messages are translation keys, resolved by the consumer in the "settings"
 // namespace (see useBugReportFormStructure / useSendFeedbackFormStructure).

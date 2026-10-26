@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useDebounce } from "@softsurgery/hooks/utils";
 import { useBreadcrumb } from "@softsurgery/contexts";
 import { useIntro } from "@softsurgery/contexts";
-import { ResponseFeedbackDto } from "@softsurgery/api-client";
+import { ResponseFeedbackDto } from "api-client";
 import { useTranslation } from "react-i18next";
 import { useFeedbackColumns } from "./useFeedbackColumns";
 import { DataTableConfig } from "@softsurgery/datatable-builder";

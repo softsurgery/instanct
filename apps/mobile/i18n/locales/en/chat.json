@@ -18,6 +18,14 @@
       "file_one": "📎 File",
       "file_other": "📎 {{count}} files"
     },
+    "notifications": {
+      "sentMessage": "Sent you a message",
+      "pokedYou": "Poked you",
+      "wantsToChat": "Wants to chat with you",
+      "image": "📷 Image",
+      "video": "🎥 Video",
+      "file": "📎 File"
+    },
     "tabs": {
       "media": {
         "title": "Media"
@@ -97,7 +105,8 @@
         "photo_other": "{{count}} photos",
         "video_one": "{{count}} video",
         "video_other": "{{count}} videos",
-        "items": "{{count}} items"
+        "items": "{{count}} items",
+        "send": "Send"
       }
     },
     "search": {

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SessionType } from "@softsurgery/api-client";
+import { SessionType } from "api-client";
 
 // Messages are translation keys, resolved by the consumer in the "explore"
 // namespace (see useSessionStarterFormStructure / useSessionManagementFormStructure).

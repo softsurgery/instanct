@@ -1,4 +1,11 @@
-import { PageMeta, Paginated, QueryParams, ResponseConversationDto, ResponseMessageDto, ResponseUserDto } from "@softsurgery/api-client";
+import {
+  PageMeta,
+  Paginated,
+  QueryParams,
+  ResponseConversationDto,
+  ResponseMessageDto,
+  ResponseUserDto,
+} from "api-client";
 import { router } from "expo-router";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 
