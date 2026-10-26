@@ -15,7 +15,7 @@ import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
 import { useColorPalette } from "@softsurgery/mobile-components";
 import { useQueryClient } from "@tanstack/react-query";
-import { NotificationType } from "@softsurgery/api-client";
+import { NotificationType } from "api-client";
 
 if (Notifications) {
   Notifications.setNotificationHandler({
@@ -29,13 +29,15 @@ if (Notifications) {
   });
 }
 
+const GEOLOCATION_JOIN = ["user", "user.industries", "user.sessions"];
+
 export default function MainLayout() {
   const queryClient = useQueryClient();
   const { palette } = useColorPalette();
   const authPersistStore = useAuthPersistStore();
   const _geolocation = useLiveGeolocation({
     enabled: authPersistStore.isAuthenticated,
-    join: ["user", "user.industries", "user.sessions"],
+    join: GEOLOCATION_JOIN,
   });
   useCheckHealth({
     enabled: authPersistStore.isAuthenticated,
@@ -47,12 +49,9 @@ export default function MainLayout() {
 
   const { count: chatCount, resetCount: resetChatCount } = useChat({});
   useChatPendingSync();
-  const {
-    count: notificationCount,
-    notifications,
-    resetCount: resetNotificationCount,
-  } = useNotifications({
-    consequences: {
+
+  const notificationConsequences = React.useMemo(
+    () => ({
       [NotificationType.TEST]: () => {},
       [NotificationType.NEW_SIGNIN]: () => {},
       [NotificationType.NEW_MESSAGE]: () => {},
@@ -65,7 +64,16 @@ export default function MainLayout() {
       [NotificationType.REQUEST_REJECTED]: () => {
         queryClient.invalidateQueries({ queryKey: ["outgoing-requests"] });
       },
-    },
+    }),
+    [queryClient],
+  );
+
+  const {
+    count: notificationCount,
+    notifications,
+    resetCount: resetNotificationCount,
+  } = useNotifications({
+    consequences: notificationConsequences,
   });
 
   const { mapSession, isSessionsPending } = useActiveSessions();

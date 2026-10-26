@@ -18,7 +18,6 @@ import { MapConfigurationParam } from 'src/app/configurations/map-configuration.
 import { IQueryObject } from '@softsurgery/nsa-database';
 import { SessionService } from '@softsurgery/nsa-sessions/services/session.service';
 import {
-  ClientPresenceSource,
   UserPresenceEvent,
   UserPresenceService,
 } from '@softsurgery/nsa-um/services/user-presence.service';
@@ -92,35 +91,11 @@ export class GeolocationGateway
 
     await client.join(`user_${userId}`);
     await client.join('geolocation_subscribers');
-
-    const source: ClientPresenceSource =
-      (client.handshake?.auth?.source as ClientPresenceSource) ||
-      (client.handshake?.query?.source as ClientPresenceSource) ||
-      (client.handshake?.headers?.[
-        'x-client-source'
-      ] as ClientPresenceSource) ||
-      'mobile';
-
-    // Centralize presence tracking into UserPresenceService
-    this.userPresenceService?.trackConnection(
-      userId,
-      client.id,
-      source,
-      'geolocation',
-    );
   }
 
-  handleDisconnect(client: AdvancedSocket) {
-    const userId = client.data?.userId;
-
-    if (!userId) return;
-
-    // Centralize disconnection tracking into UserPresenceService
-    this.userPresenceService?.trackDisconnection(
-      userId,
-      client.id,
-      'geolocation',
-    );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handleDisconnect(_client: AdvancedSocket) {
+    // Geolocation-specific disconnection logic
   }
 
   @SubscribeMessage('identify')
@@ -137,9 +112,8 @@ export class GeolocationGateway
       message: 'User registered successfully',
     });
 
-    const socketData = socket.data as Record<string, unknown> | undefined;
-    if (!socketData?.hasLoggedIdentify) {
-      if (socketData) socketData.hasLoggedIdentify = true;
+    if (!socket.data?.hasLoggedIdentify) {
+      if (socket.data) socket.data.hasLoggedIdentify = true;
       this.logger.debug(`User ${userId} identified on socket ${socket.id}`);
     }
   }
