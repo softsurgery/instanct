@@ -22,7 +22,7 @@ import {
   AppHeaderBack,
   LocationMap,
 } from "@softsurgery/mobile-components";
-import { Text, Button, Icon, Separator } from "@softsurgery/mobile-ui";
+import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
 import {
   ResponseUserDeviceDto,
@@ -38,7 +38,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { DeviceDetailsSection } from "./DeviceDetailsSection";
 import { ConnectionCard } from "./ConnectionCard";
 
-const INITIAL_VISIBLE_CONNECTIONS = 3;
+const INITIAL_VISIBLE_CONNECTIONS = 5;
 
 interface DeviceDetailsPortalProps {
   className?: string;
@@ -159,7 +159,6 @@ export const DeviceDetailsPortal = ({
       toast.success(
         t(
           "settings.account.screens.privacy-security.screens.account-security.devices.toasts.revokeSuccess",
-          "Device removed and logged out successfully",
         ),
       );
       if (isThisDevice) {
@@ -172,7 +171,6 @@ export const DeviceDetailsPortal = ({
       toast.error(
         t(
           "settings.account.screens.privacy-security.screens.account-security.devices.toasts.revokeError",
-          "Failed to remove and log out device",
         ),
       );
     },
@@ -184,24 +182,20 @@ export const DeviceDetailsPortal = ({
     Alert.alert(
       t(
         "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.title",
-        "Remove and Log Out Device",
       ),
       t(
         "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.message",
-        "Are you sure you want to remove and log out this device? You will need to sign in again from that device.",
       ),
       [
         {
           text: t(
             "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.cancel",
-            "Cancel",
           ),
           style: "cancel",
         },
         {
           text: t(
             "settings.account.screens.privacy-security.screens.account-security.devices.revokeAlert.confirm",
-            "Remove and Log Out",
           ),
           style: "destructive",
           onPress: () => revokeMutation.mutate(device.id),
@@ -230,7 +224,6 @@ export const DeviceDetailsPortal = ({
     getDeviceDisplayName(device, "") ||
     t(
       "settings.account.screens.privacy-security.screens.account-security.devices.details.title",
-      "Device Details",
     );
 
   if (!device && !isLoading) {
@@ -240,7 +233,6 @@ export const DeviceDetailsPortal = ({
           classNames={{ wrapper: "border-b border-border pb-2" }}
           title={t(
             "settings.account.screens.privacy-security.screens.account-security.devices.details.title",
-            "Device Details",
           )}
           titleVariant="large"
           reverse
@@ -255,7 +247,6 @@ export const DeviceDetailsPortal = ({
           <Text className="text-base font-semibold text-foreground mb-1">
             {t(
               "settings.account.screens.privacy-security.screens.account-security.devices.details.notFound",
-              "Device not found",
             )}
           </Text>
         </View>
@@ -295,7 +286,11 @@ export const DeviceDetailsPortal = ({
           isThisDevice={isThisDevice}
           className="px-5 pt-4 pb-2"
         />
-
+        <Text className="text-sm font-semibold text-foreground px-4 mt-4">
+          {t(
+            "settings.account.screens.privacy-security.screens.account-security.devices.map.title",
+          )}
+        </Text>
         {/* Map Section */}
         <LocationMap
           latitude={activeCoords?.latitude}
@@ -316,23 +311,38 @@ export const DeviceDetailsPortal = ({
             displayLocation ||
             t(
               "settings.account.screens.privacy-security.screens.account-security.devices.details.noLocation",
-              "Location details unavailable for this device",
             )
           }
           subFallbackText={t(
             "settings.account.screens.privacy-security.screens.account-security.devices.details.approximate",
-            "Approximate location based on sign-in IP",
           )}
         />
 
         {/* Connection History Section */}
         <View className="mt-4">
-          <Text className="text-sm font-semibold text-foreground px-4">
-            {t(
-              "settings.account.screens.privacy-security.screens.account-security.devices.connections.title",
-              "Connection History",
+          <View className="flex-row items-center justify-between px-4">
+            <Text className="text-sm font-semibold text-foreground">
+              {t(
+                "settings.account.screens.privacy-security.screens.account-security.devices.connections.title",
+              )}
+            </Text>
+
+            {hasMoreConnections && (
+              <Pressable
+                accessibilityRole="button"
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                onPress={handleShowMore}
+                className="flex-row items-center gap-1 active:opacity-70"
+              >
+                <Text className="text-xs font-semibold text-primary">
+                  {t(
+                    "settings.account.screens.privacy-security.screens.account-security.devices.actions.showMore",
+                  )}
+                </Text>
+                <Icon as={ChevronRight} size={14} className="text-primary" />
+              </Pressable>
             )}
-          </Text>
+          </View>
 
           {isHistoryLoading ? (
             <View className="items-center justify-center py-6 gap-2">
@@ -344,7 +354,6 @@ export const DeviceDetailsPortal = ({
               <Text className="text-xs text-muted-foreground">
                 {t(
                   "settings.account.screens.privacy-security.screens.account-security.devices.connections.loading",
-                  "Loading connections...",
                 )}
               </Text>
             </View>
@@ -353,52 +362,32 @@ export const DeviceDetailsPortal = ({
               <Text className="text-sm text-muted-foreground">
                 {t(
                   "settings.account.screens.privacy-security.screens.account-security.devices.connections.emptyTitle",
-                  "No connection history yet",
                 )}
               </Text>
             </View>
           ) : (
             <View className="pt-1">
               {groupedConnections.map((group) => (
-                <View key={group.title}>
-                  <Text className="mb-2.5 mt-2 px-4 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                <View key={group.title} className="mb-2">
+                  <Text className="mt-4 mb-2 px-4 text-sm font-semibold text-muted-foreground">
                     {group.title}
                   </Text>
                   {group.items.map(({ connection, isLatest }, idx) => (
-                    <View
+                    <ConnectionCard
                       key={
                         connection.id
                           ? String(connection.id)
                           : `${group.title}-${idx}`
                       }
-                    >
-                      <ConnectionCard
-                        connection={connection}
-                        device={device}
-                        isLatest={isLatest}
-                      />
-                      {idx < group.items.length - 1 && <Separator />}
-                    </View>
+                      connection={connection}
+                      device={device}
+                      isLatest={isLatest}
+                      isFirst={idx === 0}
+                      isLast={idx === group.items.length - 1}
+                    />
                   ))}
                 </View>
               ))}
-
-              {hasMoreConnections && (
-                <View className="items-center pt-3 pb-1">
-                  <Pressable
-                    accessibilityRole="link"
-                    onPress={handleShowMore}
-                    className="flex-row items-center justify-center gap-1 px-4 py-1.5 active:opacity-70"
-                  >
-                    <Text className="text-sm font-semibold text-primary">
-                      {t(
-                        "settings.account.screens.privacy-security.screens.account-security.devices.actions.showMore",
-                        "Show more",
-                      )}
-                    </Text>
-                  </Pressable>
-                </View>
-              )}
             </View>
           )}
         </View>
@@ -427,7 +416,6 @@ export const DeviceDetailsPortal = ({
             <Text className="text-destructive text-md font-bold">
               {t(
                 "settings.account.screens.privacy-security.screens.account-security.devices.actions.revoke",
-                "Remove and Log Out",
               )}
             </Text>
           </Button>

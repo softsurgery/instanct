@@ -137,6 +137,9 @@
                 "accessAllowed": "Accès autorisé",
                 "accessRestricted": "Accès restreint",
                 "lastSignIn": "Dernière activité",
+                "map": {
+                  "title": "Localisation de l'appareil"
+                },
                 "details": {
                   "title": "Détails de l'appareil",
                   "os": "Système d'exploitation",

@@ -13,7 +13,7 @@ import {
   StableSafeAreaView,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
-import { Text, Icon, Separator } from "@softsurgery/mobile-ui";
+import { Text, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
 import type {
   ResponseUserDeviceDto,
@@ -28,6 +28,8 @@ export type HistoryListItem =
       id: string;
       connection: ResponseUserConnectionHistoryDto;
       isLatest: boolean;
+      isFirst: boolean;
+      isLast: boolean;
     };
 
 interface DeviceConnectionsPortalProps {
@@ -128,6 +130,8 @@ export const DeviceConnectionsPortal = ({
           id: connection.id ? String(connection.id) : `conn-${title}-${idx}`,
           connection,
           isLatest,
+          isFirst: idx === 0,
+          isLast: idx === items.length - 1,
         });
       });
     });
@@ -139,7 +143,7 @@ export const DeviceConnectionsPortal = ({
     ({ item }: { item: HistoryListItem }) => {
       if (item.type === "header") {
         return (
-          <Text className="mb-2.5 mt-2 px-4 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          <Text className="mt-4 mb-2 px-4 text-sm font-semibold text-muted-foreground">
             {item.title}
           </Text>
         );
@@ -150,23 +154,12 @@ export const DeviceConnectionsPortal = ({
           connection={item.connection}
           device={device}
           isLatest={item.isLatest}
+          isFirst={item.isFirst}
+          isLast={item.isLast}
         />
       );
     },
     [device],
-  );
-
-  const renderSeparator = React.useCallback(
-    ({ leadingItem }: { leadingItem: HistoryListItem }) => {
-      if (leadingItem.type === "header") return null;
-      const leadingIndex = flattenedHistory.findIndex(
-        (x) => x.id === leadingItem.id,
-      );
-      const nextItem = flattenedHistory[leadingIndex + 1];
-      if (nextItem && nextItem.type === "header") return null;
-      return <Separator />;
-    },
-    [flattenedHistory],
   );
 
   const renderEmpty = React.useCallback(() => {
@@ -226,7 +219,6 @@ export const DeviceConnectionsPortal = ({
           showsVerticalScrollIndicator={false}
           recycleItems={true}
           estimatedItemSize={65}
-          ItemSeparatorComponent={renderSeparator}
           ListEmptyComponent={renderEmpty}
           refreshControl={
             <RefreshControl

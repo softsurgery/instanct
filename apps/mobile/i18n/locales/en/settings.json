@@ -132,6 +132,9 @@
                 "emptyDescription": "Devices you sign in from will appear here.",
                 "thisDevice": "This Device",
                 "lastSignIn": "Last active",
+                "map": {
+                  "title": "Device Location"
+                },
                 "details": {
                   "title": "Device Details",
                   "os": "Operating System",
