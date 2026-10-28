@@ -7,10 +7,10 @@
       "startNew": "Démarrez une nouvelle discussion en recherchant un utilisateur."
     },
     "preview": {
-      "startConversation": "Démarrez une conversation 👋",
+      "startConversation": "Démarrez une conversation",
       "youPrefix": "Vous : ",
-      "pokeSent": "👉 Vous avez envoyé un signe",
-      "pokeReceived": "👈 Vous avez reçu un signe",
+      "pokeSent": "Vous avez envoyé un signe 👋",
+      "pokeReceived": "Vous avez reçu un signe 👋",
       "image_one": "📷 Image",
       "image_other": "📷 {{count}} photos",
       "video_one": "🎥 Vidéo",

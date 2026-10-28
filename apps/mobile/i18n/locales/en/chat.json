@@ -7,10 +7,10 @@
       "startNew": "Start a new chat by searching for a user."
     },
     "preview": {
-      "startConversation": "Start a conversation 👋",
+      "startConversation": "Start a conversation",
       "youPrefix": "You: ",
-      "pokeSent": "👉 You poked them",
-      "pokeReceived": "👈 Poked you",
+      "pokeSent": "You poked them 👋",
+      "pokeReceived": "They Poked you 👋",
       "image_one": "📷 Image",
       "image_other": "📷 {{count}} photos",
       "video_one": "🎥 Video",

@@ -58,6 +58,7 @@ export interface ResponseConversationDto extends DatabaseEntity {
   variant: MessageVariant;
   static?: StaticMessageEnum;
   locked: boolean;
+  unreadCount?: number;
 }
 
 export interface ResponseMessageDto extends DatabaseEntity {

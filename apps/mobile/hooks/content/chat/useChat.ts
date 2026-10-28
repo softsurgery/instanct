@@ -287,14 +287,30 @@ export const useChat = (
       const s = socketRef.current;
       if (!s) return;
       s.emit("see-conversation", { conversationId: id });
+      queryClient.setQueriesData(
+        { queryKey: ["conversations"] },
+        (oldData: InfiniteConversationData | undefined) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              data: page.data.map((conv) =>
+                conv.id === id ? { ...conv, unreadCount: 0 } : conv,
+              ),
+            })),
+          };
+        },
+      );
       invalidateUnreadCount();
     },
-    [invalidateUnreadCount],
+    [queryClient, invalidateUnreadCount],
   );
 
   const resetCount = React.useCallback(() => {
+    queryClient.setQueryData(CONVERSATIONS_UNREAD_COUNT_QUERY_KEY, 0);
     invalidateUnreadCount();
-  }, [invalidateUnreadCount]);
+  }, [queryClient, invalidateUnreadCount]);
 
   return {
     conversations,

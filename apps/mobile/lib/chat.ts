@@ -76,7 +76,19 @@ export const replaceConversationInPages = (
     ...oldData,
     pages: oldData.pages.map((page) => ({
       ...page,
-      data: page.data.map((conv) => (conv.id === updated.id ? updated : conv)),
+      data: page.data.map((conv) => {
+        if (conv.id === updated.id) {
+          return {
+            ...conv,
+            ...updated,
+            unreadCount:
+              updated.unreadCount !== undefined
+                ? updated.unreadCount
+                : conv.unreadCount,
+          };
+        }
+        return conv;
+      }),
     })),
   };
 };
@@ -130,8 +142,22 @@ export const moveConversationToTop = (
   if (!oldData?.pages?.length) return oldData;
 
   const allConversations = oldData.pages.flatMap((p) => p.data);
+  const existingConv = allConversations.find((conv) => conv.id === updated.id);
+  const unreadCount =
+    updated.unreadCount !== undefined
+      ? updated.unreadCount
+      : existingConv
+        ? (existingConv.unreadCount ?? 0) + 1
+        : 1;
+
+  const mergedUpdated: ResponseConversationDto = {
+    ...existingConv,
+    ...updated,
+    unreadCount,
+  };
+
   const filtered = allConversations.filter((conv) => conv.id !== updated.id);
-  const reordered = [updated, ...filtered];
+  const reordered = [mergedUpdated, ...filtered];
 
   let cursor = 0;
 

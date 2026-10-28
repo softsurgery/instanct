@@ -67,6 +67,16 @@ export const UserEntry = ({
     );
   }, [lastCheck, lastMessage?.createdAt]);
 
+  const unreadCount = React.useMemo(() => {
+    if (typeof conversation.unreadCount === "number") {
+      return conversation.unreadCount;
+    }
+    if (seen || !lastMessage || lastMessage.userId === currentUser?.id) {
+      return 0;
+    }
+    return 1;
+  }, [conversation.unreadCount, seen, lastMessage, currentUser?.id]);
+
   const messagePreview = React.useMemo(() => {
     if (!lastMessage) {
       return (
@@ -217,9 +227,16 @@ export const UserEntry = ({
                 <View className="h-2 w-2 rounded-full bg-orange-400" />
               )}
             </View>
-            {!seen && lastMessage && (
-              <View className="h-4 w-4 rounded-full bg-primary" />
-            )}
+            {unreadCount > 0 &&
+              (unreadCount === 1 ? (
+                <View className="h-4 w-4 rounded-full bg-primary" />
+              ) : (
+                <View className="w-5 h-5 rounded-full bg-primary items-center justify-center">
+                  <Text className="text-sm font-bold text-primary-foreground leading-none">
+                    {unreadCount > 99 ? "99+" : String(unreadCount)}
+                  </Text>
+                </View>
+              ))}
           </View>
         </View>
       </View>
