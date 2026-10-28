@@ -4,31 +4,30 @@ import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Platform, Appearance } from "react-native";
+import { Platform, Appearance, View } from "react-native";
+import { Image } from "expo-image";
 import * as Localization from "expo-localization";
 
 export default function Page() {
   const { i18n } = useTranslation();
   const { setColorScheme } = useColorScheme();
-  const preferencePersistStore = usePreferencePersistStore();
+  const { isReady, theme, language } = usePreferencePersistStore();
 
   const hasBootstrapped = React.useRef(false);
 
   React.useEffect(() => {
-    if (!preferencePersistStore.isReady || hasBootstrapped.current) return;
+    if (!isReady || hasBootstrapped.current) return;
     hasBootstrapped.current = true;
 
-    setTimeout(() => {
-      setColorScheme(preferencePersistStore.theme);
+    const timer = setTimeout(() => {
+      setColorScheme(theme);
       if (Platform.OS === "android") {
         const activeTheme =
-          preferencePersistStore.theme === "system"
-            ? (Appearance.getColorScheme() ?? "light")
-            : preferencePersistStore.theme;
+          theme === "system" ? (Appearance.getColorScheme() ?? "light") : theme;
         setAndroidNavigationBar(activeTheme === "dark" ? "dark" : "light");
       }
 
-      let lang = preferencePersistStore.language;
+      let lang = language;
       if (lang === "system") {
         lang =
           (Localization.getLocales()[0]?.languageCode as "en" | "fr" | "ar") ||
@@ -36,8 +35,18 @@ export default function Page() {
       }
       i18n.changeLanguage(lang);
       router.replace("/main");
-    }, 100);
-  }, [preferencePersistStore.isReady]);
+    }, 2000);
 
-  return <ActivityIndicator className="flex-1" size="large" />;
+    return () => clearTimeout(timer);
+  }, [isReady, theme, language, setColorScheme, i18n]);
+
+  return (
+    <View className="flex-1 items-center justify-center bg-background">
+      <Image
+        source={require("~/assets/images/logo.png")}
+        style={{ width: 240, height: 240 }}
+        contentFit="contain"
+      />
+    </View>
+  );
 }

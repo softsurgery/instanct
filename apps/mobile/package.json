@@ -11,6 +11,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint --fix",
+    "test": "node --test lib/app-version-policy.spec.ts",
+    "check-types": "tsc --noEmit",
     "clean": "rm -rf node_modules .next dist build .turbo",
     "postinstall": "node ../../scripts/mjs/sync-shared-deps.mjs && npx tailwindcss -i ./global.css -o ./node_modules/.cache/nativewind/global.css"
   },
@@ -135,5 +137,14 @@
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.0"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "react-native-render-html"
+        ]
+      }
+    }
+  }
 }

@@ -21,12 +21,32 @@ config.transformer = {
   babelTransformerPath: require.resolve("react-native-svg-transformer"),
 };
 
+const SINGLETON_PACKAGES = ["react-i18next", "i18next"];
+const mobilePkgJson = path.resolve(projectRoot, "package.json");
+
 config.resolver = {
   ...config.resolver,
   nodeModulesPaths: [
     path.resolve(projectRoot, "node_modules"),
     path.resolve(workspaceRoot, "node_modules"),
   ],
+  resolveRequest: (context, moduleName, platform) => {
+    if (
+      context.originModulePath !== mobilePkgJson &&
+      (SINGLETON_PACKAGES.includes(moduleName) ||
+        SINGLETON_PACKAGES.some((pkg) => moduleName.startsWith(`${pkg}/`)))
+    ) {
+      return context.resolveRequest(
+        {
+          ...context,
+          originModulePath: mobilePkgJson,
+        },
+        moduleName,
+        platform,
+      );
+    }
+    return context.resolveRequest(context, moduleName, platform);
+  },
   extraNodeModules: {
     "api-client": path.resolve(workspaceRoot, "apps/api-client"),
     "@softsurgery/mobile-components": path.resolve(

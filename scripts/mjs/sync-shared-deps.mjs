@@ -177,6 +177,17 @@ export function syncSharedDeps({ preferBundled = false, preSyncOverridesWithBund
       ['react-native-worklets', workletsVersion],
       ['nativewind', nativewindVersion],
       ['react-native-css-interop', cssInteropVersion],
+      ['expo-glass-effect', resolveTargetVersion('expo-glass-effect') || bundled['expo-glass-effect'] ? cleanVersion(resolveTargetVersion('expo-glass-effect') || bundled['expo-glass-effect']) : null],
+      ['expo-haptics', resolveTargetVersion('expo-haptics') || bundled['expo-haptics'] ? cleanVersion(resolveTargetVersion('expo-haptics') || bundled['expo-haptics']) : null],
+      ['expo-image', resolveTargetVersion('expo-image') || bundled['expo-image'] ? cleanVersion(resolveTargetVersion('expo-image') || bundled['expo-image']) : null],
+      ['expo-localization', resolveTargetVersion('expo-localization') || bundled['expo-localization'] ? cleanVersion(resolveTargetVersion('expo-localization') || bundled['expo-localization']) : null],
+      ['expo-location', resolveTargetVersion('expo-location') || bundled['expo-location'] ? cleanVersion(resolveTargetVersion('expo-location') || bundled['expo-location']) : null],
+      ['expo-router', resolveTargetVersion('expo-router') || bundled['expo-router'] ? cleanVersion(resolveTargetVersion('expo-router') || bundled['expo-router']) : null],
+      ['expo-server', resolveTargetVersion('expo-server') || bundled['expo-server'] ? cleanVersion(resolveTargetVersion('expo-server') || bundled['expo-server']) : null],
+      ['expo-video', resolveTargetVersion('expo-video') || bundled['expo-video'] ? cleanVersion(resolveTargetVersion('expo-video') || bundled['expo-video']) : null],
+      ['react-native-gesture-handler', resolveTargetVersion('react-native-gesture-handler') || bundled['react-native-gesture-handler'] ? cleanVersion(resolveTargetVersion('react-native-gesture-handler') || bundled['react-native-gesture-handler']) : null],
+      ['react-native-maps', resolveTargetVersion('react-native-maps') || bundled['react-native-maps'] ? cleanVersion(resolveTargetVersion('react-native-maps') || bundled['react-native-maps']) : null],
+      ['react-native-safe-area-context', resolveTargetVersion('react-native-safe-area-context') || bundled['react-native-safe-area-context'] ? cleanVersion(resolveTargetVersion('react-native-safe-area-context') || bundled['react-native-safe-area-context']) : null],
     ];
 
     for (const [key, val] of replacements) {
