@@ -1,6 +1,7 @@
 const { version } = require("./package.json");
 
-const APP_ICON = "./assets/images/icon.png";
+const APP_ICON = "./assets/images/logo.png";
+const SPLASH_IMAGE = "./assets/images/splash-icon.png";
 
 export default ({ config }) => ({
   ...config,
@@ -11,8 +12,15 @@ export default ({ config }) => ({
 
   orientation: "portrait",
   icon: APP_ICON,
+  primaryColor: "#0B3A75",
+  backgroundColor: "#ffffff",
   scheme: "com.instanct.instanctma",
   userInterfaceStyle: "automatic",
+  splash: {
+    image: SPLASH_IMAGE,
+    resizeMode: "contain",
+    backgroundColor: "#ffffff",
+  },
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
 
@@ -69,10 +77,15 @@ export default ({ config }) => ({
     },
 
     softwareKeyboardLayoutMode: "pan",
-    edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
     package: "com.instanct.instanctma",
     versionCode: 1,
+  },
+
+  web: {
+    ...config.web,
+    bundler: "metro",
+    favicon: "./assets/images/favicon.png",
   },
 
   plugins: [
@@ -125,12 +138,13 @@ export default ({ config }) => ({
     [
       "expo-splash-screen",
       {
-        image: "./assets/images/logo.png",
+        image: SPLASH_IMAGE,
         imageWidth: 200,
         resizeMode: "contain",
         backgroundColor: "#ffffff",
         dark: {
-          backgroundColor: "#000000",
+          image: SPLASH_IMAGE,
+          backgroundColor: "#171717",
         },
       },
     ],

@@ -41,7 +41,6 @@ config.resolver = {
       "packages/mobile-form-builder",
     ),
   },
-  disableHierarchicalLookup: true,
   assetExts: config.resolver.assetExts.filter((ext) => ext !== "svg"),
   sourceExts: [...config.resolver.sourceExts, "svg"],
 };
