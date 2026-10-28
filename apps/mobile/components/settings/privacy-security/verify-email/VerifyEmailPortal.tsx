@@ -12,12 +12,12 @@ interface VerifyEmailPortalProps {
 }
 
 export const VerifyEmailPortal = ({ className }: VerifyEmailPortalProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common", "screens"]);
   return (
     <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
       <ApplicationHeader
         classNames={{ wrapper: "border-b border-border pb-2" }}
-        title={t("screens.verifyEmail", "Verify Email")}
+        title={t("screens.verifyEmail")}
         titleVariant="large"
         reverse
         shortcuts={[

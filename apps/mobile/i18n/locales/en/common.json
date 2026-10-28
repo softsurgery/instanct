@@ -79,6 +79,13 @@
     "next": "Next",
     "previous": "Previous"
   },
+  "emailVerification": {
+    "title": "Email Verified",
+    "success": "Your email has been verified successfully",
+    "message": "Your email has been verified successfully",
+    "backToMenu": "Go back to explore menu",
+    "action": "Go back to explore menu"
+  },
   "formBuilder": {
     "select": {
       "placeholder": "Select an option"

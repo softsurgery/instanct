@@ -98,6 +98,12 @@
                   }
                 }
               },
+              "verify-email": {
+                "title": "Verify Email",
+                "description": "Verify your email address to secure your account",
+                "success": "Your email has been verified successfully",
+                "backToMenu": "Go back to explore menu"
+              },
               "change-password": {
                 "title": "Change Password",
                 "description": "Update your password and keep your account protected",

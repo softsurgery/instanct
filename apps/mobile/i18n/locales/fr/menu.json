@@ -24,6 +24,11 @@
       }
     },
     "unverifiedEmail": "E-mail non vérifié",
+    "emailVerification": {
+      "title": "Vérifier l'e-mail",
+      "success": "Votre e-mail a été vérifié avec succès",
+      "backToMenu": "Retour au menu explorer"
+    },
     "actions": {
       "editProfile": "Modifier le profil",
       "addCoverPhoto": "Ajouter une photo de couverture",

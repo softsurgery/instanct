@@ -79,6 +79,13 @@
     "next": "Suivant",
     "previous": "Précédent"
   },
+  "emailVerification": {
+    "title": "E-mail vérifié",
+    "success": "Votre e-mail a été vérifié avec succès",
+    "message": "Votre e-mail a été vérifié avec succès",
+    "backToMenu": "Retour au menu explorer",
+    "action": "Retour au menu explorer"
+  },
   "formBuilder": {
     "select": {
       "placeholder": "Sélectionner une option"

@@ -24,6 +24,11 @@
       }
     },
     "unverifiedEmail": "Unverified Email",
+    "emailVerification": {
+      "title": "Verify Email",
+      "success": "Your email has been verified successfully",
+      "backToMenu": "Go back to explore menu"
+    },
     "actions": {
       "editProfile": "Edit Profile",
       "addCoverPhoto": "Add Cover Photo",

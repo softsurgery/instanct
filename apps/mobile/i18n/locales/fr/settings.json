@@ -98,6 +98,12 @@
                   }
                 }
               },
+              "verify-email": {
+                "title": "Vérifier l'e-mail",
+                "description": "Vérifiez votre adresse e-mail pour sécuriser votre compte",
+                "success": "Votre e-mail a été vérifié avec succès",
+                "backToMenu": "Retour au menu explorer"
+              },
               "change-password": {
                 "title": "Modifier le mot de passe",
                 "description": "Mettez à jour votre mot de passe et protégez votre compte.",
