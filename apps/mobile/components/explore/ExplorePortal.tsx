@@ -33,7 +33,6 @@ import { useChatContext } from "@/contexts/ChatContext";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
-import { useMapStore } from "@/stores/useMapStore";
 import { useScrollableElement } from "@/hooks/useScrollableElement";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -50,10 +49,9 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   const { t: tExplore } = useTranslation("explore");
   const { currentUser } = useCurrentUser();
   const userFilerStore = useExploreFilterStore();
-  const mapStore = useMapStore();
   const { count: notificationCount } = useNotificationContext();
   const { count: chatCount } = useChatContext();
-  const { activeSession, initialized } = useActiveMapSessionContext();
+  const { activeSession } = useActiveMapSessionContext();
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const { animatedHeaderStyle, handleScroll: handleHeaderScroll } =
     useScrollableElement({
@@ -66,13 +64,8 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
     enabled: true,
     join: ["user", "user.industries", "user.sessions"],
   });
-  const { isIndustriesSubTypePending } = useIndustries();
-  const { objectives, isObjectivesSubTypePending } = useObjectives();
-
-  const { latitude, longitude } = mapStore?.location?.coords || {
-    latitude: 0,
-    longitude: 0,
-  };
+  useIndustries();
+  const { objectives } = useObjectives();
 
   const filterCount = React.useMemo(() => {
     return (

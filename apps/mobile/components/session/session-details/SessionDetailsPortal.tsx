@@ -8,8 +8,7 @@ import {
 import { Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { MapSessionPayload, ResponseSessionDto } from "api-client";
-import { router, useLocalSearchParams } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
+import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 import { SessionDetailsContent } from "./SessionDetailsContent";
 import { useTranslation } from "react-i18next";

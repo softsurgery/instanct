@@ -35,7 +35,7 @@ export default function MainLayout() {
   const queryClient = useQueryClient();
   const { palette } = useColorPalette();
   const authPersistStore = useAuthPersistStore();
-  const _geolocation = useLiveGeolocation({
+  useLiveGeolocation({
     enabled: authPersistStore.isAuthenticated,
     join: GEOLOCATION_JOIN,
   });
@@ -505,6 +505,7 @@ export default function MainLayout() {
             <Stack.Screen
               name="test"
               options={{
+                headerShown: false,
                 title: "Try Anything",
                 animation: "fade_from_bottom",
                 animationDuration: 200,

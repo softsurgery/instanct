@@ -23,7 +23,7 @@ export const SessionStarter = ({ className }: SessionStarterProps) => {
   React.useEffect(() => {
     height.value = withTiming(1, { duration: 300 });
     opacity.value = withTiming(1, { duration: 300 });
-  }, []);
+  }, [height, opacity]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,

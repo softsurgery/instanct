@@ -1,6 +1,6 @@
 import React from "react";
 import { useColorPalette } from "@softsurgery/mobile-components";
-import { File, Hand, Image as ImageIcon, Video } from "lucide-react-native";
+import { File, Image as ImageIcon, Video } from "lucide-react-native";
 import { Text, View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { ChatActionGridItem } from "./ChatActionGridItem";

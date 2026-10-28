@@ -67,7 +67,7 @@ export const Request = ({
   const isPendingStatus =
     !request?.status || request?.status === RequestStatus.Sent;
 
-  const { mutate: updateLocation, isPending: isUpdatingLocation } = useMutation(
+  const { isPending: isUpdatingLocation } = useMutation(
     {
       mutationFn: (payload: {
         location: string;

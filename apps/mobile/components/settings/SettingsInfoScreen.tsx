@@ -1,6 +1,4 @@
 import { cn } from "@softsurgery/lib";
-import { router } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
 import {

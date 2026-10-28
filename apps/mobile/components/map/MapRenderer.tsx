@@ -54,7 +54,6 @@ export const MapRenderer = ({
     null,
   );
   const [currentRegion, setCurrentRegion] = React.useState<Region | null>(null);
-  const [prevRegion, setPrevRegion] = React.useState<Region | null>(null);
 
   // Android marker image capture state
   const [markerImages, setMarkerImages] = React.useState<
@@ -82,7 +81,7 @@ export const MapRenderer = ({
       (u) => u.coordinatesVisible && u.latitude != null && u.longitude != null,
     );
     return [...visibleUsers, myself];
-  }, [currentUser, mapStore.nearbyUsers]);
+  }, [currentUser, mapStore.nearbyUsers, latitude, longitude]);
 
   //handle marker press
   const handleMarkerPress = (
@@ -91,7 +90,6 @@ export const MapRenderer = ({
     userId: string,
   ) => {
     if (currentRegion) {
-      setPrevRegion(currentRegion);
       prevRegionRef.current = currentRegion;
     }
 

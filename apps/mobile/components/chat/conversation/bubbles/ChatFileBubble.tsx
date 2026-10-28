@@ -1,5 +1,4 @@
 import { Text } from "@softsurgery/mobile-ui";
-import { FileTypeIcon } from "@softsurgery/mobile-components";
 import { useServerUploads } from "@/hooks/content/useServerUploads";
 import { cn } from "@softsurgery/lib";
 import { openUploadFile } from "@/lib/files";
@@ -40,11 +39,17 @@ export const ChatFileBubble = ({
     null,
   );
 
-  const uploadEntries = message ? getMessageUploadEntries(message) : [];
-  const uploadIds = uploadEntries.map((entry) => entry.uploadId);
+  const uploadEntries = React.useMemo(
+    () => (message ? getMessageUploadEntries(message) : []),
+    [message],
+  );
+  const uploadIds = React.useMemo(
+    () => uploadEntries.map((entry) => entry.uploadId),
+    [uploadEntries],
+  );
   const { uploads } = useServerUploads(uploadIds);
 
-  const pendingItems = pending?.items ?? [];
+  const pendingItems = React.useMemo(() => pending?.items ?? [], [pending?.items]);
 
   const timestamp = pending ? pending.createdAt : new Date(message!.createdAt);
   const isUploading = pending?.status === "uploading";

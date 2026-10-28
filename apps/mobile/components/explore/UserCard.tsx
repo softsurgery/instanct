@@ -358,7 +358,7 @@ export const UserCard = ({
                 </View>
                 <View className="flex-row flex-wrap gap-2">
                   {user.activeSession.payload.objectives.map((id) => {
-                    const objective = objectives.find((obj) => obj.id == id);
+                    const objective = objectives.find((obj) => String(obj.id) === String(id));
                     if (!objective) return null;
                     return (
                       <View

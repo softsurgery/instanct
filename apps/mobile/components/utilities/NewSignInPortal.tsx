@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Pressable } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { ShieldAlert } from "lucide-react-native";
@@ -53,7 +52,6 @@ export const NewSignInPortal = ({
   connectionId,
 }: NewSignInPortalProps) => {
   const { t } = useTranslation("notifications");
-  const insets = useSafeAreaInsets();
   const api = useApi();
 
   const { data: fetchedDevice } = useQuery({
