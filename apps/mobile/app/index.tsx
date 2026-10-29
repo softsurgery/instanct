@@ -44,7 +44,7 @@ export default function Page() {
     <View className="flex-1 items-center justify-center bg-background">
       <Image
         source={require("~/assets/images/logo.png")}
-        style={{ width: 240, height: 240 }}
+        style={{ width: 140, height: 140 }}
         contentFit="contain"
       />
     </View>
