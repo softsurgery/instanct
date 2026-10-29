@@ -22,18 +22,27 @@
       "actions": {
         "viewProfile": "View profile",
         "sendMessage": "Send message",
+        "sendMessageError": "Unable to open conversation",
         "removeBookmark": "Remove bookmark"
+      },
+      "removeAlert": {
+        "title": "Remove bookmark",
+        "message": "Are you sure you want to remove this bookmark?",
+        "confirm": "Remove",
+        "cancel": "Cancel",
+        "error": "Failed to remove bookmark"
       }
     },
     "request": {
-      "title": "Meeting request",
+      "title": "Meeting details",
       "labels": {
         "message": "Message",
         "dateTime": "Date and time"
       },
       "placeholders": {
         "message": "No description provided",
-        "dateTime": "Not specified"
+        "dateTime": "Not specified",
+        "location": "Not specified"
       },
       "location": {
         "updating": "Updating the location..."
@@ -41,6 +50,19 @@
       "banners": {
         "accepted": "This meeting has been added to your schedule.",
         "rejected": "This meeting request was declined."
+      },
+      "actions": {
+        "contact": "Contact",
+        "cancelMeeting": "Cancel meeting",
+        "cancelRequest": "Cancel request"
+      },
+      "actionSheet": {
+        "cancelMeeting": {
+          "title": "Cancel meeting",
+          "message": "Are you sure you want to cancel this meeting?",
+          "confirm": "Yes, cancel",
+          "cancel": "No, keep"
+        }
       },
       "toasts": {
         "locationUpdated": "Location updated",
@@ -82,6 +104,14 @@
       "request": {
         "banners": {
           "pending": "Waiting for the recipient's response."
+        },
+        "actionSheet": {
+          "cancel": {
+            "title": "Cancel request",
+            "message": "Are you sure you want to cancel this meeting request?",
+            "confirm": "Yes, cancel",
+            "cancel": "No, keep"
+          }
         }
       }
     }

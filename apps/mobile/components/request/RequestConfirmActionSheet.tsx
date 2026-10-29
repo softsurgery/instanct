@@ -11,17 +11,34 @@ interface RequestConfirmActionSheetProps {
   onConfirm: () => void;
   onClose: () => void;
   isPending: boolean;
+  isCancelMeeting?: boolean;
 }
 
 export const RequestConfirmActionSheet = React.forwardRef<
   ActionSheetRef,
   RequestConfirmActionSheetProps
->(({ event, onConfirm, onClose, isPending }, ref) => {
+>(({ event, onConfirm, onClose, isPending, isCancelMeeting }, ref) => {
   const { t } = useTranslation("activities");
   const { palette } = useColorPalette();
 
-  // ponytail: accept/reject differ only in copy + button variant
-  const scope = event === RequestEvent.Accept ? "accept" : "reject";
+  const isAccept = event === RequestEvent.Accept;
+  const scope = isAccept ? "accept" : "reject";
+
+  const title = isCancelMeeting
+    ? t("activities.request.actionSheet.cancelMeeting.title")
+    : t(`activities.incomming.request.actionSheet.${scope}.title`);
+
+  const message = isCancelMeeting
+    ? t("activities.request.actionSheet.cancelMeeting.message")
+    : t(`activities.incomming.request.actionSheet.${scope}.message`);
+
+  const confirmText = isCancelMeeting
+    ? t("activities.request.actionSheet.cancelMeeting.confirm")
+    : t(`activities.incomming.request.actionSheet.${scope}.confirm`);
+
+  const cancelText = isCancelMeeting
+    ? t("activities.request.actionSheet.cancelMeeting.cancel")
+    : t(`activities.incomming.request.actionSheet.${scope}.cancel`);
 
   return (
     <ActionSheet
@@ -43,13 +60,13 @@ export const RequestConfirmActionSheet = React.forwardRef<
           <View className="flex-row items-center justify-between mb-2">
             <View className="flex-row items-center gap-2">
               <Text variant="large" className="text-foreground">
-                {t(`activities.incomming.request.actionSheet.${scope}.title`)}
+                {title}
               </Text>
             </View>
           </View>
 
           <Text className="mb-4 text-sm text-muted-foreground">
-            {t(`activities.incomming.request.actionSheet.${scope}.message`)}
+            {message}
           </Text>
 
           <View className="pt-4">
@@ -57,16 +74,14 @@ export const RequestConfirmActionSheet = React.forwardRef<
               <Button
                 size="lg"
                 variant={
-                  event === RequestEvent.Accept ? "default" : "destructive"
+                  isCancelMeeting || !isAccept ? "destructive" : "default"
                 }
                 className="rounded-xl"
                 onPress={onConfirm}
                 disabled={isPending}
               >
                 <Text className="text-md font-bold">
-                  {t(
-                    `activities.incomming.request.actionSheet.${scope}.confirm`,
-                  )}
+                  {confirmText}
                 </Text>
               </Button>
               <Button
@@ -77,9 +92,7 @@ export const RequestConfirmActionSheet = React.forwardRef<
                 disabled={isPending}
               >
                 <Text className="text-md font-bold">
-                  {t(
-                    `activities.incomming.request.actionSheet.${scope}.cancel`,
-                  )}
+                  {cancelText}
                 </Text>
               </Button>
             </View>

@@ -42,16 +42,6 @@ export const RequestDetailsCard = ({
           </Text>
         )}
       </View>
-
-      {/* {editable && (
-        <Pressable
-          onPress={onEdit}
-          hitSlop={8}
-          className="h-8 w-8 items-center justify-center rounded-full active:bg-muted"
-        >
-          <Icon as={Edit3Icon} size={16} className="text-muted-foreground" />
-        </Pressable>
-      )} */}
     </View>
   );
 };

@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface useStartConversationProps {
   onSuccess?: (conversation: ResponseConversationDto) => void;
+  onError?: (error: any) => void;
 }
 
 /**
@@ -15,6 +16,7 @@ interface useStartConversationProps {
  */
 export const useStartConversation = ({
   onSuccess,
+  onError,
 }: useStartConversationProps = {}) => {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -30,6 +32,9 @@ export const useStartConversation = ({
           (oldData) => prependConversationToPages(oldData as any, conversation),
         );
         onSuccess?.(conversation);
+      },
+      onError: (error) => {
+        onError?.(error);
       },
     });
 

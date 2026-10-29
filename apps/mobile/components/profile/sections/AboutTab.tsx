@@ -45,7 +45,7 @@ const SectionHeader = ({
 }) => (
   <View className="mb-4 flex-row items-center gap-2.5">
     <Icon as={icon} size={24} color={color} />
-    <Text className="text-xl font-semibold text-foreground">{title}</Text>
+    <Text className="text-base font-semibold text-foreground">{title}</Text>
   </View>
 );
 

@@ -22,18 +22,27 @@
       "actions": {
         "viewProfile": "Voir le profil",
         "sendMessage": "Envoyer un message",
+        "sendMessageError": "Impossible d'ouvrir la conversation",
         "removeBookmark": "Supprimer le signet"
+      },
+      "removeAlert": {
+        "title": "Supprimer le signet",
+        "message": "Êtes-vous sûr de vouloir supprimer ce signet ?",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "error": "Échec de la suppression du signet"
       }
     },
     "request": {
-      "title": "Demande de réunion",
+      "title": "Détails de la réunion",
       "labels": {
         "message": "Message",
         "dateTime": "Date et heure"
       },
       "placeholders": {
         "message": "Aucune description fournie",
-        "dateTime": "Non spécifié"
+        "dateTime": "Non spécifié",
+        "location": "Non spécifié"
       },
       "location": {
         "updating": "Mise à jour du lieu..."
@@ -41,6 +50,19 @@
       "banners": {
         "accepted": "Cette réunion a été ajoutée à votre programme.",
         "rejected": "Cette demande de réunion a été refusée."
+      },
+      "actions": {
+        "contact": "Contacter",
+        "cancelMeeting": "Annuler la réunion",
+        "cancelRequest": "Annuler la demande"
+      },
+      "actionSheet": {
+        "cancelMeeting": {
+          "title": "Annuler la réunion",
+          "message": "Êtes-vous sûr de vouloir annuler cette réunion ?",
+          "confirm": "Oui, annuler",
+          "cancel": "Non, garder"
+        }
       },
       "toasts": {
         "locationUpdated": "Lieu mis à jour",
@@ -82,6 +104,14 @@
       "request": {
         "banners": {
           "pending": "En attente de la réponse du destinataire."
+        },
+        "actionSheet": {
+          "cancel": {
+            "title": "Annuler la demande",
+            "message": "Êtes-vous sûr de vouloir annuler cette demande de réunion ?",
+            "confirm": "Oui, annuler",
+            "cancel": "Non, garder"
+          }
         }
       }
     }

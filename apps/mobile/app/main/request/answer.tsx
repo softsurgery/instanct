@@ -1,4 +1,4 @@
-import { Request } from "@/components/request/Request";
+import { Request } from "@/components/request/request-card/Request";
 import { useLocalSearchParams } from "expo-router";
 
 export default function Screen() {
