@@ -1,8 +1,5 @@
-import { disconnectSocket } from "@softsurgery/lib";
-import {
-  NotificationType,
-  type ResponseNotificationDto,
-} from "api-client";
+import { sanitizeText, disconnectSocket } from "@softsurgery/lib";
+import { NotificationType, type ResponseNotificationDto } from "api-client";
 import { api } from "@/lib/api";
 import {
   advanceTimestampWatermark,
@@ -25,7 +22,6 @@ import {
   requestNotificationPermissions,
 } from "@/lib/notification";
 import { getNotificationDestination } from "@/lib/notification-destination";
-import { sanitizeText } from "@/lib/string";
 import i18n from "@/i18n";
 
 const PRESENCE_BACKGROUND_TASK = "INSTANCT_PRESENCE_BACKGROUND";
