@@ -10,7 +10,6 @@ import { createClientStore, useUserStore } from "@/stores/useUserStore";
 import {
   ResponseEducationDto,
   ResponseExperienceDto,
-  ResponseRefParamDto,
   ServerErrorResponse,
 } from "api-client";
 import { router, useFocusEffect, useNavigation } from "expo-router";
@@ -23,7 +22,6 @@ import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { TabView, TabBar } from "react-native-tab-view";
 import { AboutTab } from "./sections/AboutTab";
 import { CareerTab } from "./sections/CareerTab";
-import { RenderSection } from "./sections/RenderSection";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { ProfileCover } from "./ProfileCover";
 import { toast } from "sonner-native";
@@ -31,8 +29,6 @@ import { useApi } from "@/contexts/ApiContext";
 import { useMutation } from "@tanstack/react-query";
 import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
-import { ExperienceInstance } from "./experience/ExperienceInstance";
-import { EducationInstance } from "./education/EducationInstance";
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { useScrollableElement } from "@/hooks/useScrollableElement";
 import Animated, {
@@ -42,15 +38,6 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useLoader } from "@/contexts/LoaderContext";
-
-interface ProfileSection<T = unknown> {
-  key: string;
-  title: string;
-  data: T[];
-  editable: boolean;
-  color?: string;
-  renderItem: (item: any) => React.ReactNode;
-}
 
 interface InspectBaseProfileProps {
   className?: string;
@@ -191,63 +178,15 @@ export const InspectBaseProfile = ({
     [userStore],
   );
 
-  // ---------------------------------------------------------------
-  //  PROFILE SECTIONS CONFIG
-  // ---------------------------------------------------------------
-  const profileSections: ProfileSection[] = React.useMemo(
-    () => [
-      {
-        key: "experience",
-        title: t("menu.tabs.career.experience.title"),
-        data: experiences as unknown[],
-        editable: currentUser?.id === user?.id,
-        renderItem: (experience: ResponseExperienceDto) => (
-          <ExperienceInstance
-            experience={experience}
-            editable={currentUser?.id === user?.id}
-            onEdit={() => handleEditExperience(experience)}
-          />
-        ),
-      },
-      {
-        key: "education",
-        title: t("menu.tabs.career.education.title"),
-        data: educations as unknown[],
-        editable: currentUser?.id === user?.id,
-        renderItem: (education: ResponseEducationDto) => (
-          <EducationInstance
-            education={education}
-            editable={currentUser?.id === user?.id}
-            onEdit={() => handleEditEducation(education)}
-          />
-        ),
-      },
-      {
-        key: "industries",
-        title: t("menu.tabs.career.industries.title"),
-        data: industries.filter((industry) =>
-          userIndustries?.some((id) => id === industry.id),
-        ) as unknown[],
-        editable: currentUser?.id === user?.id,
-        renderItem: (industry: ResponseRefParamDto) => (
-          <View className="rounded-full border border-border px-3 py-1.5">
-            <Text className="text-[13px] font-semibold">{industry.label}</Text>
-          </View>
-        ),
-      },
-    ],
-    [
-      experiences,
-      educations,
-      industries,
-      userIndustries,
-      currentUser?.id,
-      user?.id,
-      handleEditExperience,
-      handleEditEducation,
-      t,
-    ],
+  const selectedIndustries = React.useMemo(
+    () =>
+      industries.filter((industry) =>
+        userIndustries?.some((industryId) => industryId === industry.id),
+      ),
+    [industries, userIndustries],
   );
+
+  const editable = currentUser?.id === user?.id;
 
   const layout = useWindowDimensions();
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -297,9 +236,13 @@ export const InspectBaseProfile = ({
         case "career":
           return (
             <CareerTab
-              profileSections={profileSections}
-              renderSection={RenderSection}
+              experiences={experiences}
+              educations={educations}
+              industries={selectedIndustries}
+              editable={editable}
               userId={id}
+              onEditExperience={handleEditExperience}
+              onEditEducation={handleEditEducation}
               onRefresh={onRefresh}
               refreshing={refreshing}
               onScroll={handleScroll}
@@ -309,7 +252,19 @@ export const InspectBaseProfile = ({
           return null;
       }
     },
-    [user, onRefresh, refreshing, handleScroll, profileSections, id],
+    [
+      user,
+      onRefresh,
+      refreshing,
+      handleScroll,
+      experiences,
+      educations,
+      selectedIndustries,
+      editable,
+      id,
+      handleEditExperience,
+      handleEditEducation,
+    ],
   );
 
   const animatedTabsStyle = useAnimatedStyle(() => {
