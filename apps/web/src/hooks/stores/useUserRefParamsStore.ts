@@ -1,4 +1,4 @@
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { create } from "zustand";
 
 interface UserRefParamsData {
@@ -29,7 +29,7 @@ export const useUserRefParamsStore = create<UserRefParamsStore>((set) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...(state[rootKey as keyof UserRefParamsData] as object) },
         nestedPath,
         value,

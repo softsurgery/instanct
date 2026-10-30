@@ -1,4 +1,4 @@
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { ResponseUserDto } from "api-client";
 import { Cluster, NearbyUser } from "@/types";
 import * as Location from "expo-location";
@@ -116,7 +116,7 @@ export const useMapStore = create<MapStore>((set, get) => ({
         throw new Error(`Cannot set nested path on non-object: ${rootKey}`);
       }
 
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...(rootValue as object) },
         nestedPath,
         value,

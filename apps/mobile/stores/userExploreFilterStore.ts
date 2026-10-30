@@ -1,4 +1,4 @@
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -64,7 +64,7 @@ export const useExploreFilterStore = create<ExploreFilterStore>()(
             throw new Error(`Cannot set nested path on non-object: ${rootKey}`);
           }
 
-          const updatedRoot = setDeepValue(
+          const updatedRoot = objectUtils.setDeepValue(
             { ...(rootValue as object) },
             nestedPath,
             value,

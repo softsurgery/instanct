@@ -1,4 +1,4 @@
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { type UploadFileInput } from "@/lib/upload";
 import { create } from "zustand";
 import {
@@ -150,7 +150,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
         throw new Error(`Cannot set nested path on non-object: ${rootKey}`);
       }
 
-      const updatedRoot = setDeepValue(rootValue, nestedPath, value);
+      const updatedRoot = objectUtils.setDeepValue(rootValue, nestedPath, value);
 
       return {
         ...state,
@@ -214,7 +214,7 @@ export const createClientStore = () =>
           throw new Error(`Cannot set nested path on non-object: ${rootKey}`);
         }
 
-        const updatedRoot = setDeepValue(
+        const updatedRoot = objectUtils.setDeepValue(
           { ...(rootValue as object) },
           nestedPath,
           value,

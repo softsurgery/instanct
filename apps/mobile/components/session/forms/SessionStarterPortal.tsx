@@ -24,7 +24,7 @@ import { createSessionSchema } from "@/types/validations/session.validation";
 import { ServerErrorResponse, SessionType } from "api-client";
 import { useUserSessions } from "@/hooks/content/sessions/useUserSessions";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { zodErrorsToNested } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
 interface SessionStarterPortalProps {
@@ -109,7 +109,7 @@ export const SessionStarterPortal = ({
       sessionStore.createDto,
     );
     if (!result.success) {
-      sessionStore.set("errors", zodErrorsToNested(result.error));
+      sessionStore.set("errors", objectUtils.zodErrorsToNested(result.error));
       return;
     }
     startSession();

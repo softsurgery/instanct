@@ -4,7 +4,7 @@ import {
   ResponseEducationDto,
   UpdateEducationDto,
 } from "@/types";
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 
 interface EducationStoreData {
   response?: ResponseEducationDto;
@@ -52,7 +52,7 @@ export const useEducationStore = create<EducationStore>((set) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...(state[rootKey as keyof EducationStoreData] as object) },
         nestedPath,
         value,

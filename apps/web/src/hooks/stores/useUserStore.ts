@@ -6,7 +6,7 @@ import {
   ResponseUserDto,
   UpdateUserDto,
 } from "@/types";
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { ImageFile } from "@softsurgery/form-builder";
 
 interface UserStoreData {
@@ -122,7 +122,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...(state[rootKey as keyof UserStoreData] as object) },
         nestedPath,
         value,

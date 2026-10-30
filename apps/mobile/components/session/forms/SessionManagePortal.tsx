@@ -15,7 +15,7 @@ import {
   FormBuilder,
 } from "@softsurgery/mobile-form-builder";
 import { updateSessionSchema } from "@/types/validations/session.validation";
-import { zodErrorsToNested } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import {
   StableSafeAreaView,
   ApplicationHeader,
@@ -133,7 +133,7 @@ export const SessionManagePortal = ({
   const handleSessionEdit = () => {
     const result = updateSessionSchema.safeParse(sessionStore.updateDto);
     if (!result.success) {
-      sessionStore.set("errors", zodErrorsToNested(result.error));
+      sessionStore.set("errors", objectUtils.zodErrorsToNested(result.error));
     } else {
       updateSession();
     }

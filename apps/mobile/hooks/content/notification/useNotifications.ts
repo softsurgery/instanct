@@ -7,7 +7,7 @@ import {
 import { getNotificationDestination } from "@/lib/notification-destination";
 import { advanceNotificationWatermark } from "@/lib/app-background";
 import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
-import { sanitizeText } from "@softsurgery/lib";
+import { stringUtils } from "@softsurgery/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -79,10 +79,10 @@ export function useNotifications(
 
       const destination = getNotificationDestination(notification);
       await presentLocalNotification({
-        title: sanitizeText(
+        title: stringUtils.sanitizeText(
           t(`titles.${notification.type}`, notification.payload).toString(),
         ),
-        body: sanitizeText(
+        body: stringUtils.sanitizeText(
           t(
             `descriptions.${notification.type}`,
             notification.payload,

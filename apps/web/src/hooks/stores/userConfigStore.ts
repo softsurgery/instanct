@@ -3,7 +3,7 @@ import {
   ResponseConfigurationParamDto,
   UpdateConfigurationParameterDto,
 } from "@/types";
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 
 interface ConfigStoreData {
   response?: ResponseConfigurationParamDto[];
@@ -35,7 +35,7 @@ export const useConfigStore = create<ConfigStore>((set) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...(state[rootKey as keyof ConfigStoreData] as object) },
         nestedPath,
         value,

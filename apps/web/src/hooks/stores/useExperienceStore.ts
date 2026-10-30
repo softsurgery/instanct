@@ -4,7 +4,7 @@ import {
   ResponseExperienceDto,
   UpdateExperienceDto,
 } from "@/types";
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 
 interface ExperienceStoreData {
   response?: ResponseExperienceDto;
@@ -58,7 +58,7 @@ export const useExperienceStore = create<ExperienceStore>((set) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...(state[rootKey as keyof ExperienceStoreData] as object) },
         nestedPath,
         value,

@@ -1,4 +1,4 @@
-import { sanitizeText, disconnectSocket } from "@softsurgery/lib";
+import { stringUtils, disconnectSocket } from "@softsurgery/lib";
 import { NotificationType, type ResponseNotificationDto } from "api-client";
 import { api } from "@/lib/api";
 import {
@@ -63,9 +63,11 @@ function translateNotificationField(
 
   const translated = i18n.t(key, interpolation);
   if (translated === key) {
-    return sanitizeText(i18n.t(fallbackKey, interpolation).toString());
+    return stringUtils.sanitizeText(
+      i18n.t(fallbackKey, interpolation).toString(),
+    );
   }
-  return sanitizeText(translated.toString());
+  return stringUtils.sanitizeText(translated.toString());
 }
 
 function notificationCopy(notification: ResponseNotificationDto) {

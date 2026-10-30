@@ -6,6 +6,7 @@ import {
   UpdateRefParamDto,
   UpdateRefTypeDto,
 } from "@/types";
+import { objectUtils } from "@softsurgery/lib";
 import { create } from "zustand";
 
 interface ReferenceTypesStoreData {
@@ -60,26 +61,7 @@ export const useReferenceTypesStore = create<ReferenceTypesStore>(
     },
 
     setNested: (path, value) => {
-      set((state) => {
-        const keys = path.split(".");
-        const newState = { ...state };
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let current: any = newState;
-        for (let i = 0; i < keys.length - 1; i++) {
-          const key = keys[i];
-          if (typeof current[key] !== "object" || current[key] === null) {
-            current[key] = {};
-          } else {
-            current[key] = { ...current[key] };
-          }
-          current = current[key];
-        }
-
-        current[keys[keys.length - 1]] = value;
-
-        return newState;
-      });
+      set((state) => objectUtils.setDeepValue(state, path, value) as ReferenceTypesStore);
     },
 
     reset: () => {

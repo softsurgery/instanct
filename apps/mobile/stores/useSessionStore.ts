@@ -1,4 +1,4 @@
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import {
   CreateSessionDto,
   MapSessionPayload,
@@ -56,7 +56,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...state[rootKey as keyof SessionData] },
         nestedPath,
         value,

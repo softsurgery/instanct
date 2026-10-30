@@ -23,7 +23,7 @@ import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
-import { zodErrorsToNested } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { useTranslation } from "react-i18next";
 
@@ -112,7 +112,7 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
     ).safeParse(payload);
 
     if (!result.success) {
-      requestStore.set("errors", zodErrorsToNested(result.error));
+      requestStore.set("errors", objectUtils.zodErrorsToNested(result.error));
       return;
     }
     sendRequest(result.data);

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CreateFeedbackDto } from "api-client";
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 
 interface SendFeedbackData {
   createDto: CreateFeedbackDto;
@@ -38,7 +38,7 @@ export const useSendFeedbackStore = create<SendFeedbackStore>((set, get) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...state[rootKey as keyof SendFeedbackData] },
         nestedPath,
         value,

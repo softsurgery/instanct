@@ -1,4 +1,4 @@
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { type UploadFileInput } from "@/lib/upload";
 import {
   RequestClientSignInDto,
@@ -76,7 +76,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         throw new Error(`Cannot set nested path on non-object: ${rootKey}`);
       }
 
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...(rootValue as object) },
         nestedPath,
         value,

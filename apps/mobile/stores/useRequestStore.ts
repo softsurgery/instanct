@@ -1,4 +1,4 @@
-import { setDeepValue } from "@/lib/object";
+import { objectUtils } from "@softsurgery/lib";
 import { create } from "zustand";
 import { CreateRequestDto } from "api-client";
 
@@ -54,7 +54,7 @@ export const useRequestStore = create<RequestStore>((set, get) => ({
     const [rootKey, ...restPath] = path.split(".");
     const nestedPath = restPath.join(".");
     set((state) => {
-      const updatedRoot = setDeepValue(
+      const updatedRoot = objectUtils.setDeepValue(
         { ...state[rootKey as keyof RequestData] },
         nestedPath,
         value,
