@@ -33,7 +33,7 @@ import { useChatContext } from "@/contexts/ChatContext";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
-import { useScrollableElement } from "@/hooks/useScrollableElement";
+import { useScrollableElement } from "@softsurgery/mobile-hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ExplorePortalProps {

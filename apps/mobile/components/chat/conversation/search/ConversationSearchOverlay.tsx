@@ -12,7 +12,7 @@ import {
   MarkedInput,
   useColorPalette,
 } from "@softsurgery/mobile-components";
-import { useGradualAnimation } from "@/hooks/useGradualAnimation";
+import { useGradualAnimation } from "@softsurgery/mobile-hooks";
 import { useConversationMessageSearch } from "@/hooks/content/chat/useConversationMessageSearch";
 import { ConversationSearchResultItem } from "./ConversationSearchResultItem";
 import { useTranslation } from "react-i18next";

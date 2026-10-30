@@ -44,7 +44,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useGradualAnimation } from "@/hooks/useGradualAnimation";
+import { useGradualAnimation } from "@softsurgery/mobile-hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResponseMessageDto } from "api-client";
 import { MessageFlatListItem } from "@/types";

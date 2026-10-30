@@ -1,5 +1,5 @@
 import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
-import { usePulseAnimation } from "@/hooks/usePulseAnimation";
+import { usePulseAnimation } from "@softsurgery/mobile-hooks";
 import { identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";

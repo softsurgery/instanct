@@ -26,7 +26,7 @@ import { useLoader } from "@/contexts/LoaderContext";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { Image, ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLuminance } from "@/hooks/useLuminance";
+import { useLuminance } from "@softsurgery/mobile-hooks";
 
 interface ProfileCoverProps {
   user: ResponseUserDto;

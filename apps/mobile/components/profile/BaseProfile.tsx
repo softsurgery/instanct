@@ -30,7 +30,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
-import { useScrollableElement } from "@/hooks/useScrollableElement";
+import { useScrollableElement } from "@softsurgery/mobile-hooks";
 import Animated, {
   useAnimatedStyle,
   withTiming,

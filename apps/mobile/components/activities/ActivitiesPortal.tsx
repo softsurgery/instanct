@@ -14,7 +14,7 @@ import { ActivitiesDetailContent } from "./ActivitiesDetailContent";
 import { useTranslation } from "react-i18next";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
-import { useScrollableElement } from "@/hooks/useScrollableElement";
+import { useScrollableElement } from "@softsurgery/mobile-hooks";
 import { useChatContext } from "@/contexts/ChatContext";
 
 interface ActivitiesPortalProps {
