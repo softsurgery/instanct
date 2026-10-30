@@ -538,6 +538,12 @@ importers:
       '@softsurgery/mobile-form-builder':
         specifier: workspace:*
         version: link:../../packages/mobile-form-builder
+      '@softsurgery/mobile-hooks':
+        specifier: workspace:*
+        version: link:../../packages/mobile-hooks
+      '@softsurgery/mobile-lib':
+        specifier: workspace:*
+        version: link:../../packages/mobile-lib
       '@softsurgery/mobile-ui':
         specifier: workspace:*
         version: link:../../packages/mobile-ui
@@ -643,6 +649,9 @@ importers:
       expo-router:
         specifier: 58.0.27
         version: 58.0.27(29d185af3d2d1cf65a211d0ba0011ea3)
+      expo-screen-orientation:
+        specifier: ~58.0.3
+        version: 58.0.3(expo@58.0.20)(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))
       expo-secure-store:
         specifier: ~58.0.2
         version: 58.0.2(expo@58.0.20)
@@ -1465,6 +1474,40 @@ importers:
       react-native-star-rating-widget:
         specifier: '*'
         version: 1.11.0(react-native-svg@15.16.0(react-native@0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0))(react-native@0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
+
+  packages/mobile-hooks:
+    dependencies:
+      '@softsurgery/mobile-lib':
+        specifier: workspace:*
+        version: link:../mobile-lib
+      expo:
+        specifier: 58.0.20
+        version: 58.0.20(9e45fdb3f0e272340d4be02bf6340e67)
+      expo-screen-orientation:
+        specifier: '*'
+        version: 58.0.3(expo@58.0.20)(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))
+      react:
+        specifier: 19.3.0
+        version: 19.3.0
+      react-native:
+        specifier: 0.88.0
+        version: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+    devDependencies:
+      '@types/react':
+        specifier: 19.3.0
+        version: 19.3.0
+
+  packages/mobile-lib:
+    dependencies:
+      expo:
+        specifier: 58.0.20
+        version: 58.0.20(9e45fdb3f0e272340d4be02bf6340e67)
+      expo-screen-orientation:
+        specifier: '*'
+        version: 58.0.3(expo@58.0.20)(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))
+      react-native:
+        specifier: 0.88.0
+        version: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
 
   packages/mobile-ui:
     dependencies:
@@ -9640,6 +9683,12 @@ packages:
         optional: true
       react-server-dom-webpack:
         optional: true
+
+  expo-screen-orientation@58.0.3:
+    resolution: {integrity: sha512-nvNA5VE0HBZDoZhzn0OngyVk/dSbaIMIvytgEAjADtC0pUXAeuMpfnM/e9oqM3naSDj52/F1kdg5Tx3D21QGHg==}
+    peerDependencies:
+      expo: 58.0.20
+      react-native: 0.88.0
 
   expo-secure-store@58.0.2:
     resolution: {integrity: sha512-VupWWEuQF6IiQ06McSymtn7/tehs8ifThhFwAU4UK8poomZcaa2S0UVt/y7G2XozBdkI3xpiPSx+r0pS2zsuYQ==}
@@ -24396,6 +24445,16 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
+
+  expo-screen-orientation@58.0.3(expo@58.0.20)(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)):
+    dependencies:
+      expo: 58.0.20(c9642af41b1dbd66e0d300b25467f0ef)
+      react-native: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+
+  expo-screen-orientation@58.0.3(expo@58.0.20)(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)):
+    dependencies:
+      expo: 58.0.20(9e45fdb3f0e272340d4be02bf6340e67)
+      react-native: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
 
   expo-secure-store@58.0.2(expo@58.0.20):
     dependencies:

@@ -18,6 +18,8 @@ const SHARED_MOBILE_PACKAGES = [
   'packages/mobile-ui',
   'packages/mobile-components',
   'packages/mobile-form-builder',
+  'packages/mobile-lib',
+  'packages/mobile-hooks',
 ];
 
 const ROOT_MOBILE_SINGLETONS = [

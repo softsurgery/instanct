@@ -32,6 +32,8 @@ COPY packages/hooks/package.json ./packages/hooks/package.json
 COPY packages/lib/package.json ./packages/lib/package.json
 COPY packages/mobile-components/package.json ./packages/mobile-components/package.json
 COPY packages/mobile-form-builder/package.json ./packages/mobile-form-builder/package.json
+COPY packages/mobile-hooks/package.json ./packages/mobile-hooks/package.json
+COPY packages/mobile-lib/package.json ./packages/mobile-lib/package.json
 COPY packages/mobile-ui/package.json ./packages/mobile-ui/package.json
 COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
 COPY packages/ui/package.json ./packages/ui/package.json

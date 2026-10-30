@@ -14,6 +14,8 @@ config.watchFolders = [
   path.resolve(workspaceRoot, "packages/hooks"),
   path.resolve(workspaceRoot, "packages/lib"),
   path.resolve(workspaceRoot, "packages/mobile-form-builder"),
+  path.resolve(workspaceRoot, "packages/mobile-lib"),
+  path.resolve(workspaceRoot, "packages/mobile-hooks"),
 ];
 
 config.transformer = {
@@ -59,6 +61,14 @@ config.resolver = {
     "@softsurgery/mobile-form-builder": path.resolve(
       workspaceRoot,
       "packages/mobile-form-builder",
+    ),
+    "@softsurgery/mobile-lib": path.resolve(
+      workspaceRoot,
+      "packages/mobile-lib",
+    ),
+    "@softsurgery/mobile-hooks": path.resolve(
+      workspaceRoot,
+      "packages/mobile-hooks",
     ),
   },
   assetExts: config.resolver.assetExts.filter((ext) => ext !== "svg"),

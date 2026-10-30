@@ -10,7 +10,7 @@ export default ({ config }) => ({
   slug: "instanct-mobile-app",
   version,
 
-  orientation: "portrait",
+  orientation: "default",
   icon: APP_ICON,
   primaryColor: "#0B3A75",
   backgroundColor: "#ffffff",
@@ -28,6 +28,7 @@ export default ({ config }) => ({
     ...config.ios,
 
     supportsTablet: true,
+    requireFullScreen: true,
     bundleIdentifier: "com.instanct.instanctma",
     icon: APP_ICON,
     version,
@@ -100,6 +101,12 @@ export default ({ config }) => ({
     "expo-status-bar",
     "expo-sharing",
     "expo-secure-store",
+    [
+      "expo-screen-orientation",
+      {
+        initialOrientation: "DEFAULT",
+      },
+    ],
 
     [
       "expo-notifications",

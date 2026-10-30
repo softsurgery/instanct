@@ -31,6 +31,7 @@ import { LoaderProvider } from "@/contexts/LoaderContext";
 import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useVersionPersistStore } from "@/stores/useVersionPersistStore";
 import { ForceUpdateGate } from "@/components/version/ForceUpdateGate";
+import { configureScreenOrientation } from "@softsurgery/mobile-lib";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -83,6 +84,10 @@ function RootLayout() {
   const { colorScheme } = useColorScheme();
   const isPreferenceReady = usePreferencePersistStore((state) => state.isReady);
   const isVersionReady = useVersionPersistStore((state) => state.isReady);
+
+  React.useEffect(() => {
+    void configureScreenOrientation();
+  }, []);
 
   React.useEffect(() => {
     if (!isPreferenceReady || !isVersionReady) return;
