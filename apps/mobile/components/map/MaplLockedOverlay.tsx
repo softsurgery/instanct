@@ -3,7 +3,7 @@ import { cn } from "@softsurgery/lib";
 import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
-import { MapPinOff } from "lucide-react-native";
+import { Map } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Animated, {
@@ -144,7 +144,7 @@ export const MapLockedOverlay = ({
             />
 
             <View className="h-16 w-16 items-center justify-center">
-              <Icon as={MapPinOff} size={32} />
+              <Icon as={Map} size={32} />
             </View>
           </Animated.View>
 

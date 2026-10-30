@@ -1,9 +1,9 @@
 import { Icon } from "@softsurgery/mobile-ui";
 import { useColorPalette, useRTL } from "@softsurgery/mobile-components";
-import { IconChecklist, IconMapPinHeart } from "@tabler/icons-react-native";
+import { IconChecklist } from "@tabler/icons-react-native";
 import * as Haptics from "expo-haptics";
 import { Tabs, useSegments } from "expo-router";
-import { Telescope, User } from "lucide-react-native";
+import { Map, Telescope, User } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
@@ -41,7 +41,7 @@ export default function TabLayout() {
         name: "map",
         title: "map",
         label: t("map"),
-        icon: IconMapPinHeart,
+        icon: Map,
       },
       {
         name: "menu",
