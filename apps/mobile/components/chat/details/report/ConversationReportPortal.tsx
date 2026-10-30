@@ -16,7 +16,7 @@ import {
   AppHeaderBack,
   BottomButtonWrapper,
 } from "@softsurgery/mobile-components";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useConversationReportStore } from "@/stores/useConversationReportStore";
 import { createConversationReportSchema } from "@/types/validations/chat.validation";
 import { ServerErrorResponse } from "api-client";

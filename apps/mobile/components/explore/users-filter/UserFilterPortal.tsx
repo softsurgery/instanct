@@ -12,7 +12,7 @@ import {
 import { router } from "expo-router";
 import { View } from "react-native";
 import { useExploreFilterFormStructure } from "./useExploreFilterFormStructure";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { Button, Text } from "@softsurgery/mobile-ui";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";

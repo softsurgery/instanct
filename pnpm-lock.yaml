@@ -1354,6 +1354,9 @@ importers:
       '@softsurgery/lib':
         specifier: workspace:*
         version: link:../lib
+      '@softsurgery/mobile-hooks':
+        specifier: workspace:*
+        version: link:../mobile-hooks
       '@softsurgery/mobile-ui':
         specifier: workspace:*
         version: link:../mobile-ui
@@ -1438,6 +1441,9 @@ importers:
       '@softsurgery/mobile-components':
         specifier: workspace:*
         version: link:../mobile-components
+      '@softsurgery/mobile-hooks':
+        specifier: workspace:*
+        version: link:../mobile-hooks
       '@softsurgery/mobile-ui':
         specifier: workspace:*
         version: link:../mobile-ui
@@ -1477,6 +1483,9 @@ importers:
 
   packages/mobile-hooks:
     dependencies:
+      '@softsurgery/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@softsurgery/mobile-lib':
         specifier: workspace:*
         version: link:../mobile-lib
@@ -1486,6 +1495,9 @@ importers:
       expo-screen-orientation:
         specifier: '*'
         version: 58.0.3(expo@58.0.20)(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))
+      nativewind:
+        specifier: 4.2.7
+        version: 4.2.7(37da60fa3787eed7e81221f2c84c31f1)
       react:
         specifier: 19.3.0
         version: 19.3.0

@@ -3,7 +3,7 @@ import { cn } from "@softsurgery/lib";
 import { View } from "react-native";
 import { Text, Button } from "@softsurgery/mobile-ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";

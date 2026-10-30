@@ -10,17 +10,14 @@ import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { Button, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { useUserStore } from "@/stores/useUserStore";
-import {
-  ServerErrorResponse,
-  UpdateEducationDto,
-} from "api-client";
+import { ServerErrorResponse, UpdateEducationDto } from "api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useUpdateEducationFormStructure } from "./useUpdateEducationFormStructure";
 import { updateEducationSchema } from "@/types/validations/education.validation";
 import { View } from "react-native";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import React from "react";
 import { ActionSheetRef } from "react-native-actions-sheet";

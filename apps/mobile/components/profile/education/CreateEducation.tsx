@@ -13,15 +13,12 @@ import { useUserStore } from "@/stores/useUserStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useCreateEducationFormStructure } from "./useCreateEducationFormStructure";
-import {
-  CreateEducationDto,
-  ServerErrorResponse,
-} from "api-client";
+import { CreateEducationDto, ServerErrorResponse } from "api-client";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { createEducationSchema } from "@/types/validations/education.validation";
 import { View } from "react-native";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import React from "react";
 

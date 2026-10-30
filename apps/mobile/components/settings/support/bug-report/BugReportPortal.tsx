@@ -18,7 +18,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { createBugSchema } from "@/types/validations/system-reports.validation";
 import { useReportBugStore } from "@/stores/useReportBugStore";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import { toast } from "sonner-native";
 import {

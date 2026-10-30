@@ -15,7 +15,7 @@ import {
 } from "@softsurgery/mobile-form-builder";
 import { Button, Text } from "@softsurgery/mobile-ui";
 import { useSessionStarterFormStructure } from "./useSessionStarterFormStructure";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";

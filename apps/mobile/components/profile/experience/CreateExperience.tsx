@@ -11,16 +11,13 @@ import { Button, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
-import {
-  CreateExperienceDto,
-  ServerErrorResponse,
-} from "api-client";
+import { CreateExperienceDto, ServerErrorResponse } from "api-client";
 import { createExperienceSchema } from "@/types/validations/experience.validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useCreateExperienceFormStructure } from "./useCreateExperienceFormStructure";
 import { toast } from "sonner-native";
 import React from "react";

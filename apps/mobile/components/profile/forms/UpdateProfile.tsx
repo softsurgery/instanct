@@ -10,11 +10,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useUpdateProfileFormStructure } from "./useUpdateProfileFormStructure";
-import {
-  ServerErrorResponse,
-  UpdateUserDto,
-  Upload,
-} from "api-client";
+import { ServerErrorResponse, UpdateUserDto, Upload } from "api-client";
 import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserSchema } from "@/types/validations/user.validation";
@@ -24,7 +20,7 @@ import React from "react";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";
 import { useUploadMutation } from "@/hooks/useUploadMutation";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";

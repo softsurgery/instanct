@@ -5,7 +5,7 @@ import { type ActionSheetRef } from "react-native-actions-sheet";
 import { Icon, Textarea, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { ConversationInputActionsSheet } from "./ConversationInputActionsSheet";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import Animated, {
   FadeIn,
   FadeOut,

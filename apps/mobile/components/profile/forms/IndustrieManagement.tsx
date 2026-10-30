@@ -16,7 +16,7 @@ import {
 import { Text, Icon, Button } from "@softsurgery/mobile-ui";
 import { Loader2 } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import {
   FormBuilder,

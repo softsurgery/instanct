@@ -13,7 +13,7 @@ import {
 import { Button, Icon, Text } from "@softsurgery/mobile-ui";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useChangePasswordFormStructure } from "./useChangePasswordFormStructure";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";

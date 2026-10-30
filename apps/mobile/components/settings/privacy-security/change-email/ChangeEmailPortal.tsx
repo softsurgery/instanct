@@ -8,7 +8,7 @@ import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useChangeEmailFormStructure } from "./useChangeEmailFormStructure";
 import { useUserStore } from "@/stores/useUserStore";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import * as Haptics from "expo-haptics";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useMutation } from "@tanstack/react-query";

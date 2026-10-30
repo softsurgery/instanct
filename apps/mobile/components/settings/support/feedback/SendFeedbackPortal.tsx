@@ -18,7 +18,7 @@ import {
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import {
   ServerErrorResponse,
   ResponseUserDeviceDto,

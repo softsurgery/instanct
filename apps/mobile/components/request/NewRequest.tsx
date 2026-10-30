@@ -17,7 +17,7 @@ import { cn } from "@softsurgery/lib";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useCreateNewRequestFormStructure } from "./forms/useCreateRequestFormStructure";
 import { useRequestStore } from "@/stores/useRequestStore";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
