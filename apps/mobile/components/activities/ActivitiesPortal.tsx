@@ -8,6 +8,7 @@ import { cn } from "@softsurgery/lib";
 import { MapSessionPayload, ResponseSessionDto } from "api-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { Bell } from "lucide-react-native";
+import { View } from "react-native";
 import Animated from "react-native-reanimated";
 import { ActivitiesDetailContent } from "./ActivitiesDetailContent";
 import { useTranslation } from "react-i18next";
@@ -37,7 +38,7 @@ export const ActivitiesPortal = ({ className }: ActivitiesPortalProps) => {
     router.push("/main/chat");
   }, []);
 
-  const { animatedHeaderStyle, handleScroll } = useScrollableElement({
+  const { animatedHeaderStyle, handleScroll, onLayout } = useScrollableElement({
     deltaThreshold: 40,
     duration: 250,
     checkScrollable: true,
@@ -58,23 +59,25 @@ export const ActivitiesPortal = ({ className }: ActivitiesPortalProps) => {
   return (
     <StableSafeAreaView className={cn("flex-1", className)}>
       <Animated.View style={animatedHeaderStyle}>
-        <ApplicationHeader
-          title={t("activities.title")}
-          shortcuts={[
-            {
-              key: "bell",
-              icon: Bell,
-              onPress: handleNotificationsPress,
-              badgeText: count > 0 ? String(count) : undefined,
-            },
-            {
-              key: "chat",
-              icon: IconMessageChatbot,
-              onPress: handleChatPress,
-              badgeText: chatCount > 0 ? String(chatCount) : undefined,
-            },
-          ]}
-        />
+        <View onLayout={onLayout}>
+          <ApplicationHeader
+            title={t("activities.title")}
+            shortcuts={[
+              {
+                key: "bell",
+                icon: Bell,
+                onPress: handleNotificationsPress,
+                badgeText: count > 0 ? String(count) : undefined,
+              },
+              {
+                key: "chat",
+                icon: IconMessageChatbot,
+                onPress: handleChatPress,
+                badgeText: chatCount > 0 ? String(chatCount) : undefined,
+              },
+            ]}
+          />
+        </View>
       </Animated.View>
       <StableScrollView className="flex-1 bg-background">
         <ActivitiesDetailContent

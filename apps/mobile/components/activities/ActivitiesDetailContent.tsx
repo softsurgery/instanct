@@ -1,19 +1,13 @@
 import React from "react";
-import type {
-  MapSessionPayload,
-  ResponseSessionDto,
-} from "api-client";
-import { View, useWindowDimensions } from "react-native";
+import type { MapSessionPayload, ResponseSessionDto } from "api-client";
+import { StyleProp, View, ViewStyle, useWindowDimensions } from "react-native";
 import { SessionIncomingRequests } from "./SessionIncomingRequests";
 import { SessionOutgoingRequests } from "./SessionOutgoingRequests";
 import { Text } from "@softsurgery/mobile-ui";
 import { useInfiniteUserBookmarks } from "@/hooks/content/users/useInfinteUserBookmarks";
 import { LegendList } from "@legendapp/list";
 import { BookmarkCard } from "./BookmarkCard";
-import {
-  ResponseUserBookmarkDto,
-  ResponseUserDto,
-} from "api-client";
+import { ResponseUserBookmarkDto, ResponseUserDto } from "api-client";
 import {
   Loader,
   hslToHex,
@@ -25,11 +19,13 @@ import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { BookmarkSkeleton } from "./skeletons/BookmarkSkeleton";
 import { TabView, TabBar } from "react-native-tab-view";
 import { useTranslation } from "react-i18next";
+import Animated, { AnimatedStyle } from "react-native-reanimated";
 
 interface ActivitiesDetailContentProps {
   className?: string;
   session?: ResponseSessionDto<MapSessionPayload> | null;
   handleScroll?: (event: any) => void;
+  animatedTabsStyle?: StyleProp<AnimatedStyle<ViewStyle>>;
 }
 
 type FlattenedBookmark =
@@ -40,6 +36,7 @@ export const ActivitiesDetailContent = ({
   className,
   session,
   handleScroll,
+  animatedTabsStyle,
 }: ActivitiesDetailContentProps) => {
   const { t } = useTranslation("activities");
   const {
@@ -235,7 +232,10 @@ export const ActivitiesDetailContent = ({
   );
 
   return (
-    <View className={cn("flex flex-1 flex-col", className)}>
+    <Animated.View
+      className={cn("flex flex-1 flex-col", className)}
+      style={animatedTabsStyle}
+    >
       <TabView
         navigationState={{ index: tabIndex, routes }}
         renderScene={renderScene}
@@ -262,6 +262,6 @@ export const ActivitiesDetailContent = ({
           />
         )}
       />
-    </View>
+    </Animated.View>
   );
 };
