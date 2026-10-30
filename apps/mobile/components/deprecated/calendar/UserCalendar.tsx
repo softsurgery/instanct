@@ -1,6 +1,5 @@
 import { Button, Icon, Text } from "@softsurgery/mobile-ui";
 import {
-  StablePressable,
   StableSafeAreaView,
   ApplicationHeader,
   AppHeaderBack,
@@ -28,7 +27,7 @@ import {
   Plus,
 } from "lucide-react-native";
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Pressable } from "react-native";
 
 // Mock event types for demonstration
 export interface CalendarEvent {
@@ -201,36 +200,36 @@ export const UserCalendar = ({
       <View className={cn("flex-1 bg-background", className)}>
         {/* Header */}
         <View className="flex-row items-center justify-between px-4 py-3 border-b border-border">
-          <StablePressable
+          <Pressable
             onPress={handlePrevMonth}
             className="flex-row items-center"
           >
             <Icon as={ChevronLeft} size={20} className="text-red-500" />
-          </StablePressable>
+          </Pressable>
 
           <Text className="text-red-500 text-lg font-medium">
             {format(currentMonth, "MMMM yyyy")}
           </Text>
 
-          <StablePressable
+          <Pressable
             onPress={handleNextMonth}
             className="flex-row items-center"
           >
             <Icon as={ChevronRight} size={20} className="text-red-500" />
-          </StablePressable>
+          </Pressable>
         </View>
 
         {/* Action Bar */}
         <View className="flex-row items-center justify-end px-4 py-2 border-b border-border gap-4">
-          <StablePressable>
+          <Pressable>
             <Icon as={CalendarDays} size={22} className="text-foreground" />
-          </StablePressable>
-          <StablePressable>
+          </Pressable>
+          <Pressable>
             <Icon as={Search} size={22} className="text-foreground" />
-          </StablePressable>
-          <StablePressable onPress={onAddEvent}>
+          </Pressable>
+          <Pressable onPress={onAddEvent}>
             <Icon as={Plus} size={22} className="text-foreground" />
-          </StablePressable>
+          </Pressable>
         </View>
 
         {/* Week Row */}
@@ -256,7 +255,7 @@ export const UserCalendar = ({
             const isTodayDate = isToday(day);
 
             return (
-              <StablePressable
+              <Pressable
                 key={index}
                 className="flex-1 items-center"
                 onPress={() => setSelectedDate(day)}
@@ -281,7 +280,7 @@ export const UserCalendar = ({
                     {format(day, "d")}
                   </Text>
                 </View>
-              </StablePressable>
+              </Pressable>
             );
           })}
         </View>
@@ -299,7 +298,7 @@ export const UserCalendar = ({
             <Text className="text-xs text-muted-foreground w-12">all-day</Text>
             <View className="flex-1 flex-row gap-2">
               {allDayEvents.map((event) => (
-                <StablePressable
+                <Pressable
                   key={event.id}
                   onPress={() => onEventPress?.(event)}
                   className="flex-row items-center bg-blue-100 px-2 py-1 rounded-md"
@@ -311,7 +310,7 @@ export const UserCalendar = ({
                   >
                     {event.title}
                   </Text>
-                </StablePressable>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -355,7 +354,7 @@ export const UserCalendar = ({
               const colors = EVENT_COLORS[event.color];
 
               return (
-                <StablePressable
+                <Pressable
                   key={event.id}
                   onPress={() => onEventPress?.(event)}
                   className={cn(
@@ -380,7 +379,7 @@ export const UserCalendar = ({
                       {format(event.endTime, "haa")}
                     </Text>
                   )}
-                </StablePressable>
+                </Pressable>
               );
             })}
           </View>
@@ -388,18 +387,15 @@ export const UserCalendar = ({
 
         {/* Bottom Tab Bar */}
         <View className="flex-row items-center justify-around pt-6 pb-8 border-t border-border bg-card">
-          <StablePressable
-            onPress={handleTodayPress}
-            className="items-center px-6"
-          >
+          <Pressable onPress={handleTodayPress} className="items-center px-6">
             <Text className="text-red-500 font-medium">Today</Text>
-          </StablePressable>
-          <StablePressable className="items-center px-6">
+          </Pressable>
+          <Pressable className="items-center px-6">
             <Text className="text-muted-foreground font-medium">Calendars</Text>
-          </StablePressable>
-          <StablePressable className="items-center px-6">
+          </Pressable>
+          <Pressable className="items-center px-6">
             <Text className="text-muted-foreground font-medium">Inbox</Text>
-          </StablePressable>
+          </Pressable>
         </View>
       </View>
     </StableSafeAreaView>

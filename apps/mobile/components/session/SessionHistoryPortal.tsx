@@ -1,10 +1,9 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Pressable } from "react-native";
 import { LegendList } from "@legendapp/list";
 import {
   StableSafeAreaView,
   ApplicationHeader,
-  StablePressable,
   Loader,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
@@ -58,7 +57,7 @@ export const SessionHistoryPortal = ({
 
   const renderItem = React.useCallback(
     ({ item }: { item: ResponseSessionDto }) => (
-      <StablePressable
+      <Pressable
         className={cn(
           "p-4 my-1 rounded-lg",
           item.status === SessionStatus.ACTIVE &&
@@ -103,7 +102,7 @@ export const SessionHistoryPortal = ({
           </View>
           <Icon as={ChevronRight} size={20} />
         </View>
-      </StablePressable>
+      </Pressable>
     ),
     [],
   );
