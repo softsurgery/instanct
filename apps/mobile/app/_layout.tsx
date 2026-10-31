@@ -19,11 +19,7 @@ import i18n from "../i18n";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
-import {
-  useColorPalette,
-  PaletteProvider,
-  VideoThumbnailGeneratorHost,
-} from "@softsurgery/mobile-components";
+import { VideoThumbnailGeneratorHost } from "@softsurgery/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ApiProvider } from "@/contexts/ApiContext";
@@ -32,6 +28,7 @@ import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useVersionPersistStore } from "@/stores/useVersionPersistStore";
 import { ForceUpdateGate } from "@/components/version/ForceUpdateGate";
 import { configureScreenOrientation } from "@softsurgery/mobile-lib";
+import { PaletteProvider, useColorPalette } from "@softsurgery/mobile-hooks";
 
 export { ErrorBoundary } from "expo-router";
 

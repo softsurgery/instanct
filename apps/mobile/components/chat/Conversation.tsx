@@ -13,10 +13,7 @@ import { ChevronDown } from "lucide-react-native";
 import { useFocusEffect } from "expo-router";
 import { setConversationMessageParam } from "@/lib/chat";
 
-import {
-  StableSafeAreaView,
-  useColorPalette,
-} from "@softsurgery/mobile-components";
+import { StableSafeAreaView } from "@softsurgery/mobile-components";
 import { ChatBubble } from "./conversation/bubbles/ChatBubble";
 import { ChatMediaBubble } from "./conversation/bubbles/ChatMediaBubble";
 import { ChatFileBubble } from "./conversation/bubbles/ChatFileBubble";
@@ -44,14 +41,16 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useGradualAnimation } from "@softsurgery/mobile-hooks";
+import {
+  useColorPalette,
+  useGradualAnimation,
+} from "@softsurgery/mobile-hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResponseMessageDto } from "api-client";
 import { MessageFlatListItem } from "@/types";
-import { cn } from "@softsurgery/lib";
+import { cn, dateUtils } from "@softsurgery/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";
 import { useTranslation } from "react-i18next";
-import { formatLastSeen } from "@/lib/date";
 
 interface ConversationProps {
   id: number;
@@ -289,7 +288,7 @@ export const Conversation = ({
 
   const presenceText = React.useMemo(() => {
     if (isConnected) return t("chat.conversation.presence.online");
-    if (lastSeen) return formatLastSeen(lastSeen, t);
+    if (lastSeen) return dateUtils.formatLastSeen(lastSeen, t);
     return "";
   }, [isConnected, lastSeen, t]);
 

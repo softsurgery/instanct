@@ -1,18 +1,15 @@
 import { Text } from "@softsurgery/mobile-ui";
 import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { CONVERSATION_LINKS_MESSAGES_QUERY } from "@/lib/chat";
 import { getMessageLinksForDisplay } from "@/lib/messageLinks";
-import {
-  ResponseMessageDto,
-  ResponseMessageLinkDto,
-} from "api-client";
+import { ResponseMessageDto, ResponseMessageLinkDto } from "api-client";
 import { LegendList } from "@legendapp/list";
 import { useFocusEffect } from "expo-router";
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
 import { LinkListItem } from "./LinkListItem";
 import { useTranslation } from "react-i18next";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 
 type ConversationLinkItem = {
   key: string;

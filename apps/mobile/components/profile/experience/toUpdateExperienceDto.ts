@@ -1,8 +1,5 @@
-import { toDateOrNull } from "@/lib/date";
-import {
-  ResponseExperienceDto,
-  UpdateExperienceDto,
-} from "api-client";
+import { dateUtils } from "@softsurgery/lib";
+import { ResponseExperienceDto, UpdateExperienceDto } from "api-client";
 
 export const toUpdateExperienceDto = (
   exp: ResponseExperienceDto,
@@ -12,7 +9,7 @@ export const toUpdateExperienceDto = (
   location: exp.location ?? "",
   workType: exp.workType,
   locationType: exp.locationType,
-  startDate: toDateOrNull(exp.startDate) ?? undefined,
-  endDate: toDateOrNull(exp.endDate),
+  startDate: dateUtils.toDateOrNull(exp.startDate) ?? undefined,
+  endDate: dateUtils.toDateOrNull(exp.endDate),
   description: exp.description ?? "",
 });

@@ -1,5 +1,4 @@
 import React from "react";
-import type { MapSessionPayload, ResponseSessionDto } from "api-client";
 import { StyleProp, View, ViewStyle, useWindowDimensions } from "react-native";
 import { SessionIncomingRequests } from "./SessionIncomingRequests";
 import { SessionOutgoingRequests } from "./SessionOutgoingRequests";
@@ -8,23 +7,19 @@ import { useInfiniteUserBookmarks } from "@/hooks/content/users/useInfinteUserBo
 import { LegendList } from "@legendapp/list";
 import { BookmarkCard } from "./BookmarkCard";
 import { ResponseUserBookmarkDto, ResponseUserDto } from "api-client";
-import {
-  Loader,
-  hslToHex,
-  useColorPalette,
-  NotFound,
-} from "@softsurgery/mobile-components";
+import { Loader, NotFound } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { BookmarkSkeleton } from "./skeletons/BookmarkSkeleton";
 import { TabView, TabBar } from "react-native-tab-view";
 import { useTranslation } from "react-i18next";
 import Animated, { AnimatedStyle } from "react-native-reanimated";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 
 interface ActivitiesDetailContentProps {
   className?: string;
-  session?: ResponseSessionDto<MapSessionPayload> | null;
   handleScroll?: (event: any) => void;
+  onTabChange?: (index: number) => void;
   animatedTabsStyle?: StyleProp<AnimatedStyle<ViewStyle>>;
 }
 
@@ -34,8 +29,8 @@ type FlattenedBookmark =
 
 export const ActivitiesDetailContent = ({
   className,
-  session,
   handleScroll,
+  onTabChange,
   animatedTabsStyle,
 }: ActivitiesDetailContentProps) => {
   const { t } = useTranslation("activities");
@@ -239,7 +234,10 @@ export const ActivitiesDetailContent = ({
       <TabView
         navigationState={{ index: tabIndex, routes }}
         renderScene={renderScene}
-        onIndexChange={setTabIndex}
+        onIndexChange={(index) => {
+          setTabIndex(index);
+          onTabChange?.(index);
+        }}
         initialLayout={{ width: layout.width }}
         swipeEnabled={true}
         renderTabBar={(props) => (

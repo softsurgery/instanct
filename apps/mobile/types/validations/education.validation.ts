@@ -1,9 +1,9 @@
+import { dateUtils } from "@softsurgery/lib";
 import { z } from "zod";
-import { toDateOrNull } from "@/lib/date";
 
 // Messages are translation keys, resolved by the consumer in the "menu"
 // namespace (see useCreateEducationFormStructure / useUpdateEducationFormStructure).
-const dateOrNull = z.preprocess(toDateOrNull, z.date().nullable());
+const dateOrNull = z.preprocess(dateUtils.toDateOrNull, z.date().nullable());
 
 const baseEducationSchema = z.object({
   title: z

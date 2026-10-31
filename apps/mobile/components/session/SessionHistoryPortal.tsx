@@ -7,7 +7,7 @@ import {
   Loader,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
-import { cn } from "@softsurgery/lib";
+import { cn, dateUtils } from "@softsurgery/lib";
 import { Map as MapIcon, ChevronRight, Calendar } from "lucide-react-native";
 import { router } from "expo-router";
 import { Text, Icon } from "@softsurgery/mobile-ui";
@@ -16,7 +16,6 @@ import {
   SessionType,
   type ResponseSessionDto,
 } from "api-client";
-import { toDateOnly, toTimeOnly } from "@/lib/date";
 import { useInfiniteUserSessions } from "@/hooks/content/sessions/useInfiniteUserSessions";
 import { SessionStarter } from "./SessionStarter";
 import { useTranslation } from "react-i18next";
@@ -46,8 +45,8 @@ export const SessionHistoryPortal = ({
     startDate: Date | undefined,
     endDate: Date | undefined,
   ) => {
-    const start = startDate ? toDateOnly(new Date(startDate)) : "N/A";
-    const end = endDate ? toDateOnly(new Date(endDate)) : "N/A";
+    const start = startDate ? dateUtils.toDateOnly(new Date(startDate)) : "N/A";
+    const end = endDate ? dateUtils.toDateOnly(new Date(endDate)) : "N/A";
 
     const isSameDay = start === end;
 
@@ -91,11 +90,11 @@ export const SessionHistoryPortal = ({
               </Text>
               <Text className="text-sm text-muted-foreground mt-0.5">
                 {item.plannedStart
-                  ? toTimeOnly(new Date(item.plannedStart))
+                  ? dateUtils.toTimeOnly(new Date(item.plannedStart))
                   : "N/A"}
                 {" → "}
                 {item.plannedEnd
-                  ? toTimeOnly(new Date(item.plannedEnd))
+                  ? dateUtils.toTimeOnly(new Date(item.plannedEnd))
                   : "N/A"}
               </Text>
             </View>

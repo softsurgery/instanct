@@ -1,8 +1,4 @@
-import {
-  hslToHex,
-  SeeMoreText,
-  useColorPalette,
-} from "@softsurgery/mobile-components";
+import { SeeMoreText } from "@softsurgery/mobile-components";
 import { Text, Icon } from "@softsurgery/mobile-ui";
 import { THEME } from "@/lib/theme";
 import { cn } from "@softsurgery/lib";
@@ -25,6 +21,7 @@ import {
   ScrollView,
   View,
 } from "react-native";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 
 interface AboutTabProps {
   className?: string;

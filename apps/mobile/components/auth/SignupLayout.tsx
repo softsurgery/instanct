@@ -31,12 +31,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { useLoader } from "@/contexts/LoaderContext";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface SignupLayoutProps {
   className?: string;
 }
 
 export const SignupLayout = ({ className }: SignupLayoutProps) => {
+  const isLandscape = useScreenOrientation();
   const api = useApi();
   const { t } = useTranslation("auth");
   const authStore = useAuthStore();
@@ -210,7 +212,7 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
         <View className={cn("flex-1 px-2 bg-background", className)}>
           <Stepper
             classNames={{
-              controlsWrapper: "pb-8",
+              controlsWrapper: isLandscape ? "pb-2" : "pb-8",
             }}
             steps={[
               {

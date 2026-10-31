@@ -13,9 +13,9 @@ import { Notifications } from "@/lib/notification";
 import React from "react";
 import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
-import { useColorPalette } from "@softsurgery/mobile-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { NotificationType } from "api-client";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 
 if (Notifications) {
   Notifications.setNotificationHandler({

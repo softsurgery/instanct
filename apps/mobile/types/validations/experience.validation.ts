@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { toDateOrNull } from "@/lib/date";
 import { LocationTypes, WorkTypes } from "api-client";
+import { dateUtils } from "@softsurgery/lib";
 
 // Messages are translation keys, resolved by the consumer in the "menu"
 // namespace (see useCreateExperienceFormStructure / useUpdateExperienceFormStructure).
@@ -29,7 +29,7 @@ const baseExperienceSchema = z.object({
 
   startDate: z
     .preprocess(
-      toDateOrNull,
+      dateUtils.toDateOrNull,
       z.date({
         error: "experience.validation.startDateRequired",
       }),
@@ -56,7 +56,9 @@ const baseExperienceSchema = z.object({
   locationType: z.nativeEnum(LocationTypes, {
     error: "experience.validation.invalidLocationType",
   }),
-  endDate: z.preprocess(toDateOrNull, z.union([z.date(), z.null()])).optional(),
+  endDate: z
+    .preprocess(dateUtils.toDateOrNull, z.union([z.date(), z.null()]))
+    .optional(),
 
   description: z.preprocess(
     (value) => (value == null ? "" : value),

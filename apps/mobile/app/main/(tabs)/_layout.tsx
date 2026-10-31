@@ -1,9 +1,5 @@
 import { Icon } from "@softsurgery/mobile-ui";
-import {
-  useColorPalette,
-  useRTL,
-  VibratingTabButton,
-} from "@softsurgery/mobile-components";
+import { VibratingTabButton } from "@softsurgery/mobile-components";
 import { IconChecklist } from "@tabler/icons-react-native";
 import { Tabs, useSegments } from "expo-router";
 import { Map, Telescope, User } from "lucide-react-native";
@@ -11,6 +7,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useColorPalette, useRTL } from "@softsurgery/mobile-hooks";
 
 export default function TabLayout() {
   const { palette } = useColorPalette();

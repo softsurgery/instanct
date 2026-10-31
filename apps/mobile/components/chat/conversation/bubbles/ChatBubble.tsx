@@ -1,7 +1,4 @@
-import {
-  ResponseMessageLinkDto,
-  StaticMessageEnum,
-} from "api-client";
+import { ResponseMessageLinkDto, StaticMessageEnum } from "api-client";
 import { format } from "date-fns";
 import { Alert, Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";

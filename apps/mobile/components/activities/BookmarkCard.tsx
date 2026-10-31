@@ -19,10 +19,10 @@ import {
 import {
   DestructiveActionSheet,
   ThreeDotsActionSheet,
-  useColorPalette,
 } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 
 interface BookmarkCardProps {
   className?: string;

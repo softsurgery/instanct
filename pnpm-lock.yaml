@@ -1444,6 +1444,9 @@ importers:
       '@softsurgery/mobile-hooks':
         specifier: workspace:*
         version: link:../mobile-hooks
+      '@softsurgery/mobile-lib':
+        specifier: workspace:*
+        version: link:../mobile-lib
       '@softsurgery/mobile-ui':
         specifier: workspace:*
         version: link:../mobile-ui

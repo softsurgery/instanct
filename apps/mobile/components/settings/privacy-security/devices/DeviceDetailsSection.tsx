@@ -9,7 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@softsurgery/lib";
+import { cn, dateUtils } from "@softsurgery/lib";
 import { Text, Badge, Icon } from "@softsurgery/mobile-ui";
 import { getDeviceIcon } from "@/lib/device-icon";
 import {
@@ -17,7 +17,6 @@ import {
   getDeviceSubtitle,
   type DeviceLike,
 } from "@/lib/device";
-import { formatSmartDate, toDateOrNull } from "@/lib/date";
 import type { ResponseUserConnectionHistoryDto } from "api-client";
 
 export type DeviceDetailsData = DeviceLike;
@@ -113,8 +112,10 @@ export const DeviceDetailsSection = ({
           "Last active",
         ),
       value: (() => {
-        const parsed = toDateOrNull(lastActiveTime);
-        return parsed ? formatSmartDate(parsed) : String(lastActiveTime || "");
+        const parsed = dateUtils.toDateOrNull(lastActiveTime);
+        return parsed
+          ? dateUtils.formatSmartDate(parsed)
+          : String(lastActiveTime || "");
       })(),
     },
     connectionCount != null &&

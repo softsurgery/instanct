@@ -1,12 +1,12 @@
 import { Text } from "@softsurgery/mobile-ui";
 import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { MessageVariant } from "api-client";
 import { LegendList } from "@legendapp/list";
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
 import { FileListItem, getMessageUploadEntries } from "./FileListItem";
 import { useTranslation } from "react-i18next";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 
 type ConversationFileItem = {
   key: string;

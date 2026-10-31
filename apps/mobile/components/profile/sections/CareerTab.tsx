@@ -22,7 +22,7 @@ import {
   ResponseExperienceDto,
   ResponseRefParamDto,
 } from "api-client";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { ExperienceInstance } from "../experience/ExperienceInstance";

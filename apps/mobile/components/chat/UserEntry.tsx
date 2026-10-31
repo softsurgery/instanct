@@ -2,7 +2,7 @@ import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import React from "react";
 import { View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
-import { cn } from "@softsurgery/lib";
+import { cn, dateUtils } from "@softsurgery/lib";
 import {
   MessageVariant,
   ResponseConversationDto,
@@ -11,7 +11,6 @@ import {
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { differenceInMilliseconds } from "date-fns";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
-import { formatSmartDate } from "@/lib/date";
 import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { useTranslation } from "react-i18next";
 
@@ -212,7 +211,7 @@ export const UserEntry = ({
 
             {!!lastMessage && (
               <Text className="text-[11px] text-gray-500 dark:text-gray-400">
-                {formatSmartDate(lastMessage?.createdAt)}
+                {dateUtils.formatSmartDate(lastMessage?.createdAt)}
               </Text>
             )}
           </View>

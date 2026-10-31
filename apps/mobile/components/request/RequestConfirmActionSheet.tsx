@@ -2,7 +2,7 @@ import React from "react";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
 import { Text, Button } from "@softsurgery/mobile-ui";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 import { useTranslation } from "react-i18next";
 import { RequestEvent } from "api-client";
 
@@ -65,9 +65,7 @@ export const RequestConfirmActionSheet = React.forwardRef<
             </View>
           </View>
 
-          <Text className="mb-4 text-sm text-muted-foreground">
-            {message}
-          </Text>
+          <Text className="mb-4 text-sm text-muted-foreground">{message}</Text>
 
           <View className="pt-4">
             <View className="flex flex-col justify-between gap-2">
@@ -80,9 +78,7 @@ export const RequestConfirmActionSheet = React.forwardRef<
                 onPress={onConfirm}
                 disabled={isPending}
               >
-                <Text className="text-md font-bold">
-                  {confirmText}
-                </Text>
+                <Text className="text-md font-bold">{confirmText}</Text>
               </Button>
               <Button
                 size="lg"
@@ -91,9 +87,7 @@ export const RequestConfirmActionSheet = React.forwardRef<
                 onPress={onClose}
                 disabled={isPending}
               >
-                <Text className="text-md font-bold">
-                  {cancelText}
-                </Text>
+                <Text className="text-md font-bold">{cancelText}</Text>
               </Button>
             </View>
           </View>

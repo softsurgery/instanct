@@ -1,20 +1,16 @@
-import type {
-  MapSessionPayload,
-  ResponseSessionDto,
-} from "api-client";
+import type { MapSessionPayload, ResponseSessionDto } from "api-client";
 import React from "react";
 import { ScrollView, View, useWindowDimensions } from "react-native";
 import { Text, Badge, Separator, Icon } from "@softsurgery/mobile-ui";
 import { format } from "date-fns";
 import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { cn } from "@softsurgery/lib";
+import { cn, dateUtils } from "@softsurgery/lib";
 import { TabView, TabBar } from "react-native-tab-view";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
 import { ArrowRight } from "lucide-react-native";
 import { SessionIncomingRequests } from "../../activities/SessionIncomingRequests";
 import { SessionOutgoingRequests } from "../../activities/SessionOutgoingRequests";
 import { useTranslation } from "react-i18next";
-import { toDateOrNull } from "@/lib/date";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 
 interface SessionDetailsContentProps {
   session: ResponseSessionDto<MapSessionPayload>;
@@ -26,6 +22,7 @@ export const SessionDetailsContent = ({
   const { t } = useTranslation("activities");
   const { palette } = useColorPalette();
   const layout = useWindowDimensions();
+  const isLandscape = layout.width > layout.height;
   const { objectives, isObjectivesSubTypePending } = useObjectives();
 
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -53,8 +50,8 @@ export const SessionDetailsContent = ({
   const formatSessionWindow = (
     session: ResponseSessionDto<MapSessionPayload>,
   ) => {
-    const start = toDateOrNull(session.plannedStart);
-    const end = toDateOrNull(session.plannedEnd);
+    const start = dateUtils.toDateOrNull(session.plannedStart);
+    const end = dateUtils.toDateOrNull(session.plannedEnd);
 
     return (
       <View className="bg-card border border-border rounded-lg p-4">
@@ -230,9 +227,14 @@ export const SessionDetailsContent = ({
           swipeEnabled={true}
           renderTabBar={(props) => (
             <TabBar
+              key={isLandscape ? "landscape" : "portrait"}
               {...props}
               scrollEnabled={false}
               options={tabOptions}
+              tabStyle={{
+                minHeight: isLandscape ? 38 : 48,
+                paddingVertical: isLandscape ? 4 : 8,
+              }}
               indicatorStyle={{
                 backgroundColor: hslToHex(palette.primary),
                 height: 2,

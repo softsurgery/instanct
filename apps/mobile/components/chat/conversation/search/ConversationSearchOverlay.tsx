@@ -7,12 +7,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { ResponseMessageDto } from "api-client";
 import {
-  hslToHex,
   StableSafeAreaView,
   MarkedInput,
-  useColorPalette,
 } from "@softsurgery/mobile-components";
-import { useGradualAnimation } from "@softsurgery/mobile-hooks";
+import {
+  hslToHex,
+  useColorPalette,
+  useGradualAnimation,
+} from "@softsurgery/mobile-hooks";
 import { useConversationMessageSearch } from "@/hooks/content/chat/useConversationMessageSearch";
 import { ConversationSearchResultItem } from "./ConversationSearchResultItem";
 import { useTranslation } from "react-i18next";

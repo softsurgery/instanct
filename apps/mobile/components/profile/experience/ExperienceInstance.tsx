@@ -1,8 +1,4 @@
-import {
-  SeeMoreText,
-  useColorPalette,
-  hslToHex,
-} from "@softsurgery/mobile-components";
+import { SeeMoreText } from "@softsurgery/mobile-components";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { ResponseExperienceDto } from "api-client";
@@ -10,6 +6,7 @@ import { format } from "date-fns";
 import { Briefcase, CalendarDays, Laptop, MapPin } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 
 interface ExperienceInstanceProps {
   className?: string;

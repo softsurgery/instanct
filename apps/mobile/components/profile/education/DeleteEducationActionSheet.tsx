@@ -3,7 +3,7 @@ import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { Trash2 } from "lucide-react-native";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 import { useTranslation } from "react-i18next";
 
 interface DeleteEducationActionSheetProps {

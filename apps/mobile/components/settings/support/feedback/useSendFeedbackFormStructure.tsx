@@ -1,4 +1,4 @@
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 import { SendFeedbackStore } from "@/stores/useFeedbackStore";
 import { useTranslation } from "react-i18next";
 import {

@@ -2,7 +2,7 @@ import React from "react";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
 import { Text, Button } from "@softsurgery/mobile-ui";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 import { useTranslation } from "react-i18next";
 
 interface EndSessionActionSheetProps {

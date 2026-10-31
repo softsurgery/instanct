@@ -3,7 +3,6 @@ import {
   ApplicationHeader,
   HtmlDocument,
   StableSafeAreaView,
-  useColorPalette,
   Loader,
 } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
@@ -13,6 +12,7 @@ import { View } from "react-native";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import React from "react";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 
 type ContentScreenProps = {
   slug: "terms" | "privacy" | "about" | "faqs" | "support";

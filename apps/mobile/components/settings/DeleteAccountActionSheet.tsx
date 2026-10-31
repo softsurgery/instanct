@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
-import { useColorPalette, hslToHex } from "@softsurgery/mobile-components";
+import { useColorPalette, hslToHex } from "@softsurgery/mobile-hooks";
 import { Trash2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 

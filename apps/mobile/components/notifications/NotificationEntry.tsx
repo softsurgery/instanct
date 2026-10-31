@@ -1,12 +1,8 @@
-import { timeAgo } from "@/lib/date";
 import { useTranslation } from "react-i18next";
 import { View, Pressable } from "react-native";
 import { Image, Text } from "@softsurgery/mobile-ui";
-import { cn } from "@softsurgery/lib";
-import {
-  NotificationType,
-  ResponseNotificationDto,
-} from "api-client";
+import { cn, dateUtils } from "@softsurgery/lib";
+import { NotificationType, ResponseNotificationDto } from "api-client";
 import { HTMLText } from "@softsurgery/mobile-components";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import {
@@ -76,7 +72,7 @@ export const NotificationEntry = ({
           ).toString()}
         </HTMLText>
         <Text variant={"muted"} className="ml-auto">
-          {timeAgo(notification.createdAt)}
+          {dateUtils.timeAgo(notification.createdAt)}
         </Text>
         {isUnread && (
           <View className="absolute right-0 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-primary" />
