@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  Dimensions,
   FlatList,
   Modal,
   Pressable,
   ScrollView,
   TouchableOpacity,
   View,
+  useWindowDimensions,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from "react-native";
@@ -109,10 +109,10 @@ export const ConversationMediaStaging = ({
 }: ConversationMediaStagingProps) => {
   const { t } = useTranslation("chat");
   const insets = useSafeAreaInsets();
+  const { width: screenWidth } = useWindowDimensions();
   const [caption, setCaption] = React.useState("");
   const [selectedIndexRaw, setSelectedIndex] = React.useState(0);
   const previewRef = React.useRef<FlatList<StagedMedia>>(null);
-  const screenWidth = Dimensions.get("window").width;
 
   const selectedIndex =
     stagedMedia.length === 0
@@ -163,11 +163,23 @@ export const ConversationMediaStaging = ({
       animationType="slide"
       presentationStyle="fullScreen"
       onRequestClose={handleCancel}
+      supportedOrientations={[
+        "portrait",
+        "portrait-upside-down",
+        "landscape",
+        "landscape-left",
+        "landscape-right",
+      ]}
     >
       <View className={cn("flex-1 bg-card", className)}>
         <View
           className="flex-row items-center justify-between px-4 border-b border-border bg-background"
-          style={{ paddingTop: insets.top + 8, paddingBottom: 10 }}
+          style={{
+            paddingTop: insets.top + 8,
+            paddingBottom: 10,
+            paddingLeft: Math.max(insets.left, 16),
+            paddingRight: Math.max(insets.right, 16),
+          }}
         >
           <TouchableOpacity
             onPress={handleCancel}

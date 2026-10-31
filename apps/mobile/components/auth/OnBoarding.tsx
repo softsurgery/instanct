@@ -16,7 +16,10 @@ import {
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { useColorPalette } from "@softsurgery/mobile-hooks";
+import {
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 
 const ONBOARDING_DATA = [
   {
@@ -41,7 +44,7 @@ export default function OnBoarding({ className }: OnBoardingProps) {
   const { t } = useTranslation("explore");
   const { palette, colorScheme } = useColorPalette();
   const { width, height } = useWindowDimensions();
-  const isLandscape = width > height;
+  const { isLandscape } = useScreenOrientation();
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 

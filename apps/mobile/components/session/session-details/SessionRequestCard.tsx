@@ -4,11 +4,10 @@ import { router } from "expo-router";
 import { Text, Icon } from "@softsurgery/mobile-ui";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { identifyUserAvatar, identifyUser } from "@/lib/user";
-import { cn } from "@softsurgery/lib";
-import { timeAgo } from "@/lib/date";
+import { cn, dateUtils } from "@softsurgery/lib";
 import { RequestStatus, ResponseRequestDto } from "api-client";
 import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react-native";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 
 interface SessionRequestCardProps {
   className?: string;
@@ -108,7 +107,7 @@ export const SessionRequestCard: React.FC<SessionRequestCardProps> = ({
           {createdAt && (
             <Text className="text-xs font-medium text-muted-foreground">
               {/* • */}
-              {timeAgo(createdAt)}
+              {dateUtils.timeAgo(createdAt)}
             </Text>
           )}
         </View>

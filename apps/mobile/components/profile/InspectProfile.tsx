@@ -6,6 +6,7 @@ import {
   ApplicationHeader,
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface InspectProfileProps {
   className?: string;
@@ -13,12 +14,15 @@ interface InspectProfileProps {
 }
 
 export const InspectProfile = ({ className, id }: InspectProfileProps) => {
+  const { isLandscape } = useScreenOrientation();
+
   return (
     <View className={cn("flex-1", className)}>
       <InspectBaseProfile
         id={id}
         coverExtra={
           <StableSafeAreaView
+            edges={isLandscape ? ["left"] : ["left", "right"]}
             className="absolute top-0 left-0 right-0 z-30"
             pointerEvents="box-none"
           >

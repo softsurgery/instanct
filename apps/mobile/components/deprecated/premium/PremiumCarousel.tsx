@@ -1,6 +1,6 @@
 import { cn } from "@softsurgery/lib";
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { AnimatedDot } from "./AnimatedDot";
@@ -10,9 +10,8 @@ interface PremiumCarouselProps {
   className?: string;
 }
 
-const { width } = Dimensions.get("window");
-
 export const PremiumCarousel = ({ className }: PremiumCarouselProps) => {
+  const { width } = useWindowDimensions();
   const progress = useSharedValue<number>(0);
   const premiumTiers = [
     {

@@ -10,7 +10,11 @@ import { ArrowRight } from "lucide-react-native";
 import { SessionIncomingRequests } from "../../activities/SessionIncomingRequests";
 import { SessionOutgoingRequests } from "../../activities/SessionOutgoingRequests";
 import { useTranslation } from "react-i18next";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
+import {
+  hslToHex,
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 
 interface SessionDetailsContentProps {
   session: ResponseSessionDto<MapSessionPayload>;
@@ -21,8 +25,8 @@ export const SessionDetailsContent = ({
 }: SessionDetailsContentProps) => {
   const { t } = useTranslation("activities");
   const { palette } = useColorPalette();
+  const { isLandscape } = useScreenOrientation();
   const layout = useWindowDimensions();
-  const isLandscape = layout.width > layout.height;
   const { objectives, isObjectivesSubTypePending } = useObjectives();
 
   const [tabIndex, setTabIndex] = React.useState(0);

@@ -38,7 +38,7 @@ interface SignupLayoutProps {
 }
 
 export const SignupLayout = ({ className }: SignupLayoutProps) => {
-  const isLandscape = useScreenOrientation();
+  const { isLandscape } = useScreenOrientation();
   const api = useApi();
   const { t } = useTranslation("auth");
   const authStore = useAuthStore();

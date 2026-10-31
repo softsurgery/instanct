@@ -26,7 +26,10 @@ import { useLoader } from "@/contexts/LoaderContext";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { Image, ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLuminance } from "@softsurgery/mobile-hooks";
+import {
+  useLuminance,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 
 interface ProfileCoverProps {
   user: ResponseUserDto;
@@ -41,6 +44,7 @@ export const ProfileCover = ({
   onRefresh,
   coverExtra,
 }: ProfileCoverProps) => {
+  const { isLandscape } = useScreenOrientation();
   const api = useApi();
   const { t } = useTranslation("menu");
   const queryClient = useQueryClient();
@@ -158,7 +162,8 @@ export const ProfileCover = ({
     <>
       <Pressable
         className={cn(
-          "relative w-full h-56 overflow-hidden items-center justify-center",
+          "relative w-full overflow-hidden items-center justify-center",
+          isLandscape ? "h-28" : "h-56",
           !coverSource ? "bg-primary/25" : "",
           "active:opacity-85",
         )}

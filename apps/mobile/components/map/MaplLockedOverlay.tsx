@@ -1,11 +1,20 @@
 import React from "react";
 import { cn } from "@softsurgery/lib";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import {
+  hslToHex,
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { Map } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -76,6 +85,7 @@ export const MapLockedOverlay = ({
   className,
   blurRadius = 5,
 }: MapLockedOverlayProps) => {
+  const { isLandscape } = useScreenOrientation();
   const { t } = useTranslation("common");
   const { palette, colorScheme } = useColorPalette();
 
@@ -126,12 +136,27 @@ export const MapLockedOverlay = ({
       />
 
       {/* Content */}
-      <View className="flex-1 items-center justify-center px-8">
-        <View className="w-full max-w-sm items-center">
+      <View
+        className={cn(
+          "flex-1 items-center justify-center px-8",
+          isLandscape ? "pt-10" : "",
+        )}
+      >
+        <View
+          className={cn(
+            "w-full items-center",
+            isLandscape
+              ? "max-w-xl flex-row justify-center gap-8"
+              : "max-w-sm flex-col",
+          )}
+        >
           {/* Radar + lock */}
           <Animated.View
             style={iconReveal}
-            className="mb-8 h-32 w-32 items-center justify-center"
+            className={cn(
+              "items-center justify-center",
+              isLandscape ? "h-24 w-24" : "mb-8 h-32 w-32",
+            )}
           >
             <RadarRing delay={0} color={primary} />
             <RadarRing delay={950} color={primary} />
@@ -139,21 +164,41 @@ export const MapLockedOverlay = ({
 
             <Animated.View
               pointerEvents="none"
-              style={[glowStyle, { position: "absolute", top: 16, left: 16 }]}
-              className="h-24 w-24"
+              style={[
+                glowStyle,
+                {
+                  position: "absolute",
+                  top: isLandscape ? 8 : 16,
+                  left: isLandscape ? 8 : 16,
+                },
+              ]}
+              className={cn(isLandscape ? "h-20 w-20" : "h-24 w-24")}
             />
 
             <View className="h-16 w-16 items-center justify-center">
-              <Icon as={Map} size={32} />
+              <Icon as={Map} size={isLandscape ? 28 : 32} />
             </View>
           </Animated.View>
 
           {/* Copy */}
-          <Animated.View style={textReveal} className="items-center">
-            <Text className="text-center text-2xl font-bold tracking-tight text-foreground">
+          <Animated.View
+            style={textReveal}
+            className={cn(isLandscape ? "flex-1 items-start" : "items-center")}
+          >
+            <Text
+              className={cn(
+                "text-2xl font-bold tracking-tight text-foreground",
+                isLandscape ? "text-left" : "text-center",
+              )}
+            >
               {t("screens.map.locked.title")}
             </Text>
-            <Text className="mt-2.5 text-center text-sm leading-5 text-muted-foreground">
+            <Text
+              className={cn(
+                "mt-2.5 text-sm leading-5 text-muted-foreground",
+                isLandscape ? "text-left" : "text-center",
+              )}
+            >
               {t("screens.map.locked.description")}
             </Text>
           </Animated.View>

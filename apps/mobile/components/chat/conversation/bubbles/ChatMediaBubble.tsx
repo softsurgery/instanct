@@ -1,7 +1,7 @@
 import React from "react";
 import { format } from "date-fns";
 import { Play } from "lucide-react-native";
-import { Dimensions, View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { Image } from "expo-image";
 import { Icon, Skeleton, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
@@ -17,6 +17,7 @@ import { MessageTextContent } from "./MessageTextContent";
 import { MediaImageGrid } from "./ChatMediaImageGrid";
 import { MediaUploadProgress } from "../staging/MediaUploadProgress";
 import { ChatMediaSkeleton } from "./ChatMediaSkeleton";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface ChatMediaBubbleProps {
   className?: string;
@@ -34,10 +35,16 @@ export const ChatMediaBubble = ({
   pending,
   right,
 }: ChatMediaBubbleProps) => {
-  const screenWidth = Dimensions.get("window").width;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
 
-  const CHAT_MEDIA_WIDTH = Math.round(screenWidth * 0.75);
-  const CHAT_MEDIA_HEIGHT = Math.round(CHAT_MEDIA_WIDTH * 0.75);
+  const CHAT_MEDIA_WIDTH = isLandscape
+    ? Math.min(Math.round(screenWidth * 0.45), 320)
+    : Math.round(screenWidth * 0.75);
+  const CHAT_MEDIA_HEIGHT = Math.min(
+    Math.round(CHAT_MEDIA_WIDTH * 0.75),
+    isLandscape ? Math.round(screenHeight * 0.5) : Math.round(screenHeight * 0.4),
+  );
 
   /**
    * Extracts and sorts server upload IDs from message attachment DTOs.

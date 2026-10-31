@@ -5,7 +5,11 @@ import * as Haptics from "expo-haptics";
 import { Crosshair, RefreshCcw, SatelliteDish } from "lucide-react-native";
 import { useMapStore } from "@/stores/useMapStore";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import {
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface MapModesProps {
   className?: string;
@@ -16,6 +20,8 @@ export const MapModes = ({
   className,
   moveToCurrentLocation,
 }: MapModesProps) => {
+  const { isLandscape } = useScreenOrientation();
+  const insets = useSafeAreaInsets();
   const { palette } = useColorPalette();
   const { restartSocket } = useLiveGeolocation({ enabled: false });
   const mapStore = useMapStore();
@@ -57,9 +63,14 @@ export const MapModes = ({
   return (
     <View
       className={cn(
-        "flex flex-col bg-background/75 absolute top-[15%] right-3 z-50 h-auto px-3 py-4 gap-4 items-center justify-center rounded-b-full rounded-t-full",
+        "flex flex-col bg-background/75 absolute z-50 h-auto items-center justify-center rounded-b-full rounded-t-full",
+        isLandscape ? "px-2.5 py-2.5 gap-3" : "px-3 py-4 gap-4",
         className,
       )}
+      style={{
+        top: isLandscape ? insets.top + 75 : "15%",
+        right: Math.max(insets.right, 12),
+      }}
     >
       {modes.map(({ key, icon, color, onPress }) => (
         <Icon

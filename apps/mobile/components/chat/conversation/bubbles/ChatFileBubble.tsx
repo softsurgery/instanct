@@ -6,7 +6,7 @@ import { ResponseMessageDto } from "api-client";
 import { PendingFileUpload } from "@/types";
 import { format } from "date-fns";
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import {
   getMessageUploadEntries,
   resolveUploadDisplayName,
@@ -14,6 +14,7 @@ import {
 import { ChatFileList, ChatFileListItem } from "./ChatFileList";
 import { MessageTextContent } from "./MessageTextContent";
 import { useTranslation } from "react-i18next";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface ChatFileBubbleProps {
   className?: string;
@@ -32,8 +33,11 @@ export const ChatFileBubble = ({
   right,
 }: ChatFileBubbleProps) => {
   const { t } = useTranslation("chat");
-  const screenWidth = Dimensions.get("window").width;
-  const CHAT_FILE_WIDTH = Math.round(screenWidth * 0.75);
+  const { width: screenWidth } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+  const CHAT_FILE_WIDTH = isLandscape
+    ? Math.min(Math.round(screenWidth * 0.5), 360)
+    : Math.round(screenWidth * 0.75);
 
   const [openingUploadId, setOpeningUploadId] = React.useState<number | null>(
     null,

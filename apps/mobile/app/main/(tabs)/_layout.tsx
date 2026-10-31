@@ -5,9 +5,13 @@ import { Tabs, useSegments } from "expo-router";
 import { Map, Telescope, User } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Platform, useWindowDimensions } from "react-native";
+import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useColorPalette, useRTL } from "@softsurgery/mobile-hooks";
+import {
+  useColorPalette,
+  useRTL,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 
 export default function TabLayout() {
   const { palette } = useColorPalette();
@@ -15,9 +19,8 @@ export default function TabLayout() {
   const currentRoute = segments[segments.length - 1];
   const isMapScreen = currentRoute === "map";
 
-  const { width, height } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
   const insets = useSafeAreaInsets();
-  const isLandscape = width > height;
   const iosBottomInset = Platform.OS === "ios" ? insets.bottom : 0;
 
   const isRTL = useRTL();

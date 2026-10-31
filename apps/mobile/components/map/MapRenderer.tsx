@@ -5,11 +5,19 @@ import { NearbyUser } from "@/types";
 import _ from "lodash";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import { ActivityIndicator, Platform, View } from "react-native";
+import {
+  ActivityIndicator,
+  Platform,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MapView from "react-native-map-clustering";
 import { Marker, Region } from "react-native-maps";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
-import { useColorPalette } from "@softsurgery/mobile-components";
+import {
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 import { MarkerCaptureLayer } from "./AndroidMarker";
 import { UsersCarousel } from "./UserCarousel/UsersCarousel";
 import { UserMarker } from "./UserMarker";
@@ -34,6 +42,8 @@ export const MapRenderer = ({
   latitude,
   longitude,
 }: MapRendererProps) => {
+  const { isLandscape } = useScreenOrientation();
+  const insets = useSafeAreaInsets();
   const { currentUser } = useCurrentUser();
   const { colorScheme } = useColorScheme();
   const mapRef = React.useRef<MapView>(null);
@@ -340,7 +350,16 @@ export const MapRenderer = ({
         />
       </ActionSheet>
       {mapStore.nearbyUsers.length > 0 && (
-        <View className="py-4 absolute bottom-0 left-0 right-0 bg-background/50 rounded-t-2xl">
+        <View
+          className={cn(
+            "absolute bottom-0 left-0 right-0 bg-background/50 rounded-t-2xl",
+            isLandscape ? "py-2" : "py-4",
+          )}
+          style={{
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+          }}
+        >
           <UsersCarousel
             users={mapStore.nearbyUsers}
             className="rounded-full"

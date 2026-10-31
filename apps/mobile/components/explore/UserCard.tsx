@@ -1,6 +1,10 @@
 import React from "react";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import {
+  hslToHex,
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 import { cn } from "@softsurgery/lib";
 import {
   ResponseConversationDto,
@@ -17,12 +21,12 @@ import {
   Goal,
 } from "lucide-react-native";
 import {
-  Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
   StyleSheet,
   View,
+  useWindowDimensions,
 } from "react-native";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { useStartConversation } from "@/hooks/content/chat/useStartConversation";
@@ -39,16 +43,14 @@ import Animated, {
 import { ScrollView } from "react-native-gesture-handler";
 import { ImageBackground } from "expo-image";
 import { useTranslation } from "react-i18next";
-const { width, height: screenHeight } = Dimensions.get("window");
-
-const CARD_HEIGHT = screenHeight;
-const HERO_HEIGHT = CARD_HEIGHT * 0.5;
 
 interface UserCardProps {
   className?: string;
   user: ResponseUserDto;
   objectives: ResponseRefParamDto[];
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  cardWidth?: number;
+  cardHeight?: number;
   // industries: ResponseRefParamDto[];
 }
 
@@ -56,9 +58,17 @@ export const UserCard = ({
   user,
   objectives,
   onScroll,
+  cardWidth: cardWidthProp,
+  cardHeight: cardHeightProp,
   // industries,
   className,
 }: UserCardProps) => {
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+  const resolvedWidth = cardWidthProp ?? screenWidth;
+  const resolvedHeight = cardHeightProp ?? screenHeight;
+  const heroHeight = Math.round(resolvedHeight * 0.5);
+
   const { t } = useTranslation("explore");
   const { palette } = useColorPalette();
   const primary = hslToHex(palette?.primary);
@@ -133,15 +143,135 @@ export const UserCard = ({
     opacity: pulseOpacity.value,
   }));
 
+  const actionButtons = (
+    <View
+      className={cn(
+        "flex-row items-center gap-5",
+        isLandscape ? "justify-start" : "justify-center",
+      )}
+      style={!isLandscape ? { marginTop: -36 } : undefined}
+    >
+      {/* Bookmark */}
+      <Animated.View style={bookmarkStyle}>
+        <Pressable
+          onPressIn={() => {
+            bookmarkScale.value = withSpring(0.85, {
+              damping: 12,
+              stiffness: 250,
+            });
+          }}
+          onPressOut={() => {
+            bookmarkScale.value = withSpring(1, {
+              damping: 12,
+              stiffness: 250,
+            });
+          }}
+          onPress={toggleBookmark}
+          style={isLandscape ? { width: 48, height: 48 } : undefined}
+          className={cn(
+            "h-14 w-14 items-center justify-center rounded-full border shadow-lg shadow-black/20",
+            isBookmarked
+              ? "border-transparent bg-primary active:bg-primary/50"
+              : "border-border bg-card active:bg-card/50",
+          )}
+        >
+          <Icon
+            as={Bookmark}
+            size={isLandscape ? 20 : 24}
+            color={isBookmarked ? "#ffffff" : primary}
+            fill={isBookmarked ? "#ffffff" : "transparent"}
+          />
+        </Pressable>
+      </Animated.View>
+
+      {/* Send request — the headline action with pulsing aura */}
+      <View className="relative items-center justify-center">
+        <Animated.View
+          style={[
+            pulseStyle,
+            {
+              position: "absolute",
+              width: isLandscape ? 64 : 80,
+              height: isLandscape ? 64 : 80,
+              borderRadius: isLandscape ? 32 : 40,
+              backgroundColor: primary,
+            },
+          ]}
+        />
+        <Animated.View style={requestStyle}>
+          <Pressable
+            onPressIn={() => {
+              requestScale.value = withSpring(0.85, {
+                damping: 12,
+                stiffness: 250,
+              });
+            }}
+            onPressOut={() => {
+              requestScale.value = withSpring(1, {
+                damping: 12,
+                stiffness: 250,
+              });
+            }}
+            onPress={() =>
+              router.push({
+                pathname: "/main/request/new-request",
+                params: { id: user?.id },
+              })
+            }
+            style={isLandscape ? { width: 64, height: 64 } : undefined}
+            className="rounded-full bg-primary active:bg-primary/50 border border-white/20 w-20 h-20 flex items-center justify-center shadow-xl shadow-primary/30"
+          >
+            <Icon
+              as={IconMoodPlus}
+              strokeWidth={1.5}
+              size={isLandscape ? 32 : 40}
+              color={"white"}
+            />
+          </Pressable>
+        </Animated.View>
+      </View>
+
+      {/* Message */}
+      <Animated.View style={messageStyle}>
+        <Pressable
+          onPressIn={() => {
+            messageScale.value = withSpring(0.85, {
+              damping: 12,
+              stiffness: 250,
+            });
+          }}
+          onPressOut={() => {
+            messageScale.value = withSpring(1, {
+              damping: 12,
+              stiffness: 250,
+            });
+          }}
+          onPress={() => startConversation({ users: [user.id] })}
+          style={isLandscape ? { width: 48, height: 48 } : undefined}
+          className="h-14 w-14 items-center justify-center rounded-full border border-border bg-card active:bg-card/50 shadow-lg shadow-black/20"
+        >
+          <Icon
+            as={MessageCircle}
+            size={isLandscape ? 20 : 24}
+            color={primary}
+          />
+        </Pressable>
+      </Animated.View>
+    </View>
+  );
+
+  const landscapeActions = actionButtons;
+
   const heroOverlay = (
     <View
       className="flex-1 justify-end px-5"
-      style={{ paddingBottom: 30 }}
+      style={{ paddingBottom: isLandscape ? 16 : 30 }}
       pointerEvents="box-none"
     >
-      <Pressable onPress={openProfile} className="gap-1.5">
+      <Pressable onPress={openProfile} className="gap-1">
         <Text
           className="text-3xl font-extrabold text-white tracking-tight"
+          style={isLandscape ? { fontSize: 20, lineHeight: 28 } : undefined}
           numberOfLines={1}
         >
           {identity}
@@ -150,249 +280,203 @@ export const UserCard = ({
           @{user.username}
         </Text>
       </Pressable>
+      {isLandscape ? <View className="mt-3">{landscapeActions}</View> : null}
     </View>
   );
 
-  return (
-    <ScrollView
-      className={cn("flex-1 bg-background", className)}
-      style={{ width, height: CARD_HEIGHT }}
-      showsVerticalScrollIndicator={false}
-      onScroll={onScroll}
-      scrollEventThrottle={16}
+  const heroContent = photoSource ? (
+    <ImageBackground
+      source={photoSource}
+      style={{ flex: 1 }}
+      contentFit="cover"
+      cachePolicy="memory-disk"
     >
-      {/* Hero — the person */}
-      <View style={{ height: HERO_HEIGHT, width: "100%" }}>
-        {photoSource ? (
-          <ImageBackground
-            source={photoSource}
-            style={{ flex: 1 }}
-            contentFit="cover"
-            cachePolicy="memory-disk"
-          >
-            <LinearGradient
-              colors={["rgba(0,0,0,0.5)", "transparent"]}
-              style={[styles.scrim, { height: 120 }]}
-            />
-            <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.2)", "rgba(0,0,0,0.85)"]}
-              style={StyleSheet.absoluteFill}
-            />
-            {heroOverlay}
-          </ImageBackground>
-        ) : (
-          <LinearGradient
-            colors={[primary, primaryDark]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={{ flex: 1 }}
-          >
-            {/* Elegant glassmorphic default user layout */}
-            <View
-              style={StyleSheet.absoluteFill}
-              className="items-center justify-center"
-            >
-              {/* Floating decorative glass elements for background depth */}
-              <View className="absolute top-10 left-10 w-24 h-24 rounded-full bg-white/5 border border-white/10" />
-              <View className="absolute bottom-16 right-12 w-32 h-32 rounded-full bg-white/5 border border-white/10" />
+      <LinearGradient
+        colors={["rgba(0,0,0,0.5)", "transparent"]}
+        style={[styles.scrim, { height: isLandscape ? 90 : 120 }]}
+      />
+      <LinearGradient
+        colors={["transparent", "rgba(0,0,0,0.2)", "rgba(0,0,0,0.85)"]}
+        style={StyleSheet.absoluteFill}
+      />
+      {heroOverlay}
+    </ImageBackground>
+  ) : (
+    <LinearGradient
+      colors={[primary, primaryDark]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      {/* Elegant glassmorphic default user layout */}
+      <View
+        style={StyleSheet.absoluteFill}
+        className="items-center justify-center"
+      >
+        {/* Floating decorative glass elements for background depth */}
+        <View className="absolute top-10 left-10 w-24 h-24 rounded-full bg-white/5 border border-white/10" />
+        <View className="absolute bottom-16 right-12 w-32 h-32 rounded-full bg-white/5 border border-white/10" />
 
-              {/* Main Avatar Badge */}
-              <View className="w-28 h-28 rounded-full items-center justify-center bg-white/10 border border-white/20 shadow-2xl">
-                <Text className="text-4xl font-extrabold text-white tracking-widest uppercase">
-                  {fallback}
-                </Text>
-              </View>
-            </View>
-            <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.35)"]}
-              style={StyleSheet.absoluteFill}
-            />
-            {heroOverlay}
-          </LinearGradient>
-        )}
-      </View>
-
-      {/* Content sheet — overlaps the hero for depth */}
-      <View className="flex-1 rounded-t-3xl bg-background border-t border-border/10">
-        {/* Floating action bar straddling the seam */}
+        {/* Main Avatar Badge */}
         <View
-          className="flex-row items-center justify-center gap-5"
-          style={{ marginTop: -36 }}
+          className="w-28 h-28 rounded-full items-center justify-center bg-white/10 border border-white/20 shadow-2xl"
+          style={isLandscape ? { width: 80, height: 80 } : undefined}
         >
-          {/* Bookmark */}
-          <Animated.View style={bookmarkStyle}>
-            <Pressable
-              onPressIn={() => {
-                bookmarkScale.value = withSpring(0.85, {
-                  damping: 12,
-                  stiffness: 250,
-                });
-              }}
-              onPressOut={() => {
-                bookmarkScale.value = withSpring(1, {
-                  damping: 12,
-                  stiffness: 250,
-                });
-              }}
-              onPress={toggleBookmark}
-              className={cn(
-                "h-14 w-14 items-center justify-center rounded-full border shadow-lg shadow-black/20",
-                isBookmarked
-                  ? "border-transparent bg-primary active:bg-primary/50"
-                  : "border-border bg-card active:bg-card/50",
-              )}
-            >
-              <Icon
-                as={Bookmark}
-                size={24}
-                color={isBookmarked ? "#ffffff" : primary}
-                fill={isBookmarked ? "#ffffff" : "transparent"}
-              />
-            </Pressable>
-          </Animated.View>
-
-          {/* Send request — the headline action with pulsing aura */}
-          <View className="relative items-center justify-center">
-            <Animated.View
-              style={[
-                pulseStyle,
-                {
-                  position: "absolute",
-                  width: 80,
-                  height: 80,
-                  borderRadius: 40,
-                  backgroundColor: primary,
-                },
-              ]}
-            />
-            <Animated.View style={requestStyle}>
-              <Pressable
-                onPressIn={() => {
-                  requestScale.value = withSpring(0.85, {
-                    damping: 12,
-                    stiffness: 250,
-                  });
-                }}
-                onPressOut={() => {
-                  requestScale.value = withSpring(1, {
-                    damping: 12,
-                    stiffness: 250,
-                  });
-                }}
-                onPress={() =>
-                  router.push({
-                    pathname: "/main/request/new-request",
-                    params: { id: user?.id },
-                  })
-                }
-                className="rounded-full bg-primary active:bg-primary/50 border border-white/20 w-20 h-20 flex items-center justify-center shadow-xl shadow-primary/30"
-              >
-                <Icon
-                  as={IconMoodPlus}
-                  strokeWidth={1.5}
-                  size={40}
-                  color={"white"}
-                />
-              </Pressable>
-            </Animated.View>
-          </View>
-
-          {/* Message */}
-          <Animated.View style={messageStyle}>
-            <Pressable
-              onPressIn={() => {
-                messageScale.value = withSpring(0.85, {
-                  damping: 12,
-                  stiffness: 250,
-                });
-              }}
-              onPressOut={() => {
-                messageScale.value = withSpring(1, {
-                  damping: 12,
-                  stiffness: 250,
-                });
-              }}
-              onPress={() => startConversation({ users: [user.id] })}
-              className="h-14 w-14 items-center justify-center rounded-full border border-border bg-card active:bg-card/50 shadow-lg shadow-black/20"
-            >
-              <Icon as={MessageCircle} size={24} color={primary} />
-            </Pressable>
-          </Animated.View>
+          <Text
+            className="text-4xl font-extrabold text-white tracking-widest uppercase"
+            style={isLandscape ? { fontSize: 22, lineHeight: 28 } : undefined}
+          >
+            {fallback}
+          </Text>
         </View>
+      </View>
+      <LinearGradient
+        colors={["transparent", "rgba(0,0,0,0.35)"]}
+        style={StyleSheet.absoluteFill}
+      />
+      {heroOverlay}
+    </LinearGradient>
+  );
 
-        <View className="flex-1 px-5 mt-4 pb-36">
-          {/* Industries */}
-          {user.industries && user.industries.length > 0 && (
-            <View className="mb-6">
-              <View className="mb-2.5 flex-row items-center gap-2">
-                <Icon as={Briefcase} size={15} color={primary} />
-                <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
-                  {t("explore.industries")}
+  const detailsSections = (
+    <>
+      {/* Industries */}
+      {user.industries && user.industries.length > 0 && (
+        <View className="mb-5">
+          <View className="mb-2.5 flex-row items-center gap-2">
+            <Icon as={Briefcase} size={15} color={primary} />
+            <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
+              {t("explore.industries")}
+            </Text>
+          </View>
+          <View className="flex-row flex-wrap gap-2">
+            {user.industries.map((ind) => (
+              <View
+                key={ind.id}
+                className="rounded-full border border-border/30 px-3 py-1 flex-row items-center gap-1.5"
+              >
+                <View className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
+                <Text className="text-[13px] font-semibold text-foreground">
+                  {ind.label}
                 </Text>
               </View>
-              <View className="flex-row flex-wrap gap-2">
-                {user.industries.map((ind) => (
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* Objectives */}
+      {user?.activeSession?.payload?.objectives &&
+        user.activeSession.payload.objectives.length > 0 && (
+          <View className="mb-5">
+            <View className="mb-2.5 flex-row items-center gap-2">
+              <Icon as={Goal} size={15} color={primary} />
+              <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
+                {t("explore.objectives")}
+              </Text>
+            </View>
+            <View className="flex-row flex-wrap gap-2">
+              {user.activeSession.payload.objectives.map((id) => {
+                const objective = objectives.find(
+                  (obj) => String(obj.id) === String(id),
+                );
+                if (!objective) return null;
+                return (
                   <View
-                    key={ind.id}
-                    className="rounded-full border border-border/30 px-3 py-1 flex-row items-center gap-1.5"
+                    key={objective.id}
+                    className="rounded-full bg-muted/40 border border-muted-foreground/10 px-3 py-1 flex-row items-center gap-1.5"
                   >
                     <View className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
                     <Text className="text-[13px] font-semibold text-foreground">
-                      {ind.label}
+                      {objective.label}
                     </Text>
                   </View>
-                ))}
-              </View>
-            </View>
-          )}
-
-          {/* Objectives */}
-          {user?.activeSession?.payload?.objectives &&
-            user.activeSession.payload.objectives.length > 0 && (
-              <View className="mb-6">
-                <View className="mb-2.5 flex-row items-center gap-2">
-                  <Icon as={Goal} size={15} color={primary} />
-                  <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
-                    {t("explore.objectives")}
-                  </Text>
-                </View>
-                <View className="flex-row flex-wrap gap-2">
-                  {user.activeSession.payload.objectives.map((id) => {
-                    const objective = objectives.find((obj) => String(obj.id) === String(id));
-                    if (!objective) return null;
-                    return (
-                      <View
-                        key={objective.id}
-                        className="rounded-full bg-muted/40 border border-muted-foreground/10 px-3 py-1 flex-row items-center gap-1.5"
-                      >
-                        <View className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
-                        <Text className="text-[13px] font-semibold text-foreground">
-                          {objective.label}
-                        </Text>
-                      </View>
-                    );
-                  })}
-                </View>
-              </View>
-            )}
-
-          {/* Bio */}
-          <View className="mb-8">
-            <View className="mb-2.5 flex-row items-center gap-2">
-              <Icon as={Quote} size={15} color={primary} />
-              <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
-                {t("explore.about")}
-              </Text>
-            </View>
-            <View className="bg-card/40 rounded-2xl p-4 border border-border/30">
-              <Text className="text-[14px] leading-6 text-foreground/80">
-                {user.bio?.trim() || t("explore.noBioAvailable")}
-              </Text>
+                );
+              })}
             </View>
           </View>
+        )}
+
+      {/* Bio */}
+      <View className="mb-6">
+        <View className="mb-2.5 flex-row items-center gap-2">
+          <Icon as={Quote} size={15} color={primary} />
+          <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
+            {t("explore.about")}
+          </Text>
+        </View>
+        <View className="bg-card/40 rounded-2xl p-4 border border-border/30">
+          <Text className="text-[14px] leading-6 text-foreground/80">
+            {user.bio?.trim() || t("explore.noBioAvailable")}
+          </Text>
         </View>
       </View>
-    </ScrollView>
+    </>
+  );
+
+  const leftWidth = Math.round(resolvedWidth * 0.44);
+
+  return (
+    <View
+      className={cn("bg-background", className)}
+      style={{
+        width: resolvedWidth,
+        height: resolvedHeight,
+        flexDirection: isLandscape ? "row" : "column",
+      }}
+    >
+      {isLandscape ? (
+        <View style={{ width: leftWidth, height: resolvedHeight }}>
+          {heroContent}
+        </View>
+      ) : null}
+
+      <ScrollView
+        className="flex-1 bg-background"
+        showsVerticalScrollIndicator={false}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        contentContainerStyle={
+          isLandscape
+            ? {
+                paddingTop: 52,
+                paddingBottom: 48,
+                paddingHorizontal: 20,
+              }
+            : undefined
+        }
+      >
+        {!isLandscape ? (
+          <View style={{ height: heroHeight, width: "100%" }}>
+            {heroContent}
+          </View>
+        ) : null}
+
+        <View
+          className="flex-1 bg-background"
+          style={
+            !isLandscape
+              ? {
+                  borderTopLeftRadius: 24,
+                  borderTopRightRadius: 24,
+                }
+              : undefined
+          }
+        >
+          {!isLandscape ? actionButtons : null}
+
+          <View
+            style={
+              isLandscape
+                ? { marginTop: 20 }
+                : { paddingHorizontal: 20, marginTop: 16, paddingBottom: 144 }
+            }
+          >
+            {detailsSections}
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 

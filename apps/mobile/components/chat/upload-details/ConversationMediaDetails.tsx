@@ -1,22 +1,26 @@
 import { Text } from "@softsurgery/mobile-ui";
 import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
-import { useColorPalette, hslToHex } from "@softsurgery/mobile-components";
 import { MessageVariant, ResponseMessageDto } from "api-client";
 import { LegendList } from "@legendapp/list";
 import React from "react";
 import {
   ActivityIndicator,
-  Dimensions,
   ImageURISource,
   Modal,
   ScrollView,
   View,
+  useWindowDimensions,
 } from "react-native";
 import { GestureViewer } from "react-native-gesture-image-viewer";
 import { Image } from "expo-image";
 import { useServerImages } from "@/hooks/content/useServerImages";
 import { getMessageUploadIds, MediaThumbnail } from "./MediaThumbnail";
 import { useTranslation } from "react-i18next";
+import {
+  hslToHex,
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 
 const NUM_COLUMNS = 3;
 
@@ -132,18 +136,20 @@ export const ConversationMediaDetails = ({
     [imageIndexByKey, viewerImages],
   );
 
+  const { width: screenWidth } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+  const numColumns = isLandscape ? 5 : NUM_COLUMNS;
+  const imageSize = screenWidth / numColumns;
+
   const mediaRows = React.useMemo(() => {
     const rows: MediaGridItem[][] = [];
 
-    for (let index = 0; index < mediaItems.length; index += NUM_COLUMNS) {
-      rows.push(mediaItems.slice(index, index + NUM_COLUMNS));
+    for (let index = 0; index < mediaItems.length; index += numColumns) {
+      rows.push(mediaItems.slice(index, index + numColumns));
     }
 
     return rows;
-  }, [mediaItems]);
-
-  const screenWidth = Dimensions.get("window").width;
-  const imageSize = screenWidth / NUM_COLUMNS;
+  }, [mediaItems, numColumns]);
 
   const handleEndReached = React.useCallback(() => {
     if (endReachedDuringMomentum.current) {
@@ -230,6 +236,13 @@ export const ConversationMediaDetails = ({
           visible={viewerVisible}
           presentationStyle="overFullScreen"
           onRequestClose={() => setViewerVisible(false)}
+          supportedOrientations={[
+            "portrait",
+            "portrait-upside-down",
+            "landscape",
+            "landscape-left",
+            "landscape-right",
+          ]}
         >
           <GestureViewer
             data={viewerImages}

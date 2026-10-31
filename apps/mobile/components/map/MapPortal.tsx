@@ -11,14 +11,14 @@ import { MapRenderer } from "./MapRenderer";
 import { useChatContext } from "@/contexts/ChatContext";
 import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import {
-  hslToHex,
-  useColorPalette,
   Loader,
   StableSafeAreaView,
   ApplicationHeader,
 } from "@softsurgery/mobile-components";
 import { MapStatus } from "./MapDebugging/MapStatus";
 import { MapLockedOverlay } from "./MaplLockedOverlay";
+import { MapDebugDialog } from "./MapDebugging/MapDebugDialog";
+import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
 
 interface MapPortalProps {
   className?: string;

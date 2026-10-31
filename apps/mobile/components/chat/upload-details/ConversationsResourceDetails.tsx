@@ -4,14 +4,17 @@ import {
   StableSafeAreaView,
   ApplicationHeader,
   AppHeaderBack,
-  hslToHex,
-  useColorPalette,
 } from "@softsurgery/mobile-components";
 import { TabView, TabBar } from "react-native-tab-view";
 import { ConversationMediaDetails } from "./ConversationMediaDetails";
 import { ConversationFilesDetails } from "./ConversationFilesDetails";
 import { ConversationLinksDetails } from "./ConversationLinksDetails";
 import { useTranslation } from "react-i18next";
+import {
+  hslToHex,
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 
 interface ConversationResourceDetailsProps {
   id: string;
@@ -26,6 +29,7 @@ export const ConversationResourceDetails = ({
   const { t } = useTranslation("chat");
   const { palette } = useColorPalette();
   const layout = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
   const conversationId = Number(id);
 
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -108,9 +112,14 @@ export const ConversationResourceDetails = ({
         swipeEnabled={true}
         renderTabBar={(props) => (
           <TabBar
+            key={isLandscape ? "landscape" : "portrait"}
             {...props}
             scrollEnabled={false}
             options={tabOptions}
+            tabStyle={{
+              minHeight: isLandscape ? 38 : 48,
+              paddingVertical: isLandscape ? 4 : 8,
+            }}
             indicatorStyle={{
               backgroundColor: hslToHex(palette.primary),
               height: 2,
