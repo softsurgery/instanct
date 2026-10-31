@@ -56,7 +56,14 @@ export const SigninLayout = ({ className }: SigninProps) => {
 
   const onSignInPress = () => {
     authStore.resetErrors();
-    const result = requestSignInDtoSchema.safeParse(authStore.signInRequest);
+    const email = authStore.signInRequest.email?.trim().toLowerCase() || "";
+    if (email !== authStore.signInRequest.email) {
+      authStore.setNested("signInRequest.email", email);
+    }
+    const result = requestSignInDtoSchema.safeParse({
+      ...authStore.signInRequest,
+      email,
+    });
     if (!result.success) {
       authStore.set("signInRequestErrors", result.error.flatten().fieldErrors);
     } else SignIn();
