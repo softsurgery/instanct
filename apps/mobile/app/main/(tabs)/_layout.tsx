@@ -1,24 +1,27 @@
 import { Icon } from "@softsurgery/mobile-ui";
-import { useColorPalette, useRTL } from "@softsurgery/mobile-components";
+import {
+  useColorPalette,
+  useRTL,
+  VibratingTabButton,
+} from "@softsurgery/mobile-components";
 import { IconChecklist } from "@tabler/icons-react-native";
-import * as Haptics from "expo-haptics";
 import { Tabs, useSegments } from "expo-router";
 import { Map, Telescope, User } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
+import { Platform, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const { palette } = useColorPalette();
   const segments = useSegments();
   const currentRoute = segments[segments.length - 1];
   const isMapScreen = currentRoute === "map";
+
+  const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const isLandscape = width > height;
+  const iosBottomInset = Platform.OS === "ios" ? insets.bottom : 0;
 
   const isRTL = useRTL();
   const { t } = useTranslation("screens");
@@ -55,65 +58,6 @@ export default function TabLayout() {
 
   const orderedTabs = isRTL ? [...tabsConfig].reverse() : tabsConfig;
 
-  const VibratingTabButton = ({
-    accessibilityState,
-    children,
-    onPress,
-  }: any) => {
-    const focused = accessibilityState?.selected;
-    const scale = useSharedValue(focused ? 1 : 0);
-
-    React.useEffect(() => {
-      scale.value = withSpring(focused ? 1 : 0, {
-        damping: 15,
-        stiffness: 140,
-      });
-    }, [focused]);
-
-    const animatedStyle = useAnimatedStyle(() => ({
-      transform: [
-        {
-          scale: interpolate(scale.value, [0, 1], [1, 1.08]),
-        },
-      ],
-    }));
-
-    const indicatorStyle = useAnimatedStyle(() => ({
-      opacity: scale.value,
-      transform: [
-        {
-          scaleX: withSpring(focused ? 1 : 0.4),
-        },
-      ],
-    }));
-
-    const handlePress = async () => {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      onPress?.();
-    };
-
-    return (
-      <Pressable onPress={handlePress} className="mt-2">
-        <Animated.View
-          style={animatedStyle}
-          className="items-center justify-center gap-1"
-        >
-          {children}
-
-          <Animated.View
-            style={indicatorStyle}
-            className="mt-1 h-1 w-8 rounded-full"
-          >
-            <View
-              style={{ backgroundColor: palette.primary }}
-              className="h-full w-full rounded-full"
-            />
-          </Animated.View>
-        </Animated.View>
-      </Pressable>
-    );
-  };
-
   return (
     <Tabs
       screenOptions={{
@@ -123,21 +67,30 @@ export default function TabLayout() {
           backgroundColor: "transparent",
         },
         tabBarShowLabel: true,
+        tabBarLabelPosition: isLandscape ? "beside-icon" : "below-icon",
         tabBarActiveTintColor: palette.primary,
         tabBarInactiveTintColor: palette.foreground,
         tabBarStyle: {
-          borderTopEndRadius: !isMapScreen ? 28 : 0,
-          borderTopStartRadius: !isMapScreen ? 28 : 0,
-          paddingTop: 10,
-          paddingInline: 10,
+          borderTopEndRadius: !isMapScreen ? (isLandscape ? 16 : 28) : 0,
+          borderTopStartRadius: !isMapScreen ? (isLandscape ? 16 : 28) : 0,
+          paddingTop: isLandscape ? 2 : 8,
+          paddingBottom: isLandscape
+            ? Math.min(iosBottomInset, 10)
+            : Math.min(iosBottomInset, 16),
+          paddingLeft: Math.max(insets.left, 12),
+          paddingRight: Math.max(insets.right, 12),
           backgroundColor: palette.card,
           borderColor: palette.border,
           borderTopWidth: 0,
-          height: "9%",
+          height: isLandscape
+            ? 44 + Math.min(iosBottomInset, 12)
+            : 66 + Math.min(iosBottomInset, 20),
         },
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: isLandscape ? 11 : 11,
           fontWeight: "700",
+          marginLeft: isLandscape ? 6 : 0,
+          marginTop: 0,
         },
       }}
     >
@@ -148,9 +101,15 @@ export default function TabLayout() {
           options={{
             title: tab.title,
             tabBarLabel: tab.label,
-            tabBarButton: (props) => <VibratingTabButton {...props} />,
+            tabBarButton: (props) => (
+              <VibratingTabButton {...props} isLandscape={isLandscape} />
+            ),
             tabBarIcon: ({ color, focused }) => (
-              <Icon as={tab.icon} size={focused ? 28 : 24} color={color} />
+              <Icon
+                as={tab.icon}
+                size={isLandscape ? (focused ? 20 : 18) : focused ? 26 : 23}
+                color={color}
+              />
             ),
           }}
         />
