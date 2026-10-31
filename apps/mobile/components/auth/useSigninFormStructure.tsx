@@ -26,12 +26,22 @@ export const useSignInFormStructure = ({
     placeholder: t("auth.signIn.placeholders.email"),
     variant: FieldVariant.EMAIL,
     className: "w-full",
-    error: t(store.signInRequestErrors.email?.[0]),
+    error: store.signInRequestErrors?.email?.[0]
+      ? t(store.signInRequestErrors.email[0])
+      : undefined,
     props: {
       value: store.signInRequest.email,
       onChangeText: (value: string) => {
         store.setNested("signInRequest.email", value);
-        store.setNested("signInRequestErrors.email", []);
+        if (store.signInRequestErrors?.email?.length) {
+          store.setNested("signInRequestErrors.email", []);
+        }
+      },
+      onBlur: () => {
+        const email = store.signInRequest.email?.trim().toLowerCase();
+        if (email && email !== store.signInRequest.email) {
+          store.setNested("signInRequest.email", email);
+        }
       },
       editable: !isPending,
     },
@@ -43,12 +53,16 @@ export const useSignInFormStructure = ({
     label: t("auth.signIn.labels.password"),
     description: t("auth.signIn.descriptions.password"),
     variant: FieldVariant.PASSWORD,
-    error: t(store.signInRequestErrors.password?.[0]),
+    error: store.signInRequestErrors?.password?.[0]
+      ? t(store.signInRequestErrors.password[0])
+      : undefined,
     props: {
       value: store.signInRequest.password,
       onChangeText: (text: string) => {
         store.setNested("signInRequest.password", text);
-        store.setNested("signInRequestErrors.password", []);
+        if (store.signInRequestErrors?.password?.length) {
+          store.setNested("signInRequestErrors.password", []);
+        }
       },
       editable: !isPending,
     },
