@@ -61,7 +61,10 @@ export default function OnBoarding({ className }: OnBoardingProps) {
 
   return (
     <StableSafeAreaView
-      classNames={safeAreaClassNames}
+      classNames={{
+        safearea: safeAreaClassNames.safearea,
+        wrapper: cn(safeAreaClassNames.wrapper, "bg-background"),
+      }}
       className={cn("flex-1 justify-between", className)}
     >
       <ScrollView
