@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@softsurgery/lib";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
@@ -10,6 +10,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface SessionStarterProps {
   className?: string;
@@ -17,6 +18,11 @@ interface SessionStarterProps {
 
 export const SessionStarter = ({ className }: SessionStarterProps) => {
   const { t } = useTranslation("explore");
+  const { height: screenHeight } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+  const lottieSize = isLandscape
+    ? Math.min(175, Math.round(screenHeight * 0.52))
+    : 300;
   const height = useSharedValue(1);
   const opacity = useSharedValue(1);
 
@@ -27,13 +33,17 @@ export const SessionStarter = ({ className }: SessionStarterProps) => {
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-    height: 300,
+    height: lottieSize,
     overflow: "hidden",
   }));
 
   return (
     <View
-      className={cn("flex-1 items-center justify-center gap-6 px-6", className)}
+      className={cn(
+        "flex-1 items-center justify-center gap-6 px-6",
+        isLandscape ? "flex-row pt-8" : "flex-col",
+        className,
+      )}
     >
       <TouchableOpacity
         onPress={() => router.push("/main/explore/session-starter")}
@@ -44,19 +54,35 @@ export const SessionStarter = ({ className }: SessionStarterProps) => {
             autoPlay
             loop
             style={{
-              width: 300,
-              height: 300,
+              width: lottieSize,
+              height: lottieSize,
             }}
             source={require("~/assets/lotties/power-on.json")}
           />
         </Animated.View>
       </TouchableOpacity>
-      <Text variant={"h1"} className="text-center">
-        {t("session.starter.title")}
-      </Text>
-      <Text className="text-center text-base px-2">
-        {t("session.starter.description")}
-      </Text>
+      <View
+        className={cn(
+          isLandscape
+            ? "flex-1 max-w-md gap-2 items-start"
+            : "items-center gap-4",
+        )}
+      >
+        <Text
+          variant={"h1"}
+          className={cn(isLandscape ? "text-left text-2xl" : "text-center")}
+        >
+          {t("session.starter.title")}
+        </Text>
+        <Text
+          className={cn(
+            "text-base",
+            isLandscape ? "text-left" : "text-center px-2",
+          )}
+        >
+          {t("session.starter.description")}
+        </Text>
+      </View>
     </View>
   );
 };

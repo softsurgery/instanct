@@ -65,14 +65,17 @@ export const UserCard = ({
 }: UserCardProps) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const { isLandscape } = useScreenOrientation();
+
   const resolvedWidth = cardWidthProp ?? screenWidth;
   const resolvedHeight = cardHeightProp ?? screenHeight;
+
   const heroHeight = Math.round(resolvedHeight * 0.5);
 
   const { t } = useTranslation("explore");
   const { palette } = useColorPalette();
   const primary = hslToHex(palette?.primary);
   const primaryDark = hslToHex(palette?.primary, 0.8);
+
   const router = useRouter();
   const { isBookmarked, toggleBookmark } = useBookmarkActions({
     bookmarkId: user.id,
@@ -219,7 +222,7 @@ export const UserCard = ({
               })
             }
             style={isLandscape ? { width: 64, height: 64 } : undefined}
-            className="rounded-full bg-primary active:bg-primary/50 border border-white/20 w-20 h-20 flex items-center justify-center shadow-xl shadow-primary/30"
+            className="rounded-full bg-primary active:bg-primary/50 border border-primary-foreground/20 w-20 h-20 flex items-center justify-center shadow-xl shadow-primary/30"
           >
             <Icon
               as={IconMoodPlus}
@@ -260,8 +263,6 @@ export const UserCard = ({
     </View>
   );
 
-  const landscapeActions = actionButtons;
-
   const heroOverlay = (
     <View
       className="flex-1 justify-end px-5"
@@ -270,17 +271,17 @@ export const UserCard = ({
     >
       <Pressable onPress={openProfile} className="gap-1">
         <Text
-          className="text-3xl font-extrabold text-white tracking-tight"
+          className="text-3xl font-extrabold text-primary-foreground tracking-tight"
           style={isLandscape ? { fontSize: 20, lineHeight: 28 } : undefined}
           numberOfLines={1}
         >
           {identity}
         </Text>
-        <Text className="text-sm font-semibold text-white/70 tracking-wide">
+        <Text className="text-sm font-semibold text-primary-foreground tracking-wide">
           @{user.username}
         </Text>
       </Pressable>
-      {isLandscape ? <View className="mt-3">{landscapeActions}</View> : null}
+      {isLandscape ? <View className="mt-3">{actionButtons}</View> : null}
     </View>
   );
 
@@ -314,16 +315,16 @@ export const UserCard = ({
         className="items-center justify-center"
       >
         {/* Floating decorative glass elements for background depth */}
-        <View className="absolute top-10 left-10 w-24 h-24 rounded-full bg-white/5 border border-white/10" />
-        <View className="absolute bottom-16 right-12 w-32 h-32 rounded-full bg-white/5 border border-white/10" />
+        <View className="absolute top-10 left-10 w-24 h-24 rounded-full text-primary-foreground/5 border border-primary-foreground/10" />
+        <View className="absolute bottom-16 right-12 w-32 h-32 rounded-full bg-primary-foreground/5 border border-primary-foreground/10" />
 
         {/* Main Avatar Badge */}
         <View
-          className="w-28 h-28 rounded-full items-center justify-center bg-white/10 border border-white/20 shadow-2xl"
+          className="w-28 h-28 rounded-full items-center justify-center bg-primary-foreground/10 border border-primary-foreground/20 shadow-2xl"
           style={isLandscape ? { width: 80, height: 80 } : undefined}
         >
           <Text
-            className="text-4xl font-extrabold text-white tracking-widest uppercase"
+            className="text-4xl font-extrabold text-primary-foreground tracking-widest uppercase"
             style={isLandscape ? { fontSize: 22, lineHeight: 28 } : undefined}
           >
             {fallback}
@@ -339,10 +340,10 @@ export const UserCard = ({
   );
 
   const detailsSections = (
-    <>
+    <View className={cn("flex flex-col gap-8", isLandscape ? "mb-8" : "mb-20")}>
       {/* Industries */}
       {user.industries && user.industries.length > 0 && (
-        <View className="mb-5">
+        <View>
           <View className="mb-2.5 flex-row items-center gap-2">
             <Icon as={Briefcase} size={15} color={primary} />
             <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
@@ -368,7 +369,7 @@ export const UserCard = ({
       {/* Objectives */}
       {user?.activeSession?.payload?.objectives &&
         user.activeSession.payload.objectives.length > 0 && (
-          <View className="mb-5">
+          <View>
             <View className="mb-2.5 flex-row items-center gap-2">
               <Icon as={Goal} size={15} color={primary} />
               <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
@@ -387,7 +388,7 @@ export const UserCard = ({
                     className="rounded-full bg-muted/40 border border-muted-foreground/10 px-3 py-1 flex-row items-center gap-1.5"
                   >
                     <View className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
-                    <Text className="text-[13px] font-semibold text-foreground">
+                    <Text className="text-sm font-semibold text-foreground">
                       {objective.label}
                     </Text>
                   </View>
@@ -398,7 +399,7 @@ export const UserCard = ({
         )}
 
       {/* Bio */}
-      <View className="mb-6">
+      <View>
         <View className="mb-2.5 flex-row items-center gap-2">
           <Icon as={Quote} size={15} color={primary} />
           <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
@@ -411,7 +412,7 @@ export const UserCard = ({
           </Text>
         </View>
       </View>
-    </>
+    </View>
   );
 
   const leftWidth = Math.round(resolvedWidth * 0.44);
@@ -469,7 +470,7 @@ export const UserCard = ({
             style={
               isLandscape
                 ? { marginTop: 20 }
-                : { paddingHorizontal: 20, marginTop: 16, paddingBottom: 144 }
+                : { paddingHorizontal: 20, marginTop: 16 }
             }
           >
             {detailsSections}

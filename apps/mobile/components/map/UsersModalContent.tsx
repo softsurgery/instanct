@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { ChevronRight, X } from "lucide-react-native";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { formatDistanceToNow } from "date-fns";
@@ -108,6 +108,9 @@ export const UsersModalContent = ({
   onSelectUser,
   onClose,
 }: UsersModalContentProps) => {
+  const { height: screenHeight } = useWindowDimensions();
+  const maxListHeight = Math.min(380, Math.round(screenHeight * 0.55));
+
   return (
     <View className="px-5 pt-2 pb-6">
       {/* Header */}
@@ -128,7 +131,7 @@ export const UsersModalContent = ({
 
       {/* Cluster Users List */}
       <ScrollView
-        style={{ maxHeight: 380 }}
+        style={{ maxHeight: maxListHeight }}
         showsVerticalScrollIndicator={false}
       >
         {clusterUsers?.map((u) => (
