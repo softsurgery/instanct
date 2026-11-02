@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Icon } from "@softsurgery/mobile-ui";
+import { Text } from "@softsurgery/mobile-ui";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useEducations } from "@/hooks/content/users/useEducations";
 import { useExperiences } from "@/hooks/content/users/useExperiences";
@@ -15,7 +15,7 @@ import {
 import { router, useFocusEffect, useNavigation } from "expo-router";
 import { toUpdateExperienceDto } from "./experience/toUpdateExperienceDto";
 import { toUpdateEducationDto } from "./education/toUpdateEducationDto";
-import { View, Pressable, useWindowDimensions } from "react-native";
+import { View, ScrollView, useWindowDimensions } from "react-native";
 import { ProfileStat } from "./ProfileStat";
 import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
@@ -27,9 +27,12 @@ import { ProfileCover } from "./ProfileCover";
 import { toast } from "sonner-native";
 import { useApi } from "@/contexts/ApiContext";
 import { useMutation } from "@tanstack/react-query";
-import { Mail } from "lucide-react-native";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-components";
+import {
+  hslToHex,
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 import { useScrollableElement } from "@softsurgery/mobile-hooks";
 import Animated, {
   useAnimatedStyle,
@@ -51,12 +54,20 @@ export const InspectBaseProfile = ({
   coverExtra,
 }: InspectBaseProfileProps) => {
   const api = useApi();
-  const { animatedHeaderStyle, handleScroll, onLayout, showHeader } =
-    useScrollableElement({
-      deltaThreshold: 0,
-      duration: 400,
-      checkScrollable: true,
-    });
+  const {
+    animatedHeaderStyle,
+    handleScroll,
+    onLayout,
+    showHeader,
+    headerHeight,
+    reset: resetHeader,
+  } = useScrollableElement({
+    deltaThreshold: 12,
+    landscapeDeltaThreshold: 12,
+    duration: 300,
+    checkScrollable: false,
+    collapseHeight: false,
+  });
   const insets = useSafeAreaInsets();
   const { palette } = useColorPalette();
   const { t } = useTranslation("menu");
@@ -132,6 +143,17 @@ export const InspectBaseProfile = ({
     };
   }, []);
 
+  const emailVerification = React.useMemo(
+    () => ({
+      currentUser,
+      user,
+      id,
+      sendVerifyEmail: () => sendVerifyEmail(),
+      isSendVerifyEmailPending,
+    }),
+    [currentUser, user, id, sendVerifyEmail, isSendVerifyEmailPending],
+  );
+
   const onRefresh = React.useCallback(async () => {
     await Promise.allSettled([
       refetchUser(),
@@ -188,7 +210,9 @@ export const InspectBaseProfile = ({
 
   const editable = currentUser?.id === user?.id;
 
-  const layout = useWindowDimensions();
+  const { width: screenWidth } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+  const leftPaneWidth = Math.min(Math.round(screenWidth * 0.42), 500);
   const [tabIndex, setTabIndex] = React.useState(0);
   const routes = React.useMemo(
     () => [
@@ -230,12 +254,13 @@ export const InspectBaseProfile = ({
               user={user}
               onRefresh={onRefresh}
               refreshing={refreshing}
-              onScroll={handleScroll}
+              onScroll={isLandscape ? undefined : handleScroll}
             />
           );
         case "career":
           return (
             <CareerTab
+              className="flex-1"
               experiences={experiences}
               educations={educations}
               industries={selectedIndustries}
@@ -245,7 +270,7 @@ export const InspectBaseProfile = ({
               onEditEducation={handleEditEducation}
               onRefresh={onRefresh}
               refreshing={refreshing}
-              onScroll={handleScroll}
+              onScroll={isLandscape ? undefined : handleScroll}
             />
           );
         default:
@@ -256,6 +281,7 @@ export const InspectBaseProfile = ({
       user,
       onRefresh,
       refreshing,
+      isLandscape,
       handleScroll,
       experiences,
       educations,
@@ -268,10 +294,27 @@ export const InspectBaseProfile = ({
   );
 
   const animatedTabsStyle = useAnimatedStyle(() => {
+    if (isLandscape) {
+      return {
+        paddingTop: insets.top,
+        marginBottom: 0,
+        transform: [{ translateY: 0 }],
+      };
+    }
+    // Layout stays constant (header height reserved as padding); only
+    // transforms animate, so scrolling never feeds back into layout.
+    const h = headerHeight.value > 0 ? headerHeight.value : 0;
+    const hiddenShift = Math.max(h - insets.top, 0);
     return {
-      paddingTop: withTiming(showHeader.value ? 0 : insets.top, {
-        duration: 400,
-      }),
+      paddingTop: h,
+      marginBottom: -hiddenShift,
+      transform: [
+        {
+          translateY: withTiming(showHeader.value ? 0 : -hiddenShift, {
+            duration: 300,
+          }),
+        },
+      ],
     };
   });
 
@@ -279,103 +322,172 @@ export const InspectBaseProfile = ({
     return <BaseProfileSkeleton className={className} />;
   }
 
-  return (
-    <View className={cn("bg-background flex-1", className)}>
-      <Animated.View style={animatedHeaderStyle}>
-        <View onLayout={onLayout}>
-          {/* Cover */}
-          <ProfileCover
-            user={user}
-            currentUser={currentUser}
-            onRefresh={onRefresh}
-            coverExtra={coverExtra}
-          />
-          {/* Header */}
-          <View className="-mt-12 px-5 z-50">
-            <View className="flex-row items-end justify-between">
-              <ProfileAvatar
-                user={user}
-                currentUser={currentUser}
-                onRefresh={onRefresh}
-              />
-              {currentUser?.id === id && <ProfileStat />}
-            </View>
-
-            {/* Identity */}
-            <View className="mt-3">
-              <Text className="text-2xl font-bold text-foreground">
-                {identity}
-              </Text>
-              {id && (
-                <View className="flex-col items-start justify-between gap-2">
-                  <View className="flex flex-row items-center gap-2">
-                    <Text className="text-sm text-muted-foreground">
-                      @{user?.username}
-                    </Text>
-                    {!!user?.email &&
-                      !user?.emailVerified &&
-                      currentUser?.id === id && (
-                        <Text className="text-xs text-yellow-600 font-bold">
-                          ({t("menu.unverifiedEmail")})
-                        </Text>
-                      )}
-                  </View>
-                  {currentUser?.id === id &&
-                    user?.email &&
-                    !user.emailVerified && (
-                      <Pressable
-                        onPress={() => sendVerifyEmail()}
-                        disabled={isSendVerifyEmailPending}
-                        className="flex-row items-center gap-1.5 rounded-xl border border-border px-3.5 py-2 active:opacity-80 bg-yellow-700"
-                      >
-                        <Icon
-                          as={Mail}
-                          size={16}
-                          color={palette.primaryForeground}
-                        />
-                        <Text className="text-md font-semibold text-primary-foreground">
-                          {t("menu.actions.verifyEmail")}
-                        </Text>
-                      </Pressable>
-                    )}
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
-      </Animated.View>
-      {/* Tabs */}
-      <Animated.View
-        className={cn("flex-1", !user?.emailVerified ? "mt-2" : "")}
-        style={animatedTabsStyle}
-      >
-        <TabView
-          navigationState={{ index: tabIndex, routes }}
-          renderScene={renderScene}
-          onIndexChange={setTabIndex}
-          initialLayout={{ width: layout.width }}
-          swipeEnabled={true}
-          renderTabBar={(props) => (
-            <TabBar
-              {...props}
-              scrollEnabled={false}
-              options={tabOptions}
-              indicatorStyle={{
-                backgroundColor: hslToHex(palette.primary),
-                height: 2,
-              }}
-              style={{
-                backgroundColor: "transparent",
-                elevation: 0,
-                shadowOpacity: 0,
-              }}
-              activeColor={hslToHex(palette.foreground)}
-              inactiveColor={hslToHex(palette.mutedForeground)}
-              pressColor="transparent"
-            />
-          )}
+  const profileHeaderInfo = (
+    <View
+      className="z-50"
+      style={{
+        marginTop: isLandscape ? -40 : -48,
+        paddingRight: isLandscape ? 16 : 20,
+        paddingLeft: isLandscape ? Math.max(insets.left, 16) : 20,
+      }}
+    >
+      <View className={"flex-row items-end justify-between"}>
+        <ProfileAvatar
+          user={user}
+          currentUser={currentUser}
+          onRefresh={onRefresh}
+          size={isLandscape ? 76 : 100}
         />
-      </Animated.View>
+        {currentUser?.id === id && !isLandscape && (
+          <ProfileStat
+            className="-mb-8"
+            emailVerification={emailVerification}
+          />
+        )}
+      </View>
+
+      {/* Identity */}
+      <View style={{ marginTop: isLandscape ? 8 : 12 }}>
+        <Text
+          className="text-2xl font-bold text-foreground"
+          style={isLandscape ? { fontSize: 18, lineHeight: 26 } : undefined}
+          numberOfLines={1}
+        >
+          {identity}
+        </Text>
+        {id && (
+          <View className="flex-col items-start justify-between gap-2">
+            <View className="flex flex-row items-center flex-wrap gap-2">
+              <Text className="text-sm text-muted-foreground">
+                @{user?.username}
+              </Text>
+              {!!user?.email &&
+                !user?.emailVerified &&
+                currentUser?.id === id && (
+                  <Text className="text-xs text-yellow-600 font-bold">
+                    ({t("menu.unverifiedEmail")})
+                  </Text>
+                )}
+            </View>
+            {isLandscape && (
+              <ProfileStat emailVerification={emailVerification} />
+            )}
+          </View>
+        )}
+      </View>
+    </View>
+  );
+
+  const tabViewElement = (
+    <TabView
+      style={{ flex: 1 }}
+      navigationState={{ index: tabIndex, routes }}
+      renderScene={renderScene}
+      onIndexChange={(index) => {
+        setTabIndex(index);
+        resetHeader();
+      }}
+      initialLayout={{
+        width: isLandscape ? screenWidth - leftPaneWidth : screenWidth,
+      }}
+      swipeEnabled={true}
+      renderTabBar={(props) => (
+        <TabBar
+          key={isLandscape ? "landscape" : "portrait"}
+          {...props}
+          scrollEnabled={false}
+          options={tabOptions}
+          tabStyle={{
+            flex: 1,
+            minHeight: isLandscape ? 38 : 48,
+            paddingVertical: isLandscape ? 4 : 8,
+          }}
+          indicatorStyle={{
+            backgroundColor: hslToHex(palette.primary),
+            height: 2,
+          }}
+          style={{
+            backgroundColor: "transparent",
+            elevation: 0,
+            shadowOpacity: 0,
+          }}
+          activeColor={hslToHex(palette.foreground)}
+          inactiveColor={hslToHex(palette.mutedForeground)}
+          pressColor="transparent"
+        />
+      )}
+    />
+  );
+
+  return (
+    <View
+      className={cn("bg-background flex-1", className)}
+      style={{ flexDirection: isLandscape ? "row" : "column" }}
+    >
+      {isLandscape ? (
+        <View
+          className="border-r border-border/40 bg-background"
+          style={{ width: leftPaneWidth }}
+        >
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 16 }}
+          >
+            <ProfileCover
+              user={user}
+              currentUser={currentUser}
+              onRefresh={onRefresh}
+              coverExtra={coverExtra}
+            />
+            {profileHeaderInfo}
+          </ScrollView>
+        </View>
+      ) : (
+        <Animated.View
+          style={[
+            animatedHeaderStyle,
+            { position: "absolute", top: 0, left: 0, right: 0, zIndex: 20 },
+          ]}
+        >
+          <View onLayout={onLayout}>
+            {/* Cover */}
+            <ProfileCover
+              user={user}
+              currentUser={currentUser}
+              onRefresh={onRefresh}
+              coverExtra={coverExtra}
+            />
+            {/* Header */}
+            {profileHeaderInfo}
+          </View>
+        </Animated.View>
+      )}
+
+      {/* Tabs */}
+      {isLandscape ? (
+        <View
+          key="landscape-tabs"
+          className="flex-1"
+          style={{
+            flex: 1,
+            paddingTop: insets.top,
+            paddingRight: insets.right,
+          }}
+        >
+          {tabViewElement}
+        </View>
+      ) : (
+        <Animated.View
+          key="portrait-tabs"
+          className="flex-1"
+          style={[
+            animatedTabsStyle,
+            !user?.emailVerified ? { marginTop: 8 } : undefined,
+          ]}
+        >
+          {tabViewElement}
+        </Animated.View>
+      )}
     </View>
   );
 };

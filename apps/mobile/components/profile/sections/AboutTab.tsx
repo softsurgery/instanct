@@ -103,12 +103,14 @@ export const AboutTab = ({
 
   return (
     <ScrollView
-      className={cn(className)}
+      className={cn("flex-1", className)}
+      style={{ flex: 1 }}
       onScroll={onScroll}
       scrollEventThrottle={16}
       contentContainerStyle={{
         paddingTop: 24,
         paddingBottom: 36,
+        flexGrow: 1,
       }}
       refreshControl={
         <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} />

@@ -29,12 +29,14 @@ interface ProfileAvatarProps {
   user: ResponseUserDto;
   currentUser: ResponseUserDto | null;
   onRefresh: () => void;
+  size?: number;
 }
 
 export const ProfileAvatar = ({
   user,
   currentUser,
   onRefresh,
+  size = 100,
 }: ProfileAvatarProps) => {
   const api = useApi();
   const { t } = useTranslation("menu");
@@ -55,7 +57,7 @@ export const ProfileAvatar = ({
       fallbacks: [fallback],
       className: "rounded-full",
       wrapperClassName: "border border-border bg-background rounded-full",
-      size: { width: 100, height: 100 },
+      size: { width: size, height: size },
     });
   const profilePictureSource = profilePictureUploads?.[0];
 
