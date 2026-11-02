@@ -73,7 +73,9 @@ export default function TabLayout() {
         tabBarStyle: {
           borderTopEndRadius: !isMapScreen ? (isLandscape ? 16 : 28) : 0,
           borderTopStartRadius: !isMapScreen ? (isLandscape ? 16 : 28) : 0,
-          paddingTop: isLandscape ? 2 : 8,
+          paddingTop: isLandscape
+            ? Math.min(iosBottomInset, 10)
+            : Math.min(iosBottomInset, 16),
           paddingBottom: isLandscape
             ? Math.min(iosBottomInset, 10)
             : Math.min(iosBottomInset, 16),
