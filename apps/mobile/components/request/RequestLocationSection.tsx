@@ -1,9 +1,8 @@
 import { cn } from "@softsurgery/lib";
-import { Dimensions, View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { LocationMap } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-
-const screenHeight = Dimensions.get("window").height;
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface RequestLocationSectionProps {
   className?: string;
@@ -20,6 +19,8 @@ export const RequestLocationSection = ({
   longitude,
 }: RequestLocationSectionProps) => {
   const { t } = useTranslation("activities");
+  const { height: screenHeight } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
 
   const hasLocationInfo = Boolean(
     location || (latitude != null && longitude != null),
@@ -44,7 +45,9 @@ export const RequestLocationSection = ({
         location={displayLocation}
         title={location ?? undefined}
         className="rounded-xl overflow-hidden"
-        style={{ height: screenHeight * 0.4 }}
+        style={{
+          height: isLandscape ? 180 : Math.round(screenHeight * 0.35),
+        }}
         initialDelta={{ latitudeDelta: 0.01, longitudeDelta: 0.01 }}
         scrollEnabled={false}
         zoomEnabled={false}

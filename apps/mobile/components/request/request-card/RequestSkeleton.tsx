@@ -1,8 +1,7 @@
-import { Dimensions, View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { Skeleton } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
-
-const screenHeight = Dimensions.get("window").height;
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface RequestSkeletonProps {
   className?: string;
@@ -13,6 +12,9 @@ export const RequestSkeleton = ({
   className,
   hasLocation,
 }: RequestSkeletonProps) => {
+  const { height: screenHeight } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+
   return (
     <View className={cn("flex-1 bg-background gap-4", className)}>
       {/* User header */}
@@ -45,7 +47,9 @@ export const RequestSkeleton = ({
       {hasLocation && (
         <Skeleton
           className="w-full rounded-xl"
-          style={{ height: screenHeight * 0.4 }}
+          style={{
+            height: isLandscape ? 180 : Math.round(screenHeight * 0.35),
+          }}
         />
       )}
     </View>
