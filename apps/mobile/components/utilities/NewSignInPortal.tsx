@@ -4,7 +4,6 @@ import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { ShieldAlert } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@softsurgery/lib";
 import {
   ApplicationHeader,
   AppHeaderBack,
@@ -18,6 +17,7 @@ import {
   DeviceDetailsSection,
   type DeviceDetailsData,
 } from "@/components/settings/privacy-security/devices/DeviceDetailsSection";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 const TRANSLATION_PREFIX = "screens.new-signin";
 
@@ -51,6 +51,7 @@ export const NewSignInPortal = ({
   macAddress,
   connectionId,
 }: NewSignInPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("notifications");
   const api = useApi();
 
@@ -116,9 +117,11 @@ export const NewSignInPortal = ({
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t(`${TRANSLATION_PREFIX}.header`)}
         titleVariant="large"
         reverse
@@ -130,7 +133,7 @@ export const NewSignInPortal = ({
         ]}
       />
 
-      <StableScrollView className="bg-background">
+      <StableScrollView className="bg-background flex-1 rounded-b-xl">
         <View className="items-center px-6 pt-8 pb-8">
           <Image
             source={require("@/assets/images/new-signin.png")}

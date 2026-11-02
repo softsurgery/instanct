@@ -13,8 +13,6 @@ import {
   AlertCircle,
   ChevronRight,
 } from "lucide-react-native";
-
-import { cn } from "@softsurgery/lib";
 import {
   ApplicationHeader,
   StableSafeAreaView,
@@ -22,6 +20,7 @@ import {
   AppHeaderBack,
   LocationMap,
 } from "@softsurgery/mobile-components";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
 import {
@@ -47,6 +46,7 @@ interface DeviceDetailsPortalProps {
 export const DeviceDetailsPortal = ({
   className,
 }: DeviceDetailsPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("settings");
   const queryClient = useQueryClient();
@@ -228,9 +228,11 @@ export const DeviceDetailsPortal = ({
 
   if (!device && !isLoading) {
     return (
-      <StableSafeAreaView className="flex-1 bg-card">
+      <StableSafeAreaView classNames={safeAreaClassNames}>
         <ApplicationHeader
-          classNames={{ wrapper: "border-b border-border pb-2" }}
+          classNames={{
+            wrapper: applicationHeaderClassNames.wrapper,
+          }}
           title={t(
             "settings.account.screens.privacy-security.screens.account-security.devices.details.title",
           )}
@@ -238,7 +240,7 @@ export const DeviceDetailsPortal = ({
           reverse
           shortcuts={[{ key: "back", render: <AppHeaderBack /> }]}
         />
-        <View className="flex-1 items-center justify-center p-6 bg-background">
+        <View className="flex-1 items-center justify-center p-6 bg-background rounded-b-xl">
           <Icon
             as={AlertCircle}
             size={48}
@@ -255,9 +257,11 @@ export const DeviceDetailsPortal = ({
   }
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={screenTitle}
         titleVariant="large"
         reverse
@@ -270,7 +274,7 @@ export const DeviceDetailsPortal = ({
       />
 
       <StableScrollView
-        className="flex-1 bg-background"
+        className="flex-1 bg-background rounded-b-xl"
         refreshControl={
           <RefreshControl
             refreshing={isRefetchingDevices || isRefetchingHistory}

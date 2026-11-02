@@ -20,12 +20,14 @@ import { useSignInFormStructure } from "./useSigninFormStructure";
 import { SSOButtons } from "./SSOButtons";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface SigninProps {
   className?: string;
 }
 
 export const SigninLayout = ({ className }: SigninProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("auth");
   const authStore = useAuthStore();
@@ -63,9 +65,11 @@ export const SigninLayout = ({ className }: SigninProps) => {
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         titleVariant="large"
         reverse
         shortcuts={[
@@ -75,7 +79,7 @@ export const SigninLayout = ({ className }: SigninProps) => {
           },
         ]}
       />
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background rounded-b-xl">
         <StableKeyboardAwareScrollView className="flex-1 bg-background">
           <View
             className={cn(

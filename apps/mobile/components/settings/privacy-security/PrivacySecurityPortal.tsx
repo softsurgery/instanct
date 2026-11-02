@@ -3,7 +3,6 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { ChevronRight, Lock, Mail, Smartphone } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@softsurgery/lib";
 import { SettingRow } from "../SettingsRow";
 import type { SettingRowProps } from "../SettingsRow";
 import { Text, Separator } from "@softsurgery/mobile-ui";
@@ -13,6 +12,7 @@ import {
   StableScrollView,
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface PrivacySecurityPortalProps {
   className?: string;
@@ -28,6 +28,7 @@ interface SettingsSection {
 export const PrivacySecurityPortal = ({
   className,
 }: PrivacySecurityPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("settings");
   const cardClass = "border-b-border border-t-border bg-background";
 
@@ -152,9 +153,11 @@ export const PrivacySecurityPortal = ({
   ];
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("screens.privacySecurity", "Privacy & Security")}
         titleVariant="large"
         reverse
@@ -166,7 +169,7 @@ export const PrivacySecurityPortal = ({
         ]}
       />
 
-      <StableScrollView className="bg-background">
+      <StableScrollView className="bg-background flex-1 rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(

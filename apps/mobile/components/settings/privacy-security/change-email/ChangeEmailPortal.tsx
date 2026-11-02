@@ -22,12 +22,14 @@ import {
   StableKeyboardAwareScrollView,
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface ChangeEmailPortalProps {
   className?: string;
 }
 
 export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const isKeyboardVisible = useKeyboardVisible();
   const { t } = useTranslation("settings");
@@ -71,9 +73,11 @@ export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
 
   if (!currentUser) return null;
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t(
           "settings.account.screens.privacy-security.screens.account-security.change-email.title",
           "Update Email",
@@ -88,7 +92,7 @@ export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
         ]}
       />
 
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(

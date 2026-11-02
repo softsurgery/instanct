@@ -21,12 +21,14 @@ import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import * as Haptics from "expo-haptics";
 import { useLogout } from "@/hooks/useLogout";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface ChangePasswordProps {
   className?: string;
 }
 
 export const ChangePassword = ({ className }: ChangePasswordProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("settings");
   const userStore = useUserStore();
@@ -71,9 +73,11 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t(
           "settings.account.screens.privacy-security.screens.account-security.change-password.forms.title",
         )}
@@ -86,7 +90,7 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(

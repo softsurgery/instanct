@@ -51,6 +51,7 @@ import { MessageFlatListItem } from "@/types";
 import { cn, dateUtils } from "@softsurgery/lib";
 import { ConversationSearchOverlay } from "./conversation/search/ConversationSearchOverlay";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface ConversationProps {
   id: number;
@@ -72,6 +73,7 @@ export const Conversation = ({
   avatarFallback,
   scrollToMessageId,
 }: ConversationProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("chat");
   const { colorScheme, palette } = useColorPalette();
 
@@ -364,11 +366,16 @@ export const Conversation = ({
   }, [scrollToMessageId, isMessagesLoading, listData, navigateToMessage]);
 
   return (
-    <StableSafeAreaView className="flex-1 bg-background">
+    <StableSafeAreaView classNames={safeAreaClassNames}>
       {/* HEADER */}
-      <View className="flex flex-row justify-between items-center px-2 py-2 bg-background border-b border-border">
+      <View
+        className={cn(
+          "flex flex-row justify-between items-center px-2 py-2",
+          applicationHeaderClassNames.wrapper,
+        )}
+      >
         <ChatHeaderLeft
-          className="bg-background"
+          className="bg-transparent"
           id={headerUserId as string}
           profilePicture={profilePictures[0]}
           identifier={headerIdentifier}
@@ -387,6 +394,7 @@ export const Conversation = ({
             ? require("~/assets/images/message-background-dark.jpg")
             : require("~/assets/images/message-background.jpg")
         }
+        className="rounded-b-xl overflow-hidden"
         style={{
           flex: 1,
           width: "100%",
@@ -571,7 +579,7 @@ export const Conversation = ({
 
           {/* INPUT */}
           <ConversationInput
-            className="bg-background"
+            className="bg-background rounded-b-xl"
             input={input}
             setInput={setInput}
             sendMessage={sendMessage}

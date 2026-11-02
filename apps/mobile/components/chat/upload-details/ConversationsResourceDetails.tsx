@@ -1,5 +1,5 @@
 import React from "react";
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import {
   StableSafeAreaView,
   ApplicationHeader,
@@ -10,6 +10,7 @@ import { ConversationMediaDetails } from "./ConversationMediaDetails";
 import { ConversationFilesDetails } from "./ConversationFilesDetails";
 import { ConversationLinksDetails } from "./ConversationLinksDetails";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import {
   hslToHex,
   useColorPalette,
@@ -26,6 +27,7 @@ interface ConversationResourceDetailsProps {
 export const ConversationResourceDetails = ({
   id,
 }: ConversationResourceDetailsProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("chat");
   const { palette } = useColorPalette();
   const layout = useWindowDimensions();
@@ -90,7 +92,7 @@ export const ConversationResourceDetails = ({
   );
 
   return (
-    <StableSafeAreaView className="flex-1 bg-card">
+    <StableSafeAreaView classNames={safeAreaClassNames}>
       <ApplicationHeader
         title={t("chat.resources.title")}
         titleVariant="large"
@@ -101,40 +103,44 @@ export const ConversationResourceDetails = ({
           },
         ]}
         reverse
-        classNames={{ wrapper: "border-b border-border pb-2 bg-card" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
       />
 
-      <TabView
-        navigationState={{ index: tabIndex, routes }}
-        renderScene={renderScene}
-        onIndexChange={setTabIndex}
-        initialLayout={{ width: layout.width }}
-        swipeEnabled={true}
-        renderTabBar={(props) => (
-          <TabBar
-            key={isLandscape ? "landscape" : "portrait"}
-            {...props}
-            scrollEnabled={false}
-            options={tabOptions}
-            tabStyle={{
-              minHeight: isLandscape ? 38 : 48,
-              paddingVertical: isLandscape ? 4 : 8,
-            }}
-            indicatorStyle={{
-              backgroundColor: hslToHex(palette.primary),
-              height: 2,
-            }}
-            style={{
-              backgroundColor: hslToHex(palette.background),
-              elevation: 0,
-              shadowOpacity: 0,
-            }}
-            activeColor={hslToHex(palette.foreground)}
-            inactiveColor={hslToHex(palette.mutedForeground)}
-            pressColor="transparent"
-          />
-        )}
-      />
+      <View className="flex-1 bg-background rounded-b-xl overflow-hidden">
+        <TabView
+          navigationState={{ index: tabIndex, routes }}
+          renderScene={renderScene}
+          onIndexChange={setTabIndex}
+          initialLayout={{ width: layout.width }}
+          swipeEnabled={true}
+          renderTabBar={(props) => (
+            <TabBar
+              key={isLandscape ? "landscape" : "portrait"}
+              {...props}
+              scrollEnabled={false}
+              options={tabOptions}
+              tabStyle={{
+                minHeight: isLandscape ? 38 : 48,
+                paddingVertical: isLandscape ? 4 : 8,
+              }}
+              indicatorStyle={{
+                backgroundColor: hslToHex(palette.primary),
+                height: 2,
+              }}
+              style={{
+                backgroundColor: hslToHex(palette.background),
+                elevation: 0,
+                shadowOpacity: 0,
+              }}
+              activeColor={hslToHex(palette.foreground)}
+              inactiveColor={hslToHex(palette.mutedForeground)}
+              pressColor="transparent"
+            />
+          )}
+        />
+      </View>
     </StableSafeAreaView>
   );
 };

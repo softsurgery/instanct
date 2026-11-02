@@ -27,6 +27,7 @@ import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { objectUtils } from "@softsurgery/lib";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 interface SessionStarterPortalProps {
   className?: string;
 }
@@ -34,6 +35,7 @@ interface SessionStarterPortalProps {
 export const SessionStarterPortal = ({
   className,
 }: SessionStarterPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("explore");
   const queryClient = useQueryClient();
@@ -122,9 +124,11 @@ export const SessionStarterPortal = ({
   }, []);
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("session.start.title")}
         titleVariant="large"
         reverse
@@ -135,7 +139,7 @@ export const SessionStarterPortal = ({
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("session.start.description")}

@@ -25,6 +25,7 @@ import {
   MultiSelectFieldProps,
 } from "@softsurgery/mobile-form-builder";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface IndustriesManagementProps {
   className?: string;
@@ -33,6 +34,7 @@ interface IndustriesManagementProps {
 export const IndustriesManagement = ({
   className,
 }: IndustriesManagementProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("menu");
   const isKeyboardVisible = useKeyboardVisible();
@@ -126,9 +128,11 @@ export const IndustriesManagement = ({
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2 bg-transparent" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("menu.industries.title")}
         titleVariant="large"
         reverse
@@ -139,7 +143,7 @@ export const IndustriesManagement = ({
           },
         ]}
       />
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background rounded-b-xl">
         <View className="px-5 pt-4 pb-2">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("menu.industries.description")}

@@ -28,6 +28,7 @@ import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { ServerErrorResponse, Upload } from "api-client";
 import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { useLoader } from "@/contexts/LoaderContext";
@@ -38,6 +39,7 @@ interface SignupLayoutProps {
 }
 
 export const SignupLayout = ({ className }: SignupLayoutProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { isLandscape } = useScreenOrientation();
   const api = useApi();
   const { t } = useTranslation("auth");
@@ -196,9 +198,11 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
     authStore.utilities.acceptedTerms;
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         titleVariant="large"
         reverse
         shortcuts={[
@@ -208,7 +212,7 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
           },
         ]}
       />
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background rounded-b-xl">
         <View className={cn("flex-1 px-2 bg-background", className)}>
           <Stepper
             classNames={{

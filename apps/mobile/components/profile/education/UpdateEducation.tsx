@@ -8,7 +8,6 @@ import {
 } from "@softsurgery/mobile-components";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { Button, Text } from "@softsurgery/mobile-ui";
-import { cn } from "@softsurgery/lib";
 import { useUserStore } from "@/stores/useUserStore";
 import { ServerErrorResponse, UpdateEducationDto } from "api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -20,6 +19,7 @@ import { View } from "react-native";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import React from "react";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteEducationActionSheet } from "./DeleteEducationActionSheet";
 
@@ -28,6 +28,7 @@ interface UpdateEducationProps {
 }
 
 export const UpdateEducation = ({ className }: UpdateEducationProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("common");
   const { t: tMenu } = useTranslation("menu");
@@ -128,9 +129,11 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
   }, []);
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("screens.education")}
         titleVariant="large"
         reverse
@@ -141,7 +144,7 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {tMenu("education.form.description")}

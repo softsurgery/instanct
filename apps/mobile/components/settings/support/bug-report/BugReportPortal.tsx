@@ -28,12 +28,14 @@ import {
 } from "api-client";
 import * as Haptics from "expo-haptics";
 import { getCurrentDevice } from "@/lib/device";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface BugReportPortalProps {
   className?: string;
 }
 
 export const BugReportPortal = ({ className }: BugReportPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
@@ -91,9 +93,11 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("settings.support.screens.report-bug.forms.title")}
         titleVariant="large"
         reverse
@@ -104,7 +108,7 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("settings.support.screens.report-bug.forms.description")}

@@ -18,15 +18,16 @@ import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
 import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useTranslation } from "react-i18next";
-import { cn } from "@softsurgery/lib";
 import React from "react";
 import { toast } from "sonner-native";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface UserFilterPortalProps {
   className?: string;
 }
 
 export const UserFilterPortal = ({ className }: UserFilterPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const isKeyboardVisible = useKeyboardVisible();
   const exploreFilterStore = useExploreFilterStore();
 
@@ -70,9 +71,11 @@ export const UserFilterPortal = ({ className }: UserFilterPortalProps) => {
   });
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("explore.filter.title")}
         titleVariant="large"
         reverse
@@ -83,7 +86,7 @@ export const UserFilterPortal = ({ className }: UserFilterPortalProps) => {
           },
         ]}
       />
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background rounded-b-xl">
         <StableKeyboardAwareScrollView className="flex-1 bg-background">
           <View className="px-5 pt-4 pb-2">
             <Text className="text-sm text-muted-foreground leading-relaxed">

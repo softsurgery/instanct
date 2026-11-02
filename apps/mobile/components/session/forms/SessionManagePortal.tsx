@@ -30,6 +30,7 @@ import { ActionSheetRef } from "react-native-actions-sheet";
 import { EndSessionActionSheet } from "../EndSessionActionSheet";
 
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 interface SessionManagePortalProps {
   className?: string;
 }
@@ -37,6 +38,7 @@ interface SessionManagePortalProps {
 export const SessionManagePortal = ({
   className,
 }: SessionManagePortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("explore");
   const { mapSession, refetchSessions, isSessionsPending } =
@@ -157,9 +159,11 @@ export const SessionManagePortal = ({
   const isPending = isEndingSessionPending || isUpdatingSession;
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("session.manage.title")}
         titleVariant="large"
         reverse
@@ -171,10 +175,10 @@ export const SessionManagePortal = ({
         ]}
       />
       {isSessionsPending || isObjectivesSubTypePending ? (
-        <Loader className="flex flex-1 justify-center items-center bg-background" />
+        <Loader className="flex flex-1 justify-center items-center bg-background rounded-b-xl" />
       ) : (
         <>
-          <StableKeyboardAwareScrollView className="flex-1 bg-background">
+          <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
             <View className="p-4">
               <Text className="text-sm text-muted-foreground leading-relaxed">
                 {t("session.manage.description")}

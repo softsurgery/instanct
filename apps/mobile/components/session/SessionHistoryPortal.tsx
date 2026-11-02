@@ -19,6 +19,7 @@ import {
 import { useInfiniteUserSessions } from "@/hooks/content/sessions/useInfiniteUserSessions";
 import { SessionStarter } from "./SessionStarter";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { SessionStatusLegend } from "./SessionStatusLegend";
 
 interface SessionHistoryPortalProps {
@@ -28,6 +29,7 @@ interface SessionHistoryPortalProps {
 export const SessionHistoryPortal = ({
   className,
 }: SessionHistoryPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("common");
 
   const {
@@ -107,11 +109,11 @@ export const SessionHistoryPortal = ({
   );
 
   return (
-    <StableSafeAreaView
-      className={cn("flex flex-1 flex-col bg-card", className)}
-    >
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         titleVariant="large"
         title={t("screens.sessions")}
         reverse
@@ -122,7 +124,7 @@ export const SessionHistoryPortal = ({
           },
         ]}
       />
-      <View className="flex-1">
+      <View className="flex-1 rounded-b-xl">
         {isSessionsPending ? (
           <View className="flex flex-col flex-1 justify-center items-center">
             <Loader />

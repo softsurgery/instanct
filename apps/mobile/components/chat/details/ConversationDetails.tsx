@@ -33,6 +33,7 @@ import { ConversationDetailsRow } from "./ConversationDetailsRow";
 import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { ConversationSearchOverlay } from "../conversation/search/ConversationSearchOverlay";
 import { useChatContext } from "@/contexts/ChatContext";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { useTranslation } from "react-i18next";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteConversationActionSheet } from "./DeleteConversationActionSheet";
@@ -46,6 +47,7 @@ interface ConversationDetailsProps {
  * Screen displaying settings, participant info, media/file galleries, and block/report/delete actions for a conversation.
  */
 export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("chat");
   const conversationId = Number(id);
@@ -196,7 +198,7 @@ export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
   }
 
   return (
-    <StableSafeAreaView className="flex-1 bg-card">
+    <StableSafeAreaView classNames={safeAreaClassNames}>
       <ApplicationHeader
         title={identification}
         titleVariant="large"
@@ -207,10 +209,12 @@ export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
           },
         ]}
         reverse
-        classNames={{ wrapper: "border-b border-border pb-2 bg-card" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
       />
       <ScrollView
-        className="bg-background"
+        className="bg-background flex-1 rounded-b-xl"
         showsVerticalScrollIndicator={false}
       >
         <Pressable

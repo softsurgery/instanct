@@ -22,6 +22,7 @@ import { createConversationReportSchema } from "@/types/validations/chat.validat
 import { ServerErrorResponse } from "api-client";
 import { useConversationReportFormStructure } from "./useConversationReportFormStructure";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface ConversationReportPortalProps {
   conversationId: number;
@@ -37,6 +38,7 @@ export const ConversationReportPortal = ({
   reportedUserName,
   className,
 }: ConversationReportPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("chat");
   const isKeyboardVisible = useKeyboardVisible();
@@ -91,9 +93,11 @@ export const ConversationReportPortal = ({
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("chat.report.title")}
         titleVariant="large"
         reverse
@@ -104,7 +108,7 @@ export const ConversationReportPortal = ({
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="px-5 pt-4 pb-2">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {reportedUserName

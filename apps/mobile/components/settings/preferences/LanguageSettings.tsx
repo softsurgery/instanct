@@ -10,6 +10,7 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface LanguageSettingsPortalProps {
   className?: string;
@@ -18,12 +19,15 @@ interface LanguageSettingsPortalProps {
 export const LanguageSettingsPortal = ({
   className,
 }: LanguageSettingsPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("settings");
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2 bg-transparent" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("settings.preferences.screens.language.title")}
         titleVariant="large"
         reverse
@@ -34,7 +38,7 @@ export const LanguageSettingsPortal = ({
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("settings.preferences.screens.language.description")}

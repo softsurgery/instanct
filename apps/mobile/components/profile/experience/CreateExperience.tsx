@@ -8,7 +8,6 @@ import {
 } from "@softsurgery/mobile-components";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { Button, Text } from "@softsurgery/mobile-ui";
-import { cn } from "@softsurgery/lib";
 import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
 import { CreateExperienceDto, ServerErrorResponse } from "api-client";
@@ -21,12 +20,14 @@ import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useCreateExperienceFormStructure } from "./useCreateExperienceFormStructure";
 import { toast } from "sonner-native";
 import React from "react";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface CreateExperienceProps {
   className?: string;
 }
 
 export const CreateExperience = ({ className }: CreateExperienceProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("menu");
   const isKeyboardVisible = useKeyboardVisible();
@@ -92,9 +93,11 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
   }, []);
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("experience.form.createHeader")}
         titleVariant="large"
         reverse
@@ -107,7 +110,7 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
       />
 
       {/* Scrollable content */}
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("experience.form.description")}

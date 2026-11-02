@@ -21,6 +21,7 @@ import { useChat } from "@/hooks/content/chat/useChat";
 import { CONVERSATION_LIST_JOIN } from "@/lib/chat";
 import { UserEntrySkeleton } from "./UserEntrySkeleton";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface ChatPortalProps {
   className?: string;
@@ -30,6 +31,7 @@ interface ChatPortalProps {
  * Main chat portal component rendering the search input and virtualized list of active conversations.
  */
 export const ChatPortal = ({ className }: ChatPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("chat");
   const [searchQuery, setSearchQuery] = React.useState("");
   const { value: debouncedSearchQuery } = useDebounce(searchQuery, 500);
@@ -95,11 +97,11 @@ export const ChatPortal = ({ className }: ChatPortalProps) => {
   );
 
   return (
-    <StableSafeAreaView
-      className={cn("flex flex-1 flex-col bg-card", className)}
-    >
+    <StableSafeAreaView classNames={safeAreaClassNames}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("chat.title")}
         titleVariant="large"
         reverse
@@ -111,7 +113,7 @@ export const ChatPortal = ({ className }: ChatPortalProps) => {
         ]}
       />
 
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background rounded-b-xl">
         {/* Search Bar */}
         <MarkedInput
           icon={Search}

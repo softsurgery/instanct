@@ -5,6 +5,7 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { ResponseUserDto } from "api-client";
 import {
   format,
@@ -137,6 +138,7 @@ export const UserCalendar = ({
   onEventPress,
   className,
 }: UserCalendarProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
@@ -183,10 +185,12 @@ export const UserCalendar = ({
   };
 
   return (
-    <StableSafeAreaView className="flex-1 bg-card">
+    <StableSafeAreaView classNames={safeAreaClassNames}>
       {/* Custom Header */}
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={"Calendar"}
         titleVariant="large"
         reverse
@@ -197,7 +201,7 @@ export const UserCalendar = ({
           },
         ]}
       />
-      <View className={cn("flex-1 bg-background", className)}>
+()      <View className={cn("flex-1 bg-background rounded-b-xl", className)}>
         {/* Header */}
         <View className="flex-row items-center justify-between px-4 py-3 border-b border-border">
           <Pressable

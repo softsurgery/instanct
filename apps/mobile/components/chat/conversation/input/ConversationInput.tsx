@@ -5,7 +5,10 @@ import { type ActionSheetRef } from "react-native-actions-sheet";
 import { Icon, Textarea, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { ConversationInputActionsSheet } from "./ConversationInputActionsSheet";
-import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
+import {
+  useKeyboardVisible,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
 import Animated, {
   FadeIn,
   FadeOut,
@@ -43,6 +46,7 @@ export const ConversationInput = ({
   isConversationLocked = false,
 }: ConversationInputProps) => {
   const { t } = useTranslation("chat");
+  const { isLandscape } = useScreenOrientation();
   const isKeyboardVisible = useKeyboardVisible();
   const actionSheetRef = React.useRef<ActionSheetRef>(null);
 
@@ -76,7 +80,13 @@ export const ConversationInput = ({
     <View
       className={cn(
         "bg-background/95 border-t border-border py-2 z-20",
-        isKeyboardVisible ? "pb-2" : Platform.OS === "ios" ? "pb-6" : "pb-4",
+        isKeyboardVisible
+          ? "pb-2"
+          : Platform.OS === "ios"
+            ? isLandscape
+              ? "pb-4"
+              : "pb-6"
+            : "pb-4",
         className,
       )}
     >

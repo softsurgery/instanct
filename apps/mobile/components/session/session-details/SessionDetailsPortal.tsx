@@ -6,12 +6,12 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
-import { cn } from "@softsurgery/lib";
 import { MapSessionPayload, ResponseSessionDto } from "api-client";
 import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 import { SessionDetailsContent } from "./SessionDetailsContent";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface SessionDetailsPortalProps {
   className?: string;
@@ -20,6 +20,7 @@ interface SessionDetailsPortalProps {
 export const SessionDetailsPortal = ({
   className,
 }: SessionDetailsPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("common");
 
   const { session: sessionParam } = useLocalSearchParams<{
@@ -52,9 +53,11 @@ export const SessionDetailsPortal = ({
   );
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("screens.sessionDetails")}
         titleVariant="large"
         reverse
@@ -66,7 +69,7 @@ export const SessionDetailsPortal = ({
         ]}
       />
 
-      <StableScrollView className="flex-1 bg-background">
+      <StableScrollView className="flex-1 bg-background rounded-b-xl">
         {!session ? (
           <EmptyState />
         ) : (

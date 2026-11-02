@@ -1,4 +1,4 @@
-import { cn } from "@softsurgery/lib";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import React from "react";
 import { View } from "react-native";
 import {
@@ -38,10 +38,14 @@ export const SettingsInfoScreen = ({
   updatedLabel,
   sections,
 }: SettingsInfoScreenProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
+
   return (
-    <StableSafeAreaView className={cn("flex flex-1", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2 bg-transparent" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={title}
         titleVariant="large"
         reverse
@@ -52,7 +56,7 @@ export const SettingsInfoScreen = ({
           },
         ]}
       />
-      <StableScrollView>
+      <StableScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="flex flex-col gap-4 p-4 pb-10">
           <Card className="border-primary/10 bg-primary/5">
             <CardContent className="flex flex-col gap-2 px-4">

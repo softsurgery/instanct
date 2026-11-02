@@ -6,17 +6,21 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface VerifyEmailPortalProps {
   className?: string;
 }
 
 export const VerifyEmailPortal = ({ className }: VerifyEmailPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation(["common", "screens"]);
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("screens.verifyEmail")}
         titleVariant="large"
         reverse
@@ -29,7 +33,7 @@ export const VerifyEmailPortal = ({ className }: VerifyEmailPortalProps) => {
       />
       <StableKeyboardAwareScrollView
         contentContainerClassName="px-4 py-4"
-        className="flex-1 bg-background"
+        className="flex-1 bg-background rounded-b-xl"
       ></StableKeyboardAwareScrollView>
     </StableSafeAreaView>
   );

@@ -15,12 +15,14 @@ import { Text } from "@softsurgery/mobile-ui";
 import { NotificationEntry } from "./NotificationEntry";
 import { NotificationEntrySkeleton } from "./NotificationEntrySkeleton";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface NotificationPortalProps {
   className?: string;
 }
 
 export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const queryClient = useQueryClient();
   const { t } = useTranslation("common");
@@ -94,9 +96,11 @@ export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
     [highlightedIds],
   );
   return (
-    <StableSafeAreaView className={cn("flex flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("screens.notifications")}
         titleVariant="large"
         reverse
@@ -107,7 +111,7 @@ export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
           },
         ]}
       />
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background rounded-b-xl">
         <LegendList
           style={{ flex: 1 }}
           data={notifications}

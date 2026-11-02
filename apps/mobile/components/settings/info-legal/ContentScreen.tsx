@@ -6,8 +6,8 @@ import {
   Loader,
 } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
-import { cn } from "@softsurgery/lib";
 import { useQuery } from "@tanstack/react-query";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { View } from "react-native";
 import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
@@ -30,6 +30,7 @@ export function ContentScreen({
   className,
   openLinksExternally = true,
 }: ContentScreenProps) {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { i18n } = useTranslation();
   const { data, isPending, isError } = useQuery({
@@ -66,9 +67,11 @@ export function ContentScreen({
 
   if (isPending) {
     return (
-      <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+      <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
         <ApplicationHeader
-          classNames={{ wrapper: "border-b border-border pb-2" }}
+          classNames={{
+            wrapper: applicationHeaderClassNames.wrapper,
+          }}
           title={fallbackTitle}
           titleVariant="large"
           reverse
@@ -79,7 +82,7 @@ export function ContentScreen({
             },
           ]}
         />
-        <View className="flex-1 items-center justify-center bg-background">
+        <View className="flex-1 items-center justify-center bg-background rounded-b-xl">
           <Loader />
         </View>
       </StableSafeAreaView>
@@ -88,9 +91,11 @@ export function ContentScreen({
 
   if (isError || !data) {
     return (
-      <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+      <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
         <ApplicationHeader
-          classNames={{ wrapper: "border-b border-border pb-2" }}
+          classNames={{
+            wrapper: applicationHeaderClassNames.wrapper,
+          }}
           title={fallbackTitle}
           titleVariant="large"
           reverse
@@ -101,7 +106,7 @@ export function ContentScreen({
             },
           ]}
         />
-        <View className="flex-1 items-center justify-center bg-background px-6">
+        <View className="flex-1 items-center justify-center bg-background px-6 rounded-b-xl">
           <Text className="text-sm leading-6 text-muted-foreground text-center">
             This document is temporarily unavailable. Please try again later.
           </Text>
@@ -111,9 +116,11 @@ export function ContentScreen({
   }
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={title}
         titleVariant="large"
         reverse
@@ -124,7 +131,7 @@ export function ContentScreen({
           },
         ]}
       />
-      <View className="flex-1 bg-background px-4">
+      <View className="flex-1 bg-background px-4 rounded-b-xl">
         <View key={`${slug}-${i18n.language}`} className="flex-1 relative">
           {isHtmlLoading && (
             <View className="absolute inset-0 items-center justify-center z-10 bg-background">

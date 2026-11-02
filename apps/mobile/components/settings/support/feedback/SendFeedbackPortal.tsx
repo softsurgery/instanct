@@ -29,12 +29,14 @@ import * as Haptics from "expo-haptics";
 
 import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import { getCurrentDevice } from "@/lib/device";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface SendFeedbackPortalProps {
   className?: string;
 }
 
 export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("settings");
   const isKeyboardVisible = useKeyboardVisible();
@@ -95,9 +97,11 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("settings.support.screens.send-feedback.title")}
         titleVariant="large"
         reverse
@@ -108,7 +112,7 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("settings.support.screens.send-feedback.description")}

@@ -13,6 +13,7 @@ import {
   StableSafeAreaView,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { Text, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
 import type {
@@ -39,6 +40,7 @@ interface DeviceConnectionsPortalProps {
 export const DeviceConnectionsPortal = ({
   className,
 }: DeviceConnectionsPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("settings");
 
@@ -196,9 +198,11 @@ export const DeviceConnectionsPortal = ({
   }, [isLoading, t]);
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={screenTitle}
         titleVariant="large"
         reverse
@@ -210,7 +214,7 @@ export const DeviceConnectionsPortal = ({
         ]}
       />
 
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background rounded-b-xl">
         <LegendList
           style={{ flex: 1 }}
           data={flattenedHistory}

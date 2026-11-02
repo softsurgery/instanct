@@ -26,6 +26,7 @@ import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
 import { objectUtils } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface NewRequestProps {
   className?: string;
@@ -33,6 +34,7 @@ interface NewRequestProps {
 }
 
 export const NewRequest = ({ className, id }: NewRequestProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("explore");
   const queryClient = useQueryClient();
@@ -119,9 +121,11 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
   };
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("request.newRequest.title")}
         titleVariant="large"
         reverse
@@ -135,10 +139,10 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
       />
 
       {isUserPending ? (
-        <Loader className="flex flex-1 h-full items-center justify-center" />
+        <Loader className="flex flex-1 h-full items-center justify-center rounded-b-xl" />
       ) : (
         <React.Fragment>
-          <StableKeyboardAwareScrollView className="flex-1 bg-background">
+          <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
             <Text className="text-lg font-semibold text-foreground mx-4 mt-4">
               {t("request.newRequest.partner")}
             </Text>

@@ -1,4 +1,3 @@
-import { cn } from "@softsurgery/lib";
 import { useUserStore } from "@/stores/useUserStore";
 import { router } from "expo-router";
 import {
@@ -23,6 +22,7 @@ import { useUploadMutation } from "@/hooks/useUploadMutation";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { View } from "react-native";
 
 interface UpdateProfileProps {
@@ -30,6 +30,7 @@ interface UpdateProfileProps {
 }
 
 export const UpdateProfile = ({ className }: UpdateProfileProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const isKeyboardVisible = useKeyboardVisible();
   const userStore = useUserStore();
@@ -144,9 +145,11 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
   }, [profileUploads, currentUser?.pictureId]);
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("settings.account.screens.profile.title")}
         titleVariant="large"
         reverse
@@ -157,7 +160,7 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
           },
         ]}
       />
-      <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("settings.account.screens.profile.description")}
@@ -168,7 +171,7 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             variant="default"
             className="rounded-xl"
             onPress={() => {

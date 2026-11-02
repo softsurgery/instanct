@@ -28,6 +28,7 @@ import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
 import { RequestEvent, RequestStatus } from "api-client";
 import { toast } from "sonner-native";
 import { RequestLocationSection } from "../RequestLocationSection";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { RequestSkeleton } from "./RequestSkeleton";
 import { StatusBadge } from "./RequestStatus";
 import { RequestBanner } from "./RequestBanner";
@@ -56,6 +57,7 @@ export const Request = ({
   isIncoming,
   hasLocation,
 }: RequestProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t, i18n } = useTranslation("activities");
   const queryClient = useQueryClient();
@@ -328,9 +330,11 @@ export const Request = ({
   ]);
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("activities.request.title")}
         titleVariant="large"
         reverse
@@ -342,7 +346,7 @@ export const Request = ({
         ]}
       />
 
-      <StableScrollView className="flex-1 bg-background">
+      <StableScrollView className="flex-1 bg-background rounded-b-xl">
         {isPending ? (
           <View className="p-4">
             <RequestSkeleton hasLocation={hasLocation} />

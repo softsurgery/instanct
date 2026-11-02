@@ -22,6 +22,7 @@ import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
 import type { ServerErrorResponse } from "api-client";
 import { Button, Icon, Separator, Text } from "@softsurgery/mobile-ui";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface SettingsPortalProps {
   className?: string;
@@ -36,6 +37,7 @@ interface SettingsSection {
 }
 
 export const SettingsPortal = ({ className }: SettingsPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const queryClient = useQueryClient();
   const { t: tSettings } = useTranslation("settings");
@@ -231,9 +233,11 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
   };
 
   return (
-    <StableSafeAreaView className={cn("flex flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("screens.settings.title")}
         titleVariant="large"
         reverse
@@ -244,7 +248,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
           },
         ]}
       />
-      <StableScrollView className="flex-1 bg-background">
+      <StableScrollView className="flex-1 bg-background rounded-b-xl">
         <View className="flex flex-col">
           <View className="px-4 mb-2">
             <View className="flex flex-col justify-between p-4">

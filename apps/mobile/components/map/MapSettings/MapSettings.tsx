@@ -16,12 +16,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
 import { useMapSettingsFormStructure } from "./useMapSettingsFormStructure";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 interface MapSettingsProps {
   className?: string;
 }
 
 export const MapSettings = ({ className }: MapSettingsProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("settings");
   const mapStore = useMapStore();
@@ -71,9 +73,11 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
   };
 
   return (
-    <StableSafeAreaView className={cn("flex flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t("map-settings.title")}
         titleVariant="large"
         reverse
@@ -84,13 +88,10 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
           },
         ]}
       />
-      <ScrollView className="bg-background flex-1">
+      <ScrollView className="bg-background flex-1 rounded-b-xl">
         <View className="flex flex-col">
           {sections.map((section) => (
-            <View
-              key={section.key}
-              className="border border-b-border border-t-border overflow-hidden"
-            >
+            <View key={section.key}>
               <View className="px-8 py-4 bg-card mb-4">
                 <Text className="text-lg font-semibold">{section.title}</Text>
                 <Text className="text-sm text-muted-foreground mt-1">

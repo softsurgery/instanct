@@ -20,6 +20,7 @@ import {
   useColorPalette,
   useScreenOrientation,
 } from "@softsurgery/mobile-hooks";
+import { useLayoutConfig } from "@/config/wrapper-config";
 
 const ONBOARDING_DATA = [
   {
@@ -41,6 +42,7 @@ interface OnBoardingProps {
 }
 
 export default function OnBoarding({ className }: OnBoardingProps) {
+  const { safeAreaClassNames } = useLayoutConfig();
   const { t } = useTranslation("explore");
   const { palette, colorScheme } = useColorPalette();
   const { width, height } = useWindowDimensions();
@@ -59,7 +61,8 @@ export default function OnBoarding({ className }: OnBoardingProps) {
 
   return (
     <StableSafeAreaView
-      className={cn("flex-1 justify-between bg-background", className)}
+      classNames={safeAreaClassNames}
+      className={cn("flex-1 justify-between", className)}
     >
       <ScrollView
         contentContainerStyle={{
@@ -105,14 +108,9 @@ export default function OnBoarding({ className }: OnBoardingProps) {
             </View>
           </View>
 
-          <View
-            className={cn(
-              "flex-1 justify-center",
-              isLandscape ? "mt-2" : "mt-8",
-            )}
-          >
+          <View className={cn("flex-1 justify-center items-center")}>
             <Carousel
-              key={`carousel-${colorScheme}`}
+              key={`carousel-${colorScheme}-${isLandscape}`}
               width={width}
               ref={ref}
               style={{ width: width, height: carouselHeight }}
@@ -130,7 +128,7 @@ export default function OnBoarding({ className }: OnBoardingProps) {
                       <Image
                         source={item.image}
                         style={{
-                          height: isLandscape ? 48 : height * 0.1,
+                          height: (isLandscape ? width : height) * 0.1,
                           aspectRatio: 1,
                         }}
                         contentFit="contain"

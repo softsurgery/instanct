@@ -13,6 +13,7 @@ import {
   AppHeaderBack,
   StableScrollView,
 } from "@softsurgery/mobile-components";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import { Text, Badge, Button, Separator, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "@/contexts/ApiContext";
 import { ResponseUserDeviceDto } from "api-client";
@@ -30,6 +31,7 @@ interface UserDevicesPortalProps {
 }
 
 export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
   const { t } = useTranslation("settings");
   const queryClient = useQueryClient();
@@ -113,9 +115,11 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
   const isMutating = logoutAllMutation.isPending;
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-card", className)}>
+    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{ wrapper: "border-b border-border pb-2" }}
+        classNames={{
+          wrapper: applicationHeaderClassNames.wrapper,
+        }}
         title={t(
           "settings.account.screens.privacy-security.screens.account-security.devices.title",
           "Devices & Allowed Access",
@@ -131,7 +135,7 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
       />
 
       <StableScrollView
-        className="bg-background"
+        className="bg-background flex-1 rounded-b-xl"
         refreshControl={
           <RefreshControl
             refreshing={isRefetching}
