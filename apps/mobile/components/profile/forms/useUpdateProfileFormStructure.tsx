@@ -17,6 +17,7 @@ import { UserStore } from "@/stores/useUserStore";
 import { Pressable, View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
 import { useTranslation } from "react-i18next";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface useUpdateProfileFormStructureProps {
   store: UserStore;
@@ -34,6 +35,9 @@ export const useUpdateProfileFormStructure = ({
   isPending = false,
 }: useUpdateProfileFormStructureProps) => {
   const { t } = useTranslation("settings");
+  const { isLandscape } = useScreenOrientation();
+  const hasPicture = !!(store?.picture || store?.updateDto?.pictureId);
+
   // picture
   const pictureField: Field<PictureFieldProps> = {
     id: "picture",
@@ -42,7 +46,10 @@ export const useUpdateProfileFormStructure = ({
     description: t(
       "settings.account.screens.profile.form.descriptions.profile-picture",
     ),
-    className: "h-40 w-40 rounded-full mt-2",
+    fieldClassName: "w-full",
+    className: isLandscape
+      ? "h-28 w-28 rounded-full my-2"
+      : "h-40 w-40 rounded-full my-2",
     wrapperClassName: "flex flex-row items-center justify-center",
     props: {
       image: store?.picture,
@@ -72,6 +79,7 @@ export const useUpdateProfileFormStructure = ({
     id: "pictureRemoval",
     label: "",
     variant: FieldVariant.CUSTOM,
+    fieldClassName: "w-full",
     props: {
       children: (
         <View className="flex-row items-center justify-center">
@@ -80,7 +88,7 @@ export const useUpdateProfileFormStructure = ({
               store.set("picture", undefined);
               store.setNested("updateDto.pictureId", null);
             }}
-            className="mt-2 rounded-full border border-border px-3 py-2 active:bg-muted"
+            className="rounded-full border border-border px-3 py-1.5 active:bg-muted"
           >
             <Text className="text-sm font-bold">
               {t("settings.account.screens.profile.actions.remove-picture")}
@@ -251,7 +259,11 @@ export const useUpdateProfileFormStructure = ({
         rows: [
           {
             id: 1,
-            fields: [pictureField, pictureRemovalButton],
+            fields: [
+              pictureField,
+              ...(hasPicture ? [pictureRemovalButton] : []),
+            ],
+            className: "flex flex-row items-center justify-center",
           },
           {
             id: 2,

@@ -10,6 +10,7 @@ import {
   ApplicationHeader,
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import React from "react";
 import { useChatContext } from "@/contexts/ChatContext";
@@ -19,6 +20,7 @@ interface MenuPortalProps {
 }
 
 export const MenuPortal = ({ className }: MenuPortalProps) => {
+  const { isLandscape } = useScreenOrientation();
   const { t } = useTranslation("common");
   const { currentUser } = useCurrentUser();
   const { count } = useNotificationContext();
@@ -34,6 +36,7 @@ export const MenuPortal = ({ className }: MenuPortalProps) => {
         id={currentUser?.id as string}
         coverExtra={
           <StableSafeAreaView
+            edges={isLandscape ? ["left"] : ["left", "right"]}
             className="absolute top-0 left-0 right-0 z-30"
             pointerEvents="box-none"
           >
