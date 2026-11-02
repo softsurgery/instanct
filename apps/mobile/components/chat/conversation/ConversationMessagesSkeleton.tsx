@@ -1,17 +1,15 @@
-import { Dimensions, View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { cn } from "@softsurgery/lib";
 import { Skeleton } from "@softsurgery/mobile-ui";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 import { ChatMediaSkeleton } from "./bubbles/ChatMediaSkeleton";
 
 export interface ConversationMessagesSkeletonProps {
   className?: string;
 }
 
-const screenWidth = Dimensions.get("window").width;
-const CONTENT_WIDTH = screenWidth - 24;
-
 type MessageSkeletonItem =
-  | { type: "text"; right: boolean; width: number; height: number }
+  | { type: "text"; right: boolean; widthFactor: number; height: number }
   | {
       type: "media";
       right: boolean;
@@ -19,15 +17,15 @@ type MessageSkeletonItem =
       hasCaption?: boolean;
     };
 
-const MESSAGE_SKELETONS: MessageSkeletonItem[] = [
-  { type: "text", right: true, width: CONTENT_WIDTH * 0.4, height: 56 },
+const SKELETON_TEMPLATES: MessageSkeletonItem[] = [
+  { type: "text", right: true, widthFactor: 0.4, height: 56 },
   { type: "media", right: false, isGrouped: false, hasCaption: false },
-  { type: "text", right: false, width: CONTENT_WIDTH * 0.5, height: 56 },
-  { type: "text", right: false, width: CONTENT_WIDTH * 0.3, height: 56 },
+  { type: "text", right: false, widthFactor: 0.5, height: 56 },
+  { type: "text", right: false, widthFactor: 0.3, height: 56 },
   { type: "media", right: true, isGrouped: true, hasCaption: false },
-  { type: "text", right: true, width: CONTENT_WIDTH * 0.25, height: 56 },
-  { type: "text", right: false, width: CONTENT_WIDTH * 0.5, height: 56 },
-  { type: "text", right: true, width: CONTENT_WIDTH * 0.4, height: 56 },
+  { type: "text", right: true, widthFactor: 0.25, height: 56 },
+  { type: "text", right: false, widthFactor: 0.5, height: 56 },
+  { type: "text", right: true, widthFactor: 0.4, height: 56 },
 ];
 
 /**
@@ -36,9 +34,15 @@ const MESSAGE_SKELETONS: MessageSkeletonItem[] = [
 export const ConversationMessagesSkeleton = ({
   className,
 }: ConversationMessagesSkeletonProps) => {
+  const { width: screenWidth } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+  const contentWidth = isLandscape
+    ? Math.min(screenWidth - 48, 500)
+    : screenWidth - 24;
+
   return (
     <View className={cn("flex-1 justify-end px-3 py-4 gap-2", className)}>
-      {MESSAGE_SKELETONS.map((item, index) => {
+      {SKELETON_TEMPLATES.map((item, index) => {
         if (item.type === "media") {
           return (
             <ChatMediaSkeleton
@@ -60,7 +64,10 @@ export const ConversationMessagesSkeleton = ({
           >
             <Skeleton
               className={cn("rounded-xl border border-border")}
-              style={{ width: item.width, height: item.height }}
+              style={{
+                width: Math.round(contentWidth * item.widthFactor),
+                height: item.height,
+              }}
             />
           </View>
         );

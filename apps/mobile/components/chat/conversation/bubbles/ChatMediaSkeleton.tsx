@@ -1,6 +1,7 @@
-import { Dimensions, View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { cn } from "@softsurgery/lib";
 import { Skeleton } from "@softsurgery/mobile-ui";
+import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 export interface ChatMediaSkeletonProps {
   className?: string;
@@ -22,11 +23,23 @@ export const ChatMediaSkeleton = ({
   width,
   height,
 }: ChatMediaSkeletonProps) => {
-  const screenWidth = Dimensions.get("window").width;
-  const CHAT_MEDIA_WIDTH = width ?? Math.round(screenWidth * 0.75);
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const { isLandscape } = useScreenOrientation();
+  const CHAT_MEDIA_WIDTH =
+    width ??
+    (isLandscape
+      ? Math.min(Math.round(screenWidth * 0.45), 320)
+      : Math.round(screenWidth * 0.75));
   const CHAT_MEDIA_HEIGHT =
     height ??
-    (isGrouped ? CHAT_MEDIA_WIDTH : Math.round(CHAT_MEDIA_WIDTH * 0.75));
+    (isGrouped
+      ? CHAT_MEDIA_WIDTH
+      : Math.min(
+          Math.round(CHAT_MEDIA_WIDTH * 0.75),
+          isLandscape
+            ? Math.round(screenHeight * 0.5)
+            : Math.round(screenHeight * 0.4),
+        ));
 
   return (
     <View
