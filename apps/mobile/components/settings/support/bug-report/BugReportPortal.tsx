@@ -119,7 +119,7 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -134,7 +134,7 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
                   size={18}
                   className="text-primary-foreground animate-spin"
                 />
-                <Text className="text-primary-foreground font-semibold">
+                <Text className="text-primary-foreground text-md font-bold">
                   {t(
                     "settings.support.screens.report-bug.forms.actions.submit-bug-pending",
                   )}

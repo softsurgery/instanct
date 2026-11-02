@@ -104,7 +104,7 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -119,7 +119,7 @@ export const ChangePassword = ({ className }: ChangePasswordProps) => {
                   size={18}
                   className="text-primary-foreground animate-spin"
                 />
-                <Text className="text-primary-foreground font-semibold">
+                <Text className="text-primary-foreground text-md font-bold">
                   {t(
                     "settings.account.screens.privacy-security.screens.account-security.change-password.forms.actions.updating-password",
                   )}

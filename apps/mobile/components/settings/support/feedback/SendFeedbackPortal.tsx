@@ -123,7 +123,7 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -138,7 +138,7 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
                   size={18}
                   className="text-primary-foreground animate-spin"
                 />
-                <Text className="text-primary-foreground font-semibold">
+                <Text className="text-primary-foreground text-md font-bold">
                   {t(
                     "settings.support.screens.send-feedback.forms.actions.submit-feedback-pending",
                   )}

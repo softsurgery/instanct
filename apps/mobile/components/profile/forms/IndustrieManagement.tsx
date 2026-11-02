@@ -156,7 +156,7 @@ export const IndustriesManagement = ({
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

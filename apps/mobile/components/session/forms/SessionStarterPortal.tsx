@@ -158,7 +158,7 @@ export const SessionStarterPortal = ({
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             variant="default"
             className="rounded-xl"
             onPress={handleSessionStart}

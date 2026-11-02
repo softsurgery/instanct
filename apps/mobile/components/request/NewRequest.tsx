@@ -167,7 +167,7 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
           {!isKeyboardVisible && (
             <BottomButtonWrapper>
               <Button
-                size="lg"
+                size="sm"
                 variant="default"
                 className="rounded-xl"
                 onPress={() => handleSubmit()}

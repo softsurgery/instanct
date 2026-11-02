@@ -195,11 +195,11 @@ export const SessionManagePortal = ({
         )} */}
           </StableKeyboardAwareScrollView>
           {!isKeyboardVisible && (
-            <BottomButtonWrapper>
+            <BottomButtonWrapper orientation="horizontal">
               <Button
-                size="lg"
-                variant="outline"
-                className="rounded-xl"
+                size="sm"
+                variant="destructive-outline"
+                className="rounded-xl flex-1"
                 onPress={() => {
                   onEndSessionPress(mapSession?.id!);
                 }}
@@ -212,8 +212,8 @@ export const SessionManagePortal = ({
                 </Text>
               </Button>
               <Button
-                size="lg"
-                className="rounded-xl"
+                size="sm"
+                className="rounded-xl flex-1"
                 onPress={() => handleSessionEdit()}
                 disabled={isPending}
               >

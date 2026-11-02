@@ -123,7 +123,7 @@ export const CreateExperience = ({ className }: CreateExperienceProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
             disabled={isPending}
             onPress={handleCreateSubmit}

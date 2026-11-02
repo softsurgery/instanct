@@ -442,13 +442,15 @@ export const Request = ({
 
       {/* Action Buttons at Bottom */}
       {!isPending && actions.length > 0 && (
-        <BottomButtonWrapper>
+        <BottomButtonWrapper
+          orientation={actions.length > 1 ? "horizontal" : "vertical"}
+        >
           {actions.map((action) => (
             <Button
               key={action.key}
-              size="lg"
+              size="sm"
               variant={action.variant ?? "default"}
-              className="rounded-xl"
+              className={cn("rounded-xl", actions.length > 1 && "flex-1")}
               onPress={action.onPress}
               disabled={action.disabled}
             >

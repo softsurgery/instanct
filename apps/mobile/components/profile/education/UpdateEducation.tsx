@@ -153,10 +153,10 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
         <FormBuilder structure={structure} className="px-2" />
       </StableKeyboardAwareScrollView>
       {!isKeyboardVisible && (
-        <BottomButtonWrapper>
+        <BottomButtonWrapper orientation="horizontal">
           <Button
             size="sm"
-            className="rounded-xl"
+            className="rounded-xl flex-1"
             disabled={isPending || isDeletePending}
             onPress={handleUpdateSubmit}
           >
@@ -167,7 +167,7 @@ export const UpdateEducation = ({ className }: UpdateEducationProps) => {
           <Button
             size="sm"
             variant="destructive-outline"
-            className="rounded-xl"
+            className="rounded-xl flex-1"
             disabled={isPending || isDeletePending}
             onPress={onDeleteEducationPress}
           >

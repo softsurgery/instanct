@@ -109,7 +109,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
 
       <BottomButtonWrapper>
         <Button
-          size="lg"
+          size="sm"
           variant="default"
           className="rounded-xl"
           onPress={() => {

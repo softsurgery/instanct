@@ -97,18 +97,22 @@ export const UserFilterPortal = ({ className }: UserFilterPortalProps) => {
         </StableKeyboardAwareScrollView>
       </View>
       {!isKeyboardVisible && (
-        <BottomButtonWrapper>
+        <BottomButtonWrapper orientation="horizontal">
           <Button
-            size="lg"
+            size="sm"
             variant="outline"
-            className="rounded-xl"
+            className="rounded-xl flex-1"
             onPress={handleResetFilters}
           >
             <Text className="text-md font-bold">
               {t("explore.filter.actions.removeFilters")}
             </Text>
           </Button>
-          <Button size="lg" className="rounded-xl" onPress={handleApplyFilters}>
+          <Button
+            size="sm"
+            className="rounded-xl flex-1"
+            onPress={handleApplyFilters}
+          >
             <Text className="text-md font-bold">
               {t("explore.filter.actions.saveFilters")}
             </Text>

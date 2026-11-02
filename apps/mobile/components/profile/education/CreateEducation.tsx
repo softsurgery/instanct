@@ -119,7 +119,7 @@ export const CreateEducation = ({ className }: CreateEducationProps) => {
       {!isKeyboardVisible && (
         <BottomButtonWrapper>
           <Button
-            size="lg"
+            size="sm"
             className="rounded-xl"
             disabled={isPending}
             onPress={handleCreateSubmit}

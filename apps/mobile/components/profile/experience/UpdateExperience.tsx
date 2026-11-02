@@ -157,10 +157,10 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
       </StableKeyboardAwareScrollView>
 
       {!isKeyboardVisible && (
-        <BottomButtonWrapper>
+        <BottomButtonWrapper orientation="horizontal">
           <Button
             size="sm"
-            className="rounded-xl"
+            className="rounded-xl flex-1"
             disabled={isPending || isDeletePending}
             onPress={handleUpdateSubmit}
           >
@@ -171,7 +171,7 @@ export const UpdateExperience = ({ className }: UpdateExperienceProps) => {
           <Button
             size="sm"
             variant="destructive-outline"
-            className="rounded-xl"
+            className="rounded-xl flex-1"
             disabled={isPending || isDeletePending}
             onPress={onDeleteExperiencePress}
           >
