@@ -9,6 +9,7 @@ import { UserUploadEntity } from '../entities/user-upload.entity';
 import { CreateUserUploadDto } from '../dtos/user-upload/create-user-upload.dto';
 import { UpdateUserUploadDto } from '../dtos/user-upload/update-user-upload.dto';
 import { AbstractUserService } from '@softsurgery/nsa-um/services/abstract-user.service';
+import { OAuthProvider } from '@softsurgery/nsa-auth/enums/oauth.enum';
 import { hashPassword } from '@softsurgery/nsa-helpers/hash.utils';
 import { RefParamRepository } from '@softsurgery/nsa-reference-types/repositories/ref-param.repository';
 import { RefParamEntity } from '@softsurgery/nsa-reference-types/entities/ref-param.entity';
@@ -46,6 +47,14 @@ export class UserService extends AbstractUserService {
     const { uploads, ...rest } = createUserDto;
     if (createUserDto.pictureId)
       await this.storageService.confirm(createUserDto.pictureId);
+
+    if (
+      rest.source &&
+      rest.source !== OAuthProvider.EMAIL &&
+      !rest.emailVerified
+    ) {
+      rest.emailVerified = new Date();
+    }
 
     const user = await this.userRepository.save({
       ...rest,
