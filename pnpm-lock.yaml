@@ -39,6 +39,9 @@ overrides:
 
 packageExtensionsChecksum: sha256-f2aoAZG2yxy2f8T8Z/QTOJgPiSTDC2eVereuw+RjF+8=
 
+patchedDependencies:
+  react-native-actions-sheet: 6b25e30e28a81122de20388a3893f7569d27d4483ced54059583c8cc5dbc9171
+
 importers:
 
   .:
@@ -708,7 +711,7 @@ importers:
         version: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       react-native-actions-sheet:
         specifier: ^10.1.2
-        version: 10.1.2(0bf9c38bc1e73313de86e9d454bb3527)
+        version: 10.1.2(patch_hash=6b25e30e28a81122de20388a3893f7569d27d4483ced54059583c8cc5dbc9171)(0bf9c38bc1e73313de86e9d454bb3527)
       react-native-awesome-slider:
         specifier: ^2.9.0
         version: 2.9.0(react-native-gesture-handler@3.3.0(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0))(react-native-reanimated@4.7.1(c99f497af2e73aeb2991003389b482ef))(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
@@ -1413,7 +1416,7 @@ importers:
         version: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       react-native-actions-sheet:
         specifier: '*'
-        version: 10.1.2(d37624473ceb173a8890ea694c4dcade)
+        version: 10.1.2(patch_hash=6b25e30e28a81122de20388a3893f7569d27d4483ced54059583c8cc5dbc9171)(d37624473ceb173a8890ea694c4dcade)
       react-native-gesture-handler:
         specifier: 3.3.0
         version: 3.3.0(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
@@ -1473,7 +1476,7 @@ importers:
         version: 0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       react-native-actions-sheet:
         specifier: '*'
-        version: 10.1.2(4b4a4bf7d2de03003348979a8c0869f4)
+        version: 10.1.2(patch_hash=6b25e30e28a81122de20388a3893f7569d27d4483ced54059583c8cc5dbc9171)(4b4a4bf7d2de03003348979a8c0869f4)
       react-native-maps:
         specifier: 1.29.11
         version: 1.29.11(react-native-web@0.21.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-native@0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
@@ -28914,7 +28917,7 @@ snapshots:
 
   react-is@19.3.0: {}
 
-  react-native-actions-sheet@10.1.2(0bf9c38bc1e73313de86e9d454bb3527):
+  react-native-actions-sheet@10.1.2(patch_hash=6b25e30e28a81122de20388a3893f7569d27d4483ced54059583c8cc5dbc9171)(0bf9c38bc1e73313de86e9d454bb3527):
     dependencies:
       react-native: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       react-native-gesture-handler: 3.3.0(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.74.89(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
@@ -28927,7 +28930,7 @@ snapshots:
       - react
       - supports-color
 
-  react-native-actions-sheet@10.1.2(4b4a4bf7d2de03003348979a8c0869f4):
+  react-native-actions-sheet@10.1.2(patch_hash=6b25e30e28a81122de20388a3893f7569d27d4483ced54059583c8cc5dbc9171)(4b4a4bf7d2de03003348979a8c0869f4):
     dependencies:
       react-native: 0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       react-native-gesture-handler: 3.3.0(react-native@0.88.0(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
@@ -28940,7 +28943,7 @@ snapshots:
       - react
       - supports-color
 
-  react-native-actions-sheet@10.1.2(d37624473ceb173a8890ea694c4dcade):
+  react-native-actions-sheet@10.1.2(patch_hash=6b25e30e28a81122de20388a3893f7569d27d4483ced54059583c8cc5dbc9171)(d37624473ceb173a8890ea694c4dcade):
     dependencies:
       react-native: 0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       react-native-gesture-handler: 3.3.0(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)

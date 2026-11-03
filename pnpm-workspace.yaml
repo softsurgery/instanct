@@ -80,3 +80,5 @@ minimumReleaseAgeExclude:
   - 'expo*'
   - 'babel-preset-expo*'
 
+patchedDependencies:
+  react-native-actions-sheet: patches/react-native-actions-sheet.patch

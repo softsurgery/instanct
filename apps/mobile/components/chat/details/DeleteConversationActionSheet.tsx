@@ -4,7 +4,8 @@ import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { Ban } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
+import { hslToHex, useColorPalette, useScreenOrientation } from "@softsurgery/mobile-hooks";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface DeleteConversationActionSheetProps {
   onConfirm: () => void;
@@ -21,6 +22,8 @@ export const DeleteConversationActionSheet = React.forwardRef<
 >(({ onConfirm, onClose, isPending }, ref) => {
   const { t } = useTranslation("chat");
   const { palette } = useColorPalette();
+  const { isLandscape } = useScreenOrientation();
+  const insets = useSafeAreaInsets();
 
   return (
     <ActionSheet
@@ -32,9 +35,10 @@ export const DeleteConversationActionSheet = React.forwardRef<
         backgroundColor: palette.background,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
-        paddingHorizontal: 16,
+        paddingLeft: insets.left + 16,
+        paddingRight: insets.right + 16,
         paddingTop: 12,
-        paddingBottom: 32,
+        paddingBottom: Math.max(insets.bottom, isLandscape ? 16 : 32),
       }}
     >
       <View>

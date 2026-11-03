@@ -339,8 +339,10 @@ export const MapRenderer = ({
           backgroundColor: palette.background,
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
           paddingTop: 12,
-          paddingBottom: 24,
+          paddingBottom: Math.max(insets.bottom, isLandscape ? 16 : 24),
         }}
       >
         <UsersModalContent

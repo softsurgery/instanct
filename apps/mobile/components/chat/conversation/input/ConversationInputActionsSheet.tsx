@@ -4,7 +4,8 @@ import { Text, View } from "react-native";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { ChatActionGridItem } from "./ChatActionGridItem";
 import { useTranslation } from "react-i18next";
-import { useColorPalette } from "@softsurgery/mobile-hooks";
+import { useColorPalette, useScreenOrientation } from "@softsurgery/mobile-hooks";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ConversationInputActionsSheetProps {
   onPoke: () => void;
@@ -20,6 +21,8 @@ export const ConversationInputActionsSheet = React.forwardRef<
 >(({ onPoke, onPickImage, onPickVideo, onPickFile, disabled }, ref) => {
   const { t } = useTranslation("chat");
   const { palette } = useColorPalette();
+  const { isLandscape } = useScreenOrientation();
+  const insets = useSafeAreaInsets();
   const innerRef = React.useRef<ActionSheetRef>(null);
   const pendingActionRef = React.useRef<(() => void) | null>(null);
   React.useImperativeHandle(ref, () => innerRef.current as ActionSheetRef);
@@ -84,9 +87,10 @@ export const ConversationInputActionsSheet = React.forwardRef<
         backgroundColor: palette.background,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
-        paddingHorizontal: 16,
+        paddingLeft: insets.left + 16,
+        paddingRight: insets.right + 16,
         paddingTop: 12,
-        paddingBottom: 32,
+        paddingBottom: Math.max(insets.bottom, isLandscape ? 16 : 32),
       }}
     >
       {/* Action grid */}

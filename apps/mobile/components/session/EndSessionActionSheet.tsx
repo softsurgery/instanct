@@ -2,7 +2,8 @@ import React from "react";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
 import { Text, Button } from "@softsurgery/mobile-ui";
-import { useColorPalette } from "@softsurgery/mobile-hooks";
+import { useColorPalette, useScreenOrientation } from "@softsurgery/mobile-hooks";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
 interface EndSessionActionSheetProps {
@@ -17,6 +18,9 @@ export const EndSessionActionSheet = React.forwardRef<
 >(({ onConfirm, onClose, isPending }, ref) => {
   const { t } = useTranslation("explore");
   const { palette } = useColorPalette();
+  const { isLandscape } = useScreenOrientation();
+  const insets = useSafeAreaInsets();
+
   return (
     <ActionSheet
       ref={ref}
@@ -27,9 +31,10 @@ export const EndSessionActionSheet = React.forwardRef<
         backgroundColor: palette.background,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
-        paddingHorizontal: 16,
+        paddingLeft: insets.left + 16,
+        paddingRight: insets.right + 16,
         paddingTop: 12,
-        paddingBottom: 32,
+        paddingBottom: Math.max(insets.bottom, isLandscape ? 16 : 32),
       }}
     >
       <View>
