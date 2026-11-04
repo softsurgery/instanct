@@ -61,7 +61,31 @@ function sortObjectKeys(obj) {
   return Object.fromEntries(Object.entries(obj).sort(([a], [b]) => a.localeCompare(b)));
 }
 
+function validatePatches() {
+  if (!fs.existsSync(workspaceYamlPath)) return;
+  const content = fs.readFileSync(workspaceYamlPath, 'utf8');
+  const patchMatch = content.match(/patchedDependencies:\s*\n((?:\s+[^:\n]+:\s+[^\n]+\n?)+)/);
+  if (!patchMatch) return;
+  const lines = patchMatch[1].split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const parts = trimmed.split(':').map((s) => s.trim());
+    if (parts.length >= 2) {
+      const patchPath = parts[1].replace(/['"]/g, '');
+      const fullPath = path.isAbsolute(patchPath) ? patchPath : path.join(root, patchPath);
+      if (!fs.existsSync(fullPath)) {
+        throw new Error(
+          `[sync-shared-deps] Missing patch file "${patchPath}" referenced in pnpm-workspace.yaml under patchedDependencies.\n` +
+          `Please make sure the patch file exists and is committed to git.`
+        );
+      }
+    }
+  }
+}
+
 export function syncSharedDeps({ preferBundled = false, preSyncOverridesWithBundled = false } = {}) {
+  validatePatches();
   if (!fs.existsSync(mobilePkgPath) || !fs.existsSync(rootPkgPath)) {
     return { changed: false, overridesChanged: false };
   }

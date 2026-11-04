@@ -11,6 +11,7 @@ RUN apk add --no-cache libc6-compat \
     && corepack prepare pnpm@11.25.0 --activate
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY patches ./patches
 COPY --parents apps/*/package.json packages/*/package.json ./
 
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \

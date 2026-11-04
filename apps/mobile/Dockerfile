@@ -10,6 +10,7 @@ RUN apk add --no-cache libc6-compat && \
     printf 'ignore-scripts=true\n' > .npmrc
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY patches ./patches
 
 # App package.json stubs (needed by pnpm workspace resolution)
 COPY apps/api/package.json ./apps/api/package.json
