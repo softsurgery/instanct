@@ -5,6 +5,7 @@ import { ResponseDtoHelper } from '@softsurgery/nsa-database';
 import { Expose, Type } from 'class-transformer';
 import { ResponseUserDeviceDto } from '@softsurgery/nsa-auth/dtos/user-device/response-user-device.dto';
 import { ResponseUserDto } from 'src/modules/users/dtos/user/response-user.dto';
+import { ResponseBugInterestedUserDto } from '../bug-interested-user/response-bug-interested-user.dto';
 
 export class ResponseBugDto extends ResponseDtoHelper {
   @ApiProperty({ type: Number })
@@ -44,4 +45,12 @@ export class ResponseBugDto extends ResponseDtoHelper {
   @Expose()
   @Type(() => ResponseUserDto)
   user?: ResponseUserDto;
+
+  @ApiProperty({
+    type: () => [ResponseBugInterestedUserDto],
+    required: false,
+  })
+  @Expose()
+  @Type(() => ResponseBugInterestedUserDto)
+  interestedUsers?: ResponseBugInterestedUserDto[];
 }

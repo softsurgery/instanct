@@ -8,7 +8,6 @@ import {
 import { ResponseBugDto, ResponseUserDeviceDto } from "api-client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
 import { identifyUser } from "@softsurgery/lib";
 import { Badge, Button } from "@softsurgery/ui";
 import { DataTableRowActions } from "@softsurgery/datatable-builder";
@@ -17,7 +16,6 @@ export const useBugReportColumns = (
   context: DataTableConfig<ResponseBugDto>,
   onDeviceClick?: (device: ResponseUserDeviceDto) => void,
 ): ColumnDef<ResponseBugDto>[] => {
-  const { t } = useTranslation("common");
   return [
     {
       accessorKey: "id",

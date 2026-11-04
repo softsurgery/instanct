@@ -12,6 +12,7 @@ export interface ResponseBugDto extends DatabaseEntity {
   deviceId?: string;
   userId: string;
   user?: ResponseUserDto;
+  interestedUsers?: ResponseBugInterestedUserDto[];
 }
 
 export enum BugVariant {
@@ -26,7 +27,38 @@ export interface CreateBugDto {
   variant?: BugVariant;
   title: string;
   description: string;
-  deviceId?: string;
+  deviceId?: string | null;
+  userId?: string;
+  interestedUserIds?: string[];
+}
+
+export interface UpdateBugDto {
+  variant?: BugVariant;
+  status?: BugStatus | string;
+  title?: string;
+  description?: string;
+  deviceId?: string | null;
+  userId?: string;
+  interestedUserIds?: string[];
+  notify?: boolean;
+}
+
+export enum BugStatus {
+  RESOLVED = "Resolved",
+  NOT_RESOLVED = "Not Resolved",
+  PENDING = "Pending",
+}
+
+export interface ResponseBugInterestedUserDto extends DatabaseEntity {
+  id: number;
+  bugId: number;
+  userId: string;
+  user?: ResponseUserDto;
+}
+
+export interface CreateBugInterestedUserDto {
+  bugId: number;
+  userId: string;
 }
 
 export enum FeedbackCategory {

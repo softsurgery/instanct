@@ -25,6 +25,7 @@ import { createStoreResource } from "./store";
 import { createUploadResource } from "./storage";
 import { createUserResource } from "./users";
 import { createBugResource } from "./bug";
+import { createBugInterestedUserResource } from "./bug-interested-user";
 import { createFeedbackResource } from "./feedback";
 import { createTemplateResource } from "./template";
 import { createAppVersionResource } from "./app-version";
@@ -51,6 +52,7 @@ export function createResources(http: AxiosInstance) {
       contentPage: createContentPageResource(http),
       template: createTemplateResource(http),
       bugReport: createBugResource(http),
+      bugInterestedUser: createBugInterestedUserResource(http),
       feedback: createFeedbackResource(http),
     },
     store: createStoreResource(http),

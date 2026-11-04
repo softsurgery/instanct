@@ -27,6 +27,7 @@ import { CurrentConversationController } from '@softsurgery/nsa-chat/controllers
 import { CurrentSessionController } from '@softsurgery/nsa-sessions/controllers/current-session.controller';
 import { SystemReportsModule } from 'src/modules/system-reports/system-reports.module';
 import { BugController } from 'src/modules/system-reports/controllers/bug.controller';
+import { BugInterestedUserController } from 'src/modules/system-reports/controllers/bug-interested-user.controller';
 import { FeedbackController } from 'src/modules/system-reports/controllers/feedback.controller';
 import { RequestController } from 'src/modules/requests/controllers/request.controller';
 import { RequestWorkflowController } from 'src/modules/requests/controllers/request-workdlow.controller';
@@ -62,6 +63,7 @@ import { TemplateController } from '@softsurgery/nsa-templates/controllers/templ
     //system reports
     FeedbackController,
     BugController,
+    BugInterestedUserController,
     //chat
     CurrentConversationController,
     ConversationController,

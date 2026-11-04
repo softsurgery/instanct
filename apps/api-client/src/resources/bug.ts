@@ -1,6 +1,7 @@
 import type { AxiosInstance } from "axios";
 import {
   type CreateBugDto,
+  type UpdateBugDto,
   type QueryParams,
   type Paginated,
   type ResponseBugDto,
@@ -10,6 +11,13 @@ export function createBugResource(http: AxiosInstance) {
   return {
     create: async (createBugDto: CreateBugDto): Promise<ResponseBugDto> => {
       const { data } = await http.post<ResponseBugDto>(`/bug`, createBugDto);
+      return data;
+    },
+    update: async (
+      id: string,
+      updateBugDto: UpdateBugDto
+    ): Promise<ResponseBugDto> => {
+      const { data } = await http.put<ResponseBugDto>(`/bug/${id}`, updateBugDto);
       return data;
     },
     findPaginated: async (
@@ -32,10 +40,12 @@ export function createBugResource(http: AxiosInstance) {
     },
     updateStatus: async (
       id: string,
-      status: string
+      status: string,
+      notify?: boolean
     ): Promise<ResponseBugDto> => {
       const { data } = await http.patch<ResponseBugDto>(`/bug/${id}/status`, {
         status,
+        notify,
       });
       return data;
     },

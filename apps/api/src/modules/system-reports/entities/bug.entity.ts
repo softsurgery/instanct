@@ -5,11 +5,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BugVariant } from '../enums/bug-variant.enum';
 import { UserDeviceEntity } from '@softsurgery/nsa-auth/entities/user-device.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { BugInterestedUserEntity } from './bug-interested-user.entity';
 
 @Entity('bugs')
 export class BugEntity extends EntityHelper {
@@ -34,10 +36,10 @@ export class BugEntity extends EntityHelper {
     nullable: true,
   })
   @JoinColumn({ name: 'deviceId' })
-  device?: UserDeviceEntity;
+  device?: UserDeviceEntity | null;
 
   @Column({ nullable: true })
-  deviceId?: string;
+  deviceId?: string | null;
 
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
@@ -47,4 +49,14 @@ export class BugEntity extends EntityHelper {
 
   @Column({})
   userId: string;
+
+  @OneToMany(
+    () => BugInterestedUserEntity,
+    (interestedUser) => interestedUser.bug,
+    {
+      eager: true,
+      cascade: true,
+    },
+  )
+  interestedUsers?: BugInterestedUserEntity[];
 }

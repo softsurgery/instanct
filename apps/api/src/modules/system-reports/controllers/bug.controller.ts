@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Query,
   Request,
   UseInterceptors,
@@ -21,6 +22,7 @@ import { toDto, toDtoArray } from '@softsurgery/nsa-database';
 import { LogEvent } from '@softsurgery/nsa-logger/decorators/log-event.decorator';
 import { EventType } from 'src/app/enums/event-type.enum';
 import { CreateBugDto } from '../dtos/bug/create-bug.dto';
+import { UpdateBugDto } from '../dtos/bug/update-bug.dto';
 import { BugStatus } from '../enums/bug-status.enum';
 import { AdvancedRequest } from '@softsurgery/nsa-helpers/http';
 
@@ -77,6 +79,21 @@ export class BugController {
     return toDto(ResponseBugDto, bug);
   }
 
+  @Put(':id')
+  @LogEvent(EventType.BUG_UPDATE)
+  async update(
+    @Param('id') id: string,
+    @Body() updateBugDto: UpdateBugDto,
+    @Request() req: AdvancedRequest,
+  ): Promise<ResponseBugDto | null> {
+    const bug = await this.bugService.update(id, updateBugDto);
+    req.logInfo = {
+      bugId: bug?.id,
+      variant: bug?.variant,
+    };
+    return toDto(ResponseBugDto, bug);
+  }
+
   @Delete(':id')
   @LogEvent(EventType.BUG_DELETE)
   async delete(
@@ -96,8 +113,9 @@ export class BugController {
   async updateStatus(
     @Param('id') id: string,
     @Body('status') status: BugStatus,
+    @Body('notify') notify?: boolean,
   ): Promise<ResponseBugDto> {
-    const bug = await this.bugService.updateStatus(id, status);
+    const bug = await this.bugService.updateStatus(id, status, notify ?? true);
     return toDto(ResponseBugDto, bug);
   }
 }
