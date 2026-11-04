@@ -1,0 +1,86 @@
+diff --git a/dist/src/index.js b/dist/src/index.js
+index a5a1305189eab6db868a434209809a645a92951b..8276184a0e5f2b1e0e691accdf37b9505ff847b2 100644
+--- a/dist/src/index.js
++++ b/dist/src/index.js
+@@ -122,9 +122,10 @@ export default forwardRef(function ActionSheet(_a, ref) {
+     var closing = useRef(false);
+     var draggableNodes = useRef([]);
+     var layoutTimeoutRef = useRef(null);
++    var initialDims = Dimensions.get('window');
+     var _2 = useState({
+-        width: -1,
+-        height: -1,
++        width: initialDims.width || -1,
++        height: initialDims.height || -1,
+     }), dimensions = _2[0], setDimensions = _2[1];
+     var dimensionsRef = useRef(dimensions);
+     dimensionsRef.current = dimensions;
+@@ -316,7 +317,14 @@ export default forwardRef(function ActionSheet(_a, ref) {
+                 var sheetHeight = height;
+                 sheetHeightRef.current = sheetHeight;
+                 if (dimensionsRef.current.height === -1) {
+-                    return;
++                    var win_1 = Dimensions.get('window');
++                    if (win_1.height > 0) {
++                        dimensionsRef.current = { width: win_1.width, height: win_1.height };
++                        setDimensions({ width: win_1.width, height: win_1.height });
++                    }
++                    else {
++                        return;
++                    }
+                 }
+                 if (closing.current)
+                     return;
+@@ -843,6 +851,11 @@ export default forwardRef(function ActionSheet(_a, ref) {
+     var getRef = useCallback(function () { return ({
+         show: function (snapIndex) {
+             var _a;
++            var currentWin = Dimensions.get('window');
++            if (currentWin.width > 0 && currentWin.height > 0) {
++                dimensionsRef.current = { width: currentWin.width, height: currentWin.height };
++                setDimensions({ width: currentWin.width, height: currentWin.height });
++            }
+             if (typeof snapIndex === 'number') {
+                 currentSnapIndex.current = snapIndex;
+             }
+@@ -931,6 +944,23 @@ export default forwardRef(function ActionSheet(_a, ref) {
+         }
+         sheetRef.current = getRef();
+     }, [currentContext, getRef, sheetId, sheetRef]);
++    useEffect(function () {
++        var sub = Dimensions.addEventListener('change', function (e) {
++            var win = e.window;
++            if (win.width > 0 && win.height > 0) {
++                dimensionsRef.current = { width: win.width, height: win.height };
++                setDimensions({ width: win.width, height: win.height });
++            }
++        });
++        return function () {
++            sub === null || sub === void 0 ? void 0 : sub.remove();
++        };
++    }, []);
++    useEffect(function () {
++        if (visible && sheetHeightRef.current > 0 && dimensions.height > 0) {
++            onSheetLayout(sheetHeightRef.current);
++        }
++    }, [dimensions.width, dimensions.height, visible, onSheetLayout]);
+     var onModalRequestClose = React.useCallback(function () {
+         var _a, _b;
+         if (enableRouterBackNavigation && ((_a = routerRef.current) === null || _a === void 0 ? void 0 : _a.canGoBack())) {
+@@ -1040,10 +1070,12 @@ export default forwardRef(function ActionSheet(_a, ref) {
+                   <Animated.View onLayout={function (event) {
+                 if (event.nativeEvent.layout.height < 10)
+                     return;
+-                setDimensions({
+-                    width: event.nativeEvent.layout.width,
+-                    height: event.nativeEvent.layout.height,
+-                });
++                var w = event.nativeEvent.layout.width;
++                var h = event.nativeEvent.layout.height;
++                if (dimensionsRef.current.width !== w || dimensionsRef.current.height !== h) {
++                    dimensionsRef.current = { width: w, height: h };
++                    setDimensions({ width: w, height: h });
++                }
+             }} ref={rootViewContainerRef} pointerEvents={(props === null || props === void 0 ? void 0 : props.backgroundInteractionEnabled) ? 'box-none' : 'auto'} style={[
+                 styles.parentContainer,
+                 {
