@@ -1,5 +1,5 @@
 import { Gender } from "api-client";
-import { type UploadFilesMutate } from "@/hooks/useUploadMutation";
+import { type UploadFilesMutate } from "api-client/hooks/upload/useUploadMutation";
 import {
   CustomFieldProps,
   DateFieldProps,

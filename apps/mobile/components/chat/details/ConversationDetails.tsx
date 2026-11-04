@@ -20,8 +20,8 @@ import {
   ApplicationHeader,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import {
   CONVERSATION_LIST_JOIN,

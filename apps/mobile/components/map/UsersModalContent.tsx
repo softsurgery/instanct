@@ -5,7 +5,7 @@ import { Icon, Text } from "@softsurgery/mobile-ui";
 import { formatDistanceToNow } from "date-fns";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 
 interface ClusterUserRowProps {
   user: NearbyUser;

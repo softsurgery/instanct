@@ -1,4 +1,4 @@
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";

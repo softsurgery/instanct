@@ -5,7 +5,7 @@ import { RefreshControl, View } from "react-native";
 import { ResponseRequestDto } from "api-client";
 import { Loader, NotFound } from "@softsurgery/mobile-components";
 import { SessionRequestCard } from "../session/session-details/SessionRequestCard";
-import { useInfiniteIncomingSessionRequests } from "@/hooks/content/sessions/useInfiniteIncomingSessionRequests";
+import { useInfiniteIncomingSessionRequests } from "api-client/hooks/content/sessions/useInfiniteIncomingSessionRequests";
 import { Text } from "@softsurgery/mobile-ui";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { SessionRequestCardSkeleton } from "./skeletons/SessionRequestCardSkeleton";

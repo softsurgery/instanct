@@ -5,7 +5,7 @@ import { Save } from "lucide-react";
 import { FormBuilder } from "@softsurgery/form-builder";
 import { useReferenceTypesStore } from "@/hooks/stores/useReferenceTypesStore";
 import { useCreateRefParamFormStructure } from "./useCreateRefParamFormStructure";
-import { useRefTypes } from "@/hooks/content/reference-types/useRefTypes";
+import { useRefTypes } from "api-client/hooks/content/reference-types/useRefTypes";
 import { mapToSelectOptions } from "@softsurgery/form-builder";
 
 interface RefParamCreateFormProps {

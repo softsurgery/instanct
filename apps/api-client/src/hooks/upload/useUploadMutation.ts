@@ -1,0 +1,83 @@
+import React from "react";
+import type { ServerErrorResponse, Upload } from "api-client";
+import { useMutation } from "@tanstack/react-query";
+import { useApi } from "../context/ApiContext";
+
+export type UploadProgressCallback = (percent: number) => void;
+
+export type UploadFileInput = Parameters<
+  ReturnType<typeof import("../../index").createApiClient>["upload"]["uploadFiles"]
+>[0][number];
+
+export interface UploadFilesVariables {
+  files: UploadFileInput[] | File[];
+  onProgress?: UploadProgressCallback;
+}
+
+export type UploadFilesMutate = (variables: UploadFilesVariables) => void;
+
+export interface UseUploadMutationProps {
+  temporary?: boolean;
+  onProgress?: UploadProgressCallback;
+  onSuccess?: (response: Upload[]) => void;
+  onError?: (error: ServerErrorResponse) => void;
+}
+
+const clampUploadProgress = (percent: number): number => {
+  if (!Number.isFinite(percent)) return 0;
+  return Math.max(0, Math.min(100, Math.round(percent)));
+};
+
+export const useUploadMutation = ({
+  temporary = true,
+  onProgress,
+  onSuccess,
+  onError,
+}: UseUploadMutationProps) => {
+  const api = useApi();
+  const [progress, setProgress] = React.useState<number>(0);
+
+  const updateProgress = React.useCallback(
+    (percent: number, mutationProgress?: UploadProgressCallback): void => {
+      const normalized = clampUploadProgress(percent);
+      setProgress(normalized);
+      onProgress?.(normalized);
+      mutationProgress?.(normalized);
+    },
+    [onProgress],
+  );
+
+  const { mutate: uploadFiles, isPending: isUploadPending } = useMutation<
+    Upload[],
+    ServerErrorResponse,
+    UploadFilesVariables
+  >({
+    mutationFn: async ({
+      files,
+      onProgress: mutationProgress,
+    }: UploadFilesVariables) => {
+      updateProgress(0, mutationProgress);
+      return api.upload.uploadFiles(
+        files,
+        (percent: number) => {
+          updateProgress(percent, mutationProgress);
+        },
+        temporary,
+      );
+    },
+    onSuccess: (data, variables) => {
+      updateProgress(100, variables.onProgress);
+      onSuccess?.(data);
+    },
+    onError: (error, variables) => {
+      updateProgress(0, variables.onProgress);
+      onError?.(error);
+    },
+  });
+
+  return {
+    uploadFiles,
+    isUploadPending,
+    progress,
+  };
+};

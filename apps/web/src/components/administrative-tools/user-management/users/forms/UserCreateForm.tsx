@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/stores/useUserStore";
-import { useRoles } from "@/hooks/content/useRoles";
+import { useRoles } from "api-client/hooks/content/useRoles";
 import { FormBuilder } from "@softsurgery/form-builder";
 import { mapToSelectOptions } from "@softsurgery/form-builder";
 import { Button } from "@softsurgery/ui";
@@ -14,7 +14,7 @@ import {
 } from "@/types/validations/user.validation";
 import { Spinner } from "@softsurgery/components";
 import { CreateUserDto, ServerErrorResponse, Upload } from "@/types";
-import { useUploadMutation } from "@/hooks/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 

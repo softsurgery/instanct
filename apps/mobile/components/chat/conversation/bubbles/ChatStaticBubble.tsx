@@ -3,7 +3,7 @@ import { ResponseMessageDto, StaticMessageEnum } from "api-client";
 import React from "react";
 import { Pressable } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { useTranslation } from "react-i18next";
 
 interface ChatStaticBubbleProps {

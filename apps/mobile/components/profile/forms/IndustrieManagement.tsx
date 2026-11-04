@@ -3,8 +3,8 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { View } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
-import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
-import { useUserIndustries } from "@/hooks/content/users/useUserIndustries";
+import { useIndustries } from "api-client/hooks/content/reference-types/useIndustries";
+import { useUserIndustries } from "api-client/hooks/content/users/useUserIndustries";
 import { cn } from "@softsurgery/lib";
 import {
   StableSafeAreaView,

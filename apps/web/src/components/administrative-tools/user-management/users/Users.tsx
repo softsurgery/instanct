@@ -28,8 +28,8 @@ import { useDisapproveUserDialog } from "./modals/UserDisapproveDialog";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { DataTableConfig } from "@softsurgery/datatable-builder";
-import { useUploads } from "@/hooks/content/useUploads";
-import { useUpload } from "@/hooks/content/useUpload";
+import { useUploads } from "api-client/hooks/content/useUploads";
+import { useUpload } from "api-client/hooks/content/useUpload";
 import { useUserConnection } from "@/hooks/content/user/useUserConnection";
 
 interface UsersProps {

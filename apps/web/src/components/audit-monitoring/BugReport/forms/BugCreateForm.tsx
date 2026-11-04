@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { CreateBugDto, ServerErrorResponse } from "@/types";
 import { useBugReportStore } from "@/hooks/stores/useBugReportStore";
-import { useUsers } from "@/hooks/content/user/useUsers";
+import { useUsers } from "api-client/hooks/content/user/useUsers";
 import { FormBuilder, SelectOption } from "@softsurgery/form-builder";
 import { Button } from "@softsurgery/ui";
 import { useCreateBugFormStructure } from "./useCreateBugFormStructure";

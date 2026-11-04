@@ -11,6 +11,7 @@ import { SessionProvider } from "next-auth/react";
 import { AuthTokenSync } from "@/components/auth/AuthTokenSync";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppProvider, ThemeProvider } from "@softsurgery/contexts";
+import { ApiProvider } from "api-client/hooks/context";
 import { api } from "@/lib/api";
 
 const inter = { className: "font-inter" };
@@ -49,21 +50,23 @@ const App = ({
       <SessionProvider session={session}>
         <AuthTokenSync />
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <AppProvider value={{ appType: "admin", api }}>
-              <Application
-                Component={Component}
-                pageProps={pageProps}
-                className={inter.className}
-                router={router}
-              />
-            </AppProvider>
-          </ThemeProvider>
+          <ApiProvider value={api}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <AppProvider value={{ appType: "admin", api }}>
+                <Application
+                  Component={Component}
+                  pageProps={pageProps}
+                  className={inter.className}
+                  router={router}
+                />
+              </AppProvider>
+            </ThemeProvider>
+          </ApiProvider>
         </QueryClientProvider>
       </SessionProvider>
     </React.Fragment>

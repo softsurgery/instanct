@@ -7,7 +7,7 @@ import {
   useIntro,
   useUI,
 } from "@softsurgery/contexts";
-import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
+import { useConfigurations } from "api-client/hooks/content/configurations/useConfigurations";
 import { useConfigStore } from "@/hooks/stores/userConfigStore";
 import _ from "lodash";
 import { ConfigurationInput } from "./ConfigurationInput";
@@ -45,7 +45,7 @@ export function ConfigurationEditPortal({
     clearEnableContainer,
   } = useUI();
   const { configurations, isConfigurationsPending, refetchConfigurations } =
-    useConfigurations();
+    useConfigurations({ global: true });
   const originalValuesRef = React.useRef<{ id: number; value: string }[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
 

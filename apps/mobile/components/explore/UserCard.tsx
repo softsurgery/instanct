@@ -29,9 +29,9 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { Icon, Text } from "@softsurgery/mobile-ui";
-import { useStartConversation } from "@/hooks/content/chat/useStartConversation";
-import { useBookmarkActions } from "@/hooks/content/users/useBookmarkActions";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
+import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { IconMoodPlus } from "@tabler/icons-react-native";
 import Animated, {
   useSharedValue,

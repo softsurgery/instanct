@@ -10,7 +10,7 @@ import { useUserStore } from "@/stores/useUserStore";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import * as Haptics from "expo-haptics";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";

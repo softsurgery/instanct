@@ -1,5 +1,5 @@
 //Deprecated
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { router } from "expo-router";
@@ -8,7 +8,7 @@ import React from "react";
 import { View } from "react-native";
 import { PremiumCarousel } from "../deprecated/premium/PremiumCarousel";
 import { Button, Icon, Text } from "@softsurgery/mobile-ui";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 
 interface ProfileEntryProps {
   className?: string;

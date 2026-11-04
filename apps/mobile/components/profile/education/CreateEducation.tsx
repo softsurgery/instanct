@@ -7,7 +7,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { Button, Text } from "@softsurgery/mobile-ui";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";

@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 
 interface MessageSeenIndicatorProps {
   pictureId?: number;

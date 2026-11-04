@@ -1,5 +1,4 @@
 import { Text } from "@softsurgery/mobile-ui";
-import { useServerUploads } from "@/hooks/content/useServerUploads";
 import { cn } from "@softsurgery/lib";
 import { openUploadFile } from "@/lib/files";
 import { ResponseMessageDto } from "api-client";
@@ -15,6 +14,7 @@ import { ChatFileList, ChatFileListItem } from "./ChatFileList";
 import { MessageTextContent } from "./MessageTextContent";
 import { useTranslation } from "react-i18next";
 import { useScreenOrientation } from "@softsurgery/mobile-hooks";
+import { useServerUploads } from "api-client/hooks/content/useServerUploads";
 
 interface ChatFileBubbleProps {
   className?: string;
@@ -53,7 +53,10 @@ export const ChatFileBubble = ({
   );
   const { uploads } = useServerUploads(uploadIds);
 
-  const pendingItems = React.useMemo(() => pending?.items ?? [], [pending?.items]);
+  const pendingItems = React.useMemo(
+    () => pending?.items ?? [],
+    [pending?.items],
+  );
 
   const timestamp = pending ? pending.createdAt : new Date(message!.createdAt);
   const isUploading = pending?.status === "uploading";

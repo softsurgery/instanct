@@ -16,7 +16,7 @@ import {
   SessionType,
   type ResponseSessionDto,
 } from "api-client";
-import { useInfiniteUserSessions } from "@/hooks/content/sessions/useInfiniteUserSessions";
+import { useInfiniteUserSessions } from "api-client/hooks/content/sessions/useInfiniteUserSessions";
 import { SessionStarter } from "./SessionStarter";
 import { useTranslation } from "react-i18next";
 import { useLayoutConfig } from "@/config/wrapper-config";

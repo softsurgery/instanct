@@ -7,9 +7,20 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./hooks/context": "./src/hooks/context/ApiContext.tsx",
+    "./hooks/context/ApiContext": "./src/hooks/context/ApiContext.tsx",
+    "./hooks/content/user/useFollowSystem": "./src/hooks/content/user/useFollowSystem.tsx",
+    "./hooks/content/useServerImages": "./src/hooks/content/useServerImages.tsx",
+    "./hooks/content/geolocation/useLiveGeolocationParamters": "./src/hooks/content/geolocation/useLiveGeolocationParamters.tsx",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./hooks/*/*": "./src/hooks/*/*.ts",
+    "./hooks/*/*/*": "./src/hooks/*/*/*.ts",
+    "./hooks/*/*/*/*": "./src/hooks/*/*/*/*.ts",
+    "./hooks/stores/*": "./src/hooks/stores/*.ts",
     "./*": [
-      "./src/*.ts",
       "./src/*.tsx",
+      "./src/*.ts",
       "./src/*/index.ts",
       "./src/*/index.tsx",
       "./src/*"
@@ -21,8 +32,42 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
+    "@softsurgery/form-builder": "workspace:*",
     "@softsurgery/hooks": "workspace:*",
     "@softsurgery/lib": "workspace:*",
     "axios": "^1.12.2"
+  },
+  "peerDependencies": {
+    "@react-native-async-storage/async-storage": "*",
+    "@softsurgery/mobile-components": "workspace:*",
+    "@softsurgery/mobile-ui": "workspace:*",
+    "@tanstack/react-query": "^5.56.2",
+    "expo-apple-authentication": "*",
+    "expo-auth-session": "*",
+    "expo-application": "*",
+    "expo-constants": "*",
+    "expo-file-system": "*",
+    "expo-image": "*",
+    "expo-image-picker": "*",
+    "expo-document-picker": "*",
+    "expo-location": "*",
+    "expo-notifications": "*",
+    "expo-router": "*",
+    "expo-web-browser": "*",
+    "lodash": "*",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-i18next": "^15.0.2",
+    "react-native": "*",
+    "sonner-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "@softsurgery/mobile-components": { "optional": true },
+    "@softsurgery/mobile-ui": { "optional": true }
+  },
+  "devDependencies": {
+    "@tanstack/react-query": "^5.56.2",
+    "@types/react": "19.3.0",
+    "lodash": "^4.17.21"
   }
 }

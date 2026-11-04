@@ -1,5 +1,5 @@
 import { Text } from "@softsurgery/mobile-ui";
-import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
+import { useConversationMessages } from "api-client/hooks/content/chat/useConversationMessages";
 import { MessageVariant, ResponseMessageDto } from "api-client";
 import { LegendList } from "@legendapp/list";
 import React from "react";
@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { GestureViewer } from "react-native-gesture-image-viewer";
 import { Image } from "expo-image";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { getMessageUploadIds, MediaThumbnail } from "./MediaThumbnail";
 import { useTranslation } from "react-i18next";
 import {

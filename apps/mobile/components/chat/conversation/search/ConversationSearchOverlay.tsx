@@ -15,7 +15,7 @@ import {
   useColorPalette,
   useGradualAnimation,
 } from "@softsurgery/mobile-hooks";
-import { useConversationMessageSearch } from "@/hooks/content/chat/useConversationMessageSearch";
+import { useConversationMessageSearch } from "api-client/hooks/content/chat/useConversationMessageSearch";
 import { ConversationSearchResultItem } from "./ConversationSearchResultItem";
 import { useTranslation } from "react-i18next";
 

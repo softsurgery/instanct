@@ -6,7 +6,7 @@ import * as Location from "expo-location";
 import React from "react";
 import { AppState, type AppStateStatus } from "react-native";
 import { useShallow } from "zustand/react/shallow";
-import { useLiveGeolocationParameters } from "./useLiveGeolocationParamters";
+import { useLiveGeolocationParameters } from "api-client/hooks/content/geolocation/useLiveGeolocationParamters";
 
 const MIN_MOVEMENT_METERS = 5;
 const HEARTBEAT_INTERVAL_MS = 30_000;

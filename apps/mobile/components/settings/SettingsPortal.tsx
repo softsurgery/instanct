@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@softsurgery/lib";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { identifyUser } from "@/lib/user";
 import { router } from "expo-router";
 import { ChevronRight, LogOut, Trash2 } from "lucide-react-native";

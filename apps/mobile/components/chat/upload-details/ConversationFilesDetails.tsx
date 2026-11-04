@@ -1,5 +1,5 @@
 import { Text } from "@softsurgery/mobile-ui";
-import { useConversationMessages } from "@/hooks/content/chat/useConversationMessages";
+import { useConversationMessages } from "api-client/hooks/content/chat/useConversationMessages";
 import { MessageVariant } from "api-client";
 import { LegendList } from "@legendapp/list";
 import React from "react";

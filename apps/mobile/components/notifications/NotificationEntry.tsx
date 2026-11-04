@@ -4,7 +4,7 @@ import { Image, Text } from "@softsurgery/mobile-ui";
 import { cn, dateUtils } from "@softsurgery/lib";
 import { NotificationType, ResponseNotificationDto } from "api-client";
 import { HTMLText } from "@softsurgery/mobile-components";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import {
   getNotificationDestination,
   navigateToNotificationDestination,

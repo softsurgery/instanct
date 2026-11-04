@@ -1,6 +1,6 @@
 import { Text } from "@softsurgery/mobile-ui";
 import { FileTypeIcon } from "@softsurgery/mobile-components";
-import { useServerUploads } from "@/hooks/content/useServerUploads";
+import { useServerUploads } from "api-client/hooks/content/useServerUploads";
 import {
   formatFileSize,
   getUploadDisplayName,

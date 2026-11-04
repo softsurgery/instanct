@@ -1,4 +1,4 @@
-import { useIdentifiedUser } from "@/hooks/content/users/useIdentifiedUser";
+import { useIdentifiedUser } from "api-client/hooks/content/users/useIdentifiedUser";
 import { usePulseAnimation } from "@softsurgery/mobile-hooks";
 import { identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
@@ -6,7 +6,7 @@ import { useMapStore } from "@/stores/useMapStore";
 import React from "react";
 import { Animated, View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 
 interface UserMarkerProps {
   className?: string;

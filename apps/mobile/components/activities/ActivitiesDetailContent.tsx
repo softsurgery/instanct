@@ -3,7 +3,7 @@ import { StyleProp, View, ViewStyle, useWindowDimensions } from "react-native";
 import { SessionIncomingRequests } from "./SessionIncomingRequests";
 import { SessionOutgoingRequests } from "./SessionOutgoingRequests";
 import { Text } from "@softsurgery/mobile-ui";
-import { useInfiniteUserBookmarks } from "@/hooks/content/users/useInfinteUserBookmarks";
+import { useInfiniteUserBookmarks } from "api-client/hooks/content/users/useInfinteUserBookmarks";
 import { LegendList } from "@legendapp/list";
 import { BookmarkCard } from "./BookmarkCard";
 import { ResponseUserBookmarkDto, ResponseUserDto } from "api-client";

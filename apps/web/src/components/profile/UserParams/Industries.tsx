@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 import { TreeSelectBox } from "@softsurgery/form-builder";
-import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
+import { useIndustriesTree as useIndustries } from "api-client/hooks/content/reference-types/useIndustriesTree";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 

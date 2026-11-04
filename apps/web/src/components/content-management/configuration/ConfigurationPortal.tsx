@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useBreadcrumb, useIntro } from "@softsurgery/contexts";
-import { useConfigurations } from "@/hooks/content/configuration/useConfigurations";
+import { useConfigurations } from "api-client/hooks/content/configurations/useConfigurations";
 import { cn } from "@/lib/utils";
 import { DataTable, DataTableConfig } from "@softsurgery/datatable-builder";
 import { useTranslation } from "react-i18next";
@@ -36,7 +36,7 @@ export const ConfigurationPortal = ({
   const { setRoutes, clearRoutes } = useBreadcrumb();
   const { setIntro, clearIntro, setFloating, clearFloating } = useIntro();
   const { configurations, isConfigurationsPending, refetchConfigurations } =
-    useConfigurations();
+    useConfigurations({ global: true });
 
   const [selectedNamespaceForDelete, setSelectedNamespaceForDelete] =
     React.useState<ResponseConfigurationNamespaceDto | null>(null);

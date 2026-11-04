@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useRoleStore } from "@/hooks/stores/useRoleStore";
-import { usePermissions } from "@/hooks/content/usePermissions";
+import { usePermissions } from "api-client/hooks/content/usePermissions";
 import { useCreateRoleFormStructure } from "./useCreateRoleFormStructure";
 import { Button } from "@softsurgery/ui";
 import { Save } from "lucide-react";

@@ -5,7 +5,7 @@ import { useUpdateRoleFormStructure } from "./useUpdateRoleFormStructure";
 import { FormBuilder } from "@softsurgery/form-builder";
 import { Button } from "@softsurgery/ui";
 import { Save } from "lucide-react";
-import { usePermissions } from "@/hooks/content/usePermissions";
+import { usePermissions } from "api-client/hooks/content/usePermissions";
 
 interface RoleFormProps {
   className?: string;

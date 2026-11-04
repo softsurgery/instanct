@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import { router } from "expo-router";
 import { Text, Icon } from "@softsurgery/mobile-ui";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUserAvatar, identifyUser } from "@/lib/user";
 import { cn, dateUtils } from "@softsurgery/lib";
 import { RequestStatus, ResponseRequestDto } from "api-client";

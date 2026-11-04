@@ -1,0 +1,27 @@
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useApi } from "../context/ApiContext";
+
+export const useRoles = (enabled?: boolean) => {
+  const api = useApi();
+  const {
+    isFetching: isFetchRolesPending,
+    data: rolesResp,
+    refetch: refetchRoles,
+  } = useQuery({
+    queryKey: ["roles"],
+    queryFn: () => api.admin.role.findAll(),
+    enabled,
+  });
+
+  const roles = React.useMemo(() => {
+    if (!rolesResp) return [];
+    return rolesResp;
+  }, [rolesResp]);
+
+  return {
+    roles,
+    isFetchRolesPending,
+    refetchRoles,
+  };
+};

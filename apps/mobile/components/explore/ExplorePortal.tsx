@@ -23,7 +23,7 @@ import { Text } from "@softsurgery/mobile-ui";
 import { SessionCountdown } from "../session/SessionCountdown";
 import { SessionStarter } from "../session/SessionStarter";
 import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import {
   ApplicationHeader,
@@ -32,8 +32,8 @@ import {
   Loader,
 } from "@softsurgery/mobile-components";
 import { useChatContext } from "@/contexts/ChatContext";
-import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
-import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
+import { useObjectives } from "api-client/hooks/content/reference-types/useObjectives";
+import { useIndustries } from "api-client/hooks/content/reference-types/useIndustries";
 import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import {
   hslToHex,

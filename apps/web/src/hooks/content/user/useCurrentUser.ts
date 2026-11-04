@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useEmailUser } from "./useEmailUser";
+import { useEmailUser } from "api-client/hooks/content/user/useEmailUser";
 
 export const useCurrentUser = (join?: string) => {
   const { data: session } = useSession();

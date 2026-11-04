@@ -22,7 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@softsurgery/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useFollowerDialog } from "./modals/FollowersDialog";
 import { useFollowingDialog } from "./modals/FollowingDialog";
-import { useFollowSystem } from "@/hooks/useFollowSystem";
+import { useFollowSystem } from "api-client/hooks/content/user/useFollowSystem";
 import { Notifications } from "../audit-monitoring/notifications/Notifications";
 import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";

@@ -8,7 +8,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { Button, Text } from "@softsurgery/mobile-ui";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { useUserStore } from "@/stores/useUserStore";
 import { CreateExperienceDto, ServerErrorResponse } from "api-client";
 import { createExperienceSchema } from "@/types/validations/experience.validation";

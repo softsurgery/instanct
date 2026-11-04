@@ -22,9 +22,9 @@ import {
   validatePassword,
   validateConfirmPassword,
   validateIndustries,
-} from "@/hooks/useAuthValidation";
-import { useIndustries } from "@/hooks/content/reference-types/useIndustries";
-import { useUploadMutation } from "@/hooks/useUploadMutation";
+} from "api-client/hooks/useAuthValidation";
+import { useIndustries } from "api-client/hooks/content/reference-types/useIndustries";
+import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
 import { ServerErrorResponse, Upload } from "api-client";
 import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";

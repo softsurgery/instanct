@@ -1,6 +1,6 @@
 import React from "react";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";

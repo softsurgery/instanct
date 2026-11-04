@@ -1,6 +1,6 @@
 import React from "react";
 import { BaseProfile } from "./BaseProfile";
-import { useIdentifiedUser } from "@/hooks/content/user/useIdentifiedUser";
+import { useIdentifiedUser } from "api-client/hooks/content/users/useIdentifiedUser";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 import { useUserRefParamsStore } from "@/hooks/stores/useUserRefParamsStore";
 

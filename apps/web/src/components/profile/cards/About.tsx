@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@softsurgery/ui";
 import { Separator } from "@softsurgery/ui";
-import { useUpload } from "@/hooks/content/useUpload";
+import { useUpload } from "api-client/hooks/content/useUpload";
 import { useUserStore } from "@/hooks/stores/useUserStore";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";

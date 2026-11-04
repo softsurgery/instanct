@@ -21,17 +21,17 @@ import { ChatHeaderLeft } from "./conversation/ChatHeaderLeft";
 import { ChatHeaderRight } from "./conversation/ChatHeaderRight";
 import { SeenMessageWrapper } from "./conversation/SeenMessageWrapper";
 
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { ConversationInput } from "./conversation/input/ConversationInput";
 import { ConversationMediaStaging } from "./conversation/staging/ConversationMediaStaging";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { Text } from "@softsurgery/mobile-ui";
 
-import { useConversationFeatures } from "@/hooks/content/chat/useConversationFeatures";
-import { useLastSeenMessageId } from "@/hooks/content/chat/useLastSeenMessageId";
-import { useSendChatMedia } from "@/hooks/content/chat/useSendChatMedia";
-import { useSendChatFile } from "@/hooks/content/chat/useSendChatFile";
+import { useConversationFeatures } from "api-client/hooks/content/chat/useConversationFeatures";
+import { useLastSeenMessageId } from "api-client/hooks/content/chat/useLastSeenMessageId";
+import { useSendChatMedia } from "api-client/hooks/content/chat/useSendChatMedia";
+import { useSendChatFile } from "api-client/hooks/content/chat/useSendChatFile";
 import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { ImageBackground } from "expo-image";
 import { ChatStaticBubble } from "./conversation/bubbles/ChatStaticBubble";

@@ -1,5 +1,5 @@
 import { AuthStore } from "@/stores/useAuthStore";
-import { type UploadFilesMutate } from "@/hooks/useUploadMutation";
+import { type UploadFilesMutate } from "api-client/hooks/upload/useUploadMutation";
 import {
   Field,
   FieldVariant,
@@ -20,7 +20,7 @@ import {
   validateUsername,
   validatePassword,
   validateConfirmPassword,
-} from "@/hooks/useAuthValidation";
+} from "api-client/hooks/useAuthValidation";
 
 interface useSignUpFormStructureProps {
   store: AuthStore;

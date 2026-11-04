@@ -5,7 +5,23 @@
     "resolveJsonModule": true,
     "paths": {
       "@/*": ["./*"],
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "api-client/hooks/context": [
+        "../api-client/src/hooks/context/ApiContext.tsx"
+      ],
+      "api-client/hooks/context/ApiContext": [
+        "../api-client/src/hooks/context/ApiContext.tsx"
+      ],
+      "api-client/hooks/content/useServerImages": [
+        "../api-client/src/hooks/content/useServerImages.tsx"
+      ],
+      "api-client/hooks/content/user/useFollowSystem": [
+        "../api-client/src/hooks/user-based/useFollowSystem.ts"
+      ],
+      "api-client/hooks/content/geolocation/useLiveGeolocationParamters": [
+        "../api-client/src/hooks/content/geolocation/useLiveGeolocationParamters.tsx"
+      ],
+      "api-client/hooks/*": ["../api-client/src/hooks/*"]
     }
   },
   "include": [

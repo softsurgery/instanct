@@ -8,7 +8,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import { router } from "expo-router";
-import { useObjectives } from "@/hooks/content/reference-types/useObjectives";
+import { useObjectives } from "api-client/hooks/content/reference-types/useObjectives";
 import { useSessionManagementFormStructure } from "./useSessionManagementFormStructure";
 import {
   mapToSelectOptions,
@@ -25,7 +25,7 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { useApi } from "@/contexts/ApiContext";
-import { useActiveSessions } from "@/hooks/content/sessions/useActiveSessions";
+import { useActiveSessions } from "api-client/hooks/content/sessions/useActiveSessions";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { EndSessionActionSheet } from "../EndSessionActionSheet";
 

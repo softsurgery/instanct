@@ -8,7 +8,7 @@ import {
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable } from "react-native";
 import { Eye, Camera } from "lucide-react-native";
-import { useUploadMutation } from "@/hooks/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
 import { type ReactNativeUploadFile } from "@/lib/upload";
 import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ import {
   ServerErrorResponse,
 } from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
-import { useServerImages } from "@/hooks/content/useServerImages";
+import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";
 
 interface ProfileAvatarProps {

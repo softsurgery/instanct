@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentUser } from "@/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
 import { useDebounce } from "@/hooks/useDebounce";
 import { LegendList } from "@legendapp/list";
 import { router, useFocusEffect } from "expo-router";
@@ -17,7 +17,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { UserEntry } from "./UserEntry";
 import { Separator } from "@softsurgery/mobile-ui";
-import { useChat } from "@/hooks/content/chat/useChat";
+import { useChat } from "api-client/hooks/content/chat/useChat";
 import { CONVERSATION_LIST_JOIN } from "@/lib/chat";
 import { UserEntrySkeleton } from "./UserEntrySkeleton";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";

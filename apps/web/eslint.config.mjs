@@ -1,4 +1,4 @@
-import { dirname } from "path";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 
@@ -19,6 +19,19 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+  },
+  {
+    settings: {
+      "import/resolver": {
+        typescript: {
+          project: path.join(__dirname, "tsconfig.json"),
+          alwaysTryTypes: true,
+        },
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx"],
+        },
+      },
+    },
   },
 ];
 
