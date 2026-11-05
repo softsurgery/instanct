@@ -312,6 +312,13 @@ export default function MainLayout() {
               }}
             />
             <Stack.Screen
+              name="chat/conversation-search"
+              options={{
+                title: "conversationSearch",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
               name="chat/report-conversation"
               options={{
                 title: "reportConversation",
