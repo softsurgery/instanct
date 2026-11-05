@@ -8,7 +8,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./hooks": "./src/hooks/index.ts",
+    "./hooks/auth": "./src/hooks/auth/index.ts",
     "./hooks/context": "./src/hooks/context/index.ts",
+    "./hooks/geolocation": "./src/hooks/geolocation/index.ts",
     "./hooks/*": "./src/hooks/*.ts",
     "./hooks/*/*": "./src/hooks/*/*.ts",
     "./hooks/*/*/*": "./src/hooks/*/*/*.ts",
@@ -23,8 +25,8 @@
     ]
   },
   "scripts": {
-    "build": "tsc --noEmit",
-    "check-types": "tsc --noEmit",
+    "build": "tsc --noEmit -p tsconfig.json",
+    "check-types": "tsc --noEmit -p tsconfig.json",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
@@ -68,7 +70,6 @@
   "devDependencies": {
     "@tanstack/react-query": "^5.56.2",
     "@types/react": "19.3.0",
-    "lodash": "^4.17.21",
-    "nativewind": "4.2.7"
+    "lodash": "^4.17.21"
   }
 }

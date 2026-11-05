@@ -22,7 +22,7 @@ import {
   ServerErrorResponse,
 } from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { Image, ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLuminance, useScreenOrientation } from "@softsurgery/mobile-hooks";

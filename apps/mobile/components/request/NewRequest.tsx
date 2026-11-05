@@ -12,7 +12,7 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { useIdentifiedUser } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { cn } from "@softsurgery/lib";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useCreateNewRequestFormStructure } from "./forms/useCreateRequestFormStructure";

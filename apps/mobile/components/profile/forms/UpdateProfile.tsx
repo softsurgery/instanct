@@ -15,7 +15,7 @@ import { updateUserSchema } from "@/types/validations/user.validation";
 import { Button, Text } from "@softsurgery/mobile-ui";
 import { useApi, useCurrentUser } from "api-client/hooks";
 import React from "react";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { identifyUserAvatar } from "@/lib/user";
 import { useUploadMutation } from "api-client/hooks";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";

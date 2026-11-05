@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 
 interface MessageSeenIndicatorProps {
   pictureId?: number;

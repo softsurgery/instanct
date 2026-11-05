@@ -1,3 +1,4 @@
+import "@/lib/persist-storage";
 import { splashPrevented } from "@/lib/splash-screen";
 import { NAV_THEME, THEME } from "@/lib/theme";
 import { cn } from "@softsurgery/lib";

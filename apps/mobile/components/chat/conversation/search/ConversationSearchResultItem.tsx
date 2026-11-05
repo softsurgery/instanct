@@ -4,7 +4,7 @@ import { Text } from "@softsurgery/mobile-ui";
 import { ResponseMessageDto, ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { MessageTextContent } from "../bubbles/MessageTextContent";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 
 interface SearchResultAvatarProps {
   user?: ResponseUserDto | null;

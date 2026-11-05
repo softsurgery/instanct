@@ -4,7 +4,7 @@ import { Icon } from "@softsurgery/mobile-ui";
 import * as Haptics from "expo-haptics";
 import { Crosshair, RefreshCcw, SatelliteDish } from "lucide-react-native";
 import { useMapStore } from "@/stores/useMapStore";
-import { useLiveGeolocation } from "api-client/hooks";
+import { useLiveGeolocation } from "api-client/hooks/geolocation";
 import {
   useColorPalette,
   useScreenOrientation,

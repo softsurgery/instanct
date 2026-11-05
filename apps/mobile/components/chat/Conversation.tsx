@@ -25,7 +25,7 @@ import { useCurrentUser } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { ConversationInput } from "./conversation/input/ConversationInput";
 import { ConversationMediaStaging } from "./conversation/staging/ConversationMediaStaging";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { Text } from "@softsurgery/mobile-ui";
 
 import { useConversationFeatures } from "api-client/hooks/content/chat/useConversationFeatures";

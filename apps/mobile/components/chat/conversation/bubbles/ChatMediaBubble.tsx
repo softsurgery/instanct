@@ -12,7 +12,7 @@ import {
   VideoPreview,
   VideoThumbnailPreview,
 } from "@softsurgery/mobile-components";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { MessageTextContent } from "./MessageTextContent";
 import { MediaImageGrid } from "./ChatMediaImageGrid";
 import { MediaUploadProgress } from "../staging/MediaUploadProgress";

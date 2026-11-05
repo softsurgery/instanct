@@ -8,7 +8,7 @@ import React from "react";
 import { View } from "react-native";
 import { PremiumCarousel } from "../deprecated/premium/PremiumCarousel";
 import { Button, Icon, Text } from "@softsurgery/mobile-ui";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 
 interface ProfileEntryProps {
   className?: string;

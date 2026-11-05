@@ -5,7 +5,7 @@ import {
   FieldVariant,
   FormStructure,
 } from "@softsurgery/mobile-form-builder";
-import { AuthStore } from "api-client/hooks";
+import type { AuthStore } from "api-client/hooks/auth";
 
 interface useSignInFormStructureProps {
   store: AuthStore;

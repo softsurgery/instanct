@@ -1,8 +1,6 @@
-import {
-  createApiClient,
-  type AxiosAuthAdapter,
-} from "api-client";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import "./persist-storage";
+import { createApiClient, type AxiosAuthAdapter } from "api-client";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { bindMobileClientAuth } from "@/lib/client-auth";
 import { performLogout } from "@/lib/logout";
 import { bindBackgroundApi } from "@/lib/background-api-holder";
@@ -17,13 +15,8 @@ const auth: AxiosAuthAdapter = {
   getAccessToken: () => useAuthPersistStore.getState().accessToken || undefined,
   getRefreshToken: () =>
     useAuthPersistStore.getState().refreshToken || undefined,
-  setTokens: (accessToken, refreshToken) => {
-    const store = useAuthPersistStore.getState();
-    store.setAccessToken(accessToken);
-    if (refreshToken) {
-      store.setRefreshToken(refreshToken);
-    }
-  },
+  setTokens: (accessToken, refreshToken) =>
+    useAuthPersistStore.getState().setTokens(accessToken, refreshToken),
   logout: () => useAuthPersistStore.getState().logout(),
   isAuthenticated: () => {
     const store = useAuthPersistStore.getState();

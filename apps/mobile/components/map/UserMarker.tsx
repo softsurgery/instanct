@@ -6,7 +6,7 @@ import { useMapStore } from "@/stores/useMapStore";
 import React from "react";
 import { Animated, View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 
 interface UserMarkerProps {
   className?: string;

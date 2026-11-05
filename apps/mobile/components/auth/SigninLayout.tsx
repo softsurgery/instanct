@@ -20,7 +20,7 @@ import { SSOButtons } from "./SSOButtons";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
 import { useLayoutConfig } from "@/config/wrapper-config";
-import { useAuthStore } from "api-client/hooks";
+import { useAuthStore } from "api-client/hooks/auth";
 
 interface SigninProps {
   className?: string;

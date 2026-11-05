@@ -2,7 +2,7 @@ import { Platform } from "react-native";
 import { cacheDirectory, downloadAsync } from "expo-file-system/legacy";
 import type { NotificationDestination } from "@/lib/notification-destination";
 import { destinationToNavData } from "@/lib/notification-destination";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 
 export let Notifications: typeof import("expo-notifications") | null = null;
 try {

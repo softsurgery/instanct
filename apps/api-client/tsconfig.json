@@ -5,11 +5,26 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "declaration": true,
+    "declaration": false,
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "react-native": [
+        "../../node_modules/react-native/types_generated/index.d.ts"
+      ],
+      "@softsurgery/lib": ["../../packages/lib/src/index.ts"],
+      "@softsurgery/lib/*": ["../../packages/lib/src/*"],
+      "@softsurgery/hooks": ["../../packages/hooks/src/index.ts"],
+      "@softsurgery/hooks/*": ["../../packages/hooks/src/*"],
+      "@softsurgery/form-builder": [
+        "../../packages/form-builder/src/index.ts"
+      ],
+      "@softsurgery/form-builder/*": ["../../packages/form-builder/src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["dist"]

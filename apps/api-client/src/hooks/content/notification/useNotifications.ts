@@ -23,9 +23,15 @@ interface useNotificationsProps {
   consequences?: Record<NotificationType, (...args: any[]) => void>;
 }
 
+export interface UseNotificationsResult {
+  notifications: ResponseNotificationDto[];
+  count: number;
+  resetCount: () => void;
+}
+
 export function useNotifications(
   { enabled = true, consequences }: useNotificationsProps = { enabled: true },
-) {
+): UseNotificationsResult {
   const api = useApi();
   const queryClient = useQueryClient();
   const { t } = useTranslation("notifications");
@@ -111,6 +117,5 @@ export function useNotifications(
     notifications,
     count,
     resetCount,
-    socket: socketRef.current,
   };
 }

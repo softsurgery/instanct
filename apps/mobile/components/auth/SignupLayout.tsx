@@ -12,13 +12,8 @@ import {
 } from "@softsurgery/mobile-components";
 import { useSignupDebugButton } from "./useSignupDebugButton";
 import React from "react";
-import {
-  useApi,
-  useAuthStore,
-  useAuthValidation,
-  useIndustries,
-} from "api-client/hooks";
-import { useUploadMutation } from "api-client/hooks";
+import { useApi, useIndustries, useUploadMutation } from "api-client/hooks";
+import { useAuthStore, useAuthValidation } from "api-client/hooks/auth";
 import { ServerErrorResponse, Upload } from "api-client";
 import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";

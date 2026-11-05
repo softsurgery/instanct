@@ -1,4 +1,4 @@
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";

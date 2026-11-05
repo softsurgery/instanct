@@ -20,7 +20,8 @@ import { SingleUserSheet } from "./SingleUserSheet";
 import { UsersMarker } from "./UsersMarker";
 import { UsersModalContent } from "./UsersModalContent";
 import { AndroidDarkMapStyle } from "./utils/AndroidDarkMapStyle";
-import { useCurrentUser, useLiveGeolocationParameters } from "api-client/hooks";
+import { useCurrentUser } from "api-client/hooks";
+import { useLiveGeolocationParameters } from "api-client/hooks/geolocation";
 import { MapModes } from "./MapModes";
 
 interface MapRendererProps {

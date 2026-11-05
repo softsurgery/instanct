@@ -23,6 +23,7 @@ overrides:
   next-i18next>react-native: 0.88.1
   socket.io: 4.8.1
   socket.io-client: 4.8.1
+  typeorm: 0.3.31
   '@types/mjml': 4.7.4
   '@types/mjml-core': 5.1.0
   expo-glass-effect: 58.0.5
@@ -237,7 +238,7 @@ importers:
         specifier: 4.8.1
         version: 4.8.1(supports-color@8.1.1)
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
       xstate:
         specifier: ^5.32.0
@@ -421,9 +422,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.18.1
-      nativewind:
-        specifier: 4.2.7
-        version: 4.2.7(a8da24548de1095251a794e6d6ad2d7e)
 
   apps/data-flow:
     dependencies:
@@ -1375,9 +1373,6 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.3.0)
-      '@react-native-async-storage/async-storage':
-        specifier: '*'
-        version: 2.2.0(react-native@0.88.1(@babel/core@8.0.1)(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.1(@babel/core@8.0.1)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))
       '@softsurgery/lib':
         specifier: workspace:*
         version: link:../lib
@@ -1571,12 +1566,27 @@ importers:
       '@softsurgery/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@softsurgery/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@softsurgery/mobile-components':
+        specifier: workspace:*
+        version: link:../mobile-components
       '@softsurgery/mobile-lib':
         specifier: workspace:*
         version: link:../mobile-lib
+      '@softsurgery/mobile-ui':
+        specifier: workspace:*
+        version: link:../mobile-ui
+      api-client:
+        specifier: workspace:*
+        version: link:../../apps/api-client
       expo:
         specifier: 58.0.23
         version: 58.0.23(e68c2230cc0b37b1d6c8c0b56613c765)
+      expo-image:
+        specifier: 58.0.18
+        version: 58.0.18(expo@58.0.23)(react-native-web@0.21.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-native@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
       expo-screen-orientation:
         specifier: '*'
         version: 58.0.3(expo@58.0.23)(react-native@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native-community/cli@20.2.0(supports-color@8.1.1)(typescript@5.9.3))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))
@@ -1741,7 +1751,7 @@ importers:
         specifier: 4.8.1
         version: 4.8.1(supports-color@8.1.1)
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/bcrypt':
@@ -1805,7 +1815,7 @@ importers:
         specifier: 4.8.1
         version: 4.8.1(supports-color@8.1.1)
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -1845,7 +1855,7 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -1891,7 +1901,7 @@ importers:
         specifier: ^0.14.2
         version: 0.14.4
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -1937,7 +1947,7 @@ importers:
         specifier: ^7.8.1
         version: 7.8.2
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -2008,7 +2018,7 @@ importers:
         specifier: ^7.8.1
         version: 7.8.2
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -2091,7 +2101,7 @@ importers:
         specifier: 4.8.1
         version: 4.8.1(supports-color@8.1.1)
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -2137,7 +2147,7 @@ importers:
         specifier: ^0.14.2
         version: 0.14.4
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -2202,7 +2212,7 @@ importers:
         specifier: ^0.14.2
         version: 0.14.4
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -2254,7 +2264,7 @@ importers:
         specifier: ^2.1.35
         version: 2.1.35
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
       uuid:
         specifier: ^11.1.1
@@ -2300,7 +2310,7 @@ importers:
         specifier: ^0.14.2
         version: 0.14.4
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -2352,7 +2362,7 @@ importers:
         specifier: ^0.14.2
         version: 0.14.4
       typeorm:
-        specifier: ^0.3.20
+        specifier: 0.3.31
         version: 0.3.31(mysql2@3.24.4(@types/node@22.20.4))(supports-color@8.1.1)(ts-node@10.9.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(@types/node@22.20.4)(typescript@5.9.3))
     devDependencies:
       '@types/node':
@@ -4779,7 +4789,7 @@ packages:
     peerDependencies:
       '@nestjs-cls/transactional': ^3.3.0
       nestjs-cls: ^6.3.0
-      typeorm: ^0.3.2 || ^1.0.0
+      typeorm: 0.3.31
 
   '@nestjs-cls/transactional@2.7.0':
     resolution: {integrity: sha512-X7riOgwLNFGw0/UC/xJQri2pdRBdr4X2y88F8VXKhwqWVB6iy0P17l7V656p67mRaRSb1hsIMnPKZT+dXVIX5g==}
@@ -4949,7 +4959,7 @@ packages:
       '@nestjs/core': ^10.0.0 || ^11.0.0
       reflect-metadata: ^0.1.13 || ^0.2.0
       rxjs: ^7.2.0
-      typeorm: ^0.3.0 || ^1.0.0-dev
+      typeorm: 0.3.31
 
   '@nestjs/websockets@11.2.5':
     resolution: {integrity: sha512-KSTpTWKFSrBYxxXyclDg3ir9EzPWUU8iuKK4VFaVno2L+kwZcZzsKmnXrcMnmx8Sl2glgqXQg26Esu8hbo6a0Q==}

@@ -22,7 +22,7 @@ import { Pressable, View } from "react-native";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useIdentifiedUser } from "api-client/hooks";
 import { RequestEvent, RequestStatus } from "api-client";

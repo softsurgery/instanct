@@ -5,7 +5,7 @@ import { type ActionSheetRef } from "react-native-actions-sheet";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
 import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
 import { useRouter } from "expo-router";

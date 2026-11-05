@@ -12,7 +12,7 @@ import {
 } from "@softsurgery/mobile-form-builder";
 import { cn, identifyUserAvatar } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
-import { AuthStore } from "api-client/hooks";
+import type { AuthStore } from "api-client/hooks/auth";
 import {
   validateConfirmPassword,
   validateEmail,

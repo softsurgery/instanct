@@ -15,7 +15,7 @@ import {
   connectMobilePresence,
   waitForPresenceConnection,
 } from "@/lib/mobile-presence";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import {
   createAndroidChannel,
   presentLocalNotification,

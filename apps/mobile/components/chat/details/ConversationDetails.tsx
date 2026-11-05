@@ -17,7 +17,8 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { useCurrentUser } from "api-client/hooks";
-import { useRNServerImages, useApi } from "api-client/hooks";
+import { useApi } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import {
   CONVERSATION_LIST_JOIN,

@@ -1,7 +1,7 @@
 import React from "react";
 import { AppState, type AppStateStatus } from "react-native";
 import { disconnectSocket, type Socket } from "@softsurgery/lib";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import {
   registerBackgroundActivities,
   unregisterBackgroundActivities,

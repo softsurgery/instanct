@@ -8,9 +8,9 @@ import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
 import { disconnectAllSockets } from "@softsurgery/lib";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { unregisterBackgroundActivities } from "@/lib/app-background";
-import { useAuthStore } from "api-client/hooks";
+import { useAuthStore } from "api-client/hooks/auth";
 
 export const performLogout = () => {
   // Clear persisted auth

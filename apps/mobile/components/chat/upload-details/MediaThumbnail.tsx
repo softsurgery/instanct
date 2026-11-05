@@ -4,7 +4,7 @@ import { ImageSource } from "expo-image";
 import { Play } from "lucide-react-native";
 import React from "react";
 import { Pressable, View } from "react-native";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { useApi } from "api-client/hooks";
 import {
   VideoPreview,

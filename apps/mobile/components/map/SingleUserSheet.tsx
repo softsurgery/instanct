@@ -8,7 +8,7 @@ import { ThreeDotsActionSheet } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
 
 interface SingleUserSheetProps {

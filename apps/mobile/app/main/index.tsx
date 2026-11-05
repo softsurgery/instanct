@@ -1,5 +1,5 @@
 import OnBoarding from "@/components/auth/OnBoarding";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { router } from "expo-router";
 import React from "react";
 import { ActivityIndicator, View } from "react-native";

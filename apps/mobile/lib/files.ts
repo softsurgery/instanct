@@ -1,4 +1,4 @@
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { cacheDirectory, downloadAsync } from "expo-file-system/legacy";
 import * as Sharing from "expo-sharing";
 import { Alert, Linking, Platform } from "react-native";

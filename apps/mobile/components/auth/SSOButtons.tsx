@@ -4,7 +4,7 @@ import React from "react";
 import { cn } from "@softsurgery/lib";
 import { DividedText } from "@softsurgery/mobile-components";
 import { Button, Text } from "@softsurgery/mobile-ui";
-import { useSSO } from "api-client/hooks";
+import { useSSO } from "api-client/hooks/auth";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { AcceptTerms } from "./AcceptTerms";

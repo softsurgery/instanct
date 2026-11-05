@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { GestureViewer } from "react-native-gesture-image-viewer";
 import { Image } from "expo-image";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { getMessageUploadIds, MediaThumbnail } from "./MediaThumbnail";
 import { useTranslation } from "react-i18next";
 import {

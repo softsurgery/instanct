@@ -1,6 +1,6 @@
 import React from "react";
 import { getSocket } from "@softsurgery/lib";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 
 export interface UserPresenceData {
   userId: string;

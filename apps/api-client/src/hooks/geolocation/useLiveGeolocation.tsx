@@ -3,7 +3,7 @@ import * as Location from "expo-location";
 import React from "react";
 import { AppState, type AppStateStatus } from "react-native";
 import { useShallow } from "zustand/react/shallow";
-import { useLiveGeolocationParameters } from "api-client/hooks";
+import { useLiveGeolocationParameters } from "./useLiveGeolocationParamters";
 import { useMapStore } from "../stores/useMapStore";
 import { NearbyUser } from "../types/map";
 import { useAuthPersistStore } from "@softsurgery/hooks";

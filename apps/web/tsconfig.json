@@ -14,6 +14,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "api-client/hooks/context": [
@@ -22,8 +23,39 @@
       "api-client/hooks/context/ApiContext": [
         "../api-client/src/hooks/context/ApiContext.tsx"
       ],
-      "api-client/hooks": [
-        "../api-client/src/hooks/content/useRNServerImages.tsx"
+      "api-client/hooks": ["../api-client/src/hooks/index.ts"],
+      "api-client/hooks/content/useRoles": [
+        "../api-client/src/hooks/user-based/useRoles.ts"
+      ],
+      "api-client/hooks/content/usePermissions": [
+        "../api-client/src/hooks/user-based/usePermissions.ts"
+      ],
+      "api-client/hooks/content/useUpload": [
+        "../api-client/src/hooks/content/useUpload.ts"
+      ],
+      "api-client/hooks/content/useUploads": [
+        "../api-client/src/hooks/content/useUploads.ts"
+      ],
+      "api-client/hooks/content/user/useUsers": [
+        "../api-client/src/hooks/user-based/useUsers.ts"
+      ],
+      "api-client/hooks/content/user/useEmailUser": [
+        "../api-client/src/hooks/user-based/useEmailUser.ts"
+      ],
+      "api-client/hooks/content/users/useIdentifiedUser": [
+        "../api-client/src/hooks/user-based/useIdentifiedUser.ts"
+      ],
+      "api-client/hooks/content/reference-types/useRefTypes": [
+        "../api-client/src/hooks/reference-types/useRefTypes.ts"
+      ],
+      "api-client/hooks/content/reference-types/useIndustriesTree": [
+        "../api-client/src/hooks/reference-types/useIndustriesTree.ts"
+      ],
+      "api-client/hooks/content/configurations/useConfigurations": [
+        "../api-client/src/hooks/content/configurations/useConfigurations.ts"
+      ],
+      "api-client/hooks/content/configuration/useApplicationLanguages": [
+        "../api-client/src/hooks/content/configuration/useApplicationLanguages.ts"
       ],
       "api-client/hooks/content/user/useFollowSystem": [
         "../api-client/src/hooks/user-based/useFollowSystem.ts"

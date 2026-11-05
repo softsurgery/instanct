@@ -39,10 +39,10 @@ import {
 } from "@softsurgery/mobile-hooks";
 import {
   useCurrentUser,
-  useLiveGeolocation,
   useIndustries,
   useObjectives,
 } from "api-client/hooks";
+import { useLiveGeolocation } from "api-client/hooks/geolocation";
 
 interface ExplorePortalProps {
   className?: string;

@@ -6,15 +6,12 @@ import type {
   RequestClientUpdateMailDto,
   RequestClientVerifyEmailDto,
 } from "api-client";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { getClientDeviceInfo } from "@/lib/device-info";
 import { getDeviceMacAddress } from "@/lib/device-mac";
 
 const saveClientTokens = (accessToken: string, refreshToken: string) => {
-  const authPersistStore = useAuthPersistStore.getState();
-  authPersistStore.setAccessToken(accessToken);
-  authPersistStore.setRefreshToken(refreshToken);
-  authPersistStore.setAuthenticated(true);
+  useAuthPersistStore.getState().setTokens(accessToken, refreshToken);
 };
 
 const emailCallbackUrl = () =>

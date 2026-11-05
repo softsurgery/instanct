@@ -2,7 +2,7 @@ import type { AxiosInstance } from "axios";
 import { File as ExpoFile, UploadType } from "expo-file-system";
 import { Platform } from "react-native";
 import type { Upload } from "api-client";
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 
 export type ReactNativeUploadFile = {
   uri: string;

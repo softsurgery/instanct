@@ -8,7 +8,7 @@ import {
   ResponseConversationDto,
   StaticMessageEnum,
 } from "api-client";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { differenceInMilliseconds } from "date-fns";
 import { useCurrentUser } from "api-client/hooks";
 import { useUserPresence } from "@/hooks/content/users/useUserPresence";

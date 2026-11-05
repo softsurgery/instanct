@@ -8,7 +8,8 @@ import {
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable } from "react-native";
 import { Eye, Camera } from "lucide-react-native";
-import { useApi, useRNServerImages, useUploadMutation } from "api-client/hooks";
+import { useApi, useUploadMutation } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { type ReactNativeUploadFile } from "@/lib/upload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";

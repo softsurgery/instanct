@@ -31,7 +31,7 @@ import {
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
 import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
-import { useRNServerImages } from "api-client/hooks";
+import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { IconMoodPlus } from "@tabler/icons-react-native";
 import Animated, {
   useSharedValue,
