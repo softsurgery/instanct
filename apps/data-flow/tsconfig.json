@@ -1,13 +1,16 @@
 {
-  "extends": "../../packages/typescript-config/nestjs.json",
+  "extends": "../../packages/typescript-config/nextjs.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "esModuleInterop": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "types": ["node", "jest", "multer"]
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }

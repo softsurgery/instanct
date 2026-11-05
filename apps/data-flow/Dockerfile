@@ -1,22 +1,20 @@
 # Build from the repository root:
 #   docker build -f apps/data-flow/Dockerfile -t instanct-data-flow .
 #
-#   docker run --rm --env-file apps/data-flow/.env \
-#     -e GDRIVE_SERVICE_ACCOUNT_FILE=/secrets/gdrive-service-account.json \
-#     -v /path/to/gdrive-service-account.json:/secrets/gdrive-service-account.json:ro \
-#     -v instanct-data-flows:/dataFlows \
-#     instanct-data-flow
+#   docker run --rm -p 3009:3009 instanct-data-flow
 
 FROM node:22-bookworm-slim AS builder
 
 WORKDIR /repo
 
-RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
+RUN corepack enable && corepack prepare pnpm@11.25.0 --activate && \
+    printf 'ignore-scripts=true\n' > .npmrc
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY patches ./patches
 
 COPY apps/api/package.json ./apps/api/package.json
+RUN sed -i '/"postinstall":/d' apps/api/package.json
 COPY apps/data-flow/package.json ./apps/data-flow/package.json
 COPY apps/landing/package.json ./apps/landing/package.json
 COPY apps/mobile/package.json ./apps/mobile/package.json
@@ -24,6 +22,7 @@ COPY apps/web/package.json ./apps/web/package.json
 COPY apps/api-client/package.json ./apps/api-client/package.json
 COPY apps/i18n/package.json ./apps/i18n/package.json
 
+COPY packages/chat-materials/package.json ./packages/chat-materials/package.json
 COPY packages/components/package.json ./packages/components/package.json
 COPY packages/contexts/package.json ./packages/contexts/package.json
 COPY packages/datatable-builder/package.json ./packages/datatable-builder/package.json
@@ -36,38 +35,33 @@ COPY packages/mobile-form-builder/package.json ./packages/mobile-form-builder/pa
 COPY packages/mobile-hooks/package.json ./packages/mobile-hooks/package.json
 COPY packages/mobile-lib/package.json ./packages/mobile-lib/package.json
 COPY packages/mobile-ui/package.json ./packages/mobile-ui/package.json
+COPY packages/template/package.json ./packages/template/package.json
 COPY packages/typescript-config ./packages/typescript-config
 COPY packages/ui/package.json ./packages/ui/package.json
 
 RUN pnpm install --frozen-lockfile --filter instanct-data-flow... --ignore-scripts
 
 COPY apps/data-flow ./apps/data-flow
-RUN rm -rf apps/data-flow/dist && cd apps/data-flow && /repo/node_modules/.bin/nest build
-RUN test -f /repo/apps/data-flow/dist/main.js
+COPY scripts/allowed-dev-origins.ts ./scripts/allowed-dev-origins.ts
 
-RUN pnpm deploy --legacy --filter instanct-data-flow --prod --ignore-scripts /pruned
+ENV npm_config_ignore_scripts=true
+RUN cd /repo/apps/data-flow && NODE_ENV=production /repo/node_modules/.bin/next build
 
 FROM node:22-bookworm-slim AS runner
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends default-mysql-client \
-    && rm -rf /var/lib/apt/lists/* \
-    && useradd --system --create-home --user-group app
+RUN useradd --system --create-home --user-group app
 
 WORKDIR /app
 
-COPY --from=builder --chown=app:app /repo/apps/data-flow/dist ./dist
-COPY --from=builder --chown=app:app /pruned/node_modules ./node_modules
-COPY --from=builder --chown=app:app /repo/apps/data-flow/package.json ./
-
-RUN mkdir -p /dataFlows && chown app:app /dataFlows
+COPY --from=builder --chown=app:app /repo/apps/data-flow/.next/standalone ./
+COPY --from=builder --chown=app:app /repo/apps/data-flow/.next/static ./apps/data-flow/.next/static
 
 USER app
 
 ENV NODE_ENV=production
-ENV DATA_FLOW_DIR=/dataFlows
-ENV GDRIVE_SERVICE_ACCOUNT_FILE=/secrets/gdrive-service-account.json
+ENV PORT=3009
+ENV HOSTNAME=0.0.0.0
 
-VOLUME ["/dataFlows"]
+EXPOSE 3009
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "apps/data-flow/server.js"]
