@@ -1,16 +1,15 @@
 # Instanct
 
-Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data. A separate `data-flow` app dumps MySQL and uploads the file to Google Drive.
+Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data.
 
 Clients talk to one NestJS API. Shared libraries live in the separate [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) repo and are checked out here as the `packages/` git submodule. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
 
-| App              | Package               | What it is                        | README                                           |
-| ---------------- | --------------------- | --------------------------------- | ------------------------------------------------ |
-| `apps/web`       | `instanct-ui`         | Next.js pages-router backoffice   | [apps/web/README.md](apps/web/README.md)         |
-| `apps/landing`   | `instanct-landing`    | Next.js app-router marketing site | [apps/landing/README.md](apps/landing/README.md) |
-| `apps/mobile`    | `instanct-mobile-app` | Expo Router client                | [apps/mobile/README.md](apps/mobile/README.md)   |
-| `apps/api`       | `instanct-api`        | NestJS + TypeORM + MySQL          | [apps/api/README.md](apps/api/README.md)         |
-| `apps/data-flow` | `instanct-data-flow`  | MySQL dump to Google Drive        | `apps/data-flow/.env.example`                    |
+| App              | Package               | What it is                         | README                                               |
+| ---------------- | --------------------- | ---------------------------------- | ---------------------------------------------------- |
+| `apps/web`       | `instanct-ui`         | Next.js pages-router backoffice    | [apps/web/README.md](apps/web/README.md)             |
+| `apps/landing`   | `instanct-landing`    | Next.js app-router marketing site  | [apps/landing/README.md](apps/landing/README.md)     |
+| `apps/mobile`    | `instanct-mobile-app` | Expo Router client                 | [apps/mobile/README.md](apps/mobile/README.md)       |
+| `apps/api`       | `instanct-api`        | NestJS + TypeORM + MySQL           | [apps/api/README.md](apps/api/README.md)             |
 
 ```text
 /
@@ -18,7 +17,6 @@ Clients talk to one NestJS API. Shared libraries live in the separate [softsurge
 │   ├── web/          # backoffice: pages and portals
 │   ├── landing/      # marketing pages and CMS-backed content
 │   ├── mobile/       # Expo Router screens, resource modules, React Query hooks
-│   ├── data-flow/    # one-shot mysqldump upload
 │   └── api/
 │       └── src/
 │           ├── modules/    # users, requests, geolocation, system reports
@@ -62,15 +60,13 @@ Do not use npm or Yarn. The root `packageManager` field pins `pnpm@11.25.0`. Nod
 
 ## Scripts
 
-`pnpm dev` runs the `dev` script of every app under `apps/`, including `data-flow`, which dumps the database and exits. Prefer a filtered script:
+`pnpm dev` runs the `dev` script of every app under `apps/`. Prefer a filtered script:
 
 ```sh
 pnpm dev:web         # Next.js on :3007
 pnpm dev:landing     # Next.js on :3008
 pnpm dev:mobile      # Expo dev client
 pnpm dev:api         # Nest watch mode
-pnpm dev:data-flow   # watch the dump job
-pnpm data-flow       # build and run one dump
 pnpm build
 pnpm lint
 pnpm check-types        # syncs shared dependencies, then checks types

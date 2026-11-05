@@ -8,7 +8,6 @@
     "dev:landing": "turbo run dev --filter=instanct-landing",
     "dev:mobile": "turbo run dev --filter=instanct-mobile-app",
     "dev:api": "turbo run start:dev --filter=instanct-api",
-    "dev:data-flow": "turbo run dev --filter=instanct-data-flow",
     "lint": "pnpm run format && turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check:expo": "node ./scripts/mjs/check-expo.mjs",
