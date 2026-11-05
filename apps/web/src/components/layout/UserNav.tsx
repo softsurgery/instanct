@@ -17,7 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useTranslation } from "react-i18next";
 import { identifyUser, identifyUserAvatar } from "@softsurgery/lib";
-import { useCurrentUser } from "api-client/hooks";
+import { useCurrentUser } from "api-client/hooks/user-based/useCurrentUser";
 
 interface UserNavProps {
   className?: string;
