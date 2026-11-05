@@ -28,7 +28,7 @@ COPY packages/form-builder/package.json ./packages/form-builder/package.json
 COPY packages/hooks/package.json ./packages/hooks/package.json
 COPY packages/lib/package.json ./packages/lib/package.json
 
-COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+COPY packages/typescript-config ./packages/typescript-config
 COPY packages/ui/package.json ./packages/ui/package.json
 
 RUN pnpm install --frozen-lockfile --filter instanct-landing... --ignore-scripts

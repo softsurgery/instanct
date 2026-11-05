@@ -21,6 +21,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
 
 COPY scripts/mjs/build-shared-packages.mjs scripts/mjs/prepare-api-image.mjs ./scripts/mjs/
 COPY packages/tsconfig.nsa.json ./packages/tsconfig.nsa.json
+COPY packages/typescript-config ./packages/typescript-config
 COPY --parents packages/nsa-* ./
 
 RUN node scripts/mjs/build-shared-packages.mjs \

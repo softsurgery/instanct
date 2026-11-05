@@ -7,6 +7,7 @@
     "build": "dotenv -e .env -- next build",
     "start": "dotenv -e .env -- next start",
     "lint": "eslint --fix",
+    "check-types": "tsc --noEmit",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {

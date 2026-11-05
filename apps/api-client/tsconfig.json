@@ -1,30 +1,9 @@
 {
+  "extends": "../../packages/typescript-config/mobile-library.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["ES2020", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "declaration": false,
-    "noEmit": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "react-native": [
-        "../../node_modules/react-native/types_generated/index.d.ts"
-      ],
-      "@softsurgery/lib": ["../../packages/lib/src/index.ts"],
-      "@softsurgery/lib/*": ["../../packages/lib/src/*"],
-      "@softsurgery/hooks": ["../../packages/hooks/src/index.ts"],
-      "@softsurgery/hooks/*": ["../../packages/hooks/src/*"],
-      "@softsurgery/form-builder": [
-        "../../packages/form-builder/src/index.ts"
-      ],
-      "@softsurgery/form-builder/*": ["../../packages/form-builder/src/*"]
-    }
+    // Consumed by both web and mobile, so it must not pull in the NativeWind
+    // JSX runtime that the mobile preset defaults to.
+    "jsxImportSource": "react"
   },
   "include": ["src/**/*"],
   "exclude": ["dist"]

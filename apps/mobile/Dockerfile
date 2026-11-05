@@ -34,7 +34,7 @@ COPY packages/mobile-form-builder/package.json ./packages/mobile-form-builder/pa
 COPY packages/mobile-hooks/package.json ./packages/mobile-hooks/package.json
 COPY packages/mobile-lib/package.json ./packages/mobile-lib/package.json
 COPY packages/mobile-ui/package.json ./packages/mobile-ui/package.json
-COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+COPY packages/typescript-config ./packages/typescript-config
 COPY packages/ui/package.json ./packages/ui/package.json
 
 # Install dependencies for mobile and its workspace packages
