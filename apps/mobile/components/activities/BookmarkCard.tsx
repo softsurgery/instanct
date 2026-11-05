@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import * as Haptics from "expo-haptics";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { Icon, Text } from "@softsurgery/mobile-ui";
-import { ResponseUserDto } from "api-client";
+import { resolveRefLabel, ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
@@ -35,7 +35,7 @@ export const BookmarkCard = ({
   user,
   onRemoved,
 }: BookmarkCardProps) => {
-  const { t } = useTranslation("activities");
+  const { t, i18n } = useTranslation("activities");
   const { palette } = useColorPalette();
   const ids = [user?.pictureId];
   const fallbacks = [identifyUserAvatar(user)];
@@ -92,7 +92,11 @@ export const BookmarkCard = ({
 
   const subtitle = user?.industries?.length
     ? user.industries
-        .map((industry) => industry?.label)
+        .map((industry) =>
+          industry
+            ? resolveRefLabel(industry.label, industry.extras, i18n.language)
+            : "",
+        )
         .filter(Boolean)
         .join(" · ")
     : user?.bio?.trim() || user?.email;

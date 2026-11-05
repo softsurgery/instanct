@@ -39,9 +39,9 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
   const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { isLandscape } = useScreenOrientation();
   const api = useApi();
-  const { t } = useTranslation("auth");
+  const { t, i18n } = useTranslation("auth");
   const authStore = useAuthStore();
-  const { industries } = useIndustries();
+  const { industries } = useIndustries({ locale: i18n.language });
   const { DebugButton } = useSignupDebugButton({ store: authStore });
   const { setLoading } = useLoader();
   const [isPickingPicture, setIsPickingPicture] = React.useState(false);

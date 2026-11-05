@@ -36,12 +36,14 @@ export const IndustriesManagement = ({
 }: IndustriesManagementProps) => {
   const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
-  const { t } = useTranslation("menu");
+  const { t, i18n } = useTranslation("menu");
   const isKeyboardVisible = useKeyboardVisible();
   const router = useRouter();
   const { userId } = useLocalSearchParams<{ userId: string }>();
   const queryClient = useQueryClient();
-  const { industries, isIndustriesSubTypePending } = useIndustries();
+  const { industries, isIndustriesSubTypePending } = useIndustries({
+    locale: i18n.language,
+  });
   const { userIndustries, isUserIndustriesPending } = useUserIndustries({
     userId,
     enabled: !!userId,

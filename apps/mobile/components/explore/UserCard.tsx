@@ -8,6 +8,7 @@ import {
 import { cn } from "@softsurgery/lib";
 import {
   ResponseConversationDto,
+  resolveRefLabel,
   ResponseRefParamDto,
   ResponseUserDto,
 } from "api-client";
@@ -71,7 +72,7 @@ export const UserCard = ({
 
   const heroHeight = Math.round(resolvedHeight * 0.5);
 
-  const { t } = useTranslation("explore");
+  const { t, i18n } = useTranslation("explore");
   const { palette } = useColorPalette();
   const primary = hslToHex(palette?.primary);
   const primaryDark = hslToHex(palette?.primary, 0.8);
@@ -358,7 +359,7 @@ export const UserCard = ({
               >
                 <View className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
                 <Text className="text-[13px] font-semibold text-foreground">
-                  {ind.label}
+                  {resolveRefLabel(ind.label, ind.extras, i18n.language)}
                 </Text>
               </View>
             ))}

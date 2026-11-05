@@ -10,6 +10,8 @@ import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
+import { resolveRefLabel } from "api-client";
+import { useTranslation } from "react-i18next";
 
 interface SingleUserSheetProps {
   user: NearbyUser | null;
@@ -20,6 +22,7 @@ interface SingleUserSheetProps {
 export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
   ({ user, onShowOnMap, onClose }, ref) => {
     const router = useRouter();
+    const { i18n } = useTranslation();
     const targetUserId = user?.user?.id ?? user?.userId;
 
     const identification = React.useMemo(
@@ -54,7 +57,9 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
       if (user.user?.industries?.length) {
         parts.push(
           user.user.industries
-            .map((i) => i?.label)
+            .map((i) =>
+              i ? resolveRefLabel(i.label, i.extras, i18n.language) : "",
+            )
             .filter(Boolean)
             .join(" · "),
         );
@@ -62,7 +67,7 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
         parts.push(user.user.bio.trim());
       }
       return parts.join(" • ");
-    }, [user]);
+    }, [user, i18n.language]);
 
     const handleInspectProfile = React.useCallback(() => {
       if (!targetUserId) return;

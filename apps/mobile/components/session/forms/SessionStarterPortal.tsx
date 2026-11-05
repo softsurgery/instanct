@@ -37,7 +37,7 @@ export const SessionStarterPortal = ({
 }: SessionStarterPortalProps) => {
   const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
-  const { t } = useTranslation("explore");
+  const { t, i18n } = useTranslation("explore");
   const queryClient = useQueryClient();
   const isKeyboardVisible = useKeyboardVisible();
   const sessionStore = useSessionStore();
@@ -64,7 +64,9 @@ export const SessionStarterPortal = ({
       },
     });
 
-  const { objectives, isObjectivesSubTypePending } = useObjectives();
+  const { objectives, isObjectivesSubTypePending } = useObjectives({
+    locale: i18n.language,
+  });
 
   // Prefill the form with the objectives of the most recent session.
   const { sessions: lastSessions, isSessionsPending: isLastSessionPending } =

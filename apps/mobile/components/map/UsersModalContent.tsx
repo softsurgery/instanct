@@ -6,6 +6,8 @@ import { formatDistanceToNow } from "date-fns";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
+import { resolveRefLabel } from "api-client";
+import { useTranslation } from "react-i18next";
 
 interface ClusterUserRowProps {
   user: NearbyUser;
@@ -13,6 +15,7 @@ interface ClusterUserRowProps {
 }
 
 const ClusterUserRow = ({ user, onPress }: ClusterUserRowProps) => {
+  const { i18n } = useTranslation();
   const identification = React.useMemo(
     () => identifyUser(user.user),
     [user.user],
@@ -33,12 +36,14 @@ const ClusterUserRow = ({ user, onPress }: ClusterUserRowProps) => {
   const subtitle = React.useMemo(() => {
     if (user.user?.industries?.length) {
       return user.user.industries
-        .map((i) => i?.label)
+        .map((i) =>
+          i ? resolveRefLabel(i.label, i.extras, i18n.language) : "",
+        )
         .filter(Boolean)
         .join(" · ");
     }
     return user.user?.bio?.trim() || null;
-  }, [user.user]);
+  }, [user.user, i18n.language]);
 
   return (
     <Pressable

@@ -23,11 +23,13 @@ interface SessionDetailsContentProps {
 export const SessionDetailsContent = ({
   session,
 }: SessionDetailsContentProps) => {
-  const { t } = useTranslation("activities");
+  const { t, i18n } = useTranslation("activities");
   const { palette } = useColorPalette();
   const { isLandscape } = useScreenOrientation();
   const layout = useWindowDimensions();
-  const { objectives, isObjectivesSubTypePending } = useObjectives();
+  const { objectives, isObjectivesSubTypePending } = useObjectives({
+    locale: i18n.language,
+  });
 
   const [tabIndex, setTabIndex] = React.useState(0);
 
@@ -236,7 +238,6 @@ export const SessionDetailsContent = ({
               scrollEnabled={false}
               options={tabOptions}
               tabStyle={{
-                minHeight: isLandscape ? 38 : 48,
                 paddingVertical: isLandscape ? 4 : 8,
               }}
               indicatorStyle={{

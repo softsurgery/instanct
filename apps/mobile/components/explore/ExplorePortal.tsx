@@ -55,7 +55,7 @@ const matchesAny = (targets: number[] | undefined, values: number[]) =>
 
 export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   const { palette } = useColorPalette();
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
   const { t: tExplore } = useTranslation("explore");
   const { currentUser } = useCurrentUser();
   const { filters, dto } = useExploreFilterStore();
@@ -66,8 +66,8 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
     enabled: true,
     join: ["user", "user.industries", "user.sessions"],
   });
-  useIndustries();
-  const { objectives } = useObjectives();
+  useIndustries({ locale: i18n.language });
+  const { objectives } = useObjectives({ locale: i18n.language });
   const {
     animatedHeaderStyle,
     handleScroll: handleHeaderScroll,

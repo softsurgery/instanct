@@ -1,13 +1,18 @@
 import { useApi } from "../context/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import {
+  resolveRefLabel,
+  type ResponseRefParamDto,
+} from "../../types/reference-types";
 
 interface useIndustriesProps {
   enabled?: boolean;
+  locale?: string;
 }
 
 export const useIndustries = (
-  { enabled }: useIndustriesProps = { enabled: true },
+  { enabled, locale }: useIndustriesProps = { enabled: true },
 ) => {
   const api = useApi();
   const {
@@ -26,8 +31,15 @@ export const useIndustries = (
 
   const industries = React.useMemo(() => {
     if (!industriesSubTypeResp) return [];
-    return industriesSubTypeResp.flatMap((refType) => refType.params ?? []);
-  }, [industriesSubTypeResp]);
+    const params = industriesSubTypeResp.flatMap(
+      (refType) => refType.params ?? [],
+    ) as ResponseRefParamDto[];
+    if (!locale) return params;
+    return params.map((param) => ({
+      ...param,
+      label: resolveRefLabel(param.label, param.extras, locale),
+    }));
+  }, [industriesSubTypeResp, locale]);
 
   return {
     industriesSubTypeResp,

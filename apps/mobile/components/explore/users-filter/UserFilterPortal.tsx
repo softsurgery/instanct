@@ -37,10 +37,14 @@ export const UserFilterPortal = ({ className }: UserFilterPortalProps) => {
     };
   }, []);
 
-  const { t } = useTranslation("explore");
+  const { t, i18n } = useTranslation("explore");
 
-  const { objectives, isObjectivesSubTypePending } = useObjectives();
-  const { industries, isIndustriesSubTypePending } = useIndustries();
+  const { objectives, isObjectivesSubTypePending } = useObjectives({
+    locale: i18n.language,
+  });
+  const { industries, isIndustriesSubTypePending } = useIndustries({
+    locale: i18n.language,
+  });
 
   const handleApplyFilters = () => {
     exploreFilterStore.apply();

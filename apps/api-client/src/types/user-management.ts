@@ -1,4 +1,4 @@
-import type { ResponseRefParamDto } from "./reference-types";
+import type { RefParamExtras, ResponseRefParamDto } from "./reference-types";
 import type { MapSessionPayload, ResponseSessionDto } from "./session";
 import type { Upload } from "./upload";
 import type { DatabaseEntity } from "./utils/database-entity";
@@ -52,8 +52,8 @@ export interface ResponseUserDto extends ResponseAbstractUserDto {
   driverLicenseDocumentId?: number;
   driverLicenseDocument?: Upload;
   uploads: ResponseUserUploadDto[];
-  industries: ResponseRefParamDto[];
-  objectives: ResponseRefParamDto[];
+  industries: ResponseRefParamDto<RefParamExtras>[];
+  objectives: ResponseRefParamDto<RefParamExtras>[];
 }
 
 export interface CreateUserDto extends CreateAbstractUserDto {

@@ -40,7 +40,7 @@ export const SessionManagePortal = ({
 }: SessionManagePortalProps) => {
   const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
-  const { t } = useTranslation("explore");
+  const { t, i18n } = useTranslation("explore");
   const { mapSession, refetchSessions, isSessionsPending } =
     useActiveSessions();
   const endSessionSheetRef = React.useRef<ActionSheetRef>(null);
@@ -109,7 +109,9 @@ export const SessionManagePortal = ({
     },
   });
 
-  const { objectives, isObjectivesSubTypePending } = useObjectives();
+  const { objectives, isObjectivesSubTypePending } = useObjectives({
+    locale: i18n.language,
+  });
 
   const { structure } = useSessionManagementFormStructure({
     store: sessionStore,

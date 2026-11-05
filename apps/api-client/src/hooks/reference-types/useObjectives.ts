@@ -1,13 +1,18 @@
 import { useApi } from "../context/ApiContext";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import {
+  resolveRefLabel,
+  type ResponseRefParamDto,
+} from "../../types/reference-types";
 
 interface useObjectivesProps {
   enabled?: boolean;
+  locale?: string;
 }
 
 export const useObjectives = (
-  { enabled }: useObjectivesProps = { enabled: true },
+  { enabled, locale }: useObjectivesProps = { enabled: true },
 ) => {
   const api = useApi();
   const {
@@ -26,8 +31,15 @@ export const useObjectives = (
 
   const objectives = React.useMemo(() => {
     if (!objectivesSubTypeResp) return [];
-    return objectivesSubTypeResp.flatMap((refType) => refType.params ?? []);
-  }, [objectivesSubTypeResp]);
+    const params = objectivesSubTypeResp.flatMap(
+      (refType) => refType.params ?? [],
+    ) as ResponseRefParamDto[];
+    if (!locale) return params;
+    return params.map((param) => ({
+      ...param,
+      label: resolveRefLabel(param.label, param.extras, locale),
+    }));
+  }, [objectivesSubTypeResp, locale]);
 
   return {
     objectivesSubTypeResp,
