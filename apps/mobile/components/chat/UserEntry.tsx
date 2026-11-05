@@ -8,7 +8,7 @@ import {
   ResponseConversationDto,
   StaticMessageEnum,
 } from "api-client";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { differenceInMilliseconds } from "date-fns";
 import { useCurrentUser } from "api-client/hooks";
 import { useUserPresence } from "@/hooks/content/users/useUserPresence";
@@ -48,7 +48,7 @@ export const UserEntry = ({
     [conversation.participants, currentUser?.id],
   );
 
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     className: "rounded-full",
     fallbacks: [identifyUserAvatar(user)],

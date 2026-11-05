@@ -13,16 +13,16 @@ import {
 import { useSignupDebugButton } from "./useSignupDebugButton";
 import React from "react";
 import {
+  useApi,
   useAuthStore,
   useAuthValidation,
   useIndustries,
 } from "api-client/hooks";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks";
 import { ServerErrorResponse, Upload } from "api-client";
 import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
 import { useLayoutConfig } from "@/config/wrapper-config";
-import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { useLoader } from "@/contexts/LoaderContext";
 import { useScreenOrientation } from "@softsurgery/mobile-hooks";

@@ -11,7 +11,7 @@ import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import * as Haptics from "expo-haptics";
 import { useCurrentUser } from "api-client/hooks";
 import { useMutation } from "@tanstack/react-query";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import {

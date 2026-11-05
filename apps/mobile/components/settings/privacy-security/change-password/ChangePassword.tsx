@@ -16,7 +16,7 @@ import { useChangePasswordFormStructure } from "./useChangePasswordFormStructure
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import * as Haptics from "expo-haptics";

@@ -12,14 +12,14 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { useIdentifiedUser } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { cn } from "@softsurgery/lib";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useCreateNewRequestFormStructure } from "./forms/useCreateRequestFormStructure";
 import { useRequestStore } from "@/stores/useRequestStore";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
@@ -69,7 +69,7 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
   const identity = React.useMemo(() => identifyUser(user), [user]);
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     fallbacks: [fallback],
     wrapperClassName:

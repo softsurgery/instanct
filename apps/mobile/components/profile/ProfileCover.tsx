@@ -9,9 +9,8 @@ import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable, View } from "react-native";
 import { cn } from "@softsurgery/lib";
 import { Eye, Camera } from "lucide-react-native";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useApi, useUploadMutation } from "api-client/hooks";
 import { type ReactNativeUploadFile } from "@/lib/upload";
-import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { useTranslation } from "react-i18next";
@@ -23,7 +22,7 @@ import {
   ServerErrorResponse,
 } from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { Image, ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLuminance, useScreenOrientation } from "@softsurgery/mobile-hooks";
@@ -53,7 +52,7 @@ export const ProfileCover = ({
 
   const isCurrentUser = currentUser?.id === user?.id;
 
-  const { uploads: coverUploads } = useServerImages({
+  const { uploads: coverUploads } = useRNServerImages({
     ids: [user?.coverId],
     fallbacks: [""],
     wrapperClassName: "",

@@ -18,7 +18,7 @@ import { useSessionStarterFormStructure } from "./useSessionStarterFormStructure
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import React from "react";
 import { createSessionSchema } from "@/types/validations/session.validation";
 import { ServerErrorResponse, SessionType } from "api-client";

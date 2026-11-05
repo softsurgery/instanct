@@ -14,7 +14,7 @@ import {
   TextFieldProps,
 } from "@softsurgery/form-builder";
 import { UserStore } from "@/hooks/stores/useUserStore";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks";
 import { Gender } from "@/types";
 import { useTranslation } from "react-i18next";
 import { identifyUserAvatar } from "@softsurgery/lib";

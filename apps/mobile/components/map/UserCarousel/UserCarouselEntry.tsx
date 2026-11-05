@@ -1,4 +1,4 @@
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
@@ -26,7 +26,7 @@ export const UserCarouselEntry = ({
     [userId],
   );
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     fallbacks: [fallback],
     className: "rounded-full",

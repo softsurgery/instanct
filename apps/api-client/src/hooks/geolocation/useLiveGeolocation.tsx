@@ -1,12 +1,12 @@
-import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
-import { useMapStore } from "@/stores/useMapStore";
-import { NearbyUser } from "@/types";
 import * as Location from "expo-location";
 import React from "react";
 import { AppState, type AppStateStatus } from "react-native";
 import { useShallow } from "zustand/react/shallow";
-import { useLiveGeolocationParameters } from "api-client/hooks/content/geolocation/useLiveGeolocationParamters";
+import { useLiveGeolocationParameters } from "api-client/hooks";
+import { useMapStore } from "../stores/useMapStore";
+import { NearbyUser } from "../types/map";
+import { useAuthPersistStore } from "@softsurgery/hooks";
 
 const MIN_MOVEMENT_METERS = 5;
 const HEARTBEAT_INTERVAL_MS = 30_000;

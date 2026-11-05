@@ -6,7 +6,7 @@ import { useMapStore } from "@/stores/useMapStore";
 import React from "react";
 import { Animated, View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 
 interface UserMarkerProps {
   className?: string;
@@ -34,7 +34,7 @@ export const UserMarker = ({
 
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     fallbacks: [fallback],
     className: "rounded-full",

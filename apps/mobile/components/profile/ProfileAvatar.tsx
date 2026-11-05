@@ -8,9 +8,8 @@ import {
 import * as Haptics from "expo-haptics";
 import { Keyboard, Pressable } from "react-native";
 import { Eye, Camera } from "lucide-react-native";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useApi, useRNServerImages, useUploadMutation } from "api-client/hooks";
 import { type ReactNativeUploadFile } from "@/lib/upload";
-import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { useTranslation } from "react-i18next";
@@ -22,7 +21,6 @@ import {
   ServerErrorResponse,
 } from "api-client";
 import { useLoader } from "@/contexts/LoaderContext";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";
 
 interface ProfileAvatarProps {
@@ -52,7 +50,7 @@ export const ProfileAvatar = ({
   const fallback = useMemo(() => identifyUserAvatar(user), [user]);
 
   const { uploads: profilePictureUploads, jsxArray: profilePictures } =
-    useServerImages({
+    useRNServerImages({
       ids: [user?.pictureId],
       fallbacks: [fallback],
       className: "rounded-full",

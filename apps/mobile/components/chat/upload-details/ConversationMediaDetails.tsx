@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { GestureViewer } from "react-native-gesture-image-viewer";
 import { Image } from "expo-image";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { getMessageUploadIds, MediaThumbnail } from "./MediaThumbnail";
 import { useTranslation } from "react-i18next";
 import {
@@ -114,7 +114,7 @@ export const ConversationMediaDetails = ({
       .filter((id): id is number => typeof id === "number");
   }, [imageItems]);
 
-  const { uploads } = useServerImages({
+  const { uploads } = useRNServerImages({
     ids: imageUploadIds,
   });
 

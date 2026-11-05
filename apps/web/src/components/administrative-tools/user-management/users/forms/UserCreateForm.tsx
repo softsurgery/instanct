@@ -14,7 +14,7 @@ import {
 } from "@/types/validations/user.validation";
 import { Spinner } from "@softsurgery/components";
 import { CreateUserDto, ServerErrorResponse, Upload } from "@/types";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 

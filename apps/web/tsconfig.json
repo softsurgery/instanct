@@ -22,8 +22,8 @@
       "api-client/hooks/context/ApiContext": [
         "../api-client/src/hooks/context/ApiContext.tsx"
       ],
-      "api-client/hooks/content/useServerImages": [
-        "../api-client/src/hooks/content/useServerImages.tsx"
+      "api-client/hooks": [
+        "../api-client/src/hooks/content/useRNServerImages.tsx"
       ],
       "api-client/hooks/content/user/useFollowSystem": [
         "../api-client/src/hooks/user-based/useFollowSystem.ts"

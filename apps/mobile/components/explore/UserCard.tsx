@@ -31,7 +31,7 @@ import {
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
 import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { IconMoodPlus } from "@tabler/icons-react-native";
 import Animated, {
   useSharedValue,
@@ -84,7 +84,7 @@ export const UserCard = ({
   const identity = React.useMemo(() => identifyUser(user), [user]);
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
-  const { uploads: uploadedProfilePicture } = useServerImages({
+  const { uploads: uploadedProfilePicture } = useRNServerImages({
     ids: [user?.pictureId],
     fallbacks: [fallback],
     size: { width: 100, height: 100 },

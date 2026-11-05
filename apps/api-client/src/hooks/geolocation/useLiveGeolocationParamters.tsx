@@ -1,6 +1,6 @@
-import { useMapStore } from "../../stores/useMapStore";
-import { useGlobalMapConfiguration } from "../configurations/useGlobalMapConfiguration";
-import { useCurrentMapConfiguration } from "../users/useCurrentMapConfiguration";
+import { useMapStore } from "../stores/useMapStore";
+import { useGlobalMapConfiguration } from "../content/configurations/useGlobalMapConfiguration";
+import { useCurrentMapConfiguration } from "../content/users/useCurrentMapConfiguration";
 import React from "react";
 
 interface useLiveGeolocationParameters {}

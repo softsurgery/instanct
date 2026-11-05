@@ -1,4 +1,4 @@
-import { type UploadFilesMutate } from "api-client/hooks/upload/useUploadMutation";
+import { type UploadFilesMutate } from "api-client/hooks";
 import {
   Field,
   FieldVariant,

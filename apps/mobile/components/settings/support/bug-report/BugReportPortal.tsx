@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react-native";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { Button, Text, Icon } from "@softsurgery/mobile-ui";
 import { View } from "react-native";
 import { useBugReportFormStructure } from "./useBugReportFormStructure";

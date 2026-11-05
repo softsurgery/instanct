@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { View } from "react-native";
 import { Loader2 } from "lucide-react-native";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
@@ -97,7 +97,10 @@ export const SendFeedbackPortal = ({ className }: SendFeedbackPortalProps) => {
   };
 
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={cn(className)}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

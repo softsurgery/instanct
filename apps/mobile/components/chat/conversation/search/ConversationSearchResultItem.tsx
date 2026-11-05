@@ -4,7 +4,7 @@ import { Text } from "@softsurgery/mobile-ui";
 import { ResponseMessageDto, ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { MessageTextContent } from "../bubbles/MessageTextContent";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 
 interface SearchResultAvatarProps {
   user?: ResponseUserDto | null;
@@ -14,7 +14,7 @@ interface SearchResultAvatarProps {
  * Small avatar component rendered alongside each search hit result item.
  */
 const SearchResultAvatar = ({ user }: SearchResultAvatarProps) => {
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     className: "rounded-full",
     wrapperClassName: "rounded-full border border-border overflow-hidden",

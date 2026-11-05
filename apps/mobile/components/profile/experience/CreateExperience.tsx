@@ -1,4 +1,4 @@
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import {
   ApplicationHeader,
   StableKeyboardAwareScrollView,

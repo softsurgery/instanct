@@ -11,7 +11,7 @@ import {
   StableScrollView,
 } from "@softsurgery/mobile-components";
 import { Icon, Image, Text } from "@softsurgery/mobile-ui";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { useQuery } from "@tanstack/react-query";
 import {
   DeviceDetailsSection,

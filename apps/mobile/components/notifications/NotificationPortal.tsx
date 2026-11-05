@@ -3,7 +3,7 @@ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, View } from "react-native";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { cn } from "@softsurgery/lib";
 import { ResponseNotificationDto } from "api-client";
 import {

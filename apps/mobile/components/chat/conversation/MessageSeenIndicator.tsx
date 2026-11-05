@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 
 interface MessageSeenIndicatorProps {
   pictureId?: number;
@@ -14,7 +14,7 @@ export const MessageSeenIndicator = ({
   pictureId,
   fallback,
 }: MessageSeenIndicatorProps) => {
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [pictureId],
     fallbacks: [fallback],
     className: "rounded-full",

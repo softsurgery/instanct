@@ -1,6 +1,6 @@
 import React from "react";
 import { useCurrentUser } from "api-client/hooks";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { identifyUserAvatar } from "@/lib/user";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
@@ -38,7 +38,7 @@ export const UsersMarker = ({
     if (currentUser) mapStore.addUser(currentUser);
   }, [nearbyUsers, mapStore.users, currentUser]);
 
-  const { jsxArray: userPictures } = useServerImages({
+  const { jsxArray: userPictures } = useRNServerImages({
     ids: nearbyUsers.map((u) => u?.user?.pictureId),
     className: "rounded-full",
     fallbackClassName: "text-xs",

@@ -15,7 +15,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { useLayoutConfig } from "@/config/wrapper-config";
 import { Text, Badge, Button, Separator, Icon } from "@softsurgery/mobile-ui";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { ResponseUserDeviceDto } from "api-client";
 import { useLogout } from "@/hooks/useLogout";
 import { getDeviceIcon } from "@/lib/device-icon";

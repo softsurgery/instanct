@@ -8,11 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./hooks": "./src/hooks/index.ts",
-    "./hooks/context": "./src/hooks/context/ApiContext.tsx",
-    "./hooks/context/ApiContext": "./src/hooks/context/ApiContext.tsx",
-    "./hooks/content/user/useFollowSystem": "./src/hooks/content/user/useFollowSystem.tsx",
-    "./hooks/content/useServerImages": "./src/hooks/content/useServerImages.tsx",
-    "./hooks/content/geolocation/useLiveGeolocationParamters": "./src/hooks/content/geolocation/useLiveGeolocationParamters.tsx",
+    "./hooks/context": "./src/hooks/context/index.ts",
     "./hooks/*": "./src/hooks/*.ts",
     "./hooks/*/*": "./src/hooks/*/*.ts",
     "./hooks/*/*/*": "./src/hooks/*/*/*.ts",
@@ -62,12 +58,17 @@
     "sonner-native": "*"
   },
   "peerDependenciesMeta": {
-    "@softsurgery/mobile-components": { "optional": true },
-    "@softsurgery/mobile-ui": { "optional": true }
+    "@softsurgery/mobile-components": {
+      "optional": true
+    },
+    "@softsurgery/mobile-ui": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.56.2",
     "@types/react": "19.3.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "nativewind": "4.2.7"
   }
 }

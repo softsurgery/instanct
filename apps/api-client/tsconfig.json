@@ -12,8 +12,5 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": [
-    "dist",
-    "src/hooks/content/useServerImages.tsx"
-  ]
+  "exclude": ["dist"]
 }

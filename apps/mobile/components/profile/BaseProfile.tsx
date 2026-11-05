@@ -27,7 +27,7 @@ import { CareerTab } from "./sections/CareerTab";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { ProfileCover } from "./ProfileCover";
 import { toast } from "sonner-native";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { BaseProfileSkeleton } from "./BaseProfileSkeleton";
 import {

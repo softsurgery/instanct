@@ -10,7 +10,6 @@ import {
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
-import { useApi } from "@/contexts/ApiContext";
 import { ResponseMessageDto, ServerErrorResponse } from "api-client";
 import {
   StableSafeAreaView,
@@ -18,7 +17,7 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { useCurrentUser } from "api-client/hooks";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages, useApi } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import {
   CONVERSATION_LIST_JOIN,
@@ -79,7 +78,7 @@ export const ConversationDetails = ({ id }: ConversationDetailsProps) => {
     deleteSheetRef.current?.hide();
   }, []);
 
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     className: "rounded-full",
     wrapperClassName: "rounded-full border border-border",

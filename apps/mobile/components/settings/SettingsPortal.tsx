@@ -16,7 +16,7 @@ import { SettingRow, SettingRowProps } from "./SettingsRow";
 import { useLogout } from "@/hooks/useLogout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner-native";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { getAppVersionInfo } from "@/lib/app-version";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";

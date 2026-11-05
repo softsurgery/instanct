@@ -5,7 +5,7 @@ import { Icon, Text } from "@softsurgery/mobile-ui";
 import { formatDistanceToNow } from "date-fns";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 
 interface ClusterUserRowProps {
   user: NearbyUser;
@@ -23,7 +23,7 @@ const ClusterUserRow = ({ user, onPress }: ClusterUserRowProps) => {
     [user.user],
   );
 
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user.user?.pictureId],
     fallbacks: [fallback],
     className: "rounded-full",

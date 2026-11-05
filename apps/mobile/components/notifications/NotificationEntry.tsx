@@ -4,7 +4,7 @@ import { Image, Text } from "@softsurgery/mobile-ui";
 import { cn, dateUtils } from "@softsurgery/lib";
 import { NotificationType, ResponseNotificationDto } from "api-client";
 import { HTMLText } from "@softsurgery/mobile-components";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import {
   getNotificationDestination,
   navigateToNotificationDestination,
@@ -29,7 +29,7 @@ export const NotificationEntry = ({
   const isNewSignin = notification.type === NotificationType.NEW_SIGNIN;
 
   //profile picture side-effect
-  const { uploads: profileUploads } = useServerImages({
+  const { uploads: profileUploads } = useRNServerImages({
     ids: isNewSignin ? [] : [notification.payload?.pictureId],
     fallbacks: ["?", ""],
     wrapperClassName:

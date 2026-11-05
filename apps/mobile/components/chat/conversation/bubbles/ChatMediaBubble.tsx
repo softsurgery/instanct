@@ -12,7 +12,7 @@ import {
   VideoPreview,
   VideoThumbnailPreview,
 } from "@softsurgery/mobile-components";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { MessageTextContent } from "./MessageTextContent";
 import { MediaImageGrid } from "./ChatMediaImageGrid";
 import { MediaUploadProgress } from "../staging/MediaUploadProgress";
@@ -43,7 +43,9 @@ export const ChatMediaBubble = ({
     : Math.round(screenWidth * 0.75);
   const CHAT_MEDIA_HEIGHT = Math.min(
     Math.round(CHAT_MEDIA_WIDTH * 0.75),
-    isLandscape ? Math.round(screenHeight * 0.5) : Math.round(screenHeight * 0.4),
+    isLandscape
+      ? Math.round(screenHeight * 0.5)
+      : Math.round(screenHeight * 0.4),
   );
 
   /**
@@ -56,7 +58,7 @@ export const ChatMediaBubble = ({
       .filter((id): id is number => typeof id === "number");
   const uploadIds = getMessageUploadIds(message);
 
-  const { uploads } = useServerImages({
+  const { uploads } = useRNServerImages({
     ids: uploadIds,
   });
 

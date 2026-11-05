@@ -8,7 +8,7 @@ import { ThreeDotsActionSheet } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
 
 interface SingleUserSheetProps {
@@ -32,7 +32,7 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
       [user?.user],
     );
 
-    const { jsxArray: profilePictures } = useServerImages({
+    const { jsxArray: profilePictures } = useRNServerImages({
       ids: [user?.user?.pictureId],
       fallbacks: [fallback],
       className: "rounded-full",

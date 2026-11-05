@@ -1,4 +1,3 @@
-import { useCurrentUser } from "api-client/hooks";
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
@@ -21,7 +20,7 @@ import { SingleUserSheet } from "./SingleUserSheet";
 import { UsersMarker } from "./UsersMarker";
 import { UsersModalContent } from "./UsersModalContent";
 import { AndroidDarkMapStyle } from "./utils/AndroidDarkMapStyle";
-import { useLiveGeolocationParameters } from "api-client/hooks/content/geolocation/useLiveGeolocationParamters";
+import { useCurrentUser, useLiveGeolocationParameters } from "api-client/hooks";
 import { MapModes } from "./MapModes";
 
 interface MapRendererProps {

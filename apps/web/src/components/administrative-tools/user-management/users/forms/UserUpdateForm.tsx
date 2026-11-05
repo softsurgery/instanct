@@ -14,7 +14,7 @@ import {
   updateUserSchema,
 } from "@/types/validations/user.validation";
 import { Spinner } from "@softsurgery/components";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 

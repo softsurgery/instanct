@@ -22,7 +22,6 @@ import { UserCard } from "./UserCard";
 import { Text } from "@softsurgery/mobile-ui";
 import { SessionCountdown } from "../session/SessionCountdown";
 import { SessionStarter } from "../session/SessionStarter";
-import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import {
   ApplicationHeader,
@@ -31,7 +30,6 @@ import {
   Loader,
 } from "@softsurgery/mobile-components";
 import { useChatContext } from "@/contexts/ChatContext";
-import { useIndustries, useObjectives } from "api-client/hooks";
 import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import {
   hslToHex,
@@ -39,7 +37,12 @@ import {
   useScreenOrientation,
   useScrollableElement,
 } from "@softsurgery/mobile-hooks";
-import { useCurrentUser } from "api-client/hooks";
+import {
+  useCurrentUser,
+  useLiveGeolocation,
+  useIndustries,
+  useObjectives,
+} from "api-client/hooks";
 
 interface ExplorePortalProps {
   className?: string;

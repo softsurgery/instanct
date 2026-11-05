@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import { router } from "expo-router";
 import { Text, Icon } from "@softsurgery/mobile-ui";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { identifyUserAvatar, identifyUser } from "@/lib/user";
 import { cn, dateUtils } from "@softsurgery/lib";
 import { RequestStatus, ResponseRequestDto } from "api-client";
@@ -35,7 +35,7 @@ export const SessionRequestCard: React.FC<SessionRequestCardProps> = ({
   const ids = [sender?.pictureId, receiver?.pictureId];
   const fallbacks = [identifyUserAvatar(sender), identifyUserAvatar(receiver)];
 
-  const { jsxArray: images } = useServerImages({
+  const { jsxArray: images } = useRNServerImages({
     ids,
     fallbacks,
     className: "w-12 h-12 rounded-full",

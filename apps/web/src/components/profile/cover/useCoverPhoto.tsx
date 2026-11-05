@@ -1,6 +1,6 @@
 import React from "react";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import { useUserStore } from "@/hooks/stores/useUserStore";

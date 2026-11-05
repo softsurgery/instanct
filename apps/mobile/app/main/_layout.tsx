@@ -2,7 +2,7 @@ import { ChatContext } from "@/contexts/ChatContext";
 import { NotificationContext } from "@/contexts/NotificationsContext";
 import { useChat } from "api-client/hooks/content/chat/useChat";
 import { useChatPendingSync } from "api-client/hooks/content/chat/useChatPendingSync";
-import { useLiveGeolocation } from "@/hooks/content/geolocation/useLiveGeolocation";
+import { useLiveGeolocation } from "api-client/hooks";
 import { useNotificationResponseNavigation } from "@/hooks/content/notification/useNotificationResponseNavigation";
 import { useNotifications } from "api-client/hooks/content/notification/useNotifications";
 import { useCheckHealth } from "api-client/hooks/content/useCheckHealth";

@@ -5,7 +5,7 @@ import { type ActionSheetRef } from "react-native-actions-sheet";
 import { Icon, Text } from "@softsurgery/mobile-ui";
 import { ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
 import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
 import { useRouter } from "expo-router";
@@ -43,7 +43,7 @@ export const BookmarkCard = ({
   const sheetRef = React.useRef<ActionSheetRef>(null);
   const removeSheetRef = React.useRef<ActionSheetRef>(null);
 
-  const { jsxArray: bookmarkImages } = useServerImages({
+  const { jsxArray: bookmarkImages } = useRNServerImages({
     ids,
     fallbacks,
     className: "w-14 h-14 rounded-full",

@@ -1,4 +1,4 @@
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { Button, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { ServerErrorResponse } from "api-client";
@@ -20,7 +20,7 @@ import { SSOButtons } from "./SSOButtons";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
 import { useLayoutConfig } from "@/config/wrapper-config";
-import { useAuthStore } from "api-client/hooks/auth";
+import { useAuthStore } from "api-client/hooks";
 
 interface SigninProps {
   className?: string;

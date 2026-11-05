@@ -8,7 +8,7 @@ import React from "react";
 import { View } from "react-native";
 import { PremiumCarousel } from "../deprecated/premium/PremiumCarousel";
 import { Button, Icon, Text } from "@softsurgery/mobile-ui";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 
 interface ProfileEntryProps {
   className?: string;
@@ -25,7 +25,7 @@ export const ProfileEntry = ({ className }: ProfileEntryProps) => {
     return identifyUserAvatar(currentUser);
   }, [currentUser]);
 
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [currentUser?.pictureId],
     fallbacks: [fallback],
     className: "border-2 border-border",

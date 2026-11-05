@@ -10,15 +10,14 @@ import {
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useUpdateProfileFormStructure } from "./useUpdateProfileFormStructure";
 import { ServerErrorResponse, UpdateUserDto, Upload } from "api-client";
-import { useApi } from "@/contexts/ApiContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserSchema } from "@/types/validations/user.validation";
 import { Button, Text } from "@softsurgery/mobile-ui";
-import { useCurrentUser } from "api-client/hooks";
+import { useApi, useCurrentUser } from "api-client/hooks";
 import React from "react";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { identifyUserAvatar } from "@/lib/user";
-import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
+import { useUploadMutation } from "api-client/hooks";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
@@ -127,7 +126,7 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
     };
   }, [currentUser]);
 
-  const { uploads: profileUploads } = useServerImages({
+  const { uploads: profileUploads } = useRNServerImages({
     ids: [currentUser?.pictureId],
     fallbacks: [fallback],
     size: { width: 100, height: 100 },

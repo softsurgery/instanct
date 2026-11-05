@@ -9,7 +9,7 @@ import { Text } from "@softsurgery/mobile-ui";
 import { useQuery } from "@tanstack/react-query";
 import { useLayoutConfig } from "@/config/wrapper-config";
 import { View } from "react-native";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { useColorPalette } from "@softsurgery/mobile-hooks";

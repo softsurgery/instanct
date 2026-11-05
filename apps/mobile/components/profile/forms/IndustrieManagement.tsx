@@ -2,7 +2,7 @@ import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { useIndustries } from "api-client/hooks";
 import { useUserIndustries } from "api-client/hooks";
 import { cn } from "@softsurgery/lib";

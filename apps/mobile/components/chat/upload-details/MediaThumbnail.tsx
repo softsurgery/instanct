@@ -5,7 +5,7 @@ import { Play } from "lucide-react-native";
 import React from "react";
 import { Pressable, View } from "react-native";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import {
   VideoPreview,
   VideoThumbnailPreview,

@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useCreateEducationFormStructure } from "./useCreateEducationFormStructure";
 import { CreateEducationDto, ServerErrorResponse } from "api-client";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { useTranslation } from "react-i18next";
 import { createEducationSchema } from "@/types/validations/education.validation";
 import { View } from "react-native";

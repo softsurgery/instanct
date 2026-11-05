@@ -24,7 +24,7 @@ import {
   BottomButtonWrapper,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import { useActiveSessions } from "api-client/hooks/content/sessions/useActiveSessions";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { EndSessionActionSheet } from "../EndSessionActionSheet";

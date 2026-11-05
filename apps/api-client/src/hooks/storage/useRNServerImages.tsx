@@ -1,4 +1,3 @@
-// @ts-nocheck — NativeWind className props; typechecked via mobile app.
 import React from "react";
 import { Image } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
@@ -13,7 +12,7 @@ import { Skeleton } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
 import { useApi } from "../context/ApiContext";
 
-interface UseServerImagesProps {
+interface useRNServerImagesProps {
   ids: (number | undefined)[];
   fallbacks?: (string | React.ReactNode | ImageSource | undefined)[];
   size?: { width?: number; height?: number };
@@ -22,14 +21,14 @@ interface UseServerImagesProps {
   fallbackClassName?: string;
 }
 
-export const useServerImages = ({
+export const useRNServerImages = ({
   ids,
   fallbacks = [],
   size,
   className,
   wrapperClassName,
   fallbackClassName,
-}: UseServerImagesProps) => {
+}: useRNServerImagesProps) => {
   const api = useApi();
 
   const getUploadSource = React.useCallback(
@@ -73,6 +72,16 @@ export const useServerImages = ({
                   <Text>{fallback}</Text>
                 </AvatarFallback>
               </Avatar>
+            ) : React.isValidElement(fallback) ? (
+              fallback
+            ) : fallback != null && typeof fallback === "object" ? (
+              <Image
+                source={fallback as ImageSource}
+                className={className}
+                style={{ width: size?.width, height: size?.height }}
+                contentFit="cover"
+                cachePolicy="memory-disk"
+              />
             ) : (
               fallback
             )}

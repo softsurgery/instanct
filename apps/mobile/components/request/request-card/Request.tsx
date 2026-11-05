@@ -1,5 +1,5 @@
 import React from "react";
-import { useApi } from "@/contexts/ApiContext";
+import { useApi } from "api-client/hooks";
 import {
   ApplicationHeader,
   StableSafeAreaView,
@@ -22,7 +22,7 @@ import { Pressable, View } from "react-native";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
-import { useServerImages } from "api-client/hooks/content/useServerImages";
+import { useRNServerImages } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useIdentifiedUser } from "api-client/hooks";
 import { RequestEvent, RequestStatus } from "api-client";
@@ -144,7 +144,7 @@ export const Request = ({
   });
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
-  const { jsxArray: profilePictures } = useServerImages({
+  const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     fallbacks: [fallback],
     className: "h-12 w-12 rounded-full",
