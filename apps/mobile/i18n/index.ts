@@ -25,8 +25,7 @@ import frActivities from "./locales/fr/activities.json";
 import enScreens from "./locales/en/screens.json";
 import frScreens from "./locales/fr/screens.json";
 
-import enChat from "./locales/en/chat.json";
-import frChat from "./locales/fr/chat.json";
+import { chatI18nResources } from "@softsurgery/chat-materials/i18n";
 
 import enAuth from "./locales/en/auth.json";
 import frAuth from "./locales/fr/auth.json";
@@ -40,7 +39,7 @@ const resources = {
     menu: enMenu,
     activities: enActivities,
     screens: enScreens,
-    chat: enChat,
+    ...chatI18nResources.en,
     auth: enAuth,
   },
   fr: {
@@ -50,7 +49,7 @@ const resources = {
     explore: frExplore,
     menu: frMenu,
     activities: frActivities,
-    chat: frChat,
+    ...chatI18nResources.fr,
     screens: frScreens,
     auth: frAuth,
   },
