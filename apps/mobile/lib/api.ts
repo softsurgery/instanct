@@ -5,6 +5,7 @@ import {
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { bindMobileClientAuth } from "@/lib/client-auth";
 import { performLogout } from "@/lib/logout";
+import { bindBackgroundApi } from "@/lib/background-api-holder";
 import { createMobileUpload } from "@/lib/upload";
 
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || "";
@@ -53,3 +54,4 @@ export function createMobileApi() {
 export type MobileApi = ReturnType<typeof createMobileApi>;
 
 export const api = createMobileApi();
+bindBackgroundApi(api);

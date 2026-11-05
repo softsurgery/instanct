@@ -1,6 +1,6 @@
 import { stringUtils, disconnectSocket } from "@softsurgery/lib";
 import { NotificationType, type ResponseNotificationDto } from "api-client";
-import { api } from "@/lib/api";
+import { getBackgroundApi } from "@/lib/background-api-holder";
 import {
   advanceTimestampWatermark,
   getTimestampWatermark,
@@ -96,7 +96,10 @@ async function syncNotificationsActivity(): Promise<BackgroundActivityResult> {
     const lastSeenAt = await getTimestampWatermark(
       BG_NOTIFICATIONS_LAST_SEEN_KEY,
     );
-    const page = await api.notification.findPaginated({
+    const backgroundApi = getBackgroundApi();
+    if (!backgroundApi) return "no-data";
+
+    const page = await backgroundApi.notification.findPaginated({
       page: "1",
       limit: "20",
       sort: "createdAt,desc",
