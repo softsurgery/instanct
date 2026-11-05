@@ -72,7 +72,7 @@ export const InspectBaseProfile = ({
   });
   const insets = useSafeAreaInsets();
   const { palette } = useColorPalette();
-  const { t } = useTranslation("menu");
+  const { t, i18n } = useTranslation("menu");
   const navigation = useNavigation();
   const { setLoading } = useLoader();
 
@@ -112,6 +112,7 @@ export const InspectBaseProfile = ({
 
   const { industries, isIndustriesSubTypePending } = useIndustries({
     enabled: !!user,
+    locale: i18n.language,
   });
 
   const identity = React.useMemo(() => identifyUser(user), [user]);
@@ -341,10 +342,7 @@ export const InspectBaseProfile = ({
           size={isLandscape ? 76 : 100}
         />
         {currentUser?.id === id && !isLandscape && (
-          <ProfileStat
-            className="-mb-8"
-            emailVerification={emailVerification}
-          />
+          <ProfileStat emailVerification={emailVerification} />
         )}
       </View>
 
@@ -401,7 +399,6 @@ export const InspectBaseProfile = ({
           options={tabOptions}
           tabStyle={{
             flex: 1,
-            minHeight: isLandscape ? 38 : 48,
             paddingVertical: isLandscape ? 4 : 8,
           }}
           indicatorStyle={{

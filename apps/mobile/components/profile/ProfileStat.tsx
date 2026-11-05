@@ -28,16 +28,7 @@ export const ProfileStat = ({
   const { t } = useTranslation("menu");
   return (
     <View className={cn("flex flex-col gap-2", className)}>
-      <Pressable
-        onPress={() => router.push("/main/profile/update-profile")}
-        className="flex-row items-center gap-1.5 rounded-xl border border-border px-3.5 py-2 active:opacity-80"
-      >
-        <Icon as={Pencil} size={16} />
-        <Text className="text-md font-semibold">
-          {t("menu.actions.editProfile")}
-        </Text>
-      </Pressable>
-      {currentUser?.id === id && user?.email && !user.emailVerified && (
+      {currentUser?.id === id && user?.email && !user.emailVerified ? (
         <Pressable
           onPress={() => sendVerifyEmail()}
           disabled={isSendVerifyEmailPending}
@@ -46,6 +37,16 @@ export const ProfileStat = ({
           <Icon as={Mail} size={16} color={palette.primaryForeground} />
           <Text className="text-md font-semibold text-primary-foreground">
             {t("menu.actions.verifyEmail")}
+          </Text>
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => router.push("/main/profile/update-profile")}
+          className="flex-row items-center gap-1.5 rounded-xl border border-border px-3.5 py-2 active:opacity-80"
+        >
+          <Icon as={Pencil} size={16} />
+          <Text className="text-md font-semibold">
+            {t("menu.actions.editProfile")}
           </Text>
         </Pressable>
       )}
