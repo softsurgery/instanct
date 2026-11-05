@@ -9,7 +9,7 @@ import {
   Smartphone,
   Wifi,
 } from "lucide-react";
-import { SideNav, Spinner } from "@softsurgery/components";
+import { NavTab, Spinner } from "@softsurgery/components";
 import { useUI } from "@softsurgery/contexts";
 import { About } from "./cards/About";
 import { Settings } from "./cards/Settings";
@@ -237,19 +237,17 @@ export const BaseProfile = ({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-start">
-          <aside className="w-full shrink-0 lg:sticky lg:top-4 lg:w-56">
-            <SideNav
-              activeHref={currentSection?.value}
-              onSelect={(item) => handleTabChange(item.href)}
-              items={filteredTabs.map(({ value, label, icon: Icon }) => ({
-                href: value,
-                title: label,
-                icon: <Icon className="h-4 w-4" />,
-              }))}
-            />
-          </aside>
-          <div className="min-w-0 flex-1 pb-8">{currentSection?.content}</div>
+        <div className="flex flex-col gap-6 mt-6 ">
+          <NavTab
+            activeHref={currentSection?.value}
+            onSelect={(item) => handleTabChange(item.href)}
+            items={filteredTabs.map(({ value, label, icon: Icon }) => ({
+              href: value,
+              title: label,
+              icon: <Icon className="h-4 w-4" />,
+            }))}
+          />
+          <div className="flex-1 pb-8">{currentSection?.content}</div>
         </div>
       </div>
 
