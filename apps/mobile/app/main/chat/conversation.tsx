@@ -1,4 +1,4 @@
-import { Conversation } from "@/components/chat/Conversation";
+import { Conversation } from "@softsurgery/chat-materials/mobile";
 import { useLocalSearchParams } from "expo-router";
 
 export default function Screen() {

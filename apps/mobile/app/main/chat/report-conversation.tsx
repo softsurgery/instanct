@@ -1,4 +1,4 @@
-import { ConversationReportPortal } from "@/components/chat/details/report/ConversationReportPortal";
+import { ConversationReportPortal } from "@softsurgery/chat-materials/mobile";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
 

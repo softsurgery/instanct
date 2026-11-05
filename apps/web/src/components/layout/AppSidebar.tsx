@@ -18,6 +18,7 @@ import {
   FileText,
   FileCode2,
   Bug,
+  MessageCircle,
   MessageSquare,
 } from "lucide-react";
 import {
@@ -47,6 +48,11 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: Home,
+    },
+    {
+      title: "Chat",
+      url: "/chat",
+      icon: MessageCircle,
     },
     {
       title: "User Management",

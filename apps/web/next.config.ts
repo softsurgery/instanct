@@ -11,6 +11,7 @@ const monorepoRoot = path.resolve(dir, "../..");
 const nextConfig: NextConfig = {
   allowedDevOrigins: getAllowedDevOrigins(),
   transpilePackages: [
+    "@softsurgery/chat-materials",
     "@softsurgery/ui",
     "@softsurgery/components",
     "@softsurgery/form-builder",

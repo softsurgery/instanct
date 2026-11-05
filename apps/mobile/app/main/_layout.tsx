@@ -1,4 +1,6 @@
+import { useChatConfig } from "@/config/chat-config";
 import { ChatContext } from "@/contexts/ChatContext";
+import { ChatConfigProvider } from "@softsurgery/chat-materials/mobile";
 import { NotificationContext } from "@/contexts/NotificationsContext";
 import { useChat } from "api-client/hooks/content/chat/useChat";
 import { useChatPendingSync } from "api-client/hooks/content/chat/useChatPendingSync";
@@ -47,6 +49,7 @@ export default function MainLayout() {
   });
   useNotificationResponseNavigation(authPersistStore.isAuthenticated);
 
+  const chatConfig = useChatConfig();
   const { count: chatCount, resetCount: resetChatCount } = useChat({});
   useChatPendingSync();
 
@@ -102,6 +105,7 @@ export default function MainLayout() {
             resetCount: resetChatCount,
           }}
         >
+          <ChatConfigProvider value={chatConfig}>
           <Stack
             screenOptions={{
               contentStyle: {
@@ -521,6 +525,7 @@ export default function MainLayout() {
               }}
             />
           </Stack>
+          </ChatConfigProvider>
         </ChatContext.Provider>
       </NotificationContext.Provider>
     </ActiveMapSessionContext.Provider>

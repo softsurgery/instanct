@@ -1,4 +1,4 @@
-import { ChatPortal } from "@/components/chat/ChatPortal";
+import { ChatPortal } from "@softsurgery/chat-materials/mobile";
 
 export default function Screen() {
   return <ChatPortal />;

@@ -7,6 +7,7 @@ module.exports = {
     "../../packages/mobile-ui/src/**/*.{ts,tsx}",
     "../../packages/mobile-components/src/**/*.{ts,tsx}",
     "../../packages/mobile-form-builder/src/**/*.{ts,tsx}",
+    "../../packages/chat-materials/src/mobile/**/*.{ts,tsx}",
   ],
   presets: [require("nativewind/preset")],
   theme: {
