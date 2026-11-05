@@ -9,6 +9,7 @@ import { View } from "react-native";
 import {
   AppHeaderBack,
   ApplicationHeader,
+  DestructiveActionSheet,
   StableSafeAreaView,
   StableScrollView,
 } from "@softsurgery/mobile-components";
@@ -19,7 +20,6 @@ import { toast } from "sonner-native";
 import { useApi } from "api-client/hooks";
 import { getAppVersionInfo } from "@/lib/app-version";
 import { type ActionSheetRef } from "react-native-actions-sheet";
-import { DeleteAccountActionSheet } from "./DeleteAccountActionSheet";
 import type { ServerErrorResponse } from "api-client";
 import { Button, Icon, Separator, Text } from "@softsurgery/mobile-ui";
 import { useLayoutConfig } from "@/config/wrapper-config";
@@ -335,10 +335,15 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
         </View>
       </StableScrollView>
 
-      <DeleteAccountActionSheet
+      <DestructiveActionSheet
         ref={deleteAccountSheetRef}
+        renderTrigger={false}
+        title={tSettings("settings.session.deleteAlert.title")}
+        message={tSettings("settings.session.deleteAlert.message")}
+        confirmLabel={tSettings("settings.session.deleteAlert.confirm")}
+        cancelLabel={tSettings("settings.session.deleteAlert.cancel")}
+        confirmIcon={Trash2}
         onConfirm={() => deleteAccount()}
-        onClose={() => deleteAccountSheetRef.current?.hide()}
         isPending={isDeleteAccountPending}
       />
     </StableSafeAreaView>
