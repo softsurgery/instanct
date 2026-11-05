@@ -1,8 +1,8 @@
 // @ts-nocheck — NativeWind className props; typechecked via mobile app.
+import React from "react";
 import { Image } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { ImageSource } from "expo-image";
-import React from "react";
 import { View } from "react-native";
 import {
   Avatar,
@@ -11,7 +11,6 @@ import {
 } from "@softsurgery/mobile-components";
 import { Skeleton } from "@softsurgery/mobile-ui";
 import { Text } from "@softsurgery/mobile-ui";
-import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { useApi } from "../context/ApiContext";
 
 interface UseServerImagesProps {
@@ -32,15 +31,15 @@ export const useServerImages = ({
   fallbackClassName,
 }: UseServerImagesProps) => {
   const api = useApi();
-  const accessToken = useAuthPersistStore((s) => s.accessToken);
 
   const getUploadSource = React.useCallback(
     (id?: number): ImageSource | undefined => {
-      if (!id || !accessToken) return undefined;
+      if (!id) return undefined;
 
+      // Mobile upload helpers attach auth headers when resolving the source.
       return api.upload.getUploadById(id) as unknown as ImageSource;
     },
-    [accessToken, api.upload],
+    [api.upload],
   );
 
   const idsString = JSON.stringify(ids);
