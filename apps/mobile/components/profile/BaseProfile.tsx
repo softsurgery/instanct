@@ -1,9 +1,5 @@
 import React from "react";
 import { Text } from "@softsurgery/mobile-ui";
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
-import { useEducations } from "api-client/hooks/content/users/useEducations";
-import { useExperiences } from "api-client/hooks/content/users/useExperiences";
-import { useIdentifiedUser } from "api-client/hooks/content/users/useIdentifiedUser";
 import { identifyUser } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { createClientStore, useUserStore } from "@/stores/useUserStore";
@@ -17,8 +13,14 @@ import { toUpdateExperienceDto } from "./experience/toUpdateExperienceDto";
 import { toUpdateEducationDto } from "./education/toUpdateEducationDto";
 import { View, ScrollView, useWindowDimensions } from "react-native";
 import { ProfileStat } from "./ProfileStat";
-import { useUserIndustries } from "api-client/hooks/content/users/useUserIndustries";
-import { useIndustries } from "api-client/hooks/content/reference-types/useIndustries";
+import {
+  useCurrentUser,
+  useEducations,
+  useExperiences,
+  useIdentifiedUser,
+  useIndustries,
+  useUserIndustries,
+} from "api-client/hooks";
 import { TabView, TabBar } from "react-native-tab-view";
 import { AboutTab } from "./sections/AboutTab";
 import { CareerTab } from "./sections/CareerTab";

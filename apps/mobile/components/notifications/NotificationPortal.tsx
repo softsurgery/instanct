@@ -96,7 +96,10 @@ export const NotificationsPortal = ({ className }: NotificationPortalProps) => {
     [highlightedIds],
   );
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

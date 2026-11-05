@@ -3,8 +3,8 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { View } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
-import { useIndustries } from "api-client/hooks/content/reference-types/useIndustries";
-import { useUserIndustries } from "api-client/hooks/content/users/useUserIndustries";
+import { useIndustries } from "api-client/hooks";
+import { useUserIndustries } from "api-client/hooks";
 import { cn } from "@softsurgery/lib";
 import {
   StableSafeAreaView,
@@ -128,7 +128,10 @@ export const IndustriesManagement = ({
   };
 
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

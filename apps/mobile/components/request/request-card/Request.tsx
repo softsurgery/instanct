@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useIdentifiedUser } from "api-client/hooks/content/users/useIdentifiedUser";
+import { useIdentifiedUser } from "api-client/hooks";
 import { RequestEvent, RequestStatus } from "api-client";
 import { toast } from "sonner-native";
 import { RequestLocationSection } from "../RequestLocationSection";

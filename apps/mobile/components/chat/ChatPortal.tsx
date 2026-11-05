@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { useDebounce } from "@/hooks/useDebounce";
 import { LegendList } from "@legendapp/list";
 import { router, useFocusEffect } from "expo-router";
@@ -97,7 +97,10 @@ export const ChatPortal = ({ className }: ChatPortalProps) => {
   );
 
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames}>
+    <StableSafeAreaView
+      className={cn(className)}
+      classNames={safeAreaClassNames}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

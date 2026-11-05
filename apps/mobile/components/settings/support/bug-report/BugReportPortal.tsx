@@ -93,7 +93,10 @@ export const BugReportPortal = ({ className }: BugReportPortalProps) => {
   };
 
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

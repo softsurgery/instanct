@@ -1,5 +1,5 @@
 import { useNotificationContext } from "@/contexts/NotificationsContext";
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { cn } from "@softsurgery/lib";
 import { router } from "expo-router";
 import { Bell, FlaskConical, Settings } from "lucide-react-native";

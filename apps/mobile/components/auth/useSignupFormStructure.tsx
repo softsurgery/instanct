@@ -1,4 +1,3 @@
-import { AuthStore } from "@/stores/useAuthStore";
 import { type UploadFilesMutate } from "api-client/hooks/upload/useUploadMutation";
 import {
   Field,
@@ -13,14 +12,15 @@ import {
 } from "@softsurgery/mobile-form-builder";
 import { cn, identifyUserAvatar } from "@softsurgery/lib";
 import { useTranslation } from "react-i18next";
+import { AuthStore } from "api-client/hooks";
 import {
+  validateConfirmPassword,
+  validateEmail,
   validateFirstName,
   validateLastName,
-  validateEmail,
-  validateUsername,
   validatePassword,
-  validateConfirmPassword,
-} from "api-client/hooks/useAuthValidation";
+  validateUsername,
+} from "api-client/hooks/auth/useAuthValidation";
 
 interface useSignUpFormStructureProps {
   store: AuthStore;

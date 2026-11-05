@@ -30,11 +30,6 @@ export * from "./content/configuration/useApplicationLanguages";
 
 export * from "./content/pages/useContentPages";
 
-export * from "./content/reference-types/useIndustries";
-export * from "./content/reference-types/useIndustriesTree";
-export * from "./content/reference-types/useObjectives";
-export * from "./content/reference-types/useRefTypes";
-
 export * from "./content/sessions/useActiveSessions";
 export * from "./content/sessions/useInfiniteIncomingSessionRequests";
 export * from "./content/sessions/useInfiniteOutgoingSessionRequests";
@@ -51,3 +46,4 @@ export * from "./upload/useUploadMutation";
 //************************************************************************************** */
 export * from "./auth";
 export * from "./user-based";
+export * from "./reference-types";

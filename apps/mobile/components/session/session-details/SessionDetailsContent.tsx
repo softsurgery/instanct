@@ -3,7 +3,7 @@ import React from "react";
 import { ScrollView, View, useWindowDimensions } from "react-native";
 import { Text, Badge, Separator, Icon } from "@softsurgery/mobile-ui";
 import { format } from "date-fns";
-import { useObjectives } from "api-client/hooks/content/reference-types/useObjectives";
+import { useObjectives } from "api-client/hooks";
 import { cn, dateUtils } from "@softsurgery/lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import { ArrowRight } from "lucide-react-native";

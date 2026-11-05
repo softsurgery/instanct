@@ -1,5 +1,5 @@
 //Deprecated
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { router } from "expo-router";
@@ -15,7 +15,7 @@ interface ProfileEntryProps {
 }
 
 export const ProfileEntry = ({ className }: ProfileEntryProps) => {
-  const { currentUser, refetchCurrentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const identification = React.useMemo(() => {
     return identifyUser(currentUser);

@@ -1,4 +1,3 @@
-import { AuthStore } from "@/stores/useAuthStore";
 import { useTranslation } from "react-i18next";
 import {
   EmailFieldProps,
@@ -6,6 +5,7 @@ import {
   FieldVariant,
   FormStructure,
 } from "@softsurgery/mobile-form-builder";
+import { AuthStore } from "api-client/hooks";
 
 interface useSignInFormStructureProps {
   store: AuthStore;

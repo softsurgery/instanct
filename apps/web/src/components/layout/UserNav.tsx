@@ -13,11 +13,11 @@ import {
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
-import { useCurrentUser } from "@/hooks/content/user/useCurrentUser";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useTranslation } from "react-i18next";
 import { identifyUser, identifyUserAvatar } from "@softsurgery/lib";
+import { useCurrentUser } from "api-client/hooks";
 
 interface UserNavProps {
   className?: string;
@@ -26,15 +26,21 @@ interface UserNavProps {
 export function UserNav({ className }: UserNavProps) {
   const { t } = useTranslation("common");
   const router = useRouter();
-  const { user } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
-  const identity = React.useMemo(() => identifyUser(user), [user]);
-  const avatarIdentity = React.useMemo(() => identifyUserAvatar(user), [user]);
+  const identity = React.useMemo(
+    () => identifyUser(currentUser),
+    [currentUser],
+  );
+  const avatarIdentity = React.useMemo(
+    () => identifyUserAvatar(currentUser),
+    [currentUser],
+  );
 
   const { data: profilePicture } = useQuery({
-    queryKey: ["profile-picture", user?.pictureId],
-    queryFn: () => api.upload.getUploadById(user?.pictureId as number),
-    enabled: !!user?.pictureId,
+    queryKey: ["profile-picture", currentUser?.pictureId],
+    queryFn: () => api.upload.getUploadById(currentUser?.pictureId as number),
+    enabled: !!currentUser?.pictureId,
     staleTime: Infinity,
   });
 
@@ -66,7 +72,7 @@ export function UserNav({ className }: UserNavProps) {
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-semibold">{identity}</span>
-              <span className="truncate text-xs">{user?.email}</span>
+              <span className="truncate text-xs">{currentUser?.email}</span>
             </div>
           </div>
         </DropdownMenuLabel>

@@ -10,7 +10,7 @@ import {
 } from "api-client";
 import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { differenceInMilliseconds } from "date-fns";
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { useUserPresence } from "@/hooks/content/users/useUserPresence";
 import { useTranslation } from "react-i18next";
 

@@ -8,7 +8,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import { router } from "expo-router";
-import { useObjectives } from "api-client/hooks/content/reference-types/useObjectives";
+import { useObjectives } from "api-client/hooks";
 import { useSessionManagementFormStructure } from "./useSessionManagementFormStructure";
 import {
   mapToSelectOptions,
@@ -159,7 +159,10 @@ export const SessionManagePortal = ({
   const isPending = isEndingSessionPending || isUpdatingSession;
 
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

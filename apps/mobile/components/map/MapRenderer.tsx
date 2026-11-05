@@ -1,15 +1,11 @@
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
 import _ from "lodash";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import {
-  ActivityIndicator,
-  Platform,
-  View,
-} from "react-native";
+import { ActivityIndicator, Platform, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MapView from "react-native-map-clustering";
 import { Marker, Region } from "react-native-maps";

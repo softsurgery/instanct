@@ -2,7 +2,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAuthPersistStore } from "./useAuthPersistStore";
 import { useMapStore } from "@/stores/useMapStore";
 import { useUserStore } from "@/stores/useUserStore";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { useRequestStore } from "@/stores/useRequestStore";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
@@ -11,6 +10,7 @@ import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
 import { useChatPendingStore } from "@/stores/useChatPendingStore";
 import { disconnectAllSockets } from "@softsurgery/lib";
 import { router } from "expo-router";
+import { useAuthStore } from "api-client/hooks";
 
 export const useLogout = () => {
   const queryClient = useQueryClient();

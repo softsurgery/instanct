@@ -2,7 +2,6 @@ import { router } from "expo-router";
 
 import { useMapStore } from "@/stores/useMapStore";
 import { useUserStore } from "@/stores/useUserStore";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useSessionStore } from "@/stores/useSessionStore";
 import { useRequestStore } from "@/stores/useRequestStore";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
@@ -11,6 +10,7 @@ import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
 import { disconnectAllSockets } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@/hooks/useAuthPersistStore";
 import { unregisterBackgroundActivities } from "@/lib/app-background";
+import { useAuthStore } from "api-client/hooks";
 
 export const performLogout = () => {
   // Clear persisted auth

@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useApi } from "../../context/ApiContext";
+import { useApi } from "../context/ApiContext";
 
 export const useRefTypes = () => {
   const api = useApi();

@@ -16,7 +16,10 @@ export const VerifyEmailPortal = ({ className }: VerifyEmailPortalProps) => {
   const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation(["common", "screens"]);
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

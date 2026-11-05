@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Button, Text } from "@softsurgery/mobile-ui";
 import { cn } from "@softsurgery/lib";
 import { toast } from "sonner-native";
-import { AuthStore, useAuthStore } from "@/stores/useAuthStore";
+import { AuthStore, useAuthStore } from "api-client/hooks";
 
 export interface UseSignupDebugButtonProps {
   store?: AuthStore;

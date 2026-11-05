@@ -1,4 +1,4 @@
-import { useIdentifiedUser } from "api-client/hooks/content/users/useIdentifiedUser";
+import { useIdentifiedUser } from "api-client/hooks";
 import { usePulseAnimation } from "@softsurgery/mobile-hooks";
 import { identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";

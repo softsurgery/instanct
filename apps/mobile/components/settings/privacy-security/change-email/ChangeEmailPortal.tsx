@@ -3,14 +3,13 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { Loader2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { cn } from "@softsurgery/lib";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
 import { useChangeEmailFormStructure } from "./useChangeEmailFormStructure";
 import { useUserStore } from "@/stores/useUserStore";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import * as Haptics from "expo-haptics";
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { useApi } from "@/contexts/ApiContext";
 import { toast } from "sonner-native";
@@ -23,6 +22,7 @@ import {
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
 import { useLayoutConfig } from "@/config/wrapper-config";
+import { cn } from "@softsurgery/lib";
 
 interface ChangeEmailPortalProps {
   className?: string;
@@ -73,7 +73,10 @@ export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
 
   if (!currentUser) return null;
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      className={cn(className)}
+      classNames={safeAreaClassNames}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

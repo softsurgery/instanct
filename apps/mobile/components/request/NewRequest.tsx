@@ -5,12 +5,12 @@ import {
   StableKeyboardAwareScrollView,
   Loader,
   BottomButtonWrapper,
+  AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { Button, Text } from "@softsurgery/mobile-ui";
-import { X } from "lucide-react-native";
 import { View } from "react-native";
 import { router } from "expo-router";
-import { useIdentifiedUser } from "api-client/hooks/content/users/useIdentifiedUser";
+import { useIdentifiedUser } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { cn } from "@softsurgery/lib";
@@ -121,7 +121,10 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
   };
 
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,
@@ -132,8 +135,7 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
         shortcuts={[
           {
             key: "back",
-            icon: X,
-            onPress: () => router.back(),
+            render: <AppHeaderBack />,
           },
         ]}
       />

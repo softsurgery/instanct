@@ -21,7 +21,7 @@ import { ChatHeaderLeft } from "./conversation/ChatHeaderLeft";
 import { ChatHeaderRight } from "./conversation/ChatHeaderRight";
 import { SeenMessageWrapper } from "./conversation/SeenMessageWrapper";
 
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { ConversationInput } from "./conversation/input/ConversationInput";
 import { ConversationMediaStaging } from "./conversation/staging/ConversationMediaStaging";

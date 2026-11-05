@@ -1,5 +1,4 @@
 import { cn } from "@softsurgery/lib";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { router } from "expo-router";
 import { View } from "react-native";
 import { FormBuilder } from "@softsurgery/mobile-form-builder";
@@ -14,16 +13,10 @@ import {
 import { useSignupDebugButton } from "./useSignupDebugButton";
 import React from "react";
 import {
+  useAuthStore,
   useAuthValidation,
-  validateFirstName,
-  validateLastName,
-  validateEmail,
-  validateUsername,
-  validatePassword,
-  validateConfirmPassword,
-  validateIndustries,
-} from "api-client/hooks/useAuthValidation";
-import { useIndustries } from "api-client/hooks/content/reference-types/useIndustries";
+  useIndustries,
+} from "api-client/hooks";
 import { useUploadMutation } from "api-client/hooks/upload/useUploadMutation";
 import { ServerErrorResponse, Upload } from "api-client";
 import { toast } from "sonner-native";
@@ -33,6 +26,15 @@ import { useApi } from "@/contexts/ApiContext";
 import { useTranslation } from "react-i18next";
 import { useLoader } from "@/contexts/LoaderContext";
 import { useScreenOrientation } from "@softsurgery/mobile-hooks";
+import {
+  validateConfirmPassword,
+  validateEmail,
+  validateFirstName,
+  validateIndustries,
+  validateLastName,
+  validatePassword,
+  validateUsername,
+} from "api-client/hooks/auth/useAuthValidation";
 
 interface SignupLayoutProps {
   className?: string;

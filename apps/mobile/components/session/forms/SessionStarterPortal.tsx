@@ -23,7 +23,7 @@ import React from "react";
 import { createSessionSchema } from "@/types/validations/session.validation";
 import { ServerErrorResponse, SessionType } from "api-client";
 import { useUserSessions } from "api-client/hooks/content/sessions/useUserSessions";
-import { useObjectives } from "api-client/hooks/content/reference-types/useObjectives";
+import { useObjectives } from "api-client/hooks";
 import { objectUtils } from "@softsurgery/lib";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
@@ -124,7 +124,10 @@ export const SessionStarterPortal = ({
   }, []);
 
   return (
-    <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
+    <StableSafeAreaView
+      classNames={safeAreaClassNames}
+      className={cn(className)}
+    >
       <ApplicationHeader
         classNames={{
           wrapper: applicationHeaderClassNames.wrapper,

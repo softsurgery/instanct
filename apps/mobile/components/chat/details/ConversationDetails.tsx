@@ -11,16 +11,13 @@ import {
 import { router } from "expo-router";
 import { toast } from "sonner-native";
 import { useApi } from "@/contexts/ApiContext";
-import {
-  ResponseMessageDto,
-  ServerErrorResponse,
-} from "api-client";
+import { ResponseMessageDto, ServerErrorResponse } from "api-client";
 import {
   StableSafeAreaView,
   ApplicationHeader,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import {

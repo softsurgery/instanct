@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useApi } from "../../context/ApiContext";
+import { useApi } from "../context/ApiContext";
 
 interface TreeOption {
   value: string | number;

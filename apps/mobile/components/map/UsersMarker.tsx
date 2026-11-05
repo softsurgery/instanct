@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentUser } from "api-client/hooks/content/users/useCurrentUser";
+import { useCurrentUser } from "api-client/hooks";
 import { useServerImages } from "api-client/hooks/content/useServerImages";
 import { identifyUserAvatar } from "@/lib/user";
 import { useMapStore } from "@/stores/useMapStore";
