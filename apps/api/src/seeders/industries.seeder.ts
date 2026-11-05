@@ -2,7 +2,7 @@ import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { RefTypeRepository } from '@softsurgery/nsa-reference-types/repositories/ref-type.repository';
 import { RefParamRepository } from '@softsurgery/nsa-reference-types/repositories/ref-param.repository';
-import { industries } from './data/industries.data';
+import { industries, industryRoot } from './data/industries.data';
 import { getRandomHexColor } from '@softsurgery/nsa-reference-types/utils/colors';
 
 @Injectable()
@@ -22,43 +22,47 @@ export class IndustriesSeedCommand {
     //=============================================================================================
 
     let industryRefType = await this.refTypeRepository.findOne({
-      where: { label: 'Industry' },
+      where: { label: industryRoot.label },
     });
 
     if (!industryRefType) {
       industryRefType = await this.refTypeRepository.save({
-        id: 'industry',
-        label: 'Industry',
-        description: 'Parent reference type for all industries',
+        id: industryRoot.id,
+        label: industryRoot.label,
+        description: industryRoot.description,
       });
+
       for (const industry of industries) {
         const subRefType = await this.refTypeRepository.save({
-          id: industry.industry.toLowerCase().replace(/\s+/g, '-'),
-          label: industry.industry,
-          description: `${industry.industry} sector`,
+          id: industry.label.toLowerCase().replace(/\s+/g, '-'),
+          label: industry.label,
+          description: `${industry.label} sector`,
           parent: industryRefType,
           extras: {
             color: getRandomHexColor(),
+            translations: industry.translations,
           },
         });
 
-        await Promise.all(
-          industry.params.map(async (paramLabel) => {
-            const existingParam = await this.refParamRepository.findOne({
-              where: { label: paramLabel },
-            });
-            if (!existingParam) {
-              await this.refParamRepository.save({
-                label: paramLabel,
-                description: `${paramLabel} within ${industry.industry}`,
-                refType: subRefType,
-                extras: {
-                  color: getRandomHexColor(),
-                },
+        if (industry.params && industry.params.length > 0)
+          await Promise.all(
+            industry.params.map(async (paramLabel) => {
+              const existingParam = await this.refParamRepository.findOne({
+                where: { label: paramLabel.label },
               });
-            }
-          }),
-        );
+              if (!existingParam) {
+                await this.refParamRepository.save({
+                  label: paramLabel.label,
+                  description: `${paramLabel.label} within ${industry.label}`,
+                  refType: subRefType,
+                  extras: {
+                    color: getRandomHexColor(),
+                    translations: paramLabel.translations,
+                  },
+                });
+              }
+            }),
+          );
       }
     }
 
