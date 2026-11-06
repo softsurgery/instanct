@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "../../../../packages/softsurgery-abstractions/ui/src/styles/scrollbar.css";
+@import "@softsurgery/ui/styles/scrollbar.css";
 
 @source "../../../../packages/softsurgery-abstractions/ui/src";
 @source "../../../../packages/softsurgery-abstractions/components/src";
