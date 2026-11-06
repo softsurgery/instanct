@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/typescript-config/mobile-library.json",
+  "extends": "../softsurgery-abstractions/typescript-config/mobile-library.json",
   "compilerOptions": {
     // Consumed by both web and mobile, so it must not pull in the NativeWind
     // JSX runtime that the mobile preset defaults to.

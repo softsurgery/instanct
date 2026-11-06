@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "dev": "tsc --watch",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf node_modules .next dist build .turbo"
   }

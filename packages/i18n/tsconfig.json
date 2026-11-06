@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/typescript-config/web-library.json",
+  "extends": "../softsurgery-abstractions/typescript-config/web-library.json",
   "compilerOptions": {
     "noEmit": false,
     "outDir": "./dist",

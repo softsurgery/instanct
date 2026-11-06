@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/typescript-config/nestjs.json",
+  "extends": "../../packages/softsurgery-abstractions/typescript-config/nestjs.json",
   "compilerOptions": {
     "outDir": "./dist",
     "incremental": true,

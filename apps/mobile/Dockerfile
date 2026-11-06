@@ -18,24 +18,24 @@ RUN sed -i '/"postinstall":/d' apps/api/package.json
 COPY apps/web/package.json ./apps/web/package.json
 COPY apps/landing/package.json ./apps/landing/package.json
 COPY apps/mobile/package.json ./apps/mobile/package.json
-COPY apps/api-client/package.json ./apps/api-client/package.json
-COPY apps/i18n/package.json ./apps/i18n/package.json
+COPY packages/api-client/package.json ./packages/api-client/package.json
+COPY packages/i18n/package.json ./packages/i18n/package.json
 
 # Package stubs for pnpm install (all workspace members must be present)
-COPY packages/components/package.json ./packages/components/package.json
-COPY packages/contexts/package.json ./packages/contexts/package.json
-COPY packages/datatable-builder/package.json ./packages/datatable-builder/package.json
-COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
-COPY packages/form-builder/package.json ./packages/form-builder/package.json
-COPY packages/hooks/package.json ./packages/hooks/package.json
-COPY packages/lib/package.json ./packages/lib/package.json
-COPY packages/mobile-components/package.json ./packages/mobile-components/package.json
-COPY packages/mobile-form-builder/package.json ./packages/mobile-form-builder/package.json
-COPY packages/mobile-hooks/package.json ./packages/mobile-hooks/package.json
-COPY packages/mobile-lib/package.json ./packages/mobile-lib/package.json
-COPY packages/mobile-ui/package.json ./packages/mobile-ui/package.json
-COPY packages/typescript-config ./packages/typescript-config
-COPY packages/ui/package.json ./packages/ui/package.json
+COPY packages/softsurgery-abstractions/components/package.json ./packages/softsurgery-abstractions/components/package.json
+COPY packages/softsurgery-abstractions/contexts/package.json ./packages/softsurgery-abstractions/contexts/package.json
+COPY packages/softsurgery-abstractions/datatable-builder/package.json ./packages/softsurgery-abstractions/datatable-builder/package.json
+COPY packages/softsurgery-abstractions/eslint-config/package.json ./packages/softsurgery-abstractions/eslint-config/package.json
+COPY packages/softsurgery-abstractions/form-builder/package.json ./packages/softsurgery-abstractions/form-builder/package.json
+COPY packages/softsurgery-abstractions/hooks/package.json ./packages/softsurgery-abstractions/hooks/package.json
+COPY packages/softsurgery-abstractions/lib/package.json ./packages/softsurgery-abstractions/lib/package.json
+COPY packages/softsurgery-abstractions/mobile-components/package.json ./packages/softsurgery-abstractions/mobile-components/package.json
+COPY packages/softsurgery-abstractions/mobile-form-builder/package.json ./packages/softsurgery-abstractions/mobile-form-builder/package.json
+COPY packages/softsurgery-abstractions/mobile-hooks/package.json ./packages/softsurgery-abstractions/mobile-hooks/package.json
+COPY packages/softsurgery-abstractions/mobile-lib/package.json ./packages/softsurgery-abstractions/mobile-lib/package.json
+COPY packages/softsurgery-abstractions/mobile-ui/package.json ./packages/softsurgery-abstractions/mobile-ui/package.json
+COPY packages/softsurgery-abstractions/typescript-config ./packages/softsurgery-abstractions/typescript-config
+COPY packages/softsurgery-abstractions/ui/package.json ./packages/softsurgery-abstractions/ui/package.json
 
 # Install dependencies for mobile and its workspace packages
 RUN --mount=type=cache,id=pnpm,target=/root/.cache/pnpm \
@@ -44,14 +44,14 @@ RUN --mount=type=cache,id=pnpm,target=/root/.cache/pnpm \
 
 
 # Copy workspace packages mobile depends on
-COPY apps/api-client ./apps/api-client
-COPY packages/hooks ./packages/hooks
-COPY packages/lib ./packages/lib
-COPY packages/mobile-components ./packages/mobile-components
-COPY packages/mobile-form-builder ./packages/mobile-form-builder
-COPY packages/mobile-hooks ./packages/mobile-hooks
-COPY packages/mobile-lib ./packages/mobile-lib
-COPY packages/mobile-ui ./packages/mobile-ui
+COPY packages/api-client ./packages/api-client
+COPY packages/softsurgery-abstractions/hooks ./packages/softsurgery-abstractions/hooks
+COPY packages/softsurgery-abstractions/lib ./packages/softsurgery-abstractions/lib
+COPY packages/softsurgery-abstractions/mobile-components ./packages/softsurgery-abstractions/mobile-components
+COPY packages/softsurgery-abstractions/mobile-form-builder ./packages/softsurgery-abstractions/mobile-form-builder
+COPY packages/softsurgery-abstractions/mobile-hooks ./packages/softsurgery-abstractions/mobile-hooks
+COPY packages/softsurgery-abstractions/mobile-lib ./packages/softsurgery-abstractions/mobile-lib
+COPY packages/softsurgery-abstractions/mobile-ui ./packages/softsurgery-abstractions/mobile-ui
 
 # Copy mobile app source
 COPY apps/mobile ./apps/mobile
@@ -77,5 +77,3 @@ EXPOSE 8081
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["npx", "expo", "start", "--dev-client"]
-
-

@@ -4,10 +4,10 @@ module.exports = {
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
-    "../../packages/mobile-ui/src/**/*.{ts,tsx}",
-    "../../packages/mobile-components/src/**/*.{ts,tsx}",
-    "../../packages/mobile-form-builder/src/**/*.{ts,tsx}",
-    "../../packages/chat-materials/src/mobile/**/*.{ts,tsx}",
+    "../../packages/softsurgery-abstractions/mobile-ui/src/**/*.{ts,tsx}",
+    "../../packages/softsurgery-abstractions/mobile-components/src/**/*.{ts,tsx}",
+    "../../packages/softsurgery-abstractions/mobile-form-builder/src/**/*.{ts,tsx}",
+    "../../packages/softsurgery-abstractions/chat-materials/src/mobile/**/*.{ts,tsx}",
   ],
   presets: [require("nativewind/preset")],
   theme: {

@@ -1,6 +1,11 @@
 packages:
   - "apps/*"
-  - "packages/*"
+  - "packages/api-client"
+  - "packages/i18n"
+  - "packages/softsurgery-abstractions/*"
+  - "!packages/softsurgery-abstractions"
+
+ignoreWorkspaceCycles: true
 
 nodeLinker: hoisted
 

@@ -2,7 +2,7 @@
 
 Monorepo for the Instanct web app, landing site, mobile app, and API. The product is a professional discovery and connection platform: profiles, nearby geolocation, chat, sessions, requests, and an admin surface for users, roles, and reference data.
 
-Clients talk to one NestJS API. Shared libraries live in the separate [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) repo and are checked out here as the `packages/` git submodule. `packages/nsa-*` holds the Nest abstractions (persistence, users, files, workflows). `@softsurgery/*` holds the UI and HTTP abstractions so the web and mobile apps describe forms, tables, and requests the same way.
+Clients talk to one NestJS API. Shared libraries from [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) live under `packages/softsurgery-abstractions/` (git submodule, Layout B). Instanct-owned workspace packages `packages/api-client` and `packages/i18n` sit alongside that submodule. Inside the submodule, `nsa-*` holds Nest abstractions and `@softsurgery/*` holds UI and HTTP abstractions for web and mobile.
 
 | App              | Package               | What it is                         | README                                               |
 | ---------------- | --------------------- | ---------------------------------- | ---------------------------------------------------- |
@@ -22,9 +22,10 @@ Clients talk to one NestJS API. Shared libraries live in the separate [softsurge
 │           ├── modules/    # users, requests, geolocation, system reports
 │           ├── routers/    # /  /admin  /public  /callback  /test
 │           └── seeders/
-├── packages/         # git submodule → softsurgery/softsurgery-abstractions
-│   ├── nsa-*/        # Nest shared abstractions (database, auth, storage, …)
-│   └── @softsurgery/*   # UI, HTTP, form, and table abstractions
+├── packages/
+│   ├── api-client/   # typed API client + React Query hooks (instanct)
+│   ├── i18n/         # shared translation resources (instanct)
+│   └── softsurgery-abstractions/   # git submodule (@softsurgery/*, nsa-*)
 ├── infra/nginx/      # reverse proxy in front of the apps
 ├── scripts/
 ├── package.json
@@ -33,7 +34,7 @@ Clients talk to one NestJS API. Shared libraries live in the separate [softsurge
 
 ## Clone
 
-`packages/` is a submodule. Clone with submodules, or init them after a plain clone:
+`packages/softsurgery-abstractions/` is a submodule. Clone with submodules, or init them after a plain clone:
 
 ```sh
 git clone --recurse-submodules git@github.com:softsurgery/instanct.git
@@ -41,16 +42,16 @@ git clone --recurse-submodules git@github.com:softsurgery/instanct.git
 git submodule update --init --recursive
 ```
 
-Edit shared packages in [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) (or inside the `packages/` working tree). Instanct pins a submodule commit; bump it when you want apps to pick up a new abstractions revision:
+Edit shared packages in [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) (or inside `packages/softsurgery-abstractions/`). Instanct pins a submodule commit; bump it when you want apps to pick up a new abstractions revision:
 
 ```sh
-cd packages && git pull origin main && cd ..
-git add packages && git commit -m "chore: bump softsurgery-abstractions"
+cd packages/softsurgery-abstractions && git pull origin main && cd ../..
+git add packages/softsurgery-abstractions && git commit -m "chore: bump softsurgery-abstractions"
 ```
 
 ## Package manager
 
-The workspace uses **pnpm** (`apps/*`, `packages/*`) with Turbo. App dependencies on `@softsurgery/*` stay `workspace:*`. Install from the repository root:
+The workspace uses **pnpm** with Turbo. Abstractions (`@softsurgery/*`, `nsa-*`) live under `packages/softsurgery-abstractions/`; host-only packages are `packages/api-client` and `packages/i18n`. App dependencies on abstractions use `workspace:*`. Install from the repository root:
 
 ```sh
 pnpm install
@@ -60,7 +61,7 @@ Do not use npm or Yarn. The root `packageManager` field pins `pnpm@11.25.0`. Nod
 
 ## Scripts
 
-`pnpm dev` runs the `dev` script of every app under `apps/`. Prefer a filtered script:
+`pnpm dev` runs the `dev` script of every app under `apps/` and every package under `packages/` (including `softsurgery-abstractions`). Prefer a filtered script when you only need one surface:
 
 ```sh
 pnpm dev:web         # Next.js on :3007
@@ -166,7 +167,7 @@ New API features sit on these bases. Controllers stay thin: they validate a DTO,
 
 ### Repository and CRUD service
 
-`DatabaseAbstractRepository<T>` (`packages/nsa-database/src/repositories/database.repository.ts`) is the persistence port. A concrete repository only supplies the TypeORM `Repository<T>` and the optional transaction host. The base class implements find, save, upsert, soft delete, restore, bulk delete, query-builder access, and relation discovery.
+`DatabaseAbstractRepository<T>` (`packages/softsurgery-abstractions/nsa-database/src/repositories/database.repository.ts`) is the persistence port. A concrete repository only supplies the TypeORM `Repository<T>` and the optional transaction host. The base class implements find, save, upsert, soft delete, restore, bulk delete, query-builder access, and relation discovery.
 
 `AbstractCrudService<T>` sits on that repository. It turns an `IQueryObject` into TypeORM find options, then exposes `findOneById`, `findAll`, `findAllPaginated`, `save`, `update`, and `delete`. Pagination returns `PageDto` plus `PageMetaDto`. Education, experience, conversations, notifications, sessions, geolocation, and content pages extend this class and add behavior on top.
 

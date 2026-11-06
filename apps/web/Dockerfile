@@ -15,21 +15,21 @@ COPY patches ./patches
 COPY apps/api/package.json ./apps/api/package.json
 RUN sed -i '/"postinstall":/d' apps/api/package.json
 COPY apps/web/package.json ./apps/web/package.json
-COPY apps/api-client/package.json ./apps/api-client/package.json
-COPY apps/i18n/package.json ./apps/i18n/package.json
+COPY packages/api-client/package.json ./packages/api-client/package.json
+COPY packages/i18n/package.json ./packages/i18n/package.json
 
 # Package stubs for pnpm install (all workspace members must be present)
-COPY packages/components/package.json ./packages/components/package.json
-COPY packages/contexts/package.json ./packages/contexts/package.json
-COPY packages/datatable-builder/package.json ./packages/datatable-builder/package.json
-COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
-COPY packages/form-builder/package.json ./packages/form-builder/package.json
-COPY packages/hooks/package.json ./packages/hooks/package.json
-COPY packages/lib/package.json ./packages/lib/package.json
+COPY packages/softsurgery-abstractions/components/package.json ./packages/softsurgery-abstractions/components/package.json
+COPY packages/softsurgery-abstractions/contexts/package.json ./packages/softsurgery-abstractions/contexts/package.json
+COPY packages/softsurgery-abstractions/datatable-builder/package.json ./packages/softsurgery-abstractions/datatable-builder/package.json
+COPY packages/softsurgery-abstractions/eslint-config/package.json ./packages/softsurgery-abstractions/eslint-config/package.json
+COPY packages/softsurgery-abstractions/form-builder/package.json ./packages/softsurgery-abstractions/form-builder/package.json
+COPY packages/softsurgery-abstractions/hooks/package.json ./packages/softsurgery-abstractions/hooks/package.json
+COPY packages/softsurgery-abstractions/lib/package.json ./packages/softsurgery-abstractions/lib/package.json
 
-COPY packages/typescript-config ./packages/typescript-config
-COPY packages/ui/package.json ./packages/ui/package.json
-COPY packages/template/package.json ./packages/template/package.json
+COPY packages/softsurgery-abstractions/typescript-config ./packages/softsurgery-abstractions/typescript-config
+COPY packages/softsurgery-abstractions/ui/package.json ./packages/softsurgery-abstractions/ui/package.json
+COPY packages/softsurgery-abstractions/template/package.json ./packages/softsurgery-abstractions/template/package.json
 
 RUN pnpm install --frozen-lockfile --filter instanct-ui... --ignore-scripts
 
@@ -37,16 +37,16 @@ COPY apps/web ./apps/web
 COPY scripts/allowed-dev-origins.ts ./scripts/allowed-dev-origins.ts
 
 # Copy only the packages web actually uses
-COPY apps/api-client ./apps/api-client
-COPY apps/i18n ./apps/i18n
-COPY packages/components ./packages/components
-COPY packages/contexts ./packages/contexts
-COPY packages/datatable-builder ./packages/datatable-builder
-COPY packages/form-builder ./packages/form-builder
-COPY packages/hooks ./packages/hooks
-COPY packages/lib ./packages/lib
-COPY packages/ui ./packages/ui
-COPY packages/template ./packages/template
+COPY packages/api-client ./packages/api-client
+COPY packages/i18n ./packages/i18n
+COPY packages/softsurgery-abstractions/components ./packages/softsurgery-abstractions/components
+COPY packages/softsurgery-abstractions/contexts ./packages/softsurgery-abstractions/contexts
+COPY packages/softsurgery-abstractions/datatable-builder ./packages/softsurgery-abstractions/datatable-builder
+COPY packages/softsurgery-abstractions/form-builder ./packages/softsurgery-abstractions/form-builder
+COPY packages/softsurgery-abstractions/hooks ./packages/softsurgery-abstractions/hooks
+COPY packages/softsurgery-abstractions/lib ./packages/softsurgery-abstractions/lib
+COPY packages/softsurgery-abstractions/ui ./packages/softsurgery-abstractions/ui
+COPY packages/softsurgery-abstractions/template ./packages/softsurgery-abstractions/template
 
 ENV npm_config_ignore_scripts=true
 
@@ -76,4 +76,3 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 CMD ["node", "apps/web/server.js"]
-

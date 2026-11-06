@@ -4,19 +4,23 @@ const { withNativeWind } = require("nativewind/metro");
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, "../..");
+const abstractionsRoot = path.resolve(
+  workspaceRoot,
+  "packages/softsurgery-abstractions",
+);
 
 const config = getDefaultConfig(projectRoot);
 
 config.watchFolders = [
-  path.resolve(workspaceRoot, "apps/api-client"),
-  path.resolve(workspaceRoot, "packages/mobile-components"),
-  path.resolve(workspaceRoot, "packages/mobile-ui"),
-  path.resolve(workspaceRoot, "packages/hooks"),
-  path.resolve(workspaceRoot, "packages/lib"),
-  path.resolve(workspaceRoot, "packages/mobile-form-builder"),
-  path.resolve(workspaceRoot, "packages/mobile-lib"),
-  path.resolve(workspaceRoot, "packages/mobile-hooks"),
-  path.resolve(workspaceRoot, "packages/chat-materials"),
+  path.resolve(workspaceRoot, "packages/api-client"),
+  path.resolve(abstractionsRoot, "mobile-components"),
+  path.resolve(abstractionsRoot, "mobile-ui"),
+  path.resolve(abstractionsRoot, "hooks"),
+  path.resolve(abstractionsRoot, "lib"),
+  path.resolve(abstractionsRoot, "mobile-form-builder"),
+  path.resolve(abstractionsRoot, "mobile-lib"),
+  path.resolve(abstractionsRoot, "mobile-hooks"),
+  path.resolve(abstractionsRoot, "chat-materials"),
 ];
 
 config.transformer = {
@@ -51,29 +55,23 @@ config.resolver = {
     return context.resolveRequest(context, moduleName, platform);
   },
   extraNodeModules: {
-    "api-client": path.resolve(workspaceRoot, "apps/api-client"),
+    "api-client": path.resolve(workspaceRoot, "packages/api-client"),
     "@softsurgery/mobile-components": path.resolve(
-      workspaceRoot,
-      "packages/mobile-components",
+      abstractionsRoot,
+      "mobile-components",
     ),
-    "@softsurgery/mobile-ui": path.resolve(workspaceRoot, "packages/mobile-ui"),
-    "@softsurgery/hooks": path.resolve(workspaceRoot, "packages/hooks"),
-    "@softsurgery/lib": path.resolve(workspaceRoot, "packages/lib"),
+    "@softsurgery/mobile-ui": path.resolve(abstractionsRoot, "mobile-ui"),
+    "@softsurgery/hooks": path.resolve(abstractionsRoot, "hooks"),
+    "@softsurgery/lib": path.resolve(abstractionsRoot, "lib"),
     "@softsurgery/mobile-form-builder": path.resolve(
-      workspaceRoot,
-      "packages/mobile-form-builder",
+      abstractionsRoot,
+      "mobile-form-builder",
     ),
-    "@softsurgery/mobile-lib": path.resolve(
-      workspaceRoot,
-      "packages/mobile-lib",
-    ),
-    "@softsurgery/mobile-hooks": path.resolve(
-      workspaceRoot,
-      "packages/mobile-hooks",
-    ),
+    "@softsurgery/mobile-lib": path.resolve(abstractionsRoot, "mobile-lib"),
+    "@softsurgery/mobile-hooks": path.resolve(abstractionsRoot, "mobile-hooks"),
     "@softsurgery/chat-materials": path.resolve(
-      workspaceRoot,
-      "packages/chat-materials",
+      abstractionsRoot,
+      "chat-materials",
     ),
   },
   assetExts: config.resolver.assetExts.filter((ext) => ext !== "svg"),

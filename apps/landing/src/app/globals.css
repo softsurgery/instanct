@@ -2,8 +2,8 @@
 @import "tw-animate-css";
 @import "@softsurgery/ui/styles/scrollbar.css";
 
-@source "../../../../packages/ui/src";
-@source "../../../../packages/components/src";
+@source "../../../../packages/softsurgery-abstractions/ui/src";
+@source "../../../../packages/softsurgery-abstractions/components/src";
 
 @custom-variant dark (&:is(.dark *));
 

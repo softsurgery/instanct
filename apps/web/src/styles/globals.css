@@ -1,11 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "../../../../packages/ui/src/styles/scrollbar.css";
+@import "../../../../packages/softsurgery-abstractions/ui/src/styles/scrollbar.css";
 
-@source "../../../../packages/ui/src";
-@source "../../../../packages/components/src";
-@source "../../../../packages/form-builder/src";
-@source "../../../../packages/datatable-builder/src";
+@source "../../../../packages/softsurgery-abstractions/ui/src";
+@source "../../../../packages/softsurgery-abstractions/components/src";
+@source "../../../../packages/softsurgery-abstractions/form-builder/src";
+@source "../../../../packages/softsurgery-abstractions/datatable-builder/src";
 
 @custom-variant dark (&:is(.dark *));
 

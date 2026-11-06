@@ -12,21 +12,21 @@ RUN apk add --no-cache libc6-compat \
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY patches ./patches
-COPY --parents apps/*/package.json packages/*/package.json ./
+COPY --parents apps/*/package.json packages/*/package.json packages/softsurgery-abstractions/*/package.json ./
 
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
     pnpm install --frozen-lockfile --filter instanct-api... --ignore-scripts --prefer-offline --store-dir /pnpm/store \
     && test -x node_modules/typescript/bin/tsc \
     && node -e "require('bcrypt')"
 
-COPY scripts/mjs/build-shared-packages.mjs scripts/mjs/prepare-api-image.mjs ./scripts/mjs/
-COPY packages/tsconfig.nsa.json ./packages/tsconfig.nsa.json
-COPY packages/typescript-config ./packages/typescript-config
-COPY --parents packages/nsa-* ./
+COPY packages/softsurgery-abstractions/scripts/mjs/host-repo.mjs packages/softsurgery-abstractions/scripts/mjs/build-shared-packages.mjs packages/softsurgery-abstractions/scripts/mjs/prepare-api-image.mjs ./packages/softsurgery-abstractions/scripts/mjs/
+COPY packages/softsurgery-abstractions/tsconfig.nsa.json ./packages/softsurgery-abstractions/tsconfig.nsa.json
+COPY packages/softsurgery-abstractions/typescript-config ./packages/softsurgery-abstractions/typescript-config
+COPY --parents packages/softsurgery-abstractions/nsa-* ./
 
-RUN node scripts/mjs/build-shared-packages.mjs \
-    && test -f packages/nsa-database/dist/index.js \
-    && test -f packages/nsa-auth/dist/index.js
+RUN node packages/softsurgery-abstractions/scripts/mjs/build-shared-packages.mjs \
+    && test -f packages/softsurgery-abstractions/nsa-database/dist/index.js \
+    && test -f packages/softsurgery-abstractions/nsa-auth/dist/index.js
 
 COPY apps/api ./apps/api
 
@@ -38,7 +38,7 @@ RUN rm -f apps/api/*.tsbuildinfo \
 
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
     pnpm --filter instanct-api --prod --store-dir /pnpm/store deploy --legacy --ignore-scripts /pruned \
-    && node scripts/mjs/prepare-api-image.mjs
+    && node packages/softsurgery-abstractions/scripts/mjs/prepare-api-image.mjs
 
 FROM node:22-alpine AS runner
 

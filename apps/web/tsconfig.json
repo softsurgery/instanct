@@ -1,56 +1,56 @@
 {
-  "extends": "../../packages/typescript-config/nextjs.json",
+  "extends": "../../packages/softsurgery-abstractions/typescript-config/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "api-client/hooks/context": [
-        "../api-client/src/hooks/context/ApiContext.tsx"
+        "../../packages/api-client/src/hooks/context/ApiContext.tsx"
       ],
       "api-client/hooks/context/ApiContext": [
-        "../api-client/src/hooks/context/ApiContext.tsx"
+        "../../packages/api-client/src/hooks/context/ApiContext.tsx"
       ],
-      "api-client/hooks": ["../api-client/src/hooks/index.ts"],
+      "api-client/hooks": ["../../packages/api-client/src/hooks/index.ts"],
       "api-client/hooks/content/useRoles": [
-        "../api-client/src/hooks/user-based/useRoles.ts"
+        "../../packages/api-client/src/hooks/user-based/useRoles.ts"
       ],
       "api-client/hooks/content/usePermissions": [
-        "../api-client/src/hooks/user-based/usePermissions.ts"
+        "../../packages/api-client/src/hooks/user-based/usePermissions.ts"
       ],
       "api-client/hooks/content/useUpload": [
-        "../api-client/src/hooks/content/useUpload.ts"
+        "../../packages/api-client/src/hooks/content/useUpload.ts"
       ],
       "api-client/hooks/content/useUploads": [
-        "../api-client/src/hooks/content/useUploads.ts"
+        "../../packages/api-client/src/hooks/content/useUploads.ts"
       ],
       "api-client/hooks/content/user/useUsers": [
-        "../api-client/src/hooks/user-based/useUsers.ts"
+        "../../packages/api-client/src/hooks/user-based/useUsers.ts"
       ],
       "api-client/hooks/content/user/useEmailUser": [
-        "../api-client/src/hooks/user-based/useEmailUser.ts"
+        "../../packages/api-client/src/hooks/user-based/useEmailUser.ts"
       ],
       "api-client/hooks/content/users/useIdentifiedUser": [
-        "../api-client/src/hooks/user-based/useIdentifiedUser.ts"
+        "../../packages/api-client/src/hooks/user-based/useIdentifiedUser.ts"
       ],
       "api-client/hooks/content/reference-types/useRefTypes": [
-        "../api-client/src/hooks/reference-types/useRefTypes.ts"
+        "../../packages/api-client/src/hooks/reference-types/useRefTypes.ts"
       ],
       "api-client/hooks/content/reference-types/useIndustriesTree": [
-        "../api-client/src/hooks/reference-types/useIndustriesTree.ts"
+        "../../packages/api-client/src/hooks/reference-types/useIndustriesTree.ts"
       ],
       "api-client/hooks/content/configurations/useConfigurations": [
-        "../api-client/src/hooks/content/configurations/useConfigurations.ts"
+        "../../packages/api-client/src/hooks/content/configurations/useConfigurations.ts"
       ],
       "api-client/hooks/content/configuration/useApplicationLanguages": [
-        "../api-client/src/hooks/content/configuration/useApplicationLanguages.ts"
+        "../../packages/api-client/src/hooks/content/configuration/useApplicationLanguages.ts"
       ],
       "api-client/hooks/content/user/useFollowSystem": [
-        "../api-client/src/hooks/user-based/useFollowSystem.ts"
+        "../../packages/api-client/src/hooks/user-based/useFollowSystem.ts"
       ],
       "api-client/hooks/content/geolocation/useLiveGeolocationParamters": [
-        "../api-client/src/hooks/content/geolocation/useLiveGeolocationParamters.tsx"
+        "../../packages/api-client/src/hooks/content/geolocation/useLiveGeolocationParamters.tsx"
       ],
-      "api-client/hooks/*": ["../api-client/src/hooks/*"]
+      "api-client/hooks/*": ["../../packages/api-client/src/hooks/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
