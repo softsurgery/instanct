@@ -1,3 +1,0 @@
-[submodule "packages"]
-	url = git@github.com:softsurgery/softsurgery-abstractions.git
-	path = packages
