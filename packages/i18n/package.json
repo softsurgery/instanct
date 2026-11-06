@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
+    "dev": "tsc --pretty false && node -e \"console.log(require('./package.json').name + ': typecheck ok')\"",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf node_modules .next dist build .turbo"
   }

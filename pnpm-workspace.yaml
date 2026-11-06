@@ -1,11 +1,16 @@
 packages:
   - "apps/*"
-  - "packages/api-client"
-  - "packages/i18n"
+  - "packages/*"
   - "packages/softsurgery-abstractions/*"
-  - "!packages/softsurgery-abstractions"
-
-ignoreWorkspaceCycles: true
+  # Generated trees. Next standalone output lives at `.next/standalone/**`
+  # and contains its own package.json files.
+  - "!**/node_modules/**"
+  - "!**/.next/**"
+  - "!**/.next/standalone/**"
+  - "!**/dist/**"
+  - "!**/build/**"
+  - "!**/.expo/**"
+  - "!**/.turbo/**"
 
 nodeLinker: hoisted
 
@@ -82,9 +87,9 @@ allowBuilds:
   core-js: false
 
 minimumReleaseAgeExclude:
-  - '@expo/*'
-  - 'expo*'
-  - 'babel-preset-expo*'
+  - "@expo/*"
+  - "expo*"
+  - "babel-preset-expo*"
 
 patchedDependencies:
   react-native-actions-sheet: patches/react-native-actions-sheet.patch

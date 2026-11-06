@@ -26,7 +26,7 @@
   },
   "scripts": {
     "build": "tsc --noEmit -p tsconfig.json",
-    "dev": "tsc --noEmit --watch -p tsconfig.json",
+    "dev": "tsc --noEmit --pretty false -p tsconfig.json && node -e \"console.log(require('./package.json').name + ': typecheck ok')\"",
     "check-types": "tsc --noEmit -p tsconfig.json",
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
@@ -38,7 +38,6 @@
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "*",
-    "@softsurgery/mobile-components": "workspace:*",
     "@softsurgery/mobile-ui": "workspace:*",
     "@tanstack/react-query": "^5.56.2",
     "expo-apple-authentication": "*",
@@ -61,9 +60,6 @@
     "sonner-native": "*"
   },
   "peerDependenciesMeta": {
-    "@softsurgery/mobile-components": {
-      "optional": true
-    },
     "@softsurgery/mobile-ui": {
       "optional": true
     }
