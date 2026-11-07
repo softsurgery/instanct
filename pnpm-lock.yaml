@@ -1523,9 +1523,6 @@ importers:
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.4.0
       expo:
         specifier: 58.0.23
         version: 58.0.23(e68c2230cc0b37b1d6c8c0b56613c765)

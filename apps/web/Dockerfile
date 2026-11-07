@@ -30,6 +30,12 @@ COPY packages/softsurgery-abstractions/lib/package.json ./packages/softsurgery-a
 COPY packages/softsurgery-abstractions/typescript-config ./packages/softsurgery-abstractions/typescript-config
 COPY packages/softsurgery-abstractions/ui/package.json ./packages/softsurgery-abstractions/ui/package.json
 COPY packages/softsurgery-abstractions/template/package.json ./packages/softsurgery-abstractions/template/package.json
+COPY packages/softsurgery-abstractions/chat-materials/package.json ./packages/softsurgery-abstractions/chat-materials/package.json
+COPY packages/softsurgery-abstractions/mobile-components/package.json ./packages/softsurgery-abstractions/mobile-components/package.json
+COPY packages/softsurgery-abstractions/mobile-form-builder/package.json ./packages/softsurgery-abstractions/mobile-form-builder/package.json
+COPY packages/softsurgery-abstractions/mobile-hooks/package.json ./packages/softsurgery-abstractions/mobile-hooks/package.json
+COPY packages/softsurgery-abstractions/mobile-lib/package.json ./packages/softsurgery-abstractions/mobile-lib/package.json
+COPY packages/softsurgery-abstractions/mobile-ui/package.json ./packages/softsurgery-abstractions/mobile-ui/package.json
 
 RUN pnpm install --frozen-lockfile --filter instanct-ui... --ignore-scripts
 
@@ -47,6 +53,12 @@ COPY packages/softsurgery-abstractions/hooks ./packages/softsurgery-abstractions
 COPY packages/softsurgery-abstractions/lib ./packages/softsurgery-abstractions/lib
 COPY packages/softsurgery-abstractions/ui ./packages/softsurgery-abstractions/ui
 COPY packages/softsurgery-abstractions/template ./packages/softsurgery-abstractions/template
+COPY packages/softsurgery-abstractions/chat-materials ./packages/softsurgery-abstractions/chat-materials
+COPY packages/softsurgery-abstractions/mobile-components ./packages/softsurgery-abstractions/mobile-components
+COPY packages/softsurgery-abstractions/mobile-form-builder ./packages/softsurgery-abstractions/mobile-form-builder
+COPY packages/softsurgery-abstractions/mobile-hooks ./packages/softsurgery-abstractions/mobile-hooks
+COPY packages/softsurgery-abstractions/mobile-lib ./packages/softsurgery-abstractions/mobile-lib
+COPY packages/softsurgery-abstractions/mobile-ui ./packages/softsurgery-abstractions/mobile-ui
 
 ENV npm_config_ignore_scripts=true
 

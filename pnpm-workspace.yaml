@@ -93,3 +93,7 @@ minimumReleaseAgeExclude:
 
 patchedDependencies:
   react-native-actions-sheet: patches/react-native-actions-sheet.patch
+
+# deploy --legacy re-resolves one app. This patch is mobile-only, so the API
+# production tree does not apply it and otherwise fails with ERR_PNPM_UNUSED_PATCH.
+allowUnusedPatches: true
