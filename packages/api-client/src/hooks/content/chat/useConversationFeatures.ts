@@ -401,9 +401,27 @@ export const useConversationFeatures = ({
       );
     };
 
+    const onMessageDeleted = ({
+      messageId,
+      conversationId,
+    }: {
+      messageId: number;
+      conversationId: number;
+    }) => {
+      if (conversationId !== id) return;
+      setCachedMessages((prev) => {
+        if (!prev) return defaultCacheValue;
+        return {
+          ...prev,
+          messages: prev.messages.filter((m) => m.id !== messageId),
+        };
+      });
+    };
+
     s.on("connect", onConnect);
     s.on("conversation-messages", onConversationMessages);
     s.on("message", onMessage);
+    s.on("message-deleted", onMessageDeleted);
     s.on("error", onError);
     s.on("conversation-updated-last-check", onConversationUpdatedLastCheck);
 
@@ -418,6 +436,7 @@ export const useConversationFeatures = ({
       s.off("connect", onConnect);
       s.off("conversation-messages", onConversationMessages);
       s.off("message", onMessage);
+      s.off("message-deleted", onMessageDeleted);
       s.off("error", onError);
       s.off("conversation-updated-last-check", onConversationUpdatedLastCheck);
       // Do NOT clear the cache on unmount — that's the whole point
@@ -599,6 +618,50 @@ export const useConversationFeatures = ({
   );
 
   /**
+   * Asks the server to delete a message the current user authored.
+   */
+  const deleteMessage = React.useCallback(
+    (messageId: number) =>
+      new Promise<void>((resolve, reject) => {
+        const s = socketRef.current;
+        if (!s?.connected) {
+          reject(new Error("Socket unavailable"));
+          return;
+        }
+
+        let settled = false;
+        const timer = setTimeout(() => {
+          if (settled) return;
+          settled = true;
+          reject(new Error("Delete timed out"));
+        }, 10000);
+
+        s.emit(
+          "delete-message",
+          { messageId, conversationId: id },
+          (response?: { ok?: boolean }) => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            if (response?.ok) {
+              setCachedMessages((prev) => {
+                if (!prev) return defaultCacheValue;
+                return {
+                  ...prev,
+                  messages: prev.messages.filter((m) => m.id !== messageId),
+                };
+              });
+              resolve();
+            } else {
+              reject(new Error("Unable to delete message"));
+            }
+          },
+        );
+      }),
+    [id],
+  );
+
+  /**
    * Emits a socket event to mark the current conversation as seen.
    */
   const markConversationAsSeen = React.useCallback(
@@ -634,6 +697,7 @@ export const useConversationFeatures = ({
     sendMediaMessage,
     sendFileMessage,
     pendingTextMessages,
+    deleteMessage,
     markConversationAsSeen,
   };
 };

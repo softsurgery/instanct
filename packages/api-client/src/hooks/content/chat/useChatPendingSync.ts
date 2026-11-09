@@ -7,6 +7,7 @@ import { useChatPendingStore } from "../../stores/useChatPendingStore";
 import {
   conversationLinksMessagesQueryKey,
   prependMessageToConversationLinksCache,
+  removeMessageFromInfiniteMessages,
 } from "../../lib/chat-cache";
 import { messageHasLinks } from "../../lib/messageLinks";
 import { MessageVariant, ResponseMessageDto } from "api-client";
@@ -78,10 +79,42 @@ export const useChatPendingSync = () => {
       }
     };
 
+    const onMessageDeleted = ({
+      messageId,
+      conversationId,
+    }: {
+      messageId: number;
+      conversationId: number;
+    }) => {
+      queryClient.setQueryData<CachedConversationMessages>(
+        ["conversation-messages", conversationId],
+        (prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            messages: prev.messages.filter((message) => message.id !== messageId),
+          };
+        },
+      );
+
+      queryClient.setQueriesData({ queryKey: ["messages"] }, (oldData) =>
+        removeMessageFromInfiniteMessages(
+          oldData as Parameters<typeof removeMessageFromInfiniteMessages>[0],
+          messageId,
+        ),
+      );
+
+      queryClient.invalidateQueries({
+        queryKey: ["conversation-message-search", conversationId],
+      });
+    };
+
     s.on("message", onMessage);
+    s.on("message-deleted", onMessageDeleted);
 
     return () => {
       s.off("message", onMessage);
+      s.off("message-deleted", onMessageDeleted);
     };
   }, [authPersistStore.accessToken, currentUser?.id, queryClient]);
 };

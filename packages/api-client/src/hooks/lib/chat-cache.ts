@@ -27,6 +27,21 @@ type MessagesInfiniteData = {
   pageParams: unknown[];
 };
 
+export const removeMessageFromInfiniteMessages = (
+  oldData: MessagesInfiniteData | undefined,
+  messageId: number,
+): MessagesInfiniteData | undefined => {
+  if (!oldData?.pages) return oldData;
+
+  return {
+    ...oldData,
+    pages: oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.filter((item) => item.id !== messageId),
+    })),
+  };
+};
+
 export const prependMessageToConversationLinksCache = (
   oldData: MessagesInfiniteData | undefined,
   message: ResponseMessageDto,
