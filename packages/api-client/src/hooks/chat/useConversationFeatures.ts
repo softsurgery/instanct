@@ -1,4 +1,4 @@
-import { useApi } from "../../context/ApiContext";
+import { useApi } from "../context/ApiContext";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
@@ -8,7 +8,7 @@ import {
   ResponseMessageDto,
   StaticMessageEnum,
 } from "api-client";
-import { MessageFlatListItem } from "../../types/chat-pending";
+import { MessageFlatListItem } from "../types/chat-pending";
 import { useAudioPlayer } from "expo-audio";
 import {
   differenceInCalendarDays,
@@ -23,11 +23,11 @@ import {
   conversationLinksMessagesQueryKey,
   prependMessageToConversationLinksCache,
   replaceConversationInPages,
-} from "../../lib/chat-cache";
+} from "../lib/chat-cache";
 import { CONVERSATIONS_UNREAD_COUNT_QUERY_KEY } from "./useChat";
-import { messageHasLinks } from "../../lib/messageLinks";
-import { useCurrentUser } from "../../user-based/useCurrentUser";
-import { useChatPendingStore } from "../../stores/useChatPendingStore";
+import { messageHasLinks } from "../lib/messageLinks";
+import { useCurrentUser } from "../user-based/useCurrentUser";
+import { useChatPendingStore } from "../stores/useChatPendingStore";
 import { useShallow } from "zustand/react/shallow";
 
 interface useConversationFeaturesProps {

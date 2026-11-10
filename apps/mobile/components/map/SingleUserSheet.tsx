@@ -9,7 +9,7 @@ import { Text } from "@softsurgery/mobile-ui";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
-import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
+import { useStartConversation } from "api-client/hooks/chat";
 import { resolveRefLabel } from "api-client";
 import { useTranslation } from "react-i18next";
 

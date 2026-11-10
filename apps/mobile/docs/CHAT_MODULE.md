@@ -34,7 +34,7 @@ The Instanct Chat Module is a high-performance, real-time messaging system built
                                 │ React Props & Hook Callbacks
 ┌───────────────────────────────┴────────────────────────────────┐
 │                      Custom Hooks Layer                        │
-│   hooks/content/chat/** (useChat, useConversationFeatures...)  │
+│   api-client/hooks/chat (useChat, useConversationFeatures...)   │
 └───────▲───────────────────────▲────────────────────────▲───────┘
         │                       │                        │
 ┌───────┴──────────────┐┌───────┴───────────────┐┌───────┴───────┐
@@ -120,7 +120,7 @@ Whenever server messages are fetched or refreshed:
 
 ## 5. Custom Hooks Layer
 
-All domain hooks are located in `hooks/content/chat/`:
+All domain hooks are located in `packages/api-client/src/hooks/content/chat/` and exported via `api-client/hooks/chat`:
 
 | Hook Name                          | File                              | Responsibility                                                                                                                                                                                                               |
 | :--------------------------------- | :-------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

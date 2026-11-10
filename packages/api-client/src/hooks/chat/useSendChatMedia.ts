@@ -1,13 +1,13 @@
 import React from "react";
 import { Alert, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { useApi } from "../../context/ApiContext";
-import { clampUploadProgress, type ReactNativeUploadFile } from "../../lib/upload-types";
+import { useApi } from "../context/ApiContext";
+import { clampUploadProgress, type ReactNativeUploadFile } from "../lib/upload-types";
 import { MessageVariant, ResponseMessageDto } from "api-client";
-import { MediaKind, PendingMediaUpload, StagedMedia } from "../../types/chat-pending";
-import { waitForUiReady } from "../../lib/upload-types";
+import { MediaKind, PendingMediaUpload, StagedMedia } from "../types/chat-pending";
+import { waitForUiReady } from "../lib/upload-types";
 import { toast } from "sonner-native";
-import { useChatPendingStore } from "../../stores/useChatPendingStore";
+import { useChatPendingStore } from "../stores/useChatPendingStore";
 import { useShallow } from "zustand/react/shallow";
 
 const MAX_SELECTION = 10;

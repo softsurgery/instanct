@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useApi } from "../../context/ApiContext";
+import { useApi } from "../context/ApiContext";
 import {
   MessageVariant,
   ResponseConversationDto,
@@ -15,16 +15,16 @@ import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import {
   createAndroidChannel,
   requestNotificationPermissions,
-} from "../../lib/mobile/notification";
-import { presentChatMessageNotification } from "../../lib/mobile/notification-chat";
-import { useCurrentUser } from "../../user-based/useCurrentUser";
+} from "../lib/mobile/notification";
+import { presentChatMessageNotification } from "../lib/mobile/notification-chat";
+import { useCurrentUser } from "../user-based/useCurrentUser";
 import {
   CONVERSATION_LIST_JOIN,
   InfiniteConversationData,
   moveConversationToTop,
   prependConversationToPages,
   replaceConversationInPages,
-} from "../../lib/chat-cache";
+} from "../lib/chat-cache";
 import { useSegments, useGlobalSearchParams } from "expo-router";
 
 export const CONVERSATIONS_UNREAD_COUNT_QUERY_KEY = [

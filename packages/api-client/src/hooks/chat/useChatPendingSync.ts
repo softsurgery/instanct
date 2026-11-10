@@ -2,14 +2,14 @@ import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { getSocket } from "@softsurgery/lib";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
-import { useCurrentUser } from "../../user-based/useCurrentUser";
-import { useChatPendingStore } from "../../stores/useChatPendingStore";
+import { useCurrentUser } from "../user-based/useCurrentUser";
+import { useChatPendingStore } from "../stores/useChatPendingStore";
 import {
   conversationLinksMessagesQueryKey,
   prependMessageToConversationLinksCache,
   removeMessageFromInfiniteMessages,
-} from "../../lib/chat-cache";
-import { messageHasLinks } from "../../lib/messageLinks";
+} from "../lib/chat-cache";
+import { messageHasLinks } from "../lib/messageLinks";
 import { MessageVariant, ResponseMessageDto } from "api-client";
 
 interface CachedConversationMessages {

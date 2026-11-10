@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useApi } from "../../context/ApiContext";
+import { useApi } from "../context/ApiContext";
 import { useDebounce } from "@softsurgery/hooks/utils";
-import { filterMessagesByContentQuery } from "../../lib/messageSearch";
-import { MESSAGE_SEARCH_JOIN } from "../../lib/chat-cache";
+import { filterMessagesByContentQuery } from "../lib/messageSearch";
+import { MESSAGE_SEARCH_JOIN } from "../lib/chat-cache";
 
 interface UseConversationMessageSearchProps {
   conversationId: number;

@@ -1,16 +1,16 @@
 import React from "react";
 import { Alert } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
-import { useApi } from "../../context/ApiContext";
+import { useApi } from "../context/ApiContext";
 import {
   calculateBatchUploadProgress,
   type ReactNativeUploadFile,
-} from "../../lib/upload-types";
+} from "../lib/upload-types";
 import { MessageVariant, ResponseMessageDto } from "api-client";
-import { PendingFileUpload } from "../../types/chat-pending";
-import { waitForUiReady } from "../../lib/upload-types";
+import { PendingFileUpload } from "../types/chat-pending";
+import { waitForUiReady } from "../lib/upload-types";
 import { toast } from "sonner-native";
-import { useChatPendingStore } from "../../stores/useChatPendingStore";
+import { useChatPendingStore } from "../stores/useChatPendingStore";
 import { useShallow } from "zustand/react/shallow";
 
 const MAX_FILE_SELECTION = 10;

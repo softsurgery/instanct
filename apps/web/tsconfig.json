@@ -4,6 +4,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "api-client/hooks/chat": [
+        "../../packages/api-client/src/hooks/chat/index.ts"
+      ],
+      "api-client/hooks/content/chat": [
+        "../../packages/api-client/src/hooks/content/chat/index.ts"
+      ],
       "api-client/hooks/context": [
         "../../packages/api-client/src/hooks/context/ApiContext.tsx"
       ],

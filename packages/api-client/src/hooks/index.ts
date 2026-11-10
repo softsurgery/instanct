@@ -8,7 +8,7 @@ export * from "./content/useUploads";
 // Chat, notifications, geolocation, auth and app-version hooks are mobile-only
 // (expo-router, expo-auth-session, expo-application, react-native, ...). Keeping them
 // out of this barrel is what stops react-native from entering the Next.js module graph.
-// Import from `api-client/hooks/content/chat/*`, `.../notification/useNotifications`,
+// Import from `api-client/hooks/chat`, `.../notification/useNotifications`,
 // `api-client/hooks/geolocation`, `api-client/hooks/auth` or
 // `api-client/hooks/useAppVersionCheck`.
 

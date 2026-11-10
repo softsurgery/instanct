@@ -1,5 +1,5 @@
-import { useApi } from "../../context/ApiContext";
-import { prependConversationToPages } from "../../lib/chat-cache";
+import { useApi } from "../context/ApiContext";
+import { prependConversationToPages } from "../lib/chat-cache";
 import {
   CreateConversationDto,
   ResponseConversationDto,

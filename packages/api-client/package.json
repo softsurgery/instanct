@@ -9,6 +9,8 @@
     ".": "./src/index.ts",
     "./hooks": "./src/hooks/index.ts",
     "./hooks/auth": "./src/hooks/auth/index.ts",
+    "./hooks/chat": "./src/hooks/chat/index.ts",
+    "./hooks/content/chat": "./src/hooks/content/chat/index.ts",
     "./hooks/context": "./src/hooks/context/index.ts",
     "./hooks/geolocation": "./src/hooks/geolocation/index.ts",
     "./hooks/*": "./src/hooks/*.ts",

@@ -7,7 +7,7 @@ import { resolveRefLabel, ResponseUserDto } from "api-client";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
-import { useStartConversation } from "api-client/hooks/content/chat/useStartConversation";
+import { useStartConversation } from "api-client/hooks/chat";
 import { useRouter } from "expo-router";
 import {
   Bookmark,

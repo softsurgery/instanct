@@ -7,7 +7,7 @@ import { useRequestStore } from "@/stores/useRequestStore";
 import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useReportBugStore } from "@/stores/useReportBugStore";
 import { useSendFeedbackStore } from "@/stores/useFeedbackStore";
-import { useChatPendingStore } from "@/stores/useChatPendingStore";
+import { useChatPendingStore } from "api-client/hooks/stores/useChatPendingStore";
 import { disconnectAllSockets } from "@softsurgery/lib";
 import { router } from "expo-router";
 import { useAuthStore } from "api-client/hooks/auth";
