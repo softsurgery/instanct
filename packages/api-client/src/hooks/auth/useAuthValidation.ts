@@ -1,5 +1,5 @@
 import { useAuthStore } from "./useAuthStore";
-import { useDebounce } from "@softsurgery/hooks/utils";
+import { useDebounce } from "@softsurgery/lib";
 import { useIdentifiedUserUsername } from "../user-based/useIdentifiedUserUsername";
 import { useIdentifiedUserEmail } from "../user-based/useIdentifiedUserEmail";
 import React from "react";

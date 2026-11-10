@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { api } from "@/lib/api";
-import { useDebounce } from "@softsurgery/hooks/utils";
+import { useDebounce } from "@softsurgery/lib";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useBreadcrumb, useIntro } from "@softsurgery/contexts";
 import { toast } from "sonner";

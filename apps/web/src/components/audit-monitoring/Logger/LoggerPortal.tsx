@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDebounce } from "@softsurgery/hooks/utils";
+import { useDebounce } from "@softsurgery/lib";
 import { useBreadcrumb } from "@softsurgery/contexts";
 import { useIntro } from "@softsurgery/contexts";
 import { ResponseLogDto } from "@/types";

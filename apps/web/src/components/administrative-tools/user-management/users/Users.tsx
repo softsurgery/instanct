@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { api } from "@/lib/api";
 import { useBreadcrumb } from "@softsurgery/contexts";
-import { useDebounce } from "@softsurgery/hooks/utils";
+import { useDebounce } from "@softsurgery/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useUserColumns } from "./columns";
