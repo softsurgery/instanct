@@ -1,8 +1,16 @@
 import { Platform } from "react-native";
+import Constants, { ExecutionEnvironment } from "expo-constants";
 import { cacheDirectory, downloadAsync } from "expo-file-system/legacy";
 import type { NotificationDestination } from "./notification-destination";
 import { destinationToNavData } from "./notification-destination";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
+
+function isExpoGo(): boolean {
+  return (
+    Constants.executionEnvironment === ExecutionEnvironment.StoreClient ||
+    Constants.appOwnership === "expo"
+  );
+}
 
 export let Notifications: typeof import("expo-notifications") | null = null;
 try {
@@ -15,18 +23,25 @@ const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || "";
 
 export async function requestNotificationPermissions() {
   if (!Notifications) return;
-  const { status } = await Notifications.requestPermissionsAsync();
-  if (status !== "granted") {
-    console.warn("Notification permissions not granted");
+  try {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== "granted") {
+      console.warn("Notification permissions not granted");
+    }
+  } catch (error) {
+    console.warn("[notif] failed to request permissions:", error);
   }
 }
 
 export async function createAndroidChannel() {
-  if (Platform.OS === "android" && Notifications) {
+  if (Platform.OS !== "android" || !Notifications || isExpoGo()) return;
+  try {
     await Notifications.setNotificationChannelAsync("default", {
       name: "Default",
       importance: Notifications.AndroidImportance.HIGH,
     });
+  } catch (error) {
+    console.warn("[notif] failed to create Android channel:", error);
   }
 }
 
@@ -122,22 +137,26 @@ export async function presentLocalNotification({
       ]
     : undefined;
 
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title,
-      body,
-      sound,
-      data: stringifyNotificationData({
-        ...navData,
-        ...data,
-        ...(resolvedImageUri ? { imageUri: resolvedImageUri } : {}),
-        ...(pictureId != null ? { pictureId: String(pictureId) } : {}),
-      }),
-      ...(attachments ? { attachments } : {}),
-      ...(Platform.OS === "android"
-        ? { priority: Notifications.AndroidNotificationPriority.HIGH }
-        : {}),
-    },
-    trigger: null,
-  });
+  try {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title,
+        body,
+        sound,
+        data: stringifyNotificationData({
+          ...navData,
+          ...data,
+          ...(resolvedImageUri ? { imageUri: resolvedImageUri } : {}),
+          ...(pictureId != null ? { pictureId: String(pictureId) } : {}),
+        }),
+        ...(attachments ? { attachments } : {}),
+        ...(Platform.OS === "android"
+          ? { priority: Notifications.AndroidNotificationPriority.HIGH }
+          : {}),
+      },
+      trigger: null,
+    });
+  } catch (error) {
+    console.warn("[notif] failed to present local notification:", error);
+  }
 }

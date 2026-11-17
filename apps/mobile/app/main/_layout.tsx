@@ -4,19 +4,18 @@ import { ChatConfigProvider } from "@softsurgery/chat-materials/mobile";
 import { NotificationContext } from "@/contexts/NotificationsContext";
 import { useChat, useChatPendingSync } from "api-client/hooks/chat";
 import { useLiveGeolocation } from "api-client/hooks/geolocation";
-import { useNotificationResponseNavigation } from "@/hooks/content/notification/useNotificationResponseNavigation";
+import { useNotificationResponseNavigation, useColorPalette } from "@softsurgery/mobile-hooks";
 import { useNotifications } from "api-client/hooks/content/notification/useNotifications";
 import { useCheckHealth } from "api-client/hooks/content/useCheckHealth";
 import { useMobilePresence } from "@/hooks/content/users/useMobilePresence";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { Stack } from "expo-router";
-import { Notifications } from "@/lib/notification";
+import { Notifications } from "@softsurgery/mobile-lib";
 import React from "react";
 import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "api-client/hooks/content/sessions/useActiveSessions";
 import { useQueryClient } from "@tanstack/react-query";
 import { NotificationType } from "api-client";
-import { useColorPalette } from "@softsurgery/mobile-hooks";
 
 if (Notifications) {
   Notifications.setNotificationHandler({

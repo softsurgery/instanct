@@ -1,4 +1,4 @@
-import { supportsNativeBackgroundTasks } from "@/lib/expo-env";
+import { supportsNativeBackgroundTasks } from "@softsurgery/mobile-lib";
 import {
   startAppStateBackgroundRuntime,
   stopAppStateBackgroundRuntime,

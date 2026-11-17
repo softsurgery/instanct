@@ -2,21 +2,17 @@ import {
   NotificationType,
   type ResponseNotificationDto,
 } from "api-client";
-import { router } from "expo-router";
+import type { NotificationDestination } from "@softsurgery/mobile-lib";
 
-export type NotificationDestination = {
-  pathname: string;
-  params?: Record<string, string>;
-};
-
-/** Payload carried in OS notification `data` so taps know where to navigate. */
-export type NotificationNavData = {
-  screen: string;
-  params?: string;
-  type?: string;
-  notificationId?: string;
-  conversationId?: string;
-};
+export type {
+  NotificationDestination,
+  NotificationNavData,
+} from "@softsurgery/mobile-lib";
+export {
+  destinationToNavData,
+  navigateToNotificationDestination,
+  parseNotificationNavData,
+} from "@softsurgery/mobile-lib";
 
 export function getNotificationDestination(
   notification: Pick<ResponseNotificationDto, "type" | "payload">,
@@ -95,57 +91,4 @@ export function getChatNotificationDestination(input: {
       ...(input.avatarFallback ? { avatarFallback: input.avatarFallback } : {}),
     },
   };
-}
-
-export function destinationToNavData(
-  destination: NotificationDestination | null | undefined,
-  extras: Omit<NotificationNavData, "screen" | "params"> = {},
-): NotificationNavData | Record<string, never> {
-  if (!destination?.pathname) return {};
-  return {
-    screen: destination.pathname,
-    ...(destination.params
-      ? { params: JSON.stringify(destination.params) }
-      : {}),
-    ...extras,
-  };
-}
-
-export function parseNotificationNavData(
-  data: Record<string, unknown> | undefined | null,
-): NotificationDestination | null {
-  if (!data || typeof data.screen !== "string" || !data.screen) {
-    return null;
-  }
-
-  let params: Record<string, string> | undefined;
-  if (typeof data.params === "string" && data.params) {
-    try {
-      const parsed = JSON.parse(data.params) as Record<string, unknown>;
-      params = Object.fromEntries(
-        Object.entries(parsed).map(([key, value]) => [key, String(value)]),
-      );
-    } catch {
-      params = undefined;
-    }
-  } else if (data.params && typeof data.params === "object") {
-    params = Object.fromEntries(
-      Object.entries(data.params as Record<string, unknown>).map(
-        ([key, value]) => [key, String(value)],
-      ),
-    );
-  }
-
-  return { pathname: data.screen, params };
-}
-
-export function navigateToNotificationDestination(
-  destination: NotificationDestination | null | undefined,
-): boolean {
-  if (!destination?.pathname) return false;
-  router.push({
-    pathname: destination.pathname as never,
-    params: destination.params,
-  });
-  return true;
 }
