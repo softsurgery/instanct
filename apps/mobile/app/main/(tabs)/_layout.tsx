@@ -21,7 +21,15 @@ export default function TabLayout() {
 
   const { isLandscape } = useScreenOrientation();
   const insets = useSafeAreaInsets();
-  const iosBottomInset = Platform.OS === "ios" ? insets.bottom : 0;
+  const topPadding = Math.min(insets.bottom, isLandscape ? 10 : 16);
+  const bottomPadding =
+    Platform.OS === "android"
+      ? insets.bottom
+      : Math.min(insets.bottom, isLandscape ? 10 : 16);
+  const bottomHeightExtra =
+    Platform.OS === "android"
+      ? insets.bottom
+      : Math.min(insets.bottom, isLandscape ? 12 : 20);
 
   const isRTL = useRTL();
   const { t } = useTranslation("screens");
@@ -73,20 +81,14 @@ export default function TabLayout() {
         tabBarStyle: {
           borderTopEndRadius: !isMapScreen ? (isLandscape ? 16 : 28) : 0,
           borderTopStartRadius: !isMapScreen ? (isLandscape ? 16 : 28) : 0,
-          paddingTop: isLandscape
-            ? Math.min(iosBottomInset, 10)
-            : Math.min(iosBottomInset, 16),
-          paddingBottom: isLandscape
-            ? Math.min(iosBottomInset, 10)
-            : Math.min(iosBottomInset, 16),
+          paddingTop: topPadding,
+          paddingBottom: bottomPadding,
           paddingLeft: Math.max(insets.left, 12),
           paddingRight: Math.max(insets.right, 12),
           backgroundColor: palette.card,
           borderColor: palette.border,
           borderTopWidth: 0,
-          height: isLandscape
-            ? 44 + Math.min(iosBottomInset, 12)
-            : 66 + Math.min(iosBottomInset, 20),
+          height: (isLandscape ? 44 : 66) + bottomHeightExtra,
         },
         tabBarLabelStyle: {
           fontSize: isLandscape ? 11 : 11,

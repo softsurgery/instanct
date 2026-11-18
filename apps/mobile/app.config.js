@@ -167,6 +167,7 @@ export default ({ config }) => ({
     "expo-video",
     "expo-apple-authentication",
     "./plugins/withAppleGeneralSettings",
+    "@softsurgery/mobile-lib/plugins/withAndroidEdgeToEdge",
   ],
 
   experiments: {

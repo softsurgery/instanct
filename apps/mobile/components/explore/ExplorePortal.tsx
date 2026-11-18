@@ -11,8 +11,6 @@ import {
   LayoutChangeEvent,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Platform,
-  StatusBar,
   StyleSheet,
   View,
 } from "react-native";
@@ -84,10 +82,7 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   // floating header lines up with them while the cards stay full-bleed.
   const insets = useSafeAreaInsets();
   const { isLandscape } = useScreenOrientation();
-  const headerTop =
-    !isLandscape && Platform.OS === "android"
-      ? (StatusBar.currentHeight ?? 0) + insets.top * 0.2
-      : insets.top;
+  const headerTop = insets.top;
 
   // The real size of the content area drives the card size and layout, so the
   // cards always match the rendered frame in both portrait and landscape.

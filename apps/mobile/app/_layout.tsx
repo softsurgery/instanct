@@ -8,12 +8,10 @@ import { PortalHost } from "@rn-primitives/portal";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import * as SystemUI from "expo-system-ui";
 import React from "react";
-import { Platform, View } from "react-native";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { Platform, TurboModuleRegistry, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 import i18n from "../i18n";
 import { I18nextProvider } from "react-i18next";
@@ -27,22 +25,45 @@ import { LoaderProvider } from "@/contexts/LoaderContext";
 import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useVersionPersistStore } from "@/stores/useVersionPersistStore";
 import { ForceUpdateGate } from "@/components/version/ForceUpdateGate";
+import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { configureScreenOrientation } from "@softsurgery/mobile-lib";
-import { PaletteProvider, useColorPalette } from "@softsurgery/mobile-hooks";
+import {
+  hslToHex,
+  PaletteProvider,
+  useColorPalette,
+} from "@softsurgery/mobile-hooks";
 
 export { ErrorBoundary } from "expo-router";
 
+function isAndroidEdgeToEdgeNativelyEnabled(): boolean {
+  if (Platform.OS !== "android") return true;
+  if (TurboModuleRegistry.get("RNEdgeToEdge") != null) return true;
+  const deviceInfo = TurboModuleRegistry.get<{
+    getConstants?: () => { isEdgeToEdge?: boolean };
+  }>("DeviceInfo");
+  return deviceInfo?.getConstants?.()?.isEdgeToEdge === true;
+}
+
+const ANDROID_EDGE_TO_EDGE_NATIVE = isAndroidEdgeToEdgeNativelyEnabled();
+
 function RootLayoutContent() {
   const { colorScheme, palette } = useColorPalette();
-  const insets = useSafeAreaInsets();
+
+  React.useEffect(() => {
+    void SystemUI.setBackgroundColorAsync(hslToHex(palette.background)).catch(
+      () => {},
+    );
+    setAndroidNavigationBar(colorScheme === "dark" ? "dark" : "light");
+  }, [colorScheme, palette.background]);
 
   return (
-    <KeyboardProvider>
+    <KeyboardProvider
+      {...(!ANDROID_EDGE_TO_EDGE_NATIVE
+        ? { statusBarTranslucent: true, navigationBarTranslucent: true }
+        : {})}
+    >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <View
-          className={cn("flex-1 light dark:dark bg-background")}
-          style={{ paddingBottom: Platform.OS === "ios" ? 0 : insets.bottom }}
-        >
+        <View className={cn("flex-1 light dark:dark bg-background")}>
           <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
           <Stack
             screenOptions={{
