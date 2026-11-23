@@ -1,21 +1,34 @@
 import { useChatConfig } from "@/config/chat-config";
 import { ChatContext } from "@/contexts/ChatContext";
-import { ChatConfigProvider } from "@softsurgery/chat-materials/mobile";
+import {
+  ChatConfigProvider,
+  presentChatMessageNotification,
+} from "@softsurgery/chat-materials/mobile";
 import { NotificationContext } from "@/contexts/NotificationsContext";
 import { useChat, useChatPendingSync } from "api-client/hooks/chat";
 import { useLiveGeolocation } from "api-client/hooks/geolocation";
-import { useNotificationResponseNavigation, useColorPalette } from "@softsurgery/mobile-hooks";
+import { useColorPalette } from "@softsurgery/mobile-hooks";
 import { useNotifications } from "api-client/hooks/content/notification/useNotifications";
 import { useCheckHealth } from "api-client/hooks/content/useCheckHealth";
 import { useMobilePresence } from "@/hooks/content/users/useMobilePresence";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { Stack } from "expo-router";
-import { Notifications } from "@softsurgery/mobile-lib";
+import {
+  NotificationConfigProvider,
+  Notifications,
+  useNotificationResponseNavigation,
+  type NotificationConfig,
+} from "@softsurgery/notification-materials/mobile";
+import { useLayoutConfig } from "@/config/wrapper-config";
 import React from "react";
 import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "api-client/hooks/content/sessions/useActiveSessions";
 import { useQueryClient } from "@tanstack/react-query";
 import { NotificationType } from "api-client";
+import {
+  getChatNotificationDestination,
+  getNotificationDestination,
+} from "@/lib/notification-destination";
 
 if (Notifications) {
   Notifications.setNotificationHandler({
@@ -48,7 +61,13 @@ export default function MainLayout() {
   useNotificationResponseNavigation(authPersistStore.isAuthenticated);
 
   const chatConfig = useChatConfig();
-  const { count: chatCount, resetCount: resetChatCount } = useChat({});
+  const { count: chatCount, resetCount: resetChatCount } = useChat({
+    onIncomingMessageNotification: (input) =>
+      presentChatMessageNotification({
+        ...input,
+        getDestination: getChatNotificationDestination,
+      }),
+  });
   useChatPendingSync();
 
   const notificationConsequences = React.useMemo(
@@ -65,6 +84,11 @@ export default function MainLayout() {
       [NotificationType.REQUEST_REJECTED]: () => {
         queryClient.invalidateQueries({ queryKey: ["outgoing-requests"] });
       },
+      [NotificationType.REQUEST_CANCELLED]: () => {
+        queryClient.invalidateQueries({ queryKey: ["incoming-requests"] });
+        queryClient.invalidateQueries({ queryKey: ["outgoing-requests"] });
+        queryClient.invalidateQueries({ queryKey: ["request"] });
+      },
     }),
     [queryClient],
   );
@@ -75,6 +99,7 @@ export default function MainLayout() {
     resetCount: resetNotificationCount,
   } = useNotifications({
     consequences: notificationConsequences,
+    getDestination: getNotificationDestination,
   });
 
   const { mapSession, isSessionsPending } = useActiveSessions();
@@ -82,6 +107,20 @@ export default function MainLayout() {
   React.useEffect(() => {
     queryClient.invalidateQueries();
   }, []);
+
+  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
+  const notificationConfig = React.useMemo<NotificationConfig>(
+    () => ({
+      safeAreaClassNames,
+      applicationHeaderClassNames,
+      getNotificationDestination,
+      fallbackImageSource: require("@/assets/images/icon.png"),
+      typeImageSources: {
+        [NotificationType.NEW_SIGNIN]: require("@/assets/images/new-signin.png"),
+      },
+    }),
+    [safeAreaClassNames, applicationHeaderClassNames],
+  );
 
   return (
     <ActiveMapSessionContext.Provider
@@ -97,6 +136,7 @@ export default function MainLayout() {
           resetCount: resetNotificationCount,
         }}
       >
+        <NotificationConfigProvider value={notificationConfig}>
         <ChatContext.Provider
           value={{
             count: chatCount,
@@ -532,6 +572,7 @@ export default function MainLayout() {
           </Stack>
           </ChatConfigProvider>
         </ChatContext.Provider>
+        </NotificationConfigProvider>
       </NotificationContext.Provider>
     </ActiveMapSessionContext.Provider>
   );

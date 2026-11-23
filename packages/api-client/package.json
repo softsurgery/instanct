@@ -36,6 +36,7 @@
     "@softsurgery/form-builder": "workspace:*",
     "@softsurgery/hooks": "workspace:*",
     "@softsurgery/lib": "workspace:*",
+    "@softsurgery/notification-materials": "workspace:*",
     "axios": "^1.12.2"
   },
   "peerDependencies": {

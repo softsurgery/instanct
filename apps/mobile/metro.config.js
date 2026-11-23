@@ -21,6 +21,7 @@ config.watchFolders = [
   path.resolve(abstractionsRoot, "mobile-lib"),
   path.resolve(abstractionsRoot, "mobile-hooks"),
   path.resolve(abstractionsRoot, "chat-materials"),
+  path.resolve(abstractionsRoot, "notification-materials"),
 ];
 
 config.transformer = {
@@ -72,6 +73,10 @@ config.resolver = {
     "@softsurgery/chat-materials": path.resolve(
       abstractionsRoot,
       "chat-materials",
+    ),
+    "@softsurgery/notification-materials": path.resolve(
+      abstractionsRoot,
+      "notification-materials",
     ),
   },
   assetExts: config.resolver.assetExts.filter((ext) => ext !== "svg"),

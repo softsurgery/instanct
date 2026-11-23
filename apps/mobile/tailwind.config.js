@@ -8,6 +8,7 @@ module.exports = {
     "../../packages/softsurgery-abstractions/mobile-components/src/**/*.{ts,tsx}",
     "../../packages/softsurgery-abstractions/mobile-form-builder/src/**/*.{ts,tsx}",
     "../../packages/softsurgery-abstractions/chat-materials/src/mobile/**/*.{ts,tsx}",
+    "../../packages/softsurgery-abstractions/notification-materials/src/mobile/**/*.{ts,tsx}",
   ],
   presets: [require("nativewind/preset")],
   theme: {

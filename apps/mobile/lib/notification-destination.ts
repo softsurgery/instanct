@@ -2,17 +2,17 @@ import {
   NotificationType,
   type ResponseNotificationDto,
 } from "api-client";
-import type { NotificationDestination } from "@softsurgery/mobile-lib";
+import type { NotificationDestination } from "@softsurgery/notification-materials/mobile";
 
 export type {
   NotificationDestination,
   NotificationNavData,
-} from "@softsurgery/mobile-lib";
+} from "@softsurgery/notification-materials/mobile";
 export {
   destinationToNavData,
   navigateToNotificationDestination,
   parseNotificationNavData,
-} from "@softsurgery/mobile-lib";
+} from "@softsurgery/notification-materials/mobile";
 
 export function getNotificationDestination(
   notification: Pick<ResponseNotificationDto, "type" | "payload">,
@@ -33,6 +33,14 @@ export function getNotificationDestination(
         params: {
           id: String(notification.payload?.requestId ?? ""),
           isIncoming: "0",
+        },
+      };
+    case NotificationType.REQUEST_CANCELLED:
+      return {
+        pathname: "/main/request/answer",
+        params: {
+          id: String(notification.payload?.requestId ?? ""),
+          isIncoming: notification.payload?.isIncoming ? "1" : "0",
         },
       };
     case NotificationType.NEW_SIGNIN:

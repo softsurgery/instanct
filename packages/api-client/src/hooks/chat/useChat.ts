@@ -8,6 +8,8 @@ import { useApi } from "../context/ApiContext";
 import {
   MessageVariant,
   ResponseConversationDto,
+  ResponseMessageDto,
+  ResponseUserDto,
   StaticMessageEnum,
 } from "api-client";
 import { getSocket, type Socket } from "@softsurgery/lib";
@@ -15,8 +17,7 @@ import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import {
   createAndroidChannel,
   requestNotificationPermissions,
-} from "../lib/mobile/notification";
-import { presentChatMessageNotification } from "../lib/mobile/notification-chat";
+} from "@softsurgery/notification-materials/mobile/lib";
 import { useCurrentUser } from "../user-based/useCurrentUser";
 import {
   CONVERSATION_LIST_JOIN,
@@ -31,11 +32,20 @@ export const CONVERSATIONS_UNREAD_COUNT_QUERY_KEY = [
   "conversations-unread-count",
 ] as const;
 
+export interface ChatIncomingNotificationInput {
+  conversationId: number;
+  user?: ResponseUserDto | null;
+  message?: Pick<ResponseMessageDto, "content" | "variant" | "static"> | null;
+}
+
 interface useChatProps {
   search?: string;
   limit?: number;
   join?: string;
   enabled?: boolean;
+  onIncomingMessageNotification?: (
+    input: ChatIncomingNotificationInput,
+  ) => Promise<void> | void;
 }
 
 let chatSocketListenerCount = 0;
@@ -50,6 +60,7 @@ export const useChat = (
     limit = 20,
     join = CONVERSATION_LIST_JOIN,
     enabled = true,
+    onIncomingMessageNotification,
   }: useChatProps = {
     search: "",
     limit: 20,
@@ -157,7 +168,7 @@ export const useChat = (
         !isCurrentConversation &&
         !isOnChatPortal
       ) {
-        await presentChatMessageNotification({
+        await onIncomingMessageNotification?.({
           conversationId: conversation.id,
           user: sender,
           message: conversation.lastMessage ?? conversation.messages?.[0],
@@ -214,7 +225,7 @@ export const useChat = (
           (!updated.messages?.length && !!updated.lastMessage);
 
         if (shouldNotify) {
-          await presentChatMessageNotification({
+          await onIncomingMessageNotification?.({
             conversationId: updated.id,
             user,
             message: incomingMessage,

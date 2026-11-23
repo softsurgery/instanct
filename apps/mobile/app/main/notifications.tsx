@@ -1,5 +1,7 @@
-import { NotificationsPortal } from "@/components/notifications/NotificationPortal";
+import { NotificationsPortal } from "@softsurgery/notification-materials/mobile";
+import { useNotificationContext } from "@/contexts/NotificationsContext";
 
 export default function Screen() {
-  return <NotificationsPortal />;
+  const { resetCount } = useNotificationContext();
+  return <NotificationsPortal resetCount={resetCount} />;
 }

@@ -1,11 +1,11 @@
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import {
+  advanceNotificationWatermark,
   createAndroidChannel,
   presentLocalNotification,
   requestNotificationPermissions,
-} from "../../lib/mobile/notification";
-import { getNotificationDestination } from "../../lib/mobile/notification-destination";
-import { advanceNotificationWatermark } from "../../lib/notification-watermark";
+  type NotificationDestination,
+} from "@softsurgery/notification-materials/mobile/lib";
 import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import { stringUtils } from "@softsurgery/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,6 +21,9 @@ export const NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY = [
 interface useNotificationsProps {
   enabled?: boolean;
   consequences?: Record<NotificationType, (...args: any[]) => void>;
+  getDestination?: (
+    notification: ResponseNotificationDto,
+  ) => NotificationDestination | null;
 }
 
 export interface UseNotificationsResult {
@@ -30,7 +33,9 @@ export interface UseNotificationsResult {
 }
 
 export function useNotifications(
-  { enabled = true, consequences }: useNotificationsProps = { enabled: true },
+  { enabled = true, consequences, getDestination }: useNotificationsProps = {
+    enabled: true,
+  },
 ): UseNotificationsResult {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -83,7 +88,7 @@ export function useNotifications(
 
       consequences?.[notification.type]?.(notification);
 
-      const destination = getNotificationDestination(notification);
+      const destination = getDestination?.(notification) ?? null;
       await presentLocalNotification({
         title: stringUtils.sanitizeText(
           t(`titles.${notification.type}`, notification.payload).toString(),

@@ -20,7 +20,7 @@ import {
   createAndroidChannel,
   presentLocalNotification,
   requestNotificationPermissions,
-} from "@softsurgery/mobile-lib";
+} from "@softsurgery/notification-materials/mobile";
 import { getNotificationDestination } from "@/lib/notification-destination";
 import i18n from "@/i18n";
 
