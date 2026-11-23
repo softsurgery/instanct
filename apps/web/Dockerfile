@@ -36,6 +36,7 @@ COPY packages/softsurgery-abstractions/mobile-form-builder/package.json ./packag
 COPY packages/softsurgery-abstractions/mobile-hooks/package.json ./packages/softsurgery-abstractions/mobile-hooks/package.json
 COPY packages/softsurgery-abstractions/mobile-lib/package.json ./packages/softsurgery-abstractions/mobile-lib/package.json
 COPY packages/softsurgery-abstractions/mobile-ui/package.json ./packages/softsurgery-abstractions/mobile-ui/package.json
+COPY packages/softsurgery-abstractions/notification-materials/package.json ./packages/softsurgery-abstractions/notification-materials/package.json
 
 RUN pnpm install --frozen-lockfile --filter instanct-ui... --ignore-scripts
 
@@ -59,6 +60,7 @@ COPY packages/softsurgery-abstractions/mobile-form-builder ./packages/softsurger
 COPY packages/softsurgery-abstractions/mobile-hooks ./packages/softsurgery-abstractions/mobile-hooks
 COPY packages/softsurgery-abstractions/mobile-lib ./packages/softsurgery-abstractions/mobile-lib
 COPY packages/softsurgery-abstractions/mobile-ui ./packages/softsurgery-abstractions/mobile-ui
+COPY packages/softsurgery-abstractions/notification-materials ./packages/softsurgery-abstractions/notification-materials
 
 ENV npm_config_ignore_scripts=true
 

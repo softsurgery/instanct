@@ -34,6 +34,7 @@ COPY packages/softsurgery-abstractions/mobile-form-builder/package.json ./packag
 COPY packages/softsurgery-abstractions/mobile-hooks/package.json ./packages/softsurgery-abstractions/mobile-hooks/package.json
 COPY packages/softsurgery-abstractions/mobile-lib/package.json ./packages/softsurgery-abstractions/mobile-lib/package.json
 COPY packages/softsurgery-abstractions/mobile-ui/package.json ./packages/softsurgery-abstractions/mobile-ui/package.json
+COPY packages/softsurgery-abstractions/notification-materials/package.json ./packages/softsurgery-abstractions/notification-materials/package.json
 COPY packages/softsurgery-abstractions/typescript-config ./packages/softsurgery-abstractions/typescript-config
 COPY packages/softsurgery-abstractions/ui/package.json ./packages/softsurgery-abstractions/ui/package.json
 
@@ -52,6 +53,7 @@ COPY packages/softsurgery-abstractions/mobile-form-builder ./packages/softsurger
 COPY packages/softsurgery-abstractions/mobile-hooks ./packages/softsurgery-abstractions/mobile-hooks
 COPY packages/softsurgery-abstractions/mobile-lib ./packages/softsurgery-abstractions/mobile-lib
 COPY packages/softsurgery-abstractions/mobile-ui ./packages/softsurgery-abstractions/mobile-ui
+COPY packages/softsurgery-abstractions/notification-materials ./packages/softsurgery-abstractions/notification-materials
 
 # Copy mobile app source
 COPY apps/mobile ./apps/mobile
