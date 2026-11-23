@@ -2,14 +2,20 @@ import React, { forwardRef } from "react";
 import { Pressable, View } from "react-native";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import { useRouter } from "expo-router";
-import { formatDistanceToNow } from "date-fns";
-import { MapPin, MessageCircle, Send, UserRound } from "lucide-react-native";
+import {
+  Bookmark,
+  MapPin,
+  MessageCircle,
+  Send,
+  UserRound,
+} from "lucide-react-native";
 import { ThreeDotsActionSheet } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { useStartConversation } from "api-client/hooks/chat";
+import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
 import { resolveRefLabel } from "api-client";
 import { useTranslation } from "react-i18next";
 
@@ -51,6 +57,11 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
       },
     });
 
+    const { isBookmarked, toggleBookmark } = useBookmarkActions({
+      bookmarkId: targetUserId ?? "",
+      enabled: !!targetUserId,
+    });
+
     const subtitle = React.useMemo(() => {
       if (!user) return "";
       const parts: string[] = [];
@@ -90,6 +101,12 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
       });
     }, [router, targetUserId]);
 
+    const canLocateOnMap = Boolean(
+      user?.coordinatesVisible &&
+      user?.latitude != null &&
+      user?.longitude != null,
+    );
+
     const handleShow = React.useCallback(() => {
       if (user?.latitude != null && user?.longitude != null) {
         onShowOnMap(user.latitude, user.longitude);
@@ -110,10 +127,19 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
           onPress: handleSendMessage,
         },
         {
-          label: "Show on Map",
-          icon: MapPin,
-          onPress: handleShow,
+          label: isBookmarked ? "Remove Bookmark" : "Bookmark",
+          icon: Bookmark,
+          onPress: toggleBookmark,
         },
+        ...(canLocateOnMap
+          ? [
+              {
+                label: "Locate on Map",
+                icon: MapPin,
+                onPress: handleShow,
+              },
+            ]
+          : []),
         {
           label: "View Profile",
           icon: UserRound,
@@ -124,6 +150,9 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
         handleSendRequest,
         handleSendMessage,
         isStartingConversation,
+        isBookmarked,
+        toggleBookmark,
+        canLocateOnMap,
         handleShow,
         handleInspectProfile,
       ],
@@ -159,37 +188,18 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
                     {identification}
                   </Text>
                   <View className="flex-row items-center gap-1.5 mt-0.5">
-                    {user.isOnline ? (
-                      <Text className="text-xs font-semibold text-emerald-600">
-                        Online
-                      </Text>
-                    ) : (
-                      <Text className="text-xs text-muted-foreground">
-                        {user.updatedAt
-                          ? `Last active ${formatDistanceToNow(
-                              new Date(user.updatedAt),
-                              { addSuffix: true },
-                            )}`
-                          : "Offline"}
-                      </Text>
-                    )}
                     {user.distance != null && (
-                      <>
-                        <Text className="text-xs text-muted-foreground">•</Text>
-                        <Text className="text-xs text-muted-foreground">
-                          {user.distance.toFixed(2)} km away
-                        </Text>
-                      </>
+                      <Text className="text-xs text-muted-foreground">
+                        {user.distance.toFixed(2)} km away
+                      </Text>
                     )}
                   </View>
-                  {!!subtitle && (
-                    <Text
-                      numberOfLines={1}
-                      className="mt-0.5 text-xs text-muted-foreground"
-                    >
-                      {subtitle}
-                    </Text>
-                  )}
+                  <Text
+                    numberOfLines={1}
+                    className="mt-0.5 text-xs text-muted-foreground"
+                  >
+                    {user.user?.email}
+                  </Text>
                 </View>
               </View>
             </Pressable>

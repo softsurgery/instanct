@@ -432,14 +432,16 @@ export const MapRenderer = ({
           <UsersCarousel
             users={mapStore.nearbyUsers}
             className="rounded-full"
-            onUserPress={(user) => {
-              if (
-                user.coordinatesVisible &&
-                user.latitude != null &&
-                user.longitude != null
-              ) {
-                handleMarkerPress(user.latitude, user.longitude, user.userId);
-              }
+            onUserPress={(nearbyUser: NearbyUser) => {
+              const fullUser = mapStore.users.find(
+                (u) => u.id === nearbyUser.userId,
+              );
+              setSelectedUser({
+                ...nearbyUser,
+                user: fullUser ?? nearbyUser.user,
+              });
+              clusterSheetRef.current?.hide();
+              singleUserSheetRef.current?.show();
             }}
           />
         </View>

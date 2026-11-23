@@ -23,21 +23,21 @@ export const UserCarouselEntry = ({
   );
   const nearbyUser = React.useMemo(
     () => mapStore.getNearbyUserById(userId),
-    [userId],
+    [userId, mapStore.nearbyUsers],
   );
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
   const { jsxArray: profilePictures } = useRNServerImages({
     ids: [user?.pictureId],
     fallbacks: [fallback],
     className: "rounded-full",
-    wrapperClassName: "border-2 border-white bg-white rounded-full shadow-md",
+    wrapperClassName: "rounded-full overflow-hidden",
     size: { width: 50, height: 50 },
   });
 
   return (
     <Pressable
       className={cn(className)}
-      onPress={() => onPress?.({ ...nearbyUser, user })}
+      onPress={() => onPress?.({ ...nearbyUser, userId, user })}
     >
       {profilePictures[0]}
     </Pressable>
