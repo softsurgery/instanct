@@ -4,7 +4,7 @@ import { identifyUserAvatar } from "@/lib/user";
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import React from "react";
-import { Animated, View } from "react-native";
+import { Animated, Platform, View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 
@@ -24,6 +24,7 @@ export const UserMarker = ({
   const width = 40;
   const height = 40;
   const activeBackgroundColor = "rgba(34,197,94,0.8)";
+  const isAndroid = Platform.OS === "android";
 
   const mapStore = useMapStore();
   const { user } = useIdentifiedUser({ id: userId });
@@ -43,8 +44,10 @@ export const UserMarker = ({
     size: { width, height },
   });
 
-  //pulse animation
-  const { scale, opacity } = usePulseAnimation({ active: isOnline });
+  // Pulse animation (iOS only — Android renders markers as static ViewShot bitmaps)
+  const { scale, opacity } = usePulseAnimation({
+    active: Boolean(isOnline) && !isAndroid,
+  });
 
   const onlinePulseBlock = React.useMemo(() => {
     return (
@@ -68,8 +71,8 @@ export const UserMarker = ({
       pointerEvents="none"
     >
       <View>
-        {/* Online pulsing highlight */}
-        {isOnline ? onlinePulseBlock : null}
+        {/* Online pulsing highlight (iOS only; Android uses AnimatedMarker in MapRenderer) */}
+        {isOnline && !isAndroid ? onlinePulseBlock : null}
         {/* Avatar */}
         <View
           style={{

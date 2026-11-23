@@ -11,9 +11,10 @@ import { Marker, Region } from "react-native-maps";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
 import {
   useColorPalette,
+  usePulseAnimation,
   useScreenOrientation,
 } from "@softsurgery/mobile-hooks";
-import { MarkerCaptureLayer } from "./AndroidMarker";
+import { AndroidPulseOverlay, MarkerCaptureLayer } from "./AndroidMarker";
 import { UsersCarousel } from "./UserCarousel/UsersCarousel";
 import { UserMarker } from "./UserMarker";
 import { SingleUserSheet } from "./SingleUserSheet";
@@ -68,7 +69,9 @@ export const MapRenderer = ({
   const isAndroid = Platform.OS === "android";
 
   const handleMarkerCapture = React.useCallback((id: string, uri: string) => {
-    setMarkerImages((prev) => ({ ...prev, [id]: uri }));
+    setMarkerImages((prev) =>
+      prev[id] === uri ? prev : { ...prev, [id]: uri },
+    );
   }, []);
 
   const nearbyUsersAndMyself = React.useMemo(() => {
@@ -206,26 +209,83 @@ export const MapRenderer = ({
     setClusterUsers(null);
   };
 
+  const unclusteredIdsRef = React.useRef<Set<string> | null>(null);
+
+  const handleMarkersChange = React.useCallback((markers: any[] = []) => {
+    const ids = new Set<string>();
+    for (const m of markers) {
+      if (m?.properties?.point_count === 0 && m?.properties?.id) {
+        ids.add(m.properties.id);
+      }
+    }
+    unclusteredIdsRef.current = ids;
+  }, []);
+
+  const resolvePulsePoints = React.useCallback(async () => {
+    const map = mapRef.current as any;
+    if (!map || typeof map.pointForCoordinate !== "function") return [];
+
+    const onlineUsers = nearbyUsersAndMyself.filter(
+      (u) =>
+        u.isOnline &&
+        u.latitude != null &&
+        u.longitude != null &&
+        (unclusteredIdsRef.current === null ||
+          unclusteredIdsRef.current.has(u.userId)),
+    );
+
+    return Promise.all(
+      onlineUsers.map(async (u) => {
+        const pt = await map.pointForCoordinate({
+          latitude: u.latitude!,
+          longitude: u.longitude!,
+        });
+        return { id: u.userId, x: pt.x, y: pt.y };
+      }),
+    );
+  }, [nearbyUsersAndMyself]);
+
+  const androidPulse = usePulseAnimation({
+    active: isAndroid,
+    maxOpacity: 0.75,
+    resolvePoints: isAndroid ? resolvePulsePoints : undefined,
+  });
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleRegionChange = React.useCallback(
+  const handleRegionChangeThrottled = React.useCallback(
     _.throttle((region: Region) => {
       setCurrentRegion(region);
     }, 250),
     [],
   );
 
+  const handleRegionChange = React.useCallback(
+    (region: Region) => {
+      androidPulse.pause();
+      handleRegionChangeThrottled(region);
+    },
+    [androidPulse.pause, handleRegionChangeThrottled],
+  );
+
   if (!currentUser || isPending) return <ActivityIndicator />;
 
-  const markerCaptureItems = nearbyUsersAndMyself.map((u) => ({
-    id: u.userId,
-    content: (
-      <UserMarker
-        userId={u.userId}
-        isOnline={u.isOnline}
-        isCurrentUser={u.userId === currentUser?.id}
-      />
-    ),
-  }));
+  const markerCaptureItems = isAndroid
+    ? nearbyUsersAndMyself.map((u) => {
+        const storeUser = mapStore.users.find((user) => user.id === u.userId);
+        const isSelf = u.userId === currentUser?.id;
+        return {
+          id: u.userId,
+          captureKey: `${u.isOnline ? 1 : 0}-${isSelf ? 1 : 0}-${mapStore.settings.showUsernames ? 1 : 0}-${storeUser?.pictureId ?? ""}-${storeUser?.username ?? ""}`,
+          content: (
+            <UserMarker
+              userId={u.userId}
+              isOnline={u.isOnline}
+              isCurrentUser={isSelf}
+            />
+          ),
+        };
+      })
+    : [];
 
   return (
     <View className={cn("flex-1", className)}>
@@ -249,7 +309,10 @@ export const MapRenderer = ({
         customMapStyle={
           colorScheme === "dark" ? AndroidDarkMapStyle : undefined
         }
+        onMapReady={androidPulse.syncPoints}
         onRegionChange={handleRegionChange}
+        onRegionChangeComplete={androidPulse.resume}
+        onMarkersChange={handleMarkersChange}
         showsCompass={false}
         mapType={mapStore.settings.mode === "map" ? "standard" : "satellite"}
         clusteringEnabled={true}
@@ -316,6 +379,14 @@ export const MapRenderer = ({
           </Marker>
         ))}
       </MapView>
+      {/* Android: 60fps native-driver pulse overlay synced to map coordinates */}
+      <AndroidPulseOverlay
+        points={androidPulse.points}
+        scale={androidPulse.scale}
+        opacity={androidPulse.opacity}
+        visible={!androidPulse.isPaused}
+        yOffset={mapStore.settings.showUsernames ? -14 : 0}
+      />
       {/* Single User Modal using ThreeDotsActionSheet */}
       <SingleUserSheet
         ref={singleUserSheetRef}
