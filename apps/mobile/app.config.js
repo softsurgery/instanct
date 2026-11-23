@@ -80,6 +80,7 @@ export default ({ config }) => ({
     softwareKeyboardLayoutMode: "pan",
     predictiveBackGestureEnabled: false,
     package: "com.instanct.instanctma",
+    googleServicesFile: "../../env/google-services.json",
     versionCode: 1,
   },
 
@@ -177,5 +178,6 @@ export default ({ config }) => ({
 
   extra: {
     router: {},
-  },
+    eas: { projectId: "aaee4983-0da0-46f6-91d8-44bd838cc6ed" }
+  }
 });

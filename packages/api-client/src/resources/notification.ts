@@ -63,6 +63,28 @@ export function createNotificationResource(http: AxiosInstance) {
     return response.data;
   };
 
+  const registerPushToken = async (payload: {
+    token: string;
+    platform?: string;
+    deviceName?: string;
+  }): Promise<{ success: boolean }> => {
+    const response = await http.post<{ success: boolean }>(
+      `/notification/push-token`,
+      payload,
+    );
+    return response.data;
+  };
+
+  const unregisterPushToken = async (
+    token: string,
+  ): Promise<{ success: boolean }> => {
+    const response = await http.delete<{ success: boolean }>(
+      `/notification/push-token`,
+      { data: { token } },
+    );
+    return response.data;
+  };
+
   return {
     findPaginated,
     findPaginatedByUser,
@@ -71,6 +93,8 @@ export function createNotificationResource(http: AxiosInstance) {
     getUnreadCount,
     markAllAsRead,
     testNotify,
+    registerPushToken,
+    unregisterPushToken,
   };
 }
 

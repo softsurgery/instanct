@@ -2,6 +2,9 @@ import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import {
   advanceNotificationWatermark,
   createAndroidChannel,
+  getExpoPushToken,
+  getPushDeviceName,
+  Notifications,
   presentLocalNotification,
   requestNotificationPermissions,
   type NotificationDestination,
@@ -10,6 +13,7 @@ import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import { stringUtils } from "@softsurgery/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import { Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useApi } from "../../context/ApiContext";
 import { NotificationType, ResponseNotificationDto } from "api-client";
@@ -61,11 +65,45 @@ export function useNotifications(
   });
 
   React.useEffect(() => {
+    if (!enabled || !isAuthenticated) return;
+
+    let cancelled = false;
     (async () => {
       await requestNotificationPermissions();
       await createAndroidChannel();
+      const token = await getExpoPushToken();
+      if (!cancelled && token) {
+        try {
+          await api.notification.registerPushToken({
+            token,
+            platform: Platform.OS,
+            deviceName: getPushDeviceName(),
+          });
+        } catch (error) {
+          console.warn("[notif] failed to register push token:", error);
+        }
+      }
     })();
-  }, []);
+
+    const tokenSub = Notifications?.addPushTokenListener?.(() => {
+      void getExpoPushToken().then((refreshedToken) => {
+        if (!cancelled && refreshedToken) {
+          void api.notification
+            .registerPushToken({
+              token: refreshedToken,
+              platform: Platform.OS,
+              deviceName: getPushDeviceName(),
+            })
+            .catch(() => {});
+        }
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      tokenSub?.remove?.();
+    };
+  }, [api.notification, enabled, isAuthenticated]);
 
   React.useEffect(() => {
     const socket = getSocket("notifications", {
