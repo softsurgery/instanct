@@ -11,6 +11,33 @@ interface RequestBannerProps {
   isIncoming?: boolean;
 }
 
+const BANNER_CONFIG = {
+  [RequestStatus.Accepted]: {
+    icon: Calendar,
+    containerClass: "border-emerald-500/25 bg-emerald-500/10",
+    textClass: "text-emerald-600 dark:text-emerald-400",
+    messageKey: "activities.request.banners.accepted",
+  },
+  [RequestStatus.Rejected]: {
+    icon: XCircle,
+    containerClass: "border-destructive/20 bg-destructive/10",
+    textClass: "text-destructive",
+    messageKey: "activities.request.banners.rejected",
+  },
+  [RequestStatus.Cancelled]: {
+    icon: XCircle,
+    containerClass: "border-destructive/20 bg-destructive/10",
+    textClass: "text-destructive",
+    messageKey: "activities.request.banners.cancelled",
+  },
+  [RequestStatus.Sent]: {
+    icon: Clock3,
+    containerClass: "border-border bg-muted",
+    textClass: "text-muted-foreground",
+    messageKey: "activities.outgoing.request.banners.pending",
+  },
+} as const;
+
 export const RequestBanner = ({
   status,
   className,
@@ -18,58 +45,24 @@ export const RequestBanner = ({
 }: RequestBannerProps) => {
   const { t } = useTranslation("activities");
 
-  const isPendingStatus =
-    status !== undefined &&
-    status !== RequestStatus.Accepted &&
-    status !== RequestStatus.Rejected;
+  if (!status) return null;
+  if (status === RequestStatus.Sent && isIncoming) return null;
 
-  if (status === RequestStatus.Accepted) {
-    return (
-      <View
-        className={cn(
-          "flex-row items-center gap-2.5 rounded-xl border border-primary/20 bg-primary/10 p-3.5",
-          className,
-        )}
-      >
-        <Icon as={Calendar} size={18} className="text-primary" />
-        <Text className="flex-1 text-sm text-primary">
-          {t("activities.request.banners.accepted")}
-        </Text>
-      </View>
-    );
-  }
+  const config = BANNER_CONFIG[status as keyof typeof BANNER_CONFIG];
+  if (!config) return null;
 
-  if (status === RequestStatus.Rejected) {
-    return (
-      <View
-        className={cn(
-          "flex-row items-center gap-2.5 rounded-xl border border-destructive/20 bg-destructive/10 p-3.5",
-          className,
-        )}
-      >
-        <Icon as={XCircle} size={18} className="text-destructive" />
-        <Text className="flex-1 text-sm text-destructive">
-          {t("activities.request.banners.rejected")}
-        </Text>
-      </View>
-    );
-  }
-
-  if (isPendingStatus && !isIncoming) {
-    return (
-      <View
-        className={cn(
-          "flex-row items-center gap-2.5 rounded-xl border border-border bg-muted p-3.5",
-          className,
-        )}
-      >
-        <Icon as={Clock3} size={18} className="text-muted-foreground" />
-        <Text className="flex-1 text-sm text-muted-foreground">
-          {t("activities.outgoing.request.banners.pending")}
-        </Text>
-      </View>
-    );
-  }
-
-  return null;
+  return (
+    <View
+      className={cn(
+        "flex-row items-center gap-2.5 rounded-xl border p-3.5",
+        config.containerClass,
+        className,
+      )}
+    >
+      <Icon as={config.icon} size={18} className={config.textClass} />
+      <Text className={cn("flex-1 text-sm", config.textClass)}>
+        {t(config.messageKey)}
+      </Text>
+    </View>
+  );
 };

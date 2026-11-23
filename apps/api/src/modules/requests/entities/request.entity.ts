@@ -65,4 +65,7 @@ export class RequestEntity extends EntityHelper {
 
   @Column({ type: 'timestamp', nullable: true })
   time?: Date;
+
+  @Column({ type: 'text', nullable: true })
+  cancelReason?: string;
 }

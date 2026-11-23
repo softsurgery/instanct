@@ -1,5 +1,9 @@
 import { AbstractWorkflowService } from '@softsurgery/nsa-workflows/services/workflow.service';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { RequestStatus } from '../enums/request-status.enum';
 import { RequestEvent } from '../enums/request-event.enum';
 import { RequestService } from './request.service';
@@ -22,13 +26,30 @@ export class RequestWorkflowService extends AbstractWorkflowService<
     };
   }
 
-  async next(id: number, event: RequestEvent) {
-    const request = await this.requestService.findOneById(id);
+  async next(id: number, event: RequestEvent, cancelReason?: string) {
+    const request = await this.requestService.findOneById(id, 'session');
     if (!request) {
-      throw new Error(`Request with id ${id} not found`);
+      throw new NotFoundException(`Request with id ${id} not found`);
     }
-    const newStatus = this.transition(request?.status, event);
-    await this.requestService.save({ id: request?.id, status: newStatus });
+
+    const session = request.session;
+    const isArchived =
+      Boolean(session?.ended) ||
+      (session?.plannedEnd
+        ? new Date(session.plannedEnd) <= new Date()
+        : false);
+    if (isArchived) {
+      throw new BadRequestException(
+        'Cannot update a request for an archived session',
+      );
+    }
+
+    const newStatus = this.transition(request.status, event);
+    await this.requestService.save({
+      id: request.id,
+      status: newStatus,
+      cancelReason,
+    });
     return this.findOneById(id);
   }
 }

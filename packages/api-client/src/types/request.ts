@@ -5,12 +5,14 @@ import type { DatabaseEntity } from "./utils/database-entity";
 export enum RequestEvent {
   Accept = "Accept",
   Reject = "Reject",
+  Cancel = "Cancel",
 }
 
 export enum RequestStatus {
   Sent = "Sent",
   Accepted = "Accepted",
   Rejected = "Rejected",
+  Cancelled = "Cancelled",
   Expired = "Expired",
 }
 
@@ -25,6 +27,7 @@ export interface ResponseRequestDto extends DatabaseEntity {
   latitude?: number;
   longitude?: number;
   time?: Date;
+  cancelReason?: string;
 }
 
 export interface ResponseRequestWorkflowDto {
@@ -39,10 +42,12 @@ export interface CreateRequestDto {
   latitude?: number;
   longitude?: number;
   time?: Date;
+  cancelReason?: string;
 }
 
 export interface UpdateRequestStatusDto {
   event: RequestEvent;
+  cancelReason?: string;
 }
 
 export type UpdateRequestDto = Partial<CreateRequestDto>;

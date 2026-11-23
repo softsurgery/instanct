@@ -6,6 +6,7 @@
     "REQUEST_RECEIVED": "New Request Received",
     "REQUEST_ACCEPTED": "Your request has been accepted",
     "REQUEST_REJECTED": "Your request has been rejected",
+    "REQUEST_CANCELLED": "Request cancelled",
     "fallback": "Notification"
   },
   "descriptions": {
@@ -15,6 +16,7 @@
     "REQUEST_RECEIVED": "You have received a new request from {{senderIdentification}}. Click to view the request details and respond.",
     "REQUEST_ACCEPTED": "{{responderIdentification}} has accepted your request. You can now connect and start collaborating!",
     "REQUEST_REJECTED": "{{responderIdentification}} has rejected your request. Don't worry",
+    "REQUEST_CANCELLED": "{{responderIdentification}} has canceled the request. Tap to see reason",
     "fallback": "You have a new notification"
   },
   "screens": {

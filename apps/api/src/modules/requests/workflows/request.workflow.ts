@@ -3,7 +3,7 @@ import { setup } from 'xstate';
 export const requestMachine = setup({
   types: {
     context: {},
-    events: {} as { type: 'Accept' } | { type: 'Reject' },
+    events: {} as { type: 'Accept' } | { type: 'Reject' } | { type: 'Cancel' },
   },
 }).createMachine({
   context: {},
@@ -18,12 +18,22 @@ export const requestMachine = setup({
         Reject: {
           target: 'Rejected',
         },
+        Cancel: {
+          target: 'Cancelled',
+        },
       },
     },
     Accepted: {
-      type: 'final',
+      on: {
+        Cancel: {
+          target: 'Cancelled',
+        },
+      },
     },
     Rejected: {
+      type: 'final',
+    },
+    Cancelled: {
       type: 'final',
     },
     Expired: {

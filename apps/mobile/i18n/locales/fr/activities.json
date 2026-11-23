@@ -35,21 +35,31 @@
     },
     "request": {
       "title": "Détails de la réunion",
+      "status": {
+        "accepted": "Acceptée",
+        "rejected": "Refusée",
+        "cancelled": "Annulée",
+        "sent": "En attente",
+        "expired": "Expirée"
+      },
       "labels": {
         "message": "Message",
-        "dateTime": "Date et heure"
+        "dateTime": "Date et heure",
+        "cancelReason": "Raison de l'annulation"
       },
       "placeholders": {
         "message": "Aucune description fournie",
         "dateTime": "Non spécifié",
-        "location": "Non spécifié"
+        "location": "Non spécifié",
+        "cancelReason": "Expliquez la raison de l'annulation..."
       },
       "location": {
         "updating": "Mise à jour du lieu..."
       },
       "banners": {
         "accepted": "Cette réunion a été ajoutée à votre programme.",
-        "rejected": "Cette demande de réunion a été refusée."
+        "rejected": "Cette demande de réunion a été refusée.",
+        "cancelled": "Cette demande de réunion a été annulée."
       },
       "actions": {
         "contact": "Contacter",
@@ -67,6 +77,7 @@
       "toasts": {
         "locationUpdated": "Lieu mis à jour",
         "locationError": "Impossible de mettre à jour le lieu",
+        "cancelled": "Demande annulée",
         "error": "Une erreur est survenue. Veuillez réessayer."
       }
     },

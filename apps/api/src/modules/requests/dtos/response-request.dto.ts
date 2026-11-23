@@ -47,4 +47,8 @@ export class ResponseRequestDto extends ResponseDtoHelper {
   @ApiProperty({ type: Date, nullable: true })
   @Expose()
   time?: Date;
+
+  @ApiProperty({ type: String, nullable: true })
+  @Expose()
+  cancelReason?: string;
 }

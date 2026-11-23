@@ -20,6 +20,7 @@ const statusColorMap: Record<string, string> = {
   [RequestStatus.Sent]: "#fbbf24",
   [RequestStatus.Accepted]: "#34d399",
   [RequestStatus.Rejected]: "#f87171",
+  [RequestStatus.Cancelled]: "#f87171",
 };
 
 export const SessionRequestCard: React.FC<SessionRequestCardProps> = ({

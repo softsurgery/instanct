@@ -6,6 +6,7 @@
     "REQUEST_RECEIVED": "تم استلام طلب جديد",
     "REQUEST_ACCEPTED": "تم قبول طلبك",
     "REQUEST_REJECTED": "تم رفض طلبك",
+    "REQUEST_CANCELLED": "تم إلغاء الطلب",
     "fallback": "إشعار"
   },
   "descriptions": {
@@ -15,6 +16,7 @@
     "REQUEST_RECEIVED": "لقد تلقيت طلبًا جديدًا من {{senderIdentification}}. انقر لعرض تفاصيل الطلب والرد عليه.",
     "REQUEST_ACCEPTED": "{{responderIdentification}} قد قبل طلبك. يمكنك الآن الاتصال والبدء في التعاون!",
     "REQUEST_REJECTED": "{{responderIdentification}} قد رفض طلبك. لا تقلق",
+    "REQUEST_CANCELLED": "قام {{responderIdentification}} بإلغاء الطلب. اضغط لمعرفة السبب",
     "fallback": "لديك إشعار جديد"
   }
 }

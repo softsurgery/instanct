@@ -56,6 +56,7 @@ export class RequestWorkflowController {
   @Post(':id/next')
   @BatchNotify(NotificationType.REQUEST_ACCEPTED)
   @BatchNotify(NotificationType.REQUEST_REJECTED)
+  @BatchNotify(NotificationType.REQUEST_CANCELLED)
   async next(
     @Param('id') id: number,
     @Body() updateRequestStatusDto: UpdateRequestStatusDto,
@@ -64,45 +65,69 @@ export class RequestWorkflowController {
     const updatedRequest = await this.requestWorkflowService.next(
       id,
       updateRequestStatusDto.event,
+      updateRequestStatusDto.cancelReason,
     );
 
-    const request = await this.requestService.findOneById(id, 'session.user');
+    const request = await this.requestService.findOneById(
+      id,
+      'session.user,receivers',
+    );
     const currentUser = (await this.userService.findOneById(
       req.user!.sub,
     )) as UserEntity;
     const senderId = request?.session?.user?.id;
+    const isSender = senderId === req.user!.sub;
+    const recipientIds = isSender
+      ? (request?.receivers?.map((receiver) => receiver.id) ?? []).filter(
+          (uid) => uid !== req.user!.sub,
+        )
+      : senderId
+        ? [senderId]
+        : [];
 
-    if (senderId) {
-      const isAccepted = updateRequestStatusDto.event === RequestEvent.Accept;
-      const notificationType = isAccepted
-        ? NotificationType.REQUEST_ACCEPTED
-        : NotificationType.REQUEST_REJECTED;
+    const eventMap: Record<
+      RequestEvent,
+      { notificationType: NotificationType; logEvent: EventType }
+    > = {
+      [RequestEvent.Accept]: {
+        notificationType: NotificationType.REQUEST_ACCEPTED,
+        logEvent: EventType.REQUEST_ACCEPTED,
+      },
+      [RequestEvent.Reject]: {
+        notificationType: NotificationType.REQUEST_REJECTED,
+        logEvent: EventType.REQUEST_REJECTED,
+      },
+      [RequestEvent.Cancel]: {
+        notificationType: NotificationType.REQUEST_CANCELLED,
+        logEvent: EventType.REQUEST_CANCELLED,
+      },
+    };
 
-      req.logEvent = isAccepted
-        ? EventType.REQUEST_ACCEPTED
-        : EventType.REQUEST_REJECTED;
+    const { notificationType, logEvent } =
+      eventMap[updateRequestStatusDto.event];
 
-      req.logInfo = {
-        requestId: id,
-        senderId,
-        senderName: identifyUser(request?.session?.user),
-      };
+    req.logEvent = logEvent;
+    req.logInfo = {
+      requestId: id,
+      senderId,
+      senderName: identifyUser(request?.session?.user),
+    };
 
+    if (recipientIds.length > 0) {
       req.batchNotificationInfo = [
         {
           type: notificationType,
-          entries: [
-            {
-              userId: senderId,
-              payload: {
-                requestId: id,
-                responderId: req.user!.sub,
-                responderIdentification: identifyUser(currentUser),
-                pictureId: currentUser?.pictureId,
-                event: updateRequestStatusDto.event,
-              },
+          entries: recipientIds.map((userId) => ({
+            userId,
+            payload: {
+              requestId: id,
+              responderId: req.user!.sub,
+              responderIdentification: identifyUser(currentUser),
+              pictureId: currentUser?.pictureId,
+              event: updateRequestStatusDto.event,
+              isIncoming: isSender,
             },
-          ],
+          })),
         },
       ];
     }

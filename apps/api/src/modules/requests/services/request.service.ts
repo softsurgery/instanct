@@ -6,7 +6,7 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { SchedulerRegistry } from '@nestjs/schedule';
+import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import { AbstractCrudService } from '@softsurgery/nsa-database';
 import { SessionEntity } from '@softsurgery/nsa-sessions/entities/session.entity';
 import { SessionRepository } from '@softsurgery/nsa-sessions/repositories/session.repository';
@@ -248,7 +248,8 @@ export class RequestService
     return updated;
   }
 
-  private async expireStaleRequests(): Promise<void> {
+  @Cron(CronExpression.EVERY_MINUTE)
+  async expireStaleRequests(): Promise<void> {
     const now = new Date();
     const expiredCount =
       await this.requestRepository.expireSentRequestsForEndedSessions(now);
@@ -281,6 +282,12 @@ export class RequestService
     const delay = session.plannedEnd.getTime() - Date.now();
     if (delay <= 0) {
       void this.expireSentRequestsForSession(session.id);
+      return;
+    }
+
+    // Node's setTimeout overflows 32-bit signed ints (> ~24.8 days) and fires immediately;
+    // the @Cron(EVERY_MINUTE) job handles long-dated sessions once they end.
+    if (delay > 2_147_483_647) {
       return;
     }
 

@@ -1,20 +1,23 @@
 import React from "react";
-import { useApi } from "api-client/hooks";
+import { useApi, useIdentifiedUser } from "api-client/hooks";
 import {
-  ApplicationHeader,
-  StableSafeAreaView,
-  StableScrollView,
-  Loader,
   AppHeaderBack,
+  ApplicationHeader,
   BottomButtonWrapper,
   DestructiveActionSheet,
+  Loader,
+  SeeMoreText,
+  StableSafeAreaView,
+  StableScrollView,
 } from "@softsurgery/mobile-components";
-import { Button, Icon, Text } from "@softsurgery/mobile-ui";
-import { cn } from "@softsurgery/lib";
+import { Button, Icon, Text, Textarea } from "@softsurgery/mobile-ui";
+import { cn, dateUtils } from "@softsurgery/lib";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Calendar,
   CheckCheck,
+  Clock,
+  MessageSquare,
   XCircle,
   type LucideIcon,
 } from "lucide-react-native";
@@ -24,13 +27,11 @@ import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
-import { useIdentifiedUser } from "api-client/hooks";
 import { RequestEvent, RequestStatus } from "api-client";
 import { toast } from "sonner-native";
 import { RequestLocationSection } from "../RequestLocationSection";
 import { useLayoutConfig } from "@/config/wrapper-config";
 import { RequestSkeleton } from "./RequestSkeleton";
-import { StatusBadge } from "./RequestStatus";
 import { RequestBanner } from "./RequestBanner";
 
 interface RequestProps {
@@ -44,11 +45,18 @@ interface ActionConfig {
   key: string;
   label: string;
   onPress: () => void;
-  variant?:
-    "default" | "outline" | "destructive" | "destructive-outline" | "secondary";
+  variant?: "default" | "destructive-outline";
   icon?: LucideIcon;
   disabled?: boolean;
-  loading?: boolean;
+}
+
+interface CancelSheetConfig {
+  title: string;
+  message: string;
+  confirmLabel: string;
+  cancelLabel: string;
+  requiresReason: boolean;
+  event: RequestEvent;
 }
 
 export const Request = ({
@@ -59,16 +67,13 @@ export const Request = ({
 }: RequestProps) => {
   const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const api = useApi();
-  const { t, i18n } = useTranslation("activities");
+  const { t } = useTranslation("activities");
   const queryClient = useQueryClient();
 
   const cancelSheetRef = React.useRef<ActionSheetRef>(null);
-  const [cancelConfig, setCancelConfig] = React.useState<{
-    title: string;
-    message: string;
-    confirmLabel: string;
-    cancelLabel: string;
-  } | null>(null);
+  const [cancelConfig, setCancelConfig] =
+    React.useState<CancelSheetConfig | null>(null);
+  const [cancelReason, setCancelReason] = React.useState("");
 
   const { data: request, isPending: isRequestPending } = useQuery({
     queryKey: ["request", id],
@@ -79,38 +84,25 @@ export const Request = ({
       ),
   });
 
-  const receiver = request?.receivers?.[0];
-  const displayUserId = isIncoming ? request?.session?.user?.id : receiver?.id;
-
-  const { isPending: isUpdatingLocation } = useMutation({
-    mutationFn: (payload: {
-      location: string;
-      latitude: number;
-      longitude: number;
-    }) => api.request.update(id, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["request", id] });
-      queryClient.invalidateQueries({ queryKey: ["requests"] });
-      toast.success(t("activities.request.toasts.locationUpdated"));
-    },
-    onError: () => {
-      toast.error(t("activities.request.toasts.locationError"));
-    },
-  });
+  const displayUserId = isIncoming
+    ? request?.session?.user?.id
+    : request?.receivers?.[0]?.id;
 
   const { mutate: updateStatus, isPending: isUpdating } = useMutation({
-    mutationFn: (event: RequestEvent) =>
-      api.request.updateStatus(Number(id), event),
-    onSuccess: (_data, event) => {
+    mutationFn: ({ event, reason }: { event: RequestEvent; reason?: string }) =>
+      api.request.updateStatus(Number(id), event, reason),
+    onSuccess: (_data, { event }) => {
       cancelSheetRef.current?.hide();
-      queryClient.invalidateQueries({ queryKey: ["request", id] });
-      queryClient.invalidateQueries({ queryKey: ["requests"] });
-      queryClient.invalidateQueries({ queryKey: ["incoming-requests"] });
-      queryClient.invalidateQueries({ queryKey: ["outgoing-requests"] });
+      setCancelReason("");
+      ["request", "requests", "incoming-requests", "outgoing-requests"].forEach(
+        (key) => queryClient.invalidateQueries({ queryKey: [key] }),
+      );
       toast.success(
         event === RequestEvent.Accept
           ? t("activities.incomming.request.toasts.accepted")
-          : t("activities.incomming.request.toasts.rejected"),
+          : event === RequestEvent.Cancel
+            ? t("activities.request.toasts.cancelled")
+            : t("activities.incomming.request.toasts.rejected"),
       );
     },
     onError: () => {
@@ -119,29 +111,27 @@ export const Request = ({
   });
 
   const openCancelSheet = React.useCallback(
-    (config: {
-      title: string;
-      message: string;
-      confirmLabel: string;
-      cancelLabel: string;
-    }) => {
-      setCancelConfig(config);
+    (prefix: string, event: RequestEvent, requiresReason = true) => {
+      setCancelReason("");
+      setCancelConfig({
+        title: t(`${prefix}.title`),
+        message: t(`${prefix}.message`),
+        confirmLabel: t(`${prefix}.confirm`),
+        cancelLabel: t(`${prefix}.cancel`),
+        requiresReason,
+        event,
+      });
       cancelSheetRef.current?.show();
     },
-    [],
+    [t],
   );
 
-  const handleConfirmCancel = React.useCallback(() => {
-    updateStatus(RequestEvent.Reject);
-  }, [updateStatus]);
-
-  const handleCloseCancel = React.useCallback(() => {
+  const closeCancelSheet = React.useCallback(() => {
+    setCancelReason("");
     cancelSheetRef.current?.hide();
   }, []);
 
-  const { user, isUserPending } = useIdentifiedUser({
-    id: displayUserId!,
-  });
+  const { user, isUserPending } = useIdentifiedUser({ id: displayUserId! });
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
 
   const { jsxArray: profilePictures } = useRNServerImages({
@@ -153,175 +143,86 @@ export const Request = ({
     size: { width: 48, height: 48 },
   });
 
-  const editable =
-    request?.status === RequestStatus.Accepted ||
-    request?.status === RequestStatus.Rejected
-      ? false
-      : true;
-
   const isPending = isRequestPending || isUserPending;
 
-  const formattedDateTime = React.useMemo(() => {
-    const rawTime = request?.time || request?.session?.plannedStart;
-    if (!rawTime) return null;
-    const date = new Date(rawTime);
-    if (isNaN(date.getTime())) return null;
+  const startDate = dateUtils.toDateOrNull(
+    request?.time || request?.session?.plannedStart,
+  );
+  const endDate = dateUtils.toDateOrNull(request?.session?.plannedEnd);
 
-    const locale = i18n.language || "fr";
-
-    let dateStr = "";
-    try {
-      const weekday = new Intl.DateTimeFormat(locale, {
-        weekday: "long",
-      }).format(date);
-      const dayMonthYear = new Intl.DateTimeFormat(locale, {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }).format(date);
-      dateStr = `${weekday.charAt(0).toUpperCase() + weekday.slice(1)}, ${dayMonthYear}`;
-    } catch {
-      dateStr = date.toLocaleDateString();
-    }
-
-    let timeStr = "";
-    try {
-      const startTime = new Intl.DateTimeFormat(locale, {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }).format(date);
-
-      if (request?.session?.plannedEnd) {
-        const endDate = new Date(request.session.plannedEnd);
-        if (!isNaN(endDate.getTime())) {
-          const endTime = new Intl.DateTimeFormat(locale, {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          }).format(endDate);
-          timeStr = `${startTime} - ${endTime}`;
-        } else {
-          timeStr = startTime;
-        }
-      } else {
-        timeStr = startTime;
-      }
-    } catch {
-      timeStr = "";
-    }
-
-    return { dateStr, timeStr };
-  }, [
-    request?.time,
-    request?.session?.plannedStart,
-    request?.session?.plannedEnd,
-    i18n.language,
-  ]);
+  const isArchived = React.useMemo(() => {
+    if (!request?.session) return false;
+    if (request.session.ended) return true;
+    return endDate ? endDate.getTime() <= Date.now() : false;
+  }, [request?.session, endDate]);
 
   const actions = React.useMemo<ActionConfig[]>(() => {
-    if (!request || isPending) return [];
+    if (!request || isPending || isArchived) return [];
 
-    const cancelMeetingAction: ActionConfig = {
-      key: "cancelMeeting",
-      label: t(
-        "activities.request.actions.cancelMeeting",
-        "Annuler la réunion",
-      ),
-      onPress: () =>
-        openCancelSheet({
-          title: t(
-            "activities.request.actionSheet.cancelMeeting.title",
-            "Annuler la réunion",
-          ),
-          message: t(
-            "activities.request.actionSheet.cancelMeeting.message",
-            "Êtes-vous sûr de vouloir annuler cette réunion ?",
-          ),
-          confirmLabel: t(
-            "activities.request.actionSheet.cancelMeeting.confirm",
-            "Oui, annuler",
-          ),
-          cancelLabel: t(
-            "activities.request.actionSheet.cancelMeeting.cancel",
-            "Non, garder",
-          ),
-        }),
+    const cancelAction = (
+      key: string,
+      labelKey: string,
+      sheetPrefix: string,
+      event: RequestEvent,
+      requiresReason: boolean,
+      icon?: LucideIcon,
+    ): ActionConfig => ({
+      key,
+      label: t(labelKey),
+      onPress: () => openCancelSheet(sheetPrefix, event, requiresReason),
       variant: "destructive-outline",
+      icon,
       disabled: isUpdating,
-    };
-
-    const cancelRequestAction: ActionConfig = {
-      key: "cancelRequest",
-      label: t(
-        "activities.request.actions.cancelRequest",
-        "Annuler la demande",
-      ),
-      onPress: () =>
-        openCancelSheet({
-          title: t(
-            "activities.outgoing.request.actionSheet.cancel.title",
-            "Annuler la demande",
-          ),
-          message: t(
-            "activities.outgoing.request.actionSheet.cancel.message",
-            "Êtes-vous sûr de vouloir annuler cette demande de réunion ?",
-          ),
-          confirmLabel: t(
-            "activities.outgoing.request.actionSheet.cancel.confirm",
-            "Oui, annuler",
-          ),
-          cancelLabel: t(
-            "activities.outgoing.request.actionSheet.cancel.cancel",
-            "Non, garder",
-          ),
-        }),
-      variant: "destructive-outline",
-      disabled: isUpdating,
-    };
-
-    const acceptAction: ActionConfig = {
-      key: "accept",
-      label: t("activities.incomming.request.actions.accept"),
-      onPress: () => updateStatus(RequestEvent.Accept),
-      variant: "default",
-      icon: CheckCheck,
-      disabled: isUpdating,
-    };
-
-    const rejectAction: ActionConfig = {
-      key: "reject",
-      label: t("activities.incomming.request.actions.reject"),
-      onPress: () =>
-        openCancelSheet({
-          title: t("activities.incomming.request.actionSheet.reject.title"),
-          message: t("activities.incomming.request.actionSheet.reject.message"),
-          confirmLabel: t(
-            "activities.incomming.request.actionSheet.reject.confirm",
-          ),
-          cancelLabel: t(
-            "activities.incomming.request.actionSheet.reject.cancel",
-          ),
-        }),
-      variant: "destructive-outline",
-      icon: XCircle,
-      disabled: isUpdating,
-    };
+    });
 
     const statusActionsMap: Record<RequestStatus, ActionConfig[]> = {
-      [RequestStatus.Accepted]: [cancelMeetingAction],
+      [RequestStatus.Accepted]: [
+        cancelAction(
+          "cancelMeeting",
+          "activities.request.actions.cancelMeeting",
+          "activities.request.actionSheet.cancelMeeting",
+          RequestEvent.Cancel,
+          true,
+        ),
+      ],
+      [RequestStatus.Cancelled]: [],
       [RequestStatus.Rejected]: [],
       [RequestStatus.Expired]: [],
       [RequestStatus.Sent]: isIncoming
-        ? [acceptAction, rejectAction]
-        : [cancelRequestAction],
+        ? [
+            {
+              key: "accept",
+              label: t("activities.incomming.request.actions.accept"),
+              onPress: () => updateStatus({ event: RequestEvent.Accept }),
+              variant: "default",
+              icon: CheckCheck,
+              disabled: isUpdating,
+            },
+            cancelAction(
+              "reject",
+              "activities.incomming.request.actions.reject",
+              "activities.incomming.request.actionSheet.reject",
+              RequestEvent.Reject,
+              false,
+              XCircle,
+            ),
+          ]
+        : [
+            cancelAction(
+              "cancelRequest",
+              "activities.request.actions.cancelRequest",
+              "activities.outgoing.request.actionSheet.cancel",
+              RequestEvent.Cancel,
+              true,
+            ),
+          ],
     };
 
-    const currentStatus = request.status ?? RequestStatus.Sent;
-    return statusActionsMap[currentStatus] ?? [];
+    return statusActionsMap[request.status ?? RequestStatus.Sent] ?? [];
   }, [
     request,
     isPending,
+    isArchived,
     isIncoming,
     isUpdating,
     t,
@@ -329,21 +230,17 @@ export const Request = ({
     updateStatus,
   ]);
 
+  const isCancelDisabled =
+    Boolean(cancelConfig?.requiresReason) && !cancelReason.trim();
+
   return (
     <StableSafeAreaView classNames={safeAreaClassNames} className={className}>
       <ApplicationHeader
-        classNames={{
-          wrapper: applicationHeaderClassNames.wrapper,
-        }}
+        classNames={{ wrapper: applicationHeaderClassNames.wrapper }}
         title={t("activities.request.title")}
         titleVariant="large"
         reverse
-        shortcuts={[
-          {
-            key: "back",
-            render: <AppHeaderBack />,
-          },
-        ]}
+        shortcuts={[{ key: "back", render: <AppHeaderBack /> }]}
       />
 
       <StableScrollView className="flex-1 bg-background rounded-b-xl">
@@ -352,23 +249,22 @@ export const Request = ({
             <RequestSkeleton hasLocation={hasLocation} />
           </View>
         ) : (
-          <View className="p-4 flex flex-col gap-4">
-            {/* User row */}
+          <View className="p-4 gap-3.5">
             {user && (
-              <View className="flex-row items-center justify-between">
-                <Pressable
-                  className="flex-row items-center gap-3 flex-1 mr-2 active:opacity-70"
-                  onPress={() =>
-                    router.push({
-                      pathname: "/main/profile/inspect-profile",
-                      params: { id: user.id },
-                    })
-                  }
-                >
+              <Pressable
+                className="flex-row items-center justify-between gap-3 active:opacity-75 my-4"
+                onPress={() =>
+                  router.push({
+                    pathname: "/main/profile/inspect-profile",
+                    params: { id: user.id },
+                  })
+                }
+              >
+                <View className="flex-row items-center gap-3 flex-1 min-w-0">
                   <View className="overflow-hidden rounded-full">
-                    {profilePictures[0] ? profilePictures[0] : fallback}
+                    {profilePictures[0] ?? fallback}
                   </View>
-                  <View className="flex-1">
+                  <View className="flex-1 min-w-0">
                     <Text
                       className="text-base font-bold text-foreground"
                       numberOfLines={1}
@@ -376,71 +272,113 @@ export const Request = ({
                       {identifyUser(user)}
                     </Text>
                     <Text
-                      className="text-sm text-muted-foreground mt-0.5"
+                      className="text-xs text-muted-foreground mt-0.5"
                       numberOfLines={1}
                     >
-                      {user?.email}
+                      {user.username ? `@${user.username}` : user.email}
                     </Text>
                   </View>
-                </Pressable>
-                <StatusBadge status={request?.status} />
-              </View>
+                </View>
+              </Pressable>
             )}
 
-            {/* Status Banner */}
-            <RequestBanner status={request?.status} isIncoming={!editable} />
-
-            {/* Message Speech Bubble */}
-            {Boolean(request?.message) && (
-              <View className="self-start max-w-xs rounded-2xl rounded-bl-sm bg-secondary px-4 py-3">
-                <Text className="text-sm leading-5 text-secondary-foreground">
-                  {request?.message}
-                </Text>
-              </View>
-            )}
-
-            {/* Date & Time row */}
-            <View className="flex-row items-center gap-3">
-              <Icon as={Calendar} size={20} className="text-muted-foreground" />
-              <View className="flex-1">
-                {formattedDateTime ? (
-                  <>
-                    <Text className="text-base font-semibold text-foreground">
-                      {formattedDateTime.dateStr}
-                    </Text>
-                    <Text className="text-sm font-normal text-muted-foreground mt-0.5">
-                      {formattedDateTime.timeStr}
-                    </Text>
-                  </>
-                ) : (
-                  <Text className="text-sm italic text-muted-foreground">
-                    {t("activities.request.placeholders.dateTime")}
+            <View className="flex flex-col gap-4 px-1 pb-4">
+              <View className="flex-row items-start gap-3">
+                <View className="h-9 w-9 rounded-full bg-primary/10 items-center justify-center">
+                  <Icon as={Calendar} size={17} className="text-primary" />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    {t("activities.request.labels.dateTime")}
                   </Text>
-                )}
+                  {startDate ? (
+                    <>
+                      <Text className="text-sm font-semibold text-foreground mt-0.5">
+                        {dateUtils.toLongDateString(startDate)}
+                      </Text>
+                      <View className="flex-row items-center gap-1.5 mt-1">
+                        <Icon
+                          as={Clock}
+                          size={13}
+                          className="text-muted-foreground"
+                        />
+                        <Text className="text-xs text-muted-foreground">
+                          {endDate
+                            ? `${dateUtils.toTimeOnly(startDate)} - ${dateUtils.toTimeOnly(endDate)}`
+                            : dateUtils.toTimeOnly(startDate)}
+                        </Text>
+                      </View>
+                    </>
+                  ) : (
+                    <Text className="text-sm italic text-muted-foreground mt-0.5">
+                      {t("activities.request.placeholders.dateTime")}
+                    </Text>
+                  )}
+                </View>
               </View>
+
+              {Boolean(request?.message) && (
+                <View className="flex-row items-start gap-3">
+                  <View className="h-9 w-9 rounded-full bg-secondary items-center justify-center">
+                    <Icon
+                      as={MessageSquare}
+                      size={17}
+                      className="text-secondary-foreground"
+                    />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-0.5">
+                      {t("activities.request.labels.message")}
+                    </Text>
+                    <SeeMoreText
+                      numberOfLines={4}
+                      textClassname="text-sm leading-5 text-foreground"
+                    >
+                      {request!.message!}
+                    </SeeMoreText>
+                  </View>
+                </View>
+              )}
+
+              {(request?.status === RequestStatus.Cancelled ||
+                request?.status === RequestStatus.Rejected) &&
+                Boolean(request?.cancelReason) && (
+                  <View className="flex-row items-start gap-3">
+                    <View className="h-9 w-9 rounded-full bg-destructive/10 items-center justify-center">
+                      <Icon
+                        as={XCircle}
+                        size={17}
+                        className="text-destructive"
+                      />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-xs font-medium uppercase tracking-wide text-destructive mb-0.5">
+                        {t("activities.request.labels.cancelReason")}
+                      </Text>
+                      <SeeMoreText
+                        numberOfLines={4}
+                        textClassname="text-sm leading-5 text-foreground"
+                      >
+                        {request.cancelReason!}
+                      </SeeMoreText>
+                    </View>
+                  </View>
+                )}
             </View>
 
-            {/* Location Section */}
             <RequestLocationSection
               location={request?.location}
               latitude={request?.latitude}
               longitude={request?.longitude}
-              editable={editable}
             />
-
-            {isUpdatingLocation && (
-              <View className="flex-row items-center gap-2">
-                <Loader size="small" />
-                <Text className="text-sm text-muted-foreground">
-                  {t("activities.request.location.updating")}
-                </Text>
-              </View>
-            )}
+            <RequestBanner
+              status={request?.status}
+              isIncoming={Boolean(isIncoming)}
+            />
           </View>
         )}
       </StableScrollView>
 
-      {/* Action Buttons at Bottom */}
       {!isPending && actions.length > 0 && (
         <BottomButtonWrapper
           orientation={actions.length > 1 ? "horizontal" : "vertical"}
@@ -454,7 +392,7 @@ export const Request = ({
               onPress={action.onPress}
               disabled={action.disabled}
             >
-              {action.loading ? (
+              {isUpdating && action.key === "accept" ? (
                 <Loader size="small" />
               ) : (
                 <View className="flex-row items-center justify-center gap-2">
@@ -475,9 +413,30 @@ export const Request = ({
         confirmLabel={cancelConfig?.confirmLabel}
         cancelLabel={cancelConfig?.cancelLabel}
         confirmIcon={XCircle}
-        onConfirm={handleConfirmCancel}
-        onCancel={handleCloseCancel}
-        onClose={handleCloseCancel}
+        disabled={isCancelDisabled}
+        customContentSide="bottom"
+        customContent={
+          cancelConfig?.requiresReason ? (
+            <View className="w-full mt-3 pb-6 px-4">
+              <Textarea
+                value={cancelReason}
+                onChangeText={setCancelReason}
+                placeholder={t("activities.request.placeholders.cancelReason")}
+                numberOfLines={3}
+                maxLength={500}
+              />
+            </View>
+          ) : undefined
+        }
+        onConfirm={() => {
+          if (!cancelConfig) return;
+          updateStatus({
+            event: cancelConfig.event,
+            reason: cancelReason.trim() || undefined,
+          });
+        }}
+        onCancel={closeCancelSheet}
+        onClose={closeCancelSheet}
         isPending={isUpdating}
       />
     </StableSafeAreaView>

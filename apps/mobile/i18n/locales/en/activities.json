@@ -35,21 +35,31 @@
     },
     "request": {
       "title": "Meeting details",
+      "status": {
+        "accepted": "Accepted",
+        "rejected": "Declined",
+        "cancelled": "Cancelled",
+        "sent": "Pending",
+        "expired": "Expired"
+      },
       "labels": {
         "message": "Message",
-        "dateTime": "Date and time"
+        "dateTime": "Date and time",
+        "cancelReason": "Cancellation reason"
       },
       "placeholders": {
         "message": "No description provided",
         "dateTime": "Not specified",
-        "location": "Not specified"
+        "location": "Not specified",
+        "cancelReason": "Explain why you are canceling..."
       },
       "location": {
         "updating": "Updating the location..."
       },
       "banners": {
         "accepted": "This meeting has been added to your schedule.",
-        "rejected": "This meeting request was declined."
+        "rejected": "This meeting request was declined.",
+        "cancelled": "This meeting request was cancelled."
       },
       "actions": {
         "contact": "Contact",
@@ -67,6 +77,7 @@
       "toasts": {
         "locationUpdated": "Location updated",
         "locationError": "Unable to update the location",
+        "cancelled": "Request cancelled",
         "error": "Something went wrong. Please try again."
       }
     },

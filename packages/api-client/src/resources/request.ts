@@ -64,10 +64,20 @@ export function createRequestResource(http: AxiosInstance) {
   const updateStatus = async (
     id: number,
     event: RequestEvent,
+    cancelReason?: string,
   ): Promise<ResponseRequestWorkflowDto> => {
+    const payload: {
+      event: RequestEvent;
+      cancelReason?: string;
+    } = { event };
+
+    if (cancelReason) {
+      payload.cancelReason = cancelReason;
+    }
+
     const response = await http.post<ResponseRequestWorkflowDto>(
       `/request-workflow/${id}/next`,
-      { event },
+      payload,
     );
     return response.data;
   };
