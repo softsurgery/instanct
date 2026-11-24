@@ -20,6 +20,7 @@ config.watchFolders = [
   path.resolve(abstractionsRoot, "mobile-form-builder"),
   path.resolve(abstractionsRoot, "mobile-lib"),
   path.resolve(abstractionsRoot, "mobile-hooks"),
+  path.resolve(abstractionsRoot, "mobile-monitor"),
   path.resolve(abstractionsRoot, "chat-materials"),
   path.resolve(abstractionsRoot, "notification-materials"),
 ];
@@ -70,6 +71,10 @@ config.resolver = {
     ),
     "@softsurgery/mobile-lib": path.resolve(abstractionsRoot, "mobile-lib"),
     "@softsurgery/mobile-hooks": path.resolve(abstractionsRoot, "mobile-hooks"),
+    "@softsurgery/mobile-monitor": path.resolve(
+      abstractionsRoot,
+      "mobile-monitor",
+    ),
     "@softsurgery/chat-materials": path.resolve(
       abstractionsRoot,
       "chat-materials",

@@ -33,6 +33,7 @@ COPY packages/softsurgery-abstractions/mobile-components/package.json ./packages
 COPY packages/softsurgery-abstractions/mobile-form-builder/package.json ./packages/softsurgery-abstractions/mobile-form-builder/package.json
 COPY packages/softsurgery-abstractions/mobile-hooks/package.json ./packages/softsurgery-abstractions/mobile-hooks/package.json
 COPY packages/softsurgery-abstractions/mobile-lib/package.json ./packages/softsurgery-abstractions/mobile-lib/package.json
+COPY packages/softsurgery-abstractions/mobile-monitor/package.json ./packages/softsurgery-abstractions/mobile-monitor/package.json
 COPY packages/softsurgery-abstractions/mobile-ui/package.json ./packages/softsurgery-abstractions/mobile-ui/package.json
 COPY packages/softsurgery-abstractions/notification-materials/package.json ./packages/softsurgery-abstractions/notification-materials/package.json
 COPY packages/softsurgery-abstractions/typescript-config ./packages/softsurgery-abstractions/typescript-config
@@ -52,6 +53,7 @@ COPY packages/softsurgery-abstractions/mobile-components ./packages/softsurgery-
 COPY packages/softsurgery-abstractions/mobile-form-builder ./packages/softsurgery-abstractions/mobile-form-builder
 COPY packages/softsurgery-abstractions/mobile-hooks ./packages/softsurgery-abstractions/mobile-hooks
 COPY packages/softsurgery-abstractions/mobile-lib ./packages/softsurgery-abstractions/mobile-lib
+COPY packages/softsurgery-abstractions/mobile-monitor ./packages/softsurgery-abstractions/mobile-monitor
 COPY packages/softsurgery-abstractions/mobile-ui ./packages/softsurgery-abstractions/mobile-ui
 COPY packages/softsurgery-abstractions/notification-materials ./packages/softsurgery-abstractions/notification-materials
 

@@ -46,6 +46,7 @@
     "@softsurgery/mobile-form-builder": "workspace:*",
     "@softsurgery/mobile-hooks": "workspace:*",
     "@softsurgery/mobile-lib": "workspace:*",
+    "@softsurgery/mobile-monitor": "workspace:*",
     "@softsurgery/mobile-ui": "workspace:*",
     "@softsurgery/notification-materials": "workspace:*",
     "@tabler/icons-react-native": "^3.36.1",

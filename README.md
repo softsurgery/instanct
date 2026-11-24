@@ -4,12 +4,12 @@ Monorepo for the Instanct web app, landing site, mobile app, and API. The produc
 
 Clients talk to one NestJS API. Shared libraries from [softsurgery-abstractions](https://github.com/softsurgery/softsurgery-abstractions) live under `packages/softsurgery-abstractions/` (git submodule, Layout B). Instanct-owned workspace packages `packages/api-client` and `packages/i18n` sit alongside that submodule. Inside the submodule, `nsa-*` holds Nest abstractions and `@softsurgery/*` holds UI and HTTP abstractions for web and mobile.
 
-| App              | Package               | What it is                         | README                                               |
-| ---------------- | --------------------- | ---------------------------------- | ---------------------------------------------------- |
-| `apps/web`       | `instanct-ui`         | Next.js pages-router backoffice    | [apps/web/README.md](apps/web/README.md)             |
-| `apps/landing`   | `instanct-landing`    | Next.js app-router marketing site  | [apps/landing/README.md](apps/landing/README.md)     |
-| `apps/mobile`    | `instanct-mobile-app` | Expo Router client                 | [apps/mobile/README.md](apps/mobile/README.md)       |
-| `apps/api`       | `instanct-api`        | NestJS + TypeORM + MySQL           | [apps/api/README.md](apps/api/README.md)             |
+| App            | Package               | What it is                        | README                                           |
+| -------------- | --------------------- | --------------------------------- | ------------------------------------------------ |
+| `apps/web`     | `instanct-ui`         | Next.js pages-router backoffice   | [apps/web/README.md](apps/web/README.md)         |
+| `apps/landing` | `instanct-landing`    | Next.js app-router marketing site | [apps/landing/README.md](apps/landing/README.md) |
+| `apps/mobile`  | `instanct-mobile-app` | Expo Router client                | [apps/mobile/README.md](apps/mobile/README.md)   |
+| `apps/api`     | `instanct-api`        | NestJS + TypeORM + MySQL          | [apps/api/README.md](apps/api/README.md)         |
 
 ```text
 /
@@ -265,17 +265,18 @@ Runtime settings use the same shape. `ConfigurationNamespaceEntity` groups `Conf
 | `@softsurgery/nsa-chat`, `@softsurgery/nsa-sessions`, `@softsurgery/nsa-notifications`                                                  | Conversations, sessions, live alerts                                                           |
 | `@softsurgery/nsa-content`, `@softsurgery/nsa-templates`, `@softsurgery/nsa-configurations`, `@softsurgery/nsa-reference-types`         | CMS pages, layouts, settings, lookup trees                                                     |
 | `@softsurgery/nsa-workflows`, `@softsurgery/nsa-mail`, `@softsurgery/nsa-logger`, `@softsurgery/nsa-sentry`, `@softsurgery/nsa-helpers` | Status machines, mail, request logs, error reporting, shared helpers and runtime binding slots |
-| `api-client`                                                                                                               | Axios instance and one resource object per API area                                            |
+| `api-client`                                                                                                                            | Axios instance and one resource object per API area                                            |
 | `@softsurgery/form-builder`                                                                                                             | Declarative web forms                                                                          |
 | `@softsurgery/mobile-form-builder`                                                                                                      | The same form model for React Native                                                           |
 | `@softsurgery/datatable-builder`                                                                                                        | Server-driven admin tables                                                                     |
 | `@softsurgery/ui` / `@softsurgery/components`                                                                                           | Web primitives (Radix, editor, toasts) and composites                                          |
 | `@softsurgery/mobile-ui` / `@softsurgery/mobile-components`                                                                             | Native primitives and composites                                                               |
+| `@softsurgery/mobile-monitor`                                                                                                           | Floating CPU, GPU, and memory monitor overlay (`__DEV__` or Admin)                             |
 | `@softsurgery/template`                                                                                                                 | Template list, editor, and preview for the backoffice                                          |
 | `@softsurgery/hooks`                                                                                                                    | Persisted auth and preference stores, shared hooks                                             |
 | `@softsurgery/contexts`                                                                                                                 | Breadcrumb, intro, footer, theme, and `AppProvider`                                            |
 | `@softsurgery/lib`                                                                                                                      | `cn`, centralized socket management, nested stores, legal HTML cleanup                         |
-| `i18n`                                                                                                                     | Shared `en` / `fr` config. Landing copies live here                                            |
+| `i18n`                                                                                                                                  | Shared `en` / `fr` config. Landing copies live here                                            |
 | `@repo/eslint-config`, `@repo/typescript-config`                                                                                        | Tooling                                                                                        |
 
 ### API client

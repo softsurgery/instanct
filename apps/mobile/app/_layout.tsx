@@ -25,6 +25,7 @@ import { LoaderProvider } from "@/contexts/LoaderContext";
 import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useVersionPersistStore } from "@/stores/useVersionPersistStore";
 import { ForceUpdateGate } from "@/components/version/ForceUpdateGate";
+import { AppMonitorOverlay } from "@/components/monitor/AppMonitorOverlay";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { configureScreenOrientation } from "@softsurgery/mobile-lib";
 import {
@@ -92,6 +93,7 @@ function RootLayoutContent() {
           <PortalHost />
           <VideoThumbnailGeneratorHost />
           <ForceUpdateGate />
+          <AppMonitorOverlay />
         </View>
       </GestureHandlerRootView>
     </KeyboardProvider>

@@ -35,6 +35,7 @@ COPY packages/softsurgery-abstractions/mobile-components/package.json ./packages
 COPY packages/softsurgery-abstractions/mobile-form-builder/package.json ./packages/softsurgery-abstractions/mobile-form-builder/package.json
 COPY packages/softsurgery-abstractions/mobile-hooks/package.json ./packages/softsurgery-abstractions/mobile-hooks/package.json
 COPY packages/softsurgery-abstractions/mobile-lib/package.json ./packages/softsurgery-abstractions/mobile-lib/package.json
+COPY packages/softsurgery-abstractions/mobile-monitor/package.json ./packages/softsurgery-abstractions/mobile-monitor/package.json
 COPY packages/softsurgery-abstractions/mobile-ui/package.json ./packages/softsurgery-abstractions/mobile-ui/package.json
 COPY packages/softsurgery-abstractions/notification-materials/package.json ./packages/softsurgery-abstractions/notification-materials/package.json
 
