@@ -40,17 +40,31 @@ export function AppProviders({ children }: AppProvidersProps) {
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [introClassName, setIntroClassName] = useState<string>("");
   const [floating, setFloating] = useState<React.ReactNode>(null);
 
-  const setIntro = useCallback((newTitle: string, newDescription?: string) => {
-    setTitle((prev) => (prev === newTitle ? prev : newTitle));
-    const desc = newDescription || "";
-    setDescription((prev) => (prev === desc ? prev : desc));
+  const setIntro = useCallback(
+    (newTitle: string, newDescription?: string, newClassName?: string) => {
+      setTitle((prev) => (prev === newTitle ? prev : newTitle));
+      const desc = newDescription || "";
+      setDescription((prev) => (prev === desc ? prev : desc));
+      if (newClassName !== undefined) {
+        setIntroClassName((prev) =>
+          prev === newClassName ? prev : newClassName,
+        );
+      }
+    },
+    [],
+  );
+
+  const clearIntroClassName = useCallback(() => {
+    setIntroClassName((prev) => (prev === "" ? prev : ""));
   }, []);
 
   const clearIntro = useCallback(() => {
     setTitle((prev) => (prev === "" ? prev : ""));
     setDescription((prev) => (prev === "" ? prev : ""));
+    setIntroClassName((prev) => (prev === "" ? prev : ""));
   }, []);
 
   const clearFloating = useCallback(() => {
@@ -61,19 +75,24 @@ export function AppProviders({ children }: AppProvidersProps) {
     () => ({
       title,
       description,
+      className: introClassName,
       floating,
       setIntro,
+      setIntroClassName,
       setFloating,
       clearIntro,
+      clearIntroClassName,
       clearFloating,
     }),
     [
       title,
       description,
+      introClassName,
       floating,
       setIntro,
       setFloating,
       clearIntro,
+      clearIntroClassName,
       clearFloating,
     ],
   );

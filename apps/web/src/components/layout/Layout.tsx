@@ -13,9 +13,14 @@ interface LayoutProps {
 }
 
 function LayoutShell({ className, children }: LayoutProps) {
-  const { title, description, floating } = useIntro();
+  const { title, description, floating, className: introClassName } = useIntro();
   const { content } = useFooter();
-  const { enableMainOverflow, showSidebar = true, enableContainer } = useUI();
+  const {
+    rootClassName,
+    enableMainOverflow,
+    showSidebar = true,
+    enableContainer,
+  } = useUI();
 
   return (
     <SidebarProvider
@@ -34,9 +39,10 @@ function LayoutShell({ className, children }: LayoutProps) {
           <div
             id="main-layout"
             className={cn(
-              "flex min-h-0 flex-1 flex-col gap-4 p-2 md:p-4",
+              "flex min-h-0 flex-1 flex-col gap-4",
               enableMainOverflow ? "overflow-auto" : "overflow-hidden",
               className,
+              rootClassName,
             )}
           >
             <div
@@ -47,7 +53,12 @@ function LayoutShell({ className, children }: LayoutProps) {
               )}
             >
               {(title || description || floating) && (
-                <div className="shrink-0 flex flex-row items-center justify-between gap-4">
+                <div
+                  className={cn(
+                    "shrink-0 flex flex-row items-center justify-between gap-4",
+                    introClassName,
+                  )}
+                >
                   <div className="space-y-1">
                     {title && (
                       <h2 className="text-2xl font-semibold tracking-tight">
