@@ -5,6 +5,7 @@ import { StyleProp, Text, TextStyle, View, ViewStyle } from "react-native";
 
 interface SessionCountdownProps {
   session: ResponseSessionDto;
+  isActive?: boolean;
   classNames?: {
     wrapper?: string;
     text?: string;
@@ -42,6 +43,7 @@ const pad = (n: number): string => String(n).padStart(2, "0");
 export const SessionCountdown = ({
   styles,
   session,
+  isActive = true,
   classNames,
 }: SessionCountdownProps) => {
   const targetDate = session.plannedEnd ?? session.ended;
@@ -55,7 +57,10 @@ export const SessionCountdown = ({
   React.useEffect(() => {
     if (!targetDate) return;
 
-    setTimeLeft(computeTimeLeft(targetDate));
+    const initial = computeTimeLeft(targetDate);
+    setTimeLeft(initial);
+
+    if (!isActive || initial.total <= 0) return;
 
     const interval = setInterval(() => {
       const updated = computeTimeLeft(targetDate);
@@ -67,7 +72,7 @@ export const SessionCountdown = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [targetDate]);
+  }, [targetDate, isActive]);
 
   if (!targetDate) {
     return null;

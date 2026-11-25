@@ -51,6 +51,7 @@ export default function MainLayout() {
   useLiveGeolocation({
     enabled: authPersistStore.isAuthenticated,
     join: GEOLOCATION_JOIN,
+    subscribe: false,
   });
   useCheckHealth({
     enabled: authPersistStore.isAuthenticated,
@@ -62,6 +63,7 @@ export default function MainLayout() {
 
   const chatConfig = useChatConfig();
   const { count: chatCount, resetCount: resetChatCount } = useChat({
+    enabled: authPersistStore.isAuthenticated,
     onIncomingMessageNotification: (input) =>
       presentChatMessageNotification({
         ...input,
@@ -98,11 +100,14 @@ export default function MainLayout() {
     notifications,
     resetCount: resetNotificationCount,
   } = useNotifications({
+    enabled: authPersistStore.isAuthenticated,
     consequences: notificationConsequences,
     getDestination: getNotificationDestination,
   });
 
-  const { mapSession, isSessionsPending } = useActiveSessions();
+  const { mapSession, isSessionsPending } = useActiveSessions({
+    enabled: authPersistStore.isAuthenticated,
+  });
 
   React.useEffect(() => {
     queryClient.invalidateQueries();
@@ -122,27 +127,36 @@ export default function MainLayout() {
     [safeAreaClassNames, applicationHeaderClassNames],
   );
 
+  const activeMapSessionValue = React.useMemo(
+    () => ({
+      activeSession: mapSession,
+      initialized: !isSessionsPending,
+    }),
+    [mapSession, isSessionsPending],
+  );
+
+  const notificationContextValue = React.useMemo(
+    () => ({
+      count: notificationCount,
+      notifications,
+      resetCount: resetNotificationCount,
+    }),
+    [notificationCount, notifications, resetNotificationCount],
+  );
+
+  const chatContextValue = React.useMemo(
+    () => ({
+      count: chatCount,
+      resetCount: resetChatCount,
+    }),
+    [chatCount, resetChatCount],
+  );
+
   return (
-    <ActiveMapSessionContext.Provider
-      value={{
-        activeSession: mapSession,
-        initialized: !isSessionsPending,
-      }}
-    >
-      <NotificationContext.Provider
-        value={{
-          count: notificationCount,
-          notifications,
-          resetCount: resetNotificationCount,
-        }}
-      >
+    <ActiveMapSessionContext.Provider value={activeMapSessionValue}>
+      <NotificationContext.Provider value={notificationContextValue}>
         <NotificationConfigProvider value={notificationConfig}>
-        <ChatContext.Provider
-          value={{
-            count: chatCount,
-            resetCount: resetChatCount,
-          }}
-        >
+        <ChatContext.Provider value={chatContextValue}>
           <ChatConfigProvider value={chatConfig}>
           <Stack
             screenOptions={{

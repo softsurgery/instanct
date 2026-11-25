@@ -32,15 +32,14 @@ import { useActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import {
   hslToHex,
   useColorPalette,
+  useScreenActive,
   useScreenOrientation,
   useScrollableElement,
 } from "@softsurgery/mobile-hooks";
-import {
-  useCurrentUser,
-  useIndustries,
-  useObjectives,
-} from "api-client/hooks";
+import { useCurrentUser, useIndustries, useObjectives } from "api-client/hooks";
 import { useLiveGeolocation } from "api-client/hooks/geolocation";
+
+const EXPLORE_JOIN = ["user", "user.industries", "user.sessions"];
 
 interface ExplorePortalProps {
   className?: string;
@@ -52,6 +51,7 @@ const matchesAny = (targets: number[] | undefined, values: number[]) =>
   !targets?.length || values.some((value) => targets.includes(value));
 
 export const ExplorePortal = ({ className }: ExplorePortalProps) => {
+  const isScreenActive = useScreenActive();
   const { palette } = useColorPalette();
   const { t, i18n } = useTranslation("common");
   const { t: tExplore } = useTranslation("explore");
@@ -62,7 +62,8 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   const { activeSession } = useActiveMapSessionContext();
   const { users: liveUsers } = useLiveGeolocation({
     enabled: true,
-    join: ["user", "user.industries", "user.sessions"],
+    join: EXPLORE_JOIN,
+    subscribe: { users: true },
   });
   useIndustries({ locale: i18n.language });
   const { objectives } = useObjectives({ locale: i18n.language });
@@ -137,6 +138,7 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   // the pager does not jump back to the first card on every location tick.
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const activeIndex = Math.min(currentIndex, Math.max(users.length - 1, 0));
+  const activeUserId = users[activeIndex]?.id;
 
   const handleHorizontalScroll = React.useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -162,9 +164,10 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
         onScroll={handleHeaderScroll}
         cardWidth={cardSize?.width}
         cardHeight={cardSize?.height}
+        isActive={isScreenActive && item.id === activeUserId}
       />
     ),
-    [objectives, handleHeaderScroll, cardSize],
+    [objectives, handleHeaderScroll, cardSize, isScreenActive, activeUserId],
   );
 
   const showCards = !!activeSession && users.length > 0;
@@ -211,7 +214,9 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   );
 
   const renderEmptyState = () => {
-    if (!activeSession) return <SessionStarter className="px-4" />;
+    if (!activeSession) {
+      return <SessionStarter className="px-4" isActive={isScreenActive} />;
+    }
 
     return (
       <View className="flex-1 items-center justify-center px-4">
@@ -219,7 +224,7 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
           <NotFound message={tExplore("explore.noMatchFilters")} />
         ) : (
           <>
-            <Loader />
+            <Loader isPending={isScreenActive} />
             <Text variant="large" className="text-center">
               {tExplore("explore.nearbyPeopleShortly")}
             </Text>
@@ -239,6 +244,7 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
           // orientation instead of landing between two cards.
           key={`${Math.round(cardSize.width)}x${Math.round(cardSize.height)}`}
           data={users}
+          extraData={isScreenActive ? activeUserId : null}
           style={[StyleSheet.absoluteFill, { left: cardsLeft }]}
           horizontal
           pagingEnabled
@@ -299,6 +305,7 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
               {activeSession && (
                 <SessionCountdown
                   session={activeSession}
+                  isActive={isScreenActive}
                   styles={{ text: { color: titleColor } }}
                 />
               )}

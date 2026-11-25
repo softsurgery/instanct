@@ -14,12 +14,17 @@ import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 
 interface SessionStarterProps {
   className?: string;
+  isActive?: boolean;
 }
 
-export const SessionStarter = ({ className }: SessionStarterProps) => {
+export const SessionStarter = ({
+  className,
+  isActive = true,
+}: SessionStarterProps) => {
   const { t } = useTranslation("explore");
   const { height: screenHeight } = useWindowDimensions();
   const { isLandscape } = useScreenOrientation();
+  const lottieRef = React.useRef<LottieView>(null);
   const lottieSize = isLandscape
     ? Math.min(175, Math.round(screenHeight * 0.52))
     : 300;
@@ -30,6 +35,14 @@ export const SessionStarter = ({ className }: SessionStarterProps) => {
     height.value = withTiming(1, { duration: 300 });
     opacity.value = withTiming(1, { duration: 300 });
   }, [height, opacity]);
+
+  React.useEffect(() => {
+    if (isActive) {
+      lottieRef.current?.play();
+    } else {
+      lottieRef.current?.pause();
+    }
+  }, [isActive]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
@@ -51,7 +64,8 @@ export const SessionStarter = ({ className }: SessionStarterProps) => {
       >
         <Animated.View style={animatedStyle}>
           <LottieView
-            autoPlay
+            ref={lottieRef}
+            autoPlay={isActive}
             loop
             style={{
               width: lottieSize,
