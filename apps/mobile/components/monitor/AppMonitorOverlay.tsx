@@ -2,12 +2,17 @@ import React from "react";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { useCurrentUser } from "api-client/hooks";
 import { FloatingMonitor, shouldShowMobileMonitor } from "@softsurgery/mobile-monitor";
+import { useMonitorConfig } from "@/config/monitor-config";
 
 /**
  * Renders the floating CPU / GPU / memory monitor overlay only in __DEV__ mode
  * or when the connected authenticated user holds an Admin role.
  */
 export function AppMonitorOverlay() {
+  const {
+    enabled,
+    constants: { MAX_USED_MEMO, SHOW_METRICS },
+  } = useMonitorConfig();
   const isAuthenticated = useAuthPersistStore((s) => s.isAuthenticated);
   const { currentUser } = useCurrentUser({
     enabled: !__DEV__ && isAuthenticated,
@@ -22,15 +27,23 @@ export function AppMonitorOverlay() {
       typeof value === "string" && value.trim().toLowerCase() === "admin",
   );
 
-  const visible = shouldShowMobileMonitor({
-    isDev: __DEV__,
-    isAuthenticated,
-    isAdmin,
-  });
+  const visible =
+    enabled &&
+    shouldShowMobileMonitor({
+      isDev: __DEV__,
+      isAuthenticated,
+      isAdmin,
+    });
 
   if (!visible) {
     return null;
   }
 
-  return <FloatingMonitor enabled={visible} />;
+  return (
+    <FloatingMonitor
+      enabled={visible}
+      showMetrics={SHOW_METRICS}
+      maxUsedMemoryMb={MAX_USED_MEMO}
+    />
+  );
 }
