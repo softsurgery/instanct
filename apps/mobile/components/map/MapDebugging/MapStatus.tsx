@@ -11,7 +11,8 @@ interface MapStatusProps {
 }
 
 export const MapStatus = ({ classNames }: MapStatusProps) => {
-  const mapStore = useMapStore();
+  const connected = useMapStore((s) => s.connected);
+  const reconnectAttempt = useMapStore((s) => s.reconnection.reconnectAttempt);
   return (
     <View className={cn(classNames?.wrapper)}>
       <Text
@@ -24,17 +25,17 @@ export const MapStatus = ({ classNames }: MapStatusProps) => {
         <Text
           className={cn(
             "text-sm font-bold",
-            mapStore.connected ? "text-green-500" : "text-red-500",
+            connected ? "text-green-500" : "text-red-500",
           )}
         >
           {" "}
-          {mapStore.connected ? "Online" : "Offline"}
+          {connected ? "Online" : "Offline"}
         </Text>{" "}
-        {!mapStore.connected && (
+        {!connected && (
           <Text
             className={cn("text-xs font-bold text-gray-200 dark:text-gray-400")}
           >
-            / Reconnecting ({mapStore.reconnection.reconnectAttempt})
+            / Reconnecting ({reconnectAttempt})
           </Text>
         )}
       </Text>

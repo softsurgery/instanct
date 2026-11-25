@@ -8,45 +8,50 @@ import { Animated, Platform, View } from "react-native";
 import { Text } from "@softsurgery/mobile-ui";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 
+const MARKER_AVATAR_SIZE = { width: 40, height: 40 };
+
 interface UserMarkerProps {
   className?: string;
   userId: string;
   isOnline?: boolean;
   isCurrentUser?: boolean;
+  animatePulse?: boolean;
 }
 
-export const UserMarker = ({
+export const UserMarker = React.memo(function UserMarker({
   className,
   userId,
   isOnline,
   isCurrentUser = false,
-}: UserMarkerProps) => {
-  const width = 40;
-  const height = 40;
+  animatePulse = true,
+}: UserMarkerProps) {
+  const { width, height } = MARKER_AVATAR_SIZE;
   const activeBackgroundColor = "rgba(34,197,94,0.8)";
   const isAndroid = Platform.OS === "android";
 
-  const mapStore = useMapStore();
+  const showUsernames = useMapStore((s) => s.settings.showUsernames);
   const { user } = useIdentifiedUser({ id: userId });
 
   React.useEffect(() => {
-    if (user) mapStore.addUser(user);
+    if (user) useMapStore.getState().addUser(user);
   }, [user]);
 
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
+  const imageIds = React.useMemo(() => [user?.pictureId], [user?.pictureId]);
+  const imageFallbacks = React.useMemo(() => [fallback], [fallback]);
 
   const { jsxArray: profilePictures } = useRNServerImages({
-    ids: [user?.pictureId],
-    fallbacks: [fallback],
+    ids: imageIds,
+    fallbacks: imageFallbacks,
     className: "rounded-full",
     wrapperClassName: "bg-foreground/25",
     fallbackClassName: "text-xs",
-    size: { width, height },
+    size: MARKER_AVATAR_SIZE,
   });
 
   // Pulse animation (iOS only — Android renders markers as static ViewShot bitmaps)
   const { scale, opacity } = usePulseAnimation({
-    active: Boolean(isOnline) && !isAndroid,
+    active: Boolean(isOnline) && !isAndroid && animatePulse,
   });
 
   const onlinePulseBlock = React.useMemo(() => {
@@ -72,7 +77,7 @@ export const UserMarker = ({
     >
       <View>
         {/* Online pulsing highlight (iOS only; Android uses AnimatedMarker in MapRenderer) */}
-        {isOnline && !isAndroid ? onlinePulseBlock : null}
+        {isOnline && !isAndroid && animatePulse ? onlinePulseBlock : null}
         {/* Avatar */}
         <View
           style={{
@@ -89,11 +94,11 @@ export const UserMarker = ({
       </View>
 
       {/* Username */}
-      {mapStore.settings.showUsernames && (
+      {showUsernames && (
         <Text className="mt-1 text-xs font-extrabold bg-background/50 p-1 rounded-lg text-center">
           {!isCurrentUser ? user?.username : "You"}
         </Text>
       )}
     </View>
   );
-};
+});

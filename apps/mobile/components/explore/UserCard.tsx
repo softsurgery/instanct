@@ -35,6 +35,7 @@ import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkAc
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { IconMoodPlus } from "@tabler/icons-react-native";
 import Animated, {
+  cancelAnimation,
   useSharedValue,
   useAnimatedStyle,
   withSpring,
@@ -45,6 +46,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { ImageBackground } from "expo-image";
 import { useTranslation } from "react-i18next";
 
+const USER_CARD_IMAGE_SIZE = { width: 100, height: 100 };
+
 interface UserCardProps {
   className?: string;
   user: ResponseUserDto;
@@ -52,18 +55,20 @@ interface UserCardProps {
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   cardWidth?: number;
   cardHeight?: number;
+  isActive?: boolean;
   // industries: ResponseRefParamDto[];
 }
 
-export const UserCard = ({
+export const UserCard = React.memo(function UserCard({
   user,
   objectives,
   onScroll,
   cardWidth: cardWidthProp,
   cardHeight: cardHeightProp,
+  isActive = true,
   // industries,
   className,
-}: UserCardProps) => {
+}: UserCardProps) {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const { isLandscape } = useScreenOrientation();
 
@@ -84,16 +89,18 @@ export const UserCard = ({
 
   const identity = React.useMemo(() => identifyUser(user), [user]);
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
+  const imageIds = React.useMemo(() => [user?.pictureId], [user?.pictureId]);
+  const imageFallbacks = React.useMemo(() => [fallback], [fallback]);
 
   const { uploads: uploadedProfilePicture } = useRNServerImages({
-    ids: [user?.pictureId],
-    fallbacks: [fallback],
-    size: { width: 100, height: 100 },
+    ids: imageIds,
+    fallbacks: imageFallbacks,
+    size: USER_CARD_IMAGE_SIZE,
   });
 
   const photoSource = uploadedProfilePicture[0];
 
-  const { startConversation } = useStartConversation({
+  const { startConversation, isStartingConversation } = useStartConversation({
     onSuccess: (conversation: ResponseConversationDto) => {
       router.push({
         pathname: "/main/chat/conversation",
@@ -125,11 +132,21 @@ export const UserCard = ({
     transform: [{ scale: messageScale.value }],
   }));
 
-  // Pulsing animation for the main action button
+  // Pulsing animation for the main action button (only active on focused active card)
   const pulseScale = useSharedValue(1);
-  const pulseOpacity = useSharedValue(0.4);
+  const pulseOpacity = useSharedValue(isActive ? 0.4 : 0);
 
   React.useEffect(() => {
+    if (!isActive) {
+      cancelAnimation(pulseScale);
+      cancelAnimation(pulseOpacity);
+      pulseScale.value = 1;
+      pulseOpacity.value = 0;
+      return;
+    }
+
+    pulseScale.value = 1;
+    pulseOpacity.value = 0.4;
     pulseScale.value = withRepeat(
       withTiming(1.35, { duration: 1600 }),
       -1,
@@ -140,7 +157,12 @@ export const UserCard = ({
       -1,
       false,
     );
-  }, [pulseScale, pulseOpacity]);
+
+    return () => {
+      cancelAnimation(pulseScale);
+      cancelAnimation(pulseOpacity);
+    };
+  }, [isActive, pulseScale, pulseOpacity]);
 
   const pulseStyle = useAnimatedStyle(() => ({
     transform: [{ scale: pulseScale.value }],
@@ -238,6 +260,7 @@ export const UserCard = ({
       {/* Message */}
       <Animated.View style={messageStyle}>
         <Pressable
+          disabled={isStartingConversation}
           onPressIn={() => {
             messageScale.value = withSpring(0.85, {
               damping: 12,
@@ -250,7 +273,11 @@ export const UserCard = ({
               stiffness: 250,
             });
           }}
-          onPress={() => startConversation({ users: [user.id] })}
+          onPress={() => {
+            if (!isStartingConversation) {
+              startConversation({ users: [user.id] });
+            }
+          }}
           style={isLandscape ? { width: 48, height: 48 } : undefined}
           className="h-14 w-14 items-center justify-center rounded-full border border-border bg-card active:bg-card/50 shadow-lg shadow-black/20"
         >
@@ -480,7 +507,7 @@ export const UserCard = ({
       </ScrollView>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   scrim: {

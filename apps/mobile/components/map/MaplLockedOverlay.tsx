@@ -20,51 +20,17 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withDelay,
-  withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { RadarRing } from "@softsurgery/mobile-components";
 import { Icon } from "@softsurgery/mobile-ui";
 
 interface MapLockedOverlayProps {
   className?: string;
   onStartSession?: () => void;
   blurRadius?: number;
+  isActive?: boolean;
 }
-
-/** A single sonar ring that expands and fades, forever. */
-const RadarRing = ({ delay, color }: { delay: number; color: string }) => {
-  const p = useSharedValue(0);
-
-  React.useEffect(() => {
-    p.value = withDelay(
-      delay,
-      withRepeat(
-        withTiming(1, {
-          duration: 2800,
-          easing: Easing.out(Easing.ease),
-        }),
-        -1,
-        false,
-      ),
-    );
-  }, [delay, p]);
-
-  const style = useAnimatedStyle(() => ({
-    transform: [{ scale: 0.55 + p.value * 1.25 }],
-    opacity: (1 - p.value) * 0.25,
-  }));
-
-  return (
-    <Animated.View
-      pointerEvents="none"
-      style={[
-        StyleSheet.absoluteFill,
-        { borderRadius: 999, borderWidth: 1.5, borderColor: color },
-        style,
-      ]}
-    />
-  );
-};
 
 /** Staggered fade + rise on mount. */
 const useReveal = (delay: number) => {
@@ -84,6 +50,7 @@ const useReveal = (delay: number) => {
 export const MapLockedOverlay = ({
   className,
   blurRadius = 5,
+  isActive = true,
 }: MapLockedOverlayProps) => {
   const { isLandscape } = useScreenOrientation();
   const { t } = useTranslation("common");
@@ -95,23 +62,6 @@ export const MapLockedOverlay = ({
   // staggered entrance
   const iconReveal = useReveal(0);
   const textReveal = useReveal(140);
-
-  // soft glow behind the lock
-  const glow = useSharedValue(0);
-  React.useEffect(() => {
-    glow.value = withRepeat(
-      withTiming(1, {
-        duration: 2000,
-        easing: Easing.inOut(Easing.ease),
-      }),
-      -1,
-      true,
-    );
-  }, [glow]);
-  const glowStyle = useAnimatedStyle(() => ({
-    opacity: 0.35 + glow.value * 0.4,
-    transform: [{ scale: 1 + glow.value * 0.12 }],
-  }));
 
   return (
     <View className={cn("flex-1 overflow-hidden bg-muted", className)}>
@@ -158,22 +108,9 @@ export const MapLockedOverlay = ({
               isLandscape ? "h-24 w-24" : "mb-8 h-32 w-32",
             )}
           >
-            <RadarRing delay={0} color={primary} />
-            <RadarRing delay={950} color={primary} />
-            <RadarRing delay={1900} color={primary} />
-
-            <Animated.View
-              pointerEvents="none"
-              style={[
-                glowStyle,
-                {
-                  position: "absolute",
-                  top: isLandscape ? 8 : 16,
-                  left: isLandscape ? 8 : 16,
-                },
-              ]}
-              className={cn(isLandscape ? "h-20 w-20" : "h-24 w-24")}
-            />
+            <RadarRing delay={0} color={primary} isActive={isActive} />
+            <RadarRing delay={950} color={primary} isActive={isActive} />
+            <RadarRing delay={1900} color={primary} isActive={isActive} />
 
             <View className="h-16 w-16 items-center justify-center">
               <Icon as={Map} size={isLandscape ? 28 : 32} />

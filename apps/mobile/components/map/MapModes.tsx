@@ -23,8 +23,12 @@ export const MapModes = ({
   const { isLandscape } = useScreenOrientation();
   const insets = useSafeAreaInsets();
   const { palette } = useColorPalette();
-  const { restartSocket } = useLiveGeolocation({ enabled: false });
-  const mapStore = useMapStore();
+  const { restartSocket } = useLiveGeolocation({
+    enabled: false,
+    subscribe: false,
+  });
+  const mode = useMapStore((s) => s.settings.mode);
+  const setNested = useMapStore((s) => s.setNested);
   const modes = [
     {
       key: "refresh",
@@ -36,12 +40,10 @@ export const MapModes = ({
     {
       key: "globe",
       icon: SatelliteDish,
-      color:
-        mapStore.settings.mode !== "map" ? palette.primary : palette.foreground,
+      color: mode !== "map" ? palette.primary : palette.foreground,
       onPress: () => {
-        if (mapStore.settings.mode === "map")
-          mapStore.setNested("settings.mode", "sattelite");
-        else mapStore.setNested("settings.mode", "map");
+        if (mode === "map") setNested("settings.mode", "sattelite");
+        else setNested("settings.mode", "map");
       },
     },
     {

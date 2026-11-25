@@ -9,6 +9,8 @@ import { Marker } from "react-native-maps";
 import ViewShot, { ViewShotRef } from "react-native-view-shot";
 import { Text } from "@softsurgery/mobile-ui";
 
+const CLUSTER_AVATAR_SIZE = { width: 30, height: 30 };
+
 interface UsersMarkerProps {
   nearbyUsers: NearbyUser[];
   latitude: number;
@@ -17,36 +19,46 @@ interface UsersMarkerProps {
   onPress: (users: NearbyUser[] | null) => void;
 }
 
-export const UsersMarker = ({
+export const UsersMarker = React.memo(function UsersMarker({
   nearbyUsers,
   latitude,
   longitude,
   currentUserIncluded,
   onPress,
-}: UsersMarkerProps) => {
-  const width = 30;
-  const height = 30;
+}: UsersMarkerProps) {
+  const { width } = CLUSTER_AVATAR_SIZE;
   const { currentUser } = useCurrentUser();
-  const mapStore = useMapStore();
   const isAndroid = Platform.OS === "android";
 
   // Android self-capture state
   const viewShotRef = React.useRef<ViewShotRef>(null);
+  const captureTimersRef = React.useRef<ReturnType<typeof setTimeout>[]>([]);
   const [imageUri, setImageUri] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    if (currentUser) mapStore.addUser(currentUser);
-  }, [nearbyUsers, mapStore.users, currentUser]);
+    if (currentUser) useMapStore.getState().addUser(currentUser);
+  }, [currentUser]);
+
+  const displayUsers = React.useMemo(
+    () => nearbyUsers.slice(0, 3),
+    [nearbyUsers],
+  );
+  const pictureIds = React.useMemo(
+    () => displayUsers.map((u) => u?.user?.pictureId),
+    [displayUsers],
+  );
+  const pictureFallbacks = React.useMemo(
+    () => displayUsers.map((u) => identifyUserAvatar(u?.user)),
+    [displayUsers],
+  );
 
   const { jsxArray: userPictures } = useRNServerImages({
-    ids: nearbyUsers.map((u) => u?.user?.pictureId),
+    ids: pictureIds,
     className: "rounded-full",
     fallbackClassName: "text-xs",
-    size: { width, height },
-    fallbacks: mapStore.users.map((u) => identifyUserAvatar(u)),
+    size: CLUSTER_AVATAR_SIZE,
+    fallbacks: pictureFallbacks,
   });
-
-  const displayUsers = mapStore.users.slice(0, 3);
 
   const capture = React.useCallback(async () => {
     try {
@@ -59,15 +71,21 @@ export const UsersMarker = ({
     }
   }, []);
 
+  React.useEffect(() => {
+    return () => {
+      captureTimersRef.current.forEach(clearTimeout);
+      captureTimersRef.current = [];
+    };
+  }, []);
+
   const handleLayout = React.useCallback(() => {
     if (!isAndroid) return;
+    captureTimersRef.current.forEach(clearTimeout);
     // Capture after a short delay for images to settle
-    const t1 = setTimeout(capture, 200);
-    const t2 = setTimeout(capture, 1200);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
+    captureTimersRef.current = [
+      setTimeout(capture, 200),
+      setTimeout(capture, 1200),
+    ];
   }, [isAndroid, capture]);
 
   const label = currentUserIncluded
@@ -85,7 +103,7 @@ export const UsersMarker = ({
       <View className="flex flex-row items-center justify-center">
         {displayUsers.map((user, index) => (
           <View
-            key={user.id}
+            key={user.userId}
             style={{
               marginLeft:
                 nearbyUsers.length > 2 ? (index === 0 ? 0 : -width * 0.4) : 0,
@@ -148,4 +166,4 @@ export const UsersMarker = ({
       {content}
     </Marker>
   );
-};
+});

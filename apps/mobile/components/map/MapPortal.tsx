@@ -18,30 +18,36 @@ import {
 import { MapStatus } from "./MapDebugging/MapStatus";
 import { MapLockedOverlay } from "./MaplLockedOverlay";
 import { MapDebugDialog } from "./MapDebugging/MapDebugDialog";
-import { hslToHex, useColorPalette } from "@softsurgery/mobile-hooks";
+import {
+  hslToHex,
+  useColorPalette,
+  useScreenActive,
+} from "@softsurgery/mobile-hooks";
 
 interface MapPortalProps {
   className?: string;
 }
 
 export const MapPortal = ({ className }: MapPortalProps) => {
-  const mapStore = useMapStore();
+  const isScreenActive = useScreenActive();
+  const mapMode = useMapStore((s) => s.settings.mode);
+  const location = useMapStore((s) => s.location);
   const { activeSession, initialized } = useActiveMapSessionContext();
   const { palette, colorScheme } = useColorPalette();
 
   const mapHeaderIconColors = React.useMemo(() => {
-    if (colorScheme === "light" && mapStore.settings.mode === "sattelite") {
+    if (colorScheme === "light" && mapMode === "sattelite") {
       return hslToHex(palette.background);
     }
     return hslToHex(palette.foreground);
-  }, [palette, colorScheme, mapStore.settings.mode]);
+  }, [palette, colorScheme, mapMode]);
 
   const mapHeaderTitleClassName = React.useMemo(() => {
-    if (colorScheme === "light" && mapStore.settings.mode === "sattelite") {
+    if (colorScheme === "light" && mapMode === "sattelite") {
       return "text-background";
     }
     return "text-foreground";
-  }, [colorScheme, mapStore.settings.mode]);
+  }, [colorScheme, mapMode]);
 
   const { t } = useTranslation("common");
   const { count: chatCount } = useChatContext();
@@ -51,7 +57,7 @@ export const MapPortal = ({ className }: MapPortalProps) => {
     router.push("/main/chat");
   }, []);
 
-  const { latitude, longitude } = mapStore?.location?.coords || {
+  const { latitude, longitude } = location?.coords || {
     latitude: 0,
     longitude: 0,
   };
@@ -59,24 +65,24 @@ export const MapPortal = ({ className }: MapPortalProps) => {
   return (
     <View className={cn("flex-1 bg-background", className)}>
       <View className="absolute inset-0 border-y border-border top-0">
-        {activeSession && (!initialized || !mapStore.location) ? (
+        {activeSession && (!initialized || !location) ? (
           <View
             className={cn(
               "flex-1 items-center justify-center bg-background",
               className,
             )}
           >
-            <Loader size="large" />
+            <Loader size="large" isPending={isScreenActive} />
           </View>
         ) : activeSession ? (
           <MapRenderer
             className="flex-1"
             latitude={latitude}
             longitude={longitude}
-            nearbyUsers={mapStore.nearbyUsers}
+            isActive={isScreenActive}
           />
         ) : (
-          <MapLockedOverlay className="flex-1" />
+          <MapLockedOverlay className="flex-1" isActive={isScreenActive} />
         )}
       </View>
 

@@ -52,52 +52,58 @@ interface MarkerCaptureItemProps {
   onCapture: (id: string, uri: string) => void;
 }
 
-const MarkerCaptureItem = ({
-  id,
-  captureKey,
-  children,
-  onCapture,
-}: MarkerCaptureItemProps) => {
-  const viewShotRef = React.useRef<ViewShotRef>(null);
-  const captureTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  );
+const MarkerCaptureItem = React.memo(
+  function MarkerCaptureItem({
+    id,
+    captureKey,
+    children,
+    onCapture,
+  }: MarkerCaptureItemProps) {
+    const viewShotRef = React.useRef<ViewShotRef>(null);
+    const captureTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(
+      null,
+    );
 
-  const capture = React.useCallback(() => {
-    if (captureTimeout.current) clearTimeout(captureTimeout.current);
-    captureTimeout.current = setTimeout(async () => {
-      try {
-        if (viewShotRef.current) {
-          const uri = await (viewShotRef.current as any).capture();
-          onCapture(id, uri);
-        }
-      } catch {
-        // View may not be laid out yet, will retry
-      }
-    }, 150);
-  }, [id, onCapture]);
-
-  // Re-capture only when marker visual state (captureKey) changes, not on every parent render
-  React.useEffect(() => {
-    capture();
-    // Second capture to catch async-loaded images (e.g. profile pictures)
-    const delayedCapture = setTimeout(capture, 1200);
-    return () => {
+    const capture = React.useCallback(() => {
       if (captureTimeout.current) clearTimeout(captureTimeout.current);
-      clearTimeout(delayedCapture);
-    };
-  }, [captureKey, capture]);
+      captureTimeout.current = setTimeout(async () => {
+        try {
+          if (viewShotRef.current) {
+            const uri = await (viewShotRef.current as any).capture();
+            onCapture(id, uri);
+          }
+        } catch {
+          // View may not be laid out yet, will retry
+        }
+      }, 150);
+    }, [id, onCapture]);
 
-  return (
-    <ViewShot
-      ref={viewShotRef}
-      options={{ format: "png", result: "tmpfile" }}
-      onLayout={capture}
-    >
-      {children}
-    </ViewShot>
-  );
-};
+    // Re-capture only when marker visual state (captureKey) changes, not on every parent render
+    React.useEffect(() => {
+      capture();
+      // Second capture to catch async-loaded images (e.g. profile pictures)
+      const delayedCapture = setTimeout(capture, 1200);
+      return () => {
+        if (captureTimeout.current) clearTimeout(captureTimeout.current);
+        clearTimeout(delayedCapture);
+      };
+    }, [captureKey, capture]);
+
+    return (
+      <ViewShot
+        ref={viewShotRef}
+        options={{ format: "png", result: "tmpfile" }}
+        onLayout={capture}
+      >
+        {children}
+      </ViewShot>
+    );
+  },
+  (prev, next) =>
+    prev.id === next.id &&
+    prev.captureKey === next.captureKey &&
+    prev.onCapture === next.onCapture,
+);
 
 interface AndroidPulseOverlayProps {
   points: PulsePoint[];

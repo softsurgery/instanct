@@ -1,7 +1,6 @@
 import { cn } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
-import _ from "lodash";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { ActivityIndicator, Platform, View } from "react-native";
@@ -9,6 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MapView from "react-native-map-clustering";
 import { Marker, Region } from "react-native-maps";
 import ActionSheet, { type ActionSheetRef } from "react-native-actions-sheet";
+import { useShallow } from "zustand/react/shallow";
 import {
   useColorPalette,
   usePulseAnimation,
@@ -30,7 +30,8 @@ interface MapRendererProps {
   style?: Record<string, any>;
   latitude: number;
   longitude: number;
-  nearbyUsers: NearbyUser[];
+  nearbyUsers?: NearbyUser[];
+  isActive?: boolean;
 }
 
 export const MapRenderer = ({
@@ -38,6 +39,7 @@ export const MapRenderer = ({
   style,
   latitude,
   longitude,
+  isActive = true,
 }: MapRendererProps) => {
   const { isLandscape } = useScreenOrientation();
   const insets = useSafeAreaInsets();
@@ -45,13 +47,17 @@ export const MapRenderer = ({
   const { colorScheme } = useColorScheme();
   const mapRef = React.useRef<MapView>(null);
   const superCluster = React.useRef<any>(null);
-  const mapStore = useMapStore();
+  const nearbyUsers = useMapStore(useShallow((s) => s.nearbyUsers));
+  const users = useMapStore(useShallow((s) => s.users));
+  const showUsernames = useMapStore((s) => s.settings.showUsernames);
+  const mapMode = useMapStore((s) => s.settings.mode);
   const { isPending } = useLiveGeolocationParameters();
   const { palette } = useColorPalette();
 
   const singleUserSheetRef = React.useRef<ActionSheetRef>(null);
   const clusterSheetRef = React.useRef<ActionSheetRef>(null);
   const prevRegionRef = React.useRef<Region | null>(null);
+  const currentRegionRef = React.useRef<Region | null>(null);
 
   //states
   const [selectedUser, setSelectedUser] = React.useState<NearbyUser | null>(
@@ -60,7 +66,6 @@ export const MapRenderer = ({
   const [clusterUsers, setClusterUsers] = React.useState<NearbyUser[] | null>(
     null,
   );
-  const [currentRegion, setCurrentRegion] = React.useState<Region | null>(null);
 
   // Android marker image capture state
   const [markerImages, setMarkerImages] = React.useState<
@@ -83,14 +88,14 @@ export const MapRenderer = ({
       isOnline: true,
       coordinatesVisible: true,
       profilePicture: null,
-      updatedAt: new Date().toISOString(),
+      updatedAt: "",
     };
     // Only show users with visible coordinates on the map
-    const visibleUsers = mapStore.nearbyUsers.filter(
+    const visibleUsers = nearbyUsers.filter(
       (u) => u.coordinatesVisible && u.latitude != null && u.longitude != null,
     );
     return [...visibleUsers, myself];
-  }, [currentUser, mapStore.nearbyUsers, latitude, longitude]);
+  }, [currentUser?.id, nearbyUsers, latitude, longitude]);
 
   //handle marker press
   const handleMarkerPress = (
@@ -98,8 +103,8 @@ export const MapRenderer = ({
     longitude: number,
     userId: string,
   ) => {
-    if (currentRegion) {
-      prevRegionRef.current = currentRegion;
+    if (currentRegionRef.current) {
+      prevRegionRef.current = currentRegionRef.current;
     }
 
     if (mapRef.current) {
@@ -115,8 +120,8 @@ export const MapRenderer = ({
       );
     }
 
-    const nearbyUser = mapStore.nearbyUsers.find((u) => u.userId === userId);
-    const user = mapStore.users.find((u) => u.id === userId);
+    const nearbyUser = nearbyUsers.find((u) => u.userId === userId);
+    const user = users.find((u) => u.id === userId);
     if (nearbyUser) {
       setSelectedUser({ ...nearbyUser, user: user ?? nearbyUser.user });
       clusterSheetRef.current?.hide();
@@ -163,7 +168,7 @@ export const MapRenderer = ({
         .filter((u) => u.userId !== currentUser?.id)
         .map((u) => ({
           ...u,
-          user: mapStore.users.find((user) => user.id === u.userId) ?? u.user,
+          user: users.find((user) => user.id === u.userId) ?? u.user,
         }))
         .sort((a, b) => (a?.distance ?? 0) - (b?.distance ?? 0)),
     );
@@ -171,7 +176,7 @@ export const MapRenderer = ({
   };
 
   const handleSelectUserFromCluster = (nearbyUser: NearbyUser) => {
-    const fullUser = mapStore.users.find((u) => u.id === nearbyUser.userId);
+    const fullUser = users.find((u) => u.id === nearbyUser.userId);
     setSelectedUser({ ...nearbyUser, user: fullUser ?? nearbyUser.user });
     clusterSheetRef.current?.hide();
     setTimeout(() => {
@@ -246,46 +251,49 @@ export const MapRenderer = ({
   }, [nearbyUsersAndMyself]);
 
   const androidPulse = usePulseAnimation({
-    active: isAndroid,
+    active: isAndroid && isActive,
     maxOpacity: 0.75,
-    resolvePoints: isAndroid ? resolvePulsePoints : undefined,
+    resolvePoints: isAndroid && isActive ? resolvePulsePoints : undefined,
   });
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleRegionChangeThrottled = React.useCallback(
-    _.throttle((region: Region) => {
-      setCurrentRegion(region);
-    }, 250),
-    [],
-  );
+  const { pause: pauseAndroidPulse, resume: resumeAndroidPulse } = androidPulse;
 
   const handleRegionChange = React.useCallback(
     (region: Region) => {
-      androidPulse.pause();
-      handleRegionChangeThrottled(region);
+      currentRegionRef.current = region;
+      pauseAndroidPulse();
     },
-    [androidPulse.pause, handleRegionChangeThrottled],
+    [pauseAndroidPulse],
   );
 
-  if (!currentUser || isPending) return <ActivityIndicator />;
+  const handleRegionChangeComplete = React.useCallback(
+    (region: Region) => {
+      currentRegionRef.current = region;
+      resumeAndroidPulse();
+    },
+    [resumeAndroidPulse],
+  );
 
-  const markerCaptureItems = isAndroid
-    ? nearbyUsersAndMyself.map((u) => {
-        const storeUser = mapStore.users.find((user) => user.id === u.userId);
-        const isSelf = u.userId === currentUser?.id;
-        return {
-          id: u.userId,
-          captureKey: `${u.isOnline ? 1 : 0}-${isSelf ? 1 : 0}-${mapStore.settings.showUsernames ? 1 : 0}-${storeUser?.pictureId ?? ""}-${storeUser?.username ?? ""}`,
-          content: (
-            <UserMarker
-              userId={u.userId}
-              isOnline={u.isOnline}
-              isCurrentUser={isSelf}
-            />
-          ),
-        };
-      })
-    : [];
+  const markerCaptureItems = React.useMemo(() => {
+    if (!isAndroid) return [];
+    return nearbyUsersAndMyself.map((u) => {
+      const storeUser = users.find((user) => user.id === u.userId);
+      const isSelf = u.userId === currentUser?.id;
+      return {
+        id: u.userId,
+        captureKey: `${u.isOnline ? 1 : 0}-${isSelf ? 1 : 0}-${showUsernames ? 1 : 0}-${storeUser?.pictureId ?? ""}-${storeUser?.username ?? ""}`,
+        content: (
+          <UserMarker
+            userId={u.userId}
+            isOnline={u.isOnline}
+            isCurrentUser={isSelf}
+            animatePulse={false}
+          />
+        ),
+      };
+    });
+  }, [isAndroid, nearbyUsersAndMyself, users, currentUser?.id, showUsernames]);
+
+  if (!currentUser || isPending) return <ActivityIndicator />;
 
   return (
     <View className={cn("flex-1", className)}>
@@ -311,10 +319,10 @@ export const MapRenderer = ({
         }
         onMapReady={androidPulse.syncPoints}
         onRegionChange={handleRegionChange}
-        onRegionChangeComplete={androidPulse.resume}
+        onRegionChangeComplete={handleRegionChangeComplete}
         onMarkersChange={handleMarkersChange}
         showsCompass={false}
-        mapType={mapStore.settings.mode === "map" ? "standard" : "satellite"}
+        mapType={mapMode === "map" ? "standard" : "satellite"}
         clusteringEnabled={true}
         renderCluster={(cluster) => {
           const { geometry, properties } = cluster;
@@ -326,21 +334,22 @@ export const MapRenderer = ({
             ? superCluster.current?.getLeaves?.(cluster.id, Infinity)
             : [];
 
-          const nearbyUsers = nearbyUsersAndMyself
-            .filter((u) =>
-              clusterIds.map((c: any) => c.properties?.id).includes(u.userId),
-            )
+          const clusterMemberIds = new Set(
+            clusterIds.map((c: any) => c.properties?.id),
+          );
+          const clusterNearbyUsers = nearbyUsersAndMyself
+            .filter((u) => clusterMemberIds.has(u.userId))
             .map((nearbyUser) => ({
               ...nearbyUser,
-              user: mapStore.users.find((u) => nearbyUser.userId === u.id),
+              user: users.find((u) => nearbyUser.userId === u.id),
             }));
 
           return (
             <UsersMarker
               key={cluster.id}
-              nearbyUsers={nearbyUsers}
+              nearbyUsers={clusterNearbyUsers}
               currentUserIncluded={
-                !!nearbyUsers.find(
+                !!clusterNearbyUsers.find(
                   (u) => u.userId === (currentUser?.id as string),
                 )
               }
@@ -361,7 +370,7 @@ export const MapRenderer = ({
               if (u.userId !== currentUser?.id)
                 handleMarkerPress(u.latitude!, u.longitude!, u.userId);
             }}
-            tracksViewChanges={!isAndroid}
+            tracksViewChanges={false}
             image={
               isAndroid && markerImages[u.userId]
                 ? { uri: markerImages[u.userId] }
@@ -374,6 +383,7 @@ export const MapRenderer = ({
                 userId={u.userId}
                 isOnline={u.isOnline}
                 isCurrentUser={u.userId === currentUser?.id}
+                animatePulse={isActive}
               />
             )}
           </Marker>
@@ -384,8 +394,8 @@ export const MapRenderer = ({
         points={androidPulse.points}
         scale={androidPulse.scale}
         opacity={androidPulse.opacity}
-        visible={!androidPulse.isPaused}
-        yOffset={mapStore.settings.showUsernames ? -14 : 0}
+        visible={isActive && !androidPulse.isPaused}
+        yOffset={showUsernames ? -14 : 0}
       />
       {/* Single User Modal using ThreeDotsActionSheet */}
       <SingleUserSheet
@@ -418,7 +428,7 @@ export const MapRenderer = ({
           onClose={() => clusterSheetRef.current?.hide()}
         />
       </ActionSheet>
-      {mapStore.nearbyUsers.length > 0 && (
+      {nearbyUsers.length > 0 && (
         <View
           className={cn(
             "absolute bottom-0 left-0 right-0 bg-background/50 rounded-t-2xl",
@@ -430,12 +440,10 @@ export const MapRenderer = ({
           }}
         >
           <UsersCarousel
-            users={mapStore.nearbyUsers}
+            users={nearbyUsers}
             className="rounded-full"
             onUserPress={(nearbyUser: NearbyUser) => {
-              const fullUser = mapStore.users.find(
-                (u) => u.id === nearbyUser.userId,
-              );
+              const fullUser = users.find((u) => u.id === nearbyUser.userId);
               setSelectedUser({
                 ...nearbyUser,
                 user: fullUser ?? nearbyUser.user,
