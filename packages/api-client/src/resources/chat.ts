@@ -20,6 +20,26 @@ export function createChatResource(http: AxiosInstance) {
     return response.data;
   };
 
+  const findPaginatedByUserId = async (
+    userId: string,
+    query: QueryParams = {},
+  ): Promise<Paginated<ResponseConversationDto>> => {
+    const response = await http.get<Paginated<ResponseConversationDto>>(
+      `/conversation/list/${userId}`,
+      { params: listParams(query) },
+    );
+    return response.data;
+  };
+
+  const findConversationById = async (
+    id: number,
+  ): Promise<ResponseConversationDto | null> => {
+    const response = await http.get<ResponseConversationDto | null>(
+      `/conversation/${id}`,
+    );
+    return response.data;
+  };
+
   const findById = async (
     id: number,
     join?: string,
@@ -77,6 +97,8 @@ export function createChatResource(http: AxiosInstance) {
   return {
     conversation: {
       findPaginatedUserConversations,
+      findPaginatedByUserId,
+      findConversationById,
       findById,
       createConversation,
       deleteConversation,

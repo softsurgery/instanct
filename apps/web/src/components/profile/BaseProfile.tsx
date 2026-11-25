@@ -14,6 +14,7 @@ import { useUI } from "@softsurgery/contexts";
 import { About } from "./cards/About";
 import { Settings } from "./cards/Settings";
 import { Activity } from "./cards/Activity";
+import { Conversations } from "./cards/Conversations";
 import { Devices } from "./cards/devices/Devices";
 import { Connections } from "./cards/connections/Connections";
 import { cn } from "@/lib/utils";
@@ -136,7 +137,7 @@ export const BaseProfile = ({
       value: "conversations",
       label: t("userManagement.inspect.tabs.conversations"),
       icon: MessageSquare,
-      content: <div>Conversations Content</div>,
+      content: <Conversations userId={user?.id} />,
     },
     {
       value: "notifications",
@@ -165,7 +166,9 @@ export const BaseProfile = ({
   ];
 
   const filteredTabs = tabs.filter(
-    (tab) => tab.value !== "notifications" || user?.id !== currentUser?.id,
+    (tab) =>
+      (tab.value !== "notifications" && tab.value !== "conversations") ||
+      user?.id !== currentUser?.id,
   );
 
   const displayName =

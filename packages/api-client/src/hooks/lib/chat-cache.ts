@@ -6,6 +6,10 @@ import type {
   ResponseMessageDto,
 } from "../../types";
 
+export const CONVERSATIONS_UNREAD_COUNT_QUERY_KEY = [
+  "conversations-unread-count",
+] as const;
+
 export const CONVERSATION_LINKS_MESSAGES_QUERY: QueryParams = {
   limit: "20",
   sort: "createdAt,DESC",

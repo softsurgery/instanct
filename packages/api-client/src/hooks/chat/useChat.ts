@@ -20,6 +20,7 @@ import {
 } from "@softsurgery/notification-materials/mobile/lib";
 import { useCurrentUser } from "../user-based/useCurrentUser";
 import {
+  CONVERSATIONS_UNREAD_COUNT_QUERY_KEY,
   CONVERSATION_LIST_JOIN,
   InfiniteConversationData,
   moveConversationToTop,
@@ -28,9 +29,7 @@ import {
 } from "../lib/chat-cache";
 import { useSegments, useGlobalSearchParams } from "expo-router";
 
-export const CONVERSATIONS_UNREAD_COUNT_QUERY_KEY = [
-  "conversations-unread-count",
-] as const;
+export { CONVERSATIONS_UNREAD_COUNT_QUERY_KEY };
 
 export interface ChatIncomingNotificationInput {
   conversationId: number;
