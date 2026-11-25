@@ -6,12 +6,10 @@ interface useCheckHealthProps {
   refetchInterval?: number;
 }
 
-export const useCheckHealth = (
-  { enabled = true, refetchInterval = 5000 }: useCheckHealthProps = {
-    enabled: true,
-    refetchInterval: 5000,
-  },
-) => {
+export const useCheckHealth = ({
+  enabled = true,
+  refetchInterval = 30_000,
+}: useCheckHealthProps = {}) => {
   const api = useApi();
   const { data } = useQuery({
     queryKey: ["checkHealth"],

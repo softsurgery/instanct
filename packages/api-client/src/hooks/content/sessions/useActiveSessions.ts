@@ -8,12 +8,10 @@ interface useActiveSessionsProps {
   enabled?: boolean;
 }
 
-export const useActiveSessions = (
-  { enabled, refetchInterval }: useActiveSessionsProps = {
-    enabled: true,
-    refetchInterval: 2000,
-  },
-) => {
+export const useActiveSessions = ({
+  enabled = true,
+  refetchInterval = 15_000,
+}: useActiveSessionsProps = {}) => {
   const api = useApi();
   const {
     data: sessionsResp,

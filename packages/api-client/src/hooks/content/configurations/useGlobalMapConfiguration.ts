@@ -1,3 +1,4 @@
+import React from "react";
 import { ConfigurationNamespaces } from "api-client";
 import { useConfigurationByName } from "./useConfigurationByName";
 
@@ -14,17 +15,20 @@ export const useGlobalMapConfiguration = (
       enabled,
     });
 
+  const mapConfiguration = React.useMemo(() => {
+    if (!configuration) return null;
+    return {
+      rangeMax: Number(
+        configuration.params?.find((p) => p.name === "range.max")?.value,
+      ),
+      rangeMin: Number(
+        configuration.params?.find((p) => p.name === "range.min")?.value,
+      ),
+    };
+  }, [configuration]);
+
   return {
-    mapConfiguration: configuration
-      ? {
-          rangeMax: Number(
-            configuration?.params?.find((p) => p.name === "range.max")?.value,
-          ),
-          rangeMin: Number(
-            configuration?.params?.find((p) => p.name === "range.min")?.value,
-          ),
-        }
-      : null,
+    mapConfiguration,
     isMapConfigurationPending: isConfigurationPending,
     refetchMapConfiguration: refetchConfiguration,
   };

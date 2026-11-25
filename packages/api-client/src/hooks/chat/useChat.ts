@@ -84,11 +84,12 @@ export const useChat = (
   }, [segments, params]);
 
   React.useEffect(() => {
+    if (!enabled || !authPersistStore.isAuthenticated) return;
     (async () => {
       await requestNotificationPermissions();
       await createAndroidChannel();
     })();
-  }, []);
+  }, [enabled, authPersistStore.isAuthenticated]);
 
   const { data: count = 0 } = useQuery({
     queryKey: CONVERSATIONS_UNREAD_COUNT_QUERY_KEY,
@@ -132,6 +133,8 @@ export const useChat = (
   }, [queryClient]);
 
   React.useEffect(() => {
+    if (!enabled || !authPersistStore.isAuthenticated) return;
+
     const s = getSocket("chat", { token: authPersistStore.accessToken });
 
     socketRef.current = s;
@@ -281,6 +284,8 @@ export const useChat = (
       }
     };
   }, [
+    enabled,
+    authPersistStore.isAuthenticated,
     limit,
     search,
     join,

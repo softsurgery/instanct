@@ -1,7 +1,11 @@
 import { disconnectSocket, getSocket, type Socket } from "@softsurgery/lib";
 import * as Location from "expo-location";
 import React from "react";
-import { AppState, type AppStateStatus } from "react-native";
+import {
+  AppState,
+  type AppStateStatus,
+  type NativeEventSubscription,
+} from "react-native";
 import { useShallow } from "zustand/react/shallow";
 import { useLiveGeolocationParameters } from "./useLiveGeolocationParamters";
 import { useMapStore } from "../stores/useMapStore";
@@ -10,6 +14,13 @@ import { useAuthPersistStore } from "@softsurgery/hooks";
 
 const MIN_MOVEMENT_METERS = 5;
 const HEARTBEAT_INTERVAL_MS = 30_000;
+const EMPTY_NEARBY_USERS: NearbyUser[] = [];
+const EMPTY_USERS: ReturnType<typeof useMapStore.getState>["users"] = [];
+const DEFAULT_RECONNECTION = {
+  reconnecting: false,
+  reconnectAttempt: 0,
+  reconnectDelay: 0,
+};
 
 function calculateDistanceMeters(
   lat1: number,
@@ -35,6 +46,7 @@ function calculateDistanceMeters(
 let subscriberCount = 0;
 let sharedSocket: Socket | null = null;
 let locationInterval: ReturnType<typeof setInterval> | null = null;
+let appStateSubscription: NativeEventSubscription | null = null;
 let listenersAttached = false;
 let isUpdatingLocation = false;
 let lastEmittedPos: {
@@ -50,7 +62,7 @@ const activeJoins = new Set<string>([
 ]);
 
 async function performLocationUpdate(force = false): Promise<void> {
-  if (isUpdatingLocation && !force) return;
+  if (isUpdatingLocation) return;
   if (!sharedSocket?.connected) return;
   if (AppState.currentState !== "active" && !force) return;
 
@@ -81,7 +93,19 @@ async function performLocationUpdate(force = false): Promise<void> {
       accuracy: Location.Accuracy.Balanced,
     });
 
-    useMapStore.getState().set("location", pos);
+    const prevLoc = useMapStore.getState().location;
+    const movedFromStore = prevLoc
+      ? calculateDistanceMeters(
+          prevLoc.coords.latitude,
+          prevLoc.coords.longitude,
+          pos.coords.latitude,
+          pos.coords.longitude,
+        )
+      : Infinity;
+
+    if (!prevLoc || movedFromStore >= MIN_MOVEMENT_METERS) {
+      useMapStore.getState().set("location", pos);
+    }
 
     const now = Date.now();
     const last = lastEmittedPos;
@@ -116,6 +140,23 @@ async function performLocationUpdate(force = false): Promise<void> {
     console.warn("⚠️ Failed to fetch location:", err);
   } finally {
     isUpdatingLocation = false;
+  }
+}
+
+function startLocationInterval(): void {
+  if (locationInterval || AppState.currentState !== "active") return;
+  const updateInterval =
+    (useMapStore.getState().parameters?.updateInterval ?? 15) * 1000;
+  locationInterval = setInterval(
+    () => void performLocationUpdate(),
+    updateInterval,
+  );
+}
+
+function stopLocationInterval(): void {
+  if (locationInterval) {
+    clearInterval(locationInterval);
+    locationInterval = null;
   }
 }
 
@@ -247,20 +288,30 @@ async function startGeolocation(accessToken?: string): Promise<void> {
   // Trigger initial location check
   await performLocationUpdate(true);
 
-  if (!locationInterval) {
-    const updateInterval =
-      (useMapStore.getState().parameters?.updateInterval ?? 5) * 1000;
-    locationInterval = setInterval(
-      () => void performLocationUpdate(),
-      updateInterval,
+  startLocationInterval();
+
+  if (!appStateSubscription) {
+    appStateSubscription = AppState.addEventListener(
+      "change",
+      (nextState: AppStateStatus) => {
+        if (nextState === "active") {
+          startLocationInterval();
+          if (sharedSocket?.connected) {
+            void performLocationUpdate(true);
+          }
+        } else {
+          stopLocationInterval();
+        }
+      },
     );
   }
 }
 
 function stopGeolocation(): void {
-  if (locationInterval) {
-    clearInterval(locationInterval);
-    locationInterval = null;
+  stopLocationInterval();
+  if (appStateSubscription) {
+    appStateSubscription.remove();
+    appStateSubscription = null;
   }
   if (sharedSocket) {
     disconnectSocket("geolocation");
@@ -271,31 +322,56 @@ function stopGeolocation(): void {
   isUpdatingLocation = false;
 }
 
+type GeolocationSubscription =
+  | boolean
+  | {
+      users?: boolean;
+      nearbyUsers?: boolean;
+      location?: boolean;
+      status?: boolean;
+    };
+
 interface UseLiveGeolocationOptions {
   enabled?: boolean;
   join?: string[];
+  subscribe?: GeolocationSubscription;
 }
 
 export function useLiveGeolocation(
-  { enabled = true, join = [] }: UseLiveGeolocationOptions = {
+  { enabled = true, join = [], subscribe = true }: UseLiveGeolocationOptions = {
     enabled: true,
     join: [],
+    subscribe: true,
   },
 ) {
   const { refetchMapConfiguration } = useLiveGeolocationParameters();
   const { accessToken } = useAuthPersistStore();
 
-  const connected = useMapStore((s) => s.connected);
-  const loading = useMapStore((s) => s.loading);
-  const reconnection = useMapStore((s) => s.reconnection);
-  const location = useMapStore((s) => s.location);
-  const restartSignal = useMapStore((s) => s.restartSignal);
-  const hasInitializedParameters = useMapStore(
-    (s) => s.hasInitializedParameters,
-  );
+  const subStatus =
+    typeof subscribe === "boolean" ? subscribe : (subscribe.status ?? false);
+  const subLocation =
+    typeof subscribe === "boolean" ? subscribe : (subscribe.location ?? false);
+  const subNearbyUsers =
+    typeof subscribe === "boolean"
+      ? subscribe
+      : (subscribe.nearbyUsers ?? false);
+  const subUsers =
+    typeof subscribe === "boolean" ? subscribe : (subscribe.users ?? false);
 
-  const nearbyUsers = useMapStore(useShallow((s) => s.nearbyUsers));
-  const users = useMapStore(useShallow((s) => s.users));
+  const connected = useMapStore((s) => (subStatus ? s.connected : false));
+  const loading = useMapStore((s) => (subStatus ? s.loading : false));
+  const reconnection = useMapStore((s) =>
+    subStatus ? s.reconnection : DEFAULT_RECONNECTION,
+  );
+  const location = useMapStore((s) => (subLocation ? s.location : null));
+  const restartSignal = useMapStore((s) => s.restartSignal);
+
+  const nearbyUsers = useMapStore(
+    useShallow((s) => (subNearbyUsers ? s.nearbyUsers : EMPTY_NEARBY_USERS)),
+  );
+  const users = useMapStore(
+    useShallow((s) => (subUsers ? s.users : EMPTY_USERS)),
+  );
 
   React.useEffect(() => {
     if (join && join.length > 0) {
@@ -319,17 +395,6 @@ export function useLiveGeolocation(
       }
     };
   }, [enabled, accessToken, restartSignal]);
-
-  React.useEffect(() => {
-    const handleAppStateChange = (nextState: AppStateStatus) => {
-      if (nextState === "active" && sharedSocket?.connected) {
-        void performLocationUpdate(true);
-      }
-    };
-
-    const sub = AppState.addEventListener("change", handleAppStateChange);
-    return () => sub.remove();
-  }, []);
 
   const restartSocket = React.useCallback(async () => {
     stopGeolocation();

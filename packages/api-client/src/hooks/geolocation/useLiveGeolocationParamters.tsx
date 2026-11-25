@@ -6,7 +6,8 @@ import React from "react";
 interface useLiveGeolocationParameters {}
 
 export function useLiveGeolocationParameters({}: useLiveGeolocationParameters = {}) {
-  const mapStore = useMapStore();
+  const set = useMapStore((s) => s.set);
+  const setNested = useMapStore((s) => s.setNested);
   //global configuration
   const {
     mapConfiguration,
@@ -24,27 +25,26 @@ export function useLiveGeolocationParameters({}: useLiveGeolocationParameters = 
   React.useEffect(() => {
     if (userMapConfiguration && mapConfiguration) {
       // Always update global parameters
-      mapStore.setNested("parameters.rangeMin", mapConfiguration?.rangeMin);
-      mapStore.setNested("parameters.rangeMax", mapConfiguration?.rangeMax);
-      mapStore.setNested("parameters.radius", userMapConfiguration.radius);
+      setNested("parameters.rangeMin", mapConfiguration.rangeMin);
+      setNested("parameters.rangeMax", mapConfiguration.rangeMax);
+      setNested("parameters.radius", userMapConfiguration.radius);
 
       // Seed user settings from server on first load only
-      if (!mapStore.hasInitializedParameters) {
-        mapStore.setNested("settings.radius", userMapConfiguration.radius);
-        mapStore.setNested(
-          "settings.showUsernames",
-          userMapConfiguration.showUsernames,
-        );
-        mapStore.set("hasInitializedParameters", true);
+      if (!useMapStore.getState().hasInitializedParameters) {
+        setNested("settings.radius", userMapConfiguration.radius);
+        setNested("settings.showUsernames", userMapConfiguration.showUsernames);
+        set("hasInitializedParameters", true);
       }
     }
-  }, [userMapConfiguration, mapConfiguration]);
+  }, [userMapConfiguration, mapConfiguration, set, setNested]);
+
+  const refetchMapConfiguration = React.useCallback(() => {
+    refetchGlobalMapConfiguration();
+    refetchUserMapConfiguration();
+  }, [refetchGlobalMapConfiguration, refetchUserMapConfiguration]);
 
   return {
-    refetchMapConfiguration: () => {
-      refetchGlobalMapConfiguration();
-      refetchUserMapConfiguration();
-    },
+    refetchMapConfiguration,
     isPending: isMapConfigurationPending || isUserMapConfigurationPending,
   };
 }

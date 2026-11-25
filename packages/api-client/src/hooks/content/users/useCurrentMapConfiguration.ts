@@ -25,19 +25,21 @@ export const useCurrentMapConfiguration = (
     [mapConfigurationResp],
   );
 
+  const parsedMapConfiguration = React.useMemo(() => {
+    if (!mapConfiguration) return null;
+    return {
+      radius: Number(
+        mapConfiguration.params?.find((param) => param.name === "radius")
+          ?.value,
+      ),
+      showUsernames:
+        mapConfiguration.params?.find((param) => param.name === "showUsernames")
+          ?.value === "true",
+    };
+  }, [mapConfiguration]);
+
   return {
-    mapConfiguration: mapConfiguration
-      ? {
-          radius: Number(
-            mapConfiguration?.params?.find((param) => param.name === "radius")
-              ?.value,
-          ),
-          showUsernames:
-            mapConfiguration?.params?.find(
-              (param) => param.name === "showUsernames",
-            )?.value === "true",
-        }
-      : null,
+    mapConfiguration: parsedMapConfiguration,
     isMapConfigurationPending,
     refetchMapConfiguration,
   };

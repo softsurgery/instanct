@@ -63,7 +63,7 @@ const initialState: MapData = {
     radius: 50,
     rangeMax: 100,
     rangeMin: 0,
-    updateInterval: 5,
+    updateInterval: 15,
   },
   settings: {
     radius: 50,
@@ -93,17 +93,23 @@ const initialState: MapData = {
 export const useMapStore = create<MapStore>((set, get) => ({
   ...initialState,
   set: (name, value) => {
-    set((state) => ({
-      ...state,
-      [name]: value,
-    }));
+    set((state) => {
+      if (Object.is(state[name], value)) return state;
+      return {
+        ...state,
+        [name]: value,
+      };
+    });
   },
   setNested: (path: string, value: unknown) => {
     if (!path.includes(".")) {
-      set((state) => ({
-        ...state,
-        [path]: value,
-      }));
+      set((state) => {
+        if (Object.is(state[path as keyof MapData], value)) return state;
+        return {
+          ...state,
+          [path]: value,
+        };
+      });
       return;
     }
 
@@ -114,6 +120,10 @@ export const useMapStore = create<MapStore>((set, get) => ({
       const rootValue = state[rootKey as keyof MapData];
       if (typeof rootValue !== "object" || rootValue === null) {
         throw new Error(`Cannot set nested path on non-object: ${rootKey}`);
+      }
+
+      if (Object.is(objectUtils.getDeepValue(rootValue, nestedPath), value)) {
+        return state;
       }
 
       const updatedRoot = objectUtils.setDeepValue(
