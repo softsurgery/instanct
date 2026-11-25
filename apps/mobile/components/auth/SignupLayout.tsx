@@ -19,7 +19,7 @@ import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
 import { useLayoutConfig } from "@/config/wrapper-config";
 import { useTranslation } from "react-i18next";
-import { useLoader } from "@/contexts/LoaderContext";
+import { useLoader } from "@softsurgery/contexts";
 import { useScreenOrientation } from "@softsurgery/mobile-hooks";
 import {
   validateConfirmPassword,

@@ -21,7 +21,8 @@ import { VideoThumbnailGeneratorHost } from "@softsurgery/mobile-components";
 import { asyncStoragePersister, queryClient } from "@/lib/queryClient";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ApiProvider } from "@/contexts/ApiContext";
-import { LoaderProvider } from "@/contexts/LoaderContext";
+import { LoaderProvider } from "@softsurgery/contexts";
+import { LoaderOverlay } from "@softsurgery/contexts/LoaderOverlay";
 import { usePreferencePersistStore } from "@softsurgery/hooks";
 import { useVersionPersistStore } from "@/stores/useVersionPersistStore";
 import { ForceUpdateGate } from "@/components/version/ForceUpdateGate";
@@ -137,6 +138,7 @@ function RootLayout() {
               <SafeAreaProvider>
                 <LoaderProvider>
                   <RootLayoutContent />
+                  <LoaderOverlay />
                 </LoaderProvider>
               </SafeAreaProvider>
             </PersistQueryClientProvider>

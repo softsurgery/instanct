@@ -33,6 +33,7 @@
     "clean": "rm -rf node_modules .next dist build .turbo"
   },
   "dependencies": {
+    "@softsurgery/contexts": "workspace:*",
     "@softsurgery/form-builder": "workspace:*",
     "@softsurgery/hooks": "workspace:*",
     "@softsurgery/lib": "workspace:*",
