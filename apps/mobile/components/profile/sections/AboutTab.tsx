@@ -126,7 +126,7 @@ export const AboutTab = ({
             color={primary}
           />
 
-          {user?.bio ? (
+          {user?.bio?.trim() ? (
             <SeeMoreText
               textClassname="text-sm leading-7 text-foreground"
               numberOfLines={4}
@@ -134,9 +134,11 @@ export const AboutTab = ({
               {user.bio.trim()}
             </SeeMoreText>
           ) : (
-            <Text className="text-sm leading-6 text-muted-foreground">
-              {t("menu.tabs.about.empty")}
-            </Text>
+            <View className="items-center rounded-2xl border border-dashed border-border py-6">
+              <Text className="text-sm italic text-muted-foreground">
+                {t("menu.tabs.about.empty")}
+              </Text>
+            </View>
           )}
         </View>
 
