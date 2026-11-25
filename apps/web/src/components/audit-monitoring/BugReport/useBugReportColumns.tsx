@@ -57,9 +57,14 @@ export const useBugReportColumns = (
           context={context}
         />
       ),
-      cell: ({ row }) => <span>{row.original.title}</span>,
+      cell: ({ row }) => (
+        <div className="wrap-break-word whitespace-normal min-w-[200px]">
+          {row.original.title}
+        </div>
+      ),
       enableSorting: true,
       enableHiding: true,
+      size: 200,
     },
     {
       accessorKey: "status",
@@ -101,13 +106,13 @@ export const useBugReportColumns = (
         />
       ),
       cell: ({ row }) => (
-        <div className="text-muted-foreground wrap-break-word whitespace-normal">
+        <div className="text-muted-foreground wrap-break-word whitespace-normal min-w-[350px]">
           {row.original.description}
         </div>
       ),
       enableSorting: false,
       enableHiding: true,
-      size: 200,
+      size: 350,
     },
     {
       accessorKey: "user",
