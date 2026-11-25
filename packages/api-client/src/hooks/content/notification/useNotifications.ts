@@ -1,10 +1,10 @@
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import {
+  addPushTokenListener,
   advanceNotificationWatermark,
   createAndroidChannel,
   getExpoPushToken,
   getPushDeviceName,
-  Notifications,
   presentLocalNotification,
   requestNotificationPermissions,
   type NotificationDestination,
@@ -48,6 +48,10 @@ export function useNotifications(
     ResponseNotificationDto[]
   >([]);
   const socketRef = React.useRef<Socket | null>(null);
+  const consequencesRef = React.useRef(consequences);
+  const getDestinationRef = React.useRef(getDestination);
+  consequencesRef.current = consequences;
+  getDestinationRef.current = getDestination;
   const { accessToken, isAuthenticated } = useAuthPersistStore();
 
   const { data: count = 0 } = useQuery({
@@ -85,7 +89,7 @@ export function useNotifications(
       }
     })();
 
-    const tokenSub = Notifications?.addPushTokenListener?.(() => {
+    const tokenSub = addPushTokenListener(() => {
       void getExpoPushToken().then((refreshedToken) => {
         if (!cancelled && refreshedToken) {
           void api.notification
@@ -106,14 +110,15 @@ export function useNotifications(
   }, [api.notification, enabled, isAuthenticated]);
 
   React.useEffect(() => {
+    if (!enabled || !isAuthenticated) return;
+
     const socket = getSocket("notifications", {
       token: accessToken,
     });
 
     socketRef.current = socket;
 
-    socket.on("notification", async (notification: ResponseNotificationDto) => {
-      if (!enabled) return;
+    const onNotification = async (notification: ResponseNotificationDto) => {
       setNotifications((prev) => [...prev, notification]);
       queryClient.invalidateQueries({
         queryKey: NOTIFICATIONS_UNREAD_COUNT_QUERY_KEY,
@@ -124,9 +129,9 @@ export function useNotifications(
         queryClient.invalidateQueries({ queryKey: ["user-devices"] });
       }
 
-      consequences?.[notification.type]?.(notification);
+      consequencesRef.current?.[notification.type]?.(notification);
 
-      const destination = getDestination?.(notification) ?? null;
+      const destination = getDestinationRef.current?.(notification) ?? null;
       await presentLocalNotification({
         title: stringUtils.sanitizeText(
           t(`titles.${notification.type}`, notification.payload).toString(),
@@ -144,13 +149,16 @@ export function useNotifications(
         },
       });
       void advanceNotificationWatermark(notification.createdAt);
-    });
+    };
+
+    socket.on("notification", onNotification);
 
     return () => {
+      socket.off("notification", onNotification);
       disconnectSocket("notifications");
       socketRef.current = null;
     };
-  }, [accessToken, consequences, enabled, queryClient, t]);
+  }, [accessToken, enabled, isAuthenticated, queryClient, t]);
 
   const resetCount = React.useCallback(() => {
     markAllAsRead();
