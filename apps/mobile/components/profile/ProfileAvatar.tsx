@@ -21,7 +21,7 @@ import {
   UpdateUserDto,
   ServerErrorResponse,
 } from "api-client";
-import { useLoader } from "@/contexts/LoaderContext";
+import { useLoader } from "@softsurgery/contexts";
 import { identifyUserAvatar } from "@/lib/user";
 
 interface ProfileAvatarProps {

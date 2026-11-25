@@ -42,7 +42,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { useLoader } from "@/contexts/LoaderContext";
+import { useLoader } from "@softsurgery/contexts";
 
 interface InspectBaseProfileProps {
   className?: string;

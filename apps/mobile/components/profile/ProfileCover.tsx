@@ -21,7 +21,7 @@ import {
   UpdateUserCoverDto,
   ServerErrorResponse,
 } from "api-client";
-import { useLoader } from "@/contexts/LoaderContext";
+import { useLoader } from "@softsurgery/contexts";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { Image, ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
