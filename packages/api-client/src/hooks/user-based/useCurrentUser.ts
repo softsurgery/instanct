@@ -2,7 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useApi } from "../context/ApiContext";
 
-export const useCurrentUser = () => {
+export interface UseCurrentUserOptions {
+  enabled?: boolean;
+}
+
+export const useCurrentUser = (
+  { enabled = true }: UseCurrentUserOptions = { enabled: true },
+) => {
   const api = useApi();
   const {
     data: currentUserResp,
@@ -11,6 +17,7 @@ export const useCurrentUser = () => {
   } = useQuery({
     queryKey: ["current-user"],
     queryFn: () => api.currentUser.find(),
+    enabled,
   });
 
   const currentUser = React.useMemo(() => {
