@@ -11,27 +11,34 @@ interface UserCarouselEntryProps {
   onPress?: (user: any) => void;
 }
 
-export const UserCarouselEntry = ({
+const CAROUSEL_AVATAR_SIZE = { width: 50, height: 50 };
+
+export const UserCarouselEntry = React.memo(function UserCarouselEntry({
   className,
   userId,
   onPress,
-}: UserCarouselEntryProps) => {
-  const mapStore = useMapStore();
-  const user = React.useMemo(
-    () => mapStore.getUserById(userId),
-    [userId, mapStore.users],
+}: UserCarouselEntryProps) {
+  const user = useMapStore(
+    React.useCallback(
+      (s) => s.users.find((u) => u.id === userId) ?? null,
+      [userId],
+    ),
   );
-  const nearbyUser = React.useMemo(
-    () => mapStore.getNearbyUserById(userId),
-    [userId, mapStore.nearbyUsers],
+  const nearbyUser = useMapStore(
+    React.useCallback(
+      (s) => s.nearbyUsers.find((u) => u.userId === userId) ?? null,
+      [userId],
+    ),
   );
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
+  const imageIds = React.useMemo(() => [user?.pictureId], [user?.pictureId]);
+  const imageFallbacks = React.useMemo(() => [fallback], [fallback]);
   const { jsxArray: profilePictures } = useRNServerImages({
-    ids: [user?.pictureId],
-    fallbacks: [fallback],
+    ids: imageIds,
+    fallbacks: imageFallbacks,
     className: "rounded-full",
     wrapperClassName: "rounded-full overflow-hidden",
-    size: { width: 50, height: 50 },
+    size: CAROUSEL_AVATAR_SIZE,
   });
 
   return (
@@ -42,4 +49,4 @@ export const UserCarouselEntry = ({
       {profilePictures[0]}
     </Pressable>
   );
-};
+});

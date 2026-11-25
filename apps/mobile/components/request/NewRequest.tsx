@@ -41,9 +41,9 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
   const isKeyboardVisible = useKeyboardVisible();
   const requestStore = useRequestStore();
   const { user, isUserPending } = useIdentifiedUser({ id });
-  const mapStore = useMapStore();
+  const coords = useMapStore((s) => s.location?.coords);
 
-  const { latitude, longitude } = mapStore?.location?.coords || {
+  const { latitude, longitude } = coords || {
     latitude: 0,
     longitude: 0,
   };
