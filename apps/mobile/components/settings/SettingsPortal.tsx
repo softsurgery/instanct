@@ -21,8 +21,11 @@ import { useApi } from "api-client/hooks";
 import { getAppVersionInfo } from "@/lib/app-version";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import type { ServerErrorResponse } from "api-client";
-import { Button, Icon, Separator, Text } from "@softsurgery/mobile-ui";
+import { Button, Icon, Separator, Switch, Text } from "@softsurgery/mobile-ui";
 import { useLayoutConfig } from "@/config/wrapper-config";
+import { useMonitorConfig } from "@/config/monitor-config";
+import { useAuthPersistStore } from "@softsurgery/hooks/stores";
+import { shouldShowMobileMonitor } from "@softsurgery/mobile-monitor";
 
 interface SettingsPortalProps {
   className?: string;
@@ -42,6 +45,23 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
   const queryClient = useQueryClient();
   const { t: tSettings } = useTranslation("settings");
   const { installedVersion } = React.useMemo(() => getAppVersionInfo(), []);
+  const { enabled: monitorEnabled, setEnabled: setMonitorEnabled } =
+    useMonitorConfig();
+  const isAuthenticated = useAuthPersistStore((s) => s.isAuthenticated);
+  const { currentUser } = useCurrentUser();
+  const isAdmin = [
+    currentUser?.roleId,
+    currentUser?.role?.id,
+    currentUser?.role?.label,
+  ].some(
+    (value) =>
+      typeof value === "string" && value.trim().toLowerCase() === "admin",
+  );
+  const canShowMonitor = shouldShowMobileMonitor({
+    isDev: __DEV__,
+    isAuthenticated,
+    isAdmin,
+  });
 
   const settingsSections: SettingsSection[] = [
     {
@@ -177,7 +197,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
     },
     {
       key: "test",
-      title: "Test",
+      title: "Test & Admin tools",
       description: "This is just for development purposes",
       rows: [
         {
@@ -199,13 +219,29 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
             });
           },
         },
+        ...(canShowMonitor
+          ? [
+              {
+                className: "p-1 px-4 mt-1",
+                title: "System Monitor",
+                description: "Show floating CPU, GPU, and memory metrics",
+                rightComponent: (
+                  <Switch
+                    className="scale-125"
+                    checked={monitorEnabled}
+                    onCheckedChange={setMonitorEnabled}
+                  />
+                ),
+                onPress: () => setMonitorEnabled(!monitorEnabled),
+              },
+            ]
+          : []),
       ],
       showOnDevelopment: true,
     },
-  ].filter((section) => !section.showOnDevelopment || __DEV__);
+  ].filter((section) => !section.showOnDevelopment || canShowMonitor);
 
   const { t } = useTranslation("common");
-  const { currentUser } = useCurrentUser();
   const logout = useLogout();
 
   const deleteAccountSheetRef = React.useRef<ActionSheetRef>(null);
