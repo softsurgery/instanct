@@ -57,6 +57,8 @@
           "actions": {
             "update-profile": "Mettre à jour le profil",
             "update-profile-pending": "Mise à jour...",
+            "view-picture": "Voir la photo",
+            "edit-picture": "Modifier la photo",
             "remove-picture": "Supprimer la photo"
           },
           "toasts": {

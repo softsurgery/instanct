@@ -22,6 +22,7 @@ import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
 import { useLayoutConfig } from "@/config/wrapper-config";
+import { useIsPickingPicture } from "@softsurgery/mobile-hooks";
 import { View } from "react-native";
 
 interface UpdateProfileProps {
@@ -35,6 +36,7 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
   const userStore = useUserStore();
   const queryClient = useQueryClient();
   const { t } = useTranslation("settings");
+  const { onPickStart, onPickEnd } = useIsPickingPicture();
 
   const { mutate: updateUser, isPending: isUpdatePending } = useMutation({
     mutationFn: (user: UpdateUserDto) => api.currentUser.update(user),
@@ -105,6 +107,8 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
     fallback,
     uploadPicture: uploadProfilePicture,
     isProfilePictureUploadPending,
+    onPickStart,
+    onPickEnd,
   });
 
   React.useEffect(() => {

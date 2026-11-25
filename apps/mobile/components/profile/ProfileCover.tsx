@@ -21,8 +21,7 @@ import {
   UpdateUserCoverDto,
   ServerErrorResponse,
 } from "api-client";
-import { useLoader } from "@softsurgery/contexts";
-import { useRNServerImages } from "@softsurgery/mobile-hooks";
+import { useIsPickingPicture, useRNServerImages } from "@softsurgery/mobile-hooks";
 import { Image, ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLuminance, useScreenOrientation } from "@softsurgery/mobile-hooks";
@@ -44,8 +43,6 @@ export const ProfileCover = ({
   const api = useApi();
   const { t } = useTranslation("menu");
   const queryClient = useQueryClient();
-  const [isPickingCover, setIsPickingCover] = React.useState(false);
-  const { setLoading } = useLoader();
 
   const sheetRef = useRef<ActionSheetRef>(null);
   const previewRef = useRef<PhotoPreviewRef>(null);
@@ -101,18 +98,14 @@ export const ProfileCover = ({
       },
     });
 
-  React.useEffect(() => {
-    setLoading(isCoverUploadPending || isUpdateCoverPending || isPickingCover);
-  }, [isCoverUploadPending, isUpdateCoverPending, isPickingCover, setLoading]);
-
-  React.useEffect(() => {
-    return () => setLoading(false);
-  }, [setLoading]);
+  const { onPickStart, onPickEnd } = useIsPickingPicture(
+    isCoverUploadPending || isUpdateCoverPending,
+  );
 
   const handlePickCover = async () => {
     if (!isCurrentUser) return;
 
-    setIsPickingCover(true);
+    onPickStart();
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ["images"],
@@ -134,7 +127,7 @@ export const ProfileCover = ({
         files: [fileLike],
       });
     } finally {
-      setIsPickingCover(false);
+      onPickEnd();
     }
   };
 

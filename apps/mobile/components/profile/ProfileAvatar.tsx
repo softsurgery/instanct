@@ -21,7 +21,7 @@ import {
   UpdateUserDto,
   ServerErrorResponse,
 } from "api-client";
-import { useLoader } from "@softsurgery/contexts";
+import { useIsPickingPicture } from "@softsurgery/mobile-hooks";
 import { identifyUserAvatar } from "@/lib/user";
 
 interface ProfileAvatarProps {
@@ -40,8 +40,6 @@ export const ProfileAvatar = ({
   const api = useApi();
   const { t } = useTranslation("menu");
   const queryClient = useQueryClient();
-  const [isPickingPicture, setIsPickingPicture] = React.useState(false);
-  const { setLoading } = useLoader();
 
   const sheetRef = useRef<ActionSheetRef>(null);
   const previewRef = useRef<PhotoPreviewRef>(null);
@@ -101,16 +99,12 @@ export const ProfileAvatar = ({
       },
     });
 
-  React.useEffect(() => {
-    setLoading(isUploadPending || isUpdatePending || isPickingPicture);
-  }, [isUploadPending, isUpdatePending, isPickingPicture, setLoading]);
-
-  React.useEffect(() => {
-    return () => setLoading(false);
-  }, [setLoading]);
+  const { onPickStart, onPickEnd } = useIsPickingPicture(
+    isUploadPending || isUpdatePending,
+  );
 
   const handlePickPicture = async () => {
-    setIsPickingPicture(true);
+    onPickStart();
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ["images"],
@@ -132,7 +126,7 @@ export const ProfileAvatar = ({
         files: [fileLike],
       });
     } finally {
-      setIsPickingPicture(false);
+      onPickEnd();
     }
   };
 

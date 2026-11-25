@@ -1676,6 +1676,9 @@ importers:
 
   packages/softsurgery-abstractions/mobile-hooks:
     dependencies:
+      '@softsurgery/contexts':
+        specifier: workspace:*
+        version: link:../contexts
       '@softsurgery/hooks':
         specifier: workspace:*
         version: link:../hooks

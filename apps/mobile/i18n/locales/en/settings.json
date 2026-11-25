@@ -57,6 +57,8 @@
           "actions": {
             "update-profile": "Update Profile",
             "update-profile-pending": "Updating...",
+            "view-picture": "View Picture",
+            "edit-picture": "Edit Picture",
             "remove-picture": "Remove Picture"
           },
           "toasts": {

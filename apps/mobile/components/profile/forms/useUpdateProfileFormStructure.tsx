@@ -6,7 +6,6 @@ import {
   Field,
   FieldVariant,
   FormStructure,
-  PictureFieldProps,
   SelectFieldProps,
   TextareaFieldProps,
   TextFieldProps,
@@ -14,10 +13,9 @@ import {
   UploadProgressCallback,
 } from "@softsurgery/mobile-form-builder";
 import { UserStore } from "@/stores/useUserStore";
-import { Pressable, View } from "react-native";
-import { Text } from "@softsurgery/mobile-ui";
 import { useTranslation } from "react-i18next";
 import { useScreenOrientation } from "@softsurgery/mobile-hooks";
+import { UpdateProfileAvatar } from "./UpdateProfileAvatar";
 
 interface useUpdateProfileFormStructureProps {
   store: UserStore;
@@ -25,6 +23,8 @@ interface useUpdateProfileFormStructureProps {
   uploadPicture: UploadFilesMutate;
   isProfilePictureUploadPending: boolean;
   isPending?: boolean;
+  onPickStart?: () => void;
+  onPickEnd?: () => void;
 }
 
 export const useUpdateProfileFormStructure = ({
@@ -33,68 +33,57 @@ export const useUpdateProfileFormStructure = ({
   uploadPicture,
   isProfilePictureUploadPending,
   isPending = false,
+  onPickStart,
+  onPickEnd,
 }: useUpdateProfileFormStructureProps) => {
   const { t } = useTranslation("settings");
   const { isLandscape } = useScreenOrientation();
-  const hasPicture = !!(store?.picture || store?.updateDto?.pictureId);
 
   // picture
-  const pictureField: Field<PictureFieldProps> = {
+  const pictureField: Field<CustomFieldProps> = {
     id: "picture",
     label: t("settings.account.screens.profile.form.profile-picture"),
-    variant: FieldVariant.PICTURE,
+    variant: FieldVariant.CUSTOM,
     description: t(
       "settings.account.screens.profile.form.descriptions.profile-picture",
     ),
     fieldClassName: "w-full",
-    className: isLandscape
-      ? "h-28 w-28 rounded-full my-2"
-      : "h-40 w-40 rounded-full my-2",
-    wrapperClassName: "flex flex-row items-center justify-center",
-    props: {
-      image: store?.picture,
-      progress: store?.progress,
-      alt: fallback,
-      editable: !isProfilePictureUploadPending && !isPending,
-      onFileChange: (value: UploadFileInput) => {
-        store.set("picture", value);
-      },
-      onUpload: (
-        file: UploadFileInput,
-        onProgress?: UploadProgressCallback,
-      ) => {
-        store.set("progress", 0);
-        uploadPicture({
-          files: [file],
-          onProgress: (progress: number) => {
-            store.set("progress", progress);
-            onProgress?.(progress);
-          },
-        });
-      },
-    },
-  };
-
-  const pictureRemovalButton: Field<CustomFieldProps> = {
-    id: "pictureRemoval",
-    label: "",
-    variant: FieldVariant.CUSTOM,
-    fieldClassName: "w-full",
     props: {
       children: (
-        <View className="flex-row items-center justify-center">
-          <Pressable
-            onPress={() => {
-              store.set("picture", undefined);
-              store.setNested("updateDto.pictureId", null);
-            }}
-            className="rounded-full border border-border px-3 py-1.5 active:bg-muted"
-          >
-            <Text className="text-sm font-bold">
-              {t("settings.account.screens.profile.actions.remove-picture")}
-            </Text>
-          </Pressable>
-        </View>
+        <UpdateProfileAvatar
+          image={store?.picture}
+          progress={store?.progress}
+          fallback={fallback}
+          editable={!isProfilePictureUploadPending && !isPending}
+          wrapperClassName="flex flex-row items-center justify-center"
+          className={
+            isLandscape
+              ? "h-28 w-28 rounded-full my-2"
+              : "h-40 w-40 rounded-full my-2"
+          }
+          onPickStart={onPickStart}
+          onPickEnd={onPickEnd}
+          onFileChange={(value: UploadFileInput) => {
+            store.set("picture", value);
+          }}
+          onUpload={(
+            file: UploadFileInput,
+            onProgress?: UploadProgressCallback,
+          ) => {
+            store.set("progress", 0);
+            uploadPicture({
+              files: [file],
+              onProgress: (progress: number) => {
+                store.set("progress", progress);
+                onProgress?.(progress);
+              },
+            });
+          }}
+          onRemove={() => {
+            store.set("picture", undefined);
+            store.setNested("updateDto.pictureId", null);
+          }}
+        />
       ),
     },
   };
@@ -259,10 +248,7 @@ export const useUpdateProfileFormStructure = ({
         rows: [
           {
             id: 1,
-            fields: [
-              pictureField,
-              ...(hasPicture ? [pictureRemovalButton] : []),
-            ],
+            fields: [pictureField],
             className: "flex flex-row items-center justify-center",
           },
           {

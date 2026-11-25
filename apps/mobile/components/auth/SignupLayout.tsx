@@ -19,8 +19,7 @@ import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
 import { useLayoutConfig } from "@/config/wrapper-config";
 import { useTranslation } from "react-i18next";
-import { useLoader } from "@softsurgery/contexts";
-import { useScreenOrientation } from "@softsurgery/mobile-hooks";
+import { useIsPickingPicture, useScreenOrientation } from "@softsurgery/mobile-hooks";
 import {
   validateConfirmPassword,
   validateEmail,
@@ -43,8 +42,6 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
   const authStore = useAuthStore();
   const { industries } = useIndustries({ locale: i18n.language });
   const { DebugButton } = useSignupDebugButton({ store: authStore });
-  const { setLoading } = useLoader();
-  const [isPickingPicture, setIsPickingPicture] = React.useState(false);
 
   const {
     uploadFiles: uploadProfilePicture,
@@ -66,6 +63,10 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
 
   const { usernameValidation, emailValidation } = useAuthValidation();
 
+  const { onPickStart, onPickEnd } = useIsPickingPicture(
+    isProfilePictureUploadPending,
+  );
+
   const {
     signUpFormStructure,
     industriesFormStructure,
@@ -80,20 +81,15 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
     })),
     uploadPicture: uploadProfilePicture,
     isProfilePictureUploadPending,
-    onPickStart: () => setIsPickingPicture(true),
-    onPickEnd: () => setIsPickingPicture(false),
+    onPickStart,
+    onPickEnd,
   });
 
   React.useEffect(() => {
-    setLoading(isProfilePictureUploadPending || isPickingPicture);
-  }, [isProfilePictureUploadPending, isPickingPicture, setLoading]);
-
-  React.useEffect(() => {
     return () => {
-      setLoading(false);
       authStore.reset();
     };
-  }, [setLoading]);
+  }, []);
 
   const { mutate: signUp, isPending: isSignUpPending } = useMutation({
     mutationFn: async () => {

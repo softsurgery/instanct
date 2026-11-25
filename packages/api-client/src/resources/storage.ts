@@ -7,6 +7,14 @@ import type {
 } from "../types";
 import { listParams } from "./query";
 
+export type ReactNativeUploadFile = {
+  uri: string;
+  name: string;
+  type: string;
+};
+
+export type UploadFileInput = File | ReactNativeUploadFile;
+
 export function createUploadResource(http: AxiosInstance) {
   const findPaginated = async (
     query: QueryParams = {},
@@ -23,12 +31,12 @@ export function createUploadResource(http: AxiosInstance) {
   };
 
   const uploadFile = async (
-    file: File,
+    file: UploadFileInput,
     onProgress?: (percent: number) => void,
     temporary: boolean = true,
   ): Promise<Upload> => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", file as unknown as Blob);
 
     const response = await http.post<Upload>(
       temporary ? "/storage/upload/temporary" : "/storage/upload",
@@ -46,13 +54,13 @@ export function createUploadResource(http: AxiosInstance) {
   };
 
   const uploadFiles = async (
-    files: File[],
+    files: UploadFileInput[],
     onProgress?: (percent: number) => void,
     temporary: boolean = true,
   ): Promise<Upload[]> => {
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append("files", file);
+      formData.append("files", file as unknown as Blob);
     });
 
     const response = await http.post<Upload[]>(
