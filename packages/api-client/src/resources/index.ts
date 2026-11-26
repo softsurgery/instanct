@@ -23,6 +23,7 @@ import { createRoleResource } from "./roles";
 import { createSessionResource } from "./session";
 import { createStoreResource } from "./store";
 import { createUploadResource } from "./storage";
+import { createMediaStorageResource } from "./media-storage";
 import { createUserResource } from "./users";
 import { createBugResource } from "./bug";
 import { createBugInterestedUserResource } from "./bug-interested-user";
@@ -59,6 +60,7 @@ export function createResources(http: AxiosInstance) {
     contentPage: createContentPageResource(http),
     template: createTemplateResource(http),
     upload: createUploadResource(http),
+    mediaStorage: createMediaStorageResource(http),
     notification: createNotificationResource(http),
     follow: createFollowResource(http),
     experience: createExperienceResource(http),

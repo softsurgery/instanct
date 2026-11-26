@@ -194,7 +194,8 @@ export const ProfileCover = ({
 
       <PhotoPreview
         ref={previewRef}
-        source={coverSource as ImageSource | undefined}
+        uploadId={user?.coverId}
+        source={user?.coverId ? undefined : (coverSource as ImageSource | undefined)}
       />
 
       <ThreeDotsActionSheet

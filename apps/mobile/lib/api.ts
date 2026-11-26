@@ -5,6 +5,7 @@ import { bindMobileClientAuth } from "@/lib/client-auth";
 import { performLogout } from "@/lib/logout";
 import { bindBackgroundApi } from "@/lib/background-api-holder";
 import { createMobileUpload } from "@/lib/upload";
+import { createMobileMediaStorage } from "@/lib/media-storage";
 
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || "";
 const delayMs = process.env.EXPO_PUBLIC_GLOBAL_DELAY
@@ -41,6 +42,7 @@ export function createMobileApi() {
     ...client,
     clientAuth: bindMobileClientAuth(client.clientAuth),
     upload: createMobileUpload(client.http),
+    mediaStorage: createMobileMediaStorage(baseURL),
   };
 }
 

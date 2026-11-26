@@ -147,7 +147,11 @@ export const ProfileAvatar = ({
         {profilePictures[0]}
       </Pressable>
 
-      <PhotoPreview ref={previewRef} source={profilePictureSource} />
+      <PhotoPreview
+        ref={previewRef}
+        uploadId={user?.pictureId}
+        source={user?.pictureId ? undefined : profilePictureSource}
+      />
 
       <ThreeDotsActionSheet
         ref={sheetRef}

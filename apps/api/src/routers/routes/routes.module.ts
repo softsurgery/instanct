@@ -22,6 +22,7 @@ import { EducationController } from 'src/modules/users/controllers/education.con
 import { ConfigurationController } from '@softsurgery/nsa-configurations/controllers/configuration.controller';
 import { ConfigurationsModule } from '@softsurgery/nsa-configurations/configurations.module';
 import { StorageController } from '@softsurgery/nsa-storage/controllers/storage.controller';
+import { MediaStorageController } from '@softsurgery/nsa-storage/controllers/media-storage.controller';
 import { CurrentUserController } from 'src/modules/users/controllers/current-user.controller';
 import { CurrentConversationController } from '@softsurgery/nsa-chat/controllers/user-conversation.controller';
 import { CurrentSessionController } from '@softsurgery/nsa-sessions/controllers/current-session.controller';
@@ -52,6 +53,7 @@ import { TemplateController } from '@softsurgery/nsa-templates/controllers/templ
     UserDeviceController,
     //common
     StorageController,
+    MediaStorageController,
     ConfigurationController,
     //user
     CurrentUserController,

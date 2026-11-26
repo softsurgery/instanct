@@ -26,6 +26,11 @@ export type { UserResource } from "./resources/users";
 export type { RoleResource } from "./resources/roles";
 export type { PermissionResource } from "./resources/permission";
 export type { UploadResource } from "./resources/storage";
+export {
+  buildViewQueryString,
+  type MediaStorageResource,
+  type MediaStorageViewOptions,
+} from "./resources/media-storage";
 export type { LandingConfigurationResource } from "./resources/landing-configuration";
 export type { AppVersionResource } from "./resources/app-version";
 export type { BugInterestedUserResource } from "./resources/bug-interested-user";
