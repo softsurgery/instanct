@@ -26,7 +26,7 @@ import { CreateRequestDtoSchema } from "@/types/validations/request.validation";
 import { objectUtils } from "@softsurgery/lib";
 import { useMapStore } from "@/stores/useMapStore";
 import { useTranslation } from "react-i18next";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface NewRequestProps {
   className?: string;

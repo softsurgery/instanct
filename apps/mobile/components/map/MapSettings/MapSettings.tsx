@@ -16,7 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useApi } from "api-client/hooks";
 import { toast } from "sonner-native";
 import { useMapSettingsFormStructure } from "./useMapSettingsFormStructure";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface MapSettingsProps {
   className?: string;

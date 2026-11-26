@@ -5,7 +5,7 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { cn } from "@softsurgery/lib";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { ResponseUserDto } from "api-client";
 import {
   format,

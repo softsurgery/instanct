@@ -20,7 +20,7 @@ import {
   useColorPalette,
   useScreenOrientation,
 } from "@softsurgery/mobile-hooks";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 const ONBOARDING_DATA = [
   {

@@ -3,6 +3,7 @@ import { cn } from "@softsurgery/lib";
 import { useCurrentUser } from "api-client/hooks";
 import { identifyUser } from "@/lib/user";
 import { router } from "expo-router";
+import { Image } from "expo-image";
 import { ChevronRight, LogOut, Trash2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -22,8 +23,11 @@ import { getAppVersionInfo } from "@/lib/app-version";
 import { type ActionSheetRef } from "react-native-actions-sheet";
 import type { ServerErrorResponse } from "api-client";
 import { Button, Icon, Separator, Switch, Text } from "@softsurgery/mobile-ui";
-import { useLayoutConfig } from "@/config/wrapper-config";
-import { useMonitorConfig } from "@/config/monitor-config";
+import {
+  useAppConfig,
+  useLayoutConfig,
+  useMonitorConfig,
+} from "@softsurgery/contexts";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { shouldShowMobileMonitor } from "@softsurgery/mobile-monitor";
 
@@ -47,6 +51,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
   const { installedVersion } = React.useMemo(() => getAppVersionInfo(), []);
   const { enabled: monitorEnabled, setEnabled: setMonitorEnabled } =
     useMonitorConfig();
+  const { imageCachePolicy, imageQuality } = useAppConfig();
   const isAuthenticated = useAuthPersistStore((s) => s.isAuthenticated);
   const { currentUser } = useCurrentUser();
   const isAdmin = [
@@ -62,6 +67,17 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
     isAuthenticated,
     isAdmin,
   });
+
+  const invalidateImageCache = async () => {
+    try {
+      await Promise.all([Image.clearMemoryCache(), Image.clearDiskCache()]);
+      toast.success("Image cache invalidated", {
+        description: `Cleared cache for policy "${imageCachePolicy}"`,
+      });
+    } catch {
+      toast.error("Failed to clear image cache");
+    }
+  };
 
   const settingsSections: SettingsSection[] = [
     {
@@ -217,6 +233,15 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
             toast.success("Queries invalidated successfully", {
               description: "All queries have been invalidated",
             });
+          },
+        },
+        {
+          className: "p-1 px-4 mt-1",
+          title: "Invalidate Image Cache",
+          description: `Policy: ${imageCachePolicy}, Quality: ${imageQuality}% — tap to clear memory & disk cache`,
+          rightIcon: ChevronRight,
+          onPress: async () => {
+            await invalidateImageCache();
           },
         },
         ...(canShowMonitor

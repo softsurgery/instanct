@@ -21,7 +21,7 @@ import {
   StableKeyboardAwareScrollView,
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { cn } from "@softsurgery/lib";
 
 interface ChangeEmailPortalProps {

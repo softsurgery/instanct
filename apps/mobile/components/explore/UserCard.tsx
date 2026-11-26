@@ -33,6 +33,7 @@ import { Icon, Text } from "@softsurgery/mobile-ui";
 import { useStartConversation } from "api-client/hooks/chat";
 import { useBookmarkActions } from "api-client/hooks/content/users/useBookmarkActions";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
+import { useAppConfig } from "@softsurgery/contexts";
 import { IconMoodPlus } from "@tabler/icons-react-native";
 import Animated, {
   cancelAnimation,
@@ -89,6 +90,7 @@ export const UserCard = React.memo(function UserCard({
 
   const identity = React.useMemo(() => identifyUser(user), [user]);
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
+  const { imageCachePolicy } = useAppConfig();
   const imageIds = React.useMemo(() => [user?.pictureId], [user?.pictureId]);
   const imageFallbacks = React.useMemo(() => [fallback], [fallback]);
 
@@ -318,7 +320,7 @@ export const UserCard = React.memo(function UserCard({
       source={photoSource}
       style={{ flex: 1 }}
       contentFit="cover"
-      cachePolicy="memory-disk"
+      cachePolicy={imageCachePolicy}
     >
       <LinearGradient
         colors={["rgba(0,0,0,0.5)", "transparent"]}

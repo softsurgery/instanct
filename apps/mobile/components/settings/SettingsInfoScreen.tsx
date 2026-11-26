@@ -1,5 +1,4 @@
-import { useLayoutConfig } from "@/config/wrapper-config";
-import React from "react";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { View } from "react-native";
 import {
   ApplicationHeader,

@@ -19,7 +19,7 @@ import { useSignInFormStructure } from "./useSigninFormStructure";
 import { SSOButtons } from "./SSOButtons";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { useAuthStore } from "api-client/hooks/auth";
 
 interface SigninProps {

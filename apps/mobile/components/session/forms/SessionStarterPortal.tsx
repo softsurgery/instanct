@@ -27,7 +27,7 @@ import { useObjectives } from "api-client/hooks";
 import { objectUtils } from "@softsurgery/lib";
 import { toast } from "sonner-native";
 import { useTranslation } from "react-i18next";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 interface SessionStarterPortalProps {
   className?: string;
 }

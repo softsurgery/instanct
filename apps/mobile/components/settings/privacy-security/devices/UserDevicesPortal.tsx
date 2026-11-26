@@ -13,7 +13,7 @@ import {
   AppHeaderBack,
   StableScrollView,
 } from "@softsurgery/mobile-components";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { Text, Badge, Button, Separator, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "api-client/hooks";
 import { ResponseUserDeviceDto } from "api-client";

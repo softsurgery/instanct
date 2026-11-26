@@ -19,7 +19,7 @@ import {
 import { useInfiniteUserSessions } from "api-client/hooks/content/sessions/useInfiniteUserSessions";
 import { SessionStarter } from "./SessionStarter";
 import { useTranslation } from "react-i18next";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { SessionStatusLegend } from "./SessionStatusLegend";
 
 interface SessionHistoryPortalProps {

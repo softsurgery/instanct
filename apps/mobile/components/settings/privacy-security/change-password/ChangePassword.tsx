@@ -21,7 +21,7 @@ import { toast } from "sonner-native";
 import { ServerErrorResponse } from "api-client";
 import * as Haptics from "expo-haptics";
 import { useLogout } from "@/hooks/useLogout";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface ChangePasswordProps {
   className?: string;

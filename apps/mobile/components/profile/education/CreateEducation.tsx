@@ -20,7 +20,7 @@ import { View } from "react-native";
 import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { toast } from "sonner-native";
 import React from "react";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface CreateEducationProps {
   className?: string;

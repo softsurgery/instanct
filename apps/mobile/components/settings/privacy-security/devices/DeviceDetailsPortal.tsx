@@ -20,7 +20,7 @@ import {
   AppHeaderBack,
   LocationMap,
 } from "@softsurgery/mobile-components";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { Text, Button, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "api-client/hooks";
 import {

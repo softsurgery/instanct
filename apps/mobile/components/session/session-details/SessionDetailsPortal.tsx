@@ -11,7 +11,7 @@ import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 import { SessionDetailsContent } from "./SessionDetailsContent";
 import { useTranslation } from "react-i18next";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface SessionDetailsPortalProps {
   className?: string;

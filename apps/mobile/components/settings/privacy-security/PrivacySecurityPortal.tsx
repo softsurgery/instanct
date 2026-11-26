@@ -12,7 +12,7 @@ import {
   StableScrollView,
   StableSafeAreaView,
 } from "@softsurgery/mobile-components";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface PrivacySecurityPortalProps {
   className?: string;

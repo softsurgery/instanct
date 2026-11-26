@@ -20,7 +20,7 @@ import { useKeyboardVisible } from "@softsurgery/mobile-hooks";
 import { useCreateExperienceFormStructure } from "./useCreateExperienceFormStructure";
 import { toast } from "sonner-native";
 import React from "react";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface CreateExperienceProps {
   className?: string;

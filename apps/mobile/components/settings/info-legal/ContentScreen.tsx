@@ -7,7 +7,7 @@ import {
 } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
 import { useQuery } from "@tanstack/react-query";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { View } from "react-native";
 import { useApi } from "api-client/hooks";
 import { useTranslation } from "react-i18next";

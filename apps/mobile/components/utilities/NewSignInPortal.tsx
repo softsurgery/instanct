@@ -17,7 +17,7 @@ import {
   DeviceDetailsSection,
   type DeviceDetailsData,
 } from "@/components/settings/privacy-security/devices/DeviceDetailsSection";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 const TRANSLATION_PREFIX = "screens.new-signin";
 

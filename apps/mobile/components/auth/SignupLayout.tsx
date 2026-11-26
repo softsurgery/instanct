@@ -17,7 +17,7 @@ import { useAuthStore, useAuthValidation } from "api-client/hooks/auth";
 import { ServerErrorResponse, Upload } from "api-client";
 import { toast } from "sonner-native";
 import { useMutation } from "@tanstack/react-query";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { useTranslation } from "react-i18next";
 import { useIsPickingPicture, useScreenOrientation } from "@softsurgery/mobile-hooks";
 import {

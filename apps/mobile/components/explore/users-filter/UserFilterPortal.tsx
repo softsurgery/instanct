@@ -19,7 +19,7 @@ import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { toast } from "sonner-native";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface UserFilterPortalProps {
   className?: string;

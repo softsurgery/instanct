@@ -13,7 +13,7 @@ import {
   StableSafeAreaView,
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { Text, Icon } from "@softsurgery/mobile-ui";
 import { useApi } from "api-client/hooks";
 import type {

@@ -29,7 +29,7 @@ import * as Haptics from "expo-haptics";
 
 import { useCurrentDeviceMac } from "@/hooks/useCurrentDeviceMac";
 import { getCurrentDevice } from "@/lib/device";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface SendFeedbackPortalProps {
   className?: string;

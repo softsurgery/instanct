@@ -1,8 +1,12 @@
 import React from "react";
 import { useAuthPersistStore } from "@softsurgery/hooks/stores";
 import { useCurrentUser } from "api-client/hooks";
-import { FloatingMonitor, shouldShowMobileMonitor } from "@softsurgery/mobile-monitor";
-import { useMonitorConfig } from "@/config/monitor-config";
+import {
+  FloatingMonitor,
+  Metric,
+  shouldShowMobileMonitor,
+} from "@softsurgery/mobile-monitor";
+import { useMonitorConfig } from "@softsurgery/contexts";
 
 /**
  * Renders the floating CPU / GPU / memory monitor overlay only in __DEV__ mode
@@ -12,7 +16,7 @@ export function AppMonitorOverlay() {
   const {
     enabled,
     constants: { MAX_USED_MEMO, SHOW_METRICS },
-  } = useMonitorConfig();
+  } = useMonitorConfig<Metric>();
   const isAuthenticated = useAuthPersistStore((s) => s.isAuthenticated);
   const { currentUser } = useCurrentUser({
     enabled: !__DEV__ && isAuthenticated,

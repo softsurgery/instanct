@@ -6,7 +6,7 @@ import {
   AppHeaderBack,
 } from "@softsurgery/mobile-components";
 import { useTranslation } from "react-i18next";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 
 interface VerifyEmailPortalProps {
   className?: string;

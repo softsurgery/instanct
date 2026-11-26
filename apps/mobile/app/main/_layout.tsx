@@ -1,4 +1,4 @@
-import { useChatConfig } from "@/config/chat-config";
+import { useChatConfig, useLayoutConfig } from "@softsurgery/contexts";
 import { ChatContext } from "@/contexts/ChatContext";
 import {
   ChatConfigProvider,
@@ -19,7 +19,6 @@ import {
   useNotificationResponseNavigation,
   type NotificationConfig,
 } from "@softsurgery/notification-materials/mobile";
-import { useLayoutConfig } from "@/config/wrapper-config";
 import React from "react";
 import { ActiveMapSessionContext } from "@/contexts/ActiveMapSessionContext";
 import { useActiveSessions } from "api-client/hooks/content/sessions/useActiveSessions";

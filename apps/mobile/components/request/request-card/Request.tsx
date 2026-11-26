@@ -30,7 +30,7 @@ import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { RequestEvent, RequestStatus } from "api-client";
 import { toast } from "sonner-native";
 import { RequestLocationSection } from "../RequestLocationSection";
-import { useLayoutConfig } from "@/config/wrapper-config";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import { RequestSkeleton } from "./RequestSkeleton";
 import { RequestBanner } from "./RequestBanner";
 
