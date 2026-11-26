@@ -20,6 +20,7 @@ import {
   Bug,
   MessageCircle,
   MessageSquare,
+  Map as MapIcon,
 } from "lucide-react";
 import {
   Sidebar,
@@ -126,6 +127,11 @@ const data = {
       ],
     },
 
+    {
+      title: "Map Manager",
+      url: "/map-manager",
+      icon: MapIcon,
+    },
     {
       title: "Settings",
       url: "/settings",

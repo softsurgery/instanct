@@ -21,7 +21,6 @@ import { createRefTypeResource } from "./ref-type";
 import { createRequestResource } from "./request";
 import { createRoleResource } from "./roles";
 import { createSessionResource } from "./session";
-import { createStoreResource } from "./store";
 import { createUploadResource } from "./storage";
 import { createMediaStorageResource } from "./media-storage";
 import { createUserResource } from "./users";
@@ -30,6 +29,7 @@ import { createBugInterestedUserResource } from "./bug-interested-user";
 import { createFeedbackResource } from "./feedback";
 import { createTemplateResource } from "./template";
 import { createAppVersionResource } from "./app-version";
+import { createExperimentalGeolocationResource } from "./experimental-geolocation";
 
 export function createResources(http: AxiosInstance) {
   return {
@@ -55,8 +55,8 @@ export function createResources(http: AxiosInstance) {
       bugReport: createBugResource(http),
       bugInterestedUser: createBugInterestedUserResource(http),
       feedback: createFeedbackResource(http),
+      experimentalGeolocation: createExperimentalGeolocationResource(http),
     },
-    store: createStoreResource(http),
     contentPage: createContentPageResource(http),
     template: createTemplateResource(http),
     upload: createUploadResource(http),

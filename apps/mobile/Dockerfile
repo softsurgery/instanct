@@ -29,6 +29,7 @@ COPY packages/softsurgery-abstractions/eslint-config/package.json ./packages/sof
 COPY packages/softsurgery-abstractions/form-builder/package.json ./packages/softsurgery-abstractions/form-builder/package.json
 COPY packages/softsurgery-abstractions/hooks/package.json ./packages/softsurgery-abstractions/hooks/package.json
 COPY packages/softsurgery-abstractions/lib/package.json ./packages/softsurgery-abstractions/lib/package.json
+COPY packages/softsurgery-abstractions/map-materials/package.json ./packages/softsurgery-abstractions/map-materials/package.json
 COPY packages/softsurgery-abstractions/mobile-components/package.json ./packages/softsurgery-abstractions/mobile-components/package.json
 COPY packages/softsurgery-abstractions/mobile-form-builder/package.json ./packages/softsurgery-abstractions/mobile-form-builder/package.json
 COPY packages/softsurgery-abstractions/mobile-hooks/package.json ./packages/softsurgery-abstractions/mobile-hooks/package.json

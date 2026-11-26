@@ -8,11 +8,26 @@ import { ConfigurationsModule } from '@softsurgery/nsa-configurations/configurat
 import { RequestsModule } from '../requests/requests.module';
 import { SessionModule } from '@softsurgery/nsa-sessions/sessions.module';
 import { AuthModule } from '@softsurgery/nsa-auth/auth.module';
+import { ExperimentalGeolocationService } from './services/experimental-geolocation.service';
+import { ExperimentalGeolocationController } from './controllers/experimental-geolocation.controller';
+import { ExperimentalGeolocationGateway } from './gateways/experimental-geolocation.gateway';
 
 @Module({
-  controllers: [],
-  providers: [GeolocationRepository, GeolocationService, GeolocationGateway],
-  exports: [GeolocationRepository, GeolocationService, GeolocationGateway],
+  controllers: [ExperimentalGeolocationController],
+  providers: [
+    GeolocationRepository,
+    GeolocationService,
+    ExperimentalGeolocationService,
+    GeolocationGateway,
+    ExperimentalGeolocationGateway,
+  ],
+  exports: [
+    GeolocationRepository,
+    GeolocationService,
+    ExperimentalGeolocationService,
+    GeolocationGateway,
+    ExperimentalGeolocationGateway,
+  ],
   imports: [
     TypeOrmModule.forFeature([GeolocationEntity]),
     ConfigurationsModule,

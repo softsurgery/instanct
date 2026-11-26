@@ -342,7 +342,7 @@ importers:
     dependencies:
       '@sentry/nextjs':
         specifier: ^11.0.0
-        version: 11.0.0(next@16.3.4(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))
+        version: 11.0.0(next@16.3.4(@babel/core@8.0.1)(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))
       '@softsurgery/components':
         specifier: workspace:*
         version: link:../../packages/softsurgery-abstractions/components
@@ -375,7 +375,7 @@ importers:
         version: 0.563.0(react@19.3.0)
       next:
         specifier: ^16.2.6
-        version: 16.3.4(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.4(@babel/core@8.0.1)(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -873,6 +873,9 @@ importers:
       '@softsurgery/lib':
         specifier: workspace:*
         version: link:../../packages/softsurgery-abstractions/lib
+      '@softsurgery/map-materials':
+        specifier: workspace:*
+        version: link:../../packages/softsurgery-abstractions/map-materials
       '@softsurgery/template':
         specifier: workspace:*
         version: link:../../packages/softsurgery-abstractions/template
@@ -918,6 +921,9 @@ importers:
       i18next-localstorage-backend:
         specifier: ^4.2.0
         version: 4.3.2
+      leaflet:
+        specifier: ^1.9.4
+        version: 1.9.4
       lodash:
         specifier: ^4.17.23
         version: 4.18.1
@@ -979,6 +985,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.3.3
+      '@types/leaflet':
+        specifier: ^1.9.23
+        version: 1.9.23
       '@types/lodash':
         specifier: ^4.17.20
         version: 4.17.25
@@ -1526,6 +1535,25 @@ importers:
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.7.0
+
+  packages/softsurgery-abstractions/map-materials:
+    dependencies:
+      leaflet:
+        specifier: ^1.9.4
+        version: 1.9.4
+      next-themes:
+        specifier: '*'
+        version: 0.4.6(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react:
+        specifier: 19.3.0
+        version: 19.3.0
+      react-dom:
+        specifier: 19.3.0
+        version: 19.3.0(react@19.3.0)
+    devDependencies:
+      '@types/leaflet':
+        specifier: ^1.9.16
+        version: 1.9.23
 
   packages/softsurgery-abstractions/mobile-components:
     dependencies:
@@ -7642,6 +7670,9 @@ packages:
   '@types/jsonwebtoken@9.0.10':
     resolution: {integrity: sha512-asx5hIG9Qmf/1oStypjanR7iKTv0gXQ1Ov/jfrX6kS/EO0OFni8orbmGCn0672NHR3kXHwpAwR+B368ZGN/2rA==}
 
+  '@types/leaflet@1.9.23':
+    resolution: {integrity: sha512-rpvCoR7fQ2I4tFGIDjuyRAXl25e9YiJ9eE7AdJY5aJF8tkgg4ph3fRb9zafM6ZB1YO5LYziZQwh/vW3IOat/+Q==}
+
   '@types/lodash@4.17.25':
     resolution: {integrity: sha512-+K1NIO8I+F9/wNulfVvu23QYd0Pe9/OCqRrim4NoYIf1VoEDL90Ve4ClzpyqBLc7NpGGWRvYNCKZ1BE/Jpf8dQ==}
 
@@ -11470,6 +11501,9 @@ packages:
 
   leac@0.7.0:
     resolution: {integrity: sha512-qMrZeyEekgdRQ9o6a4NAB2EQZrv827GJdn1vnapwSJ90hWRB4TzUSunvacPkxQ2TnNqHNI1/zSt0hlo0crG8Jw==}
+
+  leaflet@1.9.4:
+    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
 
   leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
@@ -20762,28 +20796,6 @@ snapshots:
       - rollup
       - webpack
 
-  '@sentry/nextjs@11.0.0(next@16.3.4(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))':
-    dependencies:
-      '@opentelemetry/api': 1.9.1
-      '@rollup/plugin-commonjs': 28.0.1(rollup@4.63.4)
-      '@sentry/browser-utils': 11.0.0
-      '@sentry/bundler-plugins': 11.0.0(rollup@4.63.4)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))
-      '@sentry/conventions': 0.23.0
-      '@sentry/core': 11.0.0
-      '@sentry/node': 11.0.0(rollup@4.63.4)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))
-      '@sentry/opentelemetry': 11.0.0(@opentelemetry/api@1.9.1)
-      '@sentry/react': 11.0.0(react@19.3.0)
-      '@sentry/server-runtime-injection': 11.0.0
-      '@sentry/server-utils': 11.0.0
-      '@sentry/vercel-edge': 11.0.0
-      next: 16.3.4(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      rollup: 4.63.4
-      stacktrace-parser: 0.1.11
-    transitivePeerDependencies:
-      - react
-      - react-router
-      - webpack
-
   '@sentry/nextjs@11.0.0(next@16.3.4(@babel/core@8.0.1)(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(webpack@5.106.2(@swc/core@1.16.2(@swc/helpers@0.5.23))(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(uglify-js@3.19.3))':
     dependencies:
       '@opentelemetry/api': 1.9.1
@@ -21600,6 +21612,10 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
       '@types/node': 25.0.10
+
+  '@types/leaflet@1.9.23':
+    dependencies:
+      '@types/geojson': 7946.0.16
 
   '@types/lodash@4.17.25': {}
 
@@ -27032,6 +27048,8 @@ snapshots:
   leac@0.7.0:
     optional: true
 
+  leaflet@1.9.4: {}
+
   leven@3.1.0: {}
 
   levn@0.4.1:
@@ -28472,33 +28490,6 @@ snapshots:
     dependencies:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
-
-  next@16.3.4(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@25.0.10)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
-    dependencies:
-      '@next/env': 16.3.4
-      '@swc/helpers': 0.5.23
-      baseline-browser-mapping: 2.11.18
-      caniuse-lite: 1.0.30001809
-      postcss: 8.5.23
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      styled-jsx: 5.1.6(@babel/core@7.29.7(supports-color@8.1.1))(react@19.3.0)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 16.3.4
-      '@next/swc-darwin-x64': 16.3.4
-      '@next/swc-linux-arm64-gnu': 16.3.4
-      '@next/swc-linux-arm64-musl': 16.3.4
-      '@next/swc-linux-x64-gnu': 16.3.4
-      '@next/swc-linux-x64-musl': 16.3.4
-      '@next/swc-win32-arm64-msvc': 16.3.4
-      '@next/swc-win32-x64-msvc': 16.3.4
-      '@opentelemetry/api': 1.9.1
-      babel-plugin-react-compiler: 1.0.0
-      sharp: 0.35.4(@types/node@25.0.10)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@types/node'
-      - babel-plugin-macros
 
   next@16.3.4(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:

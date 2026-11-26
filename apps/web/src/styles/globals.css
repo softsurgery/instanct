@@ -7,6 +7,7 @@
 @source "../../../../packages/softsurgery-abstractions/form-builder/src";
 @source "../../../../packages/softsurgery-abstractions/datatable-builder/src";
 @source "../../../../packages/softsurgery-abstractions/chat-materials/src/web";
+@source "../../../../packages/softsurgery-abstractions/map-materials/src/web";
 
 @custom-variant dark (&:is(.dark *));
 

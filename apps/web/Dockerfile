@@ -26,6 +26,7 @@ COPY packages/softsurgery-abstractions/eslint-config/package.json ./packages/sof
 COPY packages/softsurgery-abstractions/form-builder/package.json ./packages/softsurgery-abstractions/form-builder/package.json
 COPY packages/softsurgery-abstractions/hooks/package.json ./packages/softsurgery-abstractions/hooks/package.json
 COPY packages/softsurgery-abstractions/lib/package.json ./packages/softsurgery-abstractions/lib/package.json
+COPY packages/softsurgery-abstractions/map-materials/package.json ./packages/softsurgery-abstractions/map-materials/package.json
 
 COPY packages/softsurgery-abstractions/typescript-config ./packages/softsurgery-abstractions/typescript-config
 COPY packages/softsurgery-abstractions/ui/package.json ./packages/softsurgery-abstractions/ui/package.json
@@ -53,6 +54,7 @@ COPY packages/softsurgery-abstractions/datatable-builder ./packages/softsurgery-
 COPY packages/softsurgery-abstractions/form-builder ./packages/softsurgery-abstractions/form-builder
 COPY packages/softsurgery-abstractions/hooks ./packages/softsurgery-abstractions/hooks
 COPY packages/softsurgery-abstractions/lib ./packages/softsurgery-abstractions/lib
+COPY packages/softsurgery-abstractions/map-materials ./packages/softsurgery-abstractions/map-materials
 COPY packages/softsurgery-abstractions/ui ./packages/softsurgery-abstractions/ui
 COPY packages/softsurgery-abstractions/template ./packages/softsurgery-abstractions/template
 COPY packages/softsurgery-abstractions/chat-materials ./packages/softsurgery-abstractions/chat-materials

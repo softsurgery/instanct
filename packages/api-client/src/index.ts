@@ -34,4 +34,5 @@ export {
 export type { LandingConfigurationResource } from "./resources/landing-configuration";
 export type { AppVersionResource } from "./resources/app-version";
 export type { BugInterestedUserResource } from "./resources/bug-interested-user";
+export type { ExperimentalGeolocationResource } from "./resources/experimental-geolocation";
 export * from "./types";

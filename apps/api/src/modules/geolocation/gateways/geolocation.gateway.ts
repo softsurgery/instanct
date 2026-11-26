@@ -22,6 +22,7 @@ import {
   UserPresenceService,
 } from '@softsurgery/nsa-um/services/user-presence.service';
 import { UserConnectionHistoryService } from '@softsurgery/nsa-auth/services/user-connection-history.service';
+import { ExperimentalGeolocationService } from '../services/experimental-geolocation.service';
 
 @WebSocketGateway({
   namespace: '/geolocation',
@@ -49,6 +50,8 @@ export class GeolocationGateway
     private readonly userPresenceService?: UserPresenceService,
     @Optional()
     private readonly userConnectionHistoryService?: UserConnectionHistoryService,
+    @Optional()
+    private readonly experimentalGeolocationService?: ExperimentalGeolocationService,
   ) {}
 
   async onModuleInit() {
@@ -174,7 +177,7 @@ export class GeolocationGateway
         userId,
       );
 
-      const nearbyUsers =
+      const baseNearbyUsers =
         await this.geolocationService.findActiveSessionsByRadius(
           latitude,
           longitude,
@@ -182,6 +185,14 @@ export class GeolocationGateway
           userId,
           data.query,
         );
+
+      const { geolocations: nearbyUsers, forceVisible } = this
+        .experimentalGeolocationService
+        ? await this.experimentalGeolocationService.augmentNearbyGeolocations(
+            userId,
+            baseNearbyUsers,
+          )
+        : { geolocations: baseNearbyUsers, forceVisible: false };
 
       // Batch resolve bidirectional accepted requests for all candidate nearby users in a single query
       const candidateUserIds = nearbyUsers.map((g) => g.userId);
@@ -193,23 +204,25 @@ export class GeolocationGateway
 
       const nearbyWithPresence = nearbyUsers.map((geo) => {
         const accepted = acceptedIds.has(geo.userId);
+        const coordinatesVisible = forceVisible || accepted;
         const isOnline =
           this.userPresenceService?.isUserConnected(geo.userId) ?? false;
 
         return {
           ...geo,
-          latitude: accepted ? geo.latitude : null,
-          longitude: accepted ? geo.longitude : null,
-          distance: accepted
-            ? GeolocationService.calculateDistanceKm(
-                latitude,
-                longitude,
-                geo.latitude as number,
-                geo.longitude as number,
-              )
-            : null,
+          latitude: coordinatesVisible ? geo.latitude : null,
+          longitude: coordinatesVisible ? geo.longitude : null,
+          distance:
+            coordinatesVisible && geo.latitude != null && geo.longitude != null
+              ? GeolocationService.calculateDistanceKm(
+                  latitude,
+                  longitude,
+                  geo.latitude,
+                  geo.longitude,
+                )
+              : null,
           isOnline,
-          coordinatesVisible: accepted,
+          coordinatesVisible,
         };
       });
 
@@ -223,23 +236,27 @@ export class GeolocationGateway
       // Emit user_moved to user rooms with full profile so they appear immediately in Explore
       for (const nearby of nearbyWithPresence) {
         const accepted = acceptedIds.has(nearby.userId);
-        const distance = accepted
-          ? GeolocationService.calculateDistanceKm(
-              latitude,
-              longitude,
-              nearby.latitude as number,
-              nearby.longitude as number,
-            )
-          : null;
+        const coordinatesVisible = forceVisible || accepted;
+        const distance =
+          coordinatesVisible &&
+          nearby.latitude != null &&
+          nearby.longitude != null
+            ? GeolocationService.calculateDistanceKm(
+                latitude,
+                longitude,
+                nearby.latitude,
+                nearby.longitude,
+              )
+            : null;
 
         const movementPayload = {
           userId,
-          latitude: accepted ? latitude : null,
-          longitude: accepted ? longitude : null,
+          latitude: coordinatesVisible ? latitude : null,
+          longitude: coordinatesVisible ? longitude : null,
           distance,
           user: currentUserProfile,
           isOnline: true,
-          coordinatesVisible: accepted,
+          coordinatesVisible,
           updatedAt: new Date().toISOString(),
         };
 

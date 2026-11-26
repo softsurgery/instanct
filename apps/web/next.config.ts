@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: getAllowedDevOrigins(),
   transpilePackages: [
     "@softsurgery/chat-materials",
+    "@softsurgery/map-materials",
     "@softsurgery/ui",
     "@softsurgery/components",
     "@softsurgery/form-builder",
