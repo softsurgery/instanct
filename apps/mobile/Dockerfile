@@ -50,6 +50,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.cache/pnpm \
 COPY packages/api-client ./packages/api-client
 COPY packages/softsurgery-abstractions/hooks ./packages/softsurgery-abstractions/hooks
 COPY packages/softsurgery-abstractions/lib ./packages/softsurgery-abstractions/lib
+COPY packages/softsurgery-abstractions/map-materials ./packages/softsurgery-abstractions/map-materials
 COPY packages/softsurgery-abstractions/mobile-components ./packages/softsurgery-abstractions/mobile-components
 COPY packages/softsurgery-abstractions/mobile-form-builder ./packages/softsurgery-abstractions/mobile-form-builder
 COPY packages/softsurgery-abstractions/mobile-hooks ./packages/softsurgery-abstractions/mobile-hooks

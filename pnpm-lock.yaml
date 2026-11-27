@@ -1036,6 +1036,9 @@ importers:
       '@softsurgery/lib':
         specifier: workspace:*
         version: link:../softsurgery-abstractions/lib
+      '@softsurgery/map-materials':
+        specifier: workspace:*
+        version: link:../softsurgery-abstractions/map-materials
       '@softsurgery/mobile-ui':
         specifier: workspace:*
         version: link:../softsurgery-abstractions/mobile-ui

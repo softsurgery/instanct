@@ -26,7 +26,9 @@ interface MapData {
   connected: boolean;
   location: Location.LocationObject | null;
   users: ResponseUserDto[];
+  usersById: Record<string, ResponseUserDto>;
   nearbyUsers: NearbyUser[];
+  nearbyUsersById: Record<string, NearbyUser>;
   clusters: Cluster[];
   reconnection: {
     reconnecting: boolean;
@@ -79,8 +81,10 @@ const initialState: MapData = {
   connected: false,
   location: null,
   users: [],
+  usersById: {},
   clusters: [],
   nearbyUsers: [],
+  nearbyUsersById: {},
   reconnection: {
     reconnecting: false,
     reconnectAttempt: 0,
@@ -141,37 +145,37 @@ export const useMapStore = create<MapStore>((set, get) => ({
 
   addUser: (user: ResponseUserDto) => {
     set((state) => {
-      const existing = state.users.find((u) => u.id === user.id);
+      const existing = state.usersById[user.id];
 
-      // Add new user
       if (!existing) {
         return {
           ...state,
           users: [...state.users, user],
+          usersById: { ...state.usersById, [user.id]: user },
         };
       }
 
-      // No changes
       if (isEqual(existing, user)) {
         return state;
       }
 
-      // Replace changed user
       return {
         ...state,
         users: state.users.map((u) => (u.id === user.id ? user : u)),
+        usersById: { ...state.usersById, [user.id]: user },
       };
     });
   },
 
   addNearbyUser: (user: NearbyUser) => {
     set((state) => {
-      const existing = state.nearbyUsers.find((u) => u.userId === user.userId);
+      const existing = state.nearbyUsersById[user.userId];
 
       if (!existing) {
         return {
           ...state,
           nearbyUsers: [...state.nearbyUsers, user],
+          nearbyUsersById: { ...state.nearbyUsersById, [user.userId]: user },
         };
       }
 
@@ -184,57 +188,92 @@ export const useMapStore = create<MapStore>((set, get) => ({
         nearbyUsers: state.nearbyUsers.map((u) =>
           u.userId === user.userId ? user : u,
         ),
+        nearbyUsersById: { ...state.nearbyUsersById, [user.userId]: user },
       };
     });
   },
 
   setUsers: (users: ResponseUserDto[]) => {
+    if (users.length === 0) return;
     set((state) => {
-      const updated = [...state.users];
+      const nextById = { ...state.usersById };
       let changed = false;
 
       for (const newUser of users) {
-        const index = updated.findIndex((u) => u.id === newUser.id);
-        if (index !== -1) {
-          if (!isEqual(updated[index], newUser)) {
-            updated[index] = { ...updated[index], ...newUser };
+        const existing = nextById[newUser.id];
+        if (existing) {
+          if (!isEqual(existing, newUser)) {
+            nextById[newUser.id] = { ...existing, ...newUser };
             changed = true;
           }
         } else {
-          updated.push(newUser);
+          nextById[newUser.id] = newUser;
           changed = true;
         }
       }
 
       if (!changed) return state;
-      return { ...state, users: updated };
+      return {
+        ...state,
+        usersById: nextById,
+        users: Object.values(nextById),
+      };
     });
   },
   setNearbyUsers: (users: NearbyUser[]) => {
     set((state) => {
-      const updated = [...state.nearbyUsers];
-      let changed = false;
+      const nextById: Record<string, NearbyUser> = {};
+      const nextList: NearbyUser[] = [];
+      let changed = users.length !== state.nearbyUsers.length;
 
       for (const newUser of users) {
-        const index = updated.findIndex((u) => u.userId === newUser.userId);
-        if (index !== -1) {
-          if (!isEqual(updated[index], newUser)) {
-            updated[index] = { ...updated[index], ...newUser };
+        const existing = state.nearbyUsersById[newUser.userId];
+        if (existing) {
+          if (isEqual(existing, newUser)) {
+            nextById[newUser.userId] = existing;
+            nextList.push(existing);
+          } else {
+            const merged = { ...existing, ...newUser };
+            nextById[newUser.userId] = merged;
+            nextList.push(merged);
             changed = true;
           }
         } else {
-          updated.push(newUser);
+          nextById[newUser.userId] = newUser;
+          nextList.push(newUser);
           changed = true;
         }
       }
 
       if (!changed) return state;
-      return { ...state, nearbyUsers: updated };
+
+      // Prune cached user profiles for users who are no longer nearby
+      let nextUsersById = state.usersById;
+      let nextUsers = state.users;
+      const hasStaleUsers = state.users.some((u) => !(u.id in nextById));
+      if (hasStaleUsers) {
+        nextUsersById = {};
+        nextUsers = [];
+        for (const u of state.users) {
+          if (u.id in nextById) {
+            nextUsersById[u.id] = u;
+            nextUsers.push(u);
+          }
+        }
+      }
+
+      return {
+        ...state,
+        nearbyUsers: nextList,
+        nearbyUsersById: nextById,
+        users: nextUsers,
+        usersById: nextUsersById,
+      };
     });
   },
   updateNearbyUser: (data: NearbyUser) => {
     set((state) => {
-      const existing = state.nearbyUsers.find((u) => u.userId === data.userId);
+      const existing = state.nearbyUsersById[data.userId];
 
       if (
         existing &&
@@ -245,44 +284,46 @@ export const useMapStore = create<MapStore>((set, get) => ({
         return state;
       }
 
-      // If existing and data is identical, bail out
       if (existing && isEqual(existing, data)) {
         return state;
       }
 
-      const copy = [...state.nearbyUsers];
-      const index = copy.findIndex((u) => u.userId === data.userId);
+      const merged = existing ? { ...existing, ...data } : data;
+      const nextById = { ...state.nearbyUsersById, [data.userId]: merged };
+      const nextList = existing
+        ? state.nearbyUsers.map((u) => (u.userId === data.userId ? merged : u))
+        : [...state.nearbyUsers, merged];
 
-      if (index !== -1) {
-        copy[index] = { ...copy[index], ...data };
-      } else {
-        copy.push(data);
-      }
-
-      return { ...state, nearbyUsers: copy };
+      return { ...state, nearbyUsers: nextList, nearbyUsersById: nextById };
     });
   },
   updateNearbyUserPresence: (userId: string, isOnline: boolean) => {
     set((state) => {
-      const index = state.nearbyUsers.findIndex((u) => u.userId === userId);
-      if (index === -1) return state;
-      if (state.nearbyUsers[index].isOnline === isOnline) return state;
+      const existing = state.nearbyUsersById[userId];
+      if (!existing || existing.isOnline === isOnline) return state;
 
-      const copy = [...state.nearbyUsers];
-      copy[index] = { ...copy[index], isOnline };
-      return { ...state, nearbyUsers: copy };
+      const updated = { ...existing, isOnline };
+      return {
+        ...state,
+        nearbyUsersById: { ...state.nearbyUsersById, [userId]: updated },
+        nearbyUsers: state.nearbyUsers.map((u) =>
+          u.userId === userId ? updated : u,
+        ),
+      };
     });
   },
   getUserById: (id: string) => {
-    return get().users.find((u) => u.id === id) ?? null;
+    return get().usersById[id] ?? null;
   },
   getNearbyUserById: (id: string) => {
-    return get().nearbyUsers.find((u) => u.userId === id) ?? null;
+    return get().nearbyUsersById[id] ?? null;
   },
   restart: () => {
     set({
       nearbyUsers: [],
+      nearbyUsersById: {},
       users: [],
+      usersById: {},
       connected: false,
     });
   },
