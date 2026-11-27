@@ -1,16 +1,32 @@
 import React from "react";
 import { cn } from "@softsurgery/lib";
-import { TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { View, useWindowDimensions } from "react-native";
+import { GlowingOrb, IconArc } from "@softsurgery/mobile-components";
 import { Text } from "@softsurgery/mobile-ui";
+import { Image } from "expo-image";
 import { router } from "expo-router";
-import LottieView from "lottie-react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import {
+  Briefcase,
+  Calendar,
+  Handshake,
+  MapPin,
+  Users,
+} from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { useScreenOrientation } from "@softsurgery/mobile-hooks";
+import {
+  useColorPalette,
+  useScreenOrientation,
+} from "@softsurgery/mobile-hooks";
+
+const ARC_ICONS = [
+  { key: "calendar", Icon: Calendar, angle: -112 },
+  { key: "handshake", Icon: Handshake, angle: -56 },
+  { key: "users", Icon: Users, angle: 0 },
+  { key: "briefcase", Icon: Briefcase, angle: 56 },
+  { key: "map-pin", Icon: MapPin, angle: 112 },
+] as const;
+
+const ARC_DOT_ANGLES = [-84, -28, 28, 84] as const;
 
 interface SessionStarterProps {
   className?: string;
@@ -22,33 +38,31 @@ export const SessionStarter = ({
   isActive = true,
 }: SessionStarterProps) => {
   const { t } = useTranslation("explore");
+  const { colorScheme } = useColorPalette();
   const { height: screenHeight } = useWindowDimensions();
   const { isLandscape } = useScreenOrientation();
-  const lottieRef = React.useRef<LottieView>(null);
-  const lottieSize = isLandscape
-    ? Math.min(175, Math.round(screenHeight * 0.52))
-    : 300;
-  const height = useSharedValue(1);
-  const opacity = useSharedValue(1);
+  const isDark = colorScheme === "dark";
 
-  React.useEffect(() => {
-    height.value = withTiming(1, { duration: 300 });
-    opacity.value = withTiming(1, { duration: 300 });
-  }, [height, opacity]);
+  const containerSize = isLandscape
+    ? Math.min(220, Math.round(screenHeight * 0.62))
+    : 320;
+  const arcRadius = Math.round(containerSize * 0.41);
+  const badgeSize = Math.round(containerSize * 0.13);
+  const iconSize = Math.round(badgeSize * 0.48);
+  const orbSize = Math.round(containerSize * 0.52);
+  const logoSize = Math.round(orbSize * 0.56);
 
-  React.useEffect(() => {
-    if (isActive) {
-      lottieRef.current?.play();
-    } else {
-      lottieRef.current?.pause();
-    }
-  }, [isActive]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    height: lottieSize,
-    overflow: "hidden",
-  }));
+  const highlightColor = isDark ? "#38BDF8" : "#0284C7";
+  const arcStrokeColor = isDark
+    ? "rgba(125, 211, 252, 0.28)"
+    : "rgba(2, 132, 199, 0.25)";
+  const badgeBgColor = isDark
+    ? "rgba(56, 189, 248, 0.08)"
+    : "rgba(2, 132, 199, 0.08)";
+  const badgeBorderColor = isDark
+    ? "rgba(125, 211, 252, 0.25)"
+    : "rgba(2, 132, 199, 0.28)";
+  const badgeIconColor = isDark ? "#F8FAFC" : "#0F172A";
 
   return (
     <View
@@ -58,23 +72,48 @@ export const SessionStarter = ({
         className,
       )}
     >
-      <TouchableOpacity
-        onPress={() => router.push("/main/explore/session-starter")}
-        activeOpacity={0.8}
+      <View
+        style={{
+          width: containerSize,
+          height: containerSize,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <Animated.View style={animatedStyle}>
-          <LottieView
-            ref={lottieRef}
-            autoPlay={isActive}
-            loop
+        <IconArc
+          size={containerSize}
+          radius={arcRadius}
+          items={ARC_ICONS}
+          dotAngles={ARC_DOT_ANGLES}
+          badgeSize={badgeSize}
+          iconSize={iconSize}
+          strokeWidth={2.5}
+          dotRadius={isLandscape ? 2.2 : 3}
+          arcStrokeColor={arcStrokeColor}
+          dotColor={highlightColor}
+          badgeBgColor={badgeBgColor}
+          badgeBorderColor={badgeBorderColor}
+          iconColor={badgeIconColor}
+        />
+
+        <GlowingOrb
+          size={orbSize}
+          glowSize={containerSize}
+          isActive={isActive}
+          onPress={() => router.push("/main/explore/session-starter")}
+        >
+          <Image
+            source={require("~/assets/images/logo.png")}
+            tintColor="#ffffff"
+            contentFit="contain"
             style={{
-              width: lottieSize,
-              height: lottieSize,
+              width: logoSize,
+              height: logoSize,
             }}
-            source={require("~/assets/lotties/power-on.json")}
           />
-        </Animated.View>
-      </TouchableOpacity>
+        </GlowingOrb>
+      </View>
+
       <View
         className={cn(
           isLandscape
@@ -86,11 +125,19 @@ export const SessionStarter = ({
           variant={"h1"}
           className={cn(isLandscape ? "text-left text-2xl" : "text-center")}
         >
-          {t("session.starter.title")}
+          {t("session.starter.titlePrefix")}
+          <Text
+            variant={"h1"}
+            className={cn(isLandscape && "text-2xl")}
+            style={{ color: highlightColor }}
+          >
+            {t("session.starter.titleHighlight")}
+          </Text>
+          {t("session.starter.titleSuffix")}
         </Text>
         <Text
           className={cn(
-            "text-base",
+            "text-base text-foreground/80",
             isLandscape ? "text-left" : "text-center px-2",
           )}
         >

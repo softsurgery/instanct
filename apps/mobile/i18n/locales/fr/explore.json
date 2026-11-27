@@ -35,8 +35,10 @@
   },
   "session": {
     "starter": {
-      "title": "Prêt à connecter ?",
-      "description": "Commencez votre première session !"
+      "titlePrefix": "Prêt à ",
+      "titleHighlight": "vous connecter",
+      "titleSuffix": " ?",
+      "description": "Rejoignez Instanct et accédez à votre réseau, vos opportunités et vos événements."
     },
     "start": {
       "title": "Démarrer une session",

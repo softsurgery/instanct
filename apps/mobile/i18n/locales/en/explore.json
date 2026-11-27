@@ -35,8 +35,10 @@
   },
   "session": {
     "starter": {
-      "title": "Ready to connect?",
-      "description": "Start your first session!"
+      "titlePrefix": "Ready to ",
+      "titleHighlight": "connect",
+      "titleSuffix": "?",
+      "description": "Join Instanct and access your network, opportunities, and events."
     },
     "start": {
       "title": "Start a session",
