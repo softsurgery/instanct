@@ -6,6 +6,12 @@
     "objectives": "Objectifs",
     "about": "À propos",
     "noBioAvailable": "Aucune biographie disponible.",
+    "cluster": {
+      "peopleNearby": "{{count}} personnes à proximité",
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "kmAway": "à {{distance}} km"
+    },
     "filter": {
       "title": "Filtres utilisateurs",
       "filtersDescription": "Vous pouvez appliquer des filtres pour trouver des utilisateurs correspondant à des critères spécifiques. Ces filtres vous aideront à découvrir des utilisateurs en fonction de leurs objectifs, de leur secteur d'activité et bien plus encore.",

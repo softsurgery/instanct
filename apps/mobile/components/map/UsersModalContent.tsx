@@ -6,6 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import { NearbyUser } from "@/types";
 import { identifyUser, identifyUserAvatar } from "@/lib/user";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
+import { getDateFnsLocale } from "@softsurgery/lib";
 import { resolveRefLabel } from "api-client";
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +16,7 @@ interface ClusterUserRowProps {
 }
 
 const ClusterUserRow = ({ user, onPress }: ClusterUserRowProps) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation("explore");
   const identification = React.useMemo(
     () => identifyUser(user.user),
     [user.user],
@@ -47,7 +48,7 @@ const ClusterUserRow = ({ user, onPress }: ClusterUserRowProps) => {
 
   return (
     <Pressable
-      className="flex-row items-center gap-3.5 py-3 px-1 border-b border-border/30 active:opacity-60"
+      className="flex-row items-center gap-3.5 py-3 px-1 active:opacity-60"
       onPress={onPress}
     >
       <View className="relative">
@@ -68,21 +69,26 @@ const ClusterUserRow = ({ user, onPress }: ClusterUserRowProps) => {
         </Text>
         <View className="flex-row items-center gap-1.5 mt-0.5">
           {user.isOnline ? (
-            <Text className="text-xs text-emerald-600 font-medium">Online</Text>
+            <Text className="text-xs text-emerald-600 font-medium">
+              {t("explore.cluster.online")}
+            </Text>
           ) : (
             <Text className="text-xs text-muted-foreground">
               {user.updatedAt
                 ? formatDistanceToNow(new Date(user.updatedAt), {
                     addSuffix: true,
+                    locale: getDateFnsLocale(i18n.language),
                   })
-                : "Offline"}
+                : t("explore.cluster.offline")}
             </Text>
           )}
           {user.distance != null && (
             <>
               <Text className="text-xs text-muted-foreground">•</Text>
               <Text className="text-xs text-muted-foreground">
-                {user.distance.toFixed(2)} km away
+                {t("explore.cluster.kmAway", {
+                  distance: user.distance.toFixed(2),
+                })}
               </Text>
             </>
           )}
@@ -113,6 +119,7 @@ export const UsersModalContent = ({
   onSelectUser,
   onClose,
 }: UsersModalContentProps) => {
+  const { t } = useTranslation("explore");
   const { height: screenHeight } = useWindowDimensions();
   const maxListHeight = Math.min(380, Math.round(screenHeight * 0.55));
 
@@ -121,17 +128,10 @@ export const UsersModalContent = ({
       {/* Header */}
       <View className="flex-row items-center justify-between mb-2 px-1">
         <Text className="text-lg font-bold text-foreground">
-          {clusterUsers?.length ?? 0} People Nearby
+          {t("explore.cluster.peopleNearby", {
+            count: clusterUsers?.length ?? 0,
+          })}
         </Text>
-        {onClose && (
-          <Pressable
-            onPress={onClose}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            className="p-1 rounded-full active:bg-muted"
-          >
-            <Icon as={X} size={18} className="text-muted-foreground" />
-          </Pressable>
-        )}
       </View>
 
       {/* Cluster Users List */}
