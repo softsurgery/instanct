@@ -240,7 +240,7 @@ export const DeviceDetailsPortal = ({
           reverse
           shortcuts={[{ key: "back", render: <AppHeaderBack /> }]}
         />
-        <View className="flex-1 items-center justify-center p-6 bg-background rounded-b-xl">
+        <View className="flex-1 items-center justify-center p-6 rounded-b-xl">
           <Icon
             as={AlertCircle}
             size={48}
@@ -274,7 +274,7 @@ export const DeviceDetailsPortal = ({
       />
 
       <StableScrollView
-        className="flex-1 bg-background rounded-b-xl"
+        className="flex-1 rounded-b-xl"
         refreshControl={
           <RefreshControl
             refreshing={isRefetchingDevices || isRefetchingHistory}

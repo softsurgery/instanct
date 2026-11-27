@@ -91,7 +91,7 @@ export const MapSettings = ({ className }: MapSettingsProps) => {
           },
         ]}
       />
-      <ScrollView className="bg-background flex-1 rounded-b-xl">
+      <ScrollView className="flex-1 rounded-b-xl">
         <View className="flex flex-col">
           {sections.map((section) => (
             <View key={section.key}>

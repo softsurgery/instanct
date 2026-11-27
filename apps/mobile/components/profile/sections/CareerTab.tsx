@@ -116,7 +116,7 @@ export const CareerTab = ({
     <ScrollView
       onScroll={onScroll}
       scrollEventThrottle={16}
-      className={cn("flex-1 bg-background", className)}
+      className={cn("flex-1", className)}
       style={{ flex: 1 }}
       contentContainerStyle={{ paddingTop: 20, paddingBottom: 32, flexGrow: 1 }}
       refreshControl={

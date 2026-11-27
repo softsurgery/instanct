@@ -16,7 +16,7 @@ export const RequestSkeleton = ({
   const { isLandscape } = useScreenOrientation();
 
   return (
-    <View className={cn("flex-1 bg-background gap-4", className)}>
+    <View className={cn("flex-1 gap-4", className)}>
       {/* User header */}
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center gap-3 flex-1 mr-2">

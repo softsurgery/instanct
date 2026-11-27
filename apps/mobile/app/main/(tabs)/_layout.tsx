@@ -7,7 +7,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useLayoutConfig } from "@softsurgery/contexts";
 import {
+  hslToHex,
   useColorPalette,
   useRTL,
   useScreenOrientation,
@@ -15,6 +17,7 @@ import {
 
 export default function TabLayout() {
   const { palette } = useColorPalette();
+  const { hasBackground } = useLayoutConfig();
   const segments = useSegments();
   const currentRoute = segments[segments.length - 1];
   const isMapScreen = currentRoute === "map";
@@ -29,7 +32,7 @@ export default function TabLayout() {
   const bottomHeightExtra =
     Platform.OS === "android"
       ? insets.bottom
-      : Math.min(insets.bottom, isLandscape ? 12 : 20);
+      : Math.min(insets.bottom, isLandscape ? 12 : 24);
 
   const isRTL = useRTL();
   const { t } = useTranslation("screens");
@@ -85,7 +88,9 @@ export default function TabLayout() {
           paddingBottom: bottomPadding,
           paddingLeft: Math.max(insets.left, 12),
           paddingRight: Math.max(insets.right, 12),
-          backgroundColor: palette.card,
+          backgroundColor: hasBackground
+            ? hslToHex(palette.card, 0.4)
+            : palette.card,
           borderColor: palette.border,
           borderTopWidth: 0,
           height: (isLandscape ? 44 : 66) + bottomHeightExtra,

@@ -79,11 +79,11 @@ export const SigninLayout = ({ className }: SigninProps) => {
           },
         ]}
       />
-      <View className="flex-1 bg-background rounded-b-xl">
-        <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <View className="flex-1 rounded-b-xl">
+        <StableKeyboardAwareScrollView className="flex-1">
           <View
             className={cn(
-              "flex flex-col flex-1 justify-centers gap-5 p-4 bg-background",
+              "flex flex-col flex-1 justify-centers gap-5 p-4",
               className,
             )}
           >

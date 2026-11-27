@@ -17,7 +17,7 @@ export const BaseProfileSkeleton = ({
 
   if (isLandscape) {
     return (
-      <View className={cn("flex-1 flex-row bg-background", className)}>
+      <View className={cn("flex-1 flex-row", className)}>
         <View
           className="border-r border-border/40"
           style={{ width: leftPaneWidth }}
@@ -41,7 +41,7 @@ export const BaseProfileSkeleton = ({
   }
 
   return (
-    <View className={cn("flex-1 bg-background", className)}>
+    <View className={cn("flex-1", className)}>
       {/* Cover */}
       <Skeleton className="h-48 w-full rounded-none bg-primary/25" />
 

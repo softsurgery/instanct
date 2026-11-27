@@ -30,7 +30,7 @@ export const PrivacySecurityPortal = ({
 }: PrivacySecurityPortalProps) => {
   const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
   const { t } = useTranslation("settings");
-  const cardClass = "border-b-border border-t-border bg-background";
+  const cardClass = "border-b-border border-t-border";
 
   const sections: SettingsSection[] = [
     {
@@ -169,7 +169,7 @@ export const PrivacySecurityPortal = ({
         ]}
       />
 
-      <StableScrollView className="bg-background flex-1 rounded-b-xl">
+      <StableScrollView className="flex-1 rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(
@@ -181,7 +181,7 @@ export const PrivacySecurityPortal = ({
         <View className="flex flex-col">
           {sections.map((section) => (
             <View key={section.key} className={cardClass}>
-              <View className="px-8 py-4 bg-card mb-4">
+              <View className="px-8 py-4 bg-card/60 mb-4">
                 <Text className="text-lg font-semibold">{section.title}</Text>
                 <Text className="text-sm text-muted-foreground mt-1">
                   {section.description}

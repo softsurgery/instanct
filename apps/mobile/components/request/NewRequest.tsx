@@ -144,7 +144,7 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
         <Loader className="flex flex-1 h-full items-center justify-center rounded-b-xl" />
       ) : (
         <React.Fragment>
-          <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
+          <StableKeyboardAwareScrollView className="flex-1 rounded-b-xl">
             <Text className="text-lg font-semibold text-foreground mx-4 mt-4">
               {t("request.newRequest.partner")}
             </Text>

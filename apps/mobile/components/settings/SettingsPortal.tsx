@@ -309,7 +309,7 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
           },
         ]}
       />
-      <StableScrollView className="flex-1 bg-background rounded-b-xl">
+      <StableScrollView className="flex-1 rounded-b-xl">
         <View className="flex flex-col">
           <View className="px-4 mb-2">
             <View className="flex flex-col justify-between p-4">
@@ -326,8 +326,8 @@ export const SettingsPortal = ({ className }: SettingsPortalProps) => {
           </View>
 
           {settingsSections.map((section) => (
-            <View key={section.key} className="bg-background">
-              <View className="px-8 py-4 bg-card mb-4">
+            <View key={section.key}>
+              <View className="px-8 py-4 bg-card/60 mb-4">
                 <Text className="text-lg font-semibold">{section.title}</Text>
                 <Text className="text-sm text-muted-foreground mt-1">
                   {section.description}

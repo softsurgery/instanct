@@ -130,7 +130,7 @@ export const SessionHistoryPortal = ({
             <Loader />
           </View>
         ) : sessions.length !== 0 ? (
-          <View className="flex-1 bg-background">
+          <View className="flex-1">
             <SessionStatusLegend />
             <LegendList
               className="flex-1"

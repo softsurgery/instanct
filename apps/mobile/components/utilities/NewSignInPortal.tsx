@@ -133,7 +133,7 @@ export const NewSignInPortal = ({
         ]}
       />
 
-      <StableScrollView className="bg-background flex-1 rounded-b-xl">
+      <StableScrollView className="flex-1 rounded-b-xl">
         <View className="items-center px-6 pt-8 pb-8">
           <Image
             source={require("@/assets/images/new-signin.png")}

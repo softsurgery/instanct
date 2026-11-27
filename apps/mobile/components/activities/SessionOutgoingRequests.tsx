@@ -98,7 +98,7 @@ export const SessionOutgoingRequests = ({
   }
 
   return (
-    <View className={cn("flex-1 bg-background", className)}>
+    <View className={cn("flex-1", className)}>
       <LegendList
         style={{ flex: 1, paddingBlock: 12 }}
         data={flattenedData}

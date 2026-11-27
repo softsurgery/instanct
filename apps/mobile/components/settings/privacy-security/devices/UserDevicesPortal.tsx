@@ -138,7 +138,7 @@ export const UserDevicesPortal = ({ className }: UserDevicesPortalProps) => {
       />
 
       <StableScrollView
-        className="bg-background flex-1 rounded-b-xl"
+        className="flex-1 rounded-b-xl"
         refreshControl={
           <RefreshControl
             refreshing={isRefetching}

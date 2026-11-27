@@ -112,9 +112,11 @@ export default function MainLayout() {
     queryClient.invalidateQueries();
   }, []);
 
-  const { safeAreaClassNames, applicationHeaderClassNames } = useLayoutConfig();
+  const { safeAreaClassNames, applicationHeaderClassNames, hasBackground } =
+    useLayoutConfig();
   const notificationConfig = React.useMemo<NotificationConfig>(
     () => ({
+      hasBackground,
       safeAreaClassNames,
       applicationHeaderClassNames,
       getNotificationDestination,
@@ -123,7 +125,7 @@ export default function MainLayout() {
         [NotificationType.NEW_SIGNIN]: require("@/assets/images/new-signin.png"),
       },
     }),
-    [safeAreaClassNames, applicationHeaderClassNames],
+    [hasBackground, safeAreaClassNames, applicationHeaderClassNames],
   );
 
   const activeMapSessionValue = React.useMemo(
@@ -161,7 +163,7 @@ export default function MainLayout() {
             screenOptions={{
               contentStyle: {
                 flex: 1,
-                backgroundColor: palette.background,
+                backgroundColor: "transparent",
               },
             }}
           >

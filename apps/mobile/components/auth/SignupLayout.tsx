@@ -205,8 +205,8 @@ export const SignupLayout = ({ className }: SignupLayoutProps) => {
           },
         ]}
       />
-      <View className="flex-1 bg-background rounded-b-xl">
-        <View className={cn("flex-1 px-2 bg-background", className)}>
+      <View className="flex-1 rounded-b-xl">
+        <View className={cn("flex-1 px-2", className)}>
           <Stepper
             classNames={{
               controlsWrapper: isLandscape ? "pb-2" : "pb-8",

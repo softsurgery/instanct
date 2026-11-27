@@ -36,7 +36,7 @@ export const VerifyEmailPortal = ({ className }: VerifyEmailPortalProps) => {
       />
       <StableKeyboardAwareScrollView
         contentContainerClassName="px-4 py-4"
-        className="flex-1 bg-background rounded-b-xl"
+        className="flex-1 rounded-b-xl"
       ></StableKeyboardAwareScrollView>
     </StableSafeAreaView>
   );

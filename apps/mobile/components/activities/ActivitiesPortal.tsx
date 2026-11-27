@@ -47,7 +47,7 @@ export const ActivitiesPortal = ({ className }: ActivitiesPortalProps) => {
   });
 
   return (
-    <StableSafeAreaView className={cn("flex-1 bg-background", className)}>
+    <StableSafeAreaView className={cn("flex-1", className)}>
       <View className="flex-1">
         <Animated.View
           style={[

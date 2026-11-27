@@ -22,7 +22,7 @@ import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import { Image } from "expo-image";
 import React from "react";
-import { AppState, Platform, TurboModuleRegistry, View } from "react-native";
+import { AppState, Platform, StyleSheet, TurboModuleRegistry, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 import i18n from "../i18n";
@@ -86,13 +86,28 @@ function RootLayoutContent() {
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View className={cn("flex-1 light dark:dark bg-background")}>
+          <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+            <Image
+              source={
+                colorScheme === "dark"
+                  ? require("~/assets/images/app-bg.png")
+                  : require("~/assets/images/app-bg-light.png")
+              }
+              style={{
+                width: "100%",
+                height: "100%",
+                opacity: colorScheme === "dark" ? 0.3 : 1,
+              }}
+              contentFit="cover"
+            />
+          </View>
           <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
           <Stack
             screenOptions={{
               headerShown: false,
               contentStyle: {
                 flex: 1,
-                backgroundColor: palette.background,
+                backgroundColor: "transparent",
               },
               keyboardHandlingEnabled: true,
               headerStyle: {
@@ -128,6 +143,16 @@ function RootLayout() {
   const monitorConfig = useBootstrapMonitorConfig();
   const layoutConfig = useBootstrapLayoutConfig();
   const chatConfig = useBootstrapChatConfig();
+  const navTheme = React.useMemo(() => {
+    const baseTheme = NAV_THEME[colorScheme ?? "light"];
+    return {
+      ...baseTheme,
+      colors: {
+        ...baseTheme.colors,
+        background: "transparent",
+      },
+    };
+  }, [colorScheme]);
 
   React.useEffect(() => {
     void configureScreenOrientation();
@@ -150,7 +175,7 @@ function RootLayout() {
     <I18nextProvider i18n={i18n}>
       <ApiProvider>
         <PaletteProvider theme={THEME}>
-          <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
+          <ThemeProvider value={navTheme}>
             <PersistQueryClientProvider
               client={queryClient}
               persistOptions={{

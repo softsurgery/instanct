@@ -420,12 +420,12 @@ export const InspectBaseProfile = ({
 
   return (
     <View
-      className={cn("bg-background flex-1", className)}
+      className={cn("flex-1", className)}
       style={{ flexDirection: isLandscape ? "row" : "column" }}
     >
       {isLandscape ? (
         <View
-          className="border-r border-border/40 bg-background"
+          className="border-r border-border/40"
           style={{ width: leftPaneWidth }}
         >
           <ScrollView

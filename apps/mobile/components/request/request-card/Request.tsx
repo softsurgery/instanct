@@ -243,7 +243,7 @@ export const Request = ({
         shortcuts={[{ key: "back", render: <AppHeaderBack /> }]}
       />
 
-      <StableScrollView className="flex-1 bg-background rounded-b-xl">
+      <StableScrollView className="flex-1 rounded-b-xl">
         {isPending ? (
           <View className="p-4">
             <RequestSkeleton hasLocation={hasLocation} />

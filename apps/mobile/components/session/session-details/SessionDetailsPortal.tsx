@@ -69,7 +69,7 @@ export const SessionDetailsPortal = ({
         ]}
       />
 
-      <StableScrollView className="flex-1 bg-background rounded-b-xl">
+      <StableScrollView className="flex-1 rounded-b-xl">
         {!session ? (
           <EmptyState />
         ) : (

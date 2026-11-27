@@ -148,13 +148,13 @@ export const IndustriesManagement = ({
           },
         ]}
       />
-      <View className="flex-1 bg-background rounded-b-xl">
+      <View className="flex-1 rounded-b-xl">
         <View className="px-5 pt-4 pb-2">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t("menu.industries.description")}
           </Text>
         </View>
-        <StableKeyboardAwareScrollView className="flex-1 bg-background">
+        <StableKeyboardAwareScrollView className="flex-1">
           <FormBuilder structure={strurcture} className="mt-4 px-2" />
         </StableKeyboardAwareScrollView>
       </View>

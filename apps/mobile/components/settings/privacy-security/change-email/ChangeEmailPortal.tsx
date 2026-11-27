@@ -95,7 +95,7 @@ export const ChangeEmailPortal = ({ className }: ChangeEmailPortalProps) => {
         ]}
       />
 
-      <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
+      <StableKeyboardAwareScrollView className="flex-1 rounded-b-xl">
         <View className="p-4">
           <Text className="text-sm text-muted-foreground leading-relaxed">
             {t(

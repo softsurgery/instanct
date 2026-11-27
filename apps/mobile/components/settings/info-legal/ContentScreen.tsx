@@ -82,7 +82,7 @@ export function ContentScreen({
             },
           ]}
         />
-        <View className="flex-1 items-center justify-center bg-background rounded-b-xl">
+        <View className="flex-1 items-center justify-center rounded-b-xl">
           <Loader />
         </View>
       </StableSafeAreaView>
@@ -106,7 +106,7 @@ export function ContentScreen({
             },
           ]}
         />
-        <View className="flex-1 items-center justify-center bg-background px-6 rounded-b-xl">
+        <View className="flex-1 items-center justify-center px-6 rounded-b-xl">
           <Text className="text-sm leading-6 text-muted-foreground text-center">
             This document is temporarily unavailable. Please try again later.
           </Text>
@@ -131,10 +131,10 @@ export function ContentScreen({
           },
         ]}
       />
-      <View className="flex-1 bg-background px-4 rounded-b-xl">
+      <View className="flex-1 px-4 rounded-b-xl">
         <View key={`${slug}-${i18n.language}`} className="flex-1 relative">
           {isHtmlLoading && (
-            <View className="absolute inset-0 items-center justify-center z-10 bg-background">
+            <View className="absolute inset-0 items-center justify-center z-10">
               <Loader />
             </View>
           )}

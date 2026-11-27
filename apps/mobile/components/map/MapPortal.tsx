@@ -63,12 +63,12 @@ export const MapPortal = ({ className }: MapPortalProps) => {
   };
 
   return (
-    <View className={cn("flex-1 bg-background", className)}>
+    <View className={cn("flex-1", className)}>
       <View className="absolute inset-0 border-y border-border top-0">
         {activeSession && (!initialized || !location) ? (
           <View
             className={cn(
-              "flex-1 items-center justify-center bg-background",
+              "flex-1 items-center justify-center",
               className,
             )}
           >

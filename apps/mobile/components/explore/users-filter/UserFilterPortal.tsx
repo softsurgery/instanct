@@ -89,8 +89,8 @@ export const UserFilterPortal = ({ className }: UserFilterPortalProps) => {
           },
         ]}
       />
-      <View className="flex-1 bg-background rounded-b-xl">
-        <StableKeyboardAwareScrollView className="flex-1 bg-background">
+      <View className="flex-1 rounded-b-xl">
+        <StableKeyboardAwareScrollView className="flex-1">
           <View className="px-5 pt-4 pb-2">
             <Text className="text-sm text-muted-foreground leading-relaxed">
               {t("explore.filter.filtersDescription")}

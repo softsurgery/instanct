@@ -217,7 +217,7 @@ export const DeviceConnectionsPortal = ({
         ]}
       />
 
-      <View className="flex-1 bg-background rounded-b-xl">
+      <View className="flex-1 rounded-b-xl">
         <LegendList
           style={{ flex: 1 }}
           data={flattenedHistory}

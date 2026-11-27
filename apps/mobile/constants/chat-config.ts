@@ -10,21 +10,23 @@ export function useBootstrapChatConfig(): ChatConfigValue {
     () =>
       isLandscape
         ? {
+            hasBackground: true,
             safeAreaClassNames: {
-              safearea: cn("bg-background"),
-              wrapper: cn("bg-card border border-border rounded-xl"),
+              safearea: cn("bg-transparent"),
+              wrapper: cn("bg-transparent border border-border rounded-xl"),
             },
             applicationHeaderClassNames: {
               wrapper: cn("border-b border-border pb-2"),
             },
           }
         : {
+            hasBackground: true,
             safeAreaClassNames: {
-              safearea: cn("bg-card"),
-              wrapper: cn("bg-card"),
+              safearea: cn("bg-transparent"),
+              wrapper: cn("bg-transparent"),
             },
             applicationHeaderClassNames: {
-              wrapper: cn("border-b border-x border-border bg-card pb-2"),
+              wrapper: cn("border-b border-x border-border bg-transparent pb-2"),
             },
           },
     [isLandscape],

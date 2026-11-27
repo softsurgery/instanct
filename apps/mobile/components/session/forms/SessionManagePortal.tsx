@@ -180,10 +180,10 @@ export const SessionManagePortal = ({
         ]}
       />
       {isSessionsPending || isObjectivesSubTypePending ? (
-        <Loader className="flex flex-1 justify-center items-center bg-background rounded-b-xl" />
+        <Loader className="flex flex-1 justify-center items-center rounded-b-xl" />
       ) : (
         <>
-          <StableKeyboardAwareScrollView className="flex-1 bg-background rounded-b-xl">
+          <StableKeyboardAwareScrollView className="flex-1 rounded-b-xl">
             <View className="p-4">
               <Text className="text-sm text-muted-foreground leading-relaxed">
                 {t("session.manage.description")}

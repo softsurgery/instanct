@@ -63,7 +63,7 @@ export default function OnBoarding({ className }: OnBoardingProps) {
     <StableSafeAreaView
       classNames={{
         safearea: safeAreaClassNames.safearea,
-        wrapper: cn(safeAreaClassNames.wrapper, "bg-background"),
+        wrapper: cn(safeAreaClassNames.wrapper, "bg-transparent"),
       }}
       className={cn("flex-1 justify-between", className)}
     >

@@ -11,6 +11,7 @@ export default function AuthLayout() {
       screenOptions={{
         contentStyle: {
           flex: 1,
+          backgroundColor: "transparent",
         },
       }}
     >
