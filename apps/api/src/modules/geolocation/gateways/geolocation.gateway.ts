@@ -191,6 +191,9 @@ export class GeolocationGateway
         ? await this.experimentalGeolocationService.augmentNearbyGeolocations(
             userId,
             baseNearbyUsers,
+            latitude,
+            longitude,
+            radius,
           )
         : { geolocations: baseNearbyUsers, forceVisible: false };
 
@@ -235,28 +238,14 @@ export class GeolocationGateway
 
       // Emit user_moved to user rooms with full profile so they appear immediately in Explore
       for (const nearby of nearbyWithPresence) {
-        const accepted = acceptedIds.has(nearby.userId);
-        const coordinatesVisible = forceVisible || accepted;
-        const distance =
-          coordinatesVisible &&
-          nearby.latitude != null &&
-          nearby.longitude != null
-            ? GeolocationService.calculateDistanceKm(
-                latitude,
-                longitude,
-                nearby.latitude,
-                nearby.longitude,
-              )
-            : null;
-
         const movementPayload = {
           userId,
-          latitude: coordinatesVisible ? latitude : null,
-          longitude: coordinatesVisible ? longitude : null,
-          distance,
+          latitude: nearby.coordinatesVisible ? latitude : null,
+          longitude: nearby.coordinatesVisible ? longitude : null,
+          distance: nearby.distance,
           user: currentUserProfile,
           isOnline: true,
-          coordinatesVisible,
+          coordinatesVisible: nearby.coordinatesVisible,
           updatedAt: new Date().toISOString(),
         };
 

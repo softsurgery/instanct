@@ -53,6 +53,9 @@ export class ExperimentalGeolocationService implements OnModuleInit {
   async augmentNearbyGeolocations(
     currentUserId: string,
     existingGeolocations: GeolocationEntity[],
+    latitude: number,
+    longitude: number,
+    radiusKm: number,
   ): Promise<{ geolocations: GeolocationEntity[]; forceVisible: boolean }> {
     const forceVisible = this.positionsVisibleToEveryone;
     if (!forceVisible && !this.includeConnectedUsers) {
@@ -87,16 +90,25 @@ export class ExperimentalGeolocationService implements OnModuleInit {
         return { geolocations: existingGeolocations, forceVisible };
       }
 
+      const matchedRows = await this.geolocationRepository.findByKmRadius(
+        latitude,
+        longitude,
+        radiusKm,
+        currentUserId,
+        Array.from(extraUserIds),
+      );
+
+      if (matchedRows.length === 0) {
+        return { geolocations: existingGeolocations, forceVisible };
+      }
+
+      const matchedIds = matchedRows.map((r) => r.id);
       const extraGeos = await this.geolocationRepository
         .createQueryBuilder('geo')
         .leftJoinAndSelect('geo.user', 'user')
         .leftJoinAndSelect('user.picture', 'picture')
         .leftJoinAndSelect('user.sessions', 'sessions')
-        .where('geo.userId IN (:...userIds)', {
-          userIds: Array.from(extraUserIds),
-        })
-        .andWhere('geo.latitude IS NOT NULL')
-        .andWhere('geo.longitude IS NOT NULL')
+        .where('geo.id IN (:...ids)', { ids: matchedIds })
         .getMany();
 
       return {

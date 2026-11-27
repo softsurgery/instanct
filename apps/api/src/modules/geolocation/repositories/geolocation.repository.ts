@@ -21,27 +21,48 @@ export class GeolocationRepository extends DatabaseAbstractRepository<Geolocatio
     longitude: number,
     radius: number,
     excludeUserId?: string,
-  ): Promise<GeolocationEntity[]> {
+    userIds?: string[],
+  ): Promise<Array<GeolocationEntity & { distance?: number }>> {
+    if (userIds && userIds.length === 0) {
+      return Promise.resolve([]);
+    }
+
+    const params: unknown[] = [latitude, longitude, latitude];
+    let extraConditions = '';
+
+    if (excludeUserId) {
+      extraConditions += ' AND g.userId != ?';
+      params.push(excludeUserId);
+    }
+
+    if (userIds && userIds.length > 0) {
+      const placeholders = userIds.map(() => '?').join(', ');
+      extraConditions += ` AND g.userId IN (${placeholders})`;
+      params.push(...userIds);
+    }
+
+    params.push(radius);
+
     const query = `
     SELECT 
       g.*,
       (
         6371 * ACOS(
-          COS(RADIANS(?)) * COS(RADIANS(g.latitude)) *
-          COS(RADIANS(g.longitude) - RADIANS(?)) +
-          SIN(RADIANS(?)) * SIN(RADIANS(g.latitude))
+          LEAST(
+            1,
+            COS(RADIANS(?)) * COS(RADIANS(g.latitude)) *
+            COS(RADIANS(g.longitude) - RADIANS(?)) +
+            SIN(RADIANS(?)) * SIN(RADIANS(g.latitude))
+          )
         )
       ) AS distance
     FROM geolocations g
     WHERE g.latitude IS NOT NULL
       AND g.longitude IS NOT NULL
-      ${excludeUserId ? 'AND g.userId != ?' : ''}
+      ${extraConditions}
     HAVING distance < ?
     ORDER BY distance ASC;
   `;
-    const params = excludeUserId
-      ? [latitude, longitude, latitude, excludeUserId, radius]
-      : [latitude, longitude, latitude, radius];
 
     return this.rawQuery(query, params);
   }
