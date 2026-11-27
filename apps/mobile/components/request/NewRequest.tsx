@@ -74,7 +74,7 @@ export const NewRequest = ({ className, id }: NewRequestProps) => {
     fallbacks: [fallback],
     wrapperClassName:
       "border border-border bg-background rounded-full shadow-md",
-    size: { width: 70, height: 70 },
+    imageOptions: { width: 70, height: 70 },
   });
 
   const { mutate: sendRequest, isPending: isSendingRequestPending } =

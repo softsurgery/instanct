@@ -42,7 +42,7 @@ export const UserMarker = React.memo(function UserMarker({
     className: "rounded-full",
     wrapperClassName: "bg-foreground/25",
     fallbackClassName: "text-xs",
-    size: MARKER_AVATAR_SIZE,
+    imageOptions: MARKER_AVATAR_SIZE,
   });
 
   // Pulse animation (iOS only — Android renders markers as static ViewShot bitmaps)

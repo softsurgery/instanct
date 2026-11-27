@@ -140,7 +140,7 @@ export const Request = ({
     className: "h-12 w-12 rounded-full",
     wrapperClassName:
       "h-12 w-12 rounded-full border border-border bg-background shadow-sm",
-    size: { width: 48, height: 48 },
+    imageOptions: { width: 48, height: 48 },
   });
 
   const isPending = isRequestPending || isUserPending;

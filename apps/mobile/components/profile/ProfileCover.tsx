@@ -21,7 +21,10 @@ import {
   UpdateUserCoverDto,
   ServerErrorResponse,
 } from "api-client";
-import { useIsPickingPicture, useRNServerImages } from "@softsurgery/mobile-hooks";
+import {
+  useIsPickingPicture,
+  useRNServerImages,
+} from "@softsurgery/mobile-hooks";
 import { Image, ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLuminance, useScreenOrientation } from "@softsurgery/mobile-hooks";
@@ -53,7 +56,7 @@ export const ProfileCover = ({
     ids: [user?.coverId],
     fallbacks: [""],
     wrapperClassName: "",
-    size: { width: 100, height: 100 },
+    imageOptions: { width: 1280, height: 720, quality: 90 },
   });
   const coverSource = coverUploads?.[0];
 
@@ -195,7 +198,9 @@ export const ProfileCover = ({
       <PhotoPreview
         ref={previewRef}
         uploadId={user?.coverId}
-        source={user?.coverId ? undefined : (coverSource as ImageSource | undefined)}
+        source={
+          user?.coverId ? undefined : (coverSource as ImageSource | undefined)
+        }
       />
 
       <ThreeDotsActionSheet

@@ -32,7 +32,7 @@ export const UserCarouselEntry = React.memo(function UserCarouselEntry({
     fallbacks: imageFallbacks,
     className: "rounded-full",
     wrapperClassName: "rounded-full overflow-hidden",
-    size: CAROUSEL_AVATAR_SIZE,
+    imageOptions: CAROUSEL_AVATAR_SIZE,
   });
 
   return (

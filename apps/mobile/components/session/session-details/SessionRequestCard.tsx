@@ -40,7 +40,7 @@ export const SessionRequestCard: React.FC<SessionRequestCardProps> = ({
     ids,
     fallbacks,
     className: "w-12 h-12 rounded-full",
-    size: { width: 50, height: 50 },
+    imageOptions: { width: 50, height: 50 },
   });
 
   const createdAt = request?.createdAt ? new Date(request.createdAt) : null;

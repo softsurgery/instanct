@@ -97,7 +97,7 @@ export const UserCard = React.memo(function UserCard({
   const { uploads: uploadedProfilePicture } = useRNServerImages({
     ids: imageIds,
     fallbacks: imageFallbacks,
-    size: USER_CARD_IMAGE_SIZE,
+    imageOptions: USER_CARD_IMAGE_SIZE,
   });
 
   const photoSource = uploadedProfilePicture[0];

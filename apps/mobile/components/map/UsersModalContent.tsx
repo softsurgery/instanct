@@ -31,7 +31,7 @@ const ClusterUserRow = ({ user, onPress }: ClusterUserRowProps) => {
     ids: [user.user?.pictureId],
     fallbacks: [fallback],
     className: "rounded-full",
-    size: { width: 44, height: 44 },
+    imageOptions: { width: 44, height: 44 },
   });
 
   const subtitle = React.useMemo(() => {

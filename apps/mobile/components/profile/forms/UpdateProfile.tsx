@@ -133,7 +133,7 @@ export const UpdateProfile = ({ className }: UpdateProfileProps) => {
   const { uploads: profileUploads } = useRNServerImages({
     ids: [currentUser?.pictureId],
     fallbacks: [fallback],
-    size: { width: 100, height: 100 },
+    imageOptions: { width: 100, height: 100 },
   });
 
   React.useEffect(() => {

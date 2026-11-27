@@ -47,7 +47,7 @@ export const BookmarkCard = ({
     ids,
     fallbacks,
     className: "w-14 h-14 rounded-full",
-    size: { width: 50, height: 50 },
+    imageOptions: { width: 50, height: 50 },
   });
 
   const { deleteBookmark, isDeletingBookmark } = useBookmarkActions({

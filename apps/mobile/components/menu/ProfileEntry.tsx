@@ -29,7 +29,7 @@ export const ProfileEntry = ({ className }: ProfileEntryProps) => {
     ids: [currentUser?.pictureId],
     fallbacks: [fallback],
     className: "border-2 border-border",
-    size: { width: 80, height: 80 },
+    imageOptions: { width: 80, height: 80 },
   });
 
   return (

@@ -45,7 +45,7 @@ export const SingleUserSheet = forwardRef<ActionSheetRef, SingleUserSheetProps>(
       ids: [user?.user?.pictureId],
       fallbacks: [fallback],
       className: "rounded-full",
-      size: { width: 50, height: 50 },
+      imageOptions: { width: 50, height: 50 },
     });
 
     const { startConversation, isStartingConversation } = useStartConversation({

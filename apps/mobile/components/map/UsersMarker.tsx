@@ -53,7 +53,7 @@ export const UsersMarker = React.memo(function UsersMarker({
     ids: pictureIds,
     className: "rounded-full",
     fallbackClassName: "text-xs",
-    size: CLUSTER_AVATAR_SIZE,
+    imageOptions: CLUSTER_AVATAR_SIZE,
     fallbacks: pictureFallbacks,
   });
 

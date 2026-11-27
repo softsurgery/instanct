@@ -54,7 +54,7 @@ export const ProfileAvatar = ({
       fallbacks: [fallback],
       className: "rounded-full",
       wrapperClassName: "border border-border bg-background rounded-full",
-      size: { width: size, height: size },
+      imageOptions: { width: size, height: size },
     });
   const profilePictureSource = profilePictureUploads?.[0];
 
