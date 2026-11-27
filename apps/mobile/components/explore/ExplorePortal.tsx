@@ -2,19 +2,15 @@ import React from "react";
 import { useNotificationContext } from "@/contexts/NotificationsContext";
 import { cn } from "@softsurgery/lib";
 import { ResponseUserDto } from "api-client";
-import { LegendList } from "@legendapp/list";
 import { IconMessageChatbot } from "@tabler/icons-react-native";
 import { router } from "expo-router";
 import { ArrowDownNarrowWide, Bell, CalendarCog } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import {
   LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   StyleSheet,
   View,
 } from "react-native";
-import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { UserCard } from "./UserCard";
 import { Text } from "@softsurgery/mobile-ui";
@@ -24,6 +20,8 @@ import { useExploreFilterStore } from "@/stores/userExploreFilterStore";
 import {
   ApplicationHeader,
   NotFound,
+  ShuffleCardList,
+  ShuffleCardRenderInfo,
   StableSafeAreaView,
   Loader,
 } from "@softsurgery/mobile-components";
@@ -34,7 +32,6 @@ import {
   useColorPalette,
   useScreenActive,
   useScreenOrientation,
-  useScrollableElement,
 } from "@softsurgery/mobile-hooks";
 import { useCurrentUser, useIndustries, useObjectives } from "api-client/hooks";
 import { useLiveGeolocation } from "api-client/hooks/geolocation";
@@ -67,23 +64,9 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   });
   useIndustries({ locale: i18n.language });
   const { objectives } = useObjectives({ locale: i18n.language });
-  const {
-    animatedHeaderStyle,
-    handleScroll: handleHeaderScroll,
-    onLayout: onHeaderLayout,
-    reset: resetHeader,
-  } = useScrollableElement({
-    deltaThreshold: 10,
-    duration: 250,
-    checkScrollable: true,
-    collapseHeight: false,
-  });
 
-  // Same top offset StableSafeAreaView applies on the other screens, so the
-  // floating header lines up with them while the cards stay full-bleed.
   const insets = useSafeAreaInsets();
   const { isLandscape } = useScreenOrientation();
-  const headerTop = insets.top;
 
   // The real size of the content area drives the card size and layout, so the
   // cards always match the rendered frame in both portrait and landscape.
@@ -140,42 +123,35 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   const activeIndex = Math.min(currentIndex, Math.max(users.length - 1, 0));
   const activeUserId = users[activeIndex]?.id;
 
-  const handleHorizontalScroll = React.useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const { contentOffset, layoutMeasurement } = event.nativeEvent;
-      if (layoutMeasurement.width <= 0) return;
-      setCurrentIndex(
-        Math.max(0, Math.round(contentOffset.x / layoutMeasurement.width)),
-      );
-    },
-    [],
-  );
+  const framePaddingX = cardSize ? Math.round(cardSize.width * 0.04) : 14;
+  const framePaddingTop = 8;
+  const framePaddingBottom = cardSize
+    ? Math.max(Math.round(cardSize.height * 0.09), isLandscape ? 16 : 48)
+    : 48;
+  const cardBorderColor = hslToHex(palette.border, 0.8);
 
-  // Show the header again whenever the user swipes to another card.
-  React.useEffect(() => {
-    resetHeader();
-  }, [activeIndex, resetHeader]);
-
-  const renderItem = React.useCallback(
-    ({ item }: { item: ResponseUserDto }) => (
+  const renderCard = React.useCallback(
+    ({
+      item,
+      isActive,
+      cardWidth,
+      cardHeight,
+    }: ShuffleCardRenderInfo<ResponseUserDto>) => (
       <UserCard
         user={item}
         objectives={objectives}
-        onScroll={handleHeaderScroll}
-        cardWidth={cardSize?.width}
-        cardHeight={cardSize?.height}
-        isActive={isScreenActive && item.id === activeUserId}
+        cardWidth={cardWidth}
+        cardHeight={cardHeight}
+        isActive={isScreenActive && isActive}
       />
     ),
-    [objectives, handleHeaderScroll, cardSize, isScreenActive, activeUserId],
+    [objectives, isScreenActive],
   );
 
   const showCards = !!activeSession && users.length > 0;
   const foreground = hslToHex(palette.foreground);
-  // The title sits on the card photo; in landscape the shortcuts sit on the
-  // details pane instead, so they keep the regular foreground color.
-  const titleColor = showCards ? "white" : foreground;
-  const shortcutColor = showCards && !isLandscape ? "white" : foreground;
+  const titleColor = foreground;
+  const shortcutColor = foreground;
 
   const shortcuts = React.useMemo(
     () => [
@@ -239,23 +215,20 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
 
     return (
       <>
-        <LegendList
-          // Remount on resize so paging snaps to the current card in the new
-          // orientation instead of landing between two cards.
-          key={`${Math.round(cardSize.width)}x${Math.round(cardSize.height)}`}
+        <ShuffleCardList
           data={users}
           extraData={isScreenActive ? activeUserId : null}
           style={[StyleSheet.absoluteFill, { left: cardsLeft }]}
-          horizontal
-          pagingEnabled
-          recycleItems
-          bounces={false}
-          showsHorizontalScrollIndicator={false}
-          estimatedItemSize={cardSize.width}
-          initialScrollIndex={activeIndex}
+          width={cardSize.width}
+          height={cardSize.height}
+          activeIndex={activeIndex}
+          onIndexChange={setCurrentIndex}
+          paddingHorizontal={framePaddingX}
+          paddingTop={framePaddingTop}
+          paddingBottom={framePaddingBottom}
+          borderColor={cardBorderColor}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-          onScroll={handleHorizontalScroll}
+          renderCard={renderCard}
         />
         <View
           pointerEvents="none"
@@ -275,26 +248,13 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
   };
 
   return (
-    // Cards bleed under the status bar (and keep the left inset in landscape);
-    // the header and the empty states are kept inside the safe area.
-    <View className={cn("flex-1", className)} onLayout={handleLayout}>
-      {showCards ? (
-        renderCards()
-      ) : (
-        <StableSafeAreaView>{renderEmptyState()}</StableSafeAreaView>
-      )}
-      <Animated.View
-        onLayout={onHeaderLayout}
-        style={[
-          animatedHeaderStyle,
-          {
-            position: "absolute",
-            top: headerTop,
-            left: insets.left,
-            right: insets.right,
-            zIndex: 10,
-          },
-        ]}
+    <View className={cn("flex-1", className)}>
+      <View
+        style={{
+          paddingTop: insets.top,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        }}
       >
         <ApplicationHeader
           title={
@@ -314,7 +274,16 @@ export const ExplorePortal = ({ className }: ExplorePortalProps) => {
           classNames={{ wrapper: cn(activeSession && "items-start") }}
           shortcuts={shortcuts}
         />
-      </Animated.View>
+      </View>
+      <View className="flex-1" onLayout={handleLayout}>
+        {showCards ? (
+          renderCards()
+        ) : (
+          <StableSafeAreaView edges={["bottom", "left", "right"]}>
+            {renderEmptyState()}
+          </StableSafeAreaView>
+        )}
+      </View>
     </View>
   );
 };

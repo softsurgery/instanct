@@ -47,7 +47,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { ImageBackground } from "expo-image";
 import { useTranslation } from "react-i18next";
 
-const USER_CARD_IMAGE_SIZE = { width: 100, height: 100 };
+const USER_CARD_IMAGE_SIZE = { width: 1080, height: 1080, quality: 90 };
 
 interface UserCardProps {
   className?: string;
@@ -174,10 +174,10 @@ export const UserCard = React.memo(function UserCard({
   const actionButtons = (
     <View
       className={cn(
-        "flex-row items-center gap-5",
+        "flex-row items-center gap-4",
         isLandscape ? "justify-start" : "justify-center",
       )}
-      style={!isLandscape ? { marginTop: -36 } : undefined}
+      style={!isLandscape ? { marginTop: -28 } : undefined}
     >
       {/* Bookmark */}
       <Animated.View style={bookmarkStyle}>
@@ -195,17 +195,17 @@ export const UserCard = React.memo(function UserCard({
             });
           }}
           onPress={toggleBookmark}
-          style={isLandscape ? { width: 48, height: 48 } : undefined}
+          style={isLandscape ? { width: 40, height: 40 } : undefined}
           className={cn(
-            "h-14 w-14 items-center justify-center rounded-full border shadow-lg shadow-black/20",
+            "h-11 w-11 items-center justify-center rounded-full border shadow-lg shadow-black/20",
             isBookmarked
-              ? "border-transparent bg-primary active:bg-primary/50"
-              : "border-border bg-card active:bg-card/50",
+              ? "border-primary/40 bg-primary active:bg-primary/60"
+              : "border-border/70 bg-card/70 active:bg-card/40",
           )}
         >
           <Icon
             as={Bookmark}
-            size={isLandscape ? 20 : 24}
+            size={isLandscape ? 18 : 20}
             color={isBookmarked ? "#ffffff" : primary}
             fill={isBookmarked ? "#ffffff" : "transparent"}
           />
@@ -219,9 +219,9 @@ export const UserCard = React.memo(function UserCard({
             pulseStyle,
             {
               position: "absolute",
-              width: isLandscape ? 64 : 80,
-              height: isLandscape ? 64 : 80,
-              borderRadius: isLandscape ? 32 : 40,
+              width: isLandscape ? 52 : 64,
+              height: isLandscape ? 52 : 64,
+              borderRadius: isLandscape ? 26 : 32,
               backgroundColor: primary,
             },
           ]}
@@ -246,13 +246,13 @@ export const UserCard = React.memo(function UserCard({
                 params: { id: user?.id },
               })
             }
-            style={isLandscape ? { width: 64, height: 64 } : undefined}
-            className="rounded-full bg-primary active:bg-primary/50 border border-primary-foreground/20 w-20 h-20 flex items-center justify-center shadow-xl shadow-primary/30"
+            style={isLandscape ? { width: 52, height: 52 } : undefined}
+            className="rounded-full bg-primary active:bg-primary/70 border border-primary-foreground/30 w-16 h-16 flex items-center justify-center shadow-xl shadow-primary/30"
           >
             <Icon
               as={IconMoodPlus}
               strokeWidth={1.5}
-              size={isLandscape ? 32 : 40}
+              size={isLandscape ? 24 : 30}
               color={"white"}
             />
           </Pressable>
@@ -280,12 +280,12 @@ export const UserCard = React.memo(function UserCard({
               startConversation({ users: [user.id] });
             }
           }}
-          style={isLandscape ? { width: 48, height: 48 } : undefined}
-          className="h-14 w-14 items-center justify-center rounded-full border border-border bg-card active:bg-card/50 shadow-lg shadow-black/20"
+          style={isLandscape ? { width: 40, height: 40 } : undefined}
+          className="h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-card/70 active:bg-card/40 shadow-lg shadow-black/20"
         >
           <Icon
             as={MessageCircle}
-            size={isLandscape ? 20 : 24}
+            size={isLandscape ? 18 : 20}
             color={primary}
           />
         </Pressable>
@@ -369,79 +369,76 @@ export const UserCard = React.memo(function UserCard({
     </LinearGradient>
   );
 
-  const detailsSections = (
-    <View className={cn("flex flex-col gap-8", isLandscape ? "mb-8" : "mb-20")}>
-      {/* Industries */}
-      {user.industries && user.industries.length > 0 && (
-        <View>
-          <View className="mb-2.5 flex-row items-center gap-2">
-            <Icon as={Briefcase} size={15} color={primary} />
-            <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
-              {t("explore.industries")}
-            </Text>
-          </View>
-          <View className="flex-row flex-wrap gap-2">
-            {user.industries.map((ind) => (
-              <View
-                key={ind.id}
-                className="rounded-full border border-border/30 px-3 py-1 flex-row items-center gap-1.5"
-              >
-                <View className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
-                <Text className="text-[13px] font-semibold text-foreground">
-                  {resolveRefLabel(ind.label, ind.extras, i18n.language)}
-                </Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      )}
+  const industryItems = React.useMemo(
+    () =>
+      (user.industries ?? []).map((ind) => ({
+        key: String(ind.id),
+        label: resolveRefLabel(ind.label, ind.extras, i18n.language),
+      })),
+    [user.industries, i18n.language],
+  );
 
-      {/* Objectives */}
-      {user?.activeSession?.payload?.objectives &&
-        user.activeSession.payload.objectives.length > 0 && (
-          <View>
-            <View className="mb-2.5 flex-row items-center gap-2">
-              <Icon as={Goal} size={15} color={primary} />
-              <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
-                {t("explore.objectives")}
+  const objectiveItems = React.useMemo(
+    () =>
+      (user?.activeSession?.payload?.objectives ?? []).flatMap((id) => {
+        const objective = objectives.find(
+          (obj) => String(obj.id) === String(id),
+        );
+        return objective
+          ? [{ key: String(objective.id), label: objective.label }]
+          : [];
+      }),
+    [user?.activeSession?.payload?.objectives, objectives],
+  );
+
+  const renderTagSection = (
+    icon: typeof Briefcase,
+    title: string,
+    items: { key: string; label: string }[],
+  ) => {
+    if (items.length === 0) return null;
+    return (
+      <View>
+        <View className="mb-2.5 flex-row items-center gap-2">
+          <Icon as={icon} size={15} color={primary} />
+          <Text className="text-sm font-extrabold text-foreground tracking-wider">
+            {title}
+          </Text>
+        </View>
+        <View className="flex-row flex-wrap gap-2">
+          {items.map((item) => (
+            <View
+              key={item.key}
+              className="rounded-full border border-border px-3 py-1 flex-row items-center gap-1.5"
+            >
+              <Text className="text-sm font-semibold text-foreground">
+                {item.label}
               </Text>
             </View>
-            <View className="flex-row flex-wrap gap-2">
-              {user.activeSession.payload.objectives.map((id) => {
-                const objective = objectives.find(
-                  (obj) => String(obj.id) === String(id),
-                );
-                if (!objective) return null;
-                return (
-                  <View
-                    key={objective.id}
-                    className="rounded-full bg-muted/40 border border-muted-foreground/10 px-3 py-1 flex-row items-center gap-1.5"
-                  >
-                    <View className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
-                    <Text className="text-sm font-semibold text-foreground">
-                      {objective.label}
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
-          </View>
-        )}
+          ))}
+        </View>
+      </View>
+    );
+  };
 
+  const detailsSections = (
+    <View className={cn("flex flex-col gap-8", isLandscape ? "mb-4" : "mb-8")}>
       {/* Bio */}
       <View>
         <View className="mb-2.5 flex-row items-center gap-2">
           <Icon as={Quote} size={15} color={primary} />
-          <Text className="text-sm font-extrabold text-foreground uppercase tracking-wider">
+          <Text className="text-sm font-extrabold text-foreground tracking-wider">
             {t("explore.about")}
           </Text>
         </View>
-        <View className="bg-card/40 rounded-2xl p-4 border border-border/30">
-          <Text className="text-[14px] leading-6 text-foreground/80">
-            {user.bio?.trim() || t("explore.noBioAvailable")}
-          </Text>
-        </View>
+        <Text
+          className={cn("text-sm leading-6", !user.bio && "text-foreground/80")}
+        >
+          {user.bio?.trim() || t("explore.noBioAvailable")}
+        </Text>
       </View>
+      {renderTagSection(Briefcase, t("explore.industries"), industryItems)}
+      {renderTagSection(Goal, t("explore.objectives"), objectiveItems)}
     </View>
   );
 
@@ -449,7 +446,7 @@ export const UserCard = React.memo(function UserCard({
 
   return (
     <View
-      className={cn("bg-background", className)}
+      className={cn("bg-background/30", className)}
       style={{
         width: resolvedWidth,
         height: resolvedHeight,
@@ -463,7 +460,7 @@ export const UserCard = React.memo(function UserCard({
       ) : null}
 
       <ScrollView
-        className="flex-1 bg-background"
+        className="flex-1 bg-transparent"
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
         scrollEventThrottle={16}
@@ -484,7 +481,7 @@ export const UserCard = React.memo(function UserCard({
         ) : null}
 
         <View
-          className="flex-1 bg-background"
+          className="flex-1 bg-transparent"
           style={
             !isLandscape
               ? {
