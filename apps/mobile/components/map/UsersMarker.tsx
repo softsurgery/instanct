@@ -1,10 +1,9 @@
 import React from "react";
-import { useCurrentUser } from "api-client/hooks";
 import { useRNServerImages } from "@softsurgery/mobile-hooks";
 import { identifyUserAvatar } from "@/lib/user";
-import { useMapStore } from "@/stores/useMapStore";
 import { NearbyUser } from "@/types";
 import { Platform, View } from "react-native";
+import { File as ExpoFile } from "expo-file-system";
 import { Marker } from "react-native-maps";
 import ViewShot, { ViewShotRef } from "react-native-view-shot";
 import { Text } from "@softsurgery/mobile-ui";
@@ -13,6 +12,7 @@ const CLUSTER_AVATAR_SIZE = { width: 30, height: 30 };
 
 interface UsersMarkerProps {
   nearbyUsers: NearbyUser[];
+  totalCount?: number;
   latitude: number;
   longitude: number;
   currentUserIncluded?: boolean;
@@ -21,23 +21,20 @@ interface UsersMarkerProps {
 
 export const UsersMarker = React.memo(function UsersMarker({
   nearbyUsers,
+  totalCount,
   latitude,
   longitude,
   currentUserIncluded,
   onPress,
 }: UsersMarkerProps) {
   const { width } = CLUSTER_AVATAR_SIZE;
-  const { currentUser } = useCurrentUser();
   const isAndroid = Platform.OS === "android";
 
   // Android self-capture state
   const viewShotRef = React.useRef<ViewShotRef>(null);
   const captureTimersRef = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const lastUriRef = React.useRef<string | null>(null);
   const [imageUri, setImageUri] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    if (currentUser) useMapStore.getState().addUser(currentUser);
-  }, [currentUser]);
 
   const displayUsers = React.useMemo(
     () => nearbyUsers.slice(0, 3),
@@ -60,23 +57,38 @@ export const UsersMarker = React.memo(function UsersMarker({
     fallbacks: pictureFallbacks,
   });
 
+  const deleteFileQuietly = React.useCallback((uri: string | null) => {
+    if (!uri) return;
+    try {
+      new ExpoFile(uri).delete();
+    } catch {
+      // Ignore cleanup errors for already-removed tmpfiles
+    }
+  }, []);
+
   const capture = React.useCallback(async () => {
     try {
       if (viewShotRef.current) {
         const uri = await (viewShotRef.current as any).capture();
+        if (lastUriRef.current && lastUriRef.current !== uri) {
+          deleteFileQuietly(lastUriRef.current);
+        }
+        lastUriRef.current = uri;
         setImageUri(uri);
       }
     } catch {
       // View not ready yet
     }
-  }, []);
+  }, [deleteFileQuietly]);
 
   React.useEffect(() => {
     return () => {
       captureTimersRef.current.forEach(clearTimeout);
       captureTimersRef.current = [];
+      deleteFileQuietly(lastUriRef.current);
+      lastUriRef.current = null;
     };
-  }, []);
+  }, [deleteFileQuietly]);
 
   const handleLayout = React.useCallback(() => {
     if (!isAndroid) return;
@@ -88,11 +100,10 @@ export const UsersMarker = React.memo(function UsersMarker({
     ];
   }, [isAndroid, capture]);
 
+  const count = totalCount ?? nearbyUsers.length;
   const label = currentUserIncluded
-    ? `You & ${nearbyUsers.length - 1} Person${
-        nearbyUsers.length > 1 ? "s" : ""
-      }`
-    : `${nearbyUsers.length} Person${nearbyUsers.length > 1 ? "s" : ""}`;
+    ? `You & ${count - 1} Person${count - 1 > 1 ? "s" : ""}`
+    : `${count} Person${count > 1 ? "s" : ""}`;
 
   const content = (
     <View

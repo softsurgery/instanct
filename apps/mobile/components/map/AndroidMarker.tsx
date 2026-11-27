@@ -1,5 +1,6 @@
 import React from "react";
 import { Animated, Platform, View } from "react-native";
+import { File as ExpoFile } from "expo-file-system";
 import ViewShot, { ViewShotRef } from "react-native-view-shot";
 import type { PulsePoint } from "@softsurgery/mobile-hooks";
 
@@ -63,6 +64,16 @@ const MarkerCaptureItem = React.memo(
     const captureTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(
       null,
     );
+    const lastUriRef = React.useRef<string | null>(null);
+
+    const deleteFileQuietly = React.useCallback((uri: string | null) => {
+      if (!uri) return;
+      try {
+        new ExpoFile(uri).delete();
+      } catch {
+        // Ignore cleanup errors for already-removed tmpfiles
+      }
+    }, []);
 
     const capture = React.useCallback(() => {
       if (captureTimeout.current) clearTimeout(captureTimeout.current);
@@ -70,13 +81,24 @@ const MarkerCaptureItem = React.memo(
         try {
           if (viewShotRef.current) {
             const uri = await (viewShotRef.current as any).capture();
+            if (lastUriRef.current && lastUriRef.current !== uri) {
+              deleteFileQuietly(lastUriRef.current);
+            }
+            lastUriRef.current = uri;
             onCapture(id, uri);
           }
         } catch {
           // View may not be laid out yet, will retry
         }
       }, 150);
-    }, [id, onCapture]);
+    }, [id, onCapture, deleteFileQuietly]);
+
+    React.useEffect(() => {
+      return () => {
+        deleteFileQuietly(lastUriRef.current);
+        lastUriRef.current = null;
+      };
+    }, [deleteFileQuietly]);
 
     // Re-capture only when marker visual state (captureKey) changes, not on every parent render
     React.useEffect(() => {

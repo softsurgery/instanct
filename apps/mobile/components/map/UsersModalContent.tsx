@@ -124,7 +124,7 @@ export const UsersModalContent = ({
   const maxListHeight = Math.min(380, Math.round(screenHeight * 0.55));
 
   return (
-    <View className="px-5 pt-2 pb-6">
+    <View className="px-5 pt-2">
       {/* Header */}
       <View className="flex-row items-center justify-between mb-2 px-1">
         <Text className="text-lg font-bold text-foreground">

@@ -32,10 +32,6 @@ export const UserMarker = React.memo(function UserMarker({
   const showUsernames = useMapStore((s) => s.settings.showUsernames);
   const { user } = useIdentifiedUser({ id: userId });
 
-  React.useEffect(() => {
-    if (user) useMapStore.getState().addUser(user);
-  }, [user]);
-
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
   const imageIds = React.useMemo(() => [user?.pictureId], [user?.pictureId]);
   const imageFallbacks = React.useMemo(() => [fallback], [fallback]);

@@ -19,16 +19,10 @@ export const UserCarouselEntry = React.memo(function UserCarouselEntry({
   onPress,
 }: UserCarouselEntryProps) {
   const user = useMapStore(
-    React.useCallback(
-      (s) => s.users.find((u) => u.id === userId) ?? null,
-      [userId],
-    ),
+    React.useCallback((s) => s.usersById[userId] ?? null, [userId]),
   );
   const nearbyUser = useMapStore(
-    React.useCallback(
-      (s) => s.nearbyUsers.find((u) => u.userId === userId) ?? null,
-      [userId],
-    ),
+    React.useCallback((s) => s.nearbyUsersById[userId] ?? null, [userId]),
   );
   const fallback = React.useMemo(() => identifyUserAvatar(user), [user]);
   const imageIds = React.useMemo(() => [user?.pictureId], [user?.pictureId]);
